@@ -1,3 +1,6 @@
+puts 'SENTRY INITIALIZER'
+puts ENV["SENTRY_DSN"]
+
 =begin
 if %w(production staging).include?(Rails.env)
   require "raven"

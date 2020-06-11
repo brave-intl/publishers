@@ -76,6 +76,9 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  # Resolves docker error "Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1"
+  config.web_console.whitelisted_ips = ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16']
+
   config.logger = ActiveSupport::Logger.new(config.paths['log'].first, 1, 50.megabytes)
   config.log_level = :debug
   config.after_initialize do

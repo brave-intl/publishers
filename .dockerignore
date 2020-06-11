@@ -1,0 +1,51 @@
+.dockerignore
+.git
+.gitignore
+logs/
+tmp/
+node_modules/
+
+# Ignore bundler config.
+/.bundle
+vendor/bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp
+.DS_Store
+.swp
+.approvals
+.torus.json
+coverage
+/tags
+
+# Ignore public uploads
+/public/uploads/*
+/public/c/*
+/public/i/*
+/public/assets/*
+
+# Ignore node_modules
+node_modules/
+
+# Generated js bundles
+/app/assets/javascripts/generated/*
+latest.dump
+.byebug_history
+.gitdocs_build/
+
+# Ignore application configuration
+/public/packs
+/public/packs-test
+/node_modules
+
+# Ignore storybook static site generation
+storybook-static/
+yarn-error.log
+
+# Ignore package-lock.json because we use yarn
+package-lock.json
+
+# Development container gem storage location
+.gems

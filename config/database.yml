@@ -11,6 +11,7 @@ development:
   primary:
     <<: *default
     url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
+
   secondary:
     <<: *default
     url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>

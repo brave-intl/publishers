@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  app: &app_base
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      RAILS_ENV: development
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgres://postgres@postgres:5432/brave_publishers_dev
+      SSL: "off"
+      SENDGRID_SMTP_SERVER: mailcatcher
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rake app_initializer:setup && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - publishers:/app:rw
+    ports:
+      - "3000:3000"
+    env_file: .env
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - "db-data:/var/lib/postgresql/data:rw"
+
+  mailcatcher:
+    image: "schickling/mailcatcher"
+    ports:
+      - 1025:1025
+      - 1080:1080
+
+  redis:
+    image: redis:alpine
+
+  webpacker:
+    <<: *app_base
+    depends_on:
+      - app
+    command: "./bin/webpack-dev-server"
+    ports:
+      - '3035:3035'
+
+  sidekiq:
+    <<: *app_base
+    command: bundle exec sidekiq
+    ports: []
+    depends_on:
+      - app
+
+volumes:
+  db-data:
+  publishers:
