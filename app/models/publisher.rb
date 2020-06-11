@@ -245,7 +245,7 @@ class Publisher < ApplicationRecord
   end
 
   def promo_status(promo_running)
-    if !promo_running || has_promo_lockout?
+    if !promo_running || promo_lockout_time_passed?
       :over
     elsif promo_enabled_2018q1
       :active
@@ -254,13 +254,9 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def has_promo_lockout?
+  def promo_lockout_time_passed?
     return promo_lockout_time < DateTime.now if promo_lockout_time.present?
     false
-  end
-
-  def no_promo_lockout?
-    !has_promo_lockout?
   end
 
   def has_verified_channel?
