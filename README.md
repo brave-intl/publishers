@@ -248,6 +248,14 @@ yarn lint
 
 ## Testing
 
+If you have Docker set up on your machine you can run all the tests by running:
+
+```sh
+make docker-test
+```
+
+Alternatively if you have the environment set up on your machine you can run the following steps.
+
 ### Ruby
 
 ```sh
