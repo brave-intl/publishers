@@ -22,10 +22,15 @@ RUN apk add --update --no-cache \
   openssl \
   pkgconfig \
   postgresql-dev \
+  python \
   tzdata \
   yarn
 
 RUN gem install bundler
+
+RUN NODE_ENV=production
+RUN RAILS_ENV=production
+
 
 WORKDIR /var/www/
 
@@ -40,7 +45,10 @@ COPY package.json yarn.lock ./
 # Install the gems.
 RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install --jobs 20 --retry 5
-RUN yarn install
+RUN yarn install --frozen-lockfile
+
+RUN yarn build
+RUN bundle exec rake assets:precompile
 
 # We copy all the files from the current directory to our
 # /app directory

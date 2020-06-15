@@ -15,5 +15,5 @@ docker-dev:
 
 docker-test:
 	docker-compose -f docker-compose.dev.yml up --detach postgres web
-	docker-compose -f docker-compose.dev.yml run -e "RAILS_ENV=test" web rails app_initializer:setup && rails test && yarn test
+	docker-compose -f docker-compose.dev.yml run -e "RAILS_ENV=test" web sh -c "rails app_initializer:setup && rails test && yarn test"
 	docker-compose -f docker-compose.dev.yml down

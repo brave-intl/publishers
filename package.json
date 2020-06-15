@@ -7,7 +7,8 @@
     "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
     "prettier": "prettier --check 'app/javascript/**/*.{ts,tsx}'",
     "build": "cd public/creators-landing && yarn install && yarn build && cd - && yarn install",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "yarn rebuild node-sass"
   },
   "husky": {
     "hooks": {
