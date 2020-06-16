@@ -31,7 +31,17 @@ class Cache::BrowserChannels::PrefixList
         {
           nibble_length: PREFIX_LENGTH * 2,
         }
-    ]).map { |r| r['substring'] }.sort!
+    ]).map { |r| r['substring'] }.uniq.sort!
+
+    if Rails.env.staging?
+      # Insert a million entries. First preallocate the space then fill the entries
+      # Took 2 seconds on Macbook Pro 2.8 Ghz quad core
+      dummy_values = ["0" * PREFIX_LENGTH * 2] * 1000000
+      dummy_values.each_with_index do |_, i|
+        dummy_values[i] = ("%8.8s" % i.to_s(16)).gsub(" ", "0")
+      end
+      result.concat(dummy_values)
+    end
 
     to_protobuf_file(result)
   end
@@ -45,7 +55,7 @@ class Cache::BrowserChannels::PrefixList
           nibble_length: PREFIX_LENGTH * 2,
           date: date
         }
-    ]).map { |r| r['substring'] }.sort!
+    ]).map { |r| r['substring'] }.uniq.sort!
 
     to_protobuf_file(result)
   end
