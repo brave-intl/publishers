@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    image: publishers:latest
     environment:
       RAILS_ENV: development
       REDIS_URL: redis://redis:6379/0

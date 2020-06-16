@@ -4,7 +4,7 @@ BUILD_TIME := $(shell date +%s)
 
 docker:
 	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \
-		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest -f ./Dockerfile.dev .
+		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .
 	docker tag publishers:latest publishers:$(GIT_VERSION)
 
 docker-dev-build:

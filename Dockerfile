@@ -47,15 +47,15 @@ RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install --jobs 20 --retry 5
 RUN yarn install --frozen-lockfile
 
-RUN yarn build
-RUN bundle exec rake assets:precompile
-
 # We copy all the files from the current directory to our
 # /app directory
 # Pay close attention to the dot (.)
 # The first one will select ALL The files of the current directory,
 # The second dot will copy it to the WORKDIR!
 COPY . .
+
+RUN yarn build
+RUN bundle exec rake assets:precompile
 
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]

@@ -7,8 +7,7 @@
     "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
     "prettier": "prettier --check 'app/javascript/**/*.{ts,tsx}'",
     "build": "cd public/creators-landing && yarn install && yarn build && cd - && yarn install",
-    "test": "jest",
-    "postinstall": "yarn add --force --frozen-lockfile node-sass"
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -118,6 +117,5 @@
     "tslint-config-standard": "^8.0.1",
     "tslint-react": "^3.6.0",
     "webpack-dev-server": "3.11.0"
-  },
-  "version": "0.0.0"
+  }
 }
