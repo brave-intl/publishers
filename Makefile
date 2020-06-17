@@ -8,12 +8,21 @@ docker:
 	docker tag publishers:latest publishers:$(GIT_VERSION)
 
 docker-dev-build:
-	docker-compose -f docker-compose.dev.yml build
+	docker-compose build
 
 docker-dev:
-	docker-compose -f docker-compose.dev.yml up
+	docker-compose up
 
 docker-test:
-	docker-compose -f docker-compose.dev.yml up --detach postgres web
-	docker-compose -f docker-compose.dev.yml run -e "RAILS_ENV=test" web sh -c "rails app_initializer:setup && rails test && yarn test"
-	docker-compose -f docker-compose.dev.yml down
+	docker-compose up --detach postgres web
+	docker-compose run -e "RAILS_ENV=test" web sh -c "rails app_initializer:setup && rails test && yarn test"
+	docker-compose down
+
+k8:
+	kubectl delete -f web-deployment.yaml
+	kubectl delete services publishers
+	kubectl apply -f  web-deployment.yaml
+	kubectl rollout status deployment.v1.apps/publishers
+	kubectl expose deployment publishers --type=NodePort --port=3000
+	kubectl get pods
+	minikube service publishers --url

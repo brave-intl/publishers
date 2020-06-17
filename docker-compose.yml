@@ -22,7 +22,7 @@ services:
       - .:/var/www
     ports:
       - "3000:3000"
-    env_file: .env
+    env_file: .env.example
 
   postgres:
     image: postgres:12-alpine
@@ -40,13 +40,13 @@ services:
   redis:
     image: redis:alpine
 
-  webpacker:
-    <<: *web_base
-    depends_on:
-      - web
-    command: "./bin/webpack-dev-server"
-    ports:
-      - '3035:3035'
+  # webpacker:
+  #   <<: *web_base
+  #   depends_on:
+  #     - web
+  #   command: "./bin/webpack-dev-server"
+  #   ports:
+  #     - '3035:3035'
 
   sidekiq:
     <<: *web_base
