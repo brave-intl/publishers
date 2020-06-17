@@ -97,7 +97,7 @@ gem "rack-attack", "~> 5.0"
 
 gem 'railties', "~> 6.0.3.1"
 
-gem "rails", "~> 6.0.3.1"
+gem "rails", "~> 6.0.3"
 gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
