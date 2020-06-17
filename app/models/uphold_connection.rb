@@ -168,7 +168,25 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def missing_card?
-    default_currency_confirmed_at.present? && address.blank?
+    (default_currency_confirmed_at.present? && address.blank?) || !valid_card?
+  end
+
+  # Calls the Uphold API and checks
+  #   - if the address exists
+  #   - the card is in the same currency as the publisher's chosen currency
+  #
+  # Returns true if the checks pass, returns false if the Uphold API returns a 404 Not Found, or the address doesn't exist.
+  def valid_card?
+    return false if address.blank?
+
+    card = UpholdClient.card.find(
+      uphold_connection: self,
+      id: address
+    )
+
+    card&.currency.eql?(default_currency)
+  rescue Faraday::ResourceNotFound
+    false
   end
 
   # Makes an HTTP Request to Uphold and sychronizes

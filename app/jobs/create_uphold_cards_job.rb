@@ -10,7 +10,7 @@ class CreateUpholdCardsJob < ApplicationJob
       return
     end
 
-    return if address_already_exists?(uphold_connection)
+    return if uphold_connection.valid_card?
 
     card = find_existing_card(uphold_connection)
 
@@ -43,21 +43,6 @@ class CreateUpholdCardsJob < ApplicationJob
     end
 
     card
-  end
-
-  # Checks to see if the address already exist and is in the right currency
-  #
-  # Returns true if the address is in the same currency as the existing connection address
-  def address_already_exists?(uphold_connection)
-    return if uphold_connection.address.blank?
-
-    card = UpholdClient.card.find(
-      uphold_connection: uphold_connection,
-      id: uphold_connection.address
-    )
-
-    card&.currency.eql?(uphold_connection.default_currency)
-  rescue Faraday::ResourceNotFound
   end
 
   # Makes an HTTP Call to the Uphold card/:id/address endpoint to determine if the card has a private address
