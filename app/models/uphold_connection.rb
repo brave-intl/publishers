@@ -105,12 +105,8 @@ class UpholdConnection < ActiveRecord::Base
   # Makes a remote HTTP call to Uphold to get more details
   # TODO should we actually call uphold_user?
 
-  def uphold_client
-    @uphold_client ||= Uphold::Client.new(uphold_connection: self)
-  end
-
   def uphold_details
-    @user ||= uphold_client.user.find(self)
+    @user ||= UpholdClient.user.find(self)
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
       Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")

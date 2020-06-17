@@ -17,7 +17,7 @@ class CreateUpholdCardsJob < ApplicationJob
     # If the card doesn't exist so we should create it
     if card.blank?
       Rails.logger.info("Could not find existing card for #{uphold_connection.default_currency} - Creating a new card")
-      card = uphold_connection.uphold_client.card.create(uphold_connection: uphold_connection)
+      card = UpholdClient.card.create(uphold_connection: uphold_connection)
     end
 
     # Finally let's update the address with the id of the card
@@ -28,7 +28,7 @@ class CreateUpholdCardsJob < ApplicationJob
   #
   # Returns nil, or the card that was found
   def find_existing_card(uphold_connection)
-    cards = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)
+    cards = UpholdClient.card.where(uphold_connection: uphold_connection)
 
     # This is the default label that we apply to a card. If we find it then it's safe to assume that this was one we've created prior.
     card = cards.detect { |c| c.label.eql?("Brave Rewards") }
@@ -51,7 +51,7 @@ class CreateUpholdCardsJob < ApplicationJob
   def address_already_exists?(uphold_connection)
     return if uphold_connection.address.blank?
 
-    card = uphold_connection.uphold_client.card.find(
+    card = UpholdClient.card.find(
       uphold_connection: uphold_connection,
       id: uphold_connection.address
     )
@@ -67,7 +67,7 @@ class CreateUpholdCardsJob < ApplicationJob
     @existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: uphold_connection, uphold_id: uphold_connection.uphold_id).to_a
     return true if @existing_private_cards.include?(card_id)
 
-    addresses = uphold_connection.uphold_client.address.all(uphold_connection: uphold_connection, id: card_id)
+    addresses = UpholdClient.address.all(uphold_connection: uphold_connection, id: card_id)
 
     addresses.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
   end
