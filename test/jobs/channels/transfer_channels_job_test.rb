@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class TransferChannelsJobTest < ActiveJob::TestCase
+class Channels::TransferChannelsJobTest < ActiveJob::TestCase
   before do
     # Mock out the creation of cards
     stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
@@ -16,7 +16,7 @@ class TransferChannelsJobTest < ActiveJob::TestCase
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
 
     assert_enqueued_jobs(0) do
-      TransferChannelsJob.perform_now
+      Channels::TransferChannelsJob.perform_now
     end
 
     contested_by_channel.reload
@@ -28,11 +28,21 @@ class TransferChannelsJobTest < ActiveJob::TestCase
     contested_by_channel = channels(:locked_out_site)
     # contest channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+    clear_enqueued_jobs
+    clear_performed_jobs
 
-    travel (Channel::CONTEST_TIMEOUT + 1.minute) do
-      assert_enqueued_jobs(6) do
-        TransferChannelsJob.perform_now
-      end
+    travel(Channel::CONTEST_TIMEOUT + 1.minute) do
+      assert_enqueued_jobs 0
+      Channels::TransferChannelsJob.perform_now
+
+      assert_enqueued_jobs 1
+      assert_performed_jobs 0
+
+      perform_enqueued_jobs
+
+      # There are 5 jobs enqueued (4 emails and a slack message) when a channel completes transfer
+      # + 2 for the actual jobs that were completed, so 7 overall
+      assert_performed_jobs 7
 
       contested_by_channel.reload
       assert contested_by_channel.verified

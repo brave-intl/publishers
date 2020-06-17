@@ -21,7 +21,7 @@
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
-  TransferChannelsJob:
+  Channel::TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   Sync::UnattachedPromoRegistrationsStatsJob:
