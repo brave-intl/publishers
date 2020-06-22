@@ -33,7 +33,7 @@ class Cache::BrowserChannels::PrefixList
         }
     ]).map { |r| r['substring'] }.uniq.sort!
 
-    if ENV["RAILS_ENV"].in?(["staging"])
+    if Rails.env.staging?
       # Insert a million entries. First preallocate the space then fill the entries
       # Took 2 seconds on Macbook Pro 2.8 Ghz quad core
       dummy_values = ["0" * PREFIX_LENGTH * 2] * 1000000
