@@ -7,7 +7,7 @@ class Cache::BrowserChannels::PrefixList
 
   attr_reader :compression_type
 
-  def initialize(compression_type: PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION)
+  def initialize(compression_type: PublishersPb::PublisherPrefixList::CompressionType::BROTLI_COMPRESSION)
     @compression_type = compression_type
   end
 
@@ -80,19 +80,19 @@ class Cache::BrowserChannels::PrefixList
   private
 
   def to_protobuf_file(result)
-    publisher_list_pb = PublishersPb::PublisherList.new
+    publisher_list_pb = PublishersPb::PublisherPrefixList.new
     publisher_list_pb.compression_type = @compression_type
-    if @compression_type == PublishersPb::PublisherList::CompressionType::NO_COMPRESSION
+    if @compression_type == PublishersPb::PublisherPrefixList::CompressionType::NO_COMPRESSION
       publisher_list_pb.prefixes = result.map { |item| [item].pack('H*') }.join("")
       publisher_list_pb.uncompressed_size = publisher_list_pb.prefixes.length
-    elsif @compression_type == PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION
+    elsif @compression_type == PublishersPb::PublisherPrefixList::CompressionType::BROTLI_COMPRESSION
       new_result = result.map { |item| [item].pack('H*') }.join("")
       publisher_list_pb.prefixes = Brotli.deflate(new_result)
       publisher_list_pb.uncompressed_size = new_result.length
     end
     publisher_list_pb.prefix_size = PREFIX_LENGTH
     temp_file = Tempfile.new.binmode
-    temp_file.write(PublishersPb::PublisherList.encode(publisher_list_pb))
+    temp_file.write(PublishersPb::PublisherPrefixList.encode(publisher_list_pb))
     temp_file.close
     temp_file
   end
