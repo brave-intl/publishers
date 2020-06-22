@@ -9,7 +9,7 @@ option optimize_for = LITE_RUNTIME;
 
 package publishers_pb;
 
-message PublisherList {
+message PublisherPrefixList {
   enum CompressionType {
     NO_COMPRESSION = 0;
     BROTLI_COMPRESSION = 1;
