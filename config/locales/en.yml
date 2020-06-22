@@ -103,7 +103,7 @@ en:
       contact: "For assistance please contact us at: %{support_email}"
   faqs:
     index:
-      title: Frequently Asked Questions
+      title: Frequently Asked Questions (FAQ)
   helpers:
     channels:
       verification_in_progress: Verification in progress
