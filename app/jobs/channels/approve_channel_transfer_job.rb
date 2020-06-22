@@ -28,9 +28,6 @@ module Channels
         # Email the new owner
         PublisherMailer.channel_transfer_approved_secondary(contested_by).deliver_later
         PublisherMailer.channel_transfer_approved_secondary_internal(contested_by).deliver_later
-
-        # Notify Slack
-        SlackMessenger.new(message: "#{channel.details.channel_identifier} has been successfully contested by #{channel.publisher.owner_identifier}.").perform
       end
     end
   end
