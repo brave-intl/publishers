@@ -18,18 +18,36 @@ message SiteBannerDetails {
   SocialLinks social_links = 6;
 }
 
-enum WalletConnectedState {
-  NO_VERIFICATION = 0;
-  UPHOLD_ACCOUNT_NO_KYC = 1;
-  UPHOLD_ACCOUNT_KYC = 2;
+enum UpholdWalletState {
+  UPHOLD_ACCOUNT_NO_KYC = 0;
+  UPHOLD_ACCOUNT_KYC = 1;
+}
+
+message UpholdWallet {
+  string address = 1;
+  UpholdWalletState wallet_state = 2;
+}
+
+enum PaypalWalletState {
+  PAYPAL_ACCOUNT_NO_KYC = 0;
+  PAYPAL_ACCOUNT_KYC = 1;
+}
+
+message PaypalWallet {
+  string address = 1;
+  PaypalWalletState wallet_state = 2;
+}
+
+message Wallet {
+  oneof provider {
+    UpholdWallet uphold_wallet = 1;
+  }
 }
 
 message ChannelResponse {
   string channel_identifier = 1;
-  WalletConnectedState wallet_connected_state = 2;
-  string wallet_address = 3;
-  bool publisher_ads_opted_in = 4;
-  SiteBannerDetails site_banner_details= 5;
+  repeated Wallet wallets = 2;
+  SiteBannerDetails site_banner_details = 3;
 }
 
 message ChannelResponseList {
