@@ -18,6 +18,12 @@ message SiteBannerDetails {
   SocialLinks social_links = 6;
 }
 
+enum AutoContributionState {
+  UNUSABLE = 0;
+  VIA_LEDGER = 1;
+  DIRECT_TO_ADDRESS = 2;
+}
+
 enum UpholdWalletState {
   UPHOLD_ACCOUNT_NO_KYC = 0;
   UPHOLD_ACCOUNT_KYC = 1;
@@ -26,6 +32,7 @@ enum UpholdWalletState {
 message UpholdWallet {
   string address = 1;
   UpholdWalletState wallet_state = 2;
+  AutoContributionState auto_contribution_state = 3;
 }
 
 enum PaypalWalletState {
@@ -36,6 +43,7 @@ enum PaypalWalletState {
 message PaypalWallet {
   string address = 1;
   PaypalWalletState wallet_state = 2;
+  AutoContributionState auto_contribution_state = 3;
 }
 
 message Wallet {
