@@ -5,60 +5,59 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("channel_responses.proto", :syntax => :proto3) do
-    add_message "publishers_pb.SocialLinks" do
-      optional :youtube, :string, 1
-      optional :twitter, :string, 2
-      optional :twitch, :string, 3
+    add_message "publishers_pb.ChannelResponse" do
+      optional :channel_identifier, :string, 1
+      repeated :wallets, :message, 2, "publishers_pb.ChannelResponse.Wallet"
+      optional :site_banner_details, :message, 3, "publishers_pb.ChannelResponse.SiteBannerDetails"
     end
-    add_message "publishers_pb.SiteBannerDetails" do
+    add_message "publishers_pb.ChannelResponse.SiteBannerDetails" do
       optional :title, :string, 1
       optional :description, :string, 2
       optional :background_url, :string, 3
       optional :logo_url, :string, 4
       repeated :donation_amounts, :double, 5
-      optional :social_links, :message, 6, "publishers_pb.SocialLinks"
+      optional :social_links, :message, 6, "publishers_pb.ChannelResponse.SiteBannerDetails.SocialLinks"
     end
-    add_message "publishers_pb.UpholdWallet" do
-      optional :address, :string, 1
-      optional :wallet_state, :enum, 2, "publishers_pb.UpholdWalletState"
+    add_message "publishers_pb.ChannelResponse.SiteBannerDetails.SocialLinks" do
+      optional :youtube, :string, 1
+      optional :twitter, :string, 2
+      optional :twitch, :string, 3
     end
-    add_message "publishers_pb.PaypalWallet" do
-      optional :address, :string, 1
-      optional :wallet_state, :enum, 2, "publishers_pb.PaypalWalletState"
-    end
-    add_message "publishers_pb.Wallet" do
+    add_message "publishers_pb.ChannelResponse.Wallet" do
       oneof :provider do
-        optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
-        optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
+        optional :uphold_wallet, :message, 1, "publishers_pb.ChannelResponse.Wallet.UpholdWallet"
+        optional :paypal_wallet, :message, 2, "publishers_pb.ChannelResponse.Wallet.PaypalWallet"
       end
     end
-    add_message "publishers_pb.ChannelResponse" do
-      optional :channel_identifier, :string, 1
-      repeated :wallets, :message, 2, "publishers_pb.Wallet"
-      optional :site_banner_details, :message, 3, "publishers_pb.SiteBannerDetails"
+    add_message "publishers_pb.ChannelResponse.Wallet.UpholdWallet" do
+      optional :address, :string, 1
+      optional :wallet_state, :enum, 2, "publishers_pb.ChannelResponse.Wallet.UpholdWallet.UpholdWalletState"
     end
-    add_message "publishers_pb.ChannelResponseList" do
-      repeated :channel_responses, :message, 1, "publishers_pb.ChannelResponse"
-    end
-    add_enum "publishers_pb.UpholdWalletState" do
+    add_enum "publishers_pb.ChannelResponse.Wallet.UpholdWallet.UpholdWalletState" do
       value :UPHOLD_ACCOUNT_NO_KYC, 0
       value :UPHOLD_ACCOUNT_KYC, 1
     end
-    add_enum "publishers_pb.PaypalWalletState" do
+    add_message "publishers_pb.ChannelResponse.Wallet.PaypalWallet" do
+      optional :wallet_state, :enum, 1, "publishers_pb.ChannelResponse.Wallet.PaypalWallet.PaypalWalletState"
+    end
+    add_enum "publishers_pb.ChannelResponse.Wallet.PaypalWallet.PaypalWalletState" do
       value :PAYPAL_ACCOUNT_NO_KYC, 0
       value :PAYPAL_ACCOUNT_KYC, 1
+    end
+    add_message "publishers_pb.ChannelResponseList" do
+      repeated :channel_responses, :message, 1, "publishers_pb.ChannelResponse"
     end
   end
 end
 
 module PublishersPb
-  SocialLinks = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SocialLinks").msgclass
-  SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
-  UpholdWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWallet").msgclass
-  PaypalWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWallet").msgclass
-  Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
+  ChannelResponse::SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.SiteBannerDetails").msgclass
+  ChannelResponse::SiteBannerDetails::SocialLinks = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.SiteBannerDetails.SocialLinks").msgclass
+  ChannelResponse::Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.Wallet").msgclass
+  ChannelResponse::Wallet::UpholdWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.Wallet.UpholdWallet").msgclass
+  ChannelResponse::Wallet::UpholdWallet::UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.Wallet.UpholdWallet.UpholdWalletState").enummodule
+  ChannelResponse::Wallet::PaypalWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.Wallet.PaypalWallet").msgclass
+  ChannelResponse::Wallet::PaypalWallet::PaypalWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse.Wallet.PaypalWallet.PaypalWalletState").enummodule
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
-  UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWalletState").enummodule
-  PaypalWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWalletState").enummodule
 end
