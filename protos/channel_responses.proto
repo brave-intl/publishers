@@ -14,14 +14,8 @@ message SiteBannerDetails {
   string description = 2;
   string background_url = 3;
   string logo_url = 4;
-  repeated int32 donation_amounts = 5;
+  repeated double donation_amounts = 5;
   SocialLinks social_links = 6;
-}
-
-enum AutoContributionState {
-  UNUSABLE = 0;
-  VIA_LEDGER = 1;
-  DIRECT_TO_ADDRESS = 2;
 }
 
 enum UpholdWalletState {
@@ -32,7 +26,6 @@ enum UpholdWalletState {
 message UpholdWallet {
   string address = 1;
   UpholdWalletState wallet_state = 2;
-  AutoContributionState auto_contribution_state = 3;
 }
 
 enum PaypalWalletState {
@@ -43,12 +36,12 @@ enum PaypalWalletState {
 message PaypalWallet {
   string address = 1;
   PaypalWalletState wallet_state = 2;
-  AutoContributionState auto_contribution_state = 3;
 }
 
 message Wallet {
   oneof provider {
     UpholdWallet uphold_wallet = 1;
+    PaypalWallet paypal_wallet = 2;
   }
 }
 

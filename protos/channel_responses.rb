@@ -15,22 +15,21 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :description, :string, 2
       optional :background_url, :string, 3
       optional :logo_url, :string, 4
-      repeated :donation_amounts, :int32, 5
+      repeated :donation_amounts, :double, 5
       optional :social_links, :message, 6, "publishers_pb.SocialLinks"
     end
     add_message "publishers_pb.UpholdWallet" do
       optional :address, :string, 1
       optional :wallet_state, :enum, 2, "publishers_pb.UpholdWalletState"
-      optional :auto_contribution_state, :enum, 3, "publishers_pb.AutoContributionState"
     end
     add_message "publishers_pb.PaypalWallet" do
       optional :address, :string, 1
       optional :wallet_state, :enum, 2, "publishers_pb.PaypalWalletState"
-      optional :auto_contribution_state, :enum, 3, "publishers_pb.AutoContributionState"
     end
     add_message "publishers_pb.Wallet" do
       oneof :provider do
         optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
+        optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
       end
     end
     add_message "publishers_pb.ChannelResponse" do
@@ -40,11 +39,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     end
     add_message "publishers_pb.ChannelResponseList" do
       repeated :channel_responses, :message, 1, "publishers_pb.ChannelResponse"
-    end
-    add_enum "publishers_pb.AutoContributionState" do
-      value :UNUSABLE, 0
-      value :VIA_LEDGER, 1
-      value :DIRECT_TO_ADDRESS, 2
     end
     add_enum "publishers_pb.UpholdWalletState" do
       value :UPHOLD_ACCOUNT_NO_KYC, 0
@@ -65,7 +59,6 @@ module PublishersPb
   Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
-  AutoContributionState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.AutoContributionState").enummodule
   UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWalletState").enummodule
   PaypalWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWalletState").enummodule
 end
