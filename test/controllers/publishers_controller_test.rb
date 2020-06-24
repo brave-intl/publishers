@@ -422,7 +422,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       publisher.save!
 
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+      stub_request(:post, /oauth2\/token/)
           .with(body: "code=#{uphold_code}&grant_type=authorization_code")
           .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
