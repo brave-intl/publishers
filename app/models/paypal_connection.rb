@@ -18,6 +18,6 @@ class PaypalConnection < ActiveRecord::Base
   end
 
   def update_site_banner_lookup!
-    publisher.update_site_banner_lookup!
+    user.update_site_banner_lookup!
   end
 end
