@@ -13,18 +13,18 @@ class Cache::BrowserChannels::PrefixListTest < ActiveSupport::TestCase
   end
 
   test 'creates basic prefix list and can decompress back for no compression' do
-    service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherList::CompressionType::NO_COMPRESSION)
+    service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherPrefixList::CompressionType::NO_COMPRESSION)
     temp_file = service.save_main_file!
-    publishers_list_pb = PublishersPb::PublisherList.decode(File.open(temp_file.path, 'rb').readlines[0])
+    publishers_list_pb = PublishersPb::PublisherPrefixList.decode(File.open(temp_file.path, 'rb').readlines[0])
     prefixes = publishers_list_pb['prefixes'].chars.each_slice(publishers_list_pb['prefix_size']).map(&:join)
     assert_not_equal 0, prefixes.length
     assert_equal SiteBannerLookup.where.not(wallet_status: PublishersPb::WalletConnectedState::NO_VERIFICATION).count, prefixes.length
   end
 
   test 'creates basic prefix list and can decompress back for brotli compression' do
-    service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION)
+    service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherPrefixList::CompressionType::BROTLI_COMPRESSION)
     temp_file = service.save_main_file!
-    prefixes_compressed = PublishersPb::PublisherList.decode(File.open(temp_file.path, 'rb').readlines[0])['prefixes']
+    prefixes_compressed = PublishersPb::PublisherPrefixList.decode(File.open(temp_file.path, 'rb').readlines[0])['prefixes']
     prefixes = Brotli.inflate(prefixes_compressed).unpack('H*')[0].scan(/.{#{Cache::BrowserChannels::PrefixList::PREFIX_LENGTH * 2}}/)
     assert_not_equal 0, prefixes.length
     assert_equal SiteBannerLookup.where.not(wallet_status: PublishersPb::WalletConnectedState::NO_VERIFICATION).count, prefixes.length
