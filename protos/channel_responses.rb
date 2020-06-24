@@ -19,12 +19,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :social_links, :message, 6, "publishers_pb.SocialLinks"
     end
     add_message "publishers_pb.UpholdWallet" do
-      optional :address, :string, 1
-      optional :wallet_state, :enum, 2, "publishers_pb.UpholdWalletState"
+      optional :wallet_state, :enum, 1, "publishers_pb.UpholdWalletState"
+      optional :address, :string, 2
     end
     add_message "publishers_pb.PaypalWallet" do
-      optional :address, :string, 1
-      optional :wallet_state, :enum, 2, "publishers_pb.PaypalWalletState"
+      optional :wallet_state, :enum, 1, "publishers_pb.PaypalWalletState"
     end
     add_message "publishers_pb.Wallet" do
       oneof :provider do

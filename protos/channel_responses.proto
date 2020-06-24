@@ -24,8 +24,8 @@ enum UpholdWalletState {
 }
 
 message UpholdWallet {
-  string address = 1;
-  UpholdWalletState wallet_state = 2;
+  UpholdWalletState wallet_state = 1;
+  string address = 2;
 }
 
 enum PaypalWalletState {
@@ -34,8 +34,7 @@ enum PaypalWalletState {
 }
 
 message PaypalWallet {
-  string address = 1;
-  PaypalWalletState wallet_state = 2;
+  PaypalWalletState wallet_state = 1;
 }
 
 message Wallet {
