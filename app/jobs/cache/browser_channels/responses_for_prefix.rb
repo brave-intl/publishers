@@ -17,11 +17,29 @@ class Cache::BrowserChannels::ResponsesForPrefix
   def generate_brotli_encoded_channel_response(prefix:)
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     @channel_responses = PublishersPb::ChannelResponseList.new
-    @site_banner_lookups.each do |site_banner_lookup|
+    @site_banner_lookups.includes(publisher: :uphold_connection).includes(publisher: :paypal_connection).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
-      channel_response.wallet_connected_state = site_banner_lookup.wallet_status
-      channel_response.wallet_address = site_banner_lookup.wallet_address if site_banner_lookup.wallet_address.present?
+      # Some malformed data shouldn't prevent the list from being generated.
+      begin
+        if site_banner_lookup.publisher.uphold_connection.present?
+          wallet = PublishersPb::Wallet.new
+          uphold_wallet = PublishersPb::UpholdWallet.new
+          uphold_wallet.address = site_banner_lookup.publisher.uphold_connection.address
+          uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: site_banner_lookup.publisher.uphold_connection)
+          wallet.uphold_wallet = uphold_wallet
+          channel_response.wallets.push(wallet)
+        end
+        if site_banner_lookup.publisher.paypal_connection.present?
+          wallet = PublishersPb::Wallet.new
+          paypal_wallet = PublishersPb::PaypalWallet.new
+          paypal_wallet.wallet_state = get_paypal_wallet_state(paypal_connection: site_banner_lookup.publisher.paypal_connection)
+          wallet.paypal_wallet = paypal_wallet
+          channel_response.wallets.push(wallet)
+        end
+      rescue
+        next
+      end
       channel_response.site_banner_details = get_site_banner_details(site_banner_lookup)
       channel_responses.channel_responses.push(channel_response)
     end
@@ -37,6 +55,22 @@ class Cache::BrowserChannels::ResponsesForPrefix
   end
 
   private
+
+  def get_uphold_wallet_state(uphold_connection:)
+    if uphold_connection.is_member && uphold_connection.address.present?
+      PublishersPb::UpholdWalletState::UPHOLD_ACCOUNT_KYC
+    else
+      PublishersPb::UpholdWalletState::UPHOLD_ACCOUNT_NO_KYC
+    end
+  end
+
+  def get_paypal_wallet_state(paypal_connection:)
+    if paypal_connection.verified_account?
+      PublishersPb::PaypalWalletState::PAYPAL_ACCOUNT_KYC
+    else
+      PublishersPb::PaypalWalletState::PAYPAL_ACCOUNT_NO_KYC
+    end
+  end
 
   def cleanup!
     begin
