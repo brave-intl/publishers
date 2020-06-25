@@ -1,10 +1,19 @@
 module Uphold
   class Client < BaseApiClient
-    attr_accessor :api_base_uri
+    attr_accessor :api_base_uri, :value
 
     def initialize(params = {})
       @connection = connection
+      @value = 0
       self.api_base_uri = params[:uri]
+    end
+
+    def set_value(val)
+      @value = val
+    end
+
+    def get_value
+      @value
     end
 
     def address

@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     get :home
     put :accept_tos
   end
+  scope controller: "hello" do
+    post :set_value
+    get :get_value
+  end
   resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful

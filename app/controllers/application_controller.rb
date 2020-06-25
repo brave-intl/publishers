@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
     )
   end
 
-  protect_from_forgery prepend: true, with: :exception
+#  protect_from_forgery prepend: true, with: :exception
+  protect_from_forgery with: :null_session
 
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
