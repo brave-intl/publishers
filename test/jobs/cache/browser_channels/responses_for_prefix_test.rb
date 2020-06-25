@@ -16,8 +16,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     service = Cache::BrowserChannels::ResponsesForPrefix.new
     service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH * 2])
     assert service.temp_file.present?
-    require 'brotli'
-    result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines[0].slice(4..-1))
+    result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end

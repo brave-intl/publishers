@@ -279,7 +279,6 @@ class Channel < ApplicationRecord
       channel_identifier: details&.channel_identifier,
     )
     site_banner_lookup.set_sha2_base16
-    site_banner_lookup.set_wallet_status(publisher: publisher)
     site_banner_lookup.derived_site_banner_info =
       if skip_site_banner_info_lookup
         {}
