@@ -1,8 +1,8 @@
-FASTLY_API = "https://api.fastly.com/public-ip-list".freeze
+FASTLY_API = Rails.application.config.services.fastly
 proxy_list = []
 
 begin
-  puts "⬇️  Pulling trusted_proxy list from Fastly"
+  puts "⬇️  Pulling trusted_proxies list from Fastly"
   response = Faraday.get(FASTLY_API)
   list = JSON.parse(response.body)
   proxy_list = list.dig("addresses")

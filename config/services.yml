@@ -1,0 +1,8 @@
+default: &default
+  fastly: <%= ENV["FASTLY_API"] || "https://api.fastly.com/public-ip-list" %>
+
+development:
+  <<: *default
+
+production:
+  <<: *default
