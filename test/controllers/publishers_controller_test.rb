@@ -8,12 +8,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
   include EyeshadeHelper
+  include MockUpholdResponses
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    stub_request(:get, /cards\?q/).to_return(body: [].to_json)
-    stub_request(:get, /v0\/me\/cards/).to_return(body: '{}')
-    stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
+    stub_uphold_cards!
   end
 
   after do
@@ -423,7 +422,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       publisher.save!
 
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+      stub_request(:post, /oauth2\/token/)
           .with(body: "code=#{uphold_code}&grant_type=authorization_code")
           .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 

@@ -35,12 +35,12 @@ class CreateUpholdChannelCardJob < ApplicationJob
 
     # If a user transfers their channel then we should try not to create duplicate uphold cards
     card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Rewards"
-    cards = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)
+    cards = UpholdClient.card.where(uphold_connection: uphold_connection)
     card_id = cards.detect { |c| c.label.eql?(card_label) }&.id
 
     if card_id.blank?
       # If the card doesn't exist so we should create it
-      card_id = uphold_connection.uphold_client.card.create(
+      card_id = UpholdClient.card.create(
         uphold_connection: uphold_connection,
         currency: uphold_connection.default_currency,
         label: card_label
@@ -53,7 +53,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
   def card_exists?(uphold_connection, card_id)
     return false if card_id.blank?
 
-    uphold_connection.uphold_client.card.find(uphold_connection: uphold_connection, id: card_id).present?
+    UpholdClient.card.find(uphold_connection: uphold_connection, id: card_id).present?
   rescue Faraday::ResourceNotFound
     false
   end
@@ -64,7 +64,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
 
     return address if address.present?
 
-    uphold_connection.uphold_client.address.create(
+    UpholdClient.address.create(
       uphold_connection: uphold_connection,
       id: card_id,
       network: UpholdConnectionForChannel::NETWORK
@@ -72,7 +72,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
   end
 
   def addresses(uphold_connection, card_id)
-    uphold_connection.uphold_client.address.all(
+    UpholdClient.address.all(
       uphold_connection: uphold_connection,
       id: card_id
     )
