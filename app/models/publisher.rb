@@ -2,6 +2,8 @@ require 'digest/md5'
 
 class Publisher < ApplicationRecord
   include UserFeatureFlags
+  include ReferralPromo
+
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
@@ -11,7 +13,6 @@ class Publisher < ApplicationRecord
   BROWSER_USER = "browser_user".freeze
 
   ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
-  MAX_PROMO_REGISTRATIONS = 500
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT].freeze
@@ -52,15 +53,12 @@ class Publisher < ApplicationRecord
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
   validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
-  validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
   validates :name, presence: true, allow_blank: true, length: { maximum: 64 }
 
   validates_inclusion_of :role, in: ROLES
-
-  validates :promo_token_2018q1, uniqueness: true, allow_nil: true
 
   before_create :build_default_channel, :set_default_features
   before_destroy :dont_destroy_publishers_with_channels
@@ -244,21 +242,6 @@ class Publisher < ApplicationRecord
     "#{OWNER_PREFIX}#{id}"
   end
 
-  def promo_status(promo_running)
-    if !promo_running || promo_lockout_time_passed?
-      :over
-    elsif promo_enabled_2018q1
-      :active
-    else
-      :inactive
-    end
-  end
-
-  def promo_lockout_time_passed?
-    return promo_lockout_time < DateTime.now if promo_lockout_time.present?
-    false
-  end
-
   def has_verified_channel?
     channels.any?(&:verified?)
   end
@@ -342,18 +325,6 @@ class Publisher < ApplicationRecord
     provider_country = uphold_connection&.country || paypal_connection&.country
 
     provider_country.to_s.upcase
-  end
-
-  def valid_promo_country?
-    PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
-  end
-
-  def may_register_promo?
-    # If the user doesn't have the referral_kyc_flag on then we can register them still.
-    return true unless referral_kyc_required?
-
-    # Otherwise they must be brave payable and from a valid country
-    brave_payable? && valid_promo_country?
   end
 
   private
