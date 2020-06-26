@@ -40,7 +40,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
   end
 
   describe 'validations' do
-    let(:uphold_connection) { uphold_connections(:verified_connection) }
+    let(:uphold_connection) { uphold_connections(:default_connection) }
 
     describe 'when uphold_access_parameters is nil' do
       before do

@@ -16,10 +16,13 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     when ["Not assigned"]
       @promo_registrations = promo_registrations.where(promo_campaign_id: nil).paginate(page: params[:page])
     else
-      @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter })
+      @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter }).paginate(page: params[:page])
     end
-
-    @promo_registrations = @promo_registrations.order("promo_registrations.created_at DESC")
+    if params[:column].present?
+      @promo_registrations = @promo_registrations.order(ActiveRecord::Base.sanitize_sql_for_order("promo_registrations.#{params[:column]} #{params[:direction]}"))
+    else
+      @promo_registrations = @promo_registrations.order("promo_registrations.created_at DESC")
+    end
     @current_campaign = params[:filter] || "All codes"
     @campaigns = PromoCampaign.pluck(:name).sort
   end
@@ -35,7 +38,13 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
   end
 
   def report
-    referral_codes = params[:referral_codes]
+    referral_codes =
+      if params[:use_campaign]
+        PromoRegistration.joins(:promo_campaign).where(promo_campaigns: { name: params[:filter] }).pluck(:referral_code)
+      else
+        params[:referral_codes]
+      end
+
     break_down_by_country = params[:geo].present?
     start_date, end_date = parse_report_dates
 
@@ -49,7 +58,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     )
 
     redirect_to admin_unattached_promo_registrations_path(filter: [params[:filter]]),
-      flash: { notice: "Generating the report, we'll email #{current_publisher.email} when it's done" }
+                flash: { notice: "Generating the report, we'll email #{current_publisher.email} when it's done" }
   end
 
   def update_statuses
@@ -84,6 +93,10 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
   end
 
   private
+
+  def sortable_columns
+    [:aggregate_downloads, :aggregate_installs, :aggregate_confirmations]
+  end
 
   def parse_report_dates
     start_date = Date.parse(params[:start_date].values.join("-"))

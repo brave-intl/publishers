@@ -1,18 +1,33 @@
+import * as moment from "moment";
 import * as React from "react";
-import locale from "../../../locale/en";
-import { IStatementOverview } from "../Statements";
+import { FormattedMessage, injectIntl, useIntl } from "react-intl";
+
+import {
+  CurrencyNumber,
+  DepositBreakdown,
+  DisplayEarningPeriod,
+  DisplayPaymentDate,
+  GetParameterCaseInsensitive,
+  IStatementOverview,
+  IStatementTotal,
+} from "../Statements";
 
 import { TableHeader } from "../StatementsStyle";
 import {
   Amount,
-  ChannelDescription,
   ChannelHeader,
   Date,
+  Description,
   Details,
   HideOverflow,
   Table,
-  TableCell
+  TableCell,
+  Total,
+  TotalCell,
 } from "./StatementDetailsStyle";
+
+import DetailSection from "./statementDetails/DetailSection";
+import RateCardStatements from "./statementDetails/RateCardStatements";
 
 import routes from "../../routes";
 
@@ -21,12 +36,44 @@ interface IStatementProps {
   showPage?: boolean;
 }
 
-export default class StatementDetails extends React.Component<
-  IStatementProps,
-  any
-> {
+class StatementDetails extends React.Component<IStatementProps, any> {
   constructor(props) {
     super(props);
+
+    this.state = { rateCardStatement: [] };
+  }
+
+  public componentDidMount() {
+    if (this.props.statement.showRateCards) {
+      this.setState({ isLoading: true });
+      this.loadGroups();
+    }
+  }
+
+  public async loadGroups() {
+    await fetch(
+      routes.publishers.statements.rate_card.path +
+        `?start_date=${this.props.statement.earningPeriod.startDate}&end_date=${
+          this.props.statement.earningPeriod.endDate
+        }&id=${this.props.statement.publisherId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "X-CSRF-Token": document.head
+            .querySelector("[name=csrf-token]")
+            .getAttribute("content"),
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        method: "GET",
+      }
+    ).then((response) => {
+      response.json().then((json) => {
+        this.setState({
+          isLoading: false,
+          rateCardStatement: json.rateCardStatement,
+        });
+      });
+    });
   }
 
   public render() {
@@ -36,13 +83,17 @@ export default class StatementDetails extends React.Component<
           <div className="d-flex align-items-center justify-content-between">
             <div>
               <h6 className="m-0">
-                <span>{locale.statements.overview.brand} </span>
+                <span>
+                  <FormattedMessage id="statements.overview.brand" />{" "}
+                </span>
                 <span className="text-muted font-weight-light ml-1">
-                  {locale.statements.overview.statement}
+                  <FormattedMessage id="statements.overview.statement" />
                 </span>
               </h6>
             </div>
-            <Date>{this.props.statement.earning_period}</Date>
+            <Date>
+              {DisplayEarningPeriod(this.props.statement.earningPeriod)}
+            </Date>
           </div>
 
           <div className="mb-4 mt-3">
@@ -54,49 +105,64 @@ export default class StatementDetails extends React.Component<
 
           <div className="d-flex justify-content-between mb-3">
             <div>
-              <div>{locale.statements.overview.amountDeposited}</div>
               <div>
-                <Amount>
-                  {parseFloat(this.props.statement.deposited).toFixed(2)}{" "}
-                  <small>{this.props.statement.currency}</small>
-                </Amount>
+                <FormattedMessage id="statements.overview.amountDeposited" />
+              </div>
+              <div>
+                {Object.keys(this.props.statement.deposited).map((name) => (
+                  <React.Fragment key={name}>
+                    <DepositBreakdown
+                      name={name}
+                      results={GetParameterCaseInsensitive(
+                        this.props.statement.depositedTypes,
+                        name
+                      )}
+                    >
+                      <Amount>
+                        <CurrencyNumber
+                          value={this.props.statement.deposited[name]}
+                        />{" "}
+                        <small>{name}</small>
+                        <br />
+                      </Amount>
+                    </DepositBreakdown>
+                  </React.Fragment>
+                ))}
               </div>
             </div>
 
-            <table className="table ml-4 border-bottom">
+            <table className="table ml-4 border-bottom statement-table">
               <tbody>
                 <tr>
-                  <td>
-                    <strong>{locale.statements.overview.totalEarned}</strong>
+                  <td colSpan={2}>
+                    <strong>
+                      <FormattedMessage id="statements.overview.totalDeposited" />
+                    </strong>
                   </td>
-                  <td>
-                    {Number.parseFloat(this.props.statement.totalEarned).toFixed(2)}{" "}
-                    {locale.bat}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{locale.statements.overview.details.totalFees}</strong>
-                  </td>
-                  <td>
-                    {Number.parseFloat(this.props.statement.totalFees).toFixed(2)}{" "}
-                    {locale.bat}
+                  <td className="text-right">
+                    <CurrencyNumber
+                      value={this.props.statement.batTotalDeposited}
+                    />{" "}
+                    <FormattedMessage id="bat" />
                   </td>
                 </tr>
+                {/* Subsection for totals */}
+                <TotalSubTable
+                  {...this.props.statement.totals}
+                  settlementDestination={
+                    this.props.statement.settlementDestination
+                  }
+                />
+
                 <tr>
-                  <td>
-                    <strong>{locale.statements.overview.totalDeposited}</strong>
+                  <td colSpan={2}>
+                    <strong>
+                      <FormattedMessage id="statements.overview.depositDate" />
+                    </strong>
                   </td>
-                  <td>
-                    {Number.parseFloat(this.props.statement.totalBATDeposited).toFixed(2)}{" "}
-                    {locale.bat}
+                  <td className="text-right">
+                    {DisplayPaymentDate(this.props.statement.paymentDate)}
                   </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{locale.statements.overview.depositDate}</strong>
-                  </td>
-                  <td>{this.props.statement.payment_date}</td>
                 </tr>
               </tbody>
             </table>
@@ -105,24 +171,36 @@ export default class StatementDetails extends React.Component<
 
         <div className="">
           <h5 className="px-5 mb-3">
-            {locale.statements.overview.totalEarned}
+            <FormattedMessage id="statements.overview.totalEarned" />
             <span className="text-muted ml-2 font-weight-light">
-              {locale.statements.overview.details.summary}
+              <FormattedMessage id="statements.overview.details.summary" />
             </span>
           </h5>
+
           {this.props.statement.details.map((detail, index) => (
-            <StatementDetail detail={detail} index={index} />
+            <DetailSection detail={detail} index={index} key={detail.title} />
           ))}
         </div>
+
+        {this.props.statement.showRateCards && (
+          <RateCardStatements
+            rateCardStatement={this.state.rateCardStatement}
+            isLoading={this.state.isLoading}
+          />
+        )}
+
         {!this.props.showPage && (
           <div className="px-5 py-3">
             <a
+              data-piwik-action="StatementViewMore"
+              data-piwik-name="Clicked"
+              data-piwik-value=""
               href={routes.publishers.statements.show.path.replace(
                 "{period}",
-                this.props.statement.earning_period
+                this.props.statement.earningPeriod.startDate
               )}
             >
-              {locale.statements.overview.viewMore}
+              <FormattedMessage id="statements.overview.viewMore" />
             </a>
           </div>
         )}
@@ -131,60 +209,90 @@ export default class StatementDetails extends React.Component<
   }
 }
 
-const StatementDetail = props => (
-  <div
-    style={{
-      background: props.index % 2 === 0 ? "#F3F3F6" : "",
-      borderRadius: "6px"
-    }}
-    className="px-5 py-4"
-  >
-    <div className="">
-      <ChannelHeader>{props.detail.title}</ChannelHeader>
-      <ChannelDescription>{props.detail.description}</ChannelDescription>
-    </div>
-    <Table className="table m-0">
-      <thead>
-        <tr>
-          <TableHeader>
-            <strong className="text-uppercase">
-              {locale.statements.overview.details.description}
-            </strong>
-          </TableHeader>
-          <TableHeader className="text-right">
-            <strong className="text-uppercase">
-              {locale.statements.overview.details.amount}
-            </strong>
-          </TableHeader>
-        </tr>
-      </thead>
-      <tbody>
-        {props.detail.transactions.map(transaction => (
-          <tr key={transaction.amount}>
-            <TableCell>
-              <HideOverflow>{transaction.channel}</HideOverflow>
-            </TableCell>
-            <TableCell className="text-right">
-              {transaction.amount} {locale.bat}
-            </TableCell>
-          </tr>
-        ))}
-        <tr>
-          <td>
-            <strong>
-              {props.detail.type === "fees" &&
-                locale.statements.overview.details.totalFees}
-              {props.detail.type !== "fees" &&
-                locale.statements.overview.details.total}
-            </strong>
-          </td>
-          <td className="text-right">
-            <strong>
-              {props.detail.amount} {locale.bat}
-            </strong>
-          </td>
-        </tr>
-      </tbody>
-    </Table>
-  </div>
+const TotalSubTable = (props) => (
+  <React.Fragment>
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total>
+          <FormattedMessage id="statements.overview.braveSettledContributions" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total>
+          <CurrencyNumber value={props.contributionSettlement} />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total>
+          <FormattedMessage id="statements.overview.referralPromoEarnings" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total>
+          <CurrencyNumber value={props.referralSettlement} />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+
+    <tr>
+      <TotalCell />
+      <TotalCell hasBorder>
+        <Total isDark>
+          <FormattedMessage id="statements.overview.totalBraveSettled" />
+        </Total>
+      </TotalCell>
+      <TotalCell hasBorder textRight>
+        <Total isDark>
+          <SettlementDestinationLink
+            settlementDestination={props.settlementDestination}
+          >
+            <CurrencyNumber value={props.totalBraveSettled} />{" "}
+            <FormattedMessage id="bat" />
+          </SettlementDestinationLink>
+        </Total>
+      </TotalCell>
+    </tr>
+
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total isDark>
+          <FormattedMessage id="statements.overview.directUserTips" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total isDark>
+          <CurrencyNumber value={props.upholdContributionSettlement} />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+  </React.Fragment>
 );
+
+export const SettlementDestinationLink = (props) => {
+  const intl = useIntl();
+  if (props.settlementDestination) {
+    return (
+      <a
+        href={intl.formatMessage(
+          { id: "statements.overview.upholdCardLink" },
+          { cardId: props.settlementDestination }
+        )}
+      >
+        {props.children}
+      </a>
+    );
+  }
+
+  return props.children;
+};
+
+export default injectIntl(StatementDetails);

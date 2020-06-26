@@ -33,8 +33,10 @@ en:
     time_until_transfer_fallback: a short time
     channel_contested_by: Channel has been verified by another publisher and will be transferred to their account in %{time_until_transfer} unless you reject.
     channel_not_found: Channel not found
+    channel_quota_exceeded: We're so popular we exceeded our daily quota of YouTube registrations. Please try again tomorrow.
     channel_removed: Channel removed.
     continue: Continue
+    date_format: "%b %d, %Y"
     dashboard: Dashboard
     referrals: Referrals
     payments: Payments
@@ -60,8 +62,10 @@ en:
     shared:
       errors: "There were errors saving your request:"
     attributes:
+      uphold_connection:
+        send_emails: Receive emails notifying me if I can't receive payments.
       publisher:
-        visible: Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels.
+        marketing_emails: By checking here, I consent to be informed of new features and promotions via email.
         name: Your Name
       site_channel_details:
         brave_publisher_id: Website Domain
@@ -302,6 +306,17 @@ en:
       title: Notification of email change
       intro: This email confirms an update made to your email address with Brave Rewards. If you made this change, check your new email account for a link to confirm it.
       contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
+    paypal:
+      missing_bank_account:
+        body_html:
+          Thank you for being a Brave Creator.
+          <br/><br/>
+          We have currently held your payment for the month of %{month}; as you have not verified your bank account with PayPal.
+          <br/><br/>
+          Once you verify your bank account with PayPal, please sign back in at creators.brave.com and refresh your PayPal account info.
+          Thank you.
+          <br/><br/>
+          The Brave Rewards | Creator team
     suspend_publisher:
       subject: Your Brave Rewards account has been temporarily frozen
       intro: Thank you for being a Brave publisher.
@@ -340,11 +355,13 @@ en:
         <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p>
         <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
       button: Verify wallet
+      unsubscribe: These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
     uphold_member_restricted:
       subject: Uphold account unable to receive funds
       body_html: |
         <p>Your Uphold account is not currently able to receive funds. Please check your account status to ensure that there are no active problems and that you are within transaction limit guidelines.</p>
         <p>Your earnings will be held safely in your Brave Rewards account until your Uphold account is ready to receive funds again. If you have any questions, please reply to this email.</p>
+        <p>These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.</p>
     verification_done:
       subject: "%{publication_title} is now verified on Brave Rewards"
       title: Verification complete
@@ -356,6 +373,7 @@ en:
       body_html: |
         <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Rewards!</span></p>
         <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
+      unsubscribe: These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
       button: Log in to Brave Rewards
     verify_email:
       subject: Verify your Brave Rewards email address
@@ -394,12 +412,12 @@ en:
         statement_file_name: BravePaymentsStatement
         missing_scope: "It looks like we're unable to read transactions from your Uphold account. This affects the ability to generate statements for direct contributions. "
         reauthorize: Click here to re-authorize with Uphold.
-        contribution_settlement: Contributions
-        contribution_settlement_description: The total amount of contributions paid through Brave managed systems, including auto-contribute and custodial wallets.
+        contribution_settlement: Brave Settled Contributions
+        contribution_settlement_description: The total amount of contributions paid through Brave managed systems, including auto-contribute and custodial wallets.  5% fee is applied to support Brave Rewards and infrastructure costs.
         referral_settlement:  Referral Promo Earnings
-        referral_settlement_description: The total amount paid for users who have installed and used Brave Browser for more than 30 days.
-        uphold_contribution_settlement: Direct Contributions
-        uphold_contribution_settlement_description: The total amount of contributions which were sent directly to your Uphold account from a user with a Brave Rewards connected wallet.
+        referral_settlement_description: The total amount paid for users who have ins talled and used Brave Browser for more than 30 days.
+        uphold_contribution_settlement: Direct User Tips
+        uphold_contribution_settlement_description: Tips made directly by Brave users are deposited into your Uphold Account as they come throughout the month. No fees are applicable for direct tips.
         fees: Fees
         fees_description: The total amount of the fees taken from contributions to support Brave Rewards, and infrastructure costs.
         account: Publisher Account
@@ -455,6 +473,7 @@ en:
         reauthorize_uphold: At the time we generated the payout report, your Uphold account needed to be reconnected.
         kyc_required: At the time we generated the payout report, your identity was not yet verified through Uphold.
         no_payment: You will not be able to receive payment for this cycle.
+        locked: At the time we generated the payout report your account was in locked status from removing your 2FA.
         generating: The payout report is currently generating. Please check back later.
     change_email:
       login_email: Login Email
@@ -523,11 +542,10 @@ en:
         legacy_youtube_login: Legacy YouTube Login
       sign_up:
         heading: Join Brave Rewards
+        terms_of_service: I agree to Brave's terms & conditions
       resend_authentication_email:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         done: The access email has been resent.
-    devise:
-      login_session_expired: Your session has expired. Please log in again.
     email_verified:
       heading: One last thing...
       intro: Finish signing up by entering below.
@@ -538,10 +556,12 @@ en:
       migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
-      balance_pending: PENDING PAYOUTS
+      balance_pending: BALANCE
       next_deposit_date: "Next Deposit Date: "
       payout_in_progress: "Payout In Progress"
+      payout_minimum_balance: "Minimum balance for payout is %{amount} %{currency}"
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
+      merchant: Merchant Keys
       held_funds: SUSPENDED BAT
       held_funds_description: |
         These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
@@ -551,20 +571,6 @@ en:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
       closed_case_description:
         <a href="/publishers/case">Your appeal case </a> has been rejected.
-
-      uphold:
-        heading: Your Uphold Wallet
-        deposit_currency_label: "Deposit Currency: "
-        deposit_currency: "BAT to "
-        check_balance: Check Balance
-        connect_to_a_new_account: Connect to a new Uphold account
-        no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
-        connect: Connect
-        disconnect: Disconnect
-        last_deposit: LAST DEPOSIT
-        last_deposit_date: "Last Deposit Date: "
-        change: Change
-        no_currency_selected: None selected
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"
@@ -575,6 +581,38 @@ en:
         heading: Contact
         edit: Edit Contact
         update: Update
+    uphold_wallet_panel:
+      heading: Your Uphold Wallet
+      deposit_currency_label: "Deposit Currency or Token: "
+      deposit_currency: "BAT to "
+      check_balance: Check Balance
+      connect_to_a_new_account: Connect to a new Uphold account
+      no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
+      connect: Connect
+      disconnect: Disconnect
+      last_deposit: LAST DEPOSIT
+      last_deposit_date: "Last Deposit Date: "
+      change: Change
+      no_currency_selected: None selected
+    paypal_connection_panel:
+      bat_points: BAT Points
+      change: Change
+      check_balance: Check Balance
+      connect_with_paypal: Connect with Paypal
+      connect: Connect
+      connected: Connected
+      deposit_date_explanation: Contribution balance gets deposited into your connected account at the 8th of every month.
+      disconnect: Disconnect
+      heading: Your Deposit Account
+      last_deposit: "Last Deposit:"
+      last_deposit_date: "made on "
+      link_bank_account: Link Bank Account
+      need_bank_account: At least one bank account needs to be linked to your Paypal account in order to receive payments.
+      no_deposit_made_yet: "No deposit has been made yet"
+      refresh_account_label: I've linked one already.
+      refresh_account_button: Check again.
+      still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
+      view_account_summary: "Check Balance"
     channel:
       added: added %{date}
       remove_verified: Remove channel
@@ -668,7 +706,7 @@ en:
       deny: Cancel
       confirm: Disconnect
     confirm_default_currency_modal:
-      headline: Confirm your preferred deposit currency
+      headline: Confirm your preferred deposit currency or token
       leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
       fee_disclaimer_html: Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a href="https://uphold.com/en/pricing">Check fees</a>
       confirm: Confirm
@@ -724,7 +762,12 @@ en:
       downloaded: "downloaded"
       installed: "installed"
       confirmed: "confirmed"
+      expiration: "Thanks for particpating in the promo program. Your referral codes will expire in %{time}."
+      unpayable_notice: "Connect and verify your identity with Uphold to enroll the referral promo program."
+      restricted_country: "Your region is currently unable to participate in the referral promo program."
+      ineligible: "You are ineligible to take part in this program. You must verify your identity with your wallet provider and be in a supported region."
       last_updated_at: "Last updated about %{time} ago"
+      group: "Group %{number}"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
       violation: We regret to inform you that we've suspended your ability to participate in Brave Rewards Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from participating in our other programs.
@@ -809,6 +852,8 @@ en:
       https_error_encountered: "The following error was encountered: "
     new:
       heading: Enter Domain Info
+      ads_enable_question: "Allow Brave to serve ads on my website."
+      learn_more: Learn More
     progress:
       info: Domain Info
       verify: Verification Method
@@ -819,6 +864,10 @@ en:
       alert: Your site is verified.
     setup_current_channel:
       alert: This page is not valid for this channel type
+    site_channel_ads_learn_more_modal: |
+      <p> Brave shares 70% of the revenue from our new privacy-preserving Publisher Ads with content providers. The project is currently in development and being tested with select partners. Brave’s Publisher Ads are available on an opt-in only basis, and you can cancel at any time. There is no obligation to sign up.</p>
+      <p>Read more about it <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">here</a>.</p>
+      <p>Publisher Ads will be available more widely soon. So, please keep an eye out for more information as it becomes available.</p>
     verification_background:
       heading: Now verifying your domain...
       help_html: |
@@ -868,6 +917,7 @@ en:
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
+      no_https_alt: Your domain is NOT using HTTPS.
     verification_wordpress:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!

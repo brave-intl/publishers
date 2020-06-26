@@ -57,23 +57,6 @@ class SearchTest < ActionDispatch::IntegrationTest
     end
   end
 
-  describe 'channel_from_video_url' do
-    let(:subject) { controller.remove_prefix_if_necessary('youtu.be/kLiLOkzLetE?t=39') }
-
-    before do
-      @prev_youtube = Rails.application.secrets[:youtube_api_key]
-      Rails.application.secrets[:youtube_api_key] = nil
-    end
-
-    after do
-      Rails.application.secrets[:youtube_api_key] = @prev_youtube
-    end
-
-    it 'extracts the channel_id from a youtube video' do
-      assert_equal subject, 'channel_id'
-    end
-  end
-
   describe 'extract_channel' do
     it 'extracts channel id' do
       channel_id = controller.send(:extract_channel, 'youtube.com/channel/UCFNTTISby1c_H-rm5Ww5rZg')

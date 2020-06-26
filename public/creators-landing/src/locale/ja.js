@@ -47,18 +47,22 @@ export default {
       tinyOne: "以前ご登録の方はこちら",
       tinyOneHref: "/log-in"
     },
-    footerOne: "Terms of Service",
+    footerOne: "利用規約",
     footerOneHref:
       "https://basicattentiontoken.org/publisher-terms-of-service/",
-    footerTwo: "Help Center",
-    footerTwoHref: "https://support.brave.com/hc/en-us"
+    footerTwo: "ヘルプセンター",
+    footerTwoHref: "https://support.brave.com/hc/en-us",
+    termsOfService: {
+      agree: "Braveの利用規約に同意します",
+      description: "Braveは<a>あなたのメールアドレス</a>をアカウントに関するご連絡やサービスに変更等に使用いたします。設定ページからメール通知の変更が可能です",
+      invalid: "アカウントを作成するには、Braveの利用規約に同意する必要があります"
+    },
+    validEmail: "メールアドレスを入力したことを確認してください。"
   },
   signoff: {
     btn: "新規登録",
     btnHref: "/sign-up",
-    headlineOne: "参加する ",
-    headlineTwo:
-      " Brave Rewardsを通じてコンテンツやメディアを収益化する"
+    headline: "すでに{count}以上のコンテンツクリエイターや出版社がBrave Rewardsに参加し、収益を上げ始めています"
   },
   sign: {
     sentAgain:

@@ -1,0 +1,60 @@
+.dashboard
+  .row
+    .col.mb-4
+      .rounded.bg-white.p-4
+        .d-flex.align-items-center.justify-content-between.mb-3
+          h4.m-0= t('.title')
+          = link_to( \
+            t('.create'), \
+            new_key_path, \
+            data: { "js-confirm-with-modal": "new_secret_key" }, \
+            class: 'btn btn-primary' \
+          )
+
+          script id="new_secret_key" type="text/html"
+            = render "new"
+
+        p ==t('.description')
+        table.table
+          thead
+            tr
+              th= t('.name')
+              th= t('.created_at')
+              th
+          tbody
+            - if @keys&.length == 0
+              tr
+                td.text-center colspan="3" = t('.no_results')
+            - @keys&.each do |key|
+              tr
+                td style="min-width: 440px"
+                  = key.name
+                  - if key.expiry
+                    .text-danger.small= t('.expires_in', time: distance_of_time_in_words_to_now(key.expiry))
+                td= key.created_at.to_date.strftime(t('shared.date_format'))
+
+                td
+                  .d-flex.justify-content-end
+                    - if key.expiry.blank?
+                      = link_to( \
+                        t('.roll'), \
+                        key_roll_path(key.id), \
+                        method: :patch, \
+                        data: { "js-confirm-with-modal": "roll-key#{key.id}" }, \
+                        class: 'btn btn-secondary mr-2' \
+                      )
+
+                      script id="roll-key#{key.id}" type="text/html"
+                        = render "roll", key: key
+
+                    = link_to( \
+                      t('.delete'), \
+                      key_path(key.id), \
+                      method: :delete, \
+                      data: { "js-confirm-with-modal": "delete-key#{key.id}" }, \
+                      class: 'btn btn-secondary' \
+                    )
+
+                    script id="delete-key#{key.id}" type="text/html"
+                      = render "delete", key: key
+

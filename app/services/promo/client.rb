@@ -5,7 +5,15 @@ module Promo
     end
 
     def owner_state
-      Promo::Models::OwnerState.new(connection)
+      @owner_state ||= Promo::Models::OwnerState.new(connection)
+    end
+
+    def reporting
+      @reporting ||= Promo::Models::Reporting.new(connection)
+    end
+
+    def peer_to_peer_registration
+      @peer_to_peer_registration ||= Promo::Models::PeerToPeerRegistration.new(connection)
     end
 
     private

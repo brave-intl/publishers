@@ -12,7 +12,6 @@ class PublisherSerializerTest < ActiveSupport::TestCase
     assert json_result.has_key?("name")
     assert json_result.has_key?("channel_identifiers")
     assert json_result.has_key?("default_currency")
-    assert json_result.has_key?("show_verification_status")
     assert json_result["channel_identifiers"].is_a?(Array)
 
     assert json_result.has_key?("channel_identifiers")

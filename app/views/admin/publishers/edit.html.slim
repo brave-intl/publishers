@@ -2,19 +2,41 @@
 
 #publisher
   #publisher-section
-    - if flash[:notice]
-      .alert.alert-success role="alert"
-        = flash[:notice]
-    - if flash[:alert]
-      .alert.alert-danger role="alert"
-        = flash[:alert]
-    h2 = @publisher.name
+    h4.m-0.p-0 Settings
+    p Toggle settings on or off for this publisher.
+
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
-      .form-group
+      .form-group.border-bottom.pb-2
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
           = " Uphold widget disabled"
+      .form-group.border-bottom.pb-2
+        label
+          = f.check_box UserFeatureFlags::WIRE_ONLY, {}, checked: @publisher.wire_only?
+          = " Wire transfers only"
+        .text-dark This feature disables uphold and paypal widgets.
+      .form-group.border-bottom.pb-2
+        label
+          = f.check_box UserFeatureFlags::INVOICE, {}, checked: @publisher.invoice?
+          = " Create invoices"
+        .text-dark Provides the ability to create invoices. Users will still be paid out the base balance that they are owed.
+      .form-group.border-bottom.pb-2
+        label
+          = f.check_box UserFeatureFlags::MERCHANT, {}, checked: @publisher.merchant?
+          = " Merchant Feature"
+        .text-dark Enables the abililty to create API Keys to interact with SKUs
+      .form-group.border-bottom.pb-2
+        label
+          = f.check_box UserFeatureFlags::REFERRAL_KYC_REQUIRED, {}, checked: @publisher.referral_kyc_required?
+          = " Referral KYC Required"
+        p.text-dark Enforces KYC for users to join the referral promo program.
+      .form-group.border-bottom.pb-2
+        label
+          = "Promo Lockout Time"
+        = f.date_field(UserFeatureFlags::PROMO_LOCKOUT_TIME, value: @publisher.promo_lockout_time, class: 'ml-2')
+        p.text-dark Sets the date when the publishers promo codes will no longer be active.
+
       .form-group
-        = f.submit class: "btn btn-primary"
+        = f.submit class: "btn btn-primary m-0"
     = form_tag admin_publisher_path, method: :delete
       = submit_tag "Delete account", class: 'btn btn-danger', data: { confirm: "Are you sure you want to delete this account?" }

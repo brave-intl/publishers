@@ -10,7 +10,7 @@
 :enabled: <%= !(ENV["RAILS_ENV"] == 'development') %>
 :schedule:
   EnqueueSiteChannelVerifications:
-    cron: "42 * * * *"
+    cron: "42 1 * * *"
     decription: "For Site Channels created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
     queue: scheduler
   CleanStaleUpholdDataJob:
@@ -24,8 +24,8 @@
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   Sync::ChannelPromoRegistrationsStatsJob:
-    cron: "0 * * * *"
-    description: "Sync stats for channel owned referral codes with the promo server every hour."
+    cron: "0 2 * * *"
+    description: "Sync stats for channel owned referral codes with the promo server every morning."
   TwoFactorAuthenticationRemovalJob:
     cron: "0 12 * * *"
     description: "Handle two factor authentication removal requests, send reminder e-mails, process 2fa removals, remove channels/wallets when required"
@@ -33,13 +33,13 @@
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
     queue: low
-  Sync::ChannelStatsJob:
-    cron: "0 1 * * *"
-    description: "Syncs the channel stats via youtube and twitch apis"
-    queue: low
   Sync::Zendesk::StartJob:
     cron: "0 1 * * *"
     description: "Syncs zendesk tickets"
+    queue: low
+  Cache::BrowserChannels::Main:
+    cron: "0 */2 * * *"
+    description: "Syncs V4 channels list"
     queue: low
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
@@ -59,8 +59,9 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
-  EnqueuePublishersForPayoutNotificationJob:
+  EnqueuePublishersForPayoutJob:
     cron: "0 0 23 * *"
+    args: ['send_notifications']
     description: "Notifies publishers their wallet is disconnected on the 23rd of every month."
     queue: scheduler
   EnqueuePublishersForPayoutJob:

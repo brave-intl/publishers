@@ -84,16 +84,16 @@ h4 {
 .bottom-swoop {
   position: absolute;
   bottom: -2px;
-  width: 100vw !important;
+  width: 100% !important;
   z-index: 0;
 }
 
 /* Terms in Signup and Signin */
 
 .terms-help {
-  position: absolute;
+  /* position: absolute;
   bottom: 60px;
-  left: 72px;
+  left: 72px; */
   color: rgb(182, 182, 182);
 }
 
@@ -150,6 +150,12 @@ h4 {
     display: flex;
     align-self: flex-start;
     margin: 0 0 18px;
+  }
+}
+
+@media (min-width: 576px) {
+  #zindex {
+    justify-content: center;
   }
 }
 

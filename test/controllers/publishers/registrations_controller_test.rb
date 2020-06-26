@@ -60,7 +60,7 @@ module Publishers
 
     describe '#create' do
       let(:create_email) { 'alice@verified.org' }
-      let(:subject) { post(registrations_path, params: { email: create_email }) }
+      let(:subject) { post(registrations_path, params: { email: create_email, terms_of_service: true }) }
 
       describe 'when the email already exists' do
         it 'sends an email' do

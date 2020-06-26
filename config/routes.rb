@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :uphold_connections do
+    get :login
+    get :confirm
+  end
+  namespace :browser_users do
+    get :home
+    put :accept_tos
+  end
   resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful
@@ -16,7 +24,13 @@ Rails.application.routes.draw do
           delete :delete_file
         end
         resources :case_notes
+        resources :keys do
+          patch :roll
+        end
 
+        resources :uphold_connection, controller: "uphold", only: :update
+
+        # Legacy route which should be migrated to UpholdConnectionsController
         scope controller: "uphold" do
           get :uphold_status
           get :uphold_verified, action: :create
@@ -25,8 +39,24 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
-        resources :statements, only: [:index, :show]
+        resources :statements, only: [:index, :show] do
+          get :rate_card, on: :collection
+        end
+
         resource :two_factor_authentications_removal
+
+        resources :promo_registrations, only: [:index, :create] do
+          collection do
+            get :for_referral_code
+            get :overview
+          end
+        end
+      end
+
+      resources :paypal_connections, controller: "publishers/paypal_connections", only: [] do
+        get :connect_callback, on: :collection
+        get :refresh
+        patch :disconnect
       end
 
       get :log_out
@@ -45,37 +75,16 @@ Rails.application.routes.draw do
       get :security, to: "publishers/security#index"
       get :prompt_security, to: "publishers/security#prompt"
       get :settings, to: "publishers/settings#index"
-
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
-      resources :promo_registrations, only: %i(index create)
     end
+
     resources :site_banners, controller: "publishers/site_banners" do
       collection do
         post :set_default_site_banner_mode
-      end
-    end
-    # (Albert Wang): Need to factor the above promo_registrations, as they should be in Publishers::PromoRegistrationsController rather than in the PromoRegistrationsController
-    resources :promo_registrations, controller: "publishers/promo_registrations", only: [] do
-      collection do
-        get :for_referral_code
-        get :overview
-      end
-    end
-  end
-
-  namespace :partners do
-    resource :payments, only: [:show] do
-      resources :invoices do
-        resources :invoice_files, only: [:create, :update, :destroy]
-      end
-    end
-    resources :referrals do
-      collection do
-        resources :promo_registrations
       end
     end
   end
@@ -126,6 +135,8 @@ Rails.application.routes.draw do
       resources :publishers, defaults: { format: :json } do
         post "publisher_status_updates"
       end
+      resources :transactions, only: [:show]
+
       # /api/v1/stats/
       namespace :stats, defaults: { format: :json } do
         namespace :channels, defaults: { format: :json } do
@@ -171,6 +182,13 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    # /api/v3_p1/
+    namespace :v3_p1, defaults: { format: :json } do
+      namespace :public, defaults: { format: :json } do
+        get "channels", controller: "channels"
+      end
+    end
   end
 
   namespace :admin do
@@ -204,11 +222,19 @@ Rails.application.routes.draw do
       end
     end
     resources :publishers do
+      resources :invoices, module: 'publishers' do
+        post :upload
+        get :finalize
+        patch :update_status
+        post :archive_file
+      end
+
       collection do
         patch :approve_channel
         get :statement
         get :cancel_two_factor_authentication_removal
       end
+      get :sign_in_as_user
 
       resources :payments
       patch :refresh_uphold
@@ -223,14 +249,7 @@ Rails.application.routes.draw do
     resources :security
 
     resources :organizations, except: [:destroy]
-    resources :partners, except: [:destroy] do
-      get :generate_manual_payout
-      resources :invoices do
-        post :upload
-        get :finalize
-        patch :update_status
-      end
-    end
+
 
     namespace :stats do
       resources :contributions, only: [:index]
@@ -265,7 +284,7 @@ Rails.application.routes.draw do
   end
 
   require "sidekiq/web"
-  if Rails.env.production?
+  if Rails.env.production? || Rails.env.staging?
     Sidekiq::Web.use Rack::Auth::Basic do |username, password|
       # Protect against timing attacks: (https://codahale.com/a-lesson-in-timing-attacks/)
       # - Use & (do not use &&) so that it doesn't short circuit.

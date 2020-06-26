@@ -14,10 +14,12 @@ import {
   StatusLink
 } from "./TopNavStyle";
 
+import Modal, { ModalSize } from "../../../../../../components/modal/Modal";
 import NavbarSelection from "../../UserNavbar";
 
 import locale from "../../../../../../locale/en";
 import routes from "../../../../../../routes/routes";
+import SimpleDialog from "../../../../../dialogs/SimpleDialog";
 
 interface ITopNavProps {
   name: string;
@@ -25,12 +27,19 @@ interface ITopNavProps {
   userID: string;
   avatar: string;
   navbarSelection: string;
+  isOpen?: boolean;
+  loginUrl?: string;
 }
 
-export default class Referrals extends React.Component<ITopNavProps, {}> {
+interface ITopNavState {
+  isOpen: boolean;
+  loginUrl: string;
+}
+
+export default class Referrals extends React.Component<ITopNavProps, ITopNavState> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {isOpen: false, loginUrl: ""} ;
   }
 
   public render() {
@@ -75,6 +84,28 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
               <Link href={`/admin/channel_transfers/${this.props.userID}`}>
                 Transfers
               </Link>
+              <Link>|</Link>
+              <Link
+                id="sign_in_as_user_button"
+                onClick={this.modalClick}
+                href="#"
+                className="mr-4"
+              >
+                Generate sign in link
+              </Link>
+              <Modal
+                show={this.state.isOpen}
+                size={ModalSize.Medium}
+                handleClose={() =>
+                  this.closeModal()
+                }
+                padding={false}
+              >
+                  <SimpleDialog
+                    header="Copy below"
+                    label={this.state.loginUrl}
+                  />
+              </Modal>
             </SectionGroup>
           </Section>
           <Section>
@@ -87,6 +118,27 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
       </Container>
     );
   }
+
+  private closeModal = () => {
+    this.setState({ isOpen: false });
+  }
+
+  private modalClick = async () => {
+    const url = "/admin/publishers/" + this.props.userID + "/sign_in_as_user";
+    const options = {
+      credentials: "same-origin",
+      headers: {
+        Accept: "text/html",
+        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]").getAttribute('content') as string,
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      method: "GET"
+    } as RequestInit;
+    const response = await fetch(url, options);
+    const data = await response.json();
+    this.setState({ loginUrl: data['login_url']});
+    this.setState({ isOpen: !this.props.isOpen });
+  };
 }
 
 function Navigation(props) {

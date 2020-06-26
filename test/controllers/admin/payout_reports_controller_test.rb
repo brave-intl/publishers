@@ -57,7 +57,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     # Stub disconnected /wallet response
     wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
 
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+    stub_request(:get, /v1\/owners\/#{URI.encode_www_form_component(publisher.owner_identifier)}\/wallet/).
       to_return(status: 200, body: wallet_response, headers: {})
 
     # Stub /balances response
@@ -107,7 +107,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     # Stub disconnected /wallet response
     wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
 
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+    stub_request(:get, /v1\/owners\/#{URI.encode_www_form_component(publisher.owner_identifier)}\/wallet/).
       to_return(status: 200, body: wallet_response, headers: {})
 
     # Stub /balances response
@@ -281,7 +281,9 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("PayoutReport.count", 0) do # Ensure no payout report is created
       assert_difference("ActionMailer::Base.deliveries.count", 1) do # ensure notification is sent
         perform_enqueued_jobs do
-          post notify_admin_payout_reports_path
+          Sidekiq::Testing.inline! do
+            post notify_admin_payout_reports_path
+          end
         end
       end
     end

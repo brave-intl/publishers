@@ -10,7 +10,7 @@
 
 .action-group {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 32px;
   align-items: center;
 }
@@ -494,6 +494,7 @@ a.logo span {
   top: 22px;
 }
 
+
 .checkbox_1 > input:active {
   border: 2px solid #7e47a8;
 }
@@ -501,6 +502,19 @@ a.logo span {
 .checkbox_1 > input:focus + label::before {
   outline: #fb542b solid 1px;
   box-shadow: 0 0px 8px #7e47a8;
+}
+
+.checkbox_small {
+  height: 30px;
+}
+.checkbox_small > input:checked + span::before {
+
+  position: absolute;
+  left: 3px;
+  top: 3px;
+}
+.assignee-input {
+  outline: none;
 }
 
 .reply:hover {

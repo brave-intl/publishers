@@ -67,22 +67,38 @@ module Publishers
     # This creates the uphold connection
     # The route for this is by default publisher/uphold_verified
     def create
-      connection = current_publisher.uphold_connection
+      uphold_connection = current_publisher.uphold_connection
 
-      validate_uphold!(connection)
-      validate_state!(connection)
+      validate_uphold!(uphold_connection)
+      validate_state!(uphold_connection)
 
-      connection.receive_uphold_code(params[:code])
+      uphold_connection.receive_uphold_code(params[:code])
 
-      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: current_publisher.id)
+      ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: uphold_connection.id)
 
-      connection.reload
-      create_uphold_report!(connection)
+      uphold_connection.reload
+      create_uphold_report!(uphold_connection)
 
       redirect_to(home_publishers_path)
     rescue UpholdError, Faraday::Error => e
       Rails.logger.info("Uphold Error: #{e.message}")
       redirect_to(home_publishers_path, alert: t(".uphold_error", message: e.message))
+    end
+
+    def update
+      uphold_connection = current_publisher.uphold_connection
+      return if uphold_connection.blank?
+
+      send_emails = DateTime.now
+
+      case params[:send_emails]
+      when 'forever'
+        send_emails = UpholdConnection::FOREVER_DATE
+      when 'next_year'
+        send_emails = 1.year.from_now
+      end
+
+      uphold_connection.update(send_emails: send_emails)
     end
 
     # publishers/disconnect_uphold

@@ -22,6 +22,7 @@ import SentEmail from "../sentEmail";
 // Sign up and sign in shared this component since
 // they are so similar in structure
 const SignComponent = props => {
+  const intl = useIntl();
   return (
     <React.Fragment>
       <Toast
@@ -31,13 +32,13 @@ const SignComponent = props => {
       <Container
         animation={props.animation}
         role="main"
-        justify="center"
         align="center"
         pad="large"
         id="zindex"
         fill
+        margin={{ top: "80px" }}
       >
-        <Box width="540px" align="center">
+        <Box width="540px" flex={{ shrink: 0 }} align="center">
           <Heading
             level="2"
             color="white"
@@ -59,9 +60,6 @@ const SignComponent = props => {
             <Form
               className="email-input"
               errors={props.errors}
-              messages={{
-                required: "Please enter a valid email address."
-              }}
               id={props.formId}
               onSubmit={props.submitForm}
             >
@@ -69,9 +67,18 @@ const SignComponent = props => {
                 name="email"
                 type="email"
                 autoFocus
-                placeholder="Enter your email"
-                required
+                placeholder={intl.formatMessage({
+                  id: "main.signin.inputPlaceholder"
+                })}
+                validate={(fieldData, _) => {
+                  if (!fieldData) {
+                    return intl.formatMessage({ id: "main.validEmail" });
+                  }
+                }}
               />
+
+              {props.termsOfService}
+
               <PrimaryButton
                 label={props.btn}
                 icon={props.loading ? <Loading /> : <span />}
@@ -79,22 +86,25 @@ const SignComponent = props => {
                 alignSelf="center"
               />
             </Form>
+
+            <Box align="center" pad="xlarge">
+              <Anchor
+                href={props.tinyOneHref}
+                label={props.tinyOne}
+                color="rgba(255, 255, 255, .8)"
+                size="small"
+              />
+              <Anchor
+                href={props.tinyTwoHref}
+                label={props.tinyTwo}
+                color="rgba(255, 255, 255, .8)"
+                size="small"
+              />
+            </Box>
           </Box>
-          <Anchor
-            href={props.tinyOneHref}
-            label={props.tinyOne}
-            color="rgba(255, 255, 255, .8)"
-            size="small"
-          />
-          <Anchor
-            href={props.tinyTwoHref}
-            label={props.tinyTwo}
-            color="rgba(255, 255, 255, .8)"
-            size="small"
-          />
-          <Box height="100px" />
         </Box>
-        <Box className="terms-help" gap="large">
+
+        <Box gap="large">
           <Box direction="row" gap="small" align="center">
             <Anchor
               label={props.footerOne}
@@ -109,13 +119,6 @@ const SignComponent = props => {
               color="rgba(255, 255, 255, .8)"
               size="small"
             />
-          </Box>
-          <Box
-            as="a"
-            href={locale.nav.batPillHref}
-            aria-label={locale.nav.batPillAlt}
-          >
-            <Image src={batPill} height="28px" />
           </Box>
         </Box>
       </Container>
@@ -170,7 +173,7 @@ const WrappedSignComponent = props => {
 
   const tryAgain = event => {
     event.preventDefault();
-    setNotification({ show: true, text: <FormattedMessage id="sign.sentAgain "/>});
+    setNotification({ show: true, text: <FormattedMessage id="sign.sentAgain"/>});
   };
 
   async function sendToServer(body) {

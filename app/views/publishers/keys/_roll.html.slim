@@ -1,0 +1,31 @@
+.text-center
+  .header-box
+    h5.text-left.m-0= t('.key')
+  .pt-2.text-left
+    = t('.description')
+  .pt-4.text-left
+    = form_with(url: key_roll_path(key.id), method: :patch)
+      = hidden_field_tag 'name', key.name
+      .form-group
+        label.font-weight-bold= t('.expire')
+        label =t('.expire_description')
+        - expiration_options = [                            \
+          [t('.options.immediately'), 0],                   \
+          [t('.options.hour'), 1.hour.seconds],             \
+          [t('.options.twelve_hours'), 12.hours.seconds],   \
+          [t('.options.day'), 24.hours.seconds],            \
+          [t('.options.three_days'), 3.days.seconds],       \
+        ]
+
+        = select_tag :expiry, options_for_select(expiration_options), class: 'form-control'
+        / = text_field_tag(:name, '', class: 'form-control', placeholder: t('.name'), autocomplete: "off")
+
+      .text-danger = t('.warning')
+
+
+      .d-flex.justify-content-between
+        div
+        div
+          = link_to t("shared.cancel"), "#", class: "js-deny btn btn-secondary mr-2"
+          = submit_tag "Roll", class:'btn btn-primary'
+

@@ -7,13 +7,12 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   def perform
-    return [] if publisher.channels.verified.empty?
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
     accounts_response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.options.params_encoder = Faraday::FlatParamsEncoder
-      request.url("v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}&pending=true")
+      request.url("v1/accounts/balances?account=#{URI.encode_www_form_component(publisher.owner_identifier)}#{channels_query_string}&pending=true")
     end
 
     accounts = JSON.parse(accounts_response.body)
@@ -39,7 +38,7 @@ class PublisherBalanceGetter < BaseApiClient
 
   def channels_query_string
     return "" if publisher.channels.verified.count == 0
-    publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}"}.reduce(:+)
+    publisher.channels.verified.map { |channel| "&account=#{URI.encode_www_form_component(channel.details.channel_identifier)}"}.reduce(:+)
   end
 
   # Eyeshade may return a 0 balance or an empty response for accounts (channel and owner)

@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_25_222810) do
+ActiveRecord::Schema.define(version: 2020_06_26_073545) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -36,6 +35,18 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "cached_uphold_tips", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "uphold_transaction_id"
+    t.string "amount"
+    t.string "settlement_currency"
+    t.string "settlement_amount"
+    t.datetime "uphold_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uphold_connection_for_channel_id"
+    t.index ["uphold_transaction_id"], name: "index_cached_uphold_tips_on_uphold_transaction_id", unique: true
   end
 
   create_table "case_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -100,6 +111,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.uuid "contested_by_channel_id"
     t.string "contest_token"
     t.datetime "contest_timesout_at"
+    t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
   end
@@ -159,7 +171,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
   end
 
   create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "partner_id"
+    t.uuid "publisher_id"
     t.date "date"
     t.string "amount", default: "0"
     t.string "finalized_amount"
@@ -171,7 +183,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.datetime "updated_at", null: false
     t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
     t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
-    t.index ["partner_id"], name: "index_invoices_on_partner_id"
+    t.index ["publisher_id"], name: "index_invoices_on_publisher_id"
   end
 
   create_table "legacy_publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -179,7 +191,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: true
+    t.boolean "verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -274,6 +286,16 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "payout_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["payout_report_id"], name: "index_payout_messages_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_payout_messages_on_publisher_id"
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
@@ -283,6 +305,20 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
+  end
+
+  create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
+    t.text "country"
+    t.boolean "verified_account"
+    t.text "paypal_account_id"
+    t.boolean "hidden", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "payer_id"
+    t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -307,6 +343,9 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.jsonb "channel_stats", default: {}
     t.text "channel_type"
     t.string "status"
+    t.string "wallet_provider_id"
+    t.integer "wallet_provider", limit: 2, default: 0
+    t.boolean "paypal_bank_account_attached", default: false, null: false
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
@@ -335,8 +374,11 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.uuid "publisher_id"
     t.string "installer_type"
     t.string "description"
+    t.integer "aggregate_downloads", default: 0, null: false
+    t.integer "aggregate_installs", default: 0, null: false
+    t.integer "aggregate_confirmations", default: 0, null: false
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", unique: true
-    t.index ["created_at"], name: "index_promo_registrations_on_created_at"
+    t.index ["kind", "created_at"], name: "index_promo_registrations_on_kind_and_created_at"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
@@ -348,9 +390,9 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
-    t.uuid "thread_id"
     t.bigint "zendesk_ticket_id"
     t.bigint "zendesk_comment_id"
+    t.uuid "thread_id"
     t.string "zendesk_to_email"
     t.string "zendesk_from_email"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
@@ -382,7 +424,6 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
-    t.boolean "visible", default: true
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
@@ -393,6 +434,8 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
     t.boolean "thirty_day_login", default: false, null: false
+    t.boolean "subscribed_to_marketing_emails", default: false, null: false
+    t.jsonb "feature_flags", default: {}
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -421,17 +464,33 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "site_banner_lookups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "sha2_base16", null: false
+    t.jsonb "derived_site_banner_info", null: false
+    t.text "channel_identifier", null: false
+    t.uuid "channel_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "wallet_address"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
+    t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
+    t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
+    t.index ["sha2_base16"], name: "index_site_banner_lookups_on_sha2_base16"
+  end
+
   create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.bigint "legacy_id"
     t.uuid "publisher_id", null: false
     t.text "title", null: false
     t.text "description", null: false
-    t.integer "donation_amounts", null: false, array: true
-    t.integer "default_donation", null: false
+    t.integer "donation_amounts", array: true
+    t.integer "default_donation"
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "channel_id"
+    t.index ["channel_id"], name: "index_site_banners_on_channel_id"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 
@@ -448,6 +507,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.datetime "updated_at", null: false
     t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
+    t.datetime "ads_enabled_at"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -542,6 +602,9 @@ ActiveRecord::Schema.define(version: 2019_11_25_222810) do
     t.string "default_currency"
     t.datetime "default_currency_confirmed_at"
     t.datetime "member_at"
+    t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
+    t.text "card_id"
+    t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

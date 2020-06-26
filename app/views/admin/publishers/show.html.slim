@@ -32,11 +32,6 @@ hr
         .db-info-row
           .db-field = "Created:"
           .db-row = @publisher.created_at.strftime('%B %d, %Y')
-        - if @publisher.partner?
-          - partner = @publisher.becomes(Partner)
-          .db-info-row
-            .db-field = "Organization:"
-            .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
           .db-field = "Overall BAT balance:"
           .db-value = "#{publisher_overall_bat_balance(@publisher)}"
@@ -51,24 +46,25 @@ hr
           .db-info-row
             .db-field = "Created by:"
             .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
-        - if @publisher.promo_enabled_2018q1
-          .db-info-row
-            .db-field = "Referral downloads:"
-            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
-          .db-info-row
-            .db-field = "Referral installs:"
-            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
-          .db-info-row
-            .db-field = "Referral confirmations:"
-            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
-          .db-info-row
-            .db-field
-              = "Referral owner status"
-              span data-tooltip="If the user is 'no-ugp' this means their promos will 404"
-                = fa_icon 'question-circle', class: 'mx-1'
-              = ": "
+        - ActiveRecord::Base.connected_to(role: :reading)
+          - if @publisher.promo_enabled_2018q1
+            .db-info-row
+              .db-field = "Referral downloads:"
+              .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
+            .db-info-row
+              .db-field = "Referral installs:"
+              .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
+            .db-info-row
+              .db-field = "Referral confirmations:"
+              .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
+            .db-info-row
+              .db-field
+                = "Referral owner status"
+                span data-tooltip="If the user is 'no-ugp' this means their promos will 404"
+                  = fa_icon 'question-circle', class: 'mx-1'
+                = ": "
 
-            .db-value= @referral_owner_status
+              .db-value= @referral_owner_status
 
       #statement-section.split-row
         .payout-report-status-section
@@ -96,12 +92,22 @@ hr
               .db-field = "Approx. amount"
               .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
 
+
+  - if @payout_report.present?
+    .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+      = render partial: 'publishers/payout_status', locals: { payout_report: @payout_report, publisher: @publisher }
+      - if @payout_message.present?
+        .mt-4
+        h5.text-dark Payout Message
+        .alert.alert-dark
+          = @payout_message.message
+
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     = render partial: 'uphold'
 
-  -if @publisher.partner?
+  -if @publisher.invoice?
     .c-4.shadow-sm.bg-white.rounded.p-3.my-4
-      =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
+      =render partial: "invoices", locals: { publisher: @publisher, limit:  params[:view_more].present? ? nil : 3 }
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     h3.text-dark Channels
@@ -112,12 +118,14 @@ hr
           hr
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
-    .panel
-      input type="checkbox" name="panels" id="panel_id"
-        label for="panel_id"
-          h3.text-dark Add Note
-      .panel-content
-        = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
+    .accordion
+      .panel
+        input type="checkbox" name="panels" id="panel_id"
+          label.d-flex for="panel_id"
+            h3.text-dark Add Note
+            = fa_icon "comment-o lg", class: 'text-dark mt-2 ml-2'
+        .panel-content
+          = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
 
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4

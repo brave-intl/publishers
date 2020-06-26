@@ -5,19 +5,22 @@ class PromoRegistration < ApplicationRecord
   CHANNEL = "channel".freeze
   OWNER = "owner".freeze
   UNATTACHED = "unattached".freeze
-  KINDS = [CHANNEL, OWNER, UNATTACHED].freeze
+  PEER_TO_PEER = "peer_to_peer".freeze
+  KINDS = [CHANNEL, OWNER, UNATTACHED, PEER_TO_PEER].freeze
 
   # Event types
   RETRIEVALS = "retrievals".freeze # Aliased as 'Downloads'
   FIRST_RUNS = "first_runs".freeze # Aliased as 'Installs'
   FINALIZED = "finalized".freeze # Aliased as 'Confirmed'
+  EYESHADE_CONFIRMED = "eyeshade_confirmed".freeze
 
   COUNTRY = "country".freeze
+  COUNTRY_CODE = "country_code".freeze
 
   # Reporting intervals
-  DAILY = "daily".freeze
-  WEEKLY = "weekly".freeze
-  MONTHLY = "monthly".freeze
+  DAILY = "day".freeze
+  WEEKLY = "week".freeze
+  MONTHLY = "month".freeze
   RUNNING_TOTAL = "running_total".freeze
 
   # Installer types
@@ -25,7 +28,11 @@ class PromoRegistration < ApplicationRecord
   MOBILE = "mobile".freeze
   STANDARD = "standard".freeze
 
-  BASE_STATS = { RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0 }.freeze
+  BASE_STATS = { RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0, EYESHADE_CONFIRMED => 0 }.freeze
+
+  # Restricting the following countries from entering the referral program
+  # Vietnam, Russia, Indonesia, China, Ukraine
+  RESTRICTED_COUNTRIES = ['VN', 'RU', 'ID', 'CN', 'UA'].freeze
 
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
@@ -42,7 +49,7 @@ class PromoRegistration < ApplicationRecord
   scope :owner_only, -> { where(kind: OWNER) }
   scope :unattached_only, -> { where(kind: UNATTACHED) }
   scope :channels_only, -> { where(kind: CHANNEL) }
-  scope :has_stats, -> { where.not(stats: "[]") }
+  scope :has_stats, -> { where.not(stats: "[]").where.not("stats = '[]'") }
 
   before_destroy :delete_from_promo_server
 
@@ -57,9 +64,10 @@ class PromoRegistration < ApplicationRecord
   end
 
   def aggregate_stats_by_period(period_start, period_end)
-    parsed = JSON.parse(stats).select do |event|
+    parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
+    parsed = parsed.select do |event|
       date = event['ymd'].to_date
-      date > period_start && date < period_end
+      date >= period_start && date <= period_end
     end
 
     parsed.reduce(BASE_STATS.deep_dup, &PromoRegistration.sum_stats)
@@ -69,7 +77,8 @@ class PromoRegistration < ApplicationRecord
   def stats_by_date
     compressed_stats = {}
     starting_date = nil
-    JSON.parse(stats).each do |stat|
+    parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
+    parsed.each do |stat|
       starting_date ||= stat['ymd'] if starting_date.nil?
       unless compressed_stats.key?(stat['ymd'])
         compressed_stats[stat['ymd']] = {}
@@ -112,9 +121,9 @@ class PromoRegistration < ApplicationRecord
 
     def sum_stats
       Proc.new do |aggregate_stats, event|
-        aggregate_stats[RETRIEVALS] += event[RETRIEVALS]
-        aggregate_stats[FIRST_RUNS] += event[FIRST_RUNS]
-        aggregate_stats[FINALIZED] += event[FINALIZED]
+        aggregate_stats.keys.each do |key|
+          aggregate_stats[key] += event[key].to_i
+        end
 
         aggregate_stats
       end

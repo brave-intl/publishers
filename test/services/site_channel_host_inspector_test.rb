@@ -32,12 +32,12 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
   end
 
   test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
-    stub_request(:get, "https://badsll.mystandardsite.com").
+    stub_request(:get, "https://expired.badssl.com").
         to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
-    stub_request(:get, "https://www.badsll.mystandardsite.com").
+    stub_request(:get, "https://www.expired.badssl.com").
         to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
 
-    result = SiteChannelHostInspector.new(url: "badsll.mystandardsite.com").perform
+    result = SiteChannelHostInspector.new(url: "expired.badssl.com", require_https: true).perform
 
     refute result[:host_connection_verified]
     refute result[:https]

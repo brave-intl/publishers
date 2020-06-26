@@ -8,12 +8,21 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
+  secondary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
+    replica: true
 
 test:
-  <<: *default
-  url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
+  secondary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -24,9 +33,19 @@ test:
 # for a full rundown on how to provide these environment variables in a
 # production deployment.
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+  secondary:
+    <<: *default
+    url: <%= ENV['FOLLOWER_DATABASE_URL'] %>
+    replica: true
 
 staging:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+  secondary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+    replica: true

@@ -24,7 +24,7 @@ ja:
   shared:
     add_channel: チャネルを追加
     app_title: Brave Rewards | クリエイター
-    app_description: Webサイトや、YoutubeやTwitchにチャネルをお持ちですか？認証を行うことで閲覧者からの支援を受け収益化することができますか
+    app_description: Webサイトや、YoutubeやTwitchにチャネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。
     cancel: キャンセル
     channel_created: チャネルを作成しました。24-48時間以内に認証ステータスが表示されます。
     channel_contested: チャネルは %{time_until_transfer}以内に現在の所有者から移管されます
@@ -62,7 +62,7 @@ ja:
     attributes:
       publisher:
         visible: はい。Braveのマーケティングチャネルにサイトを掲載して、認知を広めます
-        name: 指名
+        name: 氏名
       site_channel_details:
         brave_publisher_id: Webサイトドメイン
         brave_publisher_id_unnormalized: Webサイトドメイン
@@ -105,7 +105,7 @@ ja:
       verification_in_progress: 認証中
       verification_awaiting_admin_approval: レビュー中
       verification_failure_what_happened: 問題がありました
-      verification_failure: あなたのサイトを認証することができませんでした
+      verification_failure: サイトを認証することができませんでした
       verification_failure_explanation:
         domain_not_found: "ドメインが見つかりませんでした."
         connection_failed: |
@@ -484,25 +484,25 @@ ja:
       intro: まずは普段コンテンツを追加するチャネルを選択してください。
       website:
         heading: ウェブサイト
-        description: 自分のウェブサイトを持っていて、ドメインディレクトリにアクセスできます。
+        description: ウェブサイトを所有かつドメインディレクトリにアクセス可能
       youtube:
         heading: Youtubeチャネル
-        description: 自分のYoutubeチャネル(またはその管理権限)を持っています。
+        description: Youtubeチャネルまたはその管理権限を所有
       twitch:
         heading: Twitchチャネル
-        description: 自分のTwitchチャネルを持っています。
+        description: Twitchチャネルを所有
       twitter:
         heading: Twitter
-        description: 自分のTwitterアカウント(またはその管理権限)を持っています。
+        description: Twitterアカウントまたはその管理権限を所有
       vimeo:
         heading: Vimeoチャネル
-        description: 自分のVimeoチャネル(またはその管理権限)を持っています。
+        description: Vimeoチャネルまたはその管理権限を所有
       reddit:
         heading: Reddit
-        description: 自分のRedditアカウント(またはその管理権限)を持っています。
+        description: Redditアカウントまたはその管理権限を所有
       github:
         heading: Github
-        description: 自分のGithubアカウントを持っています。
+        description: Githubアカウントを所有
     contact_info:
       heading: 連絡先
     registrations:
@@ -536,11 +536,10 @@ ja:
         legacy_youtube_login: (旧) YouTubeログイン
       sign_up:
         heading: Brave Rewardsに参加する
+        terms_of_service: "Braveの利用規約に同意します"
       resend_authentication_email:
         access_throttled: ログインしようとした回数が多すぎて、アクセスが制限されました。 あとでもう一度試してみてください。
         done: アクセス用のメールが再送されました。
-    devise:
-      login_session_expired: セッションの有効期限が切れました。 もう一度ログインしてください。
     email_verified:
       heading: 最後に一つだけ...
       intro: 以下を入力して、サインアップを完了します。
@@ -554,6 +553,7 @@ ja:
       balance_pending: 保留中の支払い
       next_deposit_date: "次の入金日："
       payout_in_progress: "進行中の支払い"
+      payout_minimum_balance: "最低出金金額は %{amount} %{currency}です"
       add_channel_cta: ウェブサイトまたはYouTubeチャンネルを追加して、Braveのファンがこれまでにどれだけ支援したかを確認してください。
       held_funds: 中断されたBATポイント支払い
       held_funds_description: これらの資金は、不審なアクティビティが確認されたため中断されている。こちらの<a href="/publishers/case/new">手順</a>にしたがって、異議申し立てを行ってください
@@ -580,6 +580,25 @@ ja:
         view_statements: ステートメントを表示
         view_recent_statement: ％{statement_link}の準備ができました。
         unavailable: 利用可能なステートメントはありません。
+    paypal_connection_panel:
+      bat_points: BATポイントポイント
+      change: 変更
+      check_balance: 残高を確認する
+      connect_with_paypal: Paypalに接続する
+      connect: 接続
+      connected: 接続済
+      deposit_date_explanation: 支援で受け取ったポイントは、毎月8日に接続したアカウントに入金されます。
+      disconnect: 接続解除
+      heading: あなたの口座
+      last_deposit: "最近の入金:"
+      last_deposit_date: "最終入金日時: "
+      link_bank_account: 登録済の銀行口座
+      need_bank_account: 支払いを受けるには、少なくとも1つの銀行口座をPaypalアカウントに登録する必要があります。
+      no_deposit_made_yet: "まだ入金は行われていません"
+      refresh_account_label: 銀行口座登録済みの方
+      refresh_account_button: 再度ステータスを確認
+      still_not_verified: Paypalアカウントはまだ認証されていません。 銀行口座を登録した後にもう一度お試しください。
+      view_account_summary: "残高を確認する"
     channel:
       added: "%{date}に追加"
       remove_verified: チャネルを削除
@@ -588,7 +607,7 @@ ja:
       try_again: 再試行する
       verification_status: 確認ステータスは、24〜48時間以内にBraveブラウザに表示されます
       verification_status_title: 認証情報
-      channel_balance_period: この期間
+      channel_balance_period: 現在の期間
       uphold: Uphold
       reject_transfer: 移管を拒否する
     omniauth_callbacks:
@@ -708,7 +727,7 @@ ja:
     over:
       title: "申し訳ございません"
       promo_ended: "このプロモーションは終了しました"
-      description: "このプログラムにご参加いただけず申し訳ありません。ファンにBraveを使用してもらうことで、あなたの活動をサポートしてもらうことは引き続き可能です"
+      description: "残念ながらこのプログラムにご参加いただくことはできません。引き続きファンにBraveの利用を促進いただくと支援を受けることができます。"
       brave_download_link: "brave.com/download"
       footer: "今後のキャンペーンについてはメールに注目してください。"
     dashboard:
@@ -717,6 +736,7 @@ ja:
       installed: "インストール済み"
       confirmed: "確認済み"
       last_updated_at: "約%{time}前に最終更新"
+      group: 'グループ %{number}'
       active_referral: "アクティブ"
       add_channel: "紹介リンクを取得するには、ウェブサイトまたはチャンネルを確認してください。"
       violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Rewardsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。
@@ -799,6 +819,8 @@ ja:
       https_error_encountered: "次のエラーが発生しました。"
     new:
       heading: ドメイン情報を入力
+      ads_enable_question: "ページ内でBraveの広告を配信することを許可する"
+      learn_more: 詳しくはこちら
     progress:
       info: ドメイン情報
       verify: 認証方法
@@ -809,8 +831,12 @@ ja:
       alert: サイトが認証されました。
     setup_current_channel:
       alert: このページはこのチャンネルタイプでは無効です
+    site_channel_ads_learn_more_modal: |
+      <p> Braveはサイト内でプライバシー保護した新しい広告を配信し、この収益の70％をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。 Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。オプトインは任意です。</p>
+      <p>この機能について詳しくは <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">コチラ</a>.</p>
+      <p>本機能は近日中に利用可能になる予定です。今後のアップデートは上記のページからご確認ください。</p>
     verification_background:
-      heading: ドメインを確認しています...
+      heading: ドメインを検証中です...
       help_html: "<p>この画面を終了できます。24時間以内に<strong>手順を記載したメールをお送りします。</strong> </p>"
     verification_choose_method:
       heading: 認証方法を選択してください
@@ -824,20 +850,20 @@ ja:
         subheading: (DNSレコードへのアクセスが必要)
         button: DNSレコードを編集する
     verification_dns_record:
-      heading: ％{brave_publisher_id}に新しいTXTレコードを追加します
-      help: サイトの所有権を確認スタメ、新しいDNSレコードを追加する必要があります
-      help_2: DNSホストのアカウントを使用します。
+      heading: "%{brave_publisher_id} に新しいTXTレコードを追加します"
+      help: サイトの所有権を証明するため、TXTレコードを追加いただく必要があります
+      help_2: ドメインの所有権の証明は、ご利用のドメインホスト（ドメイン名の購入先）で行います。
       instruction_1: |
-        サブドメインではなく、ルートドメインにレコードを追加してください。
-      instruction_2: 以下の情報をコピーして、ゾーンファイルに貼り付けます
-      instruction_3: DNSホストのコントロールパネルを使用します。
+        サブドメインではなく、ルートドメインに対してレコードを追加してください。
+      instruction_2: ご利用のドメインホストのコントロールパネルで
+      instruction_3: 以下の情報をコピーして、DNSレコードに追加してください。
       record:
         type: Type
         value: Value (または TXT Value /Data)
         note: |
-          Note: "これが利用可能になるまで数分から数時間かかる場合があります。\nDNSがホストされている場所によって異なります。"
+          Note: "これが利用可能になるまで数分から数時間かかる場合があります。DNSがホストされている場所によって異なります。"
       copy_to_clipboard: クリップボードにコピー
-      verify: このTXTレコードをDNSホストに追加して保存したら、下のボタンをクリックして確認します。
+      verify: TXTレコードの追加が完了したら、下のボタンをクリックして確認します。
       button: DNSレコードを確認する
       helper:
         heading: DNSアカウントにTXTレコードを追加する際にサポートが必要ですか？

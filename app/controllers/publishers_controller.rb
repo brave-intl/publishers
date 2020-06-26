@@ -53,6 +53,7 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
+      flash[:alert] = @publisher.errors.full_messages.join(', ')
       render(:email_verified)
     end
   end
@@ -76,6 +77,7 @@ class PublishersController < ApplicationController
     update_params = publisher_update_params
 
     # If user enters current email address delete the pending email attribute
+    update_params[:pending_email] = update_params[:pending_email]&.downcase
     update_params[:pending_email] = nil if update_params[:pending_email] == current_publisher.email
 
     success = current_publisher.update(update_params)
@@ -97,7 +99,7 @@ class PublishersController < ApplicationController
   end
 
   def protect
-    if current_publisher.nil?
+    if current_publisher.nil? || current_publisher.browser_user?
       redirect_to root_url and return
     elsif current_publisher.admin?
       redirect_to admin_publishers_path and return
@@ -153,7 +155,7 @@ class PublishersController < ApplicationController
       uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
 
-    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.japanese_locale?(params[:locale])
+    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.paypal_locale?(params[:locale])
   end
 
   def choose_new_channel_type
@@ -180,7 +182,15 @@ class PublishersController < ApplicationController
     prepare_site_banner_data
     default_site_banner_mode = current_publisher.default_site_banner_mode
     default_site_banner = { :id => current_publisher.default_site_banner_id, :name => "Default", :type => "Default" }
-    channel_banners = current_publisher.channels.map { |channel| { id: channel.site_banner.id, name: channel.publication_title, type: channel.details_type } }
+    site_banners_channel_to_id = current_publisher.site_banners.map { |sb| [sb.channel_id, sb.id] }.to_h
+    # This could be sped up to avoid O(n) queries against the *Details tables, but it's still indexes so it's not worth tackling quite yet
+    channel_banners = current_publisher.channels.map do |channel|
+      {
+        id: site_banners_channel_to_id[channel.id],
+        name: channel.publication_title,
+        type: channel.details_type,
+      }
+    end
     data = { default_site_banner_mode: default_site_banner_mode, default_site_banner: default_site_banner, channel_banners: channel_banners }
     render(json: data.to_json)
   end
@@ -188,6 +198,10 @@ class PublishersController < ApplicationController
   private
 
   def authenticate_via_token
+    # For some odd reason, devise flash alerts get displayed during auth.
+    # Deeper details can be chased in:
+    # https://github.com/heartcombo/devise/blob/83a32e6d2118b0535cf54b48df4f9853d85b55fd/lib/devise/failure_app.rb
+    flash[:alert] = nil
     publisher_id = params[:id]
     token = params[:token]
     confirm_email = params[:confirm_email]
@@ -240,11 +254,11 @@ class PublishersController < ApplicationController
   end
 
   def publisher_complete_signup_params
-    params.require(:publisher).permit(:name, :visible)
+    params.require(:publisher).permit(:name, :subscribed_to_marketing_emails)
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :name, :visible, :thirty_day_login)
+    params.require(:publisher).permit(:pending_email, :name, :subscribed_to_marketing_emails, :thirty_day_login)
   end
 
   def publisher_update_email_params

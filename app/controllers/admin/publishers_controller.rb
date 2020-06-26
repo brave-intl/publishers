@@ -11,11 +11,8 @@ class Admin::PublishersController < AdminController
                   end
 
     if params[:q].present?
-      # Returns an ActiveRecord::Relation of publishers for pagination
-      search_query = remove_prefix_if_necessary(params[:q])
-      search_query = "%#{search_query}%" unless is_a_uuid?(search_query)
 
-      @publishers = @publishers.where(search_sql, search_query: search_query)
+      @publishers = publishers_search(@publishers, params[:q])
     end
 
     if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
@@ -30,6 +27,12 @@ class Admin::PublishersController < AdminController
 
     if params[:uphold_status].present?
       @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
+    end
+
+    if params[:feature_flag].present?
+      found_flag = UserFeatureFlags::VALID_FEATURE_FLAGS.find { |flag| flag == params[:feature_flag].to_sym }
+
+      @publishers = @publishers.send(found_flag)
     end
 
     if params[:two_factor_authentication_removal].present?
@@ -48,8 +51,13 @@ class Admin::PublishersController < AdminController
     @publisher = Publisher.find(params[:id])
     @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
     @potential_referral_payment = @publisher.most_recent_potential_referral_payment
-    @referral_owner_status = Promo::Client.new.owner_state.find(id: params[:id])
+    @referral_owner_status = PromoClient.owner_state.find(id: params[:id])
     @current_user = current_user
+
+    if payout_in_progress? || Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
+      @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
+      @payout_message = PayoutMessage.find_by(payout_report: @payout_report, publisher: @publisher)
+    end
   end
 
   def edit
@@ -59,8 +67,9 @@ class Admin::PublishersController < AdminController
 
   def update
     @publisher.update(update_params)
+    @publisher.update_feature_flags_from_form(update_feature_flag_params)
 
-    redirect_to admin_publisher_path(@publisher)
+    redirect_to admin_publisher_path(@publisher), flash: { notice: "Saved successfully" }
   end
 
   def destroy
@@ -107,6 +116,21 @@ class Admin::PublishersController < AdminController
     redirect_to admin_publisher_path(@publisher.id)
   end
 
+  def sign_in_as_user
+    if @publisher.admin?
+      render status: 401, json: {
+        error: "You cannot sign in as another admin",
+      }
+    end
+
+    authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform
+
+    login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
+    render json: {
+      login_url: login_url,
+    }
+  end
+
   private
 
   def get_publisher
@@ -124,13 +148,13 @@ class Admin::PublishersController < AdminController
     )
   end
 
-  def sortable_columns
-    [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
+  def update_feature_flag_params
+    params.require(:publisher).permit(
+      UserFeatureFlags::VALID_FEATURE_FLAGS
+    )
   end
 
-  def is_a_uuid?(uuid)
-    # https://stackoverflow.com/questions/47508829/validate-uuid-string-in-ruby-rails
-    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
-    uuid_regex.match?(uuid.to_s.downcase)
+  def sortable_columns
+    [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
   end
 end

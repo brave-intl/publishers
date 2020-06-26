@@ -15,7 +15,6 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   def perform
     events = fetch_stats
     events = select_events_within_report_range(events)
-    events = fill_in_events_with_no_activity(events)
 
     ratios = []
 
@@ -24,8 +23,10 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
       group_by_referral_code(events).each do |referral_code, referrals|
         group_by_country(referrals).each do |country, grouped_country|
-          group_by_date(grouped_country).each do |date, grouped_dates|
-            csv << reduce_events(grouped_dates, referral_code, country, date)
+          dates = group_by_date(grouped_country)
+          # Iterating through the dates. Ensures there are no gaps within the dates.
+          (@start_date..@end_date).group_by(&date_interval).each do |day, _|
+            csv << reduce_events(dates[day], referral_code, country, day)
           end
 
           ratios << calculate_ratios(referral_code, country, grouped_country)
@@ -110,7 +111,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       finalized: 0,
     }
 
-    events.each do |event|
+    events&.each do |event|
       combined[:retrievals] += event[PromoRegistration::RETRIEVALS]
       combined[:first_runs] += event[PromoRegistration::FIRST_RUNS]
       combined[:finalized] += event[PromoRegistration::FINALIZED]
@@ -142,12 +143,12 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def geo_stats
-    Promo::RegistrationsGeoStatsFetcher.new(
+    PromoClient.reporting.geo_stats_by_referral_code(
       referral_codes: @referral_codes,
       start_date: @start_date,
-      end_date: @start_date,
+      end_date: @end_date,
       interval: @reporting_interval
-    ).perform
+    )
   end
 
   def select_events_within_report_range(events)
@@ -172,54 +173,26 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   #
   # Returns an array hash of the events
   def group_by_date(events)
-    events = events.sort_by { |event| event["ymd"].to_date }
-    events_by_interval = events.group_by do |event|
+    events.each { |event| event["ymd"] = event["ymd"].to_date }
+    events = events.sort_by { |event| event["ymd"] }
+
+    events.group_by { |event| date_interval.call(event["ymd"]) }
+  end
+
+  def date_interval
+    Proc.new do |date|
       case @reporting_interval
       when PromoRegistration::DAILY
-        event["ymd"].to_date
+        date
       when PromoRegistration::WEEKLY
-        event["ymd"].to_date.at_beginning_of_week
+        date.at_beginning_of_week
       when PromoRegistration::MONTHLY
-        event["ymd"].to_date.at_beginning_of_month
+        date.at_beginning_of_month
       when PromoRegistration::RUNNING_TOTAL
         @end_date
       else
         raise "Invalid reporting interval #{@reporting_interval}."
       end
     end
-
-    events_by_interval
-  end
-
-  def fill_in_events_with_no_activity(events)
-    events_with_no_activity = []
-    grouped_referrals = group_by_referral_code(events)
-
-    (@start_date..@end_date).each do |day|
-      events.map { |e| e["referral_code"] }.each do |referral_code|
-        if broken_down_by_country?
-          countries = grouped_referrals[referral_code].map { |e| e[PromoRegistration::COUNTRY] }.uniq
-          countries.each do |country|
-            events_with_no_activity.push({
-              "referral_code" => referral_code,
-              "country" => country,
-              "ymd" => day.strftime("%Y-%m-%d"),
-              PromoRegistration::RETRIEVALS => 0,
-              PromoRegistration::FIRST_RUNS => 0,
-              PromoRegistration::FINALIZED => 0,
-            })
-          end
-        else
-          events_with_no_activity.push({
-            "referral_code" => referral_code,
-            "ymd" => day.strftime("%Y-%m-%d"),
-            PromoRegistration::RETRIEVALS => 0,
-            PromoRegistration::FIRST_RUNS => 0,
-            PromoRegistration::FINALIZED => 0,
-          })
-        end
-      end
-    end
-    events + events_with_no_activity
   end
 end

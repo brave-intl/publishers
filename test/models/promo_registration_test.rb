@@ -177,7 +177,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
 
   test "channel scope returns only channel owned promo registrations" do
     channel = channels(:verified)
-    assert_equal PromoRegistration.channels_only.count, 2
+    previous_count = PromoRegistration.channels_only.count
     promo_registration = PromoRegistration.create!(referral_code: "DEF456",
                                                    promo_id: PROMO_ID,
                                                    kind: "channel",
@@ -185,7 +185,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
                                                    channel: channel)
     PromoRegistration.create!(referral_code: "ABC123", promo_id: PROMO_ID, kind: "unattached")
 
-    assert_equal PromoRegistration.channels_only.count, 3
+    assert_equal PromoRegistration.channels_only.count, previous_count + 1
     assert_equal PromoRegistration.channels_only.order("created_at").last, promo_registration
   end
 
@@ -213,15 +213,15 @@ class PromoRegistrationTest < ActiveSupport::TestCase
   end
 
   test "aggregate_stats class method aggregates stats for all of a publishers's promo registrations" do
-
     # Ensure promo registrations with default stats e.g. "{}" has correct format
     publisher = publishers(:promo_enabled)
-    assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations), {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
+    assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
+      { PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0, PromoRegistration::EYESHADE_CONFIRMED => 0 }
 
     # Ensure promo registrations with empty stats e.g. "[]" has correct format
     publisher.promo_registrations.first.update(stats: [].to_json)
     assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
-                 {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
+                 {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0, PromoRegistration::EYESHADE_CONFIRMED => 0}
 
     # Ensure promo registrations with stats present has correct format
     publisher.promo_registrations.where(referral_code: "PRO123").first.update(stats: [{"referral_code"=>"PRO123",
@@ -237,7 +237,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
 
     publisher.reload
     assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
-                 {PromoRegistration::RETRIEVALS => 2, PromoRegistration::FIRST_RUNS => 2, PromoRegistration::FINALIZED => 0}
+                 {PromoRegistration::RETRIEVALS => 2, PromoRegistration::FIRST_RUNS => 2, PromoRegistration::FINALIZED => 0, PromoRegistration::EYESHADE_CONFIRMED => 0}
 
     # Ensure we aggregate stats for multiple promo registrations
     publisher.promo_registrations.where(referral_code: "PRO456").first.update(stats: [{"referral_code"=>"PRO456",
@@ -252,6 +252,6 @@ class PromoRegistrationTest < ActiveSupport::TestCase
                                                                                    "finalized"=>1}].to_json)
     publisher.reload
     assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
-                 {PromoRegistration::RETRIEVALS => 6, PromoRegistration::FIRST_RUNS => 6, PromoRegistration::FINALIZED => 3}
+                 {PromoRegistration::RETRIEVALS => 6, PromoRegistration::FIRST_RUNS => 6, PromoRegistration::FINALIZED => 3, PromoRegistration::EYESHADE_CONFIRMED => 0}
   end
 end

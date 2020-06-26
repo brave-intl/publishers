@@ -12,7 +12,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
       publisher = publishers(:youtube_new)
       channel = channels(:youtube_new)
 
-      stub_request(:delete, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/#{URI.escape(channel.details.channel_identifier)}/).
+      stub_request(:delete, /v1\/owners\/#{URI.encode_www_form_component(publisher.owner_identifier)}\/#{URI.escape(channel.details.channel_identifier)}/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: nil, headers: {})
 

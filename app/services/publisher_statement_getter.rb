@@ -7,21 +7,27 @@ class PublisherStatementGetter < BaseApiClient
 
     UPHOLD_CONTRIBUTION = "uphold_contribution".freeze
     UPHOLD_CONTRIBUTION_SETTLEMENT = "uphold_contribution_settlement".freeze
+    CONTRIBUTION_SETTLEMENT = "contribution_settlement"
+    REFERRAL_SETTLEMENT = "referral_settlement"
 
     def fee?
       transaction_type == 'fees'
     end
 
-    def eyeshade?
-      transaction_type == 'contribution_settlement' || transaction_type == 'referral_settlement' || fee?
+    def eyeshade_settlement?
+      transaction_type == CONTRIBUTION_SETTLEMENT || transaction_type == REFERRAL_SETTLEMENT
+    end
+
+    def uphold_contribution?
+      transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT || transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT
     end
 
     def earning_period
       # If the transaction_type is from Eyeshade this means the period was for the previous month
-      if eyeshade?
-        created_at.prev_month.at_beginning_of_month
+      if eyeshade_settlement? || fee?
+        created_at.prev_month.at_beginning_of_month.to_date
       else
-        created_at.at_beginning_of_month
+        created_at.at_beginning_of_month.to_date
       end
     end
   end
@@ -70,18 +76,11 @@ class PublisherStatementGetter < BaseApiClient
     uphold = []
 
     publisher.uphold_connection&.uphold_connection_for_channels&.each do |card_connection|
-      transactions = card_connection.uphold_connection.uphold_client.transaction.all(id: card_connection.card_id)
-      next if transactions.blank?
+      # Refresh the cache, should only request the most recent page
+      CacheUpholdTips.perform_now(uphold_connection_for_channel_id: card_connection.id)
 
-      transactions.each do |transaction|
-        uphold << Statement.new(
-          channel: card_connection.channel.details.publication_title,
-          transaction_type: Statement::UPHOLD_CONTRIBUTION,
-          amount: transaction.origin.dig("amount")&.to_d,
-          settlement_currency: transaction.destination.dig("currency"),
-          settlement_amount: transaction.destination.dig("amount")&.to_d,
-          created_at: transaction.createdAt.to_date,
-        )
+      card_connection.cached_uphold_tips.find_each do |cached_tip|
+        uphold << cached_tip.to_statement
       end
     end
 
@@ -91,7 +90,9 @@ class PublisherStatementGetter < BaseApiClient
       entries.group_by { |e| e.channel }.each do |channel, channel_entries|
         # Finally group by currency, the currency can change in the middle of the month for direct tips but likely it will just be 1.
         channel_entries.group_by { |c| c.settlement_currency }.each do |currency, currency_entries|
-          amount = channel_entries.sum { |x| x.amount }
+          amount = currency_entries.sum { |x| x.amount }
+          settlement_amount = currency_entries.sum { |x| x.settlement_amount }
+          settlement_destination = currency_entries.detect { |x| x.settlement_destination }&.settlement_destination
 
           # We're specifying a negative amount because we group by transactions already paid out.
           # This gives us the ability to aggregate and show one Uphold transaction, rather than 300 or so tips that might have been sent.
@@ -100,7 +101,8 @@ class PublisherStatementGetter < BaseApiClient
             transaction_type: Statement::UPHOLD_CONTRIBUTION_SETTLEMENT,
             amount: -amount,
             settlement_currency: currency,
-            settlement_amount: amount,
+            settlement_amount: settlement_amount,
+            settlement_destination: settlement_destination,
             created_at: date,
           )
         end

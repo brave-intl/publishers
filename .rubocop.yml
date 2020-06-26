@@ -1,9 +1,9 @@
 inherit_from:
   - .rubocop_airbnb.yml
 
-AlignParameters:
+Layout/AlignParameters:
   Enabled: false
-Documentation:
+Style/Documentation:
   Enabled: false
 AllCops:
   Include:
@@ -12,6 +12,7 @@ AllCops:
     - Rakefile
     - app/models/**/*
     - app/controllers/publishers_controller.rb
+    - app/controllers/publishers/paypal_accounts_controller.rb
     - app/controllers/publishers/registrations_controller.rb
     - app/controllers/admin/publisher_notes_controller.rb
     - app/controllers/admin/publishers_controller.rb
@@ -20,6 +21,7 @@ AllCops:
     - app/controllers/publishers/cases_controller.rb
     - app/controllers/publishers/**
     - app/services/uphold/**/*
+    - app/services/paypal/**
     - app/jobs/create_uphold_cards_job.rb
     - app/jobs/create_uphold_channel_card_job.rb
     - app/jobs/exchange_uphold_code_for_access_token_job.rb
@@ -31,7 +33,7 @@ AllCops:
     - bin/**/*
     - db/**/*
     - vendor/**/*
-LineLength:
+Metrics/LineLength:
   Max: 400
 Airbnb/SimpleModifierConditional:
   Enabled: false

@@ -2,44 +2,62 @@
 class EnqueuePublishersForPayoutJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [])
+  SEND_NOTIFICATIONS = "send_notifications".freeze
+
+  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
     Rails.logger.info("Enqueuing publishers for payment.")
 
-    if publisher_ids.present?
-      publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
-    elsif manual
-      publishers = Publisher.joins(:uphold_connection).partner
-    else
-      publishers = Publisher.joins(:uphold_connection).with_verified_channel
-    end
-
+    should_send_notifications = SEND_NOTIFICATIONS.in? args
     if payout_report_id.present?
       payout_report = PayoutReport.find(payout_report_id)
-    else
+    elsif !should_send_notifications
       payout_report = PayoutReport.create(final: final,
                                           manual: manual,
                                           fee_rate: fee_rate,
-                                          expected_num_payments: PayoutReport.expected_num_payments(publishers))
+                                          expected_num_payments: 0)
     end
 
-    publishers.find_each do |publisher|
-      if manual
-        # We can consider using a job here if n is sufficiently large
-        ManualPayoutReportPublisherIncluder.new(publisher: publisher,
-                                                payout_report: payout_report,
-                                                should_send_notifications: should_send_notifications).perform
-      else
-        IncludePublisherInPayoutReportJob.perform_later(payout_report_id: payout_report.id,
-                                                        publisher_id: publisher.id,
-                                                        should_send_notifications: should_send_notifications)
-      end
+    if should_send_notifications
+      enqueue_emails_only(
+        manual: manual,
+        publisher_ids: publisher_ids
+      )
+    else
+      enqueue_payout(
+        manual: manual,
+        payout_report: payout_report,
+        publisher_ids: publisher_ids
+      )
     end
-    Rails.logger.info("Enuqueued #{publishers.count} publishers for payment.")
-
-    payout_report
+    if payout_report.present?
+      Eyeshade::CreateSnapshot.new.perform(payout_report_id: payout_report.id)
+      payout_report
+    end
   end
 
   private
+
+  def enqueue_emails_only(manual:, publisher_ids:)
+    Payout::UpholdJob.perform_later(
+      manual: manual,
+      should_send_notifications: true,
+      publisher_ids: publisher_ids
+    )
+    Payout::PaypalJob.perform_later(
+      should_send_notifications: true,
+    )
+  end
+
+  def enqueue_payout(payout_report:, manual:, publisher_ids:)
+    Payout::UpholdJob.perform_later(
+      manual: manual,
+      payout_report_id: payout_report.id,
+      publisher_ids: publisher_ids
+    )
+    Payout::PaypalJob.perform_later(
+      payout_report_id: payout_report.id
+    )
+  end
 
   def fee_rate
     raise if Rails.application.secrets[:fee_rate].blank?

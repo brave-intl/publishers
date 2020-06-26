@@ -14,6 +14,9 @@
           - if @should_throttle
             .form-group
               = recaptcha_tags
+          label
+            = check_box_tag :terms_of_service, require: true
+            span.pl-2= t('.terms_of_service')
           = submit_tag t("shared.get_started"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing"
 
       .single-panel--footer.single-panel--footer--secondary

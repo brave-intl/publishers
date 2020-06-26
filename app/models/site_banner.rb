@@ -20,20 +20,29 @@ class SiteBanner < ApplicationRecord
   BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
   NUMBER_OF_DONATION_AMOUNTS = 3
-  DONATION_AMOUNT_PRESETS = ['1,5,10', '5,10,20', '10,20,50', '20,50,100'].freeze
+  DONATION_AMOUNT_PRESETS = ['1,10,100', '5,10,20', '10,20,50', '20,50,100'].freeze
   MAX_DONATION_AMOUNT = 999
 
   DEFAULT_TITLE = I18n.t('banner.headline')
   DEFAULT_DESCRIPTION = I18n.t('banner.tagline')
-  DEFAULT_AMOUNTS = [1, 5, 10].freeze
+  DEFAULT_AMOUNTS = [1, 10, 100].freeze
 
-  validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
+  validates_presence_of :title, :description, :publisher
   validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
+  after_save :update_site_banner_lookup!
 
   def donation_amounts_in_scope
     return if errors.present?
-    errors.add(:base, "Must be an approved tip preset") unless DONATION_AMOUNT_PRESETS.include? donation_amounts.join(',')
+    errors.add(:base, "Must be an approved tip preset") unless donation_amounts.nil? || DONATION_AMOUNT_PRESETS.include?(donation_amounts.join(','))
+  end
+
+  def update_site_banner_lookup!
+    if channel.present?
+      channel.update_site_banner_lookup!
+    else
+      publisher.update_site_banner_lookup!
+    end
   end
 
   # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains
@@ -64,8 +73,6 @@ class SiteBanner < ApplicationRecord
       channel_id: channel_id,
       title: DEFAULT_TITLE,
       description: DEFAULT_DESCRIPTION,
-      donation_amounts: DEFAULT_AMOUNTS,
-      default_donation: 5,
       social_links: { youtube: '', twitter: '', twitch: '' }
     )
   end
@@ -74,10 +81,18 @@ class SiteBanner < ApplicationRecord
     update(
       title: sanitize(title),
       description: sanitize(description),
-      donation_amounts: JSON.parse(sanitize(donation_amounts)),
-      default_donation: JSON.parse(sanitize(donation_amounts)).second,
+      donation_amounts: sanitize_donation_amounts(donation_amounts: donation_amounts),
       social_links: social_links.present? ? JSON.parse(sanitize(social_links)) : {}
     )
+  end
+
+  def sanitize_donation_amounts(donation_amounts:)
+    result = JSON.parse(sanitize(donation_amounts))
+    if result == DEFAULT_AMOUNTS
+      nil
+    else
+      result
+    end
   end
 
   def read_only_react_property
@@ -96,7 +111,7 @@ class SiteBanner < ApplicationRecord
     # Remove properties that are considered the "Default". The client will handle parsing for this.
     properties.delete(:description) if properties[:description].eql?(DEFAULT_DESCRIPTION)
     properties.delete(:title) if properties[:title].eql?(DEFAULT_TITLE)
-    properties.delete(:donationAmounts) if properties[:donationAmounts].eql?(DEFAULT_AMOUNTS)
+    properties.delete(:donationAmounts) if properties[:donationAmounts].nil? || properties[:donationAmounts].eql?(DEFAULT_AMOUNTS)
     properties[:socialLinks]&.delete_if { |k, v| v.blank? }
 
     properties.delete_if { |k, v| v.blank? }

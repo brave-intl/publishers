@@ -1,0 +1,45 @@
+en:
+  publishers:
+    keys:
+      shared:
+        rate_limited: You're doing that too much. Try again in a few seconds.
+        error:  Oh no! Something went wrong, try again in a few minutes or contact support.
+        unauthorized: You are not authorized to access this feature.
+      new:
+        create_new_key: Create a new secret key
+        name: Key name
+      index:
+        title: Keys
+        description: Create and manage your secrets keys. For more information read the <a href="https://github.com/brave-experiments/sku-js-php">Brave Payments and SKU system</a> reference implementation.
+        create: Create Key
+        name: Name
+        expires_in: "Expires in %{time}"
+        created_at: Created At
+        roll: Roll Key
+        delete: Delete Key
+        no_results: No keys have been created. Try creating some!
+      create:
+        title: New secret key created
+        secret_key: Secret Key
+        secret_key_description: Save this key, <strong class='text-primary'>%{name}</strong>, to a secure place, such as password manager. You won't be able to see it again.
+        close: Close
+        copy_to_clipboard: Copy
+      delete:
+        success: The key was deleted successfully
+        title: Delete Key
+        intro: "<strong class='text-primary'>%{name}</strong> will no longer be active. You will be able to no longer perform any actions with this key."
+        confirm: Delete Key
+        deny: Cancel
+      roll:
+        key: Roll Key
+        description: If your secret key is lost or stolen you can roll your key. This allows you to generate a new secret that you can use immediately.
+        expire: Expire
+        expire_description: Choose to block your key immediately or allow it to work for a short period of time.
+        warning: After the key has expired you will no longer be able to perform any actions with the old key.
+        cant_roll: Can't roll key that has been rolled before.
+        options:
+          immediately: Immediately
+          hour: "In 1 hour"
+          twelve_hours: "In 12 hours"
+          day: "In 24 hours"
+          three_days: "In 3 days"

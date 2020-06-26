@@ -1,13 +1,16 @@
 require 'digest/md5'
 
 class Publisher < ApplicationRecord
+  include UserFeatureFlags
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
-  ROLES = [ADMIN, PARTNER, PUBLISHER].freeze
+  BROWSER_USER = "browser_user".freeze
+
+  ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
   MAX_PROMO_REGISTRATIONS = 500
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
@@ -22,6 +25,7 @@ class Publisher < ApplicationRecord
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
   has_one :case
+  has_one :paypal_connection, -> { where(hidden: false) }, foreign_key: :user_id, class_name: "PaypalConnection"
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -33,6 +37,7 @@ class Publisher < ApplicationRecord
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
   has_many :potential_payments
+  has_many :invoices
 
   belongs_to :youtube_channel
 
@@ -44,19 +49,20 @@ class Publisher < ApplicationRecord
 
   attr_encrypted :authentication_token, key: :encryption_key
 
-  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
-  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !deleted? }
+  attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
+  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
-  validate :pending_email_must_be_a_change, unless: -> { deleted? }
-  validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
+  validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
+  validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
-  validates :name, presence: true, allow_blank: true
+  validates :name, presence: true, allow_blank: true, length: { maximum: 64 }
 
   validates_inclusion_of :role, in: ROLES
 
   validates :promo_token_2018q1, uniqueness: true, allow_nil: true
 
-  before_create :build_default_channel
+  before_create :build_default_channel, :set_default_features
   before_destroy :dont_destroy_publishers_with_channels
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
@@ -90,6 +96,8 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
+
+  store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
   def self.filter_status(status)
     joins(:status_updates).
@@ -147,13 +155,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  # This will convert the user to be a partner, or a publisher
-  def become_subclass
-    klass = self
-    klass = becomes(Partner) if partner?
-    klass
-  end
-
   # API call to eyeshade
   def wallet
     @wallet ||= PublisherWalletGetter.new(publisher: self).perform
@@ -207,10 +208,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def japanese_locale?(locale)
-    locale == "ja"
-  end
-
   def deleted?
     last_status_update&.status == PublisherStatusUpdate::DELETED
   end
@@ -248,13 +245,18 @@ class Publisher < ApplicationRecord
   end
 
   def promo_status(promo_running)
-    if !promo_running
+    if !promo_running || promo_lockout_time_passed?
       :over
     elsif promo_enabled_2018q1
       :active
     else
       :inactive
     end
+  end
+
+  def promo_lockout_time_passed?
+    return promo_lockout_time < DateTime.now if promo_lockout_time.present?
+    false
   end
 
   def has_verified_channel?
@@ -273,8 +275,18 @@ class Publisher < ApplicationRecord
     role == PUBLISHER
   end
 
+  def browser_user?
+    role == BROWSER_USER
+  end
+
   def default_site_banner
     site_banners.detect { |sb| sb.id == default_site_banner_id }
+  end
+
+  def update_site_banner_lookup!
+    channels.verified.find_each do |channel|
+      channel.update_site_banner_lookup!
+    end
   end
 
   def inferred_status
@@ -318,7 +330,40 @@ class Publisher < ApplicationRecord
     thirty_day_login? ? 30.days : 30.minutes
   end
 
+  def paypal_locale?(locale)
+    locale == 'ja'
+  end
+
+  def brave_payable?
+    paypal_connection&.verified_account || uphold_connection&.payable?
+  end
+
+  def country
+    provider_country = uphold_connection&.country || paypal_connection&.country
+
+    provider_country.to_s.upcase
+  end
+
+  def valid_promo_country?
+    PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
+  end
+
+  def may_register_promo?
+    # If the user doesn't have the referral_kyc_flag on then we can register them still.
+    return true unless referral_kyc_required?
+
+    # Otherwise they must be brave payable and from a valid country
+    brave_payable? && valid_promo_country?
+  end
+
   private
+
+  # Internal: Sets the default feature flags for an account
+  #
+  # Returns true
+  def set_default_features
+    feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
+  end
 
   def set_created_status
     created_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "created")

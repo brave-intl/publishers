@@ -195,11 +195,24 @@ document.addEventListener("DOMContentLoaded", () => {
     element
   );
 
-  const publisherVisibleCheckbox = document.getElementById("publisher_visible");
-  publisherVisibleCheckbox.addEventListener(
+  const publisherMarketingEmailCheckbox = document.getElementById("publisher_subscribed_to_marketing_emails");
+  publisherMarketingEmailCheckbox.addEventListener(
     "click",
     event => {
-      submitForm("update_publisher_visible_form", "PATCH", true);
+      submitForm("update_publisher_marketing_email_form", "PATCH", true);
+    },
+    false
+  );
+
+  const sendEmailCheckBox = document.getElementById("send_emails");
+  sendEmailCheckBox.addEventListener(
+    "change",
+    event => {
+      submitForm("update_send_email_form", "PATCH", true);
+      const snoozeDetails = document.getElementById("snoozeDetails");
+      if (snoozeDetails) {
+        snoozeDetails.remove();
+      }
     },
     false
   );

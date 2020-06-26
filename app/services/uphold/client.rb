@@ -1,8 +1,10 @@
 module Uphold
   class Client < BaseApiClient
+    attr_accessor :api_base_uri
+
     def initialize(params = {})
       @connection = connection
-      @uphold_connection = params[:uphold_connection]
+      self.api_base_uri = params[:uri]
     end
 
     def address
@@ -18,17 +20,13 @@ module Uphold
     end
 
     def transaction
-      @transaction ||= Uphold::Models::Transaction.new(uphold_connection: @uphold_connection)
+      @transaction ||= Uphold::Models::Transaction.new
     end
 
     private
 
     def perform_offline?
       Rails.application.secrets[:uphold_api_uri].blank?
-    end
-
-    def api_base_uri
-      Rails.application.secrets[:uphold_api_uri]
     end
   end
 end

@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
   include PublishersHelper
 
-  ROLES = %i(admin partner publisher).freeze
+  ROLES = %i(admin publisher).freeze
   if Rails.application.secrets[:admin_ip_whitelist]
     ADMIN_IP_WHITELIST = Rails.application.secrets[:admin_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
   else
@@ -28,10 +28,6 @@ class Ability
   end
 
   def publisher
-    base_role
-  end
-
-  def partner
     base_role
   end
 

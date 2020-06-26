@@ -4,9 +4,13 @@ class PayoutReport < ApplicationRecord
 
   LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800".freeze
 
+  MINIMUM_BALANCE_AMOUNT = 5
+  BAT = 'bat'.freeze
+
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
   has_many :potential_payments
+  has_many :payout_messages
 
   validates_presence_of :expected_num_payments
 
@@ -58,14 +62,15 @@ class PayoutReport < ApplicationRecord
   end
 
   # Updates the JSON summary of the report downloaded by admins
+  # TODO: This appears to be legacy code. Need to make sure we can remove
   def update_report_contents
     # Do not update json contents for legacy reports
     return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
-    if manual
-      payout_report_hash = JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
-    else
-      payout_report_hash = JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
-    end
+    payout_report_hash = if manual
+                           JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
+                         else
+                           JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
+                         end
     self.contents = payout_report_hash.to_json
     save!
   end

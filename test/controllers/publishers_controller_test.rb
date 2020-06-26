@@ -8,12 +8,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
   include EyeshadeHelper
+  include MockUpholdResponses
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    stub_request(:get, /cards\?q/).to_return(body: [].to_json)
-    stub_request(:get, /v0\/me\/cards/).to_return(body: '{}')
-    stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
+    stub_uphold_cards!
   end
 
   after do
@@ -21,7 +20,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   SIGNUP_PARAMS = {
-    email: "alice@example.com"
+    email: "alice@example.com",
+    terms_of_service: true
   }
 
   COMPLETE_SIGNUP_PARAMS = {
@@ -240,8 +240,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     publisher.reload
 
-    refute publisher.agreed_to_tos.present?
-
     perform_enqueued_jobs do
       patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
     end
@@ -249,6 +247,23 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher.reload
 
     assert publisher.agreed_to_tos.present?
+  end
+
+  test "publisher cannot sign up for a long name" do
+    perform_enqueued_jobs do
+      post(registrations_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+
+    publisher.reload
+
+    complete_params = { publisher: { name: "Alice" * 13, visible: true } }
+
+    patch(complete_signup_publishers_path, params: complete_params)
+    assert_equal 'Your Name is too long (maximum is 64 characters)', flash[:alert]
   end
 
   test "publisher updating contact email address will trigger 3 emails and allow publishers confirm new address" do
@@ -407,7 +422,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       publisher.save!
 
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+      stub_request(:post, /oauth2\/token/)
           .with(body: "code=#{uphold_code}&grant_type=authorization_code")
           .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
@@ -592,7 +607,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert login
     assert_equal login.user_agent, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
     assert_equal login.accept_language, "en-US,en;q=0.9"
-    assert login.browser.chrome?
   end
 
   test "#confirm_default_currency redirects publisher w/o cards:write to uphold if confirmed a not available currency" do

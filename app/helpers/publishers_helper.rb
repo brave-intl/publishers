@@ -8,6 +8,10 @@ module PublishersHelper
     Raven.capture_exception(e)
   end
 
+  def paypal_connect_url
+    "#{Rails.application.secrets[:paypal_connect_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2F#{Rails.application.secrets[:url_host]}%2Fpublishers%2Fpaypal_connections%2Fconnect_callback"
+  end
+
   def publishers_meta_tags
     {
       title: t("shared.app_title"),
@@ -20,6 +24,15 @@ module PublishersHelper
         type: "website",
       },
     }
+  end
+
+  def new_publisher?(publisher)
+    is_new = if publisher.paypal_locale?(I18n.locale)
+        publisher.paypal_connection.blank?
+      else
+        publisher.uphold_connection&.unconnected?
+      end
+    is_new.present? && publisher.channels.size.zero?
   end
 
   def publisher_can_receive_funds?(publisher)
@@ -38,11 +51,7 @@ module PublishersHelper
   def publisher_overall_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      publisher = publisher.become_subclass
-
-      if publisher.partner?
-        amount = publisher.balance
-      elsif publisher.only_user_funds?
+      if publisher.only_user_funds?
         amount = publisher.wallet&.contribution_balance&.amount_bat
       elsif publisher.no_grants?
         amount = publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
@@ -61,11 +70,7 @@ module PublishersHelper
 
     result = I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
     sentry_catcher do
-      publisher = publisher&.become_subclass
-
-      if publisher.partner?
-        balance = publisher.balance_in_currency
-      elsif publisher.only_user_funds?
+      if publisher.only_user_funds?
         balance = publisher.wallet&.contribution_balance&.amount_default_currency
       elsif publisher.no_grants?
         balance =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
@@ -85,9 +90,7 @@ module PublishersHelper
   def publisher_referral_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      publisher = publisher.become_subclass
       amount = publisher.wallet&.referral_balance&.amount_bat
-      amount = publisher.balance if publisher.partner?
       balance = '%.2f' % amount if amount.present?
     end
 
@@ -97,9 +100,7 @@ module PublishersHelper
   def publisher_contribution_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      publisher = publisher.become_subclass
       amount = publisher.wallet&.contribution_balance&.amount_bat
-      amount = publisher.balance if publisher.partner?
       balance = '%.2f' % amount if amount.present?
     end
 
@@ -131,6 +132,7 @@ module PublishersHelper
     if last_settlement_balance&.amount_bat.present?
       '%.2f' % last_settlement_balance.amount_bat
     else
+      I18n.t("helpers.publisher.no_deposit")
     end
   rescue => e
     require "sentry-raven"
@@ -154,10 +156,10 @@ module PublishersHelper
     I18n.t("helpers.publisher.conversion_unavailable", code: settlement_currency)
   end
 
-  def publisher_last_settlement_date(publisher)
+  def publisher_last_settlement_date(publisher, locale)
     last_settlement_balance = publisher.wallet&.last_settlement_balance
     if last_settlement_balance&.timestamp.present?
-      Time.at(last_settlement_balance.timestamp).to_datetime.strftime("%B %d, %Y")
+      I18n.l(Time.at(last_settlement_balance.timestamp).to_date, format: :long, locale: locale)
     else
       I18n.t("helpers.publisher.no_deposit")
     end

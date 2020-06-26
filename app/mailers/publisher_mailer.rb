@@ -11,18 +11,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject
-    )
-  end
-
-  # Best practice is to use the MailerServices::PartnerLoginLinkEmailer service
-  def login_partner_email(partner)
-    @partner = partner
-    @private_reauth_url = publisher_private_reauth_url(publisher: @partner)
-    # We should send the email out to people who have previously registered
-    # but not verified their account
-    mail(
-      to: @partner.email || @partner.pending_email,
+      asm: transaction_asm_group_id,
       subject: default_i18n_subject
     )
   end
@@ -114,6 +103,15 @@ class PublisherMailer < ApplicationMailer
   end
 
   def notify_email_change(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      asm: transaction_asm_group_id,
+      subject: default_i18n_subject
+    )
+  end
+
+  def paypal_missing_bank_account(publisher)
     @publisher = publisher
     mail(
       to: @publisher.email,
@@ -346,6 +344,12 @@ class PublisherMailer < ApplicationMailer
   end
 
   private
+
+  # (Albert Wang): These are critical emails pertaining to login.
+  # You can view the IDs here: https://mc.sendgrid.com/unsubscribe-groups
+  def transaction_asm_group_id
+    SendGrid::ASM.new(group_id: Rails.application.secrets[:sendgrid_transactional_asm_group_id])
+  end
 
   def ensure_fresh_token
     # Check if we are missing the token and capture to sentry if we are. This should not happen.

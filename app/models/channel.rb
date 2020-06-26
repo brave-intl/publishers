@@ -31,6 +31,7 @@ class Channel < ApplicationRecord
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
   has_one :site_banner
+  has_one :site_banner_lookup
 
   has_many :potential_payments
 
@@ -54,9 +55,11 @@ class Channel < ApplicationRecord
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
-  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
 
+  # *ChannelDetails get autosaved from above.
+  after_save :update_site_banner_lookup!, if: -> { :saved_change_to_verified? && verified? }
+  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
@@ -96,7 +99,7 @@ class Channel < ApplicationRecord
 
     properties.merge({
       all_channels: Channel.verified.count,
-      site:  Channel.verified.site_channels.count,
+      site: Channel.verified.site_channels.count,
     })
   end
 
@@ -271,9 +274,29 @@ class Channel < ApplicationRecord
     Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
   end
 
+  def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
+    site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
+      channel_identifier: details&.channel_identifier,
+    )
+    site_banner_lookup.set_sha2_base16
+    site_banner_lookup.derived_site_banner_info =
+      if skip_site_banner_info_lookup
+        {}
+      else
+        site_banner&.non_default_properties || publisher&.default_site_banner&.non_default_properties || {}
+      end
+    site_banner_lookup.update!(
+      channel_id: id,
+      publisher_id: publisher_id,
+      wallet_address: publisher&.uphold_connection&.address
+    )
+  end
+
   private
 
   def should_register_channel_for_promo
+    return false unless publisher.may_register_promo? && !publisher.promo_lockout_time_passed?
+
     promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = publisher.promo_enabled_2018q1?
     promo_running && publisher_enabled_promo && saved_change_to_verified? && verified && !publisher.only_user_funds?

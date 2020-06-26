@@ -7,7 +7,7 @@ import { MainSignUp } from "../sections/main-section";
 export const SignUp = () => {
   document.title = "Become a Creator - Brave Rewards | Creators";
   return (
-    <Grommet theme={theme}>
+    <Grommet style={{height:"100%"}} theme={theme}>
       <Nav />
       <MainSignUp />
     </Grommet>

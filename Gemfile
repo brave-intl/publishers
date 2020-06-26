@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "2.5.7"
+ruby "2.7.1"
 
 source "https://rubygems.org"
 
@@ -11,7 +11,7 @@ gem "activejob-traffic_control"
 gem "active_model_serializers", "~> 0.10.0"
 
 # ActiveRecord Session store for server side storage of session data
-gem 'activerecord-session_store'
+gem 'activerecord-session_store', '~> 1.1', '>= 1.1.3'
 
 # Allowing for URI templates, for HTTP clients
 gem 'addressable', '~> 2.6'
@@ -27,56 +27,55 @@ gem 'aws-sdk-s3', require: false
 
 gem "bootstrap", ">= 4.3.1"
 
-# browser details
-gem 'browser'
+gem 'brotli', "~> 0.2.3"
 
 # Authorization
-gem 'cancancan'
+gem 'cancancan',  "~> 3.1.0"
 
 # Authentication
 gem "devise", "~> 4.7.1"
-gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
 # HTTP library wrapper
-gem "faraday", "~> 0.15.4"
+gem "faraday", "~> 0.17.3"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
+
+gem 'google-protobuf', "~> 3.12.0"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri"
+gem "nokogiri", "~> 1.10.9"
 
 # Open Graph tag
-gem "meta-tags"
+gem "meta-tags", "~> 2.13.0"
 
 # Image conversion library
-gem 'mini_magick'
-
-gem 'mongo', '~> 2.2', '>= 2.2.5'
+gem 'mini_magick', "~> 4.10.1"
 
 gem "newrelic_rpm", "~> 6.7.0.359"
 
+gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 # Oauth client for google / youtube
-gem "omniauth-google-oauth2", "~> 0.5.2"
+gem "omniauth-google-oauth2", "~> 0.8.0"
 
 # Oauth client for twitch
-gem "omniauth-twitch"
+gem "omniauth-twitch", "~> 1.1.0"
 
 # Oauth client for twitter
-gem "omniauth-twitter"
+gem "omniauth-twitter", "~> 1.4.0"
 
 # OAuth client for Vimeo
-gem "omniauth-vimeo"
+gem "omniauth-vimeo", "~> 2.0.1"
 
 # OAuth client for Reddit
 gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
 
 # OAuth client for GitHub
-gem "omniauth-github"
+gem "omniauth-github", "~> 1.4.0"
 
 # Model record auditing
 gem "paper_trail", "~> 10.3.1"
@@ -88,24 +87,24 @@ gem "pg", "~> 0.18"
 gem "premailer-rails", "~> 1.10.3", require: false
 
 # Implementation of PublicSuffix
-gem 'public_suffix', '~> 3.1.1'
+gem 'public_suffix', '~> 4.0.3'
 
 # Puma as app server
-gem "puma", "~> 4.0.1"
+gem "puma", "~> 4.3.5"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 6.0.0"
+gem 'railties', "~> 6.0.3.1"
 
-gem "rails", "~> 6.0.0"
-gem 'rails-i18n', '~> 6.0'
+gem "rails", "~> 6.0.3"
+gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
-gem 'redis', '~> 4.1.2'
+gem 'redis', '~> 4.2.1'
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
@@ -114,18 +113,15 @@ gem "rqrcode", "~> 0.10"
 gem "sass-rails", "~> 5.0"
 
 # Sendgrid mail service
-gem "sendgrid-ruby"
+gem "sendgrid-ruby", "~> 6.2.1"
 
 # Exception logging
 gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq"
+gem "sidekiq", "~> 6.0.7"
 
-gem "sidekiq-scheduler", "~> 2.2.2"
-
-# Used by sendgrid-ruby. Forcing an update due to a security concern
-gem 'sinatra', '~> 2.0.2'
+gem "sidekiq-scheduler", "~> 3.0.1"
 
 # slim for view templates
 gem "slim-rails", "~> 3.1"
@@ -142,10 +138,10 @@ gem 'webpacker', '~> 4.0.7'
 gem "will_paginate"
 
 # YouTube API client
-gem 'yt'
+gem 'yt', "~> 0.33.0"
 
-gem "zeitwerk", '~> 2.1.10'
-gem "zendesk_api"
+gem "zeitwerk", '~> 2.3.0'
+gem "zendesk_api", "~> 1.26.0"
 
 group :development do
   gem "better_errors"
@@ -191,9 +187,9 @@ group :development, :test do
   gem 'minitest'
   gem 'minitest-rails'
   gem "mocha"
-  gem "capybara-selenium"
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test
+  gem 'selenium-webdriver', "~> 3.142.0"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

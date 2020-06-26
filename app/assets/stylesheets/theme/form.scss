@@ -43,7 +43,7 @@
   width: 22px;
   left: -2px;
   top: -8px;
-  background-color: #F6F6FA;
+  background-color: #E0E0E0;
   -webkit-transition: .4s;
   border-radius: 50%;
   transition: .4s;
@@ -63,4 +63,7 @@ input:checked + .slider.round:before {
 .slider.round {
   border-radius: 3px;
   height: 8px;
+  &.extended {
+    margin-top: 3px;
+  }
 }

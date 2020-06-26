@@ -27,12 +27,6 @@ aside
           = nav_link "Approvals", admin_channel_approvals_path
           = nav_link "Duplicates", duplicates_admin_channels_path
 
-      = nav_link "Organizations", admin_organizations_path
-      = nav_link "Partners", admin_partners_path
-        - if params[:partner_id] && (params[:id] || params[:invoice_id])
-            ul.sub-menu
-              = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
-
       = nav_link "Cases", admin_cases_path
         - cases = Case.where(status: Case::OPEN).size
         - if cases.positive?
@@ -45,6 +39,9 @@ aside
           = nav_link "All Publishers", admin_publishers_path
           = nav_link "Suspended Publishers", admin_publishers_path(status: PublisherStatusUpdate::SUSPENDED)
           = nav_link "2FA Removals", admin_publishers_path(two_factor_authentication_removal: true)
+          / - if params[:id] || params[:invoice_id]
+          /     ul.sub-menu
+          /       = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
       = nav_link "FAQs", admin_faq_categories_path
       = nav_link "Payout Reports", admin_payout_reports_path
       = nav_link "Referral Promo", admin_unattached_promo_registrations_path

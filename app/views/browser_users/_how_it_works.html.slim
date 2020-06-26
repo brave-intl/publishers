@@ -1,0 +1,39 @@
+.how-it-works--panel
+  .how-it-works--header
+    h3 How it works
+  .d-flex
+    .how-it-works--step-image
+      = image_tag("step_1.png", width: 32, height: 32)
+    .how-it-works--step-description
+      p Send your unique referral link below to your friends & family to download and install the Brave browser.
+  .d-flex
+    .how-it-works--step-image
+      = image_tag("step_2.png", width: 32, height: 32)
+    .how-it-works--step-description
+      p If they actively use the Brave browser for 30+ days, you will receive up to 10 BAT. See details for different rates.
+  .d-flex
+    .how-it-works--step-image
+      = image_tag("step_3.png", width: 32, height: 32)
+    .how-it-works--step-description
+      p Come visit this page to check your referral progress. Your bonus will be paid out on the 8th of every month.
+  hr
+
+  - if current_publisher.agreed_to_tos?
+    center.referral-header
+      h5 Your unique referral link
+    .d-flex.flex-row.justify-content-center
+        .p-2.referral-link
+            p id="#{@promo_registration.referral_code}" = https_referral_url(@promo_registration.referral_code)
+        .p-2.no-padding
+          button.copy-button.btn-white data-clipboard-target="##{@promo_registration.referral_code}" = t("promo.shared.copy")
+    br
+    center
+      = link_to("Terms & Conditions", "https://basicattentiontoken.org/referral-terms-of-service/", class: "tos-link")
+  - else
+    center
+      = link_to("View Terms & Conditions", "https://basicattentiontoken.org/referral-terms-of-service/", class: "tos-link")
+      br
+      br
+      = link_to "Accept Terms & Conditions", browser_users_accept_tos_path, method: :put, class: "btn btn-white"
+
+script src="dist/clipboard.min.js"

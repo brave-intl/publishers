@@ -1,0 +1,1 @@
+PromoClient = Promo::Client.new

@@ -40,6 +40,19 @@ class Rack::Attack
     req.ip if !req.path.start_with?("/assets")
   end
 
+  blocklist('fail2ban pentesters') do |req|
+    # `filter` returns truthy value if request fails, or if it's from a previously banned IP
+    # so the request is blocked
+    Rack::Attack::Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 1.hour, bantime: 7.days) do
+      # The count for the IP is incremented if the return value is truthy
+      CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
+      req.path.include?('/etc/passwd') ||
+      req.path.include?('wp-admin') ||
+      req.path.include?('wp-login')
+
+    end
+  end
+
   ### Prevent Brute-Force Login Attacks ###
 
   # The most common brute-force login attack is a brute-force password
@@ -54,6 +67,12 @@ class Rack::Attack
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
   throttle("logins/ip", limit: 5, period: 120.seconds) do |req|
     if req.path.start_with?("/publishers/") && req.params["token"]
+      req.ip
+    end
+  end
+
+  throttle("uphold/login", limit: 5, period: 10.minutes) do |req|
+    if req.path.start_with?("/uphold/login")
       req.ip
     end
   end
@@ -107,22 +126,11 @@ class Rack::Attack
   #   end
   # end
 
-  # In PublishersController we'll check the annotated request object
-  # to apply additional Recaptcha.
-  throttle("registrations/ip", limit: 60, period: 1.hour) do |req|
-    if (req.path == "/publishers" || req.path == "/publishers/registrations") && (req.post? || req.patch?)
+  throttle("registrations/create", limit: 10, period: 1.hour) do |req|
+    if (req.path.starts_with?("/publishers/registrations") ||
+        req.path.starts_with?("/publishers/resend_authentication_email")
+        ) && (req.post? || req.patch? || req.put?)
       req.ip
-    end
-  end
-
-  if Rails.env.production?
-    # Throttle requests to public api, /api/public
-    throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
-      req.ip if ["/api/v1/public", "api/v2/public", "api/v3/public"].any? { |endpoint| req.path.start_with?(endpoint) }
-    end
-  else
-    throttle("public-api-request/ip", limit: 60, period: 1.hour) do |req|
-      req.ip if ["/api/v1/public", "api/v2/public", "api/v3/public"].any? { |endpoint| req.path.start_with?(endpoint) }
     end
   end
 

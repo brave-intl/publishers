@@ -4,64 +4,76 @@ module Views
   module User
     class Statements
       include ActiveModel::Model
-      attr_accessor :overviews
+      attr_accessor :overviews, :publisher
 
-      MONTH_FORMAT = "%b %Y"
-      YEAR_FORMAT = "%b %e, %Y"
+      def initialize(publisher:)
+        @publisher = publisher
+        statements = PublisherStatementGetter.new(publisher: @publisher).perform
 
-      def initialize(publisher:, details_date: nil)
-        @statements = PublisherStatementGetter.new(publisher: publisher).perform
-        build_statements(publisher, details_date)
+        earning_periods = group_by_earning_period(statements)
+
+        build_statement_overviews(earning_periods)
       end
 
-      def as_json(*)
-        {
-          overviews: overviews,
-        }
+      # Here's the problem, sometimes users don't get paid out every month.
+      # Because of this user's statements must be grouped in such a way where we aggregate all the previous values until the first payment gets found
+      # An easy way to do this is to look at the statements which have a negative amount, signifying that we paid them out and subtracted it from their balance.
+      # Then we can group the payouts into monthly periods for the statement
+      def group_by_earning_period(statements)
+        statements.
+          select { |s| s.amount.negative? }.
+          group_by { |s| s.earning_period }
       end
 
-      def build_statements(publisher, details_date)
+      def build_statement_overviews(earning_periods)
         @overviews = []
 
-        # Here's the problem, sometimes users don't get paid out every month.
-        # Because of this user's statements must be grouped in such a way where we aggregate all the previous values until the first payment gets found
-        # An easy way to do this is to look at the statements which have a negative amount, signifying that we paid them out and subtracted it from their balance.
-        payouts = @statements.select { |x| x.amount.negative? }
-
-        # Then we can group the payouts into monthly periods for the statement
-        periods = payouts.group_by { |x| x.earning_period }
-
-        periods.each do |payment_month, payout_entries|
-          # We find the previous month that was paid, or the first statement that was generated
-          period_start = payout_entries.first.earning_period
-          payout_date = payout_entries.detect { |x| x.eyeshade? }&.created_at || payment_month
-
-          # Sum all the BAT amounts
-          total_amount = payout_entries.sum { |x| x.amount.abs }
-          total_fees = payout_entries.select { |x| x.fee? }.sum { |x| x.amount }
-
-          settlement_amount = payout_entries.sum { |x| x.settlement_amount || 0 }
-
-          @overviews << StatementOverview.new(
-            name: publisher.name,
-            email: publisher.email,
-            earning_period: "#{period_start.strftime(MONTH_FORMAT)} - #{payout_date.strftime(MONTH_FORMAT)}",
-            payment_date: payout_date.strftime(YEAR_FORMAT) || "--",
-            currency: payout_entries.detect { |x| x.settlement_currency.present? }.settlement_currency,
-            total_earned: total_amount,
-            total_fees: total_fees,
-            total_bat_deposited: total_amount - total_fees.abs,
-            deposited: settlement_amount,
+        earning_periods.each do |payment_month, payout_entries|
+          overview = StatementOverview.new(
+            publisher_id: @publisher.id,
+            name: @publisher.name,
+            email: @publisher.email,
             settled_transactions: payout_entries.deep_dup,
-            raw_transactions: entries(period_start.at_beginning_of_month, payout_date.at_beginning_of_month),
           )
+
+          total_brave_settled = 0
+          settlement_destination = nil
+
+          payout_entries.each do |payout_entry|
+            total_brave_settled += payout_entry.amount.abs if payout_entry.eyeshade_settlement?
+            settlement_destination ||= payout_entry.settlement_destination
+
+            # Not all payout entries have settlement currency / amount information so on the statement
+            # we should only show the entries which have been settled with the currency information
+            if payout_entry.settlement_currency && payout_entry.settlement_amount
+              overview.deposited[payout_entry.settlement_currency] ||= 0
+              overview.deposited[payout_entry.settlement_currency] += payout_entry.settlement_amount
+
+              # It can be confusing for the user to understand where exactly a deposit came from.
+              # This provides a breakdown of what transactions made up the settlement for this specific currency.
+              # It is shown in a tooltip in the Statement
+              overview.deposited_types[payout_entry.settlement_currency] ||= {}
+              overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] ||= 0
+              overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] += payout_entry.settlement_amount.abs
+            end
+
+            # Here we sum up (in BAT) all the different transaction types
+            # This is shown to the users as the totals from different sections
+            overview.totals[payout_entry.transaction_type.to_sym] ||= 0
+            overview.totals[payout_entry.transaction_type.to_sym] += payout_entry.amount.abs
+
+            overview.total_earned += payout_entry.amount.abs
+          end
+
+          overview.settlement_destination = settlement_destination # Assume that settlement_destination doesn't change
+
+          overview.totals[:total_brave_settled] = total_brave_settled
+          overview.bat_total_deposited = overview.total_earned - overview.totals[:fees]
+
+          # Statements are sorted by the created time, so build the details of the overview
+          # Then insert it at the beginning of the @overviews array so that users see the newest entry first.
+          @overviews.unshift(overview.build_details)
         end
-
-        @overviews
-      end
-
-      def entries(period_start, period_end)
-        @statements.select { |x| x.created_at >= period_start && x.created_at <= period_end }
       end
     end
   end

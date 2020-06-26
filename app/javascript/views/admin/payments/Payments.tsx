@@ -11,6 +11,8 @@ import CurrentTable from "./components/currentTable/CurrentTable";
 import EarningsChart from "./components/earningsChart/EarningsChart";
 import TotalTable from "./components/totalTable/TotalTable";
 
+import { IntlProvider } from "react-intl";
+import en, { flattenMessages } from "../../../locale/en";
 import routes from "../../../routes/routes";
 
 interface IPaymentsProps {
@@ -26,7 +28,7 @@ export enum NavbarSelection {
   Dashboard,
   Channels,
   Referrals,
-  Payments
+  Payments,
 }
 
 export default class Payments extends React.Component<
@@ -37,7 +39,7 @@ export default class Payments extends React.Component<
     super(props);
     this.state = {
       data: this.props.data,
-      isLoading: false
+      isLoading: false,
     };
   }
 
@@ -61,12 +63,12 @@ export default class Payments extends React.Component<
           "X-CSRF-Token": document.head
             .querySelector("[name=csrf-token]")
             .getAttribute("content"),
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
         },
-        method: "GET"
+        method: "GET",
       }
-    ).then(response => {
-      response.json().then(json => {
+    ).then((response) => {
+      response.json().then((json) => {
         this.setState({ data: json });
       });
     });
@@ -76,7 +78,7 @@ export default class Payments extends React.Component<
 
   public render() {
     return (
-      <React.Fragment>
+      <IntlProvider locale="en" messages={flattenMessages(en)}>
         <UserNavbar
           navbarSelection={"Payments"}
           publisher={this.props.data.publisher}
@@ -104,7 +106,7 @@ export default class Payments extends React.Component<
             <Statements publisher_id={this.props.data.publisher.id} />
           </Card>
         </Container>
-      </React.Fragment>
+      </IntlProvider>
     );
   }
 }
