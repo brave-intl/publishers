@@ -37,8 +37,12 @@ jobs:
         run: bundle install
       - name: Prepare database
         run: bundle exec rake db:prepare
+        env: 
+          DATABASE_URL_TEST: postgres://postgres@localhost:5432/brave_publishers_test
       - name: Run tests
         run: bundle exec rails test
+        env: 
+          DATABASE_URL_TEST: postgres://postgres@localhost:5432/brave_publishers_test
       - name: Brakeman
         run: bundle exec brakeman
       - name: Rubocop
