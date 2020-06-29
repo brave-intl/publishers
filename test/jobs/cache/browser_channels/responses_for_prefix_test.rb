@@ -18,6 +18,10 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     assert service.temp_file.present?
     result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
+<<<<<<< HEAD
+=======
+    assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, channel.uphold_connection.address
+>>>>>>> origin/staging
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end
 
