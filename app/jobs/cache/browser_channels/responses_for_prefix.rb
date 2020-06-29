@@ -1,6 +1,6 @@
 class Cache::BrowserChannels::ResponsesForPrefix
   include Sidekiq::Worker
-  sidekiq_options queue: :low, retry: false
+  sidekiq_options queue: :low, retry: true
 
   PATH = "publishers/prefixes/".freeze
   PADDING_WORD = "P".freeze
