@@ -274,10 +274,6 @@ class Channel < ApplicationRecord
     Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
   end
 
-  def site_channel?
-    channel.details_type == SiteChannelDetails.name
-  end
-
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
     return unless verified?
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
