@@ -8,3 +8,19 @@ default_uphold_connection_for_channel: &default_uphold_connection_for_channel
 uphold_connected_for_channels_twitch_details:
   <<: *default_uphold_connection_for_channel
   channel_identifier: "twitch#author:details"
+
+verified_uphold_connection_for_channel:
+  <<: *default_uphold_connection_for_channel
+  channel_identifier: "verified.org"
+  channel: verified
+  uphold_connection: verified_connection
+  currency: BAT
+  address: <%= SecureRandom.uuid %>
+
+google_verified_uphold_connection_for_channel:
+  <<: *default_uphold_connection_for_channel
+  channel_identifier: "verified.org"
+  channel: google_verified
+  uphold_connection: google_connection
+  currency: BAT
+  address: <%= SecureRandom.uuid %>
