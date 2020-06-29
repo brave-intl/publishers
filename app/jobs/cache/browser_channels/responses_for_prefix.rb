@@ -1,6 +1,6 @@
 class Cache::BrowserChannels::ResponsesForPrefix
   include Sidekiq::Worker
-  sidekiq_options queue: :low, retry: false
+  sidekiq_options queue: :low, retry: true
 
   PATH = "publishers/prefixes/".freeze
   PADDING_WORD = "P".freeze
@@ -25,7 +25,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
         if site_banner_lookup.publisher.uphold_connection.present?
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
-          uphold_wallet.address = site_banner_lookup.publisher.uphold_connection.address
+          uphold_wallet.address = site_banner_lookup.channel.uphold_connection.address
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: site_banner_lookup.publisher.uphold_connection)
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
