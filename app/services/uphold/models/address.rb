@@ -11,7 +11,7 @@ module Uphold
       # https://www.rfc-editor.org/rfc/rfc6570.txt
       PATH = Addressable::Template.new("/v0/me/cards/{id}/addresses")
 
-      attr_accessor :formats, :type
+      attr_accessor :formats, :type, :api_base_uri
 
       def initialize(params = {})
         super
