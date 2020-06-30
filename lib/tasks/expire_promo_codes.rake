@@ -21,7 +21,7 @@ task :expire_promo_codes => :environment do
 
   puts "Updating #{publishers.count}"
 
-  publishers.find_each do |publisher|
+  publishers.each do |publisher|
     feature_flags = publisher.feature_flags
     feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
 
