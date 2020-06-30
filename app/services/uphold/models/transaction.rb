@@ -14,7 +14,7 @@ module Uphold
       BATCH_SIZE = 50
 
       attr_accessor :application, :createdAt, :denomination, :destination, :fees, :id, :message, :network,
-                    :normalized, :origin, :params, :priority, :reference, :status, :type
+                    :normalized, :origin, :params, :priority, :reference, :status, :type, :api_base_uri
 
       def initialize(params = {})
         super
