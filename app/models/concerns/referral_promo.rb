@@ -45,8 +45,12 @@ module ReferralPromo
   # Public: Enqueues a job which allows publishers referrals to work if they are payable and in a valid promo_country
   #
   # Returns nil
-  def update_promo_status
+  def update_promo_status!
     return unless may_register_promo?
+
+    feature_flags = self.feature_flags
+    feature_flags.delete(UserFeatureFlags::PROMO_LOCKOUT_TIME.to_s)
+    update(feature_flags: feature_flags)
 
     Promo::UpdateStatus.perform_later(id: id, status: PublisherStatusUpdate::ACTIVE)
   end
