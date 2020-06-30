@@ -51,6 +51,7 @@ class UpholdConnection < ActiveRecord::Base
   # If the user became KYC'd let's create the uphold card for them
   after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
   after_save :update_site_banner_lookup!, if: -> { saved_change_to_is_member? }
+  after_save :update_promo_status, if: -> { saved_change_to_is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -208,6 +209,13 @@ class UpholdConnection < ActiveRecord::Base
 
   def update_site_banner_lookup!
     publisher.update_site_banner_lookup!
+  end
+
+  # Internal: If the publisher previously had referral codes and then we will re-activate their referral codes.
+  #
+  # Returns nil
+  def update_promo_status
+    publisher.update_promo_status
   end
 
   def japanese_account?
