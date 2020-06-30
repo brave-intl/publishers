@@ -23,7 +23,7 @@ task :expire_promo_codes => :environment do
 
   publishers.find_each do |publisher|
     feature_flags = publisher.feature_flags
-    feature_flags[UserFeatureFlags::PROMO_LOCKOUT_TIME] = Time.now
+    feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
 
     unless publisher.update(feature_flags: feature_flags)
       puts "Could not update the publisher #{publisher.id}. Try again later?"
