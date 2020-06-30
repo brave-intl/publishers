@@ -24,7 +24,7 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
     sign_in admin
     publisher = publishers(:uphold_connected)
 
-    assert_equal publisher.inferred_status, PublisherStatusUpdate::ACTIVE
+    assert_equal publisher.last_status_update.status, PublisherStatusUpdate::ACTIVE
 
     post(
       admin_publisher_publisher_status_updates_path(
@@ -37,12 +37,12 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
       }
     )
 
-    assert_equal publisher.status_updates.count, 1
-    assert_equal publisher.inferred_status, PublisherStatusUpdate::SUSPENDED
+    assert_equal publisher.status_updates.count, 2
+    assert_equal publisher.last_status_update.status, PublisherStatusUpdate::SUSPENDED
 
     post admin_publisher_publisher_status_updates_path(publisher_id: publisher.id, publisher_status: PublisherStatusUpdate::ACTIVE), params: {}, headers: {'HTTP_REFERER' => admin_publisher_publisher_status_updates_path(publisher_id: publisher.id) }
-    assert_equal publisher.status_updates.count, 2
-    assert_equal publisher.inferred_status, PublisherStatusUpdate::ACTIVE
+    assert_equal publisher.status_updates.count, 3
+    assert_equal publisher.last_status_update.status, PublisherStatusUpdate::ACTIVE
   end
 
   test "sends email if suspended and send_email flag is set" do

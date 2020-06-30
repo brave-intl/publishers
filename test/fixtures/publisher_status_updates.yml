@@ -43,3 +43,11 @@ partner:
 only_user_funds:
   publisher: promo_enabled_but_only_user_funds
   status: "only_user_funds"
+
+# To better represent the state of the database all publishers start off as "Active"
+<% ["uphold_connected"].each do |item| %>
+active_<%= item %>:
+  publisher: <%= item %>
+  status: "active"
+  created_at: "2018-01-01"
+<% end %>

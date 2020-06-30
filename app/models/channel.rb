@@ -30,8 +30,8 @@ class Channel < ApplicationRecord
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
-  has_one :site_banner
-  has_one :site_banner_lookup
+  has_one :site_banner, dependent: :destroy
+  has_one :site_banner_lookup, dependent: :destroy
 
   has_many :potential_payments
 
@@ -275,6 +275,7 @@ class Channel < ApplicationRecord
   end
 
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
+    return unless verified?
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
       channel_identifier: details&.channel_identifier,
     )

@@ -28,8 +28,6 @@ Rails.application.configure do
   }
   if Rails.application.secrets[:redis_url]
     config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
-  else
-    config.cache_store = :redis_cache_store, { url: "redis://127.0.0.1:6379/0" }
   end
 
   # Raise exceptions instead of rendering exception templates.

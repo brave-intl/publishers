@@ -3,9 +3,12 @@ class Api::V1::TransactionsController < Api::BaseController
 
   def show
     channel = get_channel!(params[:channel])
-    uphold_client = Uphold::Client.new(uphold_connection: channel.publisher.uphold_connection)
+    transaction = UpholdClient.transaction.find(
+      id: params[:id],
+      uphold_connection: channel.publisher.uphold_connection
+    )
 
-    render json: uphold_client.transaction.find(id: params[:id])
+    render json: transaction
   rescue GetTransactionError => e
     render json: { errors: e.message }, status: 404
   rescue Faraday::ResourceNotFound
