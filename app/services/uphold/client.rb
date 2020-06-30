@@ -8,19 +8,19 @@ module Uphold
     end
 
     def address
-      @address ||= Uphold::Models::Address.new
+      @address ||= Uphold::Models::Address.new(api_base_uri: api_base_uri)
     end
 
     def card
-      @card ||= Uphold::Models::Card.new
+      @card ||= Uphold::Models::Card.new(api_base_uri: api_base_uri)
     end
 
     def user
-      @user ||= Uphold::Models::User.new
+      @user ||= Uphold::Models::User.new(api_base_uri: api_base_uri)
     end
 
     def transaction
-      @transaction ||= Uphold::Models::Transaction.new
+      @transaction ||= Uphold::Models::Transaction.new(api_base_uri: api_base_uri)
     end
 
     private

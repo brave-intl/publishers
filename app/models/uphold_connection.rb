@@ -215,7 +215,7 @@ class UpholdConnection < ActiveRecord::Base
   #
   # Returns nil
   def update_promo_status
-    publisher.update_promo_status
+    publisher.update_promo_status!
   end
 
   def japanese_account?
