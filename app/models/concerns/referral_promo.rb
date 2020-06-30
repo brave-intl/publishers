@@ -45,7 +45,7 @@ module ReferralPromo
   # Public: Enqueues a job which allows publishers referrals to work if they are payable and in a valid promo_country
   #
   # Returns nil
-  def update_promo_status
+  def update_promo_status!
     return unless may_register_promo?
 
     Promo::UpdateStatus.perform_later(id: id, status: PublisherStatusUpdate::ACTIVE)
