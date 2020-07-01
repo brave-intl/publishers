@@ -44,6 +44,7 @@ completed:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
+  subscribed_to_marketing_emails: true
 
 completed_partner:
   email: "partner@completed.org"
