@@ -7,17 +7,17 @@ class Rack::Attack
     end
   end
 
-  # # Safelists
-  # if Rails.application.secrets[:api_ip_whitelist]
-  #   API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").freeze
-  # else
-  #   API_IP_WHITELIST = [].freeze
-  # end
+  # Safelists
+  if Rails.application.secrets[:api_ip_whitelist]
+    API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").freeze
+  else
+    API_IP_WHITELIST = [].freeze
+  end
 
-  # safelist('allow/API_IP_WHITELIST') do |req|
-  #   # Requests are allowed if the return value is truthy
-  #   API_IP_WHITELIST.include?(req.remote_ip)
-  # end
+  safelist('allow/API_IP_WHITELIST') do |req|
+    # Requests are allowed if the return value is truthy
+    API_IP_WHITELIST.include?(req.remote_ip)
+  end
 
   ### Configure Cache ###
 
