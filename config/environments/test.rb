@@ -28,6 +28,8 @@ Rails.application.configure do
   }
   if Rails.application.secrets[:redis_url]
     config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
+  else
+    config.cache_store = :memory_store, { size: 64.megabytes }
   end
 
   # Raise exceptions instead of rendering exception templates.

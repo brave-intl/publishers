@@ -1,4 +1,11 @@
 class Rack::Attack
+  # Monkey-patch the request class
+  # https://github.com/kickstarter/rack-attack/blob/master/lib/rack/attack/request.rb
+  class Request < ::Rack::Request
+    def remote_ip
+      @remote_ip ||= (env['action_dispatch.remote_ip'] || ip).to_s
+    end
+  end
 
   # Safelists
   if Rails.application.secrets[:api_ip_whitelist]
@@ -9,7 +16,7 @@ class Rack::Attack
 
   safelist('allow/API_IP_WHITELIST') do |req|
     # Requests are allowed if the return value is truthy
-    API_IP_WHITELIST.include?(req.ip)
+    API_IP_WHITELIST.include?(req.remote_ip)
   end
 
   ### Configure Cache ###
@@ -35,21 +42,20 @@ class Rack::Attack
 
   # Throttle all requests by IP (60rpm)
   #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
+  # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.remote_ip}"
   throttle("req/ip", limit: 300, period: 5.minutes) do |req|
-    req.ip if !req.path.start_with?("/assets")
+    req.remote_ip if !req.path.start_with?("/assets")
   end
 
   blocklist('fail2ban pentesters') do |req|
     # `filter` returns truthy value if request fails, or if it's from a previously banned IP
     # so the request is blocked
-    Rack::Attack::Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 1.hour, bantime: 7.days) do
+    Rack::Attack::Fail2Ban.filter("pentesters-#{req.remote_ip}", maxretry: 3, findtime: 1.hour, bantime: 7.days) do
       # The count for the IP is incremented if the return value is truthy
       CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
       req.path.include?('/etc/passwd') ||
       req.path.include?('wp-admin') ||
       req.path.include?('wp-login')
-
     end
   end
 
@@ -64,22 +70,22 @@ class Rack::Attack
 
   # Throttle POST requests to /login by IP address
   #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
+  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.remote_ip}"
   throttle("logins/ip", limit: 5, period: 120.seconds) do |req|
     if req.path.start_with?("/publishers/") && req.params["token"]
-      req.ip
+      req.remote_ip
     end
   end
 
   throttle("uphold/login", limit: 5, period: 10.minutes) do |req|
     if req.path.start_with?("/uphold/login")
-      req.ip
+      req.remote_ip
     end
   end
 
   throttle("2fa_sign_in", limit: 10, period: 15.minutes) do |req|
     if req.path.start_with?("/publishers/two_factor_authentications")
-      req.ip
+      req.remote_ip
     end
   end
 
@@ -93,21 +99,21 @@ class Rack::Attack
   # Throttle send 2fa disable emails for an IP address
   throttle("request_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
     if req.path == "/publishers/request_two_factor_authentication_removal" && req.post?
-      req.ip
+      req.remote_ip
     end
   end
 
   # Throttle confirm 2fa disable emails for an IP address
   throttle("confirm_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
     if req.path == "/publishers/confirm_two_factor_authentication_removal" && req.get?
-      req.ip
+      req.remote_ip
     end
   end
 
   # Throttle cancel 2fa disable emails for an IP address
   throttle("cancel_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
     if req.path == "/publishers/cancel_two_factor_authentication_removal" && req.get?
-      req.ip
+      req.remote_ip
     end
   end
 
@@ -130,7 +136,7 @@ class Rack::Attack
     if (req.path.starts_with?("/publishers/registrations") ||
         req.path.starts_with?("/publishers/resend_authentication_email")
         ) && (req.post? || req.patch? || req.put?)
-      req.ip
+      req.remote_ip
     end
   end
 
