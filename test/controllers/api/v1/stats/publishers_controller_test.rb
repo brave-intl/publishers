@@ -12,7 +12,6 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "does signups per day and handles blanks" do
-
     publishers(:verified).update(created_at: 6.days.ago)
     publishers(:completed).update(created_at: 1.day.ago)
     publishers(:uphold_connected).update(created_at: 6.days.ago)

@@ -10,7 +10,7 @@ class PublisherBalanceGetter < BaseApiClient
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
     accounts_response = connection.get do |request|
-      request.options.open_timeout = 2
+      request.options.open_timeout = 5
       request.options.timeout = 20
       request.headers["Authorization"] = api_authorization_header
       request.options.params_encoder = Faraday::FlatParamsEncoder
