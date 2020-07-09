@@ -29,7 +29,8 @@ module Uphold
 
         response = get(PATH.expand(id: id), {}, authorization(uphold_connection))
 
-        JSON.parse(response.body).map { |a| Address.new(a) }
+        # This must be fully spec'd out, otherwise we get the error Uphold::Models::Address::Address is not a class.
+        JSON.parse(response.body).map { |a| Uphold::Models::Address.new(a) }
       end
 
       # Creates an address for a given card

@@ -17,6 +17,16 @@ export default {
         path: "/publishers/promo_registrations/overview?publisher_id={id}"
       }
     },
+    gemini: {
+      connect: "/publishers/gemini_connection/connect",
+      show: "/publishers/geini_connection",
+      destroy: "/publishers/gemini_connection"
+    },
+    stripe: {
+      connect: "/publishers/stripe_connection/connect",
+      show: "/publishers/stripe_connection",
+      destroy: "/publishers/stripe_connection"
+    },
     statements: {
       index: {
         path: "/publishers/statements"
@@ -30,6 +40,15 @@ export default {
     },
     update: {
       path: "/publishers"
-    }
+    },
+    uphold: {
+      connect: "/publishers/connect_uphold",
+      confirm_default_currency: "/publishers/confirm_default_currency",
+      disconnect: "/publishers/disconnect_uphold",
+      status: "/publishers/uphold_status",
+    },
+    wallet: {
+      path: "/publishers/wallet"
+    },
   }
 };

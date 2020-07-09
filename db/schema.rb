@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_26_073545) do
+ActiveRecord::Schema.define(version: 2020_07_09_024010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,24 @@ ActiveRecord::Schema.define(version: 2020_06_26_073545) do
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id"
     t.index ["question"], name: "index_faqs_on_question", unique: true
     t.index ["rank"], name: "index_faqs_on_rank"
+  end
+
+  create_table "gemini_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.string "encrypted_access_token"
+    t.string "encrypted_access_token_iv"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
+    t.string "gemini_user_id"
+    t.string "display_name"
+    t.string "state_token"
+    t.string "scope"
+    t.string "status"
+    t.string "country"
+    t.boolean "is_verified"
+    t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
+    t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
+    t.index ["publisher_id"], name: "index_gemini_connections_on_publisher_id"
   end
 
   create_table "github_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -508,6 +526,28 @@ ActiveRecord::Schema.define(version: 2020_06_26_073545) do
     t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
     t.datetime "ads_enabled_at"
+  end
+
+  create_table "stripe_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.string "encrypted_access_token"
+    t.string "encrypted_access_token_iv"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
+    t.string "stripe_user_id"
+    t.string "display_name"
+    t.string "state_token"
+    t.string "scope"
+    t.string "country"
+    t.boolean "details_submitted"
+    t.boolean "payouts_enabled"
+    t.string "default_currency"
+    t.jsonb "capabilities"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["encrypted_access_token_iv"], name: "index_stripe_connections_on_encrypted_access_token_iv", unique: true
+    t.index ["encrypted_refresh_token_iv"], name: "index_stripe_connections_on_encrypted_refresh_token_iv", unique: true
+    t.index ["publisher_id"], name: "index_stripe_connections_on_publisher_id"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

@@ -161,16 +161,23 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
+  # TODO: Figure out where publishers/wallet is being used.
+  # Set up hints
   def wallet
     wallet = current_publisher.wallet
 
     uphold_connection = current_publisher.uphold_connection
 
     if wallet
+      uphold_response = uphold_connection.as_json(
+        only: [:default_currency, :uphold_id, :is_member],
+        methods: [:can_create_uphold_cards?, :username, :uphold_status]
+      )
+
       render(json:
               {
                 wallet: wallet,
-                uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
+                uphold_connection: uphold_response,
                 possible_currencies: uphold_connection.uphold_details&.currencies || [],
               })
     else

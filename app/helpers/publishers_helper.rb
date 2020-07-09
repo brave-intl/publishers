@@ -220,6 +220,10 @@ module PublishersHelper
     end
   end
 
+  def stripe_status(connection)
+    'Unconnected'
+  end
+
   def uphold_status_summary(publisher)
     case publisher.uphold_connection&.uphold_status
     when :verified, UpholdConnection::UpholdAccountState::RESTRICTED, UpholdConnection::UpholdAccountState::BLOCKED

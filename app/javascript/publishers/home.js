@@ -51,6 +51,10 @@ function updateLastSettlement(lastSettlementBalance) {
     "last_deposit_converted_amount"
   );
 
+  if(!lastSettlement) {
+    return;
+  }
+
   if (lastSettlementBalance.timestamp) {
     lastSettlement.classList.remove("no-settlement-made");
     lastSettlement.classList.add("settlement-made");
@@ -161,6 +165,8 @@ function refreshBalance() {
       }
     })
     .then(function(body) {
+      console.log('home js')
+      console.log(body)
       let wallet = new Wallet(body.wallet);
 
       updateDefaultCurrencyValue(body.uphold_connection.default_currency);
@@ -351,6 +357,7 @@ function openDefaultCurrencyModal() {
     false
   );
 }
+window.openDefaultCurrencyModal = openDefaultCurrencyModal
 
 function showWhatHappenedVerificationFailure() {
   let elementToReveal = this.nextSibling;

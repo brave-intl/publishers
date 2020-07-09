@@ -39,6 +39,14 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
+        resource :stripe_connection do
+          post :connect
+        end
+
+        resource :gemini_connection do
+          patch :connect
+        end
+
         resources :statements, only: [:index, :show] do
           get :rate_card, on: :collection
         end

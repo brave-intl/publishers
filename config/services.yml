@@ -1,5 +1,12 @@
 default: &default
   fastly: <%= ENV["FASTLY_API"] || "https://api.fastly.com/public-ip-list" %>
+  gemini:
+    base_uri: <%= ENV["GEMINI_API"] || "https://exchange.sandbox.gemini.com/" %>
+    client_id: <%= ENV["GEMINI_CLIENT_ID"] %>
+    client_secret: <%= ENV["GEMINI_CLIENT_SECRET"] %>
+
+test:
+  <<: *default
 
 development:
   <<: *default

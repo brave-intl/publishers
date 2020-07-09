@@ -136,6 +136,10 @@ class UpholdConnection < ActiveRecord::Base
     end
   end
 
+  def username
+    uphold_details&.username
+  end
+
   def unconnected?
     uphold_status == UpholdAccountState::UNCONNECTED
   end
@@ -220,6 +224,11 @@ class UpholdConnection < ActiveRecord::Base
 
   def japanese_account?
     country == JAPAN
+  end
+
+  def currencies
+    return if uphold_details.blank?
+    uphold_details&.currencies
   end
 
   def encryption_key

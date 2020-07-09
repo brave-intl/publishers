@@ -43,6 +43,7 @@ class Publisher < ApplicationRecord
   belongs_to :youtube_channel
 
   has_one :uphold_connection
+  has_one :stripe_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",

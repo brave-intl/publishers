@@ -123,6 +123,8 @@ gem "sidekiq-scheduler", "~> 3.0.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
+gem 'stripe', '~> 5.1', '>= 5.1.1'
+
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
 

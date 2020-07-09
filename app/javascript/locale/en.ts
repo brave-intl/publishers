@@ -253,7 +253,54 @@ export default {
   thirtyDay: "30-Day Use",
   tokens: "tokens",
   totalNumber: "Total Number of Codes",
-  walletBalance: "Wallet balance"
+  walletBalance: "Wallet balance",
+  walletServices: {
+    brave: {
+      description: "Connect a crypto wallet to receive contributions and other payments.",
+      title: "Wallet for BAT Payment"
+    },
+    connected: "Connected <span>{displayName}</span>",
+    disconnect: "Disconnect",
+    gemini: {
+      connect: "Connect to Gemini"
+    },
+    lastDeposit: "Last Deposit: {value}",
+    lastDepositDate: "Last Deposit Date: {value}",
+    stripe: {
+      connect: "Connect to Stripe",
+      description: "Connect to Stripe to be able receive credit card payments.",
+      disconnect: "Disconnect",
+      enablePayouts: "You're uneligable to receive payouts. Check your Stripe Account for more details.",
+      title: "Wallet for Credit Card Payment",
+    },
+    title: "Wallet Services",
+    uphold: {
+      change: "Change",
+      connect: "Connect to Uphold",
+      currency: {
+        confirm: "Confirm",
+        fee_disclaimer: 'Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a>Check fees</a>',
+        headline: "Confirm your preferred deposit currency or token",
+        intro: "You will receive monthly contributions from your Brave fans in this currency in your Uphold account.",
+      },
+      depositCurrency: "Deposit Currency: <span>{currency}</span>",
+      description: "Connect to Uphold to be able to receive contributions and other payments in BAT.",
+      disconnect: {
+        confirm: "Disconnect",
+        confirmation: "Are you sure you want to disconnect your account with Uphold?",
+        deny: "Cancel",
+        headline: "Disconnect Uphold Account?",
+        intro: "You won't be able to receive the monthly contributions from your fans until your wallet at Uphold is connected to us."
+      },
+      status: {
+        connecting: "Brave Rewards is connecting to your Uphold account.",
+        nonMember: "To receive your contribution balance, you'll need to fully verify your identity on Uphold.",
+        reauthorizationNeeded: "We are having trouble communicating with Uphold. Try reconnecting",
+        restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
+      },
+      title:"Uphold Wallet"
+    }
+  }
 };
 
 
