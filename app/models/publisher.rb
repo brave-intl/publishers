@@ -320,11 +320,11 @@ class Publisher < ApplicationRecord
   end
 
   def brave_payable?
-    paypal_connection&.verified_account || uphold_connection&.payable?
+    paypal_connection&.verified_account || uphold_connection&.payable? || gemini_connection&.payable?
   end
 
   def country
-    provider_country = uphold_connection&.country || paypal_connection&.country
+    provider_country = uphold_connection&.country || paypal_connection&.country || gemini_connection&.country
 
     provider_country.to_s.upcase
   end

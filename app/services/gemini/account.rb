@@ -13,6 +13,11 @@ module Gemini
     attr_accessor :token
     attr_reader :users
 
+    # Public: Finds the accounts that are authorized with a token
+    #
+    # token - An access token obtained through the OAuth flow
+    #
+    # Returns a Gemini::Account
     def self.find(token:)
       Account.new(token: token).find(token: token)
     end

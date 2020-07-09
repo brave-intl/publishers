@@ -47,30 +47,26 @@ module Publishers
       )
 
       redirect_to home_publishers_path
-    rescue StandardError => e
+    rescue GeminiError => e
       redirect_to(home_publishers_path, alert: t(".gemini_error", message: e.message))
     end
 
-    # def destroy
-    #   stripe_connection = current_publisher.stripe_connection
-    #   user_id = stripe_connection.stripe_user_id
+    def destroy
+      gemini_connection = current_publisher.gemini_connection
 
-    #   # Destroy our database records
-    #   if stripe_connection.destroy
-    #     # Deauthorize the account from user's Stripe Connect
-    #     account = Stripe::Account.retrieve(user_id)
-    #     account.deauthorize(Rails.application.secrets[:stripe_client_id])
-    #     redirect_to(home_publishers_path, notice: I18n.t("publishers.stripe_connections.destroy.removed"))
-    #   else
-    #     redirect_to(
-    #       home_publishers_path,
-    #       alert: I18n.t(
-    #         "publishers.stripe_connections.destroy.error",
-    #         errors: stripe_connection.errors.full_messages.join(', ')
-    #         )
-    #       )
-    #   end
-    # end
+      # Destroy our database records
+      if gemini_connection.destroy
+        redirect_to(home_publishers_path, notice: I18n.t("publishers.gemini_connections.destroy.removed"))
+      else
+        redirect_to(
+          home_publishers_path,
+          alert: I18n.t(
+            "publishers.gemini_connections.destroy.error",
+            errors: gemini_connection.errors.full_messages.join(', ')
+          )
+        )
+      end
+    end
 
     private
 

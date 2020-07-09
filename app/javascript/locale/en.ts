@@ -262,7 +262,9 @@ export default {
     connected: "Connected <span>{displayName}</span>",
     disconnect: "Disconnect",
     gemini: {
-      connect: "Connect to Gemini"
+      connect: "Connect to Gemini",
+      disconnect: "Disconnect",
+      title: "Gemini Wallet",
     },
     lastDeposit: "Last Deposit: {value}",
     lastDepositDate: "Last Deposit Date: {value}",

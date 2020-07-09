@@ -7,16 +7,6 @@ import DisconnectPrompt from "./upholdConnection/UpholdDisconnectPrompt";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
 import UpholdStatusMessage from "./upholdConnection/UpholdStatusMessage";
 
-export enum UpholdStatus {
-  ReauthorizationNeeded = "reauthorization_needed",
-  Incomplete = "incomplete",
-  Verified = "verified",
-  AccessParametersAcquired = "access_parameters_acquired ",
-  CodeAcquired = "code_acquired",
-  Unconnected = "unconnected",
-  Restricted = "restricted",
-}
-
 interface IUpholdConnectionState {
   showDisconnectModal: boolean;
   error?: string;

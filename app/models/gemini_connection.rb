@@ -9,6 +9,10 @@ class GeminiConnection < ApplicationRecord
     update(state_token: SecureRandom.hex(64).to_s)
   end
 
+  def payable?
+    is_verified? && status == "Active"
+  end
+
   private
 
   def encryption_key

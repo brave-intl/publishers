@@ -1,17 +1,21 @@
 import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
 
-import Modal, { ModalSize } from "../../../../components/modal/Modal";
-import { FlexWrapper } from "../../../style";
-import { UpholdStatus } from "../UpholdConnection";
-import DisconnectPrompt from "./UpholdDisconnectPrompt";
+enum UpholdStatus {
+  ReauthorizationNeeded = "reauthorization_needed",
+  Incomplete = "incomplete",
+  Verified = "verified",
+  AccessParametersAcquired = "access_parameters_acquired ",
+  CodeAcquired = "code_acquired",
+  Unconnected = "unconnected",
+  Restricted = "restricted",
+}
 
 const UpholdStatusMessage = (props) => {
   if (props.status === UpholdStatus.Verified) {
     return <React.Fragment />;
   }
   let messageId = "";
-  console.log('props.status', props.status)
 
   switch (props.status) {
     case UpholdStatus.CodeAcquired:
