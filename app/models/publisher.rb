@@ -44,6 +44,7 @@ class Publisher < ApplicationRecord
 
   has_one :uphold_connection
   has_one :stripe_connection
+  has_one :gemini_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",

@@ -7,6 +7,7 @@ module UserFeatureFlags
   # This flag will be set to "true" for all new publishers.
   # It enforces KYC to be present in order to create a new promo code
   REFERRAL_KYC_REQUIRED = :referral_kyc_required
+  STRIPE_ENABLED = :STRIPE_ENABLED
 
   VALID_FEATURE_FLAGS = [
     WIRE_ONLY,
@@ -14,12 +15,14 @@ module UserFeatureFlags
     MERCHANT,
     REFERRAL_KYC_REQUIRED,
     PROMO_LOCKOUT_TIME,
+    STRIPE_ENABLED,
   ].freeze
 
   included do
-    scope :wire_only, -> { where(feature_flags: { WIRE_ONLY => true }) }
-    scope :invoice,   -> { where(feature_flags: { INVOICE => true }) }
-    scope :merchant,  -> { where(feature_flags: { MERCHANT => true }) }
+    scope :wire_only,      -> { where(feature_flags: { WIRE_ONLY => true }) }
+    scope :invoice,        -> { where(feature_flags: { INVOICE => true }) }
+    scope :merchant,       -> { where(feature_flags: { MERCHANT => true }) }
+    scope :stripe_enabled, -> { where(feature_flags: { STRIPE_ENABLED => true }) }
   end
 
   def update_feature_flags_from_form(update_flag_params)
@@ -61,6 +64,10 @@ module UserFeatureFlags
 
   def referral_kyc_not_required?
     !referral_kyc_required?
+  end
+
+  def stripe_enabled?
+    feature_flags.symbolize_keys[STRIPE_ENABLED].present?
   end
 
   def promo_lockout_time

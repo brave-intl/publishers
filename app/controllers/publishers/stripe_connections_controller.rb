@@ -4,6 +4,7 @@ module Publishers
   class StripeConnectionsController < ApplicationController
     class StripeError < StandardError; end
     before_action :authenticate_publisher!
+    before_action :authorize!
     before_action :validate_connection!, only: :create
 
     STRIPE_SCOPE = "read_write".freeze
@@ -78,6 +79,10 @@ module Publishers
     end
 
     private
+
+    def authorize!
+      raise StripeError.new, "Stripe is not enabled for your account" unless current_publisher.stripe_enabled?
+    end
 
     def validate_connection!
       connection = current_publisher.stripe_connection

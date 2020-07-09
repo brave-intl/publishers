@@ -10,6 +10,7 @@ class CreateGeminiConnection < ActiveRecord::Migration[6.0]
       t.string :encrypted_refresh_token_iv, index: { unique: true }
 
       t.string :expires_in
+      t.datetime :access_expiration_time
       t.string :gemini_user_id
       t.string :display_name
       t.string :state_token

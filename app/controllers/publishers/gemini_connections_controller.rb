@@ -19,52 +19,36 @@ module Publishers
 
     def show
       gemini_connection = GeminiConnection.find_by(publisher: current_publisher)
+
+      binding.pry
+
       render json: gemini_connection
     end
 
     def new
-      authorization = Gemini::Auth.token(code: params[:code])
-
-      account = Gemini::Account.find(authorization.access_token)
-
-      bining.pry
-
       gemini_connection = GeminiConnection.find_by(publisher: current_publisher)
+
+      authorization = Gemini::Auth.token(
+        code: params[:code],
+        redirect_uri: new_gemini_connection_url(locale: nil)
+      )
+      account = Gemini::Account.find(token: authorization.access_token)
+      user = account.users.first
+
       gemini_connection.update(
         access_token: authorization.access_token,
         refresh_token: authorization.refresh_token,
-        expires_in: authorization.expires_in
+        expires_in: authorization.expires_in,
+        access_expiration_time: authorization.expires_in.seconds.from_now,
+        display_name: user.name,
+        status: user.status,
+        country: user.country_code,
+        is_verified: user.is_verified
       )
 
-
-      render json: params
-      # Raises a StripeError if the params are invalid.
-
-      # stripe_response = Stripe::OAuth.token({
-      #   client_secret: Stripe.api_key,
-      #   code: params[:code],
-      #   grant_type: "authorization_code",
-      # })
-
-      # account = Stripe::Account.retrieve(stripe_response.stripe_user_id)
-      # stripe_connection = StripeConnection.find_or_create_by(publisher: current_publisher)
-
-      # stripe_connection.update(
-      #   access_token: stripe_response.access_token,
-      #   refresh_token: stripe_response.refresh_token,
-      #   stripe_user_id: stripe_response.stripe_user_id,
-      #   scope: stripe_response.scope,
-      #   payouts_enabled: account.payouts_enabled,
-      #   details_submitted: account.details_submitted,
-      #   default_currency: account.default_currency,
-      #   capabilities: account.capabilities.to_json,
-      #   display_name: account.settings.dashboard.display_name,
-      #   country: account.country
-      # )
-
-      # redirect_to home_publishers_path
-    # rescue Stripe::OAuth::InvalidGrantError, StripeError => e
-    #   redirect_to(home_publishers_path, alert: t(".stripe_error", message: e.message))
+      redirect_to home_publishers_path
+    rescue StandardError => e
+      redirect_to(home_publishers_path, alert: t(".gemini_error", message: e.message))
     end
 
     # def destroy

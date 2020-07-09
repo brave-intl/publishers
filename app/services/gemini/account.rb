@@ -10,21 +10,31 @@ module Gemini
     PATH = Addressable::Template.new("/v1/account{/segments*}{?query*}")
 
     attr_accessor :account
+    attr_accessor :token
     attr_reader :users
 
     def self.find(token:)
-      Account.new.find(token: token)
+      Account.new(token: token).find(token: token)
     end
 
     def find(token:)
-      response = get(PATH.expand, {}, "Authorization: Bearer #{token}")
-      Gemini::Account.new(JSON.parse(response.data))
+      response = post(PATH.expand(segments: nil))
+
+      Gemini::Account.new(JSON.parse(response.body))
     end
 
     # A setter for users
     # Converts the hash of users to a Gemini::User
     def users=(users)
       @users = users.map { |u| Gemini::User.new(u) }
+    end
+
+    def api_base_uri
+      Gemini.api_base_uri
+    end
+
+    def api_authorization_header
+      "Bearer #{token}"
     end
   end
 end

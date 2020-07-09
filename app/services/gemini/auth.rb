@@ -7,10 +7,11 @@ module Gemini
     # For more information about how these URI templates are structured read the explaination in the RFC
     # https://github.com/sporkmonger/addressable
     # https://www.rfc-editor.org/rfc/rfc6570.txt
-    PATH = Addressable::Template.new("auth{/segments*}{?query*}")
+    PATH = Addressable::Template.new("/auth{/segments*}{?query*}")
     AUTHORIZATION_CODE = "authorization_code"
     REFRESH_TOKEN = "refresh_token"
 
+    attr_reader :api_authorization_header
     attr_accessor :access_token, :refresh_token, :expires_in
 
     # Public: Crafts an authorization_url
@@ -28,9 +29,9 @@ module Gemini
         redirect_uri: redirect_uri,
       }
 
-      authorization_path = PATH.expand(query: query)
+      authorization_path = PATH.expand(query: query, segments: nil)
 
-      "#{Gemini.api_base_uri}/#{authorization_path}"
+      "#{Gemini.oauth_uri}#{authorization_path}"
     end
 
     # Public: Calls the Gemini API for accessing an access_token
@@ -38,13 +39,13 @@ module Gemini
     # code - The code obtained from Gemini during the initial authorization flow
     #
     # Returns an Auth Object
-    def self.token(code:)
-      Auth.new.token(code: code)
+    def self.token(code:, redirect_uri:)
+      Auth.new.token(code: code, redirect_uri: redirect_uri)
     end
 
     # Temporarily keep a method on the class instance for API Requests until the following issue is resolved
     # https://github.com/brave-intl/publishers/issues/2779
-    def token(code:)
+    def token(code:, redirect_uri:)
       body = {
         client_id: Gemini.client_id,
         client_secret: Gemini.client_secret,
@@ -52,7 +53,7 @@ module Gemini
         code: code,
         redirect_uri: redirect_uri,
       }
-      response = post(PATH.expand(segment: 'token'), body)
+      response = post(PATH.expand(segments: 'token'), body)
 
       Auth.new(JSON.parse(response.body))
     end
@@ -80,6 +81,10 @@ module Gemini
       response = post(PATH.expand(segment: 'token'), body)
 
       Auth.new(JSON.parse(response.body))
+    end
+
+    def api_base_uri
+      Gemini.oauth_uri
     end
   end
 end

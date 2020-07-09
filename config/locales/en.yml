@@ -726,6 +726,9 @@ en:
         uphold_error: There was a problem connecting with Uphold. %{message}
         state_mismatch: Specifically, there was a mismatch between our state and Uphold.
         missing_state: There is no state token, this might have happened if you clicked the back button.
+    gemini_connections:
+      new:
+        gemini_error: There was a problem connecting with Gemini. %{message}
     stripe_connections:
       new:
         stripe_error: There was a problem connecting with Stripe. %{message}
