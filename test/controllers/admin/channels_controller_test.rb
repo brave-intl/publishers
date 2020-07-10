@@ -8,9 +8,8 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
 
-    assert_raises(CanCan::AccessDenied) do
-      get admin_publishers_path
-    end
+    get admin_publishers_path
+    assert_select 'title', "Not authorized"
   end
 
   test "filters correctly" do
