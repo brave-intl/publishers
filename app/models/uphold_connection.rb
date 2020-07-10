@@ -188,6 +188,10 @@ class UpholdConnection < ActiveRecord::Base
     card&.currency.eql?(default_currency)
   rescue Faraday::ResourceNotFound
     false
+  rescue Faraday::ClientError
+    # We'll get an HTTP Status 403 when the User doesn't have access to create cards
+    # or the access_token has expired.
+    false
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
