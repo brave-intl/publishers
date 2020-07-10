@@ -42,9 +42,8 @@ Rails.application.routes.draw do
         resource :stripe_connection do
           post :connect
         end
-
         resource :gemini_connection do
-          patch :connect
+          post :connect
         end
 
         resources :statements, only: [:index, :show] do

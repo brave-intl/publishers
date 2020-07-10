@@ -148,6 +148,10 @@ class UpholdConnection < ActiveRecord::Base
     uphold_status == UpholdAccountState::VERIFIED && status == OK
   end
 
+  def verify_url
+    Rails.application.secrets[:uphold_dashboard_url]
+  end
+
   def can_create_uphold_cards?
     uphold_verified? &&
       uphold_access_parameters.present? &&

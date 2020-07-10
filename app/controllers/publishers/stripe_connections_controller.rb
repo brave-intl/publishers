@@ -7,7 +7,7 @@ module Publishers
     before_action :authorize!
     before_action :validate_connection!, only: :create
 
-    STRIPE_SCOPE = "read_write".freeze
+    STRIPE_SCOPE = "read_write"
 
     def connect
       stripe_connection = StripeConnection.find_or_create_by(publisher: current_publisher)
@@ -73,8 +73,8 @@ module Publishers
           alert: I18n.t(
             "publishers.stripe_connections.destroy.error",
             errors: stripe_connection.errors.full_messages.join(', ')
-            )
           )
+        )
       end
     end
 

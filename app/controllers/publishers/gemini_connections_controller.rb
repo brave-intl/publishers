@@ -17,14 +17,6 @@ module Publishers
       )
     end
 
-    def show
-      gemini_connection = GeminiConnection.find_by(publisher: current_publisher)
-
-      binding.pry
-
-      render json: gemini_connection
-    end
-
     def new
       gemini_connection = GeminiConnection.find_by(publisher: current_publisher)
 

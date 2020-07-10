@@ -34,7 +34,7 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
           )}
 
           <div className="row mb-2">
-            <div className="col-6 text-dark">
+            <div className="col-6 text-dark text-truncate">
               <FormattedMessage
                 id="walletServices.connected"
                 values={{
@@ -78,6 +78,7 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
             </div>
           </div>
 
+          <UpholdStatusMessage verifyUrl={this.props.verifyUrl} status={this.props.status} />
 
           <div className="row">
             <div className="col-6 font-weight-bold">
@@ -109,7 +110,6 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
             </div>
           </div>
 
-          <UpholdStatusMessage status={this.props.status} />
         </div>
       </React.Fragment>
     );

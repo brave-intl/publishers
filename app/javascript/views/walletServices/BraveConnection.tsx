@@ -4,9 +4,9 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import routes from "../routes";
 
 import { LoaderIcon } from "brave-ui/components/icons";
+import GeminiConnection from "./braveConnection/GeminiConnection";
 import NotConnected from "./braveConnection/NotConnected";
 import UpholdConnection from "./braveConnection/UpholdConnection";
-import GeminiConnection from "./braveConnection/GeminiConnection";
 
 // This class serves as the entry point for establishing a wallet connection.
 // It allows users to establish a connection to different crypto wallet providers.
@@ -39,20 +39,23 @@ class BraveConnection extends React.Component<any, any> {
         <UpholdConnection
           defaultCurrency={this.state.upholdConnection.default_currency}
           upholdUsername={this.state.upholdConnection.username}
-          is_payable={this.state.geminiConnection['payable?']}
+          status={this.state.upholdConnection.uphold_status}
+          verifyUrl={this.state.upholdConnection.verify_url}
           loadData={this.loadData}
         />
       );
       // If there's an gemini connection let's show the GeminiConnection component
     } else if (
+      this.props.featureFlags.gemini_enabled &&
       this.state.geminiConnection &&
-      this.state.geminiConnection.id
+      this.state.geminiConnection.display_name
     ) {
       return (
         <GeminiConnection
           defaultCurrency={this.state.geminiConnection.default_currency}
           displayName={this.state.geminiConnection.display_name}
-          status={this.state.geminiConnection.uphold_status}
+          is_payable={this.state.geminiConnection["payable?"]}
+          verifyUrl={this.state.geminiConnection.verify_url}
           loadData={this.loadData}
         />
       );
@@ -73,10 +76,11 @@ class BraveConnection extends React.Component<any, any> {
         upholdConnection: null,
       };
 
-      if (response.data.uphold_connection.uphold_id) {
+      const { uphold_connection, gemini_connection } = response.data;
+      if (uphold_connection && uphold_connection.uphold_id) {
         newState.upholdConnection = response.data.uphold_connection;
       }
-      if (response.data.gemini_connection.id) {
+      if (gemini_connection && gemini_connection.id) {
         newState.geminiConnection = response.data.gemini_connection;
       }
 

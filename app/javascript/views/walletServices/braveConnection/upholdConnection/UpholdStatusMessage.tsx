@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
+import { VerifyButton } from "../VerifyButton";
 
 enum UpholdStatus {
   ReauthorizationNeeded = "reauthorization_needed",
@@ -34,8 +35,10 @@ const UpholdStatusMessage = (props) => {
   }
 
   return (
-    <div className="my-2 text-danger">
-      <FormattedMessage id={messageId} />
+    <div className="mt-2 mb-4 text-danger">
+      <VerifyButton verifyUrl={props.verifyUrl}>
+        <FormattedMessage id={messageId} />
+      </VerifyButton>
     </div>
   );
 };

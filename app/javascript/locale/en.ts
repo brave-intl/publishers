@@ -264,6 +264,7 @@ export default {
     gemini: {
       connect: "Connect to Gemini",
       disconnect: "Disconnect",
+      notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
       title: "Gemini Wallet",
     },
     lastDeposit: "Last Deposit: {value}",
@@ -296,12 +297,13 @@ export default {
       },
       status: {
         connecting: "Brave Rewards is connecting to your Uphold account.",
-        nonMember: "To receive your contribution balance, you'll need to fully verify your identity on Uphold.",
+        nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
         reauthorizationNeeded: "We are having trouble communicating with Uphold. Try reconnecting",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
       },
       title:"Uphold Wallet"
-    }
+    },
+    verify: "Continue to Verify"
   }
 };
 

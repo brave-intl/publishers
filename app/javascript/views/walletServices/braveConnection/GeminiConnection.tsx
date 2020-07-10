@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import routes from "../../routes";
 import { FlexWrapper } from "../../style";
 import GeminiIcon from "./geminiConnection/GeminiIcon";
+import { VerifyButton } from "./VerifyButton";
 
 class GeminiConnection extends React.Component<any, any> {
   constructor(props) {
@@ -57,6 +58,12 @@ class GeminiConnection extends React.Component<any, any> {
             </FlexWrapper>
           </div>
         </div>
+
+        {!this.props.is_paypable && (
+          <VerifyButton verifyUrl={this.props.verifyUrl}>
+             <FormattedMessage id="walletServices.gemini.notPayable" />
+          </VerifyButton>
+        )}
       </div>
     );
   }

@@ -19,7 +19,7 @@ class WalletServices extends React.Component<any, any> {
         <LastDepositInformation />
 
         <hr />
-        <BraveConnection />
+        <BraveConnection featureFlags={this.props.featureFlags} />
 
         {this.props.featureFlags.stripe_enabled && (
           <React.Fragment>

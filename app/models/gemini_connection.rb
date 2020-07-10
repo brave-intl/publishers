@@ -13,6 +13,10 @@ class GeminiConnection < ApplicationRecord
     is_verified? && status == "Active"
   end
 
+  def verify_url
+    "#{Rails.application.config.services.gemini[:oauth_uri]}/settings/profile"
+  end
+
   private
 
   def encryption_key

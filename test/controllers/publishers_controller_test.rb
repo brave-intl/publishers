@@ -469,15 +469,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify uphold :code_acquired but not :access params
     assert_equal publisher.uphold_connection.reload.uphold_status, :code_acquired
 
-    # verify message tells publisher they need to reconnect
-    assert_select("div#uphold_status.uphold-processing .status-description") do |element|
-      assert_equal I18n.t("helpers.publisher.uphold_status_description.connecting"), element.text
-    end
-
-    # verify button says 'reconnect to uphold' not 'create uphold wallet'
-    assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold"), element.text
-    end
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
@@ -510,11 +501,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get uphold_status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal '{"uphold_status":"unconnected",' +
-                  '"uphold_status_summary":"Not connected",' +
-                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Rewards.",' +
-                  '"uphold_status_class":"uphold-unconnected"}',
-                 response.body
+    body = JSON.parse(response.body)
+
+    assert_equal "unconnected", body.dig("uphold_status")
+    assert_equal "Not connected", body.dig("uphold_status_summary")
+    assert_equal "You need to connect to your Uphold account to receive contributions from Brave Rewards.", body.dig("uphold_status_description")
   end
 
   test "a publisher can be disconnected from uphold" do

@@ -172,11 +172,11 @@ class PublishersController < ApplicationController
 
     uphold_response = uphold_connection.as_json(
       only: [:default_currency, :uphold_id, :is_member],
-      methods: [:can_create_uphold_cards?, :username, :uphold_status]
+      methods: [:can_create_uphold_cards?, :username, :uphold_status, :verify_url]
     )
     gemini_response = gemini_connection.as_json(
       only: [:id, :default_currency, :display_name],
-      methods: [:payable?]
+      methods: [:payable?, :verify_url]
     )
 
     render(json:
