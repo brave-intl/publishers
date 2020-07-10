@@ -28,15 +28,15 @@
       hr
       = form_with(model: @publisher.uphold_connection, html: { id: "update_send_email_form", class: 'mt-4' }) do |f|
         label.d-block= t('.email.snooze')
-        - if @publisher.uphold_connection.send_emails == UpholdConnection::FOREVER_DATE
+        - if @publisher.uphold_connection&.send_emails == UpholdConnection::FOREVER_DATE
           - selected = :forever
-        - elsif @publisher.uphold_connection.send_emails > DateTime.now
+        - elsif @publisher.uphold_connection&.send_emails > DateTime.now
           - selected = :next_year
 
         = select_tag :send_emails, options_for_select([[t('.email.options.until_next_year'), :next_year],[t('.email.options.forever'), :forever]], selected), include_blank: true
-        - if @publisher.uphold_connection.send_emails > DateTime.now && @publisher.uphold_connection.send_emails != UpholdConnection::FOREVER_DATE
+        - if @publisher.uphold_connection&.send_emails > DateTime.now && @publisher.uphold_connection&.send_emails != UpholdConnection::FOREVER_DATE
           #snoozeDetails.mt-2.font-italic.text-muted
-            =t('.email.snoozed_until', date: @publisher.uphold_connection.send_emails.strftime("%Y-%m-%d"))
+            =t('.email.snoozed_until', date: @publisher.uphold_connection&.send_emails&.strftime("%Y-%m-%d"))
 
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding
