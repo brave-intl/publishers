@@ -514,7 +514,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
-    assert_response 204
+    assert_response 200
 
     publisher.reload
     refute publisher.uphold_connection.uphold_verified?
