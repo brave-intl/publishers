@@ -105,13 +105,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
          = render partial: 'payout_status', locals: { payout_report: @payout_report, publisher: @publisher }
     .row
       .col-md.mb-4
-        - if true
+        - if !(@publisher.excluded_from_payout? || @publisher.paypal_locale?(params[:locale]) || @publisher.uphold_connection&.japanese_account? || @publisher.wire_only?)
           = render partial: 'wallet_services'
-        -else
-          - if !(@publisher.excluded_from_payout? || @publisher.paypal_locale?(params[:locale]) || @publisher.uphold_connection&.japanese_account? || @publisher.wire_only?)
-            = render partial: "uphold_wallet_panel"
-          - elsif @publisher.paypal_locale?(params[:locale]) && !@publisher.wire_only?
-            = render partial: "paypal_connection_panel"
+        - elsif @publisher.paypal_locale?(params[:locale]) && !@publisher.wire_only?
+          = render partial: "paypal_connection_panel"
 
       - if promo_running?
           = render partial: 'promo_panel'

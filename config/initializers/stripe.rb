@@ -1,12 +1,10 @@
-require 'stripe'
-
-if Rails.application.secrets[:stripe_secret_key].present?
+if Rails.application.config.services.stripe[:client_secret].present?
   Rails.configuration.stripe = {
-    stripe_publishable_key: Rails.application.secrets[:stripe_publishable_key],
-    client_id: Rails.application.secrets[:stripe_client_id],
-    secret_key: Rails.application.secrets[:stripe_secret_key]
+    stripe_publishable_key: Rails.application.config.services.stripe[:publishable_key],
+    client_id: Rails.application.config.services.stripe[:client_id],
+    secret_key: Rails.application.config.services.stripe[:client_secret],
   }
 
-  Stripe.api_key = Rails.application.secrets[:stripe_secret_key]
-  Stripe.client_id = Rails.application.secrets[:stripe_client_id]
+  Stripe.client_id = Rails.application.config.services.stripe[:client_id]
+  Stripe.api_key = Rails.application.config.services.stripe[:client_secret]
 end

@@ -5,6 +5,10 @@ default: &default
     oauth_uri: <%= ENV["GEMINI_OAUTH_API"] || "https://exchange.sandbox.gemini.com" %>
     client_id: <%= ENV["GEMINI_CLIENT_ID"] %>
     client_secret: <%= ENV["GEMINI_CLIENT_SECRET"] %>
+  stripe:
+    publishable_key: <%= ENV["STRIPE_PUBLISHABLE_KEY"] %>
+    client_id: <%= ENV["STRIPE_CLIENT_ID"] %>
+    client_secret: <%= ENV["STRIPE_SECRET_KEY"] %>
 
 test:
   <<: *default

@@ -165,8 +165,6 @@ function refreshBalance() {
       }
     })
     .then(function(body) {
-      console.log('home js')
-      console.log(body)
       let wallet = new Wallet(body.wallet);
 
       updateDefaultCurrencyValue(body.uphold_connection.default_currency);
