@@ -3,6 +3,10 @@ class AdminController < ApplicationController
   helper_method :sort_column, :sort_direction
   include PublishersHelper
 
+  rescue_from CanCan::AccessDenied do |e|
+    render "admin/errors/not_authorized", layout: false
+  end
+
   # Override this value to specify the number of elements to display at a time
   # on index pages. Defaults to 20.
   def records_per_page
