@@ -14,7 +14,6 @@ class CreateGeminiConnection < ActiveRecord::Migration[6.0]
       t.string :display_name
       t.string :state_token
 
-      t.string :recipient_id, index: true, unique: true
       t.string :scope
 
       t.string :status, index: true

@@ -157,7 +157,6 @@ ActiveRecord::Schema.define(version: 2020_07_09_024010) do
     t.datetime "access_expiration_time"
     t.string "display_name"
     t.string "state_token"
-    t.string "recipient_id"
     t.string "scope"
     t.string "status"
     t.string "country"
@@ -166,7 +165,6 @@ ActiveRecord::Schema.define(version: 2020_07_09_024010) do
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_gemini_connections_on_publisher_id"
-    t.index ["recipient_id"], name: "index_gemini_connections_on_recipient_id"
     t.index ["status"], name: "index_gemini_connections_on_status"
   end
 
