@@ -4,15 +4,6 @@ require "webmock/minitest"
 class Admin::FaqCategoriesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test "regular users cannot access" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    assert_raises(CanCan::AccessDenied) {
-      get admin_faq_categories_path
-    }
-  end
-
   test "admin can access" do
     admin = publishers(:admin)
     sign_in admin

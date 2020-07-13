@@ -38,15 +38,6 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "#create raises error for non-admin" do
-    publisher = publishers(:default)
-    sign_in publisher
-
-    assert_raises do
-      post admin_payout_reports_path
-    end
-  end
-
   test "#create doesn't send email or set final if no params are present in POST" do
     admin = publishers(:admin)
     sign_in admin
