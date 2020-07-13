@@ -1,10 +1,11 @@
-import * as React from "react";
-import * as moment from "moment";
 import axios from "axios";
+import * as moment from "moment";
+import * as React from "react";
+import routes from "../routes";
+
+import { LoaderIcon } from "brave-ui/components/icons";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { FlexWrapper } from "../style";
-import routes from "../routes";
-import { LoaderIcon } from "brave-ui/components/icons";
 
 const LastDepositInformation = () => {
   const [lastDeposit, setLastDeposit] = React.useState("-");
@@ -27,7 +28,6 @@ const LastDepositInformation = () => {
           timestamp,
         } = response.data.lastSettlement;
 
-        console.log(response.data.lastSettlement);
         if (amount_settlement_currency && timestamp) {
           const time = moment.unix(timestamp).format("YYYY-MM-DD");
           setLastDeposit(amount_settlement_currency);
