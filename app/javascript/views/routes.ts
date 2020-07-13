@@ -48,7 +48,8 @@ export default {
       status: "/publishers/uphold_status",
     },
     wallet: {
-      path: "/publishers/wallet"
+      path: "/publishers/wallet",
+      latest: "/publishers/wallet/latest"
     },
   }
 };

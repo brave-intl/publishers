@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { FlexWrapper } from "../style";
 import BraveConnection from "./BraveConnection";
+import LastDepositInformation from "./LastDepositInformation";
 import StripeConnection from "./StripeConnection";
 
 class WalletServices extends React.Component<any, any> {
@@ -32,25 +33,5 @@ class WalletServices extends React.Component<any, any> {
   }
 }
 
-const LastDepositInformation = () => {
-  return (
-    <FlexWrapper>
-      <div>
-        <div className="font-weight-bold">
-          <FormattedMessage
-            id="walletServices.lastDeposit"
-            values={{ value: "-" }}
-          />
-        </div>
-        <div className="font-weight-bold">
-          <FormattedMessage
-            id="walletServices.lastDepositDate"
-            values={{ value: "-" }}
-          />
-        </div>
-      </div>
-    </FlexWrapper>
-  );
-};
 
 export default injectIntl(WalletServices);

@@ -267,8 +267,8 @@ export default {
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
       title: "Gemini Wallet",
     },
-    lastDeposit: "Last Deposit: {value}",
-    lastDepositDate: "Last Deposit Date: {value}",
+    lastDeposit: "Last Deposit: <span>{value}</span>",
+    lastDepositDate: "Last Deposit Date: <span>{value}</span>",
     stripe: {
       connect: "Connect to Stripe",
       description: "Connect to Stripe to be able receive credit card payments.",

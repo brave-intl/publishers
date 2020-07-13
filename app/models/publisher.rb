@@ -157,7 +157,7 @@ class Publisher < ApplicationRecord
 
   # API call to eyeshade
   def wallet
-    @wallet ||= PublisherWalletGetter.new(publisher: self).perform
+    @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
   end
 
   def encryption_key

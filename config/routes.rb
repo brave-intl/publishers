@@ -52,6 +52,10 @@ Rails.application.routes.draw do
 
         resource :two_factor_authentications_removal
 
+        resource :wallet do
+          get :latest
+        end
+
         resources :promo_registrations, only: [:index, :create] do
           collection do
             get :for_referral_code
@@ -72,7 +76,6 @@ Rails.application.routes.draw do
       get :change_email_confirm
       patch :update_email
       get :email_verified
-      get :wallet
       get :suspended_error
       get :get_site_banner_data
       patch :verify

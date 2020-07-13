@@ -8,7 +8,6 @@ module Publishers
 
     def uphold_status
       publisher = current_publisher
-      # binding.pry
       respond_to do |format|
         format.json do
           render(json: {

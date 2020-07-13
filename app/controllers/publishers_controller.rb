@@ -161,33 +161,6 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
-  # TODO: Figure out where publishers/wallet is being used.
-  # Set up hints
-  def wallet
-    wallet = current_publisher.wallet
-    head 404 and return if wallet.blank?
-
-    uphold_connection = current_publisher.uphold_connection
-    gemini_connection = current_publisher.gemini_connection
-
-    uphold_response = uphold_connection.as_json(
-      only: [:default_currency, :uphold_id, :is_member],
-      methods: [:can_create_uphold_cards?, :username, :uphold_status, :verify_url]
-    )
-    gemini_response = gemini_connection.as_json(
-      only: [:id, :default_currency, :display_name],
-      methods: [:payable?, :verify_url]
-    )
-
-    render(json:
-            {
-              wallet: wallet,
-              uphold_connection: uphold_response,
-              gemini_connection: gemini_response,
-              possible_currencies: uphold_connection.uphold_details&.currencies || [],
-            })
-  end
-
   def get_site_banner_data
     prepare_site_banner_data
     default_site_banner_mode = current_publisher.default_site_banner_mode
