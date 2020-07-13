@@ -61,7 +61,7 @@ class BraveConnection extends React.Component<any, any> {
       );
       // Finally if there was no wallets connected we should give the user the ability to connect.
     } else {
-      return <NotConnected />;
+      return <NotConnected featureFlags={this.props.featureFlags} />;
     }
   }
 

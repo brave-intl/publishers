@@ -6,7 +6,7 @@ import GeminiIcon from "./geminiConnection/GeminiIcon";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
 
 // This shows the Connect Buttons for the different Wallet Providers
-const NotConnected = () => (
+const NotConnected = (props) => (
   <div className="row">
     <div className="col-6">
       <h6>
@@ -16,7 +16,7 @@ const NotConnected = () => (
     </div>
     <div className="col-6 d-flex flex-column justify-content-center align-items-end">
       <UpholdConnectButton />
-      <GeminiConnectButton />
+      {props.featureFlags.gemini_enabled && <GeminiConnectButton />}
     </div>
   </div>
 );
