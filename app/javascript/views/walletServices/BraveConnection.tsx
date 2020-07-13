@@ -80,7 +80,7 @@ class BraveConnection extends React.Component<any, any> {
       if (uphold_connection && uphold_connection.uphold_id) {
         newState.upholdConnection = response.data.uphold_connection;
       }
-      if (gemini_connection && gemini_connection.id) {
+      if (gemini_connection && gemini_connection.display_name) {
         newState.geminiConnection = response.data.gemini_connection;
       }
 

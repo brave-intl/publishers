@@ -59,7 +59,7 @@ class GeminiConnection extends React.Component<any, any> {
           </div>
         </div>
 
-        {!this.props.isPaypable && (
+        {!this.props.isPayable && (
           <VerifyButton verifyUrl={this.props.verifyUrl}>
              <FormattedMessage id="walletServices.gemini.notPayable" />
           </VerifyButton>
