@@ -485,7 +485,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     stub_request(:get, /me/).to_return(body: { currencies: [] }.to_json)
 
-    get wallet_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    get wallet_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
 
