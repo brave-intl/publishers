@@ -16,7 +16,7 @@ const LastDepositInformation = () => {
 
   React.useEffect(() => {
     requestLastDeposit();
-  });
+  }, []);
 
   const requestLastDeposit = () => {
     axios
