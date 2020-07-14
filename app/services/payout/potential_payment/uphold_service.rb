@@ -23,6 +23,8 @@ class Payout::PotentialPayment::UpholdService < BaseService
     uphold_connection.sync_from_uphold!
     if uphold_connection.missing_card?
       uphold_connection.create_uphold_cards
+      # Reload the connection because create_uphold_cards modifies the database records.
+      uphold_connection.reload
     end
 
     probi = wallet.referral_balance.amount_probi # probi = balance

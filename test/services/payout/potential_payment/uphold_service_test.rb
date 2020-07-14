@@ -327,6 +327,36 @@ class UpholdServiceTest < ActiveJob::TestCase
                 assert_equal 4, JSON.parse(@payout_report.contents).length
               end
 
+              describe 'when card is missing ' do
+                let(:payout_report) do
+                  PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+                end
+                let(:new_address) { "01a9db32-d78c-458a-a2af-bf997aab6e59" }
+
+                before do
+                  stub_request(:get, /cards/).to_return(body: [id: new_address].to_json)
+                  stub_request(:post, /cards/).to_return(body: { id: new_address }.to_json)
+                end
+
+                it 'sets the address' do
+                  old_address = publisher.uphold_connection.address
+                  refute_equal new_address, old_address
+
+                  Payout::PotentialPayment::UpholdService.new(
+                    payout_report: payout_report,
+                    publisher: publisher,
+                    should_send_notifications: should_send_notifications
+                  ).perform
+
+                  PotentialPayment.where(payout_report_id: payout_report.id).each do |potential_payment|
+                    # Test to make sure that the previous address was set to the new address
+                    assert new_address, potential_payment.address
+                    # Ensure that the old address wasn't the same
+                    refute_equal old_address, potential_payment.address
+                  end
+                end
+              end
+
               it "has the correct content" do
                 PotentialPayment.where(payout_report_id: @payout_report.id).each do |potential_payment|
                   assert_equal potential_payment.address, publisher.uphold_connection.address

@@ -314,8 +314,6 @@ GEM
     rack (2.2.3)
     rack-attack (5.4.2)
       rack (>= 1.0, < 3)
-    rack-protection (2.0.8.1)
-      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -426,11 +424,10 @@ GEM
       ruby_http_client (~> 3.4)
     sentry-raven (2.11.3)
       faraday (>= 0.7.6, < 1.0)
-    sidekiq (6.0.7)
+    sidekiq (6.1.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
+      redis (>= 4.2.0)
     sidekiq-scheduler (3.0.1)
       e2mmap
       redis (>= 3, < 5)
@@ -456,6 +453,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stripe (5.22.0)
     temping (3.10.0)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
@@ -573,10 +571,11 @@ DEPENDENCIES
   selenium-webdriver (~> 3.142.0)
   sendgrid-ruby (~> 6.2.1)
   sentry-raven (~> 2.11.2)
-  sidekiq (~> 6.0.7)
+  sidekiq (~> 6.1.0)
   sidekiq-scheduler (~> 3.0.1)
   simplecov
   slim-rails (~> 3.1)
+  stripe (~> 5.1, >= 5.1.1)
   temping
   tzinfo-data
   u2f (~> 1.0)

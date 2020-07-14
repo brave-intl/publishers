@@ -136,12 +136,20 @@ class UpholdConnection < ActiveRecord::Base
     end
   end
 
+  def username
+    uphold_details&.username
+  end
+
   def unconnected?
     uphold_status == UpholdAccountState::UNCONNECTED
   end
 
   def payable?
     uphold_status == UpholdAccountState::VERIFIED && status == OK
+  end
+
+  def verify_url
+    Rails.application.secrets[:uphold_dashboard_url]
   end
 
   def can_create_uphold_cards?
@@ -188,6 +196,10 @@ class UpholdConnection < ActiveRecord::Base
     card&.currency.eql?(default_currency)
   rescue Faraday::ResourceNotFound
     false
+  rescue Faraday::ClientError
+    # We'll get an HTTP Status 403 when the User doesn't have access to create cards
+    # or the access_token has expired.
+    false
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
@@ -220,6 +232,11 @@ class UpholdConnection < ActiveRecord::Base
 
   def japanese_account?
     country == JAPAN
+  end
+
+  def currencies
+    return if uphold_details.blank?
+    uphold_details&.currencies
   end
 
   def encryption_key

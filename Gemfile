@@ -116,12 +116,14 @@ gem "sendgrid-ruby", "~> 6.2.1"
 gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 6.0.7"
+gem "sidekiq", "~> 6.1.0"
 
 gem "sidekiq-scheduler", "~> 3.0.1"
 
 # slim for view templates
 gem "slim-rails", "~> 3.1"
+
+gem 'stripe', '~> 5.1', '>= 5.1.1'
 
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"

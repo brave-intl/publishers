@@ -39,9 +39,6 @@ hr
           .db-info-row
             .db-field = "Overall #{@publisher.uphold_connection.default_currency} balance:"
             .db-value = "#{publisher_converted_overall_balance(@publisher)}"
-        .db-info-row
-          .db-field = "Last settlement balance:"
-          .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"
         - if @publisher.created_by.present?
           .db-info-row
             .db-field = "Created by:"
