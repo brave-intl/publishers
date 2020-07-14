@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl";
 
 export default class ErrorBoundary extends React.Component<any, any> {
   public static getDerivedStateFromError(error) {
@@ -14,7 +15,11 @@ export default class ErrorBoundary extends React.Component<any, any> {
   public render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
+      return (
+        <strong>
+          <FormattedMessage id="common.unexpectedError" />
+        </strong>
+      );
     }
 
     return this.props.children;
