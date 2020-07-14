@@ -43,42 +43,6 @@ function updateOverallBalance(balance) {
   }
 }
 
-function updateLastSettlement(lastSettlementBalance) {
-  let lastSettlement = document.getElementById("last_settlement");
-  let lastDepositDate = document.getElementById("last_deposit_date");
-  let lastDepositBatAmount = document.getElementById("last_deposit_bat_amount");
-  let lastDepositConvertedAmount = document.getElementById(
-    "last_deposit_converted_amount"
-  );
-
-  if (lastSettlementBalance.timestamp) {
-    lastSettlement.classList.remove("no-settlement-made");
-    lastSettlement.classList.add("settlement-made");
-
-    lastDepositDate.innerText = formatFullDate(
-      new Date(lastSettlementBalance.timestamp * 1000)
-    ); // Convert to milliseconds
-
-    lastDepositBatAmount.innerText = lastSettlementBalance.amount_bat;
-    lastDepositConvertedAmount.style.display =
-      lastSettlementBalance.settlement_currency === "BAT" ||
-      lastSettlementBalance.settlement_currency === null
-        ? "none"
-        : "block";
-    lastDepositConvertedAmount.innerText = formatConvertedBalance(
-      lastSettlementBalance.amount_settlement_currency,
-      lastSettlementBalance.settlement_currency
-    );
-  } else {
-    lastSettlement.classList.remove("settlement-made");
-    lastSettlement.classList.add("no-settlement-made");
-
-    lastDepositDate.innerText = "No deposit made yet";
-    lastDepositBatAmount.innerText = "";
-    lastDepositConvertedAmount.style.display = "none";
-  }
-}
-
 function updateChannelBalances(wallet) {
   for (let channelId in wallet.channelBalances) {
     let channelAmount = document.getElementById(
@@ -168,9 +132,6 @@ function refreshBalance() {
 
       let overallBalance = wallet.overallBalance;
       updateOverallBalance(overallBalance);
-
-      let lastSettlementBalance = wallet.lastSettlementBalance;
-      updateLastSettlement(lastSettlementBalance);
 
       updateChannelBalances(wallet);
 
@@ -351,6 +312,7 @@ function openDefaultCurrencyModal() {
     false
   );
 }
+window.openDefaultCurrencyModal = openDefaultCurrencyModal
 
 function showWhatHappenedVerificationFailure() {
   let elementToReveal = this.nextSibling;

@@ -43,6 +43,8 @@ class Publisher < ApplicationRecord
   belongs_to :youtube_channel
 
   has_one :uphold_connection
+  has_one :stripe_connection
+  has_one :gemini_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",
@@ -155,7 +157,7 @@ class Publisher < ApplicationRecord
 
   # API call to eyeshade
   def wallet
-    @wallet ||= PublisherWalletGetter.new(publisher: self).perform
+    @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
   end
 
   def encryption_key
@@ -318,11 +320,11 @@ class Publisher < ApplicationRecord
   end
 
   def brave_payable?
-    paypal_connection&.verified_account || uphold_connection&.payable?
+    paypal_connection&.verified_account || uphold_connection&.payable? || gemini_connection&.payable?
   end
 
   def country
-    provider_country = uphold_connection&.country || paypal_connection&.country
+    provider_country = uphold_connection&.country || paypal_connection&.country || gemini_connection&.country
 
     provider_country.to_s.upcase
   end
