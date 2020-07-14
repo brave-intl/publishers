@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
+import ErrorBoundary from "../../components/errorBoundary/ErrorBoundary";
 import { FlexWrapper } from "../style";
 import BraveConnection from "./BraveConnection";
 import LastDepositInformation from "./LastDepositInformation";
@@ -17,21 +18,24 @@ class WalletServices extends React.Component<any, any> {
           <FormattedMessage id="walletServices.title" />
         </h5>
 
-        <LastDepositInformation />
+        <ErrorBoundary>
+          <LastDepositInformation />
+        </ErrorBoundary>
 
         <hr />
-        <BraveConnection featureFlags={this.props.featureFlags} />
+        <ErrorBoundary>
+          <BraveConnection featureFlags={this.props.featureFlags} />
+        </ErrorBoundary>
 
         {this.props.featureFlags.stripe_enabled && (
-          <React.Fragment>
+          <ErrorBoundary>
             <hr />
             <StripeConnection />
-          </React.Fragment>
+          </ErrorBoundary>
         )}
       </div>
     );
   }
 }
-
 
 export default injectIntl(WalletServices);
