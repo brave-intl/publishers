@@ -336,6 +336,7 @@ class Publisher < ApplicationRecord
   # Returns true
   def set_default_features
     feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
+    feature_flags[UserFeatureFlags::GEMINI_ENABLED] = true
   end
 
   def set_created_status
