@@ -12,6 +12,11 @@ default: &default
 
 test:
   <<: *default
+  # In our test files we should ensure we're mocking all these requests.
+  # So we're going to be passing invalid URLs so if any of our tests aren't mocked then Faraday will raise an exception.
+  gemini:
+    api_uri: https://api.gemini.fake
+    oauth_uri: https://exchange.gemini.fake
 
 development:
   <<: *default

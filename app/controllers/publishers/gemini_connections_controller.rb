@@ -27,18 +27,26 @@ module Publishers
       account = Gemini::Account.find(token: authorization.access_token)
       user = account.users.first
 
-      gemini_connection.update(
+      # Account level identifier
+      recipient = Gemini::RecipientId.find_or_create(token: authorization.access_token)
+
+      update_params = {
         access_token: authorization.access_token,
         refresh_token: authorization.refresh_token,
         expires_in: authorization.expires_in,
         access_expiration_time: authorization.expires_in.seconds.from_now,
+        recipient_id: recipient.recipient_id,
         display_name: user.name,
         status: user.status,
         country: user.country_code,
-        is_verified: user.is_verified
-      )
+        is_verified: user.is_verified,
+      }
 
-      redirect_to home_publishers_path
+      if gemini_connection.update(update_params)
+        redirect_to(home_publishers_path)
+      else
+        redirect_to(home_publishers_path, alert:  t(".gemini_error", gemini_connection.errors.full_messages.join(', ')))
+      end
     rescue GeminiError => e
       redirect_to(home_publishers_path, alert: t(".gemini_error", message: e.message))
     end

@@ -160,6 +160,20 @@ class Publisher < ApplicationRecord
     @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
   end
 
+  # Public: Checks the different wallet connections and enqueues sync jobs to refresh their data
+  #         If their data wasn't refreshed in the last 2 hours.
+  #
+  # Returns nil
+  def sync_wallet_connections
+    if gemini_connection.present? && gemini_connection.updated_at > 2.hours.ago
+      Sync::Connection::GeminiConnectionSyncJob.perform_later(publisher_id: id)
+    end
+
+    if uphold_connection.present? && uphold_connection.updated_at > 2.hours.ago
+      Sync::Connection::UpholdConnectionSyncJob.perform_later(publisher_id: id)
+    end
+  end
+
   def encryption_key
     Publisher.encryption_key
   end

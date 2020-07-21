@@ -40,7 +40,7 @@ export default {
         title: "Add your websites or channels",
       },
       second: {
-        description: "To receive payments, your wallet accounts must be connected. Connect Uphold for your desired payment options.",
+        description: "To receive payments, your wallet accounts must be connected. Connect Gemini or Uphold for your desired payment options.",
         number: "2",
         title: "Connect wallet services",
       },

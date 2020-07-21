@@ -15,8 +15,8 @@ const NotConnected = (props) => (
       <FormattedMessage id="walletServices.brave.description" />
     </div>
     <div className="col-6 d-flex flex-column justify-content-center align-items-end">
-      <UpholdConnectButton />
       {props.featureFlags.gemini_enabled && <GeminiConnectButton />}
+      <UpholdConnectButton />
     </div>
   </div>
 );
