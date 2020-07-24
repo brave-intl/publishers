@@ -17,7 +17,7 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
     status_update = PublisherStatusUpdate.create!(publisher: publisher, status: status)
     PublisherNote.create!(note: note, publisher: publisher, created_by: admin)
 
-    render(status: 200, json: { publisher_status_updates_id: status_update.id }) and return
+    render(status: 200, json: { publisher_status_updates_id: status_update.id })
 
   rescue ActiveRecord::RecordInvalid
     error_response = {
@@ -25,7 +25,7 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
       detail: "Status #{params[:status]} is not valid, please use one of the following: #{PublisherStatusUpdate::ALL_STATUSES.join(", ")}",
     }
 
-    render(status: 404, json: error_response) and return
+    render(status: 404, json: error_response)
 
   rescue InvalidNote
     error_response = {
@@ -33,7 +33,7 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
       detail: "Note cannot be null, please provide justification for status update",
     }
 
-    render(status: 404, json: error_response) and return
+    render(status: 404, json: error_response)
 
   rescue InvalidAdmin
     error_response = {
@@ -41,7 +41,7 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
       detail: "Admin field cannot be null, please provide e-mail of an admin",
     }
 
-    render(status: 404, json: error_response) and return
+    render(status: 404, json: error_response)
 
   rescue ActiveRecord::RecordNotFound
     error_response = {
@@ -49,6 +49,6 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
       detail: "Publisher with id #{params[:publisher_id]} not found",
     }
 
-    render(status: 404, json: error_response) and return
+    render(status: 404, json: error_response)
   end
 end
