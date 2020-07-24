@@ -2,6 +2,8 @@ require 'digest/md5'
 
 class Publisher < ApplicationRecord
   include UserFeatureFlags
+  include ReferralPromo
+
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
@@ -11,7 +13,6 @@ class Publisher < ApplicationRecord
   BROWSER_USER = "browser_user".freeze
 
   ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
-  MAX_PROMO_REGISTRATIONS = 500
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT].freeze
@@ -42,6 +43,8 @@ class Publisher < ApplicationRecord
   belongs_to :youtube_channel
 
   has_one :uphold_connection
+  has_one :stripe_connection
+  has_one :gemini_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",
@@ -52,7 +55,6 @@ class Publisher < ApplicationRecord
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
   validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
-  validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
@@ -60,9 +62,7 @@ class Publisher < ApplicationRecord
 
   validates_inclusion_of :role, in: ROLES
 
-  validates :promo_token_2018q1, uniqueness: true, allow_nil: true
-
-  before_create :build_default_channel
+  before_create :build_default_channel, :set_default_features
   before_destroy :dont_destroy_publishers_with_channels
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
@@ -157,7 +157,7 @@ class Publisher < ApplicationRecord
 
   # API call to eyeshade
   def wallet
-    @wallet ||= PublisherWalletGetter.new(publisher: self).perform
+    @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
   end
 
   def encryption_key
@@ -244,16 +244,6 @@ class Publisher < ApplicationRecord
     "#{OWNER_PREFIX}#{id}"
   end
 
-  def promo_status(promo_running)
-    if !promo_running
-      :over
-    elsif promo_enabled_2018q1
-      :active
-    else
-      :inactive
-    end
-  end
-
   def has_verified_channel?
     channels.any?(&:verified?)
   end
@@ -329,7 +319,25 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  def brave_payable?
+    paypal_connection&.verified_account || uphold_connection&.payable? || gemini_connection&.payable?
+  end
+
+  def country
+    provider_country = uphold_connection&.country || paypal_connection&.country || gemini_connection&.country
+
+    provider_country.to_s.upcase
+  end
+
   private
+
+  # Internal: Sets the default feature flags for an account
+  #
+  # Returns true
+  def set_default_features
+    feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
+    feature_flags[UserFeatureFlags::GEMINI_ENABLED] = true
+  end
 
   def set_created_status
     created_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "created")

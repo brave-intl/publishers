@@ -30,8 +30,8 @@ class Channel < ApplicationRecord
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
-  has_one :site_banner
-  has_one :site_banner_lookup
+  has_one :site_banner, dependent: :destroy
+  has_one :site_banner_lookup, dependent: :destroy
 
   has_many :potential_payments
 
@@ -275,11 +275,11 @@ class Channel < ApplicationRecord
   end
 
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
+    return unless verified?
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
       channel_identifier: details&.channel_identifier,
     )
     site_banner_lookup.set_sha2_base16
-    site_banner_lookup.set_wallet_status(publisher: publisher)
     site_banner_lookup.derived_site_banner_info =
       if skip_site_banner_info_lookup
         {}
@@ -296,6 +296,8 @@ class Channel < ApplicationRecord
   private
 
   def should_register_channel_for_promo
+    return false unless publisher.may_register_promo? && !publisher.promo_lockout_time_passed?
+
     promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = publisher.promo_enabled_2018q1?
     promo_running && publisher_enabled_promo && saved_change_to_verified? && verified && !publisher.only_user_funds?

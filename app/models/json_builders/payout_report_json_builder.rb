@@ -18,6 +18,7 @@ class JsonBuilders::PayoutReportJsonBuilder
           "type" => PotentialPayment::REFERRAL,
           "address" => "#{potential_payment.address}",
           "upholdId" => "#{potential_payment.uphold_id}",
+          "walletProvider" => "#{potential_payment.wallet_provider}",
         })
       else
         channel = Channel.find_by(id: potential_payment.channel_id)
@@ -35,6 +36,7 @@ class JsonBuilders::PayoutReportJsonBuilder
             "URL" => "#{Channel.find(potential_payment.channel_id).details.url}",
             "address" => "#{potential_payment.address}",
             "upholdId" => "#{potential_payment.uphold_id}",
+            "walletProvider" => "#{potential_payment.wallet_provider}",
           })
         end
       end

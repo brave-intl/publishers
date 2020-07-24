@@ -9,7 +9,7 @@ export const ModalDiv = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 100vh;
+  height: 100%;
   width: 100%;
   z-index: 1;
 
@@ -32,7 +32,7 @@ enum ModalSize {
   Small,
   Medium,
   Large,
-  Auto
+  Auto,
 }
 
 interface IContainerProps {
@@ -48,9 +48,32 @@ export const Container = styled.div`
   z-index: 2;
 `;
 
+interface IPaddingContainer {
+  padding: boolean;
+}
+export const PaddingContainer = styled.div`
+  ${(props: Partial<IPaddingContainer>) =>
+    props.padding === true &&
+    `
+    padding: 15px;
+
+    @media only screen and (min-width: 768px) {
+      padding: 50px;
+    }
+  `}
+`;
+
 export const ExtraSmallContainer = styled(Container)`
-  width: 33%;
-  min-width: 30rem;
+  width: 95%;
+  min-width: 20rem;
+
+  @media only screen and (min-width: 600px) {
+    min-width: 30rem;
+  }
+  @media only screen and (min-width: 768px) {
+    min-width: 33rem;
+    width: 33%;
+  }
 `;
 
 export const SmallContainer = styled(Container)`
@@ -70,8 +93,8 @@ export const LargeContainer = styled(Container)`
 
 export const CloseIcon = styled.div`
   position: absolute;
-  right: 30px;
-  top: 30px;
+  right: 15px;
+  top: 15px;
   cursor: pointer;
   width: 24px;
   height: 24px;

@@ -260,6 +260,16 @@ promo_enabled_youtube:
   details: promo_enabled_youtube_details (YoutubeChannelDetails)
   verified: true
 
+reddit_promo_registered:
+  publisher: promo_not_registered
+  details: promo_reddit_details (RedditChannelDetails)
+  verified: true
+
+reddit_promo_lockout:
+  publisher: promo_lockout
+  details: promo_lockout_reddit_details (RedditChannelDetails)
+  verified: true
+
 potentially_paid_site:
   publisher: potentially_paid
   verified: true

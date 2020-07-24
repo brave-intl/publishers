@@ -44,6 +44,7 @@ module Publishers
 #    config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
 #    config.i18n.default_locale = :en
 
+    config.services = config_for(:services)
 
     # Let's ensure that our generators make a UUID as default
     config.generators do |generator|

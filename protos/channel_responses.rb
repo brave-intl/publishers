@@ -15,23 +15,37 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :description, :string, 2
       optional :background_url, :string, 3
       optional :logo_url, :string, 4
-      repeated :donation_amounts, :int32, 5
+      repeated :donation_amounts, :double, 5
       optional :social_links, :message, 6, "publishers_pb.SocialLinks"
+    end
+    add_message "publishers_pb.UpholdWallet" do
+      optional :wallet_state, :enum, 1, "publishers_pb.UpholdWalletState"
+      optional :address, :string, 2
+    end
+    add_message "publishers_pb.PaypalWallet" do
+      optional :wallet_state, :enum, 1, "publishers_pb.PaypalWalletState"
+    end
+    add_message "publishers_pb.Wallet" do
+      oneof :provider do
+        optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
+        optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
+      end
     end
     add_message "publishers_pb.ChannelResponse" do
       optional :channel_identifier, :string, 1
-      optional :wallet_connected_state, :enum, 2, "publishers_pb.WalletConnectedState"
-      optional :wallet_address, :string, 3
-      optional :publisher_ads_opted_in, :bool, 4
-      optional :site_banner_details, :message, 5, "publishers_pb.SiteBannerDetails"
+      repeated :wallets, :message, 2, "publishers_pb.Wallet"
+      optional :site_banner_details, :message, 3, "publishers_pb.SiteBannerDetails"
     end
     add_message "publishers_pb.ChannelResponseList" do
       repeated :channel_responses, :message, 1, "publishers_pb.ChannelResponse"
     end
-    add_enum "publishers_pb.WalletConnectedState" do
-      value :NO_VERIFICATION, 0
-      value :UPHOLD_ACCOUNT_NO_KYC, 1
-      value :UPHOLD_ACCOUNT_KYC, 2
+    add_enum "publishers_pb.UpholdWalletState" do
+      value :UPHOLD_ACCOUNT_NO_KYC, 0
+      value :UPHOLD_ACCOUNT_KYC, 1
+    end
+    add_enum "publishers_pb.PaypalWalletState" do
+      value :PAYPAL_ACCOUNT_NO_KYC, 0
+      value :PAYPAL_ACCOUNT_KYC, 1
     end
   end
 end
@@ -39,7 +53,11 @@ end
 module PublishersPb
   SocialLinks = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SocialLinks").msgclass
   SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
+  UpholdWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWallet").msgclass
+  PaypalWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWallet").msgclass
+  Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
-  WalletConnectedState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.WalletConnectedState").enummodule
+  UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWalletState").enummodule
+  PaypalWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWalletState").enummodule
 end

@@ -12,9 +12,12 @@ module Publishers
         format.json do
           render(json: {
             uphold_status: publisher.uphold_connection&.uphold_status.to_s,
+            uphold_is_member: publisher.uphold_connection&.is_member? || false,
             uphold_status_summary: uphold_status_summary(publisher),
             uphold_status_description: uphold_status_description(publisher),
             uphold_status_class: uphold_status_class(publisher),
+            default_currency: publisher.uphold_connection&.default_currency,
+            uphold_username: publisher.uphold_connection&.uphold_details&.username,
           }, status: 200)
         end
       end
@@ -106,12 +109,18 @@ module Publishers
       publisher = current_publisher
       publisher.uphold_connection.disconnect_uphold
 
-      head :no_content
+      render json: {}
     end
 
     private
 
     class UpholdError < StandardError; end
+
+    def show_currency_modal(uphold_connection)
+      uphold_connection.uphold_verified? &&
+      uphold_connection.status != UpholdConnection::PENDING &&
+      (uphold_connection.default_currency_confirmed_at.blank? || uphold_connection.default_currency.blank?)
+    end
 
     def create_uphold_report!(connection)
       uphold_id = connection.uphold_details&.id

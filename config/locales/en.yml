@@ -726,6 +726,20 @@ en:
         uphold_error: There was a problem connecting with Uphold. %{message}
         state_mismatch: Specifically, there was a mismatch between our state and Uphold.
         missing_state: There is no state token, this might have happened if you clicked the back button.
+    gemini_connections:
+      new:
+        gemini_error: There was a problem connecting with Gemini. %{message}
+      destroy:
+        removed: Removed Gemini Connection
+        errors: There were some errors removing your Gemini account. %{errors}
+    stripe_connections:
+      new:
+        stripe_error: There was a problem connecting with Stripe. %{message}
+        state_mismatch: Specifically, there was a mismatch between our state and Stripe.
+        missing_state: There is no state token, this might have happened if you clicked the back button.
+      destroy:
+        removed: Removed Stripe Connection
+        errors: There were some errors removing your stripe account. %{errors}
   promo:
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
@@ -762,6 +776,10 @@ en:
       downloaded: "downloaded"
       installed: "installed"
       confirmed: "confirmed"
+      expiration: "Thanks for particpating in the promo program. Your referral codes will expire in %{time}."
+      unpayable_notice: "Connect and verify your identity with Uphold to enroll the referral promo program."
+      restricted_country: "Your region is currently unable to participate in the referral promo program."
+      ineligible: "You are ineligible to take part in this program. You must verify your identity with your wallet provider and be in a supported region."
       last_updated_at: "Last updated about %{time} ago"
       group: "Group %{number}"
       active_referral: "active"

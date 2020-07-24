@@ -22,6 +22,7 @@ class JsonBuilders::ManualPayoutReportJsonBuilder
           address: potential_payment.address,
           upholdId: potential_payment.uphold_id,
           documentId: potential_payment.invoice_id,
+          walletProvider: potential_payment.wallet_provider,
         }
       )
     end

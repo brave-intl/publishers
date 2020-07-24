@@ -11,6 +11,6 @@ class SiteChannelDetailsSerializerTest < ActiveSupport::TestCase
     assert_equal "wordpress", json_result["method"]
     assert_equal "Alice the Verified", json_result["name"]
     assert_equal "alice@verified.org", json_result["email"]
-    assert_nil json_result["preferred_currency"]
+    assert_equal "BAT", json_result["preferred_currency"]
   end
 end
