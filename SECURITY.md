@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-All versions including and above the current stable release version number
+Current released version.
 
 ## Reporting a Vulnerability
 
