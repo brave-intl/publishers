@@ -3,10 +3,10 @@ on:
     branches:
       - docker-changes
 
-name: ECR Push
+name: Easy Generalized Deployments
 jobs:
   push:
-    name: Push image to ECR
+    name: Invoke easy_generalized_deploy Lambda
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -14,24 +14,8 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.EGD_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.EGD_AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-duration-seconds: 1200
-        role-session-name: GithubECRPushSession
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-
-    - name: Build, tag, and push image to Amazon ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: publishers/publishers
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    - name: Logout of Amazon ECR
-      if: always()
-      run: docker logout ${{ steps.login-ecr.outputs.registry }}
+    - name: Easy Generalized Deployments
+      uses: brave-intl/aws-codebuild-run-build@v1.0.4
