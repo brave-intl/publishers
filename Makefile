@@ -15,7 +15,7 @@ docker-dev:
 
 docker-test:
 	docker-compose up --detach postgres web
-	docker-compose run -e "RAILS_ENV=test" web sh -c "rails app_initializer:setup && rails test && yarn test"
+	docker-compose run -e "RAILS_ENV=test" web sh -c "./scripts/entrypoint.sh && rails test && yarn test"
 	docker-compose down
 
 k8:

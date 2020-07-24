@@ -36,3 +36,4 @@ coverage
 
 # Ignore package-lock.json in favor of yarn.lock
 package-lock.json
+.vscode/

@@ -1,30 +1,14 @@
-FROM ruby:2.7.1-alpine
+FROM ruby:2.7.1
 
-RUN apk add --update --no-cache \
-  bash \
-  binutils-gold \
-  build-base \
-  curl \
-  file \
-  g++ \
-  gcc \
-  git \
-  less \
-  libstdc++ \
-  libffi-dev \
-  libc-dev \
-  linux-headers \
-  libxml2-dev \
-  libxslt-dev \
-  libgcrypt-dev \
-  make \
-  netcat-openbsd \
-  openssl \
-  pkgconfig \
-  postgresql-dev \
-  tzdata \
-  yarn
+RUN apt-get update -qq && apt-get install -y build-essential
 
+RUN apt-get install -y nodejs \
+  libpq-dev \
+  curl
+
+SHELL [ "/bin/bash", "-l", "-c" ]
+
+RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN gem install bundler
 
 RUN NODE_ENV=production
@@ -39,11 +23,14 @@ WORKDIR /var/www/
 # This will also ensure that gems are cached and only updated when they change.
 COPY Gemfile ./
 COPY Gemfile.lock ./
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock .nvmrc ./
 
-# Install the gems.
+# Install the dependencies.
+RUN nvm install && nvm use
 RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install --jobs 20 --retry 5
+RUN node --version
+RUN npm install -g yarn
 RUN yarn install --frozen-lockfile
 
 # We copy all the files from the current directory to our
@@ -53,8 +40,10 @@ RUN yarn install --frozen-lockfile
 # The second dot will copy it to the WORKDIR!
 COPY . .
 
+RUN bundle exec rails assets:precompile
 RUN yarn build
-RUN bundle exec rake assets:precompile
 
 EXPOSE 3000
-CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]
+ENTRYPOINT [ "./scripts/entrypoint.sh" ]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
+
