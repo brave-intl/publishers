@@ -6,144 +6,6 @@ import { Wallet } from "../wallet";
 import { formatFullDate } from "../utils/dates";
 import { renderBannerEditor } from "../packs/banner_editor";
 
-// ToDo - import resource strings
-const NO_CURRENCY_SELECTED = "None selected";
-const SELECT_CURRENCY = "---";
-const BASIC_ATTENTION_TOKEN = "BAT";
-const UNAVAILABLE = "unavailable";
-
-function formatConvertedBalance(amount, currency) {
-  if (isNaN(amount) || amount === null) {
-    return `${currency} ${UNAVAILABLE}`;
-  } else {
-    let formattedAmount = formatAmount(amount);
-    return `~ ${formattedAmount} ${currency}`;
-  }
-}
-
-// Ensures amounts always have two decimal places
-function formatAmount(amount) {
-  return (Math.round(parseFloat(amount) * 100) / 100).toFixed(2);
-}
-
-
-function updateOverallBalance(balance) {
-  let batAmount = document.getElementById("bat_amount");
-  batAmount.innerText = formatAmount(balance.amount_bat);
-  let convertedAmount = document.getElementById("converted_amount");
-
-  if (
-    !(balance.default_currency === "BAT" || balance.default_currency === null)
-  ) {
-    convertedAmount.style.display = "block";
-    convertedAmount.innerText = formatConvertedBalance(
-      balance.amount_default_currency,
-      balance.default_currency
-    );
-  }
-}
-
-function updateChannelBalances(wallet) {
-  for (let channelId in wallet.channelBalances) {
-    let channelAmount = document.getElementById(
-      "channel_amount_bat_" + channelId
-    );
-    if (channelAmount) {
-      channelAmount.innerText = formatAmount(
-        wallet.channelBalances[channelId].amount_bat
-      );
-    }
-  }
-}
-
-function updateDefaultCurrencyValue(defaultCurrency) {
-  let upholdStatusElement = document.getElementById("uphold_status");
-  upholdStatusElement.setAttribute(
-    "data-default-currency",
-    defaultCurrency || ""
-  );
-
-  let defaultCurrencyDisplay = document.getElementById("default_currency_code");
-  defaultCurrencyDisplay.innerText = defaultCurrency || NO_CURRENCY_SELECTED;
-}
-
-function updatePossibleCurrencies(possibleCurrencies) {
-  let upholdStatusElement = document.getElementById("uphold_status");
-  upholdStatusElement.setAttribute(
-    "data-possible-currencies",
-    JSON.stringify(possibleCurrencies)
-  );
-}
-
-function getPossibleCurrencies() {
-  let upholdStatusElement = document.getElementById("uphold_status");
-  return JSON.parse(
-    upholdStatusElement.getAttribute("data-possible-currencies")
-  );
-}
-
-function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
-  select.innerHTML = "";
-
-  if (!selectedCurrency || selectedCurrency.length === 0) {
-    let option = document.createElement("option");
-    option.value = "";
-    option.innerHTML = SELECT_CURRENCY;
-    option.selected = true;
-    select.appendChild(option);
-  }
-
-  possibleCurrencies.forEach(currency => {
-    let option = document.createElement("option");
-    option.value = currency;
-    option.innerHTML = currency;
-    if (
-      (!selectedCurrency || selectedCurrency.length === 0) &&
-      currency === BASIC_ATTENTION_TOKEN
-    ) {
-      option.selected = true;
-    } else {
-      option.selected = currency === selectedCurrency;
-    }
-    select.appendChild(option);
-  });
-}
-
-function refreshBalance() {
-  let options = {
-    headers: {
-      Accept: "application/json"
-    },
-    credentials: "same-origin",
-    method: "GET"
-  };
-
-  return fetchAfterDelay("./wallet", 500)
-    .then(function(response) {
-      if (response.status === 200 || response.status === 304) {
-        return response.json();
-      }
-    })
-    .then(function(body) {
-      let wallet = new Wallet(body.wallet);
-
-      updateDefaultCurrencyValue(body.uphold_connection.default_currency);
-      updatePossibleCurrencies(body.possible_currencies);
-
-      let overallBalance = wallet.overallBalance;
-      updateOverallBalance(overallBalance);
-
-      updateChannelBalances(wallet);
-
-      if (
-        !body.uphold_connection.default_currency &&
-        body.uphold_connection["can_create_uphold_cards?"]
-      ) {
-        openDefaultCurrencyModal();
-      }
-    });
-}
-
 function removeChannel(channelId) {
   submitForm("remove_channel_" + channelId, "DELETE", true).then(function(
     response
@@ -165,154 +27,6 @@ function removeChannel(channelId) {
     flash.append("info", channelRow.getAttribute("data-remove-message"));
   });
 }
-
-let checkUpholdStatusInterval = null;
-let checkUpholdStatusCount = 0;
-
-function checkUpholdStatus() {
-  let options = {
-    headers: {
-      Accept: "application/json"
-    },
-    credentials: "same-origin",
-    method: "GET"
-  };
-
-  return fetch("./uphold_status", options)
-    .then(function(response) {
-      checkUpholdStatusCount += 1;
-      if (response.status === 200 || response.status === 304) {
-        return response.json();
-      }
-    })
-    .then(function(body) {
-      let upholdStatus = document.getElementById("uphold_status");
-      let upholdStatusSummary = document.querySelector(
-        "#uphold_status_display .status-summary .text"
-      );
-      let upholdStatusDescription = document.querySelector(
-        "#uphold_connect .status-description"
-      );
-      let timedOut = checkUpholdStatusCount >= 15;
-
-      if (timedOut) {
-        // TODO - use resource strings for summary + description text
-        body = {
-          uphold_status_class: "uphold-timeout",
-          uphold_status_summary: "Connection problems",
-          uphold_status_description:
-            "We are experiencing communication problems. Please check back later."
-        };
-      }
-
-      if (body) {
-        if (body.uphold_status_class) {
-          upholdStatus.className = body.uphold_status_class;
-        }
-
-        if (body.uphold_status_summary) {
-          upholdStatusSummary.innerText = body.uphold_status_summary;
-        }
-
-        if (body.uphold_status_description) {
-          upholdStatusDescription.innerHTML = body.uphold_status_description;
-        }
-
-        if (
-          checkUpholdStatusInterval != null &&
-          (timedOut ||
-            body.uphold_status === "verified" ||
-            body.uphold_status === "restricted")
-        ) {
-          hideReconnectButton();
-
-          clearInterval(checkUpholdStatusInterval);
-          checkUpholdStatusInterval = null;
-
-          if (body.uphold_status === "verified") {
-            refreshBalance();
-          } else if (body.uphold_status === "restricted") {
-            showUpholdSupportButton();
-          }
-        }
-      }
-    });
-}
-
-function hideReconnectButton() {
-  document.getElementById("reconnect_to_uphold").style.display = "none";
-}
-
-function showUpholdSupportButton() {
-  let upholdSupportButton = document.getElementById("go_to_uphold");
-  upholdSupportButton.text = "Go to Uphold";
-  upholdSupportButton.style.display = "inline !important";
-}
-
-function disconnectUphold() {
-  submitForm("disconnect_uphold", "PATCH", true).then(function(response) {
-    return checkUpholdStatus();
-  });
-}
-
-function openDefaultCurrencyModal() {
-  let template = document.querySelector(
-    "#confirm_default_currency_modal_wrapper"
-  );
-  let closeFn = openModal(template.innerHTML);
-
-  let form = document.getElementById("confirm_default_currency_form");
-
-  // Sync default currency selected in modal with options and value from dashboard
-  let upholdStatusElement = document.getElementById("uphold_status");
-  let currentDefaultCurrency = upholdStatusElement.getAttribute(
-    "data-default-currency"
-  );
-  let currencySelectInModal = document.getElementById(
-    "publisher_default_currency"
-  );
-  populateCurrencySelect(
-    currencySelectInModal,
-    getPossibleCurrencies(),
-    currentDefaultCurrency || ""
-  );
-
-  form.addEventListener(
-    "submit",
-    function(event) {
-      event.preventDefault();
-
-      let modal = document.getElementById("confirm_default_currency_modal");
-      let status = document.querySelector(
-        "#confirm_default_currency_modal .status"
-      );
-
-      if (!currencySelectInModal.value) {
-        closeFn();
-        return;
-      }
-
-      modal.classList.add("transitioning");
-
-      submitForm("confirm_default_currency_form", "PATCH", false)
-        .then(response => response.json())
-        .then(body => {
-          status.innerHTML = body.status;
-          setTimeout(function() {
-            if (body.action === "redirect") {
-              window.location.href = body.redirectURL;
-            } else if (body.action === "refresh") {
-              refreshBalance().then(() => closeFn());
-            } else {
-              closeFn();
-            }
-          }, body.timeout);
-        });
-    },
-    false
-  );
-}
-window.openDefaultCurrencyModal = openDefaultCurrencyModal
 
 function showWhatHappenedVerificationFailure() {
   let elementToReveal = this.nextSibling;
@@ -346,18 +60,6 @@ document.addEventListener("DOMContentLoaded", function() {
     return;
   }
 
-  let upholdStatusElement = document.getElementById("uphold_status");
-
-  if (upholdStatusElement.classList.contains("uphold-processing")) {
-    checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
-  } else if (
-    upholdStatusElement.getAttribute(
-      "data-open-confirm-default-currency-modal"
-    ) === "true"
-  ) {
-    openDefaultCurrencyModal();
-  }
-
   let removeChannelLinks = document.querySelectorAll("a.remove-channel");
   for (let i = 0, l = removeChannelLinks.length; i < l; i++) {
     removeChannelLinks[i].addEventListener(
@@ -380,38 +82,6 @@ document.addEventListener("DOMContentLoaded", function() {
     );
   }
 
-  let disconnectUpholdLink = document.querySelector("a.disconnect-uphold");
-  if (disconnectUpholdLink) {
-    disconnectUpholdLink.addEventListener(
-      "click",
-      function(event) {
-        let template = document.querySelector('[id="disconnect-uphold-js"]');
-        openModal(
-          template.innerHTML,
-          function() {
-            disconnectUphold();
-          },
-          function() {}
-        );
-        event.preventDefault();
-      },
-      false
-    );
-  }
-
-  let changeDefaultCurrencyLink = document.getElementById(
-    "change_default_currency"
-  );
-  if (changeDefaultCurrencyLink) {
-    changeDefaultCurrencyLink.addEventListener(
-      "click",
-      function(event) {
-        openDefaultCurrencyModal();
-        event.preventDefault();
-      },
-      false
-    );
-  }
   let verificationFailureWhatHappenedElements = document.getElementsByClassName(
     "verification-failed--what-happened"
   );
@@ -443,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function() {
     "instant-donation-button"
   );
 
-
   instantDonationButton.addEventListener(
     "click",
     async function(event) {
@@ -464,8 +133,8 @@ document.addEventListener("DOMContentLoaded", function() {
           Accept: "text/html",
           "X-Requested-With": "XMLHttpRequest",
           "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")
-            .content
-        }
+            .content,
+        },
       };
 
       let response = await fetch(url, options);
@@ -516,5 +185,4 @@ document.addEventListener("DOMContentLoaded", function() {
     },
     false
   );
-
 });

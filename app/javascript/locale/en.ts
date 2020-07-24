@@ -260,6 +260,12 @@ export default {
       title: "Wallet for BAT Payment"
     },
     connected: "Connected <span>{displayName}</span>",
+    currencies: {
+      defaultCurrency: 'Default Currency',
+      description: 'Confirm your preferred deposit currency or token',
+      title: 'You will receive monthly contributions from your Brave fans in this currency in your account.',
+      upholdFee: 'Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a href="https://uphold.com/en/pricing">Check fees</a>'
+    },
     disconnect: "Disconnect",
     gemini: {
       connect: "Connect to Gemini",

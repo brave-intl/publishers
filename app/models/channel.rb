@@ -284,7 +284,11 @@ class Channel < ApplicationRecord
       if skip_site_banner_info_lookup
         {}
       else
-        site_banner&.non_default_properties || publisher&.default_site_banner&.non_default_properties || {}
+        banner = site_banner&.non_default_properties.presence || publisher&.default_site_banner&.non_default_properties
+        if publisher.default_site_banner_mode
+          banner = publisher&.default_site_banner&.non_default_properties
+        end
+        banner || {}
       end
     site_banner_lookup.update!(
       channel_id: id,

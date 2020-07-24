@@ -1,12 +1,12 @@
-module Publishers
-  class UpholdController < ApplicationController
+module Connections
+  class UpholdConnectionsController < ApplicationController
     # TODO Refactor Uphold Status to not actually need helper
     # Traditional usage of helpers should really only be for views
     include PublishersHelper
 
     before_action :authenticate_publisher!
 
-    def uphold_status
+    def show
       publisher = current_publisher
       respond_to do |format|
         format.json do
@@ -67,9 +67,8 @@ module Publishers
         gsub('<STATE>', current_publisher.uphold_connection.uphold_state_token)
     end
 
-    # This creates the uphold connection
-    # The route for this is by default publisher/uphold_verified
-    def create
+    # This is the action which is redirected to from the Uphold OAuth flow.
+    def edit
       uphold_connection = current_publisher.uphold_connection
 
       validate_uphold!(uphold_connection)

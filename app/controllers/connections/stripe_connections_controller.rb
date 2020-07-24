@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Publishers
+module Connections
   class StripeConnectionsController < ApplicationController
     class StripeError < StandardError; end
     before_action :authenticate_publisher!

@@ -180,6 +180,13 @@ class UpholdConnection < ActiveRecord::Base
     (default_currency_confirmed_at.present? && address.blank?) || !valid_card?
   end
 
+  # Public: Returns a list of supported currencies for a publisher
+  #
+  # Returns an array of currencies
+  def supported_currencies
+    uphold_details&.currencies
+  end
+
   # Calls the Uphold API and checks
   #   - if the address exists
   #   - the card is in the same currency as the publisher's chosen currency

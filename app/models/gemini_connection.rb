@@ -17,6 +17,11 @@ class GeminiConnection < ApplicationRecord
     "#{Rails.application.config.services.gemini[:oauth_uri]}/settings/profile"
   end
 
+  # Eventually well expand to https://docs.gemini.com/rest-api/#symbols-and-minimums
+  def supported_currencies
+    ["USD", "BTC", "ETH"]
+  end
+
   private
 
   def encryption_key

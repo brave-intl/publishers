@@ -1,12 +1,12 @@
 noscript
   div.noscript-warning = t ".noscript"
 
-- open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
-    @publisher.uphold_connection.uphold_verified? && @publisher.uphold_connection.status != UpholdConnection::PENDING && \
-    (@publisher.uphold_connection.default_currency_confirmed_at.blank? || @publisher.uphold_connection.default_currency.blank?)
+/ - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
+/     @publisher.uphold_connection.uphold_verified? && @publisher.uphold_connection.status != UpholdConnection::PENDING && \
+/     (@publisher.uphold_connection.default_currency_confirmed_at.blank? || @publisher.uphold_connection.default_currency.blank?)
 
-script type="text/html" id="confirm_default_currency_modal_wrapper"
-  = render partial: 'confirm_default_currency_modal', locals: { possible_currencies: @possible_currencies || []}
+/ script type="text/html" id="confirm_default_currency_modal_wrapper"
+/   = render partial: 'confirm_default_currency_modal', locals: { possible_currencies: @possible_currencies || []}
 
 - content_for(:navbar_content_right) do
   = link_to( \
@@ -28,11 +28,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 = javascript_pack_tag "WelcomeModal"
 
 .dashboard
-
-  #uphold_status { class=uphold_status_class(@publisher)
-                   data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
-                   data-possible-currencies=(@possible_currencies || [])
-                   data-default-currency=@publisher.uphold_connection.default_currency }
+  #uphold_status
     .row
       .col.mb-4.payouts class="#{@publisher.no_grants? ? 'col-md-7' : '' }"
         .balance-panel.align-items-center

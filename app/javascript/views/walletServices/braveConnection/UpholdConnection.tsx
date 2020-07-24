@@ -6,9 +6,11 @@ import { FlexWrapper } from "../../style";
 import DisconnectPrompt from "./upholdConnection/UpholdDisconnectPrompt";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
 import UpholdStatusMessage from "./upholdConnection/UpholdStatusMessage";
+import CurrencySelection from "./CurrencySelection";
 
 interface IUpholdConnectionState {
   showDisconnectModal: boolean;
+  showCurrencyModal: boolean;
   error?: string;
 }
 
@@ -17,6 +19,7 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
     super(props);
     this.state = {
       error: null,
+      showCurrencyModal: true,
       showDisconnectModal: false,
     };
   }
@@ -66,12 +69,12 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
                 <Modal
                   show={this.state.showDisconnectModal}
                   size={ModalSize.Small}
-                  handleClose={() => this.showModal(false)}
+                  handleClose={() => this.showDisconnectModal(false)}
                 >
                   <DisconnectPrompt
                     setError={this.setError}
                     loadData={this.props.loadData}
-                    setShowModal={this.showModal}
+                    setShowModal={this.showDisconnectModal}
                   />
                 </Modal>
               </FlexWrapper>
@@ -107,6 +110,16 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
               >
                 <FormattedMessage id="walletServices.uphold.change" />
               </a>
+
+                <Modal
+                  show={this.state.showCurrencyModal}
+                  size={ModalSize.Small}
+                  handleClose={() => this.showCurrencyModal(false)}
+                >
+                  <CurrencySelection
+                    setShowModal={this.showCurrencyModal}
+                  />
+                </Modal>
             </div>
           </div>
 
@@ -119,8 +132,11 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
     this.setState({ error: message });
   };
 
-  private showModal = (show) => {
+  private showDisconnectModal = (show) => {
     this.setState({ showDisconnectModal: show });
+  };
+  private showCurrencyModal = (show) => {
+    this.setState({ showCurrencyModal: show });
   };
 }
 

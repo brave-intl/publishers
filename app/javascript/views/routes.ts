@@ -9,6 +9,9 @@ export default {
     }
   },
   publishers: {
+    connections: {
+      currency: "/connections/currency"
+    },
     promo_registrations: {
       show: {
         path: "/publishers/promo_registrations/for_referral_code?referral_code={referral_code}"
@@ -42,10 +45,10 @@ export default {
       path: "/publishers"
     },
     uphold: {
-      connect: "/publishers/connect_uphold",
+      connect: "/publishers/uphold_connection/connect_uphold",
       confirm_default_currency: "/publishers/confirm_default_currency",
       disconnect: "/publishers/disconnect_uphold",
-      status: "/publishers/uphold_status",
+      status: "/publishers/uphold_connection/uphold_status",
     },
     wallet: {
       path: "/publishers/wallet",

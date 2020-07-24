@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-module Publishers
+module Connections
   class GeminiConnectionsController < ApplicationController
     class GeminiError < StandardError; end
     before_action :authenticate_publisher!
     before_action :validate_connection!, only: :new
 
-    def connect
+    def create
       gemini_connection = GeminiConnection.find_or_create_by(publisher: current_publisher)
 
       gemini_connection.prepare_state_token!
@@ -17,7 +17,8 @@ module Publishers
       )
     end
 
-    def new
+    # This action is what is redirect from Gemini after the OAuth connection is redirected.
+    def edit
       gemini_connection = GeminiConnection.find_by(publisher: current_publisher)
 
       authorization = Gemini::Auth.token(

@@ -1,49 +1,62 @@
+# These are the routes for the application
+#
+# As a general rule; resources should never be nested more than 1 level deep.
+# For solutions regarding - https://guides.rubyonrails.org/routing.html#limits-to-nesting
+#
+# For more general information check out this guide
+# https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
+  # Legacy routes based off OAuth connections. We will update our OAuth providers information
+  get 'publishers/uphold_verified', to: 'connections/uphold_connections#edit'
+  get 'publishers/gemini_connection/new', to: 'connections/gemini_connections#edit'
+
+  # Routes for Browser Users to login via Uphold
   namespace :uphold_connections do
     get :login
     get :confirm
   end
+
+  # Homepage for Browser Users
   namespace :browser_users do
     get :home
     put :accept_tos
   end
+
+  # These routes are for connecting to 3rd-party payment providers.
+  namespace :connections do
+    resources :currency
+    resource :stripe_connection
+    resource :gemini_connection
+
+    resource :uphold_connection
+
+    resources :paypal_connections, only: [] do
+      get :connect_callback, on: :collection
+      get :refresh
+      patch :disconnect
+    end
+  end
+
+  # Once Publisher Logs in they access this resource
   resources :publishers, only: %i(create update new show destroy) do
     collection do
-      # Registrations, eventually we should consider refactoring these routes into something a little more restful
-      scope controller: "registrations", module: "publishers" do
-        get :sign_up
-        get :log_in
-        get :expired_authentication_token
-        post :resend_authentication_email
-
-        resource :registrations, only: [:create, :update]
-      end
-
       scope module: "publishers" do
+        # Registrations, eventually we should consider refactoring these routes into something a little more restful
+        scope controller: "registrations" do
+          get :sign_up
+          get :log_in
+          get :expired_authentication_token
+          post :resend_authentication_email
+
+          resource :registrations, only: [:create, :update]
+        end
+
         resource :case do
           delete :delete_file
         end
         resources :case_notes
         resources :keys do
           patch :roll
-        end
-
-        resources :uphold_connection, controller: "uphold", only: :update
-
-        # Legacy route which should be migrated to UpholdConnectionsController
-        scope controller: "uphold" do
-          get :uphold_status
-          get :uphold_verified, action: :create
-          patch :connect_uphold
-          patch :disconnect_uphold, action: :destroy
-          patch :confirm_default_currency
-        end
-
-        resource :stripe_connection do
-          post :connect
-        end
-        resource :gemini_connection do
-          post :connect
         end
 
         resources :statements, only: [:index, :show] do
@@ -62,12 +75,6 @@ Rails.application.routes.draw do
             get :overview
           end
         end
-      end
-
-      resources :paypal_connections, controller: "publishers/paypal_connections", only: [] do
-        get :connect_callback, on: :collection
-        get :refresh
-        patch :disconnect
       end
 
       get :log_out

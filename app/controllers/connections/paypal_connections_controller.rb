@@ -1,4 +1,4 @@
-module Publishers
+module Connections
   class PaypalConnectionsController < ApplicationController
     before_action :authenticate_publisher!
 
