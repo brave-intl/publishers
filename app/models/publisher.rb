@@ -169,7 +169,7 @@ class Publisher < ApplicationRecord
       Sync::Connection::GeminiConnectionSyncJob.perform_later(publisher_id: id)
     end
 
-    if uphold_connection.present? && uphold_connection.updated_at > 2.hours.ago
+    if uphold_connection.present? && uphold_connection.updated_at < 2.hours.ago
       Sync::Connection::UpholdConnectionSyncJob.perform_later(publisher_id: id)
     end
   end
