@@ -165,7 +165,7 @@ class Publisher < ApplicationRecord
   #
   # Returns nil
   def sync_wallet_connections
-    if gemini_connection.present? && gemini_connection.updated_at > 2.hours.ago
+    if gemini_connection.present? && gemini_connection.updated_at < 2.hours.ago
       Sync::Connection::GeminiConnectionSyncJob.perform_later(publisher_id: id)
     end
 
