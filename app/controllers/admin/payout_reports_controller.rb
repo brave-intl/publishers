@@ -54,8 +54,6 @@ class Admin::PayoutReportsController < AdminController
     content = File.read(params[:file].tempfile)
     json = JSON.parse(content)
 
-    EyeshadeClient.publishers.create_settlement(body: json)
-
     not_found = []
 
     json.each do |entry|

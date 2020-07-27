@@ -161,23 +161,6 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
-  def wallet
-    wallet = current_publisher.wallet
-
-    uphold_connection = current_publisher.uphold_connection
-
-    if wallet
-      render(json:
-              {
-                wallet: wallet,
-                uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
-                possible_currencies: uphold_connection.uphold_details&.currencies || [],
-              })
-    else
-      head 404
-    end
-  end
-
   def get_site_banner_data
     prepare_site_banner_data
     default_site_banner_mode = current_publisher.default_site_banner_mode

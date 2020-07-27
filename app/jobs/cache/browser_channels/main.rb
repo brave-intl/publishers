@@ -18,8 +18,7 @@ class Cache::BrowserChannels::Main
     result = SiteBannerLookup.find_by_sql(["
       SELECT DISTINCT SUBSTRING(sha2_base16, 1, :nibble_length) as prefix
       FROM site_banner_lookups
-      WHERE wallet_status != 0
-      AND updated_at >= :previous_run
+      WHERE updated_at >= :previous_run
       ORDER BY prefix desc",
       {
         nibble_length: RESPONSES_PREFIX_LENGTH * 2,

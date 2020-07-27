@@ -39,11 +39,22 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
+        resource :stripe_connection do
+          post :connect
+        end
+        resource :gemini_connection do
+          post :connect
+        end
+
         resources :statements, only: [:index, :show] do
           get :rate_card, on: :collection
         end
 
         resource :two_factor_authentications_removal
+
+        resource :wallet do
+          get :latest
+        end
 
         resources :promo_registrations, only: [:index, :create] do
           collection do
@@ -65,7 +76,6 @@ Rails.application.routes.draw do
       get :change_email_confirm
       patch :update_email
       get :email_verified
-      get :wallet
       get :suspended_error
       get :get_site_banner_data
       patch :verify

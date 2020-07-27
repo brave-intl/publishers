@@ -10,6 +10,7 @@ require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
+require "test_helpers/mock_uphold_responses"
 require 'capybara/rails'
 require 'capybara/minitest'
 require 'minitest/rails'

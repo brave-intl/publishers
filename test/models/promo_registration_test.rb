@@ -177,7 +177,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
 
   test "channel scope returns only channel owned promo registrations" do
     channel = channels(:verified)
-    assert_equal PromoRegistration.channels_only.count, 2
+    previous_count = PromoRegistration.channels_only.count
     promo_registration = PromoRegistration.create!(referral_code: "DEF456",
                                                    promo_id: PROMO_ID,
                                                    kind: "channel",
@@ -185,7 +185,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
                                                    channel: channel)
     PromoRegistration.create!(referral_code: "ABC123", promo_id: PROMO_ID, kind: "unattached")
 
-    assert_equal PromoRegistration.channels_only.count, 3
+    assert_equal PromoRegistration.channels_only.count, previous_count + 1
     assert_equal PromoRegistration.channels_only.order("created_at").last, promo_registration
   end
 

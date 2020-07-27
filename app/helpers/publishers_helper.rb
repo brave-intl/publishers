@@ -26,6 +26,15 @@ module PublishersHelper
     }
   end
 
+  def new_publisher?(publisher)
+    is_new = if publisher.paypal_locale?(I18n.locale)
+        publisher.paypal_connection.blank?
+      else
+        publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
+      end
+    is_new.present? && publisher.channels.size.zero?
+  end
+
   def publisher_can_receive_funds?(publisher)
     publisher.uphold_connection&.uphold_status == :verified
   end
@@ -118,48 +127,6 @@ module PublishersHelper
     }
   end
 
-  def publisher_last_settlement_bat_balance(publisher)
-    last_settlement_balance = publisher.wallet&.last_settlement_balance
-    if last_settlement_balance&.amount_bat.present?
-      '%.2f' % last_settlement_balance.amount_bat
-    else
-      I18n.t("helpers.publisher.no_deposit")
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_unavailable")
-  end
-
-  def publisher_converted_last_settlement_balance(publisher)
-    last_settlement_balance = publisher.wallet&.last_settlement_balance
-
-    if last_settlement_balance&.amount_settlement_currency.present?
-      settlement_currency = last_settlement_balance.settlement_currency
-      return if settlement_currency == "BAT"
-      I18n.t("helpers.publisher.balance_pending_approximate",
-             amount: '%.2f' % last_settlement_balance.amount_settlement_currency,
-             code: settlement_currency)
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: settlement_currency)
-  end
-
-  def publisher_last_settlement_date(publisher, locale)
-    last_settlement_balance = publisher.wallet&.last_settlement_balance
-    if last_settlement_balance&.timestamp.present?
-      I18n.l(Time.at(last_settlement_balance.timestamp).to_date, format: :long, locale: locale)
-    else
-      I18n.t("helpers.publisher.no_deposit")
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.no_deposit")
-  end
-
   def publisher_uri(publisher)
     "https://#{publisher.brave_publisher_id}"
   end
@@ -197,17 +164,6 @@ module PublishersHelper
       'uphold-' + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
     else
       'uphold-unconnected'
-    end
-  end
-
-  def last_settlement_class(publisher)
-    if publisher.wallet.present? &&
-       publisher.wallet.last_settlement_balance &&
-       publisher.wallet.last_settlement_balance.amount_bat.present?
-
-      'settlement-made'
-    else
-      'no-settlement-made'
     end
   end
 

@@ -51,6 +51,7 @@ class UpholdConnection < ActiveRecord::Base
   # If the user became KYC'd let's create the uphold card for them
   after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
   after_save :update_site_banner_lookup!, if: -> { saved_change_to_is_member? }
+  after_save :update_promo_status, if: -> { saved_change_to_is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -105,12 +106,8 @@ class UpholdConnection < ActiveRecord::Base
   # Makes a remote HTTP call to Uphold to get more details
   # TODO should we actually call uphold_user?
 
-  def uphold_client
-    @uphold_client ||= Uphold::Client.new(uphold_connection: self)
-  end
-
   def uphold_details
-    @user ||= uphold_client.user.find(self)
+    @user ||= UpholdClient.user.find(self)
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
       Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
@@ -139,6 +136,22 @@ class UpholdConnection < ActiveRecord::Base
     end
   end
 
+  def username
+    uphold_details&.username
+  end
+
+  def unconnected?
+    uphold_status == UpholdAccountState::UNCONNECTED
+  end
+
+  def payable?
+    uphold_status == UpholdAccountState::VERIFIED && status == OK
+  end
+
+  def verify_url
+    Rails.application.secrets[:uphold_dashboard_url]
+  end
+
   def can_create_uphold_cards?
     uphold_verified? &&
       uphold_access_parameters.present? &&
@@ -164,7 +177,29 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def missing_card?
-    default_currency_confirmed_at.present? && address.blank?
+    (default_currency_confirmed_at.present? && address.blank?) || !valid_card?
+  end
+
+  # Calls the Uphold API and checks
+  #   - if the address exists
+  #   - the card is in the same currency as the publisher's chosen currency
+  #
+  # Returns true if the checks pass, returns false if the Uphold API returns a 404 Not Found, or the address doesn't exist.
+  def valid_card?
+    return false if address.blank?
+
+    card = UpholdClient.card.find(
+      uphold_connection: self,
+      id: address
+    )
+
+    card&.currency.eql?(default_currency)
+  rescue Faraday::ResourceNotFound
+    false
+  rescue Faraday::ClientError
+    # We'll get an HTTP Status 403 when the User doesn't have access to create cards
+    # or the access_token has expired.
+    false
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
@@ -188,8 +223,20 @@ class UpholdConnection < ActiveRecord::Base
     publisher.update_site_banner_lookup!
   end
 
+  # Internal: If the publisher previously had referral codes and then we will re-activate their referral codes.
+  #
+  # Returns nil
+  def update_promo_status
+    publisher.update_promo_status!
+  end
+
   def japanese_account?
     country == JAPAN
+  end
+
+  def currencies
+    return if uphold_details.blank?
+    uphold_details&.currencies
   end
 
   def encryption_key

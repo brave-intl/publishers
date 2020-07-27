@@ -8,12 +8,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
   include EyeshadeHelper
+  include MockUpholdResponses
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    stub_request(:get, /cards\?q/).to_return(body: [].to_json)
-    stub_request(:get, /v0\/me\/cards/).to_return(body: '{}')
-    stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
+    stub_uphold_cards!
   end
 
   after do
@@ -423,7 +422,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       publisher.save!
 
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+      stub_request(:post, /oauth2\/token/)
           .with(body: "code=#{uphold_code}&grant_type=authorization_code")
           .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
@@ -470,15 +469,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify uphold :code_acquired but not :access params
     assert_equal publisher.uphold_connection.reload.uphold_status, :code_acquired
 
-    # verify message tells publisher they need to reconnect
-    assert_select("div#uphold_status.uphold-processing .status-description") do |element|
-      assert_equal I18n.t("helpers.publisher.uphold_status_description.connecting"), element.text
-    end
-
-    # verify button says 'reconnect to uphold' not 'create uphold wallet'
-    assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold"), element.text
-    end
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
@@ -495,7 +485,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     stub_request(:get, /me/).to_return(body: { currencies: [] }.to_json)
 
-    get wallet_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    get wallet_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
 
@@ -511,11 +501,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get uphold_status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal '{"uphold_status":"unconnected",' +
-                  '"uphold_status_summary":"Not connected",' +
-                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Rewards.",' +
-                  '"uphold_status_class":"uphold-unconnected"}',
-                 response.body
+    body = JSON.parse(response.body)
+
+    assert_equal "unconnected", body.dig("uphold_status")
+    assert_equal "Not connected", body.dig("uphold_status_summary")
+    assert_equal "You need to connect to your Uphold account to receive contributions from Brave Rewards.", body.dig("uphold_status_description")
   end
 
   test "a publisher can be disconnected from uphold" do
@@ -524,7 +514,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
-    assert_response 204
+    assert_response 200
 
     publisher.reload
     refute publisher.uphold_connection.uphold_verified?
@@ -608,7 +598,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert login
     assert_equal login.user_agent, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
     assert_equal login.accept_language, "en-US,en;q=0.9"
-    assert login.browser.chrome?
   end
 
   test "#confirm_default_currency redirects publisher w/o cards:write to uphold if confirmed a not available currency" do

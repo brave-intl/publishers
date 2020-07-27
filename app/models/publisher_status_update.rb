@@ -43,7 +43,11 @@ class PublisherStatusUpdate < ApplicationRecord
   end
 
   def should_update?
-    [ACTIVE, SUSPENDED, ONLY_USER_FUNDS].include?(status)
+    valid_transitions = [ACTIVE, SUSPENDED, ONLY_USER_FUNDS]
+    previous_status = publisher.status_updates.second&.status
+
+    # If we transition from one of these statuses to another we need to update the Promo Server
+    valid_transitions.include?(previous_status) && valid_transitions.include?(status)
   end
 
   def to_s

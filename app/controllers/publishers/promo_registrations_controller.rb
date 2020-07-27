@@ -5,6 +5,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
 
   before_action :authenticate_publisher!
   before_action :require_publisher_promo_disabled, :require_promo_running, only: %i(create)
+  before_action :validate_publisher!
 
   layout "promo_registrations", only: [:index, :create]
 
@@ -142,9 +143,15 @@ class Publishers::PromoRegistrationsController < ApplicationController
     redirect_to promo_registrations_path, action: "index" if current_publisher.promo_enabled_2018q1
   end
 
-  def user
-    return Publisher.find(params[:publisher_id]) if current_publisher.admin?
+  def validate_publisher!
+    return if user.referral_kyc_not_required? && !user.promo_lockout_time_passed?
 
-    current_publisher
+    redirect_to root_path, flash: { alert: I18n.t('promo.dashboard.ineligible') } unless user.may_register_promo? && !user.promo_lockout_time_passed?
+  end
+
+  def user
+    return (@user ||= Publisher.find(params[:publisher_id])) if current_publisher.admin?
+
+    @user ||= current_publisher
   end
 end

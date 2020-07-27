@@ -8,9 +8,10 @@ class CacheUpholdTips < ApplicationJob
     previously_cached_ids = upfc.cached_uphold_tips.order(uphold_created_at: :desc).limit(5).pluck(:uphold_transaction_id)
 
     # This can take a few minutes based on how many tips a publisher has.
-    transactions = upfc.uphold_connection.uphold_client.transaction.all(
+    transactions = UpholdClient.transaction.all(
       id: upfc.card_id,
-      previously_cached: previously_cached_ids
+      previously_cached: previously_cached_ids,
+      uphold_connection: upfc.uphold_connection
     )
 
     return if transactions.blank?

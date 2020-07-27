@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/brave-intl/publishers.svg?branch=master)](https://travis-ci.org/brave-intl/publishers)
+![Build Status](https://github.com/brave-intl/publishers/workflows/Build/badge.svg)
 
 # :wrench: Setup
 

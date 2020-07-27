@@ -29,7 +29,7 @@ Rails.application.configure do
   if Rails.application.secrets[:redis_url]
     config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
   else
-    config.cache_store = :redis_cache_store, { url: "redis://127.0.0.1:6379/0" }
+    config.cache_store = :memory_store, { size: 64.megabytes }
   end
 
   # Raise exceptions instead of rendering exception templates.
@@ -52,6 +52,8 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  config.time_zone = "UTC"
+  config.active_record.default_timezone = :utc
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

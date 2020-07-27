@@ -11,7 +11,7 @@ module Uphold
       # https://www.rfc-editor.org/rfc/rfc6570.txt
       PATH = "/v0/me/cards"
 
-      attr_accessor :address, :available, :balance, :currency, :id, :label, :lastTransactionAt, :normalized, :settings
+      attr_accessor :address, :available, :balance, :currency, :id, :label, :lastTransactionAt, :normalized, :settings, :api_base_uri
 
       def initialize(params = {})
         super

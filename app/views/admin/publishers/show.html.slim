@@ -39,9 +39,6 @@ hr
           .db-info-row
             .db-field = "Overall #{@publisher.uphold_connection.default_currency} balance:"
             .db-value = "#{publisher_converted_overall_balance(@publisher)}"
-        .db-info-row
-          .db-field = "Last settlement balance:"
-          .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"
         - if @publisher.created_by.present?
           .db-info-row
             .db-field = "Created by:"
@@ -118,12 +115,14 @@ hr
           hr
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
-    .panel
-      input type="checkbox" name="panels" id="panel_id"
-        label for="panel_id"
-          h3.text-dark Add Note
-      .panel-content
-        = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
+    .accordion
+      .panel
+        input type="checkbox" name="panels" id="panel_id"
+          label.d-flex for="panel_id"
+            h3.text-dark Add Note
+            = fa_icon "comment-o lg", class: 'text-dark mt-2 ml-2'
+        .panel-content
+          = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
 
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4

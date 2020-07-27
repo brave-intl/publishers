@@ -287,25 +287,13 @@ class UpholdServiceTest < ActiveJob::TestCase
       describe "with balance" do
         let(:balance_response) do
           [
-            {
-              account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-              account_type: "owner",
-              balance: "20.00"
-            },
-            {
-              account_id: "uphold_connected_details.org",
-              account_type: "channel",
-              balance: "20.00"
-            },
-            {
-              account_id: "twitch#author:details",
-              account_type: "channel",
-              balance: "20.00"
-            }, {
-              account_id: "twitter#channel:details",
-              account_type: "channel",
-              balance: "20.00"
-            }
+            { account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8", account_type: "owner", balance: "20.00" },
+            { account_id: publishers(:promo_not_registered).owner_identifier, account_type: "owner", balance: "20.00" },
+            { account_id: publishers(:promo_lockout).owner_identifier, account_type: "owner", balance: "20.00" },
+            { account_id: "uphold_connected_details.org", account_type: "channel", balance: "20.00" },
+            { account_id: "twitch#author:details", account_type: "channel", balance: "20.00" },
+            { account_id: "twitter#channel:details", account_type: "channel", balance: "20.00" },
+            { account_id: channels(:reddit_promo_registered).details.channel_identifier, account_type: "channel", balance: "20.00" },
           ]
         end
 
@@ -337,6 +325,36 @@ class UpholdServiceTest < ActiveJob::TestCase
 
                 @payout_report.update_report_contents
                 assert_equal 4, JSON.parse(@payout_report.contents).length
+              end
+
+              describe 'when card is missing ' do
+                let(:payout_report) do
+                  PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+                end
+                let(:new_address) { "01a9db32-d78c-458a-a2af-bf997aab6e59" }
+
+                before do
+                  stub_request(:get, /cards/).to_return(body: [id: new_address].to_json)
+                  stub_request(:post, /cards/).to_return(body: { id: new_address }.to_json)
+                end
+
+                it 'sets the address' do
+                  old_address = publisher.uphold_connection.address
+                  refute_equal new_address, old_address
+
+                  Payout::PotentialPayment::UpholdService.new(
+                    payout_report: payout_report,
+                    publisher: publisher,
+                    should_send_notifications: should_send_notifications
+                  ).perform
+
+                  PotentialPayment.where(payout_report_id: payout_report.id).each do |potential_payment|
+                    # Test to make sure that the previous address was set to the new address
+                    assert new_address, potential_payment.address
+                    # Ensure that the old address wasn't the same
+                    refute_equal old_address, potential_payment.address
+                  end
+                end
               end
 
               it "has the correct content" do
@@ -412,6 +430,60 @@ class UpholdServiceTest < ActiveJob::TestCase
                                                   publisher: publisher,
                                                   should_send_notifications: should_send_notifications).perform
               end
+            end
+          end
+
+          describe 'when REFERRAL_KYC_REQUIRED is true' do
+            let(:publisher) { publishers(:promo_not_registered) }
+
+            before do
+              Rails.application.secrets[:api_eyeshade_offline] = false
+              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+              subject
+            end
+
+            it 'only creates contribution payments' do
+              PotentialPayment.where(payout_report_id: @payout_report.id, publisher_id: publisher.id).each do |payment|
+                assert_equal "contribution", payment.kind
+              end
+            end
+          end
+
+          describe 'when the promo lockout time has expired' do
+            let(:publisher) { publishers(:promo_lockout) }
+
+            before do
+              publisher.update(feature_flags: { UserFeatureFlags::PROMO_LOCKOUT_TIME => 2.days.ago } )
+              Rails.application.secrets[:api_eyeshade_offline] = false
+              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+              subject
+            end
+
+            it 'only creates contribution payments' do
+              PotentialPayment.where(payout_report_id: @payout_report.id, publisher_id: publisher.id).each do |payment|
+                assert_equal "contribution", payment.kind
+              end
+            end
+          end
+
+          describe 'when the promo lockout time has not expired' do
+            let(:publisher) { publishers(:promo_lockout) }
+
+            before do
+              publisher.update(feature_flags: { UserFeatureFlags::PROMO_LOCKOUT_TIME => 3.days.from_now } )
+              Rails.application.secrets[:api_eyeshade_offline] = false
+              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+              subject
+            end
+
+            it 'creates referral payments' do
+              referral_payments = PotentialPayment.where(
+                payout_report_id: @payout_report.id,
+                publisher_id: publisher.id,
+                kind: 'referral'
+              )
+
+              assert referral_payments.size > 0
             end
           end
         end

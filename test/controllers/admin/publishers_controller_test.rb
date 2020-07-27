@@ -30,9 +30,8 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
 
-    assert_raises(CanCan::AccessDenied) {
-      get admin_publishers_path
-    }
+    get admin_publishers_path
+    assert_select 'title', "Not authorized"
   end
 
   test "admin can access" do
@@ -45,7 +44,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "admin filters appropriately on name & email" do
     admin = publishers(:admin)
-    publisher = Publisher.order(created_at: :asc).first
+    publisher = Publisher.order(id: :asc).first
     sign_in admin
 
     get admin_publishers_path

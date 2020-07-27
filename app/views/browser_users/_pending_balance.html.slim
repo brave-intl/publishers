@@ -18,16 +18,3 @@
       .next_deposit_date.small
         span.bold = t(".next_deposit_date")
         span = next_deposit_date
-/ We might want to enable last deposit in the future, so instead of trying to re-dig up the code
-/ These lines should be uncommented
-  .dashboard-panel--content#last_settlement class=last_settlement_class(@browser_user)
-    .last-deposit
-      = "LAST DEPOSIT"
-      .amounts
-        .bat
-          - last_deposit_balance = publisher_last_settlement_bat_balance(@browser_user)
-          span.bat-amount#last_deposit_bat_amount= last_deposit_balance
-          - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
-            span.bat-code= " BAT"
-        .converted#last_deposit_converted_amount
-          = publisher_converted_last_settlement_balance(@browser_user)

@@ -20,7 +20,7 @@
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
-  TransferChannelsJob:
+  Channel::TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   Sync::ChannelPromoRegistrationsStatsJob:
@@ -56,9 +56,6 @@
     cron: "0 4 * * *"
     description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
     queue: scheduler
-  TransferChannelsJob:
-    cron: "0 8 * * *"
-    description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   EnqueuePublishersForPayoutJob:
     cron: "0 0 23 * *"
     args: ['send_notifications']
