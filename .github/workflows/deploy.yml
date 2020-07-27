@@ -1,9 +1,9 @@
-on:
-  push:
-    branches:
-      - docker-changes
 
 name: Easy Generalized Deployments
+on:
+  push:
+    branches: [docker-changes]
+
 jobs:
   push:
     name: Invoke easy_generalized_deploy Lambda
