@@ -145,6 +145,12 @@ Rails.application.routes.draw do
       resources :publishers, defaults: { format: :json } do
         post "publisher_status_updates"
       end
+
+      # /api/v1/promo_registrations
+      namespace :promo_registrations do
+        post "/:referral_code/publisher_status_updates", action: "publisher_status_updates"
+      end
+
       resources :transactions, only: [:show]
 
       # /api/v1/stats/
