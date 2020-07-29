@@ -17,9 +17,9 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
     raise InvalidAdmin if admin.blank?
 
     if email == "brand_bidding"
-      PublisherMailer.suspend_publisher_for_brand_bidding(@publisher).deliver_later
+      PublisherMailer.suspend_publisher_for_brand_bidding(publisher).deliver_later
     elsif email == "brand_bidding_and_impersonation"
-      PublisherMailer.suspend_publisher_for_brand_bidding_and_impersonation(@publisher).deliver_later
+      PublisherMailer.suspend_publisher_for_brand_bidding_and_impersonation(publisher).deliver_later
     elsif not email.nil?
       raise InvalidEmail
     end
