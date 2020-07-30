@@ -26,7 +26,7 @@ class Api::BaseController < ActionController::API
     ip_authenticated = authenticate_ip
     token_authenticated = authenticate_token
 
-    if token_authenticated and not ip_authenticated
+    if token_authenticated && !ip_authenticated
       # Message slack per security team's recommendation https://github.com/brave/security/issues/201#issuecomment-666501816
       SlackMessenger.new(
         message: "#🚨 Publishers API auth token used from a non whitelisted IP address 🚨",
