@@ -23,7 +23,18 @@ class Api::BaseController < ActionController::API
 
   # before_action filter to protect API controller actions.
   def authenticate
-    (authenticate_ip && authenticate_token) || render_unauthorized
+    ip_authenticated = authenticate_ip
+    token_authenticated = authenticate_token
+
+    if token_authenticated and not ip_authenticated
+      # Message slack per security team's recommendation https://github.com/brave/security/issues/201#issuecomment-666501816
+      SlackMessenger.new(
+        message: "#🚨 Publishers API auth token used from a non whitelisted IP address 🚨",
+        channel: SlackMessenger::ALERTS
+      ).perform
+    end
+
+    (ip_authenticated && token_authenticated) || render_unauthorized
   end
 
   def authenticate_ip
