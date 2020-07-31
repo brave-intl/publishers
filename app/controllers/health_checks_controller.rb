@@ -56,8 +56,8 @@ class HealthChecksController < ActionController::Base
   def sidekiq_workers?
     return false unless sidekiq_connected?
 
-    stats = Sidekiq::Stats.new
-    stats.workers_size.positive?
+    ps = Sidekiq::ProcessSet.new
+    ps.size.positive?
   rescue
     false
   end
