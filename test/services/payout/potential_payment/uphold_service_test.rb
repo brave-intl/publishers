@@ -433,39 +433,6 @@ class UpholdServiceTest < ActiveJob::TestCase
             end
           end
 
-          describe 'when REFERRAL_KYC_REQUIRED is true' do
-            let(:publisher) { publishers(:promo_not_registered) }
-
-            before do
-              Rails.application.secrets[:api_eyeshade_offline] = false
-              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-              subject
-            end
-
-            it 'only creates contribution payments' do
-              PotentialPayment.where(payout_report_id: @payout_report.id, publisher_id: publisher.id).each do |payment|
-                assert_equal "contribution", payment.kind
-              end
-            end
-          end
-
-          describe 'when the promo lockout time has expired' do
-            let(:publisher) { publishers(:promo_lockout) }
-
-            before do
-              publisher.update(feature_flags: { UserFeatureFlags::PROMO_LOCKOUT_TIME => 2.days.ago } )
-              Rails.application.secrets[:api_eyeshade_offline] = false
-              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-              subject
-            end
-
-            it 'only creates contribution payments' do
-              PotentialPayment.where(payout_report_id: @payout_report.id, publisher_id: publisher.id).each do |payment|
-                assert_equal "contribution", payment.kind
-              end
-            end
-          end
-
           describe 'when the promo lockout time has not expired' do
             let(:publisher) { publishers(:promo_lockout) }
 
