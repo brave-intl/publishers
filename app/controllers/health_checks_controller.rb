@@ -4,7 +4,7 @@ class HealthChecksController < ActionController::Base
     @healthy = healthy?(@services)
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json { render json: { healthy: @healthy, services: @services }, status: @healthy ? 200 : 503 }
     end
   end
@@ -26,6 +26,7 @@ class HealthChecksController < ActionController::Base
   end
 
   def cache_connected?
+    binding.pry
     Rails.cache.redis.ping == "PONG"
   rescue StandardError
     false
@@ -45,7 +46,7 @@ class HealthChecksController < ActionController::Base
   end
 
   def sidekiq_connected?
-    connected = Sidekiq.redis do |r|
+    Sidekiq.redis do |r|
       res = r.ping
       res == 'PONG'
     end

@@ -7,9 +7,6 @@
 threads_count = ENV.fetch("RAILS_MAX_THREADS", 5)
 threads threads_count, threads_count
 
-# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-#
-port        ENV.fetch("PORT", 3000)
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -21,18 +18,21 @@ environment rails_env
 address = ENV.fetch('ADDRESS') { '127.0.0.1' }
 
 if rails_env == "development"
-  ssl = ENV["SSL"]
-  if ssl=="off"
+  if ENV["SSL"] == "off"
     bind ENV.fetch("BIND") {
       "tcp://0.0.0.0:#{ENV.fetch('PORT') { 3000 }}"
     }
   else
     ssl_bind address, '3000', {
-        key: ENV.fetch("SSL_KEY_PATH") { 'ssl/server.key' },
-        cert: ENV.fetch("SSL_CERT_PATH") { 'ssl/server.crt' },
-        verify_mode: 'none'
+      key: ENV.fetch("SSL_KEY_PATH") { 'ssl/server.key' },
+      cert: ENV.fetch("SSL_CERT_PATH") { 'ssl/server.crt' },
+      verify_mode: 'none'
     }
   end
+else
+  # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
+  #
+  port ENV.fetch("PORT", 3000)
 end
 
 # Specifies the number of `workers` to boot in clustered mode.
