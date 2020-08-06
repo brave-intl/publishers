@@ -26,7 +26,6 @@ class HealthChecksController < ActionController::Base
   end
 
   def cache_connected?
-    binding.pry
     Rails.cache.redis.ping == "PONG"
   rescue StandardError
     false

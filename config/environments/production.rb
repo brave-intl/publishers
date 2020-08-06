@@ -58,9 +58,6 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
-  # Remove redirect for health-check
-  # https://edgeapi.rubyonrails.org/classes/ActionDispatch/SSL.html
-  config.ssl_options = { redirect: { exclude: -> request { /health_check/.match?(request.path) } } }
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
