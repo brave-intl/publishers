@@ -4,6 +4,7 @@ RUN apt-get update -qq && apt-get install -y build-essential
 
 RUN apt-get install -y nodejs \
   libpq-dev \
+  git \
   curl
 
 SHELL [ "/bin/bash", "-l", "-c" ]
@@ -27,7 +28,6 @@ COPY package.json yarn.lock .nvmrc ./
 
 # Install the dependencies.
 RUN nvm install && nvm use
-RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install --jobs 20 --retry 5
 RUN node --version
 RUN npm install -g yarn
