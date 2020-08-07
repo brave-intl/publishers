@@ -34,8 +34,11 @@ gem "devise", "~> 4.7.1"
 
 gem "dnsruby", "~> 1.60.0", require: false
 
+# Powers Admin Search functionality
+gem 'elasticsearch', '~> 7.8', '>= 7.8.1'
+
 # HTTP library wrapper
-gem "faraday", "~> 0.17.3"
+gem "faraday", "~> 1.0"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
@@ -113,7 +116,7 @@ gem "sass-rails", "~> 5.0"
 gem "sendgrid-ruby", "~> 6.2.1"
 
 # Exception logging
-gem "sentry-raven", "~> 2.11.2", require: false
+gem 'sentry-raven', '~> 3.0'
 
 # Async job processing
 gem "sidekiq", "~> 6.1.0"
@@ -124,6 +127,9 @@ gem "sidekiq-scheduler", "~> 3.0.1"
 gem "slim-rails", "~> 3.1"
 
 gem 'stripe', '~> 5.1', '>= 5.1.1'
+
+# The Elasticsearch gem docs suggest using an HTTP library such as Typhoeus for optimal performance because it supports persistent ("keep-alive") connections.
+gem "typhoeus", "~> 1.3.1"
 
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"

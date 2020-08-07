@@ -71,6 +71,9 @@ class Publisher < ApplicationRecord
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
   after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
+  # TODO Perhaps this isn't the best approach, because we're using a lot of different models here?
+  # Resources are updated independently of the publisher.
+  after_commit :index_to_elasticsearch
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -327,6 +330,18 @@ class Publisher < ApplicationRecord
     provider_country = uphold_connection&.country || paypal_connection&.country || gemini_connection&.country
 
     provider_country.to_s.upcase
+  end
+
+  def index_to_elasticsearch
+    Search::PublisherIndexJob.perform_async(id)
+  end
+
+  def index_to_elasticsearch_now
+    Search::Publisher.index(id, serialized_search_hash)
+  end
+
+  def serialized_search_hash
+    Search::PublisherSerializer.new(self).serializable_hash
   end
 
   private
