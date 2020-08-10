@@ -4,9 +4,6 @@
     "id": {
       "type": "keyword"
     },
-    "owner_identifier": {
-      "type": "keyword"
-    },
     "email": {
       "type": "keyword"
     },
@@ -14,13 +11,32 @@
       "type": "text"
     },
     "channel_identifiers": {
-      "type": "text"
+      "type": "text",
+      "fields": {
+        "raw": {
+          "type": "keyword"
+        }
+      }
+    },
+    "channel_urls": {
+      "type": "text",
+      "fields": {
+        "raw": {
+          "type": "keyword"
+        }
+      }
     },
     "channel_titles": {
       "type": "text"
     },
     "referral_codes": {
-      "type": "text"
+      "type": "keyword"
+    },
+    "wallet_identifiers": {
+      "type": "keyword"
+    },
+    "created_at": {
+      "type": "date"
     }
   }
 }

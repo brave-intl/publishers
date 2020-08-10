@@ -33,6 +33,10 @@ module Search
         SearchClient.indices.put_mapping(index: index_alias, body: self::MAPPINGS)
       end
 
+      def search(body:)
+        SearchClient.search(index: self::INDEX_ALIAS, body: body)
+      end
+
       private
 
       def settings

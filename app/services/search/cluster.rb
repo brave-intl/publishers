@@ -1,6 +1,6 @@
 module Search
   class Cluster
-    SEARCH_CLASSES = [Search::Publisher].freeze
+    SEARCH_CLASSES = [Search::User].freeze
 
     class << self
       def recreate_indexes

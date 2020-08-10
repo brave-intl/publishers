@@ -333,15 +333,15 @@ class Publisher < ApplicationRecord
   end
 
   def index_to_elasticsearch
-    Search::PublisherIndexJob.perform_async(id)
+    Search::UserIndexJob.perform_async(id)
   end
 
   def index_to_elasticsearch_now
-    Search::Publisher.index(id, serialized_search_hash)
+    Search::User.index(id, serialized_search_hash)
   end
 
   def serialized_search_hash
-    Search::PublisherSerializer.new(self).serializable_hash
+    Search::UserSerializer.new(self).serializable_hash
   end
 
   private
