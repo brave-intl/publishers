@@ -323,6 +323,37 @@ en:
       body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
       closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
+    suspend_publisher_for_brand_bidding:
+      subject: Your Brave Rewards account has been temporarily frozen
+      body_html:
+        We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code.
+        <br/><br/>
+        Please stop bidding on the terms "Brave", "Brave Browser" or any other Brave branded terms when targeting your campaigns, and use negative keyword tools to ensure none of your ads accidentally appear on these keywords searches.
+        <br/><br/>
+        These terms are off limits on all ads platforms, as described in our Terms of Service - Section 19.
+        <br/><br/>
+        We have temporarily suspended your account until you are in compliance.
+        <br/><br/>
+        Thank you.
+    suspend_publisher_for_brand_bidding_and_impersonation:
+      subject: Your Brave Rewards account has been temporarily frozen
+      body_html:
+        We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code, as well as directing traffic to a site impersonating Brave.
+        <br/><br/>
+        Please stop bidding on the terms "Brave", "Brave Browser" or any other Brave branded terms when targeting your campaigns, and use negative keyword tools to ensure none of your ads accidentally appear on these keywords searches. These terms are off limits on all ads platforms, as described in our Terms of Service - Section 19. 
+        <br/><br/>
+        Further, you are not permitted to earn through the Referral Program using a site that impersonates brave.com. If you would like to continue in the Referral Program, you will need to
+        <ul>
+          <li>Change your site's domain name to not include the word "Brave".</li>
+          <li>Provide a visible, clear statement at the top of the page stating that you are not affiliated with Brave </li>
+        </ul>
+        You can choose not to change your domain name, but you would have to change the download button to direct users to brave.com and not your Referral Code. You cannot earn through the Referral Program while impersonating Brave.
+        <br/><br/>
+        Please carefully review our Terms of Service, as another violation will result in a ban from the Referral Program. 
+        <br/><br/>
+        We have temporarily suspended your account until you are in compliance.
+        <br/><br/>
+        Thank you.
     submit_appeal:
       subject: Brave Rewards Appeal — Under Review
       body: |
