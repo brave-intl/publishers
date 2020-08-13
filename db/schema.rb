@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_09_024010) do
+ActiveRecord::Schema.define(version: 2020_08_13_170145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(version: 2020_07_09_024010) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: false
+    t.boolean "verified", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -362,6 +362,8 @@ ActiveRecord::Schema.define(version: 2020_07_09_024010) do
     t.uuid "invoice_id"
     t.uuid "finalized_by_id"
     t.jsonb "channel_stats", default: {}
+    t.text "verdict"
+    t.text "notes"
     t.text "channel_type"
     t.string "status"
     t.string "wallet_provider_id"
@@ -403,6 +405,7 @@ ActiveRecord::Schema.define(version: 2020_07_09_024010) do
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
+    t.index ["referral_code"], name: "index_promo_registrations_on_referral_code"
   end
 
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
