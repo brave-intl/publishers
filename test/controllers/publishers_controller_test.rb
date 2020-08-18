@@ -600,36 +600,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal login.accept_language, "en-US,en;q=0.9"
   end
 
-  test "#confirm_default_currency redirects publisher w/o cards:write to uphold if confirmed a not available currency" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected_currency_unconfirmed)
-    sign_in publisher
-
-    confirm_default_currency_params = {
-      publisher: {
-        default_currency: "BAT"
-      }
-    }
-
-    wallet = { "wallet" => { "defaultCurrency" => "USD",
-                             "authorized" => false,
-                             "possibleCurrencies" => ["BAT"],
-                             "scope" => "cards:read, user:read" },
-               "rates" => {},
-               "contributions" => { "currency" => "USD"}
-    }
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
-
-    patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
-
-    assert_response 200
-
-    # assert_redirected_to uphold_authorization_endpoint(publisher)
-    assert publisher.uphold_connection.default_currency_confirmed_at.present?
-    assert publisher.uphold_connection.default_currency == "BAT"
-  end
-
   test "#confirm_default_currency sets new default currency, initiates CreateUpholdCardsJob if not currency in available currency" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)

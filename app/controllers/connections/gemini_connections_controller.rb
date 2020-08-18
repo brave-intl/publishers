@@ -13,7 +13,7 @@ module Connections
 
       redirect_to Gemini::Auth.authorize_url(
         state: gemini_connection.state_token,
-        redirect_uri: new_gemini_connection_url(locale: nil)
+        redirect_uri: publishers_gemini_connection_new_url(locale: nil)
       )
     end
 
@@ -23,7 +23,7 @@ module Connections
 
       authorization = Gemini::Auth.token(
         code: params[:code],
-        redirect_uri: new_gemini_connection_url(locale: nil)
+        redirect_uri: publishers_gemini_connection_new_url(locale: nil)
       )
       account = Gemini::Account.find(token: authorization.access_token)
       user = account.users.first

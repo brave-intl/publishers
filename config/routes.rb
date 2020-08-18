@@ -6,7 +6,7 @@
 # For more general information check out this guide
 # https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
-  # Legacy routes based off OAuth connections. We will update our OAuth providers information
+  # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
   get 'publishers/uphold_verified', to: 'connections/uphold_connections#edit'
   get 'publishers/gemini_connection/new', to: 'connections/gemini_connections#edit'
 
@@ -24,10 +24,9 @@ Rails.application.routes.draw do
 
   # These routes are for connecting to 3rd-party payment providers.
   namespace :connections do
-    resources :currency
+    resource :currency
     resource :stripe_connection
     resource :gemini_connection
-
     resource :uphold_connection
 
     resources :paypal_connections, only: [] do

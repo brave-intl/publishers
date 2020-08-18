@@ -10,7 +10,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
   describe 'prepare_uphold_state' do
     let(:verified_connection) { uphold_connections(:verified_connection) }
-    let(:subject) { verified_connection.prepare_uphold_state_token }
+    let(:subject) { verified_connection.prepare_uphold_state_token! }
 
     before do
       verified_connection.uphold_state_token = nil

@@ -261,10 +261,9 @@ export default {
     },
     connected: "Connected <span>{displayName}</span>",
     currencies: {
-      defaultCurrency: 'Default Currency',
-      description: 'Confirm your preferred deposit currency or token',
-      title: 'You will receive monthly contributions from your Brave fans in this currency in your account.',
-      upholdFee: 'Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a href="https://uphold.com/en/pricing">Check fees</a>'
+      description: 'You will receive monthly contributions from your Brave fans in this currency in your account.',
+      fees: 'For currency choices other than BAT, This exchange will charge an exchange fee upon deposit. <a>Check fees</a>.',
+      title: 'Confirm your preferred deposit currency or token',
     },
     disconnect: "Disconnect",
     gemini: {

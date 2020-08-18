@@ -1,3 +1,4 @@
+# This is the UpholdController for all publishers to connect their uphold account.
 module Connections
   class UpholdConnectionsController < ApplicationController
     # TODO Refactor Uphold Status to not actually need helper
@@ -5,6 +6,17 @@ module Connections
     include PublishersHelper
 
     before_action :authenticate_publisher!
+
+    # Generates an Uphold State Token for the user
+    def create
+      uphold_connection = UpholdConnection.find_or_create_by(publisher: current_publisher)
+      uphold_connection.prepare_uphold_state_token!
+
+      redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
+        gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
+        gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
+        gsub('<STATE>', uphold_connection.uphold_state_token)
+    end
 
     def show
       publisher = current_publisher
@@ -21,50 +33,6 @@ module Connections
           }, status: 200)
         end
       end
-    end
-
-    def confirm_default_currency_params
-      params.require(:publisher).permit(:default_currency)
-    end
-
-    # Records default currency preference
-    # If user does not have Uphold's `cards:write` scope, we redirect to Uphold to get authorization
-    # Card creation is done in #home
-    def confirm_default_currency
-      # TODO Consider refactoring this
-      uphold_connection = current_publisher.uphold_connection
-
-      uphold_connection.update(confirm_default_currency_params.merge(default_currency_confirmed_at: Time.now))
-
-      if uphold_connection.can_create_uphold_cards?
-        uphold_connection.create_uphold_cards
-
-        # TODO do we need this refresh?
-        render(json: {
-          action: 'refresh',
-          status: t("publishers.confirm_default_currency_modal.refreshing"),
-          timeout: 2000,
-        }, status: 200)
-      else
-        # Redirect the publisher to Uphold in order to authorize card creation.
-        # Card will be created in #home when they return.
-        render(json: {
-          action: 'redirect',
-          status: t("publishers.confirm_default_currency_modal.redirecting"),
-          redirectURL: connect_uphold_publishers_path,
-          timeout: 3000,
-        }, status: 200)
-      end
-    end
-
-    # Generates an Uphold State Token for the user
-    def connect_uphold
-      current_publisher.uphold_connection.prepare_uphold_state_token
-
-      redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
-        gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
-        gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
-        gsub('<STATE>', current_publisher.uphold_connection.uphold_state_token)
     end
 
     # This is the action which is redirected to from the Uphold OAuth flow.

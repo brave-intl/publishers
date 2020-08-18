@@ -21,9 +21,9 @@ export default {
       }
     },
     gemini: {
-      connect: "/publishers/gemini_connection/connect",
-      show: "/publishers/geini_connection",
-      destroy: "/publishers/gemini_connection"
+      connect: "/connections/gemini_connection",
+      show: "/connections/gemini_connection",
+      destroy: "/connections/gemini_connection"
     },
     stripe: {
       connect: "/publishers/stripe_connection/connect",
@@ -45,10 +45,10 @@ export default {
       path: "/publishers"
     },
     uphold: {
-      connect: "/publishers/uphold_connection/connect_uphold",
-      confirm_default_currency: "/publishers/confirm_default_currency",
-      disconnect: "/publishers/disconnect_uphold",
-      status: "/publishers/uphold_connection/uphold_status",
+      connect: "/connections/uphold_connection",
+      confirm_default_currency: "/connections/confirm_default_currency",
+      disconnect: "/connections/uphold_connection",
+      status: "/connections/uphold_connection/uphold_status",
     },
     wallet: {
       path: "/publishers/wallet",

@@ -41,6 +41,7 @@ class BraveConnection extends React.Component<any, any> {
           upholdUsername={this.state.upholdConnection.username}
           status={this.state.upholdConnection.uphold_status}
           verifyUrl={this.state.upholdConnection.verify_url}
+          canCreateCards={this.state.upholdConnection['can_create_uphold_cards?']}
           loadData={this.loadData}
         />
       );
