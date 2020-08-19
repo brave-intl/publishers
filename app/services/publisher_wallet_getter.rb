@@ -23,7 +23,7 @@ class PublisherWalletGetter < BaseApiClient
       rates: rates,
       accounts: accounts,
       transactions: transactions,
-      uphold_connection: publisher.uphold_connection
+      default_currency: publisher.wallet_provider&.default_currency
     )
 
   rescue Faraday::Error => e

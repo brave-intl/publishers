@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 class GeminiConnection < ApplicationRecord
+  SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
+
   belongs_to :publisher
 
   attr_encrypted :access_token, :refresh_token, key: :encryption_key
 
   after_save :update_default_currency, if: -> { saved_change_to_default_currency? }
+
+  validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
 
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
@@ -19,9 +23,12 @@ class GeminiConnection < ApplicationRecord
     "#{Rails.application.config.services.gemini[:oauth_uri]}/settings/profile"
   end
 
-  # Eventually well expand to https://docs.gemini.com/rest-api/#symbols-and-minimums
+  # Public: All the support currency pairs for BAT on the Gemini Exchange
+  # https://docs.gemini.com/rest-api/#symbols-and-minimums
+  #
+  # Returns an array of currencies.
   def supported_currencies
-    ["BAT", "USD", "BTC", "ETH"]
+    SUPPORTED_CURRENCIES
   end
 
   private

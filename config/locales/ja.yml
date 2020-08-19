@@ -733,6 +733,7 @@ ja:
     dashboard:
       days: "日"
       downloaded: "ダウンロード済み"
+      unpayable_notice: "Paypalに接続して身元を確認し、紹介プロモーションプログラムに登録します。"
       installed: "インストール済み"
       confirmed: "確認済み"
       last_updated_at: "約%{time}前に最終更新"

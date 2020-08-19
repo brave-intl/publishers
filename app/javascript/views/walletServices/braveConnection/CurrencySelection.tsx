@@ -34,9 +34,9 @@ const CurrencySelection = (props) => {
         props.setShowModal(false);
         props.loadData();
       })
-      .catch((axiosError) => {
-        let error = axiosError.response.data.errors;
-        if (error.length === 0) {
+      .catch(axiosError => {
+        let error = axiosError.response && axiosError.response.data.errors;
+        if (!error || error.length === 0) {
           error = [intl.formatMessage({ id: "common.unexpectedError" })];
         }
         setErrors(error);

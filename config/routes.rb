@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
   get 'publishers/uphold_verified', to: 'connections/uphold_connections#edit'
   get 'publishers/gemini_connection/new', to: 'connections/gemini_connections#edit'
+  get 'publishers/paypal_connections/connect_callback', to: 'connections/paypal_connections#connect_callback'
 
   # Routes for Browser Users to login via Uphold
   namespace :uphold_connections do
