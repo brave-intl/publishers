@@ -25,10 +25,10 @@ Rails.application.routes.draw do
 
   # These routes are for connecting to 3rd-party payment providers.
   namespace :connections do
-    resource :currency
+    resource :currency, only: [:show, :update]
     resource :stripe_connection
     resource :gemini_connection
-    resource :uphold_connection
+    resource :uphold_connection, except: [:new]
 
     resources :paypal_connections, only: [] do
       get :connect_callback, on: :collection

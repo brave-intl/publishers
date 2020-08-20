@@ -43,10 +43,6 @@ module PublishersHelper
     is_new.present? && publisher.channels.size.zero?
   end
 
-  def publisher_can_receive_funds?(publisher)
-    publisher.uphold_connection&.uphold_status == :verified
-  end
-
   def payout_in_progress?
     !!Rails.cache.fetch('payout_in_progress')
   end
@@ -136,21 +132,6 @@ module PublishersHelper
       contribution: number_to_percentage(contribution / total * 100, precision: 1),
       referrals: number_to_percentage(referrals / total * 100, precision: 1),
     }
-  end
-
-  def publisher_uri(publisher)
-    "https://#{publisher.brave_publisher_id}"
-  end
-
-  def uphold_authorization_description(publisher)
-    case publisher.uphold_connection&.uphold_status
-    when :unconnected, nil
-      I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
-    when UpholdConnection::UpholdAccountState::RESTRICTED
-      publisher.uphold_connection.is_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
-    else
-      I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
-    end
   end
 
   def uphold_dashboard_url
