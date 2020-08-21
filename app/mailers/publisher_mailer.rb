@@ -148,6 +148,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
+      from: ApplicationMailer::BRAND_BIDDING_EMAIL,
       subject: default_i18n_subject
     )
   end
@@ -156,6 +157,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
+      from: ApplicationMailer::BRAND_BIDDING_EMAIL,
       subject: default_i18n_subject
     )
   end
