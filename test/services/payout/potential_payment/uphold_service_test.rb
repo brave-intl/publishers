@@ -342,11 +342,13 @@ class UpholdServiceTest < ActiveJob::TestCase
                   old_address = publisher.uphold_connection.address
                   refute_equal new_address, old_address
 
-                  Payout::PotentialPayment::UpholdService.new(
-                    payout_report: payout_report,
-                    publisher: publisher,
-                    should_send_notifications: should_send_notifications
-                  ).perform
+                  perform_enqueued_jobs do
+                    Payout::PotentialPayment::UpholdService.new(
+                      payout_report: payout_report,
+                      publisher: publisher,
+                      should_send_notifications: should_send_notifications
+                    ).perform
+                  end
 
                   PotentialPayment.where(payout_report_id: payout_report.id).each do |potential_payment|
                     # Test to make sure that the previous address was set to the new address

@@ -38,7 +38,7 @@ noscript
       .p-2= render 'icon_circled_bang_warning'
       .p-2
         = t('publishers.statements.index.missing_scope')
-        = link_to(I18n.t('publishers.statements.index.reauthorize'), connect_uphold_publishers_path, method: :patch)
+        = link_to(I18n.t('publishers.statements.index.reauthorize'), connections_uphold_connection_path, method: :patch)
 
   .statements
 =javascript_pack_tag('Statements')

@@ -32,7 +32,7 @@ class PublishersHelperTest < ActionView::TestCase
 
     def initialize(rates: {}, accounts: [], transactions: [], uphold_connection: nil)
       @uphold_connection = UpholdConnection.new(uphold_connection)
-      @wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, uphold_connection: @uphold_connection)
+      @wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: @uphold_connection.default_currency)
     end
 
     def partner?
@@ -45,6 +45,10 @@ class PublishersHelperTest < ActionView::TestCase
 
     def no_grants?
       false
+    end
+
+    def wallet_provider
+      @uphold_connection
     end
   end
 
@@ -141,11 +145,11 @@ class PublishersHelperTest < ActionView::TestCase
 
   test '#next_deposit_date when it is midnight UTC displays the current month' do
     date = DateTime.parse("2019-05-01T00:00:00+0000")
-    assert_equal next_deposit_date(date), "May 8th"
+    assert_equal next_deposit_date(today: date), "May 8th"
   end
 
   test '#next_deposit_date when it is midnight PST displays current month' do
     date = DateTime.parse("2019-05-01T00:00:00-0800")
-    assert_equal next_deposit_date(date), "May 8th"
+    assert_equal next_deposit_date(today: date), "May 8th"
   end
 end
