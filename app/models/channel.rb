@@ -283,8 +283,10 @@ class Channel < ApplicationRecord
     site_banner_lookup.derived_site_banner_info =
       if skip_site_banner_info_lookup
         {}
+      elsif publisher.default_site_banner_mode
+        publisher&.default_site_banner&.non_default_properties || {}
       else
-        site_banner&.non_default_properties || publisher&.default_site_banner&.non_default_properties || {}
+        site_banner&.non_default_properties || {}
       end
     site_banner_lookup.update!(
       channel_id: id,
