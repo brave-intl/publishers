@@ -404,6 +404,7 @@ ActiveRecord::Schema.define(version: 2020_08_13_201014) do
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
+    t.index ["referral_code"], name: "index_promo_registrations_on_referral_code"
   end
 
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
