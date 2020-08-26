@@ -11,6 +11,7 @@ require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/mock_uphold_responses"
+require "test_helpers/mock_gemini_responses"
 require 'capybara/rails'
 require 'capybara/minitest'
 require 'minitest/rails'
@@ -18,6 +19,7 @@ require 'minitest/rails'
 Webpacker.compile
 
 Sidekiq::Testing.fake!
+
 
 WebMock.allow_net_connect!
 

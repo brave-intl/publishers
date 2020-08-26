@@ -78,7 +78,7 @@ module Gemini
         grant_type: REFRESH_TOKEN,
         refresh_token: token,
       }
-      response = post(PATH.expand(segment: 'token'), body)
+      response = post(PATH.expand(segments: 'token'), body)
 
       Auth.new(JSON.parse(response.body))
     end
