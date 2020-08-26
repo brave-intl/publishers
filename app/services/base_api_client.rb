@@ -17,8 +17,8 @@ class BaseApiClient < BaseService
   # options - [Hash] the parameters to supply
   #
   # returns - [Response] the response
-  def post(path, options = {}, authorization = nil)
-    request(:post, path, options, authorization)
+  def post(path, options = {}, authorization = nil, headers = {})
+    request(:post, path, options, authorization, headers)
   end
 
   # Make a PUT request.

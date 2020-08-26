@@ -161,6 +161,9 @@ ActiveRecord::Schema.define(version: 2020_08_13_170145) do
     t.string "status"
     t.string "country"
     t.boolean "is_verified"
+    t.string "recipient_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
@@ -212,7 +215,7 @@ ActiveRecord::Schema.define(version: 2020_08_13_170145) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: true
+    t.boolean "verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -362,8 +365,6 @@ ActiveRecord::Schema.define(version: 2020_08_13_170145) do
     t.uuid "invoice_id"
     t.uuid "finalized_by_id"
     t.jsonb "channel_stats", default: {}
-    t.text "verdict"
-    t.text "notes"
     t.text "channel_type"
     t.string "status"
     t.string "wallet_provider_id"
