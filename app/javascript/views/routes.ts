@@ -10,7 +10,7 @@ export default {
   },
   publishers: {
     connections: {
-      currency: "/connections/currency"
+      currency: "/connection/currency"
     },
     promo_registrations: {
       show: {
@@ -21,9 +21,9 @@ export default {
       }
     },
     gemini: {
-      connect: "/connections/gemini_connection",
-      show: "/connections/gemini_connection",
-      destroy: "/connections/gemini_connection"
+      connect: "/connection/gemini_connection",
+      show: "/connection/gemini_connection",
+      destroy: "/connection/gemini_connection"
     },
     stripe: {
       connect: "/publishers/stripe_connection/connect",
@@ -45,10 +45,10 @@ export default {
       path: "/publishers"
     },
     uphold: {
-      connect: "/connections/uphold_connection",
-      confirm_default_currency: "/connections/confirm_default_currency",
-      disconnect: "/connections/uphold_connection",
-      status: "/connections/uphold_connection/uphold_status",
+      connect: "/connection/uphold_connection",
+      confirm_default_currency: "/connection/confirm_default_currency",
+      disconnect: "/connection/uphold_connection",
+      status: "/connection/uphold_connection/uphold_status",
     },
     wallet: {
       path: "/publishers/wallet",

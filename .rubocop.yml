@@ -20,7 +20,7 @@ AllCops:
     - app/controllers/admin/unattached_promo_registrations_controller.rb
     - app/controllers/publishers/cases_controller.rb
     - app/controllers/publishers/**
-    - app/controllers/connections/**
+    - app/controllers/payment/**
     - app/helpers/publishers_helper.rb
     - app/services/uphold/**/*
     - app/services/paypal/**

@@ -498,7 +498,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:uphold_connected_details)
     sign_in publisher
 
-    delete connections_uphold_connection_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    delete connection_uphold_connection_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
 
@@ -595,7 +595,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     confirm_default_currency_params = { default_currency: "BAT" }
 
     assert_enqueued_with(job: CreateUpholdCardsJob) do
-      patch(connections_currency_path, params: confirm_default_currency_params)
+      patch(connection_currency_path, params: confirm_default_currency_params)
     end
 
     assert_response 200
@@ -610,7 +610,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     confirm_default_currency_params = { default_currency: "BTC" }
 
     assert_enqueued_with(job: CreateUpholdCardsJob) do
-      patch(connections_currency_path, params: confirm_default_currency_params)
+      patch(connection_currency_path, params: confirm_default_currency_params)
     end
 
     assert publisher.uphold_connection.default_currency == "BTC"
