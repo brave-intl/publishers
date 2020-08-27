@@ -163,11 +163,6 @@ en:
         this_year: This year
         last_year: Last year
         all: All dates
-      uphold_authorization_description:
-        connect_to_uphold: Connect to Uphold
-        reconnect_to_uphold: Reconnect to Uphold
-        visit_uphold_support: Visit Uphold's Support Page
-        visit_uphold_dashboard: Visit Uphold's Dashboard
       uphold_status:
         balance_sending: Contribution balance is transferred to your Uphold wallet monthly.
         connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Rewards.
@@ -340,7 +335,7 @@ en:
       body_html:
         We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code, as well as directing traffic to a site impersonating Brave.
         <br/><br/>
-        Please stop bidding on the terms "Brave", "Brave Browser" or any other Brave branded terms when targeting your campaigns, and use negative keyword tools to ensure none of your ads accidentally appear on these keywords searches. These terms are off limits on all ads platforms, as described in our Terms of Service - Section 19. 
+        Please stop bidding on the terms "Brave", "Brave Browser" or any other Brave branded terms when targeting your campaigns, and use negative keyword tools to ensure none of your ads accidentally appear on these keywords searches. These terms are off limits on all ads platforms, as described in our Terms of Service - Section 19.
         <br/><br/>
         Further, you are not permitted to earn through the Referral Program using a site that impersonates brave.com. If you would like to continue in the Referral Program, you will need to
         <ul>
@@ -349,7 +344,7 @@ en:
         </ul>
         You can choose not to change your domain name, but you would have to change the download button to direct users to brave.com and not your Referral Code. You cannot earn through the Referral Program while impersonating Brave.
         <br/><br/>
-        Please carefully review our Terms of Service, as another violation will result in a ban from the Referral Program. 
+        Please carefully review our Terms of Service, as another violation will result in a ban from the Referral Program.
         <br/><br/>
         We have temporarily suspended your account until you are in compliance.
         <br/><br/>
@@ -736,14 +731,6 @@ en:
       confirmation: Are you sure you want to disconnect your account with Uphold?
       deny: Cancel
       confirm: Disconnect
-    confirm_default_currency_modal:
-      headline: Confirm your preferred deposit currency or token
-      leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
-      fee_disclaimer_html: Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a href="https://uphold.com/en/pricing">Check fees</a>
-      confirm: Confirm
-      saving: Saving ...
-      redirecting: Redirecting to Uphold for authorization ...
-      refreshing: Refreshing balances ...
     instant_donation_modal:
       headline: Customize Your Tipping Banner
       intro:

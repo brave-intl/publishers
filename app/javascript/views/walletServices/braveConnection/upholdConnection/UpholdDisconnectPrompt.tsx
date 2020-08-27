@@ -12,7 +12,7 @@ const DisconnectPrompt = (props) => {
   const confirmDisconnect = async () => {
     setLoading(true);
     axios
-      .patch(routes.publishers.uphold.disconnect)
+      .delete(routes.publishers.uphold.disconnect)
       .then(() => {
         setLoading(false);
         props.setShowModal(false);

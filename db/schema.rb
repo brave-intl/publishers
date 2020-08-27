@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_231131) do
     t.string "recipient_id"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.string "default_currency"
     t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"

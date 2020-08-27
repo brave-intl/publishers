@@ -20,4 +20,12 @@ class PaypalConnection < ActiveRecord::Base
   def update_site_banner_lookup!
     user.update_site_banner_lookup!
   end
+
+  def default_currency
+    'YEN'
+  end
+
+  def payable?
+    verified_account
+  end
 end

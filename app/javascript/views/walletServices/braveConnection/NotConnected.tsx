@@ -32,7 +32,7 @@ const UpholdConnectButton = () => (
     data-piwik-name="Clicked"
     data-piwik-value="Dashboard"
     rel="nofollow"
-    data-method="patch"
+    data-method="post"
     href={routes.publishers.uphold.connect}
   >
     <FlexWrapper className="align-items-center">
