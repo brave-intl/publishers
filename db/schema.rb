@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_13_170145) do
+ActiveRecord::Schema.define(version: 2020_08_26_231131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -461,10 +461,13 @@ ActiveRecord::Schema.define(version: 2020_08_13_170145) do
     t.boolean "thirty_day_login", default: false, null: false
     t.boolean "subscribed_to_marketing_emails", default: false, null: false
     t.jsonb "feature_flags", default: {}
+    t.string "wallet_provider_type"
+    t.uuid "wallet_provider_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
+    t.index ["wallet_provider_type", "wallet_provider_id"], name: "index_publishers_on_wallet_provider_type_and_wallet_provider_id"
   end
 
   create_table "reddit_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

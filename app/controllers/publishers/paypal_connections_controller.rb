@@ -47,6 +47,7 @@ module Publishers
         hidden: false
       )
 
+      current_publisher.update(wallet_provider: paypal_connection)
       redirect_to home_publishers_path
     end
   end

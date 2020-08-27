@@ -95,6 +95,7 @@ class UpholdConnection < ActiveRecord::Base
       default_currency_confirmed_at: nil,
       default_currency: nil,
     )
+    publisher.update(wallet_provider: nil)
   end
 
   def uphold_reauthorization_needed?
