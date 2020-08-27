@@ -333,12 +333,19 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  # Internal: Defines and memoizes the current wallet provider connection for user.
+  #
+  # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
+  def wallet_provider
+    @connection ||= (gemini_connection || paypal_connection || uphold_connection)
+  end
+
   def brave_payable?
-    paypal_connection&.verified_account || uphold_connection&.payable? || gemini_connection&.payable?
+    wallet_provider&.payable?
   end
 
   def country
-    provider_country = uphold_connection&.country || paypal_connection&.country || gemini_connection&.country
+    provider_country = wallet_provider&.country
 
     provider_country.to_s.upcase
   end
