@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_231131) do
+ActiveRecord::Schema.define(version: 2020_08_27_225818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -371,6 +371,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_231131) do
     t.string "wallet_provider_id"
     t.integer "wallet_provider", limit: 2, default: 0
     t.boolean "paypal_bank_account_attached", default: false, null: false
+    t.boolean "gemini_is_verified"
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"

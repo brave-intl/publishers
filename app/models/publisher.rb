@@ -161,6 +161,11 @@ class Publisher < ApplicationRecord
     @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
   end
 
+  def wallet_provider
+    return @wallet_provider if @wallet_provider.present?
+    gemini_connection || paypal_connection || uphold_connection
+  end
+
   # Public: Checks the different wallet connections and enqueues sync jobs to refresh their data
   #         If their data wasn't refreshed in the last 2 hours.
   #
@@ -332,13 +337,6 @@ class Publisher < ApplicationRecord
 
   def paypal_locale?(locale)
     locale == 'ja'
-  end
-
-  # Internal: Defines and memoizes the current wallet provider connection for user.
-  #
-  # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
-  def wallet_provider
-    @connection ||= (gemini_connection || paypal_connection || uphold_connection)
   end
 
   def brave_payable?

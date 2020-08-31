@@ -216,7 +216,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
-  def sync_from_uphold!
+  def sync_connection!
     # Set uphold_details to a variable, if uphold_access_parameters is nil
     # we will end up makes N service calls everytime we call uphold_details
     # this is a side effect of the memoization

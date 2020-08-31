@@ -57,7 +57,7 @@ class UpholdConnectionsController < ApplicationController
         promo_campaign: PromoCampaign.find_by(name: PromoCampaign::PEER_TO_PEER)
       )
     end
-    uphold_connection.sync_from_uphold!
+    uphold_connection.sync_connection!
     sign_in(:publisher, user)
     uphold_connection
   end

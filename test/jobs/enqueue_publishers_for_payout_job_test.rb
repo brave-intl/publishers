@@ -2,8 +2,13 @@ require 'test_helper'
 
 class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
   include ActiveJob::TestHelper
+  include MockGeminiResponses
+
   before do
     IncludePublisherInPayoutReportJob.clear
+    mock_gemini_auth_request!
+    mock_gemini_account_request!
+    mock_gemini_recipient_id!
   end
 
   test "launches a job per payout type" do
@@ -13,7 +18,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
       final: false
     )
     assert_equal prc + 1, PayoutReport.count
-    assert_enqueued_jobs 2
+    assert_enqueued_jobs 3
   end
 
   test "can specify an existing payout report and a new one won't be created" do
@@ -35,6 +40,6 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
         publisher_ids: publishers.pluck(:id)
       )
     end
-    assert_enqueued_jobs 2
+    assert_enqueued_jobs 3
   end
 end
