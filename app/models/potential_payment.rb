@@ -17,8 +17,15 @@ class PotentialPayment < ApplicationRecord
 
   validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, :in => [true, false], unless: -> { wallet_provider == 'paypal' || wallet_provider == 'gemini' }
 
+  scope :uphold_kyc, -> {
+    where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false)
+  }
+  scope :gemini_kyc, -> {
+    where(gemini_is_verified: true)
+  }
+
   scope :to_be_paid, -> {
-    where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false).
+    uphold_kyc.or(gemini_kyc).
       where("amount::numeric > ?", 0).
       where.not(address: "").
       where.not(address: nil)
