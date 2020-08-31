@@ -2,7 +2,6 @@ module Payout
   class PaypalService < Service
     def perform
       return if skip_publisher?
-      return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold? || @publisher.wire_only?
 
       wallet = PublisherWalletGetter.new(publisher: @publisher).perform
       probi = wallet.referral_balance.amount_probi # probi = balance
