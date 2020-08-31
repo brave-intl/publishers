@@ -47,7 +47,7 @@ class PublishersHelperTest < ActionView::TestCase
       false
     end
 
-    def wallet_provider
+    def selected_wallet_provider
       @uphold_connection
     end
   end

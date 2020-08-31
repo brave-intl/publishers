@@ -46,7 +46,7 @@ module Payment
 
         ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: uphold_connection.id)
 
-        current_publisher.update(wallet_provider: uphold_connection)
+        current_publisher.update(selected_wallet_provider: uphold_connection)
 
         uphold_connection.reload
         uphold_connection.sync_from_uphold!
