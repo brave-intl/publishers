@@ -16,7 +16,12 @@ module Payout
 
       if payout_report_id.present?
         payout_report = PayoutReport.find(payout_report_id)
-        payout_report.update(expected_num_payments: payout_report.expected_num_payments + PayoutReport.expected_num_payments(publishers))
+        number_of_payments = PayoutReport.expected_num_payments(publishers)
+        payout_report.with_lock do
+          payout_report.reload
+          payout_report.expected_num_payments += number_of_payments
+          payout_report.save!
+        end
       end
     end
   end
