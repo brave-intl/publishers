@@ -11,7 +11,7 @@ module Sync
         return if uphold_connection.uphold_details.blank?
 
         # every request to the homepage let's sync from uphold
-        uphold_connection.sync_from_uphold!
+        uphold_connection.sync_connection!
 
         # Handles legacy case where user is missing an Uphold card
         uphold_connection.create_uphold_cards if uphold_connection.missing_card?

@@ -49,10 +49,15 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   end
 
   def enqueue_payout(payout_report:, manual:, publisher_ids:)
+    # Finds all the publishers that have these wallets connected and
+    # kicks off IncludePublisherInPayoutReportJob for each one.
     Payout::UpholdJob.perform_later(
       manual: manual,
       payout_report_id: payout_report.id,
       publisher_ids: publisher_ids
+    )
+    Payout::GeminiJob.perform_later(
+      payout_report_id: payout_report.id
     )
     Payout::PaypalJob.perform_later(
       payout_report_id: payout_report.id

@@ -23,6 +23,10 @@ class GeminiConnection < ApplicationRecord
     is_verified? && status == "Active"
   end
 
+  def japanese_account?
+    country&.upcase == 'JP'
+  end
+
   def verify_url
     "#{Rails.application.config.services.gemini[:oauth_uri]}/settings/profile"
   end
@@ -57,6 +61,26 @@ class GeminiConnection < ApplicationRecord
     reload
   end
 
+  def sync_connection!
+    return if access_token.blank?
+
+    # If our access token has expired then we should refresh.
+    if access_token_expired?
+      refresh_authorization!
+    end
+
+    user = Gemini::Account.find(token: access_token).users.first
+    recipient = Gemini::RecipientId.find_or_create(token: access_token)
+
+    update(
+      recipient_id: recipient.recipient_id,
+      display_name: user.name,
+      status: user.status,
+      country: user.country_code,
+      is_verified: user.is_verified,
+    )
+  end
+
   private
 
   def selected_wallet_provider
@@ -65,7 +89,7 @@ class GeminiConnection < ApplicationRecord
   end
 
   def update_default_currency
-    UpdateGeminiDefaultCurrencyJob.perform_async(gemini_id: id)
+    UpdateGeminiDefaultCurrencyJob.perform_async(id)
   end
 
   def encryption_key

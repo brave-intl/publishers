@@ -25,6 +25,10 @@ class PaypalConnection < ActiveRecord::Base
     'YEN'
   end
 
+  def japanese_account?
+    country == JAPAN_COUNTRY_CODE
+  end
+
   def payable?
     verified_account
   end

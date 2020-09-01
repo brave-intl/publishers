@@ -6,8 +6,8 @@ module Sync
       include MockGeminiResponses
 
       describe 'the GeminiConnectionSyncJob runs' do
-        let(:gemini_connection) { publishers(:completed).gemini_connection }
-        let(:subject) { Sync::Connection::GeminiConnectionSyncJob.perform_now(publisher_id: publishers(:completed).id) }
+        let(:gemini_connection) { publishers(:gemini_completed).gemini_connection }
+        let(:subject) { Sync::Connection::GeminiConnectionSyncJob.perform_now(publisher_id: publishers(:gemini_completed).id) }
 
         before do
           mock_gemini_auth_request!

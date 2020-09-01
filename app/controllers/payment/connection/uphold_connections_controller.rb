@@ -49,7 +49,7 @@ module Payment
         current_publisher.update(selected_wallet_provider: uphold_connection)
 
         uphold_connection.reload
-        uphold_connection.sync_from_uphold!
+        uphold_connection.sync_connection!
         create_uphold_report!(uphold_connection)
 
         redirect_to(home_publishers_path)

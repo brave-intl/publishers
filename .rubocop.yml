@@ -31,6 +31,8 @@ AllCops:
     - app/jobs/create_uphold_channel_card_job.rb
     - app/jobs/exchange_uphold_code_for_access_token_job.rb
     - app/jobs/clean_stale_uphold_data_job.rb
+    - app/jobs/payout/**/*
+    - app/jobs/include_publisher_in_payout_report_job.rb
     - app/services/payout_report_publisher_includer.rb
     - app/services/promo/unattached_registrar.rb
     - app/services/promo/registrations_geo_stats_fetcher.rb
