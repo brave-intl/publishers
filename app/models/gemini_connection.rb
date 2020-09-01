@@ -89,7 +89,7 @@ class GeminiConnection < ApplicationRecord
   end
 
   def update_default_currency
-    UpdateGeminiDefaultCurrencyJob.perform_async(gemini_id: id)
+    UpdateGeminiDefaultCurrencyJob.perform_async(id)
   end
 
   def encryption_key

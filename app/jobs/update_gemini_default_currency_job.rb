@@ -2,7 +2,7 @@ class UpdateGeminiDefaultCurrencyJob
   include Sidekiq::Worker
   sidekiq_options queue: :scheduler
 
-  def perform(gemini_id:)
+  def perform(gemini_id)
     connection = GeminiConnection.find(gemini_id)
 
     # Make API Request to Gemini
