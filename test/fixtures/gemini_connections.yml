@@ -1,0 +1,21 @@
+<% salt = SecureRandom.random_bytes(12) %>
+
+default_connection:
+  publisher: default
+
+connection_with_token:
+  publisher: gemini_completed
+  encrypted_access_token:  "<%= TotpRegistration.encrypt_secret(
+    'access_token',
+    key: GeminiConnection.new.send(:encryption_key),
+    iv: salt
+  ) %>"
+  encrypted_access_token_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_refresh_token:  "<%= TotpRegistration.encrypt_secret(
+    'access_token',
+    key: GeminiConnection.new.send(:encryption_key),
+    iv: salt
+  ) %>"
+  encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+
+

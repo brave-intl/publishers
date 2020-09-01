@@ -27,7 +27,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        Payout::PotentialPayment::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
+        Payout::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -45,7 +45,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        Payout::PotentialPayment::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
+        Payout::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -64,7 +64,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
     let (:subject) do
       perform_enqueued_jobs do
-        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
+        Payout::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: false).perform
       end
@@ -125,7 +125,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
+        Payout::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: false).perform
       end
@@ -216,7 +216,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
       let(:subject) do
         perform_enqueued_jobs do
-          Payout::PotentialPayment::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
+          Payout::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                             publisher: publisher,
                                             should_send_notifications: should_send_notifications).perform
         end
@@ -261,7 +261,7 @@ class UpholdServiceTest < ActiveJob::TestCase
     before do
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
       perform_enqueued_jobs do
-        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
+        Payout::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: should_send_notifications).perform
       end
@@ -276,7 +276,7 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:should_send_notifications) { true }
     let(:subject) do
       perform_enqueued_jobs do
-        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
+        Payout::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: should_send_notifications).perform
       end
@@ -342,11 +342,13 @@ class UpholdServiceTest < ActiveJob::TestCase
                   old_address = publisher.uphold_connection.address
                   refute_equal new_address, old_address
 
-                  Payout::PotentialPayment::UpholdService.new(
-                    payout_report: payout_report,
-                    publisher: publisher,
-                    should_send_notifications: should_send_notifications
-                  ).perform
+                  perform_enqueued_jobs do
+                    Payout::UpholdService.new(
+                      payout_report: payout_report,
+                      publisher: publisher,
+                      should_send_notifications: should_send_notifications
+                    ).perform
+                  end
 
                   PotentialPayment.where(payout_report_id: payout_report.id).each do |potential_payment|
                     # Test to make sure that the previous address was set to the new address
@@ -380,7 +382,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
               it "does not create any extra payments" do
                 assert_difference -> { PotentialPayment.count }, 0 do
-                  Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
+                  Payout::UpholdService.new(payout_report: @payout_report,
                                                     publisher: publisher,
                                                     should_send_notifications: should_send_notifications).perform
                 end
@@ -426,7 +428,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
             it "does not create any extra payments" do
               assert_difference -> { PotentialPayment.count }, 0 do
-                Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
+                Payout::UpholdService.new(payout_report: @payout_report,
                                                   publisher: publisher,
                                                   should_send_notifications: should_send_notifications).perform
               end

@@ -164,7 +164,7 @@ class WalletTest < ActiveSupport::TestCase
                    "settlement_currency"=>"ETH",
                    "type"=>"contribution"}]
 
-  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, transactions: transactions, uphold_connection: UpholdConnection.new(default_currency: 'USD'))
+  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, transactions: transactions, default_currency: 'USD')
 
   test "channel_balances have correct BAT and probi amounts" do
     assert_equal test_wallet.channel_balances.count, 2

@@ -3,6 +3,7 @@ import { FormattedMessage, injectIntl } from "react-intl";
 
 import Modal, { ModalSize } from "../../../components/modal/Modal";
 import { FlexWrapper } from "../../style";
+import DepositCurrency from "./upholdConnection/DepositCurrency";
 import DisconnectPrompt from "./upholdConnection/UpholdDisconnectPrompt";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
 import UpholdStatusMessage from "./upholdConnection/UpholdStatusMessage";
@@ -15,6 +16,7 @@ interface IUpholdConnectionState {
 class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
   constructor(props) {
     super(props);
+
     this.state = {
       error: null,
       showDisconnectModal: false,
@@ -66,50 +68,33 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
                 <Modal
                   show={this.state.showDisconnectModal}
                   size={ModalSize.Small}
-                  handleClose={() => this.showModal(false)}
+                  handleClose={() => this.showDisconnectModal(false)}
                 >
                   <DisconnectPrompt
                     setError={this.setError}
                     loadData={this.props.loadData}
-                    setShowModal={this.showModal}
+                    setShowModal={this.showDisconnectModal}
                   />
                 </Modal>
               </FlexWrapper>
             </div>
           </div>
 
-          <UpholdStatusMessage verifyUrl={this.props.verifyUrl} status={this.props.status} />
+          {/*
+            If a user can't create cards then we will show a status message,
+            unless they are in "blocked" status.
+          */}
+          {this.props.canCreateCards && (
+            <DepositCurrency
+              loadData={this.props.loadData}
+              defaultCurrency={this.props.defaultCurrency}
+            />
+          )}
 
-          <div className="row">
-            <div className="col-6 font-weight-bold">
-              <FormattedMessage
-                id="walletServices.uphold.depositCurrency"
-                values={{
-                  currency: this.props.defaultCurrency,
-                  span: (...chunks) => (
-                    <span
-                      id="default_currency_code"
-                      className="text-dark font-weight-normal"
-                    >
-                      {chunks}
-                    </span>
-                  ),
-                }}
-              />
-            </div>
-            <div className="col-1 d-none d-sm-block d-md-block">
-              <span className="text-muted">|</span>
-            </div>
-            <div className="col-5">
-              <a
-                href="#"
-                onClick={() => (window as any).openDefaultCurrencyModal()}
-              >
-                <FormattedMessage id="walletServices.uphold.change" />
-              </a>
-            </div>
-          </div>
-
+          <UpholdStatusMessage
+            verifyUrl={this.props.verifyUrl}
+            status={this.props.status}
+          />
         </div>
       </React.Fragment>
     );
@@ -119,7 +104,7 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
     this.setState({ error: message });
   };
 
-  private showModal = (show) => {
+  private showDisconnectModal = (show) => {
     this.setState({ showDisconnectModal: show });
   };
 }

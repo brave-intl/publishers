@@ -49,7 +49,7 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # If the user became KYC'd let's create the uphold card for them
-  after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
+  after_save :create_uphold_cards, if: -> { saved_change_to_is_member? || saved_change_to_default_currency? }
   after_save :update_site_banner_lookup!, if: -> { saved_change_to_is_member? }
   after_save :update_promo_status, if: -> { saved_change_to_is_member? }
 
@@ -61,7 +61,7 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # This state token is generated and must be unique when connecting to uphold.
-  def prepare_uphold_state_token
+  def prepare_uphold_state_token!
     self.uphold_state_token = SecureRandom.hex(64).to_s
     save!
   end
@@ -95,12 +95,19 @@ class UpholdConnection < ActiveRecord::Base
       default_currency_confirmed_at: nil,
       default_currency: nil,
     )
+    publisher.update(selected_wallet_provider: nil) if publisher.selected_wallet_provider.id == id
   end
 
+  # Public: Determines if a user needs to reconnect their Uphold account.
+  #         If the user doesn't have a valid acess scope, or Uphold returns a 401
+  #         then we tell the user to re-authorize.
+  #
+  # Returns true or false
   def uphold_reauthorization_needed?
     # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
     # Perhaps through a rescue on 401
-    uphold_verified? && (uphold_access_parameters.blank? || uphold_details.nil?)
+    uphold_verified? &&
+      (uphold_access_parameters.blank? || scope.exclude?('cards:write') || uphold_details.nil?)
   end
 
   # Makes a remote HTTP call to Uphold to get more details
@@ -158,7 +165,6 @@ class UpholdConnection < ActiveRecord::Base
       scope.include?("cards:write") &&
       status != UpholdConnection::BLOCKED &&
       status != UpholdConnection::PENDING &&
-      default_currency.present? &&
       !publisher.excluded_from_payout
   end
 
@@ -167,17 +173,24 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def create_uphold_cards
-    return unless can_create_uphold_cards?
+    return unless can_create_uphold_cards? && default_currency.present?
 
-    CreateUpholdCardsJob.perform_now(uphold_connection_id: id)
+    CreateUpholdCardsJob.perform_later(uphold_connection_id: id)
 
     publisher.channels.each do |channel|
-      CreateUpholdChannelCardJob.perform_now(uphold_connection_id: id, channel_id: channel.id)
+      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
     end
   end
 
   def missing_card?
     (default_currency_confirmed_at.present? && address.blank?) || !valid_card?
+  end
+
+  # Public: Returns a list of supported currencies for a publisher
+  #
+  # Returns an array of currencies
+  def supported_currencies
+    uphold_details&.currencies
   end
 
   # Calls the Uphold API and checks
@@ -203,7 +216,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
-  def sync_from_uphold!
+  def sync_connection!
     # Set uphold_details to a variable, if uphold_access_parameters is nil
     # we will end up makes N service calls everytime we call uphold_details
     # this is a side effect of the memoization

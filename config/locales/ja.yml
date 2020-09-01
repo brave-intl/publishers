@@ -159,11 +159,6 @@ ja:
         this_year: 今年
         last_year: 昨年
         all: 全期間
-      uphold_authorization_description:
-        connect_to_uphold: Upholdと連携
-        reconnect_to_uphold: Upholdと再度連携
-        visit_uphold_support: Upholdのサポートページ
-        visit_uphold_dashboard: Upholdのダッシュボード
       uphold_status:
         balance_sending: 支援された残高は毎月Upholdのウォレットに送金されます
         connect_to_uphold: Brave Rewardsからの支援を受け取るにはUpholdにウォレットを作る必要があります
@@ -733,6 +728,7 @@ ja:
     dashboard:
       days: "日"
       downloaded: "ダウンロード済み"
+      unpayable_notice: "Paypalに接続して身元を確認し、紹介プロモーションプログラムに登録します。"
       installed: "インストール済み"
       confirmed: "確認済み"
       last_updated_at: "約%{time}前に最終更新"

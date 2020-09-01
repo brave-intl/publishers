@@ -1,15 +1,21 @@
+# frozen_string_literal: true
+
 class IncludePublisherInPayoutReportJob
   include Sidekiq::Worker
   sidekiq_options queue: 'scheduler'
 
+  GEMINI = :gemini
+  PAYPAL = :paypal
+  UPHOLD = :uphold
+  MANUAL = :manual
+
   def perform(arguments = {})
+    arguments = arguments.symbolize_keys
     # If payout_report_id is not present, we only want to send notifications
     # not create payments
-    payout_report_id = arguments["payout_report_id"]
-    publisher_id = arguments["publisher_id"]
-    should_send_notifications = arguments["should_send_notifications"]
-    for_paypal = arguments["for_paypal"]
-    for_wire = arguments["for_wire"]
+    payout_report_id = arguments[:payout_report_id]
+    publisher_id = arguments[:publisher_id]
+    should_send_notifications = arguments[:should_send_notifications]
 
     if payout_report_id.present?
       payout_report = PayoutReport.find(payout_report_id)
@@ -17,20 +23,24 @@ class IncludePublisherInPayoutReportJob
       payout_report = nil
     end
 
+    potential_payment_job = nil
     publisher = Publisher.find(publisher_id)
-    if for_wire
-    elsif for_paypal
-      Payout::PotentialPayment::PaypalService.new(
-        publisher:                 publisher,
-        payout_report:             payout_report,
-        should_send_notifications: should_send_notifications
-      ).perform
-    else
-      Payout::PotentialPayment::UpholdService.new(
-        publisher:                 publisher,
-        payout_report:             payout_report,
-        should_send_notifications: should_send_notifications
-      ).perform
+
+    case arguments[:kind].to_sym
+    when GEMINI
+      potential_payment_job = Payout::GeminiService
+    when PAYPAL
+      potential_payment_job = Payout::PaypalService
+    when UPHOLD
+      potential_payment_job = Payout::UpholdService
+    when MANUAL
+      potential_payment_job = ManualPayoutReportPublisherIncluder
     end
+
+    potential_payment_job.new(
+      publisher: publisher,
+      payout_report: payout_report,
+      should_send_notifications: should_send_notifications,
+    ).perform
   end
 end

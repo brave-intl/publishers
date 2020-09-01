@@ -21,21 +21,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
-  # TODO Uncomment when channel removal is enabled
-  # test "unverified channel can be removed after confirmation" do
-  #   publisher = publishers(:small_media_group)
-  #   channel = channels(:small_media_group_to_verify)
-
-  #   sign_in publisher
-  #   visit home_publishers_path
-
-  #   assert_content page, channel.publication_title
-  #   find("#channel_row_#{channel.id}").click_link('Remove Channel')
-  #   assert_content page, "Are you sure you want to remove this channel?"
-  #   find('[data-test-modal-container]').click_link("Remove Channel")
-  #   refute_content page, channel.publication_title
-  # end
-
   test "verified channel can be removed after confirmation" do
     publisher = publishers(:small_media_group)
     channel = channels(:small_media_group_to_delete)
@@ -64,14 +49,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     find('[data-test-choose-channel-website]').click
 
     assert_current_path(/site_channels\/new/)
-  end
-
-  test "confirm default currency modal appears after uphold signup" do
-    publisher = publishers(:uphold_connected_currency_unconfirmed)
-    sign_in publisher
-
-    visit home_publishers_path
-    assert_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
   end
 
   test "confirm default currency modal does not appear for non uphold verified publishers" do

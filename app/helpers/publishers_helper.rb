@@ -1,6 +1,8 @@
 module PublishersHelper
   include ChannelsHelper
 
+  PAYPAL_TEMPLATE = Addressable::Template.new("https://{host}/connect{?flowEntry,client_id,scope,redirect_uri}")
+
   def sentry_catcher
     yield
   rescue => e
@@ -9,7 +11,13 @@ module PublishersHelper
   end
 
   def paypal_connect_url
-    "#{Rails.application.secrets[:paypal_connect_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2F#{Rails.application.secrets[:url_host]}%2Fpublishers%2Fpaypal_connections%2Fconnect_callback"
+    PAYPAL_TEMPLATE.expand(
+      host: Rails.application.secrets[:paypal_connect_uri]&.sub('https://', ''),
+      flowEntry: 'static',
+      client_id: Rails.application.secrets[:paypal_client_id],
+      scope: "openid email address https://uri.paypal.com/services/paypalattributes",
+      redirect_uri: publishers_paypal_connections_connect_callback_url(locale: nil),
+    ).to_s
   end
 
   def publishers_meta_tags
@@ -28,22 +36,18 @@ module PublishersHelper
 
   def new_publisher?(publisher)
     is_new = if publisher.paypal_locale?(I18n.locale)
-        publisher.paypal_connection.blank?
-      else
-        publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
-      end
+               publisher.paypal_connection.blank?
+             else
+               publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
+             end
     is_new.present? && publisher.channels.size.zero?
-  end
-
-  def publisher_can_receive_funds?(publisher)
-    publisher.uphold_connection&.uphold_status == :verified
   end
 
   def payout_in_progress?
     !!Rails.cache.fetch('payout_in_progress')
   end
 
-  def next_deposit_date(today = DateTime.now)
+  def next_deposit_date(today: DateTime.now)
     today += 1.month if today.day > 8
     today.strftime("%B 8th")
   end
@@ -66,22 +70,25 @@ module PublishersHelper
   end
 
   def publisher_converted_overall_balance(publisher)
-    return if publisher.uphold_connection.default_currency == "BAT" || publisher.uphold_connection.default_currency.blank?
+    default_currency = publisher.selected_wallet_provider&.default_currency
+    return if default_currency == "BAT" || default_currency.blank?
 
-    result = I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
+    result = I18n.t("helpers.publisher.conversion_unavailable", code: default_currency)
     sentry_catcher do
       if publisher.only_user_funds?
         balance = publisher.wallet&.contribution_balance&.amount_default_currency
       elsif publisher.no_grants?
-        balance =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+        balance = publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
       else
         balance = publisher.wallet&.overall_balance&.amount_default_currency
       end
 
       if balance.present?
-        result = I18n.t("helpers.publisher.balance_pending_approximate",
-               amount: '%.2f' % balance,
-               code: publisher&.uphold_connection.default_currency)
+        result = I18n.t(
+          "helpers.publisher.balance_pending_approximate",
+          amount: '%.2f' % balance,
+          code: default_currency,
+        )
       end
     end
     result
@@ -123,23 +130,8 @@ module PublishersHelper
     total = contribution + referrals
     {
       contribution: number_to_percentage(contribution / total * 100, precision: 1),
-      referrals: number_to_percentage(referrals / total * 100, precision: 1)
+      referrals: number_to_percentage(referrals / total * 100, precision: 1),
     }
-  end
-
-  def publisher_uri(publisher)
-    "https://#{publisher.brave_publisher_id}"
-  end
-
-  def uphold_authorization_description(publisher)
-    case publisher.uphold_connection&.uphold_status
-    when :unconnected, nil
-      I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
-    when UpholdConnection::UpholdAccountState::RESTRICTED
-      publisher.uphold_connection.is_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
-    else
-      I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
-    end
   end
 
   def uphold_dashboard_url
