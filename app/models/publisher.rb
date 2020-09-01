@@ -41,7 +41,7 @@ class Publisher < ApplicationRecord
   has_many :invoices
 
   belongs_to :youtube_channel
-  belongs_to :wallet_provider, polymorphic: true
+  belongs_to :selected_wallet_provider, polymorphic: true
 
   has_one :uphold_connection
   has_one :stripe_connection
@@ -159,11 +159,6 @@ class Publisher < ApplicationRecord
   # API call to eyeshade
   def wallet
     @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
-  end
-
-  def wallet_provider
-    return @wallet_provider if @wallet_provider.present?
-    gemini_connection || paypal_connection || uphold_connection
   end
 
   # Public: Checks the different wallet connections and enqueues sync jobs to refresh their data
@@ -339,12 +334,23 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  # Internal: Defines and memoizes the current wallet provider connection for user.
+  #
+  # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
+  def selected_wallet_provider
+    if self[:selected_wallet_provider].present?
+      self[:selected_wallet_provider]
+    else
+      gemini_connection || paypal_connection || uphold_connection
+    end
+  end
+
   def brave_payable?
-    wallet_provider&.payable?
+    selected_wallet_provider&.payable?
   end
 
   def country
-    provider_country = wallet_provider&.country
+    provider_country = selected_wallet_provider&.country
 
     provider_country.to_s.upcase
   end

@@ -64,7 +64,7 @@ module Payout
       if self.class != Payout::PaypalService
         # A publisher can have a uphold_connection and a paypal_connection.
         # Handle the case where the wallet_provider field is nil
-        connection = @publisher.wallet_provider || @publisher.gemini_connection || @publisher.uphold_connection
+        connection = @publisher.selected_wallet_provider
         if connection.japanese_account?
           create_message("Publisher is located in Japan and is not paid out through this job")
           return true

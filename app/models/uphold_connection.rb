@@ -95,7 +95,7 @@ class UpholdConnection < ActiveRecord::Base
       default_currency_confirmed_at: nil,
       default_currency: nil,
     )
-    publisher.update(wallet_provider: nil)
+    publisher.update(selected_wallet_provider: nil) if publisher.selected_wallet_provider.id == id
   end
 
   # Public: Determines if a user needs to reconnect their Uphold account.

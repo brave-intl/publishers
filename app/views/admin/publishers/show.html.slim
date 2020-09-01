@@ -35,9 +35,9 @@ hr
         .db-info-row
           .db-field = "Overall BAT balance:"
           .db-value = "#{publisher_overall_bat_balance(@publisher)}"
-        - if @publisher.wallet_provider&.default_currency.present?
+        - if @publisher.selected_wallet_provider&.default_currency.present?
           .db-info-row
-            .db-field = "Overall #{@publisher.wallet_provider&.default_currency} balance:"
+            .db-field = "Overall #{@publisher.selected_wallet_provider&.default_currency} balance:"
             .db-value = "#{publisher_converted_overall_balance(@publisher)}"
         - if @publisher.created_by.present?
           .db-info-row
