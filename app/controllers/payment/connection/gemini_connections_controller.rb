@@ -58,7 +58,6 @@ module Payment
 
         # Destroy our database records
         if gemini_connection.destroy
-          current_publisher.update(wallet_provider: nil)
           redirect_to(home_publishers_path, notice: I18n.t("publishers.gemini_connections.destroy.removed"))
         else
           redirect_to(
