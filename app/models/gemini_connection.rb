@@ -13,6 +13,8 @@ class GeminiConnection < ApplicationRecord
 
   validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
 
+  after_destroy :selected_wallet_provider
+
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
   end
@@ -56,6 +58,11 @@ class GeminiConnection < ApplicationRecord
   end
 
   private
+
+  def selected_wallet_provider
+    return unless publisher.selected_wallet_provider.id == id
+    publisher.update(selected_wallet_provider: nil)
+  end
 
   def update_default_currency
     UpdateGeminiDefaultCurrencyJob.perform_async(gemini_id: id)

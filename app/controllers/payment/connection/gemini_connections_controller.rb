@@ -44,10 +44,10 @@ module Payment
           is_verified: user.is_verified,
         }
 
-        if gemini_connection.update(update_params)
+        if gemini_connection.update(update_params) && current_publisher.update(selected_wallet_provider: gemini_connection)
           redirect_to(home_publishers_path)
         else
-          redirect_to(home_publishers_path, alert:  t(".gemini_error", gemini_connection.errors.full_messages.join(', ')))
+          redirect_to(home_publishers_path, alert:  t(".gemini_error", message: gemini_connection.errors.full_messages.join(', ')))
         end
       rescue GeminiError => e
         redirect_to(home_publishers_path, alert: t(".gemini_error", message: e.message))
