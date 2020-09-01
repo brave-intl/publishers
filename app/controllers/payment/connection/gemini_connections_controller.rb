@@ -26,25 +26,17 @@ module Payment
           code: params[:code],
           redirect_uri: publishers_gemini_connection_new_url(locale: nil)
         )
-        account = Gemini::Account.find(token: authorization.access_token)
-        user = account.users.first
-
-        # Account level identifier
-        recipient = Gemini::RecipientId.find_or_create(token: authorization.access_token)
 
         update_params = {
           access_token: authorization.access_token,
           refresh_token: authorization.refresh_token,
           expires_in: authorization.expires_in,
           access_expiration_time: authorization.expires_in.seconds.from_now,
-          recipient_id: recipient.recipient_id,
-          display_name: user.name,
-          status: user.status,
-          country: user.country_code,
-          is_verified: user.is_verified,
         }
 
-        if gemini_connection.update(update_params) && current_publisher.update(selected_wallet_provider: gemini_connection)
+        if gemini_connection.update(update_params) &&
+          current_publisher.update(selected_wallet_provider: gemini_connection) &&
+          gemini_connection.sync_connection!
           redirect_to(home_publishers_path)
         else
           redirect_to(home_publishers_path, alert:  t(".gemini_error", message: gemini_connection.errors.full_messages.join(', ')))

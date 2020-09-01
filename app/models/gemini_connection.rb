@@ -69,8 +69,12 @@ class GeminiConnection < ApplicationRecord
       refresh_authorization!
     end
 
-    user = Gemini::Account.find(token: access_token).users.first
+    users = Gemini::Account.find(token: access_token).users
     recipient = Gemini::RecipientId.find_or_create(token: access_token)
+    user = users.find { |u| u.is_verified && u.status == 'Active' }
+
+    # If we couldn't find a verified account we'll take the first user.
+    user ||= users.first
 
     update(
       recipient_id: recipient.recipient_id,
