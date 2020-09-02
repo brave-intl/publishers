@@ -30,7 +30,7 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     get admin_channels_path, params: { q: query }
     assert_response :success
     assert_select "tbody" do
-      assert_select "tr", 1
+      assert_select "tr", 3
       assert_select "td", channel.id
     end
 
