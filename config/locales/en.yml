@@ -319,7 +319,7 @@ en:
       closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
     suspend_publisher_for_brand_bidding:
-      subject: Your Brave Rewards account has been temporarily frozen
+      subject: Your Brave Rewards account has been suspended
       body_html:
         We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code.
         <br/><br/>
@@ -331,7 +331,7 @@ en:
         <br/><br/>
         Thank you.
     suspend_publisher_for_brand_bidding_and_impersonation:
-      subject: Your Brave Rewards account has been temporarily frozen
+      subject: Your Brave Rewards account has been suspended
       body_html:
         We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code, as well as directing traffic to a site impersonating Brave.
         <br/><br/>
