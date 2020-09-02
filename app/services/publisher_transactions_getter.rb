@@ -21,6 +21,12 @@ class PublisherTransactionsGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.url("v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
+      request.options.params_encoder = Faraday::FlatParamsEncoder
+      request.params['type'] = ['referral_settlement', 'contribution_settlement', 'fees']
+
+      # Set a timeout (seconds) so requests do not stall.
+      request.options[:timeout] = 15
+      request.options[:open_timeout] = 10
     end
 
     transactions = JSON.parse(response.body)
