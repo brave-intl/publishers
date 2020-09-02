@@ -7,6 +7,9 @@ class UpdateGeminiDefaultCurrencyJob
     # You can't set a payment currency unless they are fully verified with Gemini.
     return unless connection.payable?
 
+    # Refresh the connection if the token has expired.
+    connection.refresh_authorization! if connection.access_token_expired?
+
     # Make API Request to Gemini
     response = Gemini::Setting.set_payment_currency(
       token: connection.access_token,
