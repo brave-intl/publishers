@@ -151,3 +151,9 @@ potentially_paid_site_details:
 
 paypal_connected_website_details:
   brave_publisher_id: "paypalconnected.org"
+
+gemini_not_completed_website_details:
+  brave_publisher_id: "gemini_not_connected_website_details.org"
+
+gemini_completed_website_details:
+  brave_publisher_id: "gemini_completed_website_details.org"

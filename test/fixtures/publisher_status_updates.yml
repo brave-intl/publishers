@@ -51,3 +51,7 @@ active_<%= item %>:
   status: "active"
   created_at: "2018-01-01"
 <% end %>
+
+gemini_suspended_status:
+  publisher: gemini_suspended
+  status: "suspended"
