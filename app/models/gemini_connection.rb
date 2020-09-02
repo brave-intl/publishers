@@ -70,19 +70,24 @@ class GeminiConnection < ApplicationRecord
     end
 
     users = Gemini::Account.find(token: access_token).users
-    recipient = Gemini::RecipientId.find_or_create(token: access_token)
     user = users.find { |u| u.is_verified && u.status == 'Active' }
 
     # If we couldn't find a verified account we'll take the first user.
     user ||= users.first
 
     update(
-      recipient_id: recipient.recipient_id,
       display_name: user.name,
       status: user.status,
       country: user.country_code,
       is_verified: user.is_verified,
     )
+
+    # Users aren't able to create a recipient id if they are not fully verified
+    if payable?
+      recipient = Gemini::RecipientId.find_or_create(token: access_token)
+      update(recipient_id: recipient.recipient_id)
+      update_default_currency
+    end
   end
 
   private

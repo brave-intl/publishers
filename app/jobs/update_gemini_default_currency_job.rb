@@ -4,6 +4,8 @@ class UpdateGeminiDefaultCurrencyJob
 
   def perform(gemini_id)
     connection = GeminiConnection.find(gemini_id)
+    # You can't set a payment currency unless they are fully verified with Gemini.
+    return unless connection.payable?
 
     # Make API Request to Gemini
     response = Gemini::Setting.set_payment_currency(
