@@ -36,7 +36,7 @@ class Api::V1::PublishersController < Api::BaseController
     note = params[:note]
 
     # We should not automatically move publishers out of this status.
-    if user.status == PublisherStatusUpdate::ONLY_USER_FUNDS
+    if user. only_user_funds?
       render status: 200 and return
     end
 
