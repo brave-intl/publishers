@@ -37,7 +37,7 @@ class Api::V1::PublishersController < Api::BaseController
 
     # We should not automatically move publishers out of this status.
     if user.only_user_funds?
-      render status: 200 and return
+      render(status: 200, json: { publisher_status_updates_id: user.last_status_update.id }) and return
     end
 
     raise InvalidNote if note.blank?
