@@ -35,7 +35,7 @@ const UpholdStatusMessage = (props) => {
   }
 
   return (
-    <div className="mt-2 mb-4 text-danger">
+    <div className="mt-2 text-danger">
       <VerifyButton verifyUrl={props.verifyUrl}>
         <FormattedMessage id={messageId} />
       </VerifyButton>

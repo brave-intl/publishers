@@ -77,8 +77,16 @@ export const ExtraSmallContainer = styled(Container)`
 `;
 
 export const SmallContainer = styled(Container)`
-  width: 46%;
-  min-width: 35rem;
+  width: 95%;
+  min-width: 20rem;
+
+  @media only screen and (min-width: 600px) {
+    min-width: 30rem;
+  }
+  @media only screen and (min-width: 768px) {
+    width: 46%;
+    min-width: 35rem;
+  }
 `;
 
 export const MediumContainer = styled(Container)`

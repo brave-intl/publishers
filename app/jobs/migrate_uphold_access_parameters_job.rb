@@ -12,7 +12,7 @@ class MigrateUpholdAccessParametersJob < ApplicationJob
         default_currency_confirmed_at: connection.publisher.default_currency_confirmed_at || Time.now
       )
 
-      was_successful = connection.sync_from_uphold!
+      was_successful = connection.sync_connection!
       # Let's not queue up a job that will ultimately not work due to invalid access_parameters
       return unless was_successful
 

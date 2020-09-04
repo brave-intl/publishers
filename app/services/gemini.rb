@@ -1,5 +1,5 @@
 module Gemini
-  @scope = "auditor"
+  @scope = "balances:read,account:read,payments:create"
   @response_type = "code"
 
   class << self

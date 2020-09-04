@@ -144,6 +144,24 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def suspend_publisher_for_brand_bidding(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      from: ApplicationMailer::BRAND_BIDDING_EMAIL,
+      subject: default_i18n_subject
+    )
+  end
+
+  def suspend_publisher_for_brand_bidding_and_impersonation(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      from: ApplicationMailer::BRAND_BIDDING_EMAIL,
+      subject: default_i18n_subject
+    )
+  end
+
   def two_factor_authentication_removal_cancellation(publisher)
     @publisher = publisher
     @publisher_private_two_factor_cancellation_url = publisher_private_two_factor_cancellation_url(publisher: @publisher)

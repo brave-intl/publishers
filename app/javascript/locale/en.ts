@@ -40,7 +40,7 @@ export default {
         title: "Add your websites or channels",
       },
       second: {
-        description: "To receive payments, your wallet accounts must be connected. Connect Uphold for your desired payment options.",
+        description: "To receive payments, your wallet accounts must be connected. Connect Gemini or Uphold for your desired payment options.",
         number: "2",
         title: "Connect wallet services",
       },
@@ -260,6 +260,11 @@ export default {
       title: "Wallet for BAT Payment"
     },
     connected: "Connected <span>{displayName}</span>",
+    currencies: {
+      description: 'You will receive monthly contributions from your Brave fans in this currency in your account.',
+      fees: 'For currency choices other than BAT, This exchange will charge an exchange fee upon deposit. <a>Check fees</a>.',
+      title: 'Confirm your preferred deposit currency or token',
+    },
     disconnect: "Disconnect",
     gemini: {
       connect: "Connect to Gemini",
