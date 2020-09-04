@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resource :health_check, only: [:show]
+  get 'health-check', to: 'health_checks#show'
+
   namespace :uphold_connections do
     get :login
     get :confirm

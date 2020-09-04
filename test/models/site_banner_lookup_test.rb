@@ -7,11 +7,21 @@ class SiteBannerLookupTest < ActionDispatch::IntegrationTest
     assert_equal channel.site_banner_lookup.channel_identifier, channel.details.channel_identifier
   end
 
-  test "if a site banner gets updated, the lookup gets updated too" do
+  test "make sure default site banner mode gets respected" do
     new_title = "I destroyed the stones with the stones"
-    channel = channels(:verified)
-    channel.site_banner.update(title: new_title)
-    assert_equal new_title, channel.site_banner_lookup.derived_site_banner_info['title']
+    default_mode_channel = channels(:verified)
+    original_title = site_banners(:verified_default_banner).title
+    default_mode_channel.site_banner.update(title: new_title)
+
+    # Check to make sure the title for default mode didn't get changed
+    assert_equal original_title, default_mode_channel.site_banner_lookup.derived_site_banner_info['title']
+
+    # Check to make sure new title didn't overwrite the default value
+    assert_not_equal new_title, default_mode_channel.publisher.default_site_banner.title
+
+    normal_channel = channels(:completed)
+    normal_channel.site_banner.update(title: new_title)
+    assert_equal new_title, normal_channel.site_banner_lookup.derived_site_banner_info['title']
   end
 
   test "make sure site_banner_lookup has the right wallet status" do

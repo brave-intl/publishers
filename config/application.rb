@@ -40,6 +40,8 @@ module Publishers
 
     config.active_storage.queues.analysis = :low
     config.active_storage.queues.purge    = :low
+    config.ssl_options = { redirect: { exclude: -> request { request.path =~ /health-check/ } } }
+
     # config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 #    config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
 #    config.i18n.default_locale = :en

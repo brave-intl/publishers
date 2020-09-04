@@ -49,3 +49,5 @@ package-lock.json
 
 # Development container gem storage location
 .gems
+
+Dockerfile
