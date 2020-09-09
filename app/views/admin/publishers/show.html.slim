@@ -1,11 +1,11 @@
 div.row
   div.col-sm-12
     section.panel
-      = form_tag(admin_publishers_path, method: "get")
-        .input-group
-            = text_field_tag(:q, params[:q], class:'form-control')
-            .input-group-btn
-                = submit_tag("Search", class: 'btn btn-default')
+      = form_tag(admin_search_index_path, method: "get")
+        .d-flex.align-items-center.mt-2
+          big.mr-2.text-muted.search-icon=fa_icon "search"
+          = text_field_tag(:q, params[:q], placeholder: "Search", class:'form-control pl-5 rounded-pill', autocomplete: "off")
+
 hr
 #publisher
   #publisher-section.shadow-sm

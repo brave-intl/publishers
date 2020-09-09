@@ -1,0 +1,22 @@
+.tiny-table {
+  font-size: 12px;
+}
+.tiny-table {
+  border:none;
+  border-collapse: collapse;
+}
+
+.tiny-table td {
+  border-left: 1px solid #999ea2;
+  border-right: 1px solid #999ea2;
+  padding: 0 1em;
+}
+
+.tiny-table td:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.tiny-table td:last-child {
+  border-right: none;
+}

@@ -17,10 +17,10 @@ module Search
       def query(query_string)
         {
           query: {
-            query_string: {
+            simple_query_string: {
               query: query_string,
               analyze_wildcard: true,
-              allow_leading_wildcard: false,
+              lenient: true,
             },
           },
         }

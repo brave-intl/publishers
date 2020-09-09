@@ -4,14 +4,15 @@ class Admin::PublishersController < AdminController
   include ActiveRecord::Sanitization::ClassMethods
 
   def index
-    @publishers = if sort_column&.to_sym&.in? ::Publisher::ADVANCED_SORTABLE_COLUMNS
+    @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
                     Publisher.advanced_sort(sort_column.to_sym, sort_direction)
                   else
                     Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
                   end
 
     if params[:q].present?
-      @publishers = Search::User.search_documents(params[:q])
+
+      @publishers = publishers_search(@publishers, params[:q])
     end
 
     if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
@@ -38,12 +39,11 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
 
-    # @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
+    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
 
     respond_to do |format|
       format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
-      format.html {}
-      # format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
+      format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
     end
   end
 
@@ -110,7 +110,7 @@ class Admin::PublishersController < AdminController
   def refresh_uphold
     connection = UpholdConnection.find_by(publisher: params[:publisher_id])
     if connection.present?
-      connection.sync_from_uphold!
+      connection.sync_connection!
       connection.create_uphold_cards
     end
     redirect_to admin_publisher_path(@publisher.id)
@@ -155,6 +155,6 @@ class Admin::PublishersController < AdminController
   end
 
   def sortable_columns
-    [:last_sign_in_at, :created_at, ::Publisher::VERIFIED_CHANNEL_COUNT]
+    [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
   end
 end

@@ -17,6 +17,11 @@ class GeminiConnection < ApplicationRecord
     "#{Rails.application.config.services.gemini[:oauth_uri]}/settings/profile"
   end
 
+  def wallet_provider_id
+    return unless recipient_id
+    "gemini#id:#{recipient_id}"
+  end
+
   private
 
   def encryption_key

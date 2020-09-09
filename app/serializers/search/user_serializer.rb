@@ -1,7 +1,7 @@
 module Search
   class UserSerializer < ActiveModel::Serializer
     attributes :id, :email, :name, :referral_codes, :wallet_identifiers, :created_at,
-               :channel_identifiers, :channel_titles, :channel_urls
+               :channel_identifiers, :channel_titles, :channel_urls, :status
 
     def channel_identifiers
       verified_channels.collect { |c| c.details.channel_identifier }
@@ -22,10 +22,12 @@ module Search
     end
 
     def wallet_identifiers
-      [
-        object.paypal_connection&.paypal_account_id,
-        object.uphold_connection&.uphold_id,
-      ]
+      [object.gemini_connection, object.paypal_connection, object.uphold_connection].
+        map { |w| w&.wallet_provider_id }
+    end
+
+    def status
+      object.last_status_update&.status
     end
 
     private

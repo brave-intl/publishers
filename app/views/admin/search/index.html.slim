@@ -1,0 +1,47 @@
+div.row
+  div.col-sm-12
+    section.panel
+      h4.m-0 Search
+      = form_tag(admin_search_index_path, method: "get")
+        .d-flex.align-items-center.mt-2
+          big.mr-2.text-muted.search-icon=fa_icon "search"
+          = text_field_tag(:q, params[:q], placeholder: "Search", class:'form-control pl-5 rounded-pill', autocomplete: "off")
+
+
+      .mt-4
+        - if @error
+          .alert.alert-danger
+            = @error.message
+
+        - @results.each do |result|
+          = render partial: 'item', locals: { result: result }
+        - if @results.size.zero?
+            .d-flex.align-items-center.mb-4
+              = fa_icon "frown-o 4x", class: 'mx-3'
+              h3 Nothing found
+            .alert.alert-dark
+              .d-flex.align-items-center.my-2
+                = fa_stacked_icon "info inverse", base: 'circle', class: 'mr-1'
+                .font-weight-bold Tips
+              p Here are some things you can do to improve your results.
+              ul
+                li Referral codes must be in all uppercase.
+                li
+                  = "Add the field name to your query. Example "
+                  .badge.badge-light.border channel_urls:wikipedia.org
+                  = " or "
+                  .badge.badge-light.border status:suspended
+                li Add or remove quotes from your query.
+                li
+                  = "Add wildcards (*) to your query. Example "
+                  .badge.badge-light.border brave*
+                li
+                  = "For more help read the "
+                  = link_to "Elasticsearch simple_query_string", "https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax", target: 'blank'
+                  = " guide"
+
+
+
+
+
+

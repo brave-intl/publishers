@@ -17,6 +17,11 @@ class PaypalConnection < ActiveRecord::Base
     update(hidden: true)
   end
 
+  def wallet_provider_id
+    return unless paypal_account_id
+    "paypal#id:#{paypal_account_id}"
+  end
+
   def update_site_banner_lookup!
     user.update_site_banner_lookup!
   end

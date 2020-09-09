@@ -333,7 +333,7 @@ class Publisher < ApplicationRecord
   end
 
   def index_to_elasticsearch
-    Search::UserIndexJob.perform_async(id)
+    Search::PublisherIndexJob.perform_async(id)
   end
 
   def index_to_elasticsearch_now

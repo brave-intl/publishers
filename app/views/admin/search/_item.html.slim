@@ -1,0 +1,52 @@
+/ pre= JSON.pretty_generate(result)
+div.bg-white.border.rounded.p-3.mb-3
+  div
+    .d-flex.align-items-center
+      h5.m-0=link_to result["name"], admin_publisher_path(result["id"], q: params[:q])
+
+      .ml-4 class=status_badge_class(result["status"])
+        = result["status"]
+
+    .my-2=link_to result["email"], admin_publisher_path(result["id"], q: params[:q]), class: 'text-dark'
+  .my-2
+
+    table.tiny-table
+      thead
+        tr
+          td.text-muted ID
+          - if result["wallet_identifiers"].compact.length > 0
+            td.text-muted Wallet Providers
+      tbody
+        tr
+          td.text-dark= result["id"]
+          - if result["wallet_identifiers"].compact.length > 0
+            td
+              .d-flex
+                - result["wallet_identifiers"].compact.each do |id|
+                  .mr-4.text-dark = id
+
+  .row.row-cols-4.align-items-center id=result["id"]
+    - result["channel_identifiers"].each_with_index do |channel, index|
+      .col.my-2 class=(index >= 3 ? 'd-none' : '')
+        .d-flex.align-items-center
+          = image_tag(channel_search_result_icon(channel), size: "16x16", class: "mr-1")
+          = link_to result["channel_titles"][index], result["channel_urls"][index], class: 'text-dark', target: 'blank'
+          div
+            .badge.badge-light.border.ml-2.text-dark= result["referral_codes"][index]
+
+    - if result["channel_identifiers"].size > 3
+      .col
+        a href="#/" onClick="showChannels('#{result['id']}')" id='btn-#{result["id"]}'
+          = "Show all channels"
+
+
+javascript:
+  function showChannels(id) {
+    Array.from(document.getElementById(id).children).forEach(
+      e =>  e.classList.remove("d-none")
+    )
+
+    document.getElementById(`btn-${id}`).remove()
+  }
+
+

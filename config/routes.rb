@@ -263,9 +263,9 @@ Rails.application.routes.draw do
     resources :channel_transfers
     resources :channel_approvals
     resources :security
+    resources :search
 
     resources :organizations, except: [:destroy]
-
 
     namespace :stats do
       resources :contributions, only: [:index]

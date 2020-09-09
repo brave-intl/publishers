@@ -32,8 +32,16 @@
     "referral_codes": {
       "type": "keyword"
     },
-    "wallet_identifiers": {
+    "status": {
       "type": "keyword"
+    },
+    "wallet_identifiers": {
+      "type": "text",
+      "fields": {
+        "raw": {
+          "type": "keyword"
+        }
+      }
     },
     "created_at": {
       "type": "date"

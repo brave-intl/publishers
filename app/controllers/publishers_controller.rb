@@ -102,7 +102,7 @@ class PublishersController < ApplicationController
     if current_publisher.nil? || current_publisher.browser_user?
       redirect_to root_url and return
     elsif current_publisher.admin?
-      redirect_to admin_publishers_path and return
+      redirect_to admin_search_index_path and return
     end
   end
 

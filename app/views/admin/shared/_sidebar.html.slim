@@ -31,6 +31,7 @@ aside
         - cases = Case.where(status: Case::OPEN).size
         - if cases.positive?
           span.ml-3.badge.badge-light.badge-pill= cases
+      = nav_link "Search", admin_search_index_path
       li
         a href='#' class="sidebar-toggle pull-right"
           = fa_icon "chevron-down"

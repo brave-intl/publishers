@@ -166,6 +166,11 @@ class UpholdConnection < ActiveRecord::Base
     @wallet ||= publisher&.wallet
   end
 
+  def wallet_provider_id
+    return unless uphold_id
+    "uphold#id:#{uphold_id}"
+  end
+
   def create_uphold_cards
     return unless can_create_uphold_cards?
 
