@@ -128,6 +128,9 @@ class PublishersController < ApplicationController
   # Domain verified. See balance and submit payment info.
   def home
     @publisher = current_publisher
+    # Kick off jobs to resync our data with the wallet providers information.
+    @publisher.sync_wallet_connections
+
     uphold_connection = current_publisher.uphold_connection
     if uphold_connection.blank?
       uphold_connection = UpholdConnection.create!(publisher: current_publisher)
@@ -147,12 +150,6 @@ class PublishersController < ApplicationController
 
     if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
-
-      # every request to the homepage let's sync from uphold
-      uphold_connection.sync_from_uphold!
-
-      # Handles legacy case where user is missing an Uphold card
-      uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
 
     flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.paypal_locale?(params[:locale])

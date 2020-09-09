@@ -6,7 +6,7 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
   def publisher_status_updates
     referral_code = params[:referral_code]
     email = params[:email]
-    publisher = Publisher.joins(:promo_registrations).where(promo_registrations: {referral_code: referral_code}).first
+    publisher = Publisher.joins(:promo_registrations).where(promo_registrations: { referral_code: referral_code }).first
     raise ActiveRecord::RecordNotFound if publisher.nil?
 
     admin = Publisher.find_by_email(params[:admin])
@@ -20,7 +20,7 @@ class Api::V1::PromoRegistrationsController < Api::BaseController
       PublisherMailer.suspend_publisher_for_brand_bidding(publisher).deliver_later
     elsif email == "brand_bidding_and_impersonation"
       PublisherMailer.suspend_publisher_for_brand_bidding_and_impersonation(publisher).deliver_later
-    elsif not email.nil?
+    elsif email.present?
       raise InvalidEmail
     end
 

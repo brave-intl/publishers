@@ -41,6 +41,7 @@ class Publisher < ApplicationRecord
   has_many :invoices
 
   belongs_to :youtube_channel
+  belongs_to :selected_wallet_provider, polymorphic: true
 
   has_one :uphold_connection
   has_one :stripe_connection
@@ -161,6 +162,20 @@ class Publisher < ApplicationRecord
   # API call to eyeshade
   def wallet
     @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
+  end
+
+  # Public: Checks the different wallet connections and enqueues sync jobs to refresh their data
+  #         If their data wasn't refreshed in the last 2 hours.
+  #
+  # Returns nil
+  def sync_wallet_connections
+    if gemini_connection.present? && gemini_connection.updated_at < 2.hours.ago
+      Sync::Connection::GeminiConnectionSyncJob.perform_later(publisher_id: id)
+    end
+
+    if uphold_connection.present? && uphold_connection.updated_at < 2.hours.ago
+      Sync::Connection::UpholdConnectionSyncJob.perform_later(publisher_id: id)
+    end
   end
 
   def encryption_key
@@ -322,12 +337,23 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  # Internal: Defines and memoizes the current wallet provider connection for user.
+  #
+  # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
+  def selected_wallet_provider
+    if self[:selected_wallet_provider].present?
+      self[:selected_wallet_provider]
+    else
+      gemini_connection || paypal_connection || uphold_connection
+    end
+  end
+
   def brave_payable?
-    paypal_connection&.verified_account || uphold_connection&.payable? || gemini_connection&.payable?
+    selected_wallet_provider&.payable?
   end
 
   def country
-    provider_country = uphold_connection&.country || paypal_connection&.country || gemini_connection&.country
+    provider_country = selected_wallet_provider&.country
 
     provider_country.to_s.upcase
   end

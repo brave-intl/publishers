@@ -284,3 +284,13 @@ paypal_connected_website:
   publisher: paypal_connected
   verified: true
   details: paypal_connected_website_details (SiteChannelDetails)
+
+gemini_not_completed_website:
+  publisher: gemini_not_completed
+  verified: true
+  details: gemini_not_completed_website_details (SiteChannelDetails)
+
+gemini_completed_website:
+  publisher: gemini_completed
+  verified: true
+  details: gemini_completed_website_details (SiteChannelDetails)

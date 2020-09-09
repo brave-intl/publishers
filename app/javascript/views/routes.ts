@@ -9,6 +9,9 @@ export default {
     }
   },
   publishers: {
+    connections: {
+      currency: "/connection/currency"
+    },
     promo_registrations: {
       show: {
         path: "/publishers/promo_registrations/for_referral_code?referral_code={referral_code}"
@@ -18,9 +21,9 @@ export default {
       }
     },
     gemini: {
-      connect: "/publishers/gemini_connection/connect",
-      show: "/publishers/geini_connection",
-      destroy: "/publishers/gemini_connection"
+      connect: "/connection/gemini_connection",
+      show: "/connection/gemini_connection",
+      destroy: "/connection/gemini_connection"
     },
     stripe: {
       connect: "/publishers/stripe_connection/connect",
@@ -42,10 +45,10 @@ export default {
       path: "/publishers"
     },
     uphold: {
-      connect: "/publishers/connect_uphold",
-      confirm_default_currency: "/publishers/confirm_default_currency",
-      disconnect: "/publishers/disconnect_uphold",
-      status: "/publishers/uphold_status",
+      connect: "/connection/uphold_connection",
+      confirm_default_currency: "/connection/confirm_default_currency",
+      disconnect: "/connection/uphold_connection",
+      status: "/connection/uphold_connection/uphold_status",
     },
     wallet: {
       path: "/publishers/wallet",

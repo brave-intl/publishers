@@ -2,7 +2,6 @@ class Payout::UpholdJob < ApplicationJob
   queue_as :scheduler
 
   def perform(should_send_notifications: false, manual: false, payout_report_id: nil, publisher_ids: [])
-
     if publisher_ids.present?
       publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
     elsif manual
@@ -21,17 +20,18 @@ class Payout::UpholdJob < ApplicationJob
       end
     end
 
+    kind = IncludePublisherInPayoutReportJob::UPHOLD
+    if manual && payout_report.present?
+      kind = IncludePublisherInPayoutReportJob::MANUAL
+    end
+
     publishers.find_each do |publisher|
-      if manual && payout_report.present?
-        # We can consider using a job here if n is sufficiently large
-        ManualPayoutReportPublisherIncluder.new(publisher: publisher,
-                                                payout_report: payout_report,
-                                                should_send_notifications: should_send_notifications).perform
-      else
-        IncludePublisherInPayoutReportJob.perform_async(payout_report_id: payout_report_id,
-                                                        publisher_id: publisher.id,
-                                                        should_send_notifications: should_send_notifications)
-      end
+      IncludePublisherInPayoutReportJob.perform_async(
+        payout_report_id: payout_report_id,
+        publisher_id: publisher.id,
+        should_send_notifications: should_send_notifications,
+        kind: kind
+      )
     end
 
     Rails.logger.info("Enqueued #{publishers.count} publishers for payment for uphold")

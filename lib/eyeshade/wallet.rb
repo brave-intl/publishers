@@ -14,11 +14,11 @@ module Eyeshade
                 :overall_balance,
                 :last_settlement_balance
 
-    def initialize(rates: {}, accounts: [], transactions: [], uphold_connection: nil)
+    def initialize(rates: {}, accounts: [], transactions: [], default_currency: nil)
       # Wallet information
       @rates = rates["payload"] || {}
 
-      @default_currency = uphold_connection&.default_currency
+      @default_currency = default_currency
 
       @channel_balances = {}
       accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.each do |account|

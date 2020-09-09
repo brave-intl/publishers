@@ -14,7 +14,7 @@
           span &#9679;&nbsp
           = t(".connected")
         .payout-account-disconnect-button
-          = link_to t(".disconnect"), paypal_connection_disconnect_path(@publisher.paypal_connection.id), method: :patch
+          = link_to t(".disconnect"), connection_paypal_connection_disconnect_path(@publisher.paypal_connection.id), method: :patch
       br
   - if @publisher.paypal_connection.present? && !@publisher.paypal_connection.verified_account?
     .dashboard-panel--content#last_settlement
@@ -38,4 +38,4 @@
     .minor-action.d-flex.justify-content-center
       = t(".refresh_account_label")
       span &nbsp
-      = link_to(t(".refresh_account_button"), paypal_connection_refresh_path(@publisher.paypal_connection.id))
+      = link_to(t(".refresh_account_button"), connection_paypal_connection_refresh_path(@publisher.paypal_connection.id))
