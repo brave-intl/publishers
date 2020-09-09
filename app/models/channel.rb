@@ -61,7 +61,7 @@ class Channel < ApplicationRecord
   after_save :update_site_banner_lookup!, if: -> { :saved_change_to_verified? && verified? }
   after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
-  after_commit :index_to_elasticsearch
+  after_commit :index_to_elasticsearch, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
 
@@ -297,7 +297,7 @@ class Channel < ApplicationRecord
   end
 
   def index_to_elasticsearch
-    Search::PublisherIndexJob.perform_async(publisher_id)
+    Search::UserIndexJob.perform_async(publisher_id)
   end
 
   private
