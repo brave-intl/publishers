@@ -43,7 +43,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       Raven.extra_context referral_code: referral_code
       Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
     end
-  rescue Faraday::Error::ClientError => e
+  rescue Faraday::ClientError => e
     # When the owner is "no-ugp" the promo server will return 409.
     nil
   end
@@ -61,7 +61,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       referral_code: JSON.parse(response.body)["referral_code"],
       should_update_promo_server: false
     }
-  rescue Faraday::Error::ClientError => e
+  rescue Faraday::ClientError => e
     if e.response[:status] == 409
       change_ownership(channel)
     else
@@ -84,7 +84,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       referral_code: registration["referral_code"],
       should_update_promo_server: registration["owner_id"] != channel.publisher_id
     }
-  rescue Faraday::Error::ClientError
+  rescue Faraday::ClientError
     nil
   end
 
