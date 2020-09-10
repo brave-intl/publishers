@@ -338,8 +338,8 @@ class Publisher < ApplicationRecord
   #
   # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
   def selected_wallet_provider
-    if self[:selected_wallet_provider].present?
-      self[:selected_wallet_provider]
+    if super.present?
+      super
     else
       gemini_connection || paypal_connection || uphold_connection
     end
