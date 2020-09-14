@@ -1,12 +1,15 @@
 
-name: Easy Generalized Deployments
+name: Generalized Deployments
 on:
   push:
-    branches: [docker-changes]
+    branches:
+      - docker-changes
+      - master
+      - staging
 
 jobs:
   push:
-    name: Invoke easy_generalized_deploy Lambda
+    name: Invoke General Docker Build Pipeline
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -14,8 +17,9 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.EGD_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.EGD_AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.GDBP_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.GDBP_AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
-    - name: Easy Generalized Deployments
-      uses: brave-intl/aws-codebuild-run-build@v1.0.4
+    - name: Generalized Deployments
+      uses: brave-intl/general-docker-build-pipeline-action@v1.0.4
+
