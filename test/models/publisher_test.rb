@@ -346,6 +346,23 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.most_recent_potential_referral_payment.blank?
   end
 
+  describe '#selected_wallet_provider' do
+    describe 'when the publisher has a selected_wallet_provider' do
+      let(:publisher) { publishers(:publisher_selected_wallet_provider) }
+      it 'is the right kind' do
+        assert publisher.selected_wallet_provider.class, UpholdConnection
+      end
+    end
+
+    describe 'when the publisher does not have the selected_wallet_provider' do
+      let(:publisher) { publishers(:gemini_completed) }
+
+      it 'is the right kind' do
+        assert publisher.selected_wallet_provider.class, GeminiConnection
+      end
+    end
+  end
+
   describe "#history" do
     describe "when the publisher has notes" do
       it 'shows just the notes' do

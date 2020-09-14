@@ -6,11 +6,11 @@ module Payment
       class StripeError < StandardError; end
       before_action :authenticate_publisher!
       before_action :authorize!
-      before_action :validate_connection!, only: :create
+      before_action :validate_connection!, only: :edit
 
       STRIPE_SCOPE = "read_write"
 
-      def connect
+      def create
         stripe_connection = StripeConnection.find_or_create_by(publisher: current_publisher)
 
         stripe_connection.prepare_state_token!
@@ -18,7 +18,7 @@ module Payment
         redirect_to Stripe::OAuth.authorize_url(
           scope: STRIPE_SCOPE,
           state: stripe_connection.state_token,
-          redirect_uri: new_stripe_connection_url(locale: nil)
+          redirect_uri: publishers_stripe_connection_new_url(locale: nil)
         )
       end
 
@@ -27,10 +27,7 @@ module Payment
         render json: stripe_connection
       end
 
-      def new
-        # Raises a StripeError if the params are invalid.
-        validate_connection!
-
+      def edit
         stripe_response = Stripe::OAuth.token({
           client_secret: Stripe.api_key,
           code: params[:code],
