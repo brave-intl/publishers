@@ -26,9 +26,9 @@ export default {
       destroy: "/connection/gemini_connection"
     },
     stripe: {
-      connect: "/publishers/stripe_connection/connect",
-      show: "/publishers/stripe_connection",
-      destroy: "/publishers/stripe_connection"
+      connect: "/connection/stripe_connection",
+      show: "/connection/stripe_connection",
+      destroy: "/connection/stripe_connection"
     },
     statements: {
       index: {
