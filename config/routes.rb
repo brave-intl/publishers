@@ -6,6 +6,8 @@
 # For more general information check out this guide
 # https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
+  get 'health-check', to: 'health_checks#show'
+
   # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
   get 'publishers/uphold_verified', to: 'payment/connection/uphold_connections#edit'
   get 'publishers/gemini_connection/new', to: 'payment/connection/gemini_connections#edit'

@@ -55,7 +55,7 @@ gem "meta-tags", "~> 2.13.0"
 # Image conversion library
 gem 'mini_magick', "~> 4.10.1"
 
-gem "newrelic_rpm", "~> 6.7.0.359"
+gem 'newrelic_rpm', '~> 6.12', '>= 6.12.0.367'
 
 gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 # Oauth client for google / youtube
