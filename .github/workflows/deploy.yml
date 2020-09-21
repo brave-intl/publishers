@@ -3,7 +3,6 @@ name: Generalized Deployments
 on:
   push:
     branches:
-      - docker-changes
       - master
       - staging
 
