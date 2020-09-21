@@ -70,6 +70,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
+    Rails.logger.info("Request remote_ip: #{request.remote_ip}")
+    Rails.logger.info("Request ip: #{request.ip}")
+    Rails.logger.info("Headers: #{request.headers.join(', ')}")
     @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
 
