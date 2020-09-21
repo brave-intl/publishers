@@ -48,6 +48,12 @@ class ApplicationController < ActionController::Base
   end
 
   def no_cache
+    Rails.logger.info("Request remote_ip: #{request.remote_ip}")
+    Rails.logger.info("Request ip: #{request.ip}")
+    request.headers.each do |header|
+      next unless header.second.is_a?(String) || header.first.include?("X-")
+      Rails.logger.info(header.join('='))
+    end
     return if controller_name == 'static' # We want to cache on the homepage
     response.headers['Cache-Control'] = 'no-cache, no-store'
   end
@@ -70,9 +76,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
-    Rails.logger.info("Request remote_ip: #{request.remote_ip}")
-    Rails.logger.info("Request ip: #{request.ip}")
-    Rails.logger.info("Headers: #{request.headers.join(', ')}")
     @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
 
