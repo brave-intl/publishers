@@ -41,7 +41,6 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 RUN bundle exec rails assets:precompile
-RUN yarn build
 
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
