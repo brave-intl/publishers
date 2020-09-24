@@ -1,30 +1,22 @@
-FROM ruby:2.4.5
+FROM ruby:2.7.1-slim
 
-# Install node
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt-get update -qq && apt-get install -y build-essential
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs libxml2 iceweasel xvfb fonts-liberation \
- libappindicator3-1 libnspr4 libnss3 libxss1 xdg-utils gdb chromium chromium-l10n
+RUN apt-get install -y nodejs \
+  libpq-dev \
+  git \
+  curl
 
-# Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+SHELL [ "/bin/bash", "-l", "-c" ]
 
-# Symlink google-chrome to chrome so our tests can find it
-RUN ln -sf /usr/bin/google-chrome /usr/bin/chrome
+RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+RUN gem install bundler
 
-RUN gem install bundler foreman mailcatcher
-RUN npm install -g yarn
+RUN NODE_ENV=production
+RUN RAILS_ENV=production
 
-# Enabling app reloading based off of https://stackoverflow.com/questions/37699573/rails-app-in-docker-container-doesnt-reload-in-development
-# Sets the path where the app is going to be installed
-ENV RAILS_ROOT /var/www/
 
-# Creates the directory and all the parents (if they don't exist)
-RUN mkdir -p $RAILS_ROOT
-
-# This will be the de-facto directory where all the contents are going to be stored.
-WORKDIR $RAILS_ROOT
+WORKDIR /var/www/
 
 # We are copying the Gemfile first, so we can install
 # all the dependencies without any issues
@@ -32,10 +24,14 @@ WORKDIR $RAILS_ROOT
 # This will also ensure that gems are cached and only updated when they change.
 COPY Gemfile ./
 COPY Gemfile.lock ./
+COPY package.json yarn.lock .nvmrc ./
 
-# Install the gems.
-RUN bundle config build.nokogiri --use-system-libraries
-RUN bundle install
+# Install the dependencies.
+RUN nvm install && nvm use
+RUN bundle check || bundle install --jobs 20 --retry 5
+RUN node --version
+RUN npm install -g yarn
+RUN yarn install --frozen-lockfile
 
 # We copy all the files from the current directory to our
 # /app directory
@@ -43,6 +39,10 @@ RUN bundle install
 # The first one will select ALL The files of the current directory,
 # The second dot will copy it to the WORKDIR!
 COPY . .
-RUN bundle install
 
-RUN yarn
+RUN bundle exec rails assets:precompile
+
+EXPOSE 3000
+ENTRYPOINT [ "./scripts/entrypoint.sh" ]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
+
