@@ -11,7 +11,7 @@ namespace :assets do
     webpack_manifest = Rails.root.join("public", "packs", "manifest.json")
     sprockets_manifest = Dir[Rails.root.join("public", "assets", ".*.json")].first
 
-    sha = ENV['SOURCE_VERSION'] || `git rev-parse HEAD`
+    sha = ENV['SOURCE_VERSION'] || `git rev-parse HEAD`.strip()
     WebpackManifest.new(file: webpack_manifest, sha: sha).execute!
     SprocketsManifest.new(file: sprockets_manifest, sha: sha).execute!
 
