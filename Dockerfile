@@ -5,7 +5,8 @@ RUN apt-get update -qq && apt-get install -y build-essential
 RUN apt-get install -y nodejs \
   libpq-dev \
   git \
-  curl
+  curl \
+  imagemagick
 
 SHELL [ "/bin/bash", "-l", "-c" ]
 
