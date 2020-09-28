@@ -363,7 +363,7 @@ class Publisher < ApplicationRecord
   end
 
   def index_to_elasticsearch_now
-    return if ENV["ELASTICSEARCH_URL"].blank?
+    return if Rails.application.secrets.elasticsearch_url.blank?
     Search::User.index(id, serialized_search_hash)
   end
 
