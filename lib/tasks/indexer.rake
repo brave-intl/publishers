@@ -6,8 +6,8 @@ namespace :indexer do
     puts "Indexing #{count}"
     publishers.find_each.with_index do |publisher, index|
       puts "#{index} / #{count}" if (index % 1000).zero?
-      Search::UserIndexJob.perform_async(publisher.id, queue: 'low')
+      Search::UserIndexJob.perform_async(publisher.id, queue: "low")
     end
-    puts 'Done'
+    puts "Done"
   end
 end
