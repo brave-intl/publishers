@@ -6,7 +6,11 @@ RUN apt-get install -y nodejs \
   libpq-dev \
   git \
   curl \
-  imagemagick
+  imagemagick \
+  libjemalloc2
+
+RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
+ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 SHELL [ "/bin/bash", "-l", "-c" ]
 
