@@ -43,7 +43,7 @@ class Admin::PublishersController < AdminController
 
     respond_to do |format|
       format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
-      format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
+      format.html { @publishers = @publishers.group(:id).paginate(page: params[:page], total_entries: total_publishers) }
     end
   end
 
@@ -132,6 +132,16 @@ class Admin::PublishersController < AdminController
   end
 
   private
+
+  # Internal: Caches and returns the value for total number of publishers
+  #
+  # Returns the number of entries in the Publishers table
+  def total_publishers
+    Rails.cache.fetch('total_publishers', expires_in: 12.hours) do
+      Publisher.all.count
+    end
+    2000
+  end
 
   def get_publisher
     return unless params[:id].present? || params[:publisher_id].present?
