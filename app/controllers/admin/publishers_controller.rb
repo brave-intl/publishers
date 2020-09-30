@@ -140,7 +140,6 @@ class Admin::PublishersController < AdminController
     Rails.cache.fetch('total_publishers', expires_in: 12.hours) do
       Publisher.all.count
     end
-    2000
   end
 
   def get_publisher
