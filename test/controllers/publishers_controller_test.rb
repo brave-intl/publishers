@@ -331,7 +331,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.pending_email)
   end
 
-  test "publisher completing signup will trigger RegisterPublisherWithSendGridJob" do
+  test "publisher updating contact email address" do
     perform_enqueued_jobs do
       post(registrations_path, params: SIGNUP_PARAMS)
     end
@@ -340,23 +340,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.authentication_token)
     get(url)
     follow_redirect!
-    assert_performed_with(job: RegisterPublisherWithSendGridJob) do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
-  end
-
-  test "publisher updating contact email address will trigger RegisterPublisherWithSendGridJob" do
-    perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
-    end
-
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    assert_performed_with(job: RegisterPublisherWithSendGridJob) do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
 
     # update the publisher email
     perform_enqueued_jobs do
@@ -400,9 +384,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
 
     url = publisher_url(publisher, confirm_email: publisher.pending_email, token: publisher.authentication_token)
-    assert_enqueued_with(job: RegisterPublisherWithSendGridJob) do
-      get(url)
-    end
+    get(url)
     publisher.reload
 
     # verify email changes after confirmation
