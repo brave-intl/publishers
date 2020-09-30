@@ -47,8 +47,6 @@ class PublishersController < ApplicationController
       update_params[:agreed_to_tos] = Time.now
     end
 
-    update_sendgrid(publisher: @publisher)
-
     if @publisher.update(update_params)
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
@@ -195,15 +193,8 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth
     end
 
-    if confirm_email.present?
-      prior_email = publisher.email
-    end
-
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
       if confirm_email.present? && publisher.email == confirm_email && !publisher_created_through_youtube_auth
-        # Register the new email address with sendgrid, and clear the publisher interests on the old member
-        update_sendgrid(publisher: publisher, prior_email: prior_email)
-
         flash[:notice] = t(".email_confirmed", email: publisher.email)
       end
 
@@ -264,10 +255,6 @@ class PublishersController < ApplicationController
     return if current_publisher.two_factor_prompted_at.present? || two_factor_enabled?(current_publisher)
     current_publisher.update! two_factor_prompted_at: Time.now
     redirect_to prompt_security_publishers_path
-  end
-
-  def update_sendgrid(publisher:, prior_email: nil)
-    RegisterPublisherWithSendGridJob.perform_later(publisher.id, prior_email)
   end
 
   def require_verified_email
