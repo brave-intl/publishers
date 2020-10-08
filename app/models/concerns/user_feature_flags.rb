@@ -21,11 +21,11 @@ module UserFeatureFlags
   ].freeze
 
   included do
-    scope :wire_only,      -> { where(feature_flags: { WIRE_ONLY => true }) }
-    scope :invoice,        -> { where(feature_flags: { INVOICE => true }) }
-    scope :merchant,       -> { where(feature_flags: { MERCHANT => true }) }
-    scope :stripe_enabled, -> { where(feature_flags: { STRIPE_ENABLED => true }) }
-    scope :gemini_enabled, -> { where(feature_flags: { GEMINI_ENABLED => true }) }
+    scope :wire_only,      -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
+    scope :invoice,        -> { where("feature_flags->'#{INVOICE}' = 'true'") }
+    scope :merchant,       -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
+    scope :stripe_enabled, -> { where("feature_flags->'#{STRIPE_ENABLED}' = 'true'") }
+    scope :gemini_enabled, -> { where("feature_flags->'#{GEMINI_ENABLED}' = 'true'") }
   end
 
   def update_feature_flags_from_form(update_flag_params)

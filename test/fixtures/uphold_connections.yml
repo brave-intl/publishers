@@ -172,3 +172,7 @@ promo_connection:
 promo_lockout_connection:
   <<: *base_verified_connection
   publisher: promo_lockout
+
+selected_wallet_provider_connection:
+  <<: *base_verified_connection
+  publisher: publisher_selected_wallet_provider

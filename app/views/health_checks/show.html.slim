@@ -1,0 +1,105 @@
+
+head
+  css:
+    body {
+      font: 20px/25px Helvetica, "Arial Unicode MS", Arial, sans-serif;
+      margin: 20px auto;
+      min-width: 320px;
+      max-width: 960px;
+    }
+
+    h1 {
+      border: 1px solid;
+      border-radius: 3px;
+      font-weight: 500;
+      line-height: 50px;
+      overflow: hidden;
+      padding: 10px;
+      text-overflow: ellipsis;
+    }
+
+    .healthy {
+      color: #3c763d;
+    }
+
+    .unhealthy {
+      color: #a94442;
+    }
+
+    h1.healthy {
+      background-color: #dff0d8;
+      border-color: #d6e9c6;
+    }
+
+    h1.unhealthy {
+      background-color: #f2dede;
+      border-color: #ebccd1;
+    }
+
+    h1.healthy:before, tr.healthy td:last-child:before {
+      content: "✅ ";
+      padding-left: 10px;
+    }
+
+    h1.unhealthy:before, tr.unhealthy td:last-child:before {
+      content: "🚨 ";
+      padding-left: 10px;
+    }
+
+    table {
+      border: 1px solid #d9d9d9;
+      border-radius: 3px;
+      border-spacing: 0;
+      color: #555;
+      text-align: left;
+      width: 100%;
+    }
+
+    td, th {
+      border-bottom: 1px solid #d9d9d9;
+      padding: 10px;
+    }
+
+    tr:last-child td {
+      border: none;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    dl {
+      border: 1px solid #d9d9d9;
+      border-radius: 3px;
+      color: #555;
+      line-height: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 10px;
+    }
+
+    dt {
+      float: left;
+      font-weight: bold;
+      width: 180px;
+    }
+
+    dd {
+      margin-left: 200px;
+    }
+
+body
+  - if @healthy
+    h1.healthy Creators is available
+  - else
+    h1.unhealthy Creators is unavailable
+
+  - @services.each do |service|
+    dl class="#{service[:healthy] ? 'healthy' : 'unhealthy'}"
+      dt= service[:name]
+      - if service[:healthy]
+        dd available
+      - else
+        dd unavailable
+
+

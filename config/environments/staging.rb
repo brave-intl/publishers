@@ -8,18 +8,8 @@ Rails.application.configure do
     'Access-Control-Request-Method' => "GET",
     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     'Access-Control-Allow-Methods' => 'GET',
-    'X-Content-Type-Options' => 'nosniff',
-    'X-Frame-Options' => 'deny',
-    'X-XSS-Protection' => '1; mode=block',
+    'X-Frame-Options' => 'deny'
   }
-  config.content_security_policy do |policy|
-    policy.default_src :self, :https, :http
-    policy.font_src    :self, :https, :data
-    policy.img_src     :self, :https, :data
-    policy.object_src  :none
-    policy.script_src  :self, :https
-    policy.style_src   :self, :https
-  end
 
   # Rate limiting
   config.middleware.use(Rack::Attack)

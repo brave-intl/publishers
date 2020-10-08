@@ -303,3 +303,12 @@ promo_lockout:
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+publisher_selected_wallet_provider:
+  email: "provider@brave.com"
+  name: "Selected Wallet Provider"
+  selected_wallet_provider_type: UpholdConnection
+  selected_wallet_provider_id: uphold_connections(:selected_wallet_provider_connection)
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"

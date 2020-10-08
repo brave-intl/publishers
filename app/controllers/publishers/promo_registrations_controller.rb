@@ -21,11 +21,16 @@ class Publishers::PromoRegistrationsController < ApplicationController
 
   def index
     @publisher = current_publisher
-    @publisher_promo_status = @publisher.promo_status(promo_running?)
     @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
+    if Rails.env.development? || Rails.env.test?
+      @publisher_promo_status = @publisher.promo_status(promo_running?)
+    else
+      @publisher_promo_status = :over
+    end
   end
 
   def create
+    return unless Rails.env.development? || Rails.env.test?
     @publisher = current_publisher
     @publisher.promo_enabled_2018q1 = true
     @publisher.save!
