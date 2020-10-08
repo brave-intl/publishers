@@ -795,6 +795,7 @@ en:
       expiration: "Thanks for particpating in the promo program. Your referral codes will expire in %{time}."
       unpayable_notice: "Connect and verify your identity with Uphold to enroll the referral promo program."
       restricted_country: "Your region is currently unable to participate in the referral promo program."
+      signups_disabled: "Signups for the referral program are currently on hold until further notice."
       ineligible: "You are ineligible to take part in this program. You must verify your identity with your wallet provider and be in a supported region."
       last_updated_at: "Last updated about %{time} ago"
       group: "Group %{number}"
