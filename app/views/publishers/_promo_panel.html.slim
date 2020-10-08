@@ -22,7 +22,7 @@
           == t("promo.dashboard.violation")
 
 - elsif current_publisher.has_verified_channel?
-  - if !@publisher.promo_lockout_time_passed?
+  - if @publisher.may_register_promo? && !@publisher.promo_lockout_time_passed?
     .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
       .promo-panel.h-100
         .h-100
