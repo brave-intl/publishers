@@ -2,8 +2,8 @@
 
 module Search
   class User < Base
-    INDEX_NAME = "publishers_#{Rails.env}"
-    INDEX_ALIAS = "publishers_#{Rails.env}_alias"
+    INDEX_NAME = "creators_#{Rails.env}"
+    INDEX_ALIAS = "creators_#{Rails.env}_alias"
     MAPPINGS = JSON.parse(File.read("config/elasticsearch/mappings/publisher.json"), symbolize_names: true).freeze
 
     class << self
