@@ -7,16 +7,12 @@
         #promo-referring-fans= t("promo.activate.sub_header_two")
 
       .promo-panel-item.promo-panel-item-button
-        - if @publisher.may_register_promo? && !@publisher.promo_lockout_time_passed?
-          = link_to t("promo.activate.button-dashboard").upcase, promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
-        - elsif !@publisher.valid_promo_country?
-          .promo-panel-item-alert
-            #promo-panel-alert
-              = t('promo.dashboard.signups_disabled')
-        - else
-          .promo-panel-item-alert
-            #promo-panel-alert
-              = t('promo.dashboard.unpayable_notice')
+        - if Rails.env.development?
+          = link_to "[Development Only] Activate", promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
+
+        .promo-panel-item-alert
+          #promo-panel-alert
+            = t('promo.dashboard.signups_disabled')
 
 - elsif current_publisher.only_user_funds?
   .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"

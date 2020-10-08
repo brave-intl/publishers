@@ -31,9 +31,6 @@ module ReferralPromo
   #
   # Returns true or false depending on if the country is included.
   def valid_promo_country?
-    # Disallow new signups in prod and staging
-    return false if Rails.env.production? || Rails.env.staging?
-
     PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
   end
 
