@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "grommet": "^2.9.0",
+    "grommet": "^2.15.0",
     "kind-of": "^6.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.8.3",
     "react-dom-confetti": "^0.1.0",
-    "react-intl": "^3.3.0",
+    "react-intl": "^5.8.6",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "3.4.1",
-    "styled-components": "^4.4.1"
+    "react-scripts": "3.4.3",
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
+    "@babel/helper-call-delegate": "^7.11.4",
     "prettier": "1.16.3"
   },
   "scripts": {
