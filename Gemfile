@@ -89,7 +89,7 @@ gem "premailer-rails", "~> 1.10.3", require: false
 gem 'public_suffix', '~> 4.0.3'
 
 # Puma as app server
-gem "puma", "~> 4.3.5"
+gem "puma", "~> 5.0.2"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
@@ -118,7 +118,7 @@ gem "sendgrid-ruby", "~> 6.2.1"
 gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 6.1.0"
+gem "sidekiq", "~> 6.1.2"
 
 gem "sidekiq-scheduler", "~> 3.0.1"
 
