@@ -45,35 +45,37 @@ module Search
   # Returns an array of publisher ids that match the query
   def search_sql
     %{
-      publishers.id IN
-      (
-        SELECT publishers.id FROM publishers
-        INNER JOIN (
-          SELECT channels.publisher_id
-          FROM channels
-            LEFT JOIN site_channel_details ON site_channel_details.id = channels.details_id
-            LEFT JOIN youtube_channel_details ON youtube_channel_details.id = channels.details_id
-            LEFT JOIN twitch_channel_details ON twitch_channel_details.id = channels.details_id
-            LEFT JOIN promo_registrations ON promo_registrations.channel_id = channels.id
-          WHERE
-            site_channel_details.brave_publisher_id ILIKE :search_query
-            OR promo_registrations.referral_code ILIKE :search_query
-            OR youtube_channel_details.title ILIKE :search_query
-            OR youtube_channel_details.youtube_channel_id ILIKE :search_query
-            OR twitch_channel_details.NAME ILIKE :search_query
-          ) channel_search
-        ON channel_search.publisher_id = publishers.id
-
-        UNION ALL
-
-        SELECT publishers.id
-        FROM publishers
-        LEFT JOIN uphold_connections ON uphold_connections.publisher_id = publishers.id
-        WHERE publishers.email ILIKE :search_query
-              OR publishers.name ILIKE :search_query
-              OR publishers.id::text = :search_query
-              OR uphold_connections.uphold_id::text = :search_query
-      )
+    publishers.id IN (
+      SELECT channels.publisher_id
+      FROM channels
+      INNER JOIN site_channel_details
+      ON site_channel_details.id = channels.details_id
+      WHERE site_channel_details.brave_publisher_id ILIKE :search_query
+      UNION ALL
+      SELECT channels.publisher_id
+      FROM channels
+      INNER JOIN youtube_channel_details
+      ON youtube_channel_details.id = channels.details_id
+      WHERE youtube_channel_details.title ILIKE :search_query
+        OR youtube_channel_details.title ILIKE :search_query
+        OR youtube_channel_details.youtube_channel_id ILIKE :search_query
+      UNION ALL
+      SELECT channels.publisher_id
+      FROM channels
+      INNER JOIN twitch_channel_details
+      ON twitch_channel_details.id = channels.details_id
+      WHERE twitch_channel_details.NAME ILIKE :search_query
+      UNION ALL
+      SELECT publishers.id
+      FROM publishers
+      WHERE publishers.email ILIKE :search_query
+      OR publishers.name ILIKE :search_query
+      OR publishers.id::text = :search_query
+      UNION ALL
+      SELECT uphold_connections.publisher_id
+      FROM uphold_connections
+      WHERE uphold_connections.uphold_id::text = :search_query
+    )
     }
   end
 
@@ -81,7 +83,7 @@ module Search
   private
 
   def is_promo_code?(string)
-    string =~ /[a-zA-z]{3}[\d]{3}$/
+    string =~ /[a-zA-Z]{3}[\d]{3}$/
   end
 
   def is_email?(string)
