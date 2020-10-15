@@ -4,46 +4,48 @@ class Admin::PublishersController < AdminController
   include ActiveRecord::Sanitization::ClassMethods
 
   def index
-    @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
-                    Publisher.advanced_sort(sort_column.to_sym, sort_direction)
-                  else
-                    Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
-                  end
+    ActiveRecord::Base.connected_to(role: :reading) do
+      @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
+                      Publisher.advanced_sort(sort_column.to_sym, sort_direction)
+                    else
+                      Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
+                    end
 
-    if params[:q].present?
+      if params[:q].present?
 
-      @publishers = publishers_search(@publishers, params[:q])
-    end
+        @publishers = publishers_search(@publishers, params[:q])
+      end
 
-    if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
-      # Effectively sanitizes the users input
-      method = PublisherStatusUpdate::ALL_STATUSES.detect { |x| x == params[:status] }
-      @publishers = @publishers.send(method)
-    end
+      if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
+        # Effectively sanitizes the users input
+        method = PublisherStatusUpdate::ALL_STATUSES.detect { |x| x == params[:status] }
+        @publishers = @publishers.send(method)
+      end
 
-    if params[:role].present?
-      @publishers = @publishers.where(role: params[:role])
-    end
+      if params[:role].present?
+        @publishers = @publishers.where(role: params[:role])
+      end
 
-    if params[:uphold_status].present?
-      @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
-    end
+      if params[:uphold_status].present?
+        @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
+      end
 
-    if params[:feature_flag].present?
-      found_flag = UserFeatureFlags::VALID_FEATURE_FLAGS.find { |flag| flag == params[:feature_flag].to_sym }
+      if params[:feature_flag].present?
+        found_flag = UserFeatureFlags::VALID_FEATURE_FLAGS.find { |flag| flag == params[:feature_flag].to_sym }
 
-      @publishers = @publishers.send(found_flag)
-    end
+        @publishers = @publishers.send(found_flag)
+      end
 
-    if params[:two_factor_authentication_removal].present?
-      @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
-    end
+      if params[:two_factor_authentication_removal].present?
+        @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
+      end
 
-    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
+      @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
 
-    respond_to do |format|
-      format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
-      format.html { @publishers = @publishers.group(:id).paginate(page: params[:page], total_entries: total_publishers) }
+      respond_to do |format|
+        format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
+        format.html { @publishers = @publishers.group(:id).paginate(page: params[:page], total_entries: total_publishers) }
+      end
     end
   end
 
