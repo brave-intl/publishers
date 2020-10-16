@@ -60,6 +60,7 @@ class Publisher < ApplicationRecord
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
   validates :name, presence: true, allow_blank: true, length: { maximum: 64 }
+  before_save :cleanup_name, if: -> { name_changed? }
 
   validates_inclusion_of :role, in: ROLES
 
@@ -356,6 +357,12 @@ class Publisher < ApplicationRecord
   end
 
   private
+
+  def cleanup_name
+    [".", ":", "/"].each do |char|
+      self.name = name.gsub(char, "")
+    end
+  end
 
   # Internal: Sets the default feature flags for an account
   #
