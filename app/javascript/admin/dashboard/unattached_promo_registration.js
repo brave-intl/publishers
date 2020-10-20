@@ -2,9 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var unattachedReferralCodeForm = document.getElementById('unattached-referral-code-form');
 
   let assignToCampaignButton = document.getElementById('assign-to-campaign')
-  assignToCampaignButton.addEventListener('click', function(event){
-    unattachedReferralCodeForm.action = '/admin/unattached_promo_registrations/assign_campaign'
-  })
+  if (assignToCampaignButton) {
+    assignToCampaignButton.addEventListener('click', function(event){
+      unattachedReferralCodeForm.action = '/admin/unattached_promo_registrations/assign_campaign'
+    })
+  }
 
   let assignInstallerTypeToCodesButton = document.getElementById('assign-installer-type')
   assignInstallerTypeToCodesButton.addEventListener('click', function(event){
