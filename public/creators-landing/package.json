@@ -10,7 +10,7 @@
     "react-dom-confetti": "^0.1.0",
     "react-intl": "^5.8.6",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "3.4.3",
+    "react-scripts": "3.4.4",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
