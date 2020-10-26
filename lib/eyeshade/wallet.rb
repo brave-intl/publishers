@@ -29,7 +29,7 @@ module Eyeshade
       @overall_balance = Eyeshade::OverallBalance.new(@rates, @default_currency, accounts)
       @contribution_balance = Eyeshade::ContributionBalance.new(@rates, @default_currency, accounts)
 
-      @last_settlement_balance = Eyeshade::LastSettlementBalance.new(@rates, @default_currency, transactions)
+      @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates: @rates, default_currency: @default_currency, transactions: transactions)
     end
   end
 end
