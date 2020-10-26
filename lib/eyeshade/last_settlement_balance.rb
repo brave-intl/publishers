@@ -2,7 +2,14 @@ module Eyeshade
   class LastSettlementBalance < BaseBalance
     attr_reader :date, :amount_bat, :amount_settlement_currency, :timestamp, :settlement_currency
 
-    def initialize(rates, default_currency, transactions)
+    def self.for_publisher(publisher:)
+      transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
+      @default_currency = publisher.uphold_connection&.default_currency
+      @rates = Ratio::Ratio.relative_cached(currency: "BAT")
+      @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates: @rates, default_currency: @default_currency, transactions: transactions)
+    end
+
+    def initialize(rates:, default_currency:, transactions:)
       super(rates, default_currency)
 
       last_settlement = calculate_last_settlement(transactions)

@@ -1,0 +1,54 @@
+.balance-panel.align-items-center
+  .row
+    .col
+      .balance.pt-4
+        .bat-logo#bat-logo
+          = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
+        .amounts
+          - converted_balance = publisher_converted_overall_balance(@publisher)
+          h4.balance-header
+            span = t(".balance_pending")
+          .bat
+            span.bat-amount#bat_amount = publisher_overall_bat_balance(@publisher)
+            span.bat-code= " " + I18n.t(".bat_in_locale")
+          .converted#converted_amount
+            = converted_balance
+          - if payout_in_progress?
+            .payout_in_progress
+              span
+                - if converted_balance.present? && converted_balance.to_i>= PayoutReport::MINIMUM_BALANCE_AMOUNT
+                  i = t(".payout_in_progress")
+                - else
+                  i = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT, currency: t("bat_in_locale"))
+          - else
+            .next_deposit_date.small.mt-2
+              span = t(".next_deposit_date")
+              span = next_deposit_date
+    - if @publisher.no_grants?
+      .d-none.d-xl-block
+        .line
+
+      .col
+        .d-xl-none.d-lg-none
+          .ml-4.mt-4.h-line
+
+        .withheld.px-4.pt-4
+          .balance
+            .amounts
+              h4.balance-header
+                  span = t('.held_funds')
+              .bat
+                span.withheld-color.bat-amount#bat_amount= publisher_contribution_bat_balance(@publisher)
+                span.withheld-color.bat-code= " " + I18n.t(".bat_in_locale")
+          .small.my-2
+            .d-flex
+              - if @case&.open?.present? || @case&.in_progress?&.present?
+                span== t('.open_case_description')
+              - elsif @case && @case.closed?
+                span == t('.rejected_funds_description')
+              -else
+                span.warning-icon.mr-2
+                  = render 'icon_circled_bang_warning'
+                span
+                  == t('.held_funds_description')
+

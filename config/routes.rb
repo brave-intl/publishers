@@ -82,6 +82,9 @@ Rails.application.routes.draw do
 
       get :log_out
       get :home
+      get :home_balances
+      get :uphold_wallet_panel
+      get :paypal_wallet_panel
       get :change_email
       get :change_email_confirm
       patch :update_email

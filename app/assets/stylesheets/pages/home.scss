@@ -579,14 +579,6 @@
     }
 
     #last_settlement {
-      &.settlement-made {
-        display: block;
-      }
-
-      &.no-settlement-made {
-        display: none;
-      }
-
       .last-deposit-v2 {
         font-size: 13px;
         font-family: $headings-font-family;
