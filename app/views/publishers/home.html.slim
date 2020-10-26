@@ -24,7 +24,7 @@ noscript
   #uphold_status
     .row
       .col.mb-4.payouts class="#{@publisher.no_grants? ? 'col-md-7' : '' }"
-        = render_async home_balances_publishers_path do
+        = render_async home_balances_publishers_path, container_class: 'balance-panel align-items-center' do
           .spinner-border.center.text-primary role="status"
       .col-md.mb-4
         .dashboard-panel--wrapper

@@ -3,9 +3,7 @@ module Publishers
     before_action :authenticate_publisher!
 
     def show
-      p "** fetching wallet"
       wallet = current_publisher.wallet
-      p "successfully got wallet!"
       head 404 and return if wallet.blank?
 
       wallet_data = {
