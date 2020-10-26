@@ -251,6 +251,7 @@ Rails.application.routes.draw do
       end
     end
     resources :publishers do
+      get :wallet_info
       resources :invoices, module: 'publishers' do
         post :upload
         get :finalize
