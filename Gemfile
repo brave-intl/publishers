@@ -24,7 +24,7 @@ gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/
 # Use AWS gem for s3 uploads
 gem 'aws-sdk-s3', require: false
 
-gem "bootstrap", ">= 4.3.1"
+gem "bootstrap", ">= 4.5.0"
 
 gem 'brotli', "~> 0.2.3"
 
@@ -104,6 +104,8 @@ gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
 gem 'redis', '~> 4.2.1'
+
+gem "render_async", '~> 2.1.8'
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"

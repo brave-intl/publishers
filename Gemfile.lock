@@ -360,6 +360,7 @@ GEM
       json
     redis (4.2.2)
     regexp_parser (1.7.1)
+    render_async (2.1.8)
     request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.1)
@@ -517,7 +518,7 @@ DEPENDENCIES
   aws-sdk-s3
   better_errors
   binding_of_caller
-  bootstrap (>= 4.3.1)
+  bootstrap (>= 4.5.0)
   brakeman
   brotli (~> 0.2.3)
   bullet
@@ -565,6 +566,7 @@ DEPENDENCIES
   railties (~> 6.0.3.1)
   recaptcha (~> 3.3)
   redis (~> 4.2.1)
+  render_async (~> 2.1.8)
   rotp (~> 3.3)
   rqrcode (~> 0.10)
   rubocop-airbnb

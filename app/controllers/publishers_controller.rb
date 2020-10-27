@@ -138,12 +138,6 @@ class PublishersController < ApplicationController
       @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
     end
 
-    # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
-    # ToDo: rework this process?
-    @wallet = current_publisher.wallet
-
-    @case = Case.find_by(publisher: current_publisher)
-
     @possible_currencies = []
 
     if uphold_connection.uphold_details.present?
@@ -151,6 +145,24 @@ class PublishersController < ApplicationController
     end
 
     flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.paypal_locale?(params[:locale])
+  end
+
+  def home_balances
+    @publisher = current_publisher
+    @case = Case.find_by(publisher: current_publisher)
+    render partial: "home_balances"
+  end
+
+  def uphold_wallet_panel
+    @publisher = current_publisher
+    @last_settlement_balance = Eyeshade::LastSettlementBalance.for_publisher(publisher: @publisher)
+    render partial: "uphold_wallet_panel"
+  end
+
+  def paypal_wallet_panel
+    @publisher = current_publisher
+    @last_settlement_balance = Eyeshade::LastSettlementBalance.for_publisher(publisher: @publisher)
+    render partial: "paypal_wallet_panel"
   end
 
   def choose_new_channel_type
