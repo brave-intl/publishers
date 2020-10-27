@@ -77,7 +77,7 @@ class BaseApiClient < BaseService
       require "faraday"
       Faraday.new(url: api_base_uri) do |faraday|
         proxy = proxy_url if proxy_url.present?
-        if proxy !== nil && proxy.include?("eyeshade") === false
+        if !proxy.nil? && !proxy.include?("eyeshade")
           faraday.proxy = proxy
         end
         faraday.request :retry, max: retry_count, interval: 0.05, interval_randomness: 0.5, backoff_factor: 2
