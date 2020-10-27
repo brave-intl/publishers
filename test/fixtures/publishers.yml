@@ -308,7 +308,7 @@ publisher_selected_wallet_provider:
   email: "provider@brave.com"
   name: "Selected Wallet Provider"
   selected_wallet_provider_type: UpholdConnection
-  selected_wallet_provider_id: uphold_connections(:selected_wallet_provider_connection)
+  selected_wallet_provider_id: "0f83e13a-0d5d-556a-98af-dbe9e5377039"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"

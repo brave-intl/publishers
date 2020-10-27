@@ -17,6 +17,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                           expected_num_payments: 0)
     end
 
+
     if should_send_notifications
       enqueue_emails_only(
         manual: manual,
@@ -49,19 +50,46 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   end
 
   def enqueue_payout(payout_report:, manual:, publisher_ids:)
-    # Finds all the publishers that have these wallets connected and
-    # kicks off IncludePublisherInPayoutReportJob for each one.
-    Payout::UpholdJob.perform_later(
-      manual: manual,
-      payout_report_id: payout_report.id,
-      publisher_ids: publisher_ids
-    )
-    Payout::GeminiJob.perform_later(
-      payout_report_id: payout_report.id
-    )
-    Payout::PaypalJob.perform_later(
-      payout_report_id: payout_report.id
-    )
+    if publisher_ids.present?
+      publishers = Publisher.where.not(selected_wallet_provider_id: nil, selected_wallet_provider_type: nil).where(id: publisher_ids).with_verified_channel
+    else
+      publishers = Publisher.where.not(selected_wallet_provider_id: nil, selected_wallet_provider_type: nil).with_verified_channel
+    end
+
+    publishers.find_each do |publisher|
+      case publisher.selected_wallet_provider_type
+      when "UpholdConnection"
+        IncludePublisherInPayoutReportJob.perform_async(
+          payout_report_id: payout_report_id,
+          publisher_id: publisher.id,
+          should_send_notifications: false,
+          kind: IncludePublisherInPayoutReportJob::UPHOLD
+        )
+      when "GeminiConnection"
+        IncludePublisherInPayoutReportJob.perform_async(
+          payout_report_id: payout_report_id,
+          publisher_id: publisher.id,
+          should_send_notifications: false,
+          kind: IncludePublisherInPayoutReportJob::GEMINI
+        )
+      when "PaypalConnection"
+        if publishers.selected_wallet_provider.japanese_account?
+          IncludePublisherInPayoutReportJob.perform_async(
+            payout_report_id: payout_report_id,
+            publisher_id: publisher.id,
+            should_send_notifications: false,
+            kind: IncludePublisherInPayoutReportJob::PAYPAL
+          )
+        end
+      end
+    end
+
+    number_of_payments = PayoutReport.expected_num_payments(publishers)
+    payout_report.with_lock do
+      payout_report.reload
+      payout_report.expected_num_payments += number_of_payments
+      payout_report.save!
+    end
   end
 
   def fee_rate
