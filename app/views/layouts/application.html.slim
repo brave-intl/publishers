@@ -165,3 +165,4 @@ html
     - if flash[:modal_partial]
       script#js-open-modal-on-load type="text/html"
         = render "modal_partials/#{flash[:modal_partial]}"
+    = content_for :render_async

@@ -3,6 +3,7 @@
 module Ratio
   class Ratio < BaseApiClient
     PATH = "/v1/"
+    RATES_CACHE_KEY = "rates_cache".freeze
 
     def all
       return JSON.parse(all_mock_response) if Rails.application.secrets[:bat_ratios_token].blank?
@@ -19,6 +20,13 @@ module Ratio
       response = get(path.expand(currency: currency))
 
       JSON.parse(response.body)
+    end
+
+    def self.relative_cached(currency:)
+      # Cache the ratios every minute. Rates are used for display purposes only.
+      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 10.minutes) do
+        Ratio.new.relative(currency: "BAT")
+      end
     end
 
     def api_base_uri
