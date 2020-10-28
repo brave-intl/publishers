@@ -58,6 +58,7 @@ class Admin::PublishersController < AdminController
       @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
       @payout_message = PayoutMessage.find_by(payout_report: @payout_report, publisher: @publisher)
     end
+    @channels = @publisher.channels.paginate(page: params[:page], per_page: 20)
   end
 
   def wallet_info

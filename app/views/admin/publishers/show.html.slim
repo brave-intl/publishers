@@ -33,10 +33,9 @@ hr
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     h3.text-dark Channels
     #channels-section
-      - @publisher.channels.each do |channel|
+      - @channels.each do |channel|
         = render partial: 'channel', locals: { channel: channel }
-        - unless channel == @publisher.channels.last
-          hr
+      = will_paginate @channels
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     .accordion
