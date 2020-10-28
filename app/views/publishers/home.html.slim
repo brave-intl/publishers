@@ -62,8 +62,9 @@ noscript
         && !@publisher.promo_lockout_time_passed?
       = render "publishers/referral_charts", current_publisher: @publisher
 
-    - @publisher.channels.visible.each do |channel|
+    - @channels.each do |channel|
       = render partial: 'channel', locals: { channel: channel }
+    = will_paginate(@channels)
 
     .row id="add_channel_placeholder"
       .col.mb-4
