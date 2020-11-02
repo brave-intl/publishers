@@ -54,7 +54,7 @@ module Payout
       # Checking these classes will be removed once the following issue is addressed
       # https://github.com/brave-intl/publishers/issues/2858
 
-      if self.class == Payout::UpholdService && @publisher.gemini_connection.present?
+      if self.class == Payout::UpholdService && @publisher.gemini_connection.present? && @publisher.selected_wallet_provider_type != 'UpholdConnection'
         # A publisher can have a gemini_connection and uphold_connection.
         # We don't want to include users who have a GeminiConnection on the Uphold Payout
         create_message("Publisher has a gemini connection and is not paid out through this job")
