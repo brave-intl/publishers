@@ -7,7 +7,7 @@ module Payout
 
       potential_payments = []
 
-      connection = @publisher.selected_wallet_provider
+      connection = @publisher.gemini_connection
       if connection.blank?
         connection = @publisher.gemini_connection
       end
