@@ -8,10 +8,6 @@ module Payout
       potential_payments = []
 
       connection = @publisher.gemini_connection
-      if connection.blank?
-        connection = @publisher.gemini_connection
-      end
-
       # Sync the connection
       connection.sync_connection!
 
