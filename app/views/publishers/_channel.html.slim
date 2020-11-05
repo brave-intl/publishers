@@ -56,7 +56,7 @@
               = link_to(t(".try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
 
 
-          - if channel.verification_pending?
+          - if channel.verification_pending? && channel.contesting_channel.present?
             span.channel-contested= t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
           - elsif channel.verification_awaiting_admin_approval?
             = t("helpers.channels.verification_awaiting_admin_approval")
