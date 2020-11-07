@@ -29,6 +29,13 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def promo_breakdowns(publisher, attachment)
+    attachments['promos.csv'] = attachment
+    mail(
+      to: publisher.email,
+    )
+  end
+
   # TODO: Refactor
   # Like the above but without the private access link
   def verification_done_internal(channel)
