@@ -1,4 +1,4 @@
-task :expire_promo_codes => :environment do
+task :expire_low_performing_promo_codes => :environment do
   puts "Expiring promo codes for non-approved referral codes"
 
   publishers = Publisher.find_by_sql("
