@@ -63,7 +63,7 @@ class UpholdConnectionsController < ApplicationController
   end
 
   def create_promo_registration?(user:)
-    user.promo_registrations.empty?
+    false
   end
 
   def create_uphold_connection?(uphold_model_card:)
