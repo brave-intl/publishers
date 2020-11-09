@@ -298,7 +298,7 @@ class Channel < ApplicationRecord
   private
 
   def should_register_channel_for_promo
-    return false
+    false
   end
 
   def clear_verified_at_if_necessary
