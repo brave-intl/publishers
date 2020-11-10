@@ -12,8 +12,7 @@ task :expire_low_performing_promo_codes => :environment do
   # get the first one until the end
   excluded_pub_ids = ARGV.slice(2, ARGV.length)
   # excluding the passed pub ids, set the promo lockout time to first arg
-  puts "excluded_pub_ids"
-  puts excluded_pub_ids
+
   Publisher.where.not(id: excluded_pub_ids).update_all("feature_flags = jsonb_set(feature_flags::jsonb, '{#{UserFeatureFlags::PROMO_LOCKOUT_TIME}}'::text[], to_json('#{target_time}'::text)::jsonb, true)")
 
   puts "Done"
