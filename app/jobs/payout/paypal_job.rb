@@ -1,8 +1,18 @@
 class Payout::PaypalJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, payout_report_id: nil)
-    publishers = Publisher.joins(:paypal_connection).with_verified_channel.where(paypal_connections: { country: "JP" })
+  def perform(should_send_notifications: false, payout_report_id: nil, publisher_ids: [])
+    if publisher_ids.present?
+      publishers = Publisher.where(selected_wallet_provider_type: [nil, 'PaypalConnection'])
+                            .joins(:paypal_connection)
+                            .where(id: publisher_ids)
+    else
+      publishers = Publisher.where(selected_wallet_provider_type: [nil, 'PaypalConnection'])
+                            .joins(:paypal_connection)
+                            .with_verified_channel
+                            .where(paypal_connections: { country: "JP" })
+    end
+
     publishers.find_each do |publisher|
       IncludePublisherInPayoutReportJob.perform_async(
         payout_report_id: payout_report_id,

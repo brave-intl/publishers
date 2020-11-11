@@ -2,8 +2,14 @@ module Payout
   class GeminiJob < ApplicationJob
     queue_as :scheduler
 
-    def perform(should_send_notifications: false, payout_report_id: nil)
-      publishers = Publisher.joins(:gemini_connection).with_verified_channel
+    def perform(should_send_notifications: false, payout_report_id: nil, publisher_ids: [])
+      if publisher_ids.present?
+        publishers = Publisher.where(selected_wallet_provider_type: [nil, 'GeminiConnection'])
+                              .joins(:gemini_connection).where(id: publisher_ids)
+      else
+        publishers = Publisher.where(selected_wallet_provider_type: [nil, 'GeminiConnection'])
+                              .joins(:gemini_connection).with_verified_channel
+      end
 
       publishers.find_each do |publisher|
         IncludePublisherInPayoutReportJob.perform_async(
