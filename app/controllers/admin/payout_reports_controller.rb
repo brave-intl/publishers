@@ -96,8 +96,8 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def toggle_payout_in_progress
-    payout_status = Rails.cache.fetch('payout_in_progress')
-    Rails.cache.write('payout_in_progress', !payout_status)
+    payout_status = Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
+    Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, !payout_status)
     redirect_to admin_payout_reports_path, flash: { alert: "Set 'payout in progress' to #{!payout_status}" }
   end
 

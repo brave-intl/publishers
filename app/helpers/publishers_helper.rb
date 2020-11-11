@@ -44,7 +44,7 @@ module PublishersHelper
   end
 
   def payout_in_progress?
-    !!Rails.cache.fetch('payout_in_progress')
+    !!Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
   end
 
   def next_deposit_date(today: DateTime.now)
