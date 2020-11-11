@@ -5,7 +5,7 @@ class Payout::PaypalJob < ApplicationJob
     if publisher_ids.present?
       publishers = Publisher.where(selected_wallet_provider_type: [nil, 'PaypalConnection']).
         joins(:paypal_connection).
-        where(id: publisher_ids)
+        where(id: publisher_ids, paypal_connections: { country: "JP" })
     else
       publishers = Publisher.where(selected_wallet_provider_type: [nil, 'PaypalConnection']).
         joins(:paypal_connection).
