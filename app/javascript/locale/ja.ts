@@ -41,6 +41,7 @@ export default {
   },
   shared: {
     cancel: "キャンセル",
+    ok: "OK",
     save: "保存",
   },
   siteBanner: {
