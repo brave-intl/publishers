@@ -414,8 +414,14 @@ ja:
   publishers:
     home_balances:
       balance_pending: 保留中の支払い
+      closed_case_description: <a href="/publishers/case">異議申し立てのケース</a>は否認されました。
+      held_funds: 中断されたBATポイント支払い
+      held_funds_description: これらの資金は、不審なアクティビティが確認されたため中断されている。こちらの<a href="/publishers/case/new">手順</a>にしたがって、異議申し立てを行ってください
       next_deposit_date: "次の入金日："
+      open_case_description: <a href="/publishers/case">あなたの異議申し立てケース</a>がオープンしました。 定期的に確認してください。
+      payout_in_progress: "進行中の支払い"
       payout_minimum_balance: "最低出金金額は %{amount} %{currency}です"
+      rejected_funds_description: <a href="/publishers/case">あなたの異議申立てケースは否認されました</a>。これは最終決定です。
     shared:
       enter_email: メールアドレスを入力
       sign_up: 登録
@@ -549,13 +555,7 @@ ja:
       migration: 現在、定期メンテナンスを実施しています。 この間、Upholdウォレットに問題が発生する場合があります。 まもなく復旧する予定です。
       noscript: ダッシュボードを操作する場合は、ブラウザーでJavaScriptを有効にしてください。
       title: ダッシュボード
-      payout_in_progress: "進行中の支払い"
       add_channel_cta: ウェブサイトまたはYouTubeチャンネルを追加して、Braveのファンがこれまでにどれだけ支援したかを確認してください。
-      held_funds: 中断されたBATポイント支払い
-      held_funds_description: これらの資金は、不審なアクティビティが確認されたため中断されている。こちらの<a href="/publishers/case/new">手順</a>にしたがって、異議申し立てを行ってください
-      rejected_funds_description: <a href="/publishers/case">あなたの異議申立てケースは否認されました</a>。これは最終決定です。
-      open_case_description: <a href="/publishers/case">あなたの異議申し立てケース</a>がオープンしました。 定期的に確認してください。
-      closed_case_description: <a href="/publishers/case">異議申し立てのケース</a>は否認されました。
 
       uphold:
         heading: あなたのUpholdウォレット
