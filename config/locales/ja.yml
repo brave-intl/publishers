@@ -548,6 +548,8 @@ ja:
       disabled_payouts: 近日中に支払いが行われます。こちらからウォレットの接続設定が可能です。
       migration: 現在、定期メンテナンスを実施しています。 この間、Upholdウォレットに問題が発生する場合があります。 まもなく復旧する予定です。
       noscript: ダッシュボードを操作する場合は、ブラウザーでJavaScriptを有効にしてください。
+      referral_program_winddown: |
+        リファラルプログラムは2020年11月9日より徐々に縮小していくことになりました。詳しくは<a href=%{blog_link}>ブログ記事</a>をご覧ください。
       title: ダッシュボード
       payout_in_progress: "進行中の支払い"
       add_channel_cta: ウェブサイトまたはYouTubeチャンネルを追加して、Braveのファンがこれまでにどれだけ支援したかを確認してください。

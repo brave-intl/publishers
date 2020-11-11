@@ -146,6 +146,7 @@ class PublishersController < ApplicationController
     end
 
     flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.paypal_locale?(params[:locale])
+    flash[:warning] = I18n.t("publishers.home.referral_program_winddown", blog_link: "https://brave.com/referral-program-update/").html_safe if Time.now < "2020-12-01"
   end
 
   def home_balances
