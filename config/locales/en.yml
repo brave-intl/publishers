@@ -417,8 +417,18 @@ en:
   publishers:
     home_balances:
       balance_pending: BALANCE
+      closed_case_description:
+        <a href="/publishers/case">Your appeal case </a> has been rejected.
+      held_funds: SUSPENDED BAT
+      held_funds_description: |
+        These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
       next_deposit_date: "Next Deposit Date: "
+      open_case_description:
+        <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
+      payout_in_progress: "Payout In Progress"
       payout_minimum_balance: "Minimum balance for payout is %{amount} %{currency}"
+      rejected_funds_description: |
+        <a href="/publishers/case">Your appeal was rejected</a>. This decision is final.
     shared:
       enter_email: Enter your email
       sign_up: Sign Up
@@ -583,19 +593,11 @@ en:
       disabled_payouts: Payouts will be coming soon. Keep an eye on this space to connect your wallet.
       migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
+      referral_program_winddown: |
+        The referral program has started winding down on Nov 9, 2020. Please read <b><a href=%{blog_link}>our blog post</a></b> for more details.
       title: Dashboard
-      payout_in_progress: "Payout In Progress"
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
       merchant: Merchant Keys
-      held_funds: SUSPENDED BAT
-      held_funds_description: |
-        These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
-      rejected_funds_description: |
-        <a href="/publishers/case">Your appeal was rejected</a>. This decision is final.
-      open_case_description:
-        <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
-      closed_case_description:
-        <a href="/publishers/case">Your appeal case </a> has been rejected.
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"

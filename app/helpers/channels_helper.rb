@@ -115,7 +115,7 @@ module ChannelsHelper
   end
 
   def time_until_transfer(channel)
-    return unless channel.verification_pending? || channel.contest_token.present?
+    return unless channel.verification_pending? || channel.contesting_channel.contest_token.present?
     contest_timesout_at = channel.contest_timesout_at || channel.contesting_channel.contest_timesout_at
     contest_already_timed_out = (contest_timesout_at - Time.now) < 0
 
