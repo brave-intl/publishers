@@ -1,7 +1,7 @@
 .dashboard-panel--wrapper
   - payout_warning = payout_warning(payout_report, publisher)
   .dashboard-panel--header= t('.heading')
-  - if Rails.cache.fetch("payout_report_generating")
+  - if Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
     .alert.alert-info
       .font-weight-bold=t('.information.generating')
   - else

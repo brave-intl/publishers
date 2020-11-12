@@ -3,11 +3,14 @@ class Payout::UpholdJob < ApplicationJob
 
   def perform(should_send_notifications: false, manual: false, payout_report_id: nil, publisher_ids: [])
     if publisher_ids.present?
-      publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
+      publishers = Publisher.where(selected_wallet_provider_type: [nil, 'UpholdConnection']).
+        joins(:uphold_connection).where(id: publisher_ids)
     elsif manual
-      publishers = Publisher.joins(:uphold_connection).invoice
+      publishers = Publisher.where(selected_wallet_provider_type: [nil, 'UpholdConnection']).
+        joins(:uphold_connection).invoice
     else
-      publishers = Publisher.joins(:uphold_connection).with_verified_channel
+      publishers = Publisher.where(selected_wallet_provider_type: [nil, 'UpholdConnection']).
+        joins(:uphold_connection).with_verified_channel
     end
 
     if payout_report_id.present?

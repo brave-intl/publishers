@@ -57,10 +57,12 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       publisher_ids: publisher_ids
     )
     Payout::GeminiJob.perform_later(
-      payout_report_id: payout_report.id
+      payout_report_id: payout_report.id,
+      publisher_ids: publisher_ids
     )
     Payout::PaypalJob.perform_later(
-      payout_report_id: payout_report.id
+      payout_report_id: payout_report.id,
+      publisher_ids: publisher_ids
     )
   end
 

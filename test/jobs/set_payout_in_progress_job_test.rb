@@ -2,12 +2,12 @@ require 'test_helper'
 
 class SetPayoutInProgressJobTest < ActiveJob::TestCase
   test "Sets payout in progress" do
-    Rails.cache.write('payout_in_progress', false)
+    Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, false)
     SetPayoutInProgressJob.perform_now(set_to: true)
-    assert Rails.cache.fetch('payout_in_progress')
+    assert Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
 
-    Rails.cache.write('payout_in_progress', true)
+    Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, true)
     SetPayoutInProgressJob.perform_now(set_to: false)
-    refute Rails.cache.fetch('payout_in_progress')
+    refute Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
   end
 end

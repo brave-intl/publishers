@@ -323,23 +323,23 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     describe "when payout not in progress" do
       before do
-        Rails.cache.write('payout_in_progress', false)
+        Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, false)
         post toggle_payout_in_progress_admin_payout_reports_path
       end
 
       it "set payout in progress" do
-        assert Rails.cache.fetch('payout_in_progress')
+        assert Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
       end
     end
 
     describe "when payout in progress" do
       before do
-        Rails.cache.write('payout_in_progress', true)
+        Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, true)
         post toggle_payout_in_progress_admin_payout_reports_path
       end
 
       it "set payout in progress" do
-        refute Rails.cache.fetch('payout_in_progress')
+        refute Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
       end
     end  end
 end
