@@ -795,7 +795,7 @@ en:
       downloaded: "downloaded"
       installed: "installed"
       confirmed: "confirmed"
-      expiration: "Thanks for particpating in the promo program. Your referral codes will expire in %{time}."
+      expiration: "Thanks for participating in the promo program. Your referral codes will expire in %{time}."
       unpayable_notice: "Connect and verify your identity with Uphold to enroll the referral promo program."
       restricted_country: "Your region is currently unable to participate in the referral promo program."
       signups_disabled: "Signups for the referral program are currently on hold until further notice."
