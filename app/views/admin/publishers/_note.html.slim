@@ -35,7 +35,7 @@
 
       / Actual content of the note
       div id="content_#{note.id}" class="#{condense ? "" : "my-3" }"
-        = simple_format(set_mentions(note.note), sanitize: true)
+        = simple_format(set_mentions(note.note&.gsub(URI.regexp, '<a href="\0">\0</a>')&.html_safe), sanitize: true)
 
       .links
         / Reply button

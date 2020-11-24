@@ -35,7 +35,7 @@ div.row
                   td = publisher.name
                   td.small = publisher.id
                   td = publisher_status(publisher)
-                  td = publisher.notes.order(created_at: :desc).first&.note
+                  td = publisher.notes.order(created_at: :desc).first&.note&.gsub(URI.regexp, '<a href="\0">\0</a>')&.html_safe
                   td = publisher.created_at.strftime('%B %d, %Y')
                   td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
           = will_paginate @publishers
