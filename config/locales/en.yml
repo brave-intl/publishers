@@ -594,7 +594,7 @@ en:
       migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       referral_program_winddown: |
-        The referral program has started winding down on Nov 9, 2020. Please read <b><a href=%{blog_link}>our blog post</a></b> for more details.
+        The Referral Program has now ended as of November 24, 2020. Please read <b><a href=%{blog_link}>our blog post</a></b> for more details.
       title: Dashboard
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
       merchant: Merchant Keys
@@ -795,7 +795,7 @@ en:
       downloaded: "downloaded"
       installed: "installed"
       confirmed: "confirmed"
-      expiration: "Thanks for particpating in the promo program. Your referral codes will expire in %{time}."
+      expiration: "Thanks for participating in the promo program. Your referral codes will expire in %{time}."
       unpayable_notice: "Connect and verify your identity with Uphold to enroll the referral promo program."
       restricted_country: "Your region is currently unable to participate in the referral promo program."
       signups_disabled: "Signups for the referral program are currently on hold until further notice."
