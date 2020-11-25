@@ -59,7 +59,7 @@ class Channel < ApplicationRecord
 
   # *ChannelDetails get autosaved from above.
   after_save :update_site_banner_lookup!, if: -> { :saved_change_to_verified? && verified? }
-  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
+  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo?
   after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
@@ -297,7 +297,7 @@ class Channel < ApplicationRecord
 
   private
 
-  def should_register_channel_for_promo
+  def should_register_channel_for_promo?
     return false unless publisher.may_create_referrals? && publisher.may_register_promo?
     promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = publisher.promo_enabled_2018q1?

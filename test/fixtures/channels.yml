@@ -255,6 +255,11 @@ promo_enabled_site:
   details: promo_enabled_site_details (SiteChannelDetails)
   verified: true
 
+promo_enabled_site_not_verified:
+  publisher: promo_enabled
+  details: promo_enabled_site_details_not_verified (SiteChannelDetails)
+  verified: false
+
 promo_enabled_youtube:
   publisher: promo_enabled
   details: promo_enabled_youtube_details (YoutubeChannelDetails)
