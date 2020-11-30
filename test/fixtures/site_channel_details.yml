@@ -146,6 +146,9 @@ locked_out_site_details:
 promo_enabled_site_details:
   brave_publisher_id: "promotion.org"
 
+promo_enabled_site_details_not_verified:
+  brave_publisher_id: "promotion2.org"
+
 potentially_paid_site_details:
   brave_publisher_id: "pontiallypaid.org"
 

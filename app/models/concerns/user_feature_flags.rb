@@ -9,6 +9,7 @@ module UserFeatureFlags
   REFERRAL_KYC_REQUIRED = :referral_kyc_required
   STRIPE_ENABLED = :stripe_enabled
   GEMINI_ENABLED = :gemini_enabled
+  REFERRAL_ENABLED_OVERRIDE = :referral_enabled_override
 
   VALID_FEATURE_FLAGS = [
     WIRE_ONLY,
@@ -18,6 +19,7 @@ module UserFeatureFlags
     PROMO_LOCKOUT_TIME,
     STRIPE_ENABLED,
     GEMINI_ENABLED,
+    REFERRAL_ENABLED_OVERRIDE,
   ].freeze
 
   included do
@@ -46,6 +48,10 @@ module UserFeatureFlags
       end
     end
     save!
+  end
+
+  def may_create_referrals?
+    feature_flags.symbolize_keys[REFERRAL_ENABLED_OVERRIDE].present?
   end
 
   # Helper methods
