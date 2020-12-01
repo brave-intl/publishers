@@ -80,6 +80,18 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert Channel.search("global%").map(&:id).include? channel.id
   end
 
+  test "Test should_register_channel_for_promo" do
+    channel = channels(:promo_enabled_site_not_verified)
+    assert_equal false, channel.send(:should_register_channel_for_promo?)
+    publisher = channel.publisher
+    publisher.feature_flags[UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE] = true
+    publisher.save
+    assert_equal false, channel.send(:should_register_channel_for_promo?)
+    channel.verified = true
+    channel.expects(:register_channel_for_promo).once
+    channel.save
+  end
+
   # Maybe put this in a RegisterChannelForPromoJobTest?
   test "verifying a channel calls register_channel_for_promo (site)" do
     channel = channels(:default)

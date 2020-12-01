@@ -1,5 +1,6 @@
 module UserFeatureFlags
   extend ActiveSupport::Concern
+  DAILY_EMAILS_FOR_PROMO_STATS = :daily_emails_for_promo_stats
   WIRE_ONLY = :wire_only
   INVOICE = :invoice
   MERCHANT = :merchant
@@ -9,8 +10,10 @@ module UserFeatureFlags
   REFERRAL_KYC_REQUIRED = :referral_kyc_required
   STRIPE_ENABLED = :stripe_enabled
   GEMINI_ENABLED = :gemini_enabled
+  REFERRAL_ENABLED_OVERRIDE = :referral_enabled_override
 
   VALID_FEATURE_FLAGS = [
+    DAILY_EMAILS_FOR_PROMO_STATS,
     WIRE_ONLY,
     INVOICE,
     MERCHANT,
@@ -18,9 +21,11 @@ module UserFeatureFlags
     PROMO_LOCKOUT_TIME,
     STRIPE_ENABLED,
     GEMINI_ENABLED,
+    REFERRAL_ENABLED_OVERRIDE,
   ].freeze
 
   included do
+    scope :daily_emails_for_promo_stats, -> { where("feature_flags->'#{DAILY_EMAILS_FOR_PROMO_STATS}' = 'true'") }
     scope :wire_only,      -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
     scope :invoice,        -> { where("feature_flags->'#{INVOICE}' = 'true'") }
     scope :merchant,       -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
@@ -46,6 +51,10 @@ module UserFeatureFlags
       end
     end
     save!
+  end
+
+  def may_create_referrals?
+    feature_flags.symbolize_keys[REFERRAL_ENABLED_OVERRIDE].present?
   end
 
   # Helper methods
