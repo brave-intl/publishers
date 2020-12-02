@@ -192,7 +192,11 @@ class Channel < ApplicationRecord
       verification_status = nil
     end
 
-    update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
+    update!(verified: true,
+            verification_pending: false,
+            verification_status: verification_status,
+            verification_details: nil,
+            verified_at: Time.now)
   end
 
   def needs_admin_approval?
