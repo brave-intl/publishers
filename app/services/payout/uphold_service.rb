@@ -9,10 +9,6 @@ module Payout
       potential_payments = []
       uphold_connection = @publisher.uphold_connection
 
-      wallet = PublisherWalletGetter.new(publisher: @publisher, include_transactions: false).perform
-
-      raise WalletError.new(message: "There was a problem fetching the wallet for #{@publisher.id}") if wallet.blank?
-
       uphold_connection.sync_connection!
       if uphold_connection.missing_card?
         uphold_connection.create_uphold_cards
@@ -20,14 +16,11 @@ module Payout
         uphold_connection.reload
       end
 
-      probi = wallet.referral_balance.amount_probi # probi = balance
-      total_probi = probi
-
       # Create the referral payment for the owner
       potential_payments << PotentialPayment.new(
         payout_report_id: @payout_report&.id,
         name: @publisher.name,
-        amount: "#{probi}",
+        amount: "0",
         fees: "0",
         publisher_id: @publisher.id,
         kind: ::PotentialPayment::REFERRAL,
@@ -44,15 +37,11 @@ module Payout
 
       # Create potential payments for channel contributions
       @publisher.channels.verified.each do |channel|
-        probi = wallet.channel_balances[channel.details.channel_identifier].amount_probi # probi = balance - fee
-        fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
-        total_probi += probi
-
         potential_payments << PotentialPayment.new(
           payout_report_id: @payout_report&.id,
           name: "#{channel.publication_title}",
-          amount: "#{probi}",
-          fees: "#{fee_probi}",
+          amount: "0",
+          fees: "0",
           publisher_id: @publisher.id,
           channel_id: channel.id,
           kind: ::PotentialPayment::CONTRIBUTION,
@@ -83,11 +72,6 @@ module Payout
           end
         end
       end
-
-      # Notify publishers that have money waiting, but will not will not receive funds
-      if should_send_emails?(total_probi: total_probi, uphold_connection: uphold_connection)
-        send_emails(uphold_connection, probi_to_bat(total_probi).round(1))
-      end
     rescue StandardError => e
       PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message) unless should_only_notify?
 
@@ -117,16 +101,6 @@ module Payout
         PublisherMailer.uphold_kyc_incomplete(@publisher, total_amount).deliver_later
         uphold_connection.update(send_emails: 1.year.from_now)
       end
-    end
-
-
-    def should_send_emails?(total_probi:, uphold_connection:)
-      total_probi > PROBI_THRESHOLD && @should_send_notifications &&
-        (
-          uphold_connection.send_emails.present? &&
-          uphold_connection.send_emails < DateTime.now &&
-          uphold_connection.send_emails != UpholdConnection::FOREVER_DATE
-        )
     end
 
     # Converts Probi to BAT, original implementation Eyeshade::BaseBalance
