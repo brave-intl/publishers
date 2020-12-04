@@ -320,8 +320,8 @@ class UpholdServiceTest < ActiveJob::TestCase
 
               it "is included in payout report" do
                 assert_equal @payout_report.num_payments, publisher.channels.count + 1
-                assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
-                assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
+                assert_equal @payout_report.amount, 0
+                assert_equal @payout_report.fees, 0
 
                 @payout_report.update_report_contents
                 assert_equal 4, JSON.parse(@payout_report.contents).length
@@ -410,8 +410,8 @@ class UpholdServiceTest < ActiveJob::TestCase
 
             it "is not included in payout report" do
               assert_equal @payout_report.num_payments, publisher.channels.count + 1
-              assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
-              assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
+              assert_equal @payout_report.amount, 0
+              assert_equal @payout_report.fees, 0
             end
 
             it "has the correct content" do
