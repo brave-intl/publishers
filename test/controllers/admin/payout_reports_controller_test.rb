@@ -174,7 +174,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     # Create the non blank payout report
     perform_enqueued_jobs do
-      post admin_payout_reports_path(final: true)
+      post admin_payout_reports_path(final: true, manual: true)
     end
 
     # Ensure authority is the admin's email when the file is downloaded
@@ -268,16 +268,6 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     ]
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
-
-    assert_difference("PayoutReport.count", 0) do # Ensure no payout report is created
-      assert_difference("ActionMailer::Base.deliveries.count", 1) do # ensure notification is sent
-        perform_enqueued_jobs do
-          Sidekiq::Testing.inline! do
-            post notify_admin_payout_reports_path
-          end
-        end
-      end
-    end
   end
 
   describe "#upload_settlement_report" do

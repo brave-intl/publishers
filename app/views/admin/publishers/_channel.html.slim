@@ -49,19 +49,6 @@
                 div.mr-5
                   small.text-muted REFERRAL CODE
                   h6.m-0.font-weight-bold= channel.promo_registration.referral_code
-
-
-          .d-flex
-            - potential_contribution_payment = channel.most_recent_potential_payment
-            - if potential_contribution_payment.present?
-              .border-right.mx-3
-              .d-flex.flex-column.d-inline-flex
-                span.mb-1.text-wrap=payout_report_status_header('channel')
-                small.text-muted AMOUNT
-                div
-                  span.font-weight-bold= "#{(potential_contribution_payment.amount.to_d * 1/1E18).round(2)}"
-                  small.mt-1.ml-1 BAT
-
           .d-flex
             - if channel.promo_registration.present?
               .border-right.mx-3
