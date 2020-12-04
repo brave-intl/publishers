@@ -366,13 +366,13 @@ class UpholdServiceTest < ActiveJob::TestCase
                   assert_equal publisher.uphold_connection.uphold_id, potential_payment.uphold_id
 
                   if potential_payment.kind == PotentialPayment::CONTRIBUTION
-                    assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
+                    assert_equal potential_payment.amount, 0
                     assert potential_payment.channel_stats.present?
                     assert potential_payment.channel_type.present?
                     assert_equal potential_payment.channel.details.stats, potential_payment.channel_stats
                     assert_equal potential_payment.channel.details_type, potential_payment.channel_type
                   elsif potential_payment.kind == PotentialPayment::REFERRAL
-                    assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
+                    assert_equal potential_payment.amount, 0
                   end
                   assert_equal "ok", potential_payment.uphold_status
                   assert potential_payment.uphold_member
@@ -419,9 +419,9 @@ class UpholdServiceTest < ActiveJob::TestCase
                 assert_equal potential_payment.address, publisher.uphold_connection.address
                 assert_equal potential_payment.publisher_id, publisher.id.to_s
                 if potential_payment.kind == PotentialPayment::CONTRIBUTION
-                  assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
+                  assert_equal potential_payment.amount, 0
                 elsif potential_payment.kind == PotentialPayment::REFERRAL
-                  assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
+                  assert_equal potential_payment.amount, 0
                 end
               end
             end
