@@ -192,7 +192,11 @@ class Channel < ApplicationRecord
       verification_status = nil
     end
 
-    update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
+    update!(verified: true,
+            verification_pending: false,
+            verification_status: verification_status,
+            verification_details: nil,
+            verified_at: Time.now)
   end
 
   def needs_admin_approval?
@@ -260,10 +264,6 @@ class Channel < ApplicationRecord
 
   def type_display
     details_type.split("ChannelDetails").join
-  end
-
-  def most_recent_potential_payment
-    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: id)&.first
   end
 
   def uphold_connection

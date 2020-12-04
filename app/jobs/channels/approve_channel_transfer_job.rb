@@ -16,9 +16,7 @@ module Channels
         original_owner_name = channel.publisher.name
         channel_name = channel.publication_title
 
-        contested_by.verified = true
-        contested_by.verification_pending = false
-        contested_by.save! # Automatically initiates the Promo::PublisherChannelsRegistrar
+        contested_by.verification_succeeded!(false)
         channel.destroy
 
         # Email the original owner

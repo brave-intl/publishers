@@ -1,7 +1,12 @@
 one:
   final: true
+  manual: true
   expected_num_payments: "<%= PayoutReport.expected_num_payments(Publisher.all) %>"
 
 two:
   final: true
   manual: true
+
+three:
+  final: true
+  manual: false
