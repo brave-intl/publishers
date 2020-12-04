@@ -5,6 +5,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   SEND_NOTIFICATIONS = "send_notifications".freeze
 
   def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
+    return if should_send_notifications
     Rails.logger.info("Enqueuing publishers for payment.")
 
     should_send_notifications = SEND_NOTIFICATIONS.in? args

@@ -338,14 +338,6 @@ class PublisherTest < ActiveSupport::TestCase
     )
   end
 
-  test "#most_recent_potential_referral_payment finds the most recent referral payment" do
-    publisher = publishers(:potentially_paid)
-    assert publisher.most_recent_potential_referral_payment.present?
-
-    publisher = publishers(:completed)
-    assert publisher.most_recent_potential_referral_payment.blank?
-  end
-
   describe '#selected_wallet_provider' do
     describe 'when the publisher has a selected_wallet_provider' do
       let(:publisher) { publishers(:publisher_selected_wallet_provider) }

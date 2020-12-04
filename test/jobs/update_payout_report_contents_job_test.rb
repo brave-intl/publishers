@@ -5,13 +5,13 @@ class UpdatePayoutReportContentsJobTest < ActiveJob::TestCase
     payout_report = payout_reports(:one)
     UpdatePayoutReportContentsJob.perform_now(payout_report_ids: payout_report.id)
     payout_report.reload
-    assert_not_nil payout_report.contents
+    assert_equal 0, JSON.parse(payout_report.contents).length
   end
 
   test "updates payout report contents for all reports" do
     payout_report = payout_reports(:one)
     UpdatePayoutReportContentsJob.perform_now
     payout_report.reload
-    assert_not_nil payout_report.contents
+    assert_equal 0, JSON.parse(payout_report.contents).length
   end
 end

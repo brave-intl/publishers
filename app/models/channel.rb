@@ -266,10 +266,6 @@ class Channel < ApplicationRecord
     details_type.split("ChannelDetails").join
   end
 
-  def most_recent_potential_payment
-    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: id)&.first
-  end
-
   def uphold_connection
     @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher.uphold_connection.default_currency }
   end

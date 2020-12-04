@@ -173,12 +173,10 @@ class UpholdServiceTest < ActiveJob::TestCase
         refute potential_payment.reauthorization_needed
         assert_equal "blocked", potential_payment.uphold_status
         if potential_payment.kind == PotentialPayment::REFERRAL
-          assert_equal "20000000000000000000", potential_payment.amount
           assert_equal "0", potential_payment.fees
           assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
         elsif potential_payment.kind == PotentialPayment::CONTRIBUTION
-          assert_equal "19000000000000000000", potential_payment.amount
-          assert_equal  "1000000000000000000", potential_payment.fees
+          assert_equal  "0", potential_payment.fees
           assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
         end
       end
@@ -245,11 +243,6 @@ class UpholdServiceTest < ActiveJob::TestCase
         payout_report = PayoutReport.order("created_at").last
         payout_report.update_report_contents
         assert_equal 0, JSON.parse(payout_report.contents).length
-      end
-
-      it "sends email to connect uphold" do
-        email = ActionMailer::Base.deliveries.last
-        assert_equal email&.subject, I18n.t("publisher_mailer.wallet_not_connected.subject", total_amount: 975.0)
       end
     end
   end
@@ -320,11 +313,6 @@ class UpholdServiceTest < ActiveJob::TestCase
 
               it "is included in payout report" do
                 assert_equal @payout_report.num_payments, publisher.channels.count + 1
-                assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
-                assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
-
-                @payout_report.update_report_contents
-                assert_equal 4, JSON.parse(@payout_report.contents).length
               end
 
               describe 'when card is missing ' do
@@ -366,13 +354,10 @@ class UpholdServiceTest < ActiveJob::TestCase
                   assert_equal publisher.uphold_connection.uphold_id, potential_payment.uphold_id
 
                   if potential_payment.kind == PotentialPayment::CONTRIBUTION
-                    assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
                     assert potential_payment.channel_stats.present?
                     assert potential_payment.channel_type.present?
                     assert_equal potential_payment.channel.details.stats, potential_payment.channel_stats
                     assert_equal potential_payment.channel.details_type, potential_payment.channel_type
-                  elsif potential_payment.kind == PotentialPayment::REFERRAL
-                    assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
                   end
                   assert_equal "ok", potential_payment.uphold_status
                   assert potential_payment.uphold_member
@@ -410,19 +395,12 @@ class UpholdServiceTest < ActiveJob::TestCase
 
             it "is not included in payout report" do
               assert_equal @payout_report.num_payments, publisher.channels.count + 1
-              assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
-              assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
             end
 
             it "has the correct content" do
               PotentialPayment.where(payout_report_id: @payout_report.id).each do |potential_payment|
                 assert_equal potential_payment.address, publisher.uphold_connection.address
                 assert_equal potential_payment.publisher_id, publisher.id.to_s
-                if potential_payment.kind == PotentialPayment::CONTRIBUTION
-                  assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
-                elsif potential_payment.kind == PotentialPayment::REFERRAL
-                  assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
-                end
               end
             end
 
@@ -562,11 +540,6 @@ class UpholdServiceTest < ActiveJob::TestCase
             it "does not include them in payout report json" do
               @payout_report.update_report_contents
               assert_equal 0, JSON.parse(@payout_report.contents).length
-            end
-
-            it "receives an email to check uphold" do
-              email = ActionMailer::Base.deliveries.last
-              assert_equal email&.subject, I18n.t("publisher_mailer.uphold_member_restricted.subject")
             end
           end
 

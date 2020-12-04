@@ -352,14 +352,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal channel, found_channel
   end
 
-  test "most_recent_potential_payment finds the most recent potential payment" do
-    channel = channels(:potentially_paid_site)
-    assert channel.most_recent_potential_payment.present?
-
-    channel = channels(:uphold_connected_details)
-    refute channel.most_recent_potential_payment.present?
-  end
-
   describe "#advanced_sort" do
     describe 'youtube view count' do
       it 'sorts by ascending' do

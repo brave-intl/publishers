@@ -63,7 +63,6 @@ class Admin::PublishersController < AdminController
 
   def wallet_info
     @publisher = Publisher.find(params[:publisher_id])
-    @potential_referral_payment = @publisher.most_recent_potential_referral_payment
     @referral_owner_status = PromoClient.owner_state.find(id: @publisher.id)
     render partial: "wallet_info"
   end
