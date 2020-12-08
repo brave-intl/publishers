@@ -50,12 +50,12 @@ module Payment
 
         # Destroy our database records
         if gemini_connection.destroy
-          redirect_to(home_publishers_path, notice: I18n.t("publishers.gemini_connections.destroy.removed"))
+          redirect_to(home_publishers_path, notice: I18n.t(".removed"))
         else
           redirect_to(
             home_publishers_path,
             alert: I18n.t(
-              "publishers.gemini_connections.destroy.error",
+              ".error",
               errors: gemini_connection.errors.full_messages.join(', ')
             )
           )
