@@ -34,7 +34,7 @@ class IncludePublisherInPayoutReportJob
     when UPHOLD
       potential_payment_job = Payout::UpholdService
     when MANUAL
-      potential_payment_job = ManualPayoutReportPublisherIncluder
+      potential_payment_job = Payout::ManualPayoutReportPublisherIncluder
     end
 
     potential_payment_job.new(
