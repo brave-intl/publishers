@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_03_184106) do
+ActiveRecord::Schema.define(version: 2020_12_15_124546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -436,6 +436,16 @@ ActiveRecord::Schema.define(version: 2020_09_03_184106) do
     t.uuid "publisher_note_id"
     t.index ["publisher_id", "created_at"], name: "index_publisher_status_updates_on_publisher_id_and_created_at"
     t.index ["publisher_note_id"], name: "index_publisher_status_updates_on_publisher_note_id"
+  end
+
+  create_table "publisher_whitelist_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.uuid "publisher_note_id"
+    t.boolean "enabled", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["publisher_id"], name: "index_publisher_whitelist_updates_on_publisher_id"
+    t.index ["publisher_note_id"], name: "index_publisher_whitelist_updates_on_publisher_note_id"
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

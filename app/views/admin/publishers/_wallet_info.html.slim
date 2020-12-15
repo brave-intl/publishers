@@ -15,6 +15,9 @@
     .db-field = "Role:"
     .db-value = @publisher.role
   .db-info-row
+    .db-field = "Whitelisted:"
+    .db-value = @publisher.last_whitelist_update.present? && @publisher.last_whitelist_update&.enabled
+  .db-info-row
     .db-field = "Created:"
     .db-row = @publisher.created_at.strftime('%B %d, %Y')
   .db-info-row
