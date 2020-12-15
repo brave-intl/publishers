@@ -43,6 +43,10 @@ class Api::V1::PublishersController < Api::BaseController
     raise InvalidNote if note.blank?
     raise InvalidAdmin if admin.blank?
 
+    if user.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(status)
+      render(status: 403, json: {"reason": "Cannot suspend whitelisted publisher"}) and return
+    end
+
     status_update = PublisherStatusUpdate.create!(publisher: user, status: status)
     PublisherNote.create!(note: note, publisher: user, created_by: admin)
 
@@ -50,7 +54,6 @@ class Api::V1::PublishersController < Api::BaseController
     PublisherMailer.email_user_on_hold(@publisher).deliver_later if status == PublisherStatusUpdate::HOLD
 
     render(status: 200, json: { publisher_status_updates_id: status_update.id }) and return
-
   rescue ActiveRecord::RecordInvalid
     error_response = {
       error: "Status Invalid",
