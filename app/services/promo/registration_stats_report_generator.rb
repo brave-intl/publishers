@@ -4,12 +4,13 @@ require "csv"
 class Promo::RegistrationStatsReportGenerator < BaseService
   include PromosHelper
 
-  def initialize(referral_codes:, start_date:, end_date:, reporting_interval:, is_geo:)
+  def initialize(referral_codes:, start_date:, end_date:, reporting_interval:, is_geo:, include_ratios: true)
     @referral_codes = referral_codes
     @start_date = coerce_date_to_start_or_end_of_reporting_interval(start_date, reporting_interval, true)
     @end_date = coerce_date_to_start_or_end_of_reporting_interval(end_date, reporting_interval, false)
     @reporting_interval = reporting_interval
     @is_geo = is_geo
+    @include_ratios = include_ratios
   end
 
   def perform
@@ -34,9 +35,11 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       end
 
       # Append newline and ratio headers to the CSV generated
-      csv << [] << ratios_column_header(broken_down_by_country?)
-      ratios.each do |ratio|
-        csv << ratio
+      if @include_ratios
+        csv << [] << ratios_column_header(broken_down_by_country?)
+        ratios.each do |ratio|
+          csv << ratio
+        end
       end
     end
   end
