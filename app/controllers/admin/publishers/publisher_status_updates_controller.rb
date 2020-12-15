@@ -6,7 +6,7 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
   end
 
   def create
-    if @publisher.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(status)
+    if @publisher.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(params[:publisher_status])
       render(status: 403, json: { "reason": "Cannot suspend whitelisted publisher" }) and return
     end
 
