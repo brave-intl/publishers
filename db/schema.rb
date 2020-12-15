@@ -444,8 +444,10 @@ ActiveRecord::Schema.define(version: 2020_12_15_124546) do
     t.boolean "enabled", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_publisher_whitelist_updates_on_created_at"
     t.index ["publisher_id"], name: "index_publisher_whitelist_updates_on_publisher_id"
     t.index ["publisher_note_id"], name: "index_publisher_whitelist_updates_on_publisher_note_id"
+    t.index ["updated_at"], name: "index_publisher_whitelist_updates_on_updated_at"
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

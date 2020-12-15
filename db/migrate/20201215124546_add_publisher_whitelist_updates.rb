@@ -4,7 +4,7 @@ class AddPublisherWhitelistUpdates < ActiveRecord::Migration[6.0]
       t.belongs_to :publisher, type: :uuid, index: true, unique: true, null: false
       t.references :publisher_note, type: :uuid
       t.boolean :enabled, null: false
-      t.timestamps
+      t.timestamps index: true
     end
   end
 end
