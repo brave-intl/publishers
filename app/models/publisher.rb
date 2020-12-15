@@ -36,6 +36,7 @@ class Publisher < ApplicationRecord
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
+  has_many :whitelist_updates, -> { order(created_at: :desc) }, class_name: 'PublisherWhitelistUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
   has_many :potential_payments
   has_many :invoices
@@ -301,6 +302,10 @@ class Publisher < ApplicationRecord
 
   def last_status_update
     status_updates.first
+  end
+
+  def last_whitelist_update
+    whitelist_updates.first
   end
 
   def last_login_activity

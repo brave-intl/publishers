@@ -270,6 +270,7 @@ Rails.application.routes.draw do
       patch :refresh_uphold
 
       resources :publisher_notes
+      resources :publisher_whitelist_updates, controller: "publishers/publisher_whitelist_updates"
       resources :publisher_status_updates, controller: "publishers/publisher_status_updates"
       resources :referrals, controller: "publishers/referrals"
       resources :reports
