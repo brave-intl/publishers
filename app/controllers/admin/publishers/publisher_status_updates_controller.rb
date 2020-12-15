@@ -7,7 +7,7 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
 
   def create
     if @publisher.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(status)
-      render(status: 403, json: {"reason": "Cannot suspend whitelisted publisher"}) and return
+      render(status: 403, json: { "reason": "Cannot suspend whitelisted publisher" }) and return
     end
 
     note = @publisher.notes.create(note: params[:note], created_by_id: current_publisher.id)

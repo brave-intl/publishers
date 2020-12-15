@@ -44,7 +44,7 @@ class Api::V1::PublishersController < Api::BaseController
     raise InvalidAdmin if admin.blank?
 
     if user.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(status)
-      render(status: 403, json: {"reason": "Cannot suspend whitelisted publisher"}) and return
+      render(status: 403, json: { "reason": "Cannot suspend whitelisted publisher" }) and return
     end
 
     status_update = PublisherStatusUpdate.create!(publisher: user, status: status)
