@@ -31,7 +31,6 @@ h5.admin-header Change current status for #{@publisher.name}
     .form-group
       = label_tag(:status_label, "Status")
       = select_tag(:publisher_status, options_for_select(PublisherStatusUpdate::USER_SELECTABLE, @publisher.last_status_update), class: "form-control")
-
     .form-group
       = label_tag(:note_label, "Include a note: ")
       = text_area_tag(:note, '', class: 'form-control', rows: 5, required: true)
@@ -40,7 +39,15 @@ h5.admin-header Change current status for #{@publisher.name}
         = check_box_tag("send_email", true)
         = " Send email (suspended & hold only)"
     = f.submit("Update Status", class: 'btn btn-primary')
-
+    .my-3
+  = form_for(@publisher, url: admin_publisher_publisher_whitelist_updates_path(publisher_id: @publisher.id), method: :create) do |f|
+    .form-group
+      = label_tag(:enable_label, "Whitelist toggle")
+      = select_tag(:enable, options_for_select([true, false], @publisher.last_status_update), class: "form-control")
+    .form-group
+      = label_tag(:note_label, "Include a note: ")
+      = text_area_tag(:note, '', class: 'form-control', rows: 5, required: true)
+    = f.submit("Update whitelist", class: 'btn btn-primary')
 
   .legend.my-5
     h2.mb-0 Legend
