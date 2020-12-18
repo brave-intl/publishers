@@ -12,8 +12,12 @@ class Promo::EmailBreakdownsJob
       is_geo: true,
       include_ratios: false
     ).perform)
-    csv.delete("Day")
+    new_csv = []
+    csv.each do |row|
+      row.delete_at(2) # delete Day column
+      new_csv << row.join(",")
+    end
     publisher = Publisher.find_by(id: publisher_id)
-    PublisherMailer.promo_breakdowns(publisher, csv.to_csv).deliver_now
+    PublisherMailer.promo_breakdowns(publisher, new_csv.join("\n")).deliver_now
   end
 end
