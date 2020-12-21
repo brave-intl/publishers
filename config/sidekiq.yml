@@ -77,4 +77,8 @@
     cron: "0 3 1 * *"
     description: "Refreshes the json version of the report that's built from the potential payments table on the first of every month."
     queue: scheduler
+  Promo::EmailBreakdownsJob:
+    cron: "0 0 * * *"
+    description: "Sends out a breakdown to each publisher"
+    queue: low
 :verbose: true
