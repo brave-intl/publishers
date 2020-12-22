@@ -3,7 +3,7 @@ class EnqueueEmailsForPromoPublishersJob < ApplicationJob
 
   def perform
     Publisher.daily_emails_for_promo_stats.find_each do |publisher|
-      EmailBreakdownsJob.perform_async(publisher.id)
+      Promo::EmailBreakdownsJob.perform_async(publisher.id)
     end
   end
 end
