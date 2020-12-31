@@ -1,6 +1,6 @@
 class Promo::EmailBreakdownsJob
   include Sidekiq::Worker
-  sidekiq_options queue: :low, retry: true
+  sidekiq_options queue: :default, retry: true
 
   def perform(publisher_id)
     referral_codes = PromoRegistration.where(publisher_id: publisher_id).pluck(:referral_code)
