@@ -14,6 +14,7 @@ class Promo::EmailBreakdownsJob
     ).perform)
     new_csv = []
     csv.each do |row|
+      row.delete_at(5) # delete the 30-day-confirmation column
       row.delete_at(2) # delete Day column
       new_csv << row.join(",")
     end
