@@ -47,7 +47,7 @@ gem 'google-protobuf', "~> 3.12.0"
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.10.9"
+gem "nokogiri", "~> 1.11.1"
 
 # Open Graph tag
 gem "meta-tags", "~> 2.13.0"
@@ -79,8 +79,8 @@ gem "omniauth-github", "~> 1.4.0"
 # Model record auditing
 gem "paper_trail", "~> 10.3.1"
 
-# postgresql as database for Active Record
-gem "pg", "~> 0.18"
+# Use postgresql as the database for Active Record
+gem 'pg', '>= 0.18', '< 2.0'
 
 # Easy CSS-sthled emails
 gem "premailer-rails", "~> 1.10.3", require: false
@@ -89,7 +89,7 @@ gem "premailer-rails", "~> 1.10.3", require: false
 gem 'public_suffix', '~> 4.0.3'
 
 # Puma as app server
-gem "puma", "~> 5.0.2"
+gem "puma", "~> 5.1.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"

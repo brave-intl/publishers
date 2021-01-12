@@ -1,6 +1,6 @@
 class Promo::EmailBreakdownsJob
   include Sidekiq::Worker
-  sidekiq_options queue: :low, retry: true
+  sidekiq_options queue: :default, retry: true
 
   def perform(publisher_id)
     referral_codes = PromoRegistration.where(publisher_id: publisher_id).pluck(:referral_code)
@@ -14,6 +14,7 @@ class Promo::EmailBreakdownsJob
     ).perform)
     new_csv = []
     csv.each do |row|
+      row.delete_at(5) # delete the 30-day-confirmation column
       row.delete_at(2) # delete Day column
       new_csv << row.join(",")
     end
