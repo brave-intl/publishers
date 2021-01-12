@@ -1,5 +1,5 @@
 default: &default
-  fastly: <%= ENV["FASTLY_API"] || "https://api.fastly.com/public-ip-list" %>
+  cloudfront: <%= ENV["CLOUDFRONT_API"] || "https://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips" %>
   gemini:
     api_uri: <%= ENV["GEMINI_API"] || "https://api.sandbox.gemini.com" %>
     oauth_uri: <%= ENV["GEMINI_OAUTH_API"] || "https://exchange.sandbox.gemini.com" %>
