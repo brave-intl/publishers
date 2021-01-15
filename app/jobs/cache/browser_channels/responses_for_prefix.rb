@@ -104,8 +104,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
     obj = s3.bucket(Rails.application.secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
     obj.put_object({
       body: path,
-      grant_read: :s3_rewards2_bucket_grant_access,
-      grant_full_control: :s3_rewards2_bucket_grant_cloudfront_access
+      grant_read: Rails.application.secrets[:s3_rewards2_bucket_grant_access],
+      grant_full_control: Rails.application.secrets[:s3_rewards2_bucket_grant_cloudfront_access]
     })
   end
 
