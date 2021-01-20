@@ -131,9 +131,6 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   end
 
   def production_info
-    response = Faraday.get("https://publishers-distro.basicattentiontoken.org/api/v3/public/channels") do |req|
-      req.headers['Accept-Encoding'] = 'gzip'
-    end
-    JSON.parse(ActiveSupport::Gzip.decompress(response.body))
+    return []
   end
 end
