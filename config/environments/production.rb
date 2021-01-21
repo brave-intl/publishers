@@ -81,6 +81,9 @@ Rails.application.configure do
     }
   }
 
+  require 'connection_pool'
+  REDIS = ConnectionPool.new(size: 5) { Redis.new }
+
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "publishers_#{Rails.env}"
