@@ -15,9 +15,6 @@ class HealthChecksController < ActionController::Base
     [
       { name: "cache", healthy: cache_connected? },
       { name: "database", healthy: database_connected? },
-      { name: "migrations", healthy: database_migrations_updated? },
-      { name: "sidekiq", healthy: sidekiq_connected? },
-      { name: "sidekiq_workers", healthy: sidekiq_workers?, optional: true },
     ]
   end
 
@@ -26,7 +23,9 @@ class HealthChecksController < ActionController::Base
   end
 
   def cache_connected?
-    Rails.cache.redis.ping == "PONG"
+    REDIS.with do |conn|
+      conn.ping == "PONG"
+    end
   rescue StandardError
     false
   end
@@ -34,30 +33,6 @@ class HealthChecksController < ActionController::Base
   def database_connected?
     ApplicationRecord.connection
     ApplicationRecord.connected?
-  rescue
-    false
-  end
-
-  def database_migrations_updated?
-    return false unless database_connected?
-
-    !ApplicationRecord.connection.migration_context.needs_migration?
-  end
-
-  def sidekiq_connected?
-    Sidekiq.redis do |r|
-      res = r.ping
-      res == 'PONG'
-    end
-  rescue
-    false
-  end
-
-  def sidekiq_workers?
-    return false unless sidekiq_connected?
-
-    ps = Sidekiq::ProcessSet.new
-    ps.size.positive?
   rescue
     false
   end
