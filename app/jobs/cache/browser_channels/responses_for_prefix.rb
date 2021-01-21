@@ -102,7 +102,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_rewards2_access_key_id], Rails.application.secrets[:s3_rewards2_secret_access_key])
     s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards2_bucket_region])
     obj = s3.bucket(Rails.application.secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
-    obj.put_object({
+    obj.put({
       body: path,
       grant_read: Rails.application.secrets[:s3_rewards2_bucket_grant_access],
       grant_full_control: Rails.application.secrets[:s3_rewards2_bucket_grant_cloudfront_access]
