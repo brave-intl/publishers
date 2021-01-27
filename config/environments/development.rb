@@ -37,6 +37,9 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  require 'connection_pool'
+  REDIS = ConnectionPool.new(size: 5) { Redis.new }
+
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
