@@ -68,11 +68,11 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
 
         subject
 
-        UpholdConnectionForChannel.find_by(
+        _(UpholdConnectionForChannel.find_by(
           uphold_connection: uphold_connection,
           currency: uphold_connection.default_currency,
           channel_identifier: channel.details.channel_identifier
-        ).address.wont_be_same_as(previous_address)
+        ).address).wont_be_same_as(previous_address)
       end
 
     end
