@@ -35,6 +35,16 @@
           = "Promo Lockout Time"
         = f.date_field(UserFeatureFlags::PROMO_LOCKOUT_TIME, value: @publisher.promo_lockout_time, class: 'ml-2')
         p.text-dark Sets the date when the publishers promo codes will no longer be active.
+      .form-group.border-bottom.pb-2
+        label
+          = f.check_box UserFeatureFlags::DAILY_EMAILS_FOR_PROMO_STATS, {}, checked: @publisher.has_daily_emails_for_promo_stats?
+          = " Daily Emails for Promo Stats"
+        p.text-dark Sets daily emails for promos
+      .form-group.border-bottom.pb-2
+        label
+          = f.check_box UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE, {}, checked: @publisher.allowed_to_create_referrals?
+          = " Allow publisher to create referrals"
+        p.text-dark Allow publisher to create referrals
 
       .form-group
         = f.submit class: "btn btn-primary m-0"

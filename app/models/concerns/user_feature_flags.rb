@@ -86,6 +86,14 @@ module UserFeatureFlags
     feature_flags.symbolize_keys[GEMINI_ENABLED].present?
   end
 
+  def has_daily_emails_for_promo_stats?
+    feature_flags.symbolize_keys[DAILY_EMAILS_FOR_PROMO_STATS].present?
+  end
+
+  def allowed_to_create_referrals?
+    feature_flags.symbolize_keys[REFERRAL_ENABLED_OVERRIDE].present?
+  end
+
   def promo_lockout_time
     feature_flags.symbolize_keys[PROMO_LOCKOUT_TIME]
   end
