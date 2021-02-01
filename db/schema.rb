@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_15_124546) do
+ActiveRecord::Schema.define(version: 2021_01_31_233252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -36,6 +36,32 @@ ActiveRecord::Schema.define(version: 2020_12_15_124546) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "bitflyer_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.string "encrypted_access_token"
+    t.string "encrypted_access_token_iv"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
+    t.string "expires_in"
+    t.datetime "access_expiration_time"
+    t.string "display_name"
+    t.string "state_token"
+    t.string "scope"
+    t.string "status"
+    t.string "country"
+    t.boolean "is_verified"
+    t.string "recipient_id"
+    t.string "default_currency"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.index ["encrypted_access_token_iv"], name: "index_bitflyer_connections_on_encrypted_access_token_iv", unique: true
+    t.index ["encrypted_refresh_token_iv"], name: "index_bitflyer_connections_on_encrypted_refresh_token_iv", unique: true
+    t.index ["is_verified"], name: "index_bitflyer_connections_on_is_verified"
+    t.index ["publisher_id"], name: "index_bitflyer_connections_on_publisher_id"
+    t.index ["recipient_id"], name: "index_bitflyer_connections_on_recipient_id", unique: true
+    t.index ["status"], name: "index_bitflyer_connections_on_status"
   end
 
   create_table "cached_uphold_tips", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -478,6 +504,7 @@ ActiveRecord::Schema.define(version: 2020_12_15_124546) do
     t.jsonb "feature_flags", default: {}
     t.string "selected_wallet_provider_type"
     t.uuid "selected_wallet_provider_id"
+    t.string "bitflyer_deposit_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
