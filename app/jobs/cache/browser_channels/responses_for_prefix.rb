@@ -37,6 +37,14 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.paypal_wallet = paypal_wallet
           channel_response.wallets.push(wallet)
         end
+        if site_banner_lookup.publisher.bitflyer_connection.present?
+          wallet = PublishersPb::Wallet.new
+          bitflyer_wallet = PublishersPb::PaypalWallet.new
+          bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
+          bitflyer_wallet.address = site_banner_lookup.publisher.bitflyer_deposit_id
+          wallet.bitflyer_wallet = bitflyer_wallet
+          channel_response.wallets.push(wallet)
+        end
       rescue
         next
       end
@@ -72,13 +80,15 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
+  def get_bitflyer_wallet_state(paypal_connection:)
+    PublishersPb::BitFlyerWalletState::BITFLYER_ACCOUNT_KYC
+  end
+
   def cleanup!
-    begin
-      File.open(@temp_file.path, 'r') do |f|
-        File.delete(f)
-      end
-    rescue Errno::ENOENT
+    File.open(@temp_file.path, 'r') do |f|
+      File.delete(f)
     end
+  rescue Errno::ENOENT
   end
 
   # We want to hide which file is being downloaded by making all requests be the same size
