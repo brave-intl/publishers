@@ -26,7 +26,9 @@ class Cache::BrowserChannels::Main
       }
     ])
     result.each do |site_banner_lookup|
-      Cache::BrowserChannels::ResponsesForPrefix.perform_async(site_banner_lookup[:prefix])
+      ActiveRecord::Base.connection_pool.with_connection do
+        Cache::BrowserChannels::ResponsesForPrefix.perform_async(site_banner_lookup[:prefix])
+      end
     end
     Rails.cache.write(LAST_RAN_AT_KEY, Time.now.to_s)
   end
