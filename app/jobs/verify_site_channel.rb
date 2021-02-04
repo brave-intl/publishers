@@ -8,9 +8,7 @@ class VerifySiteChannel < ApplicationJob
   end
 
   def perform(channel_id:)
-    ActiveRecord::Base.connection_pool.with_connection do
-      channel = Channel.find(channel_id)
-      SiteChannelVerifier.new(channel: channel).perform
-    end
+    channel = Channel.find(channel_id)
+    SiteChannelVerifier.new(channel: channel).perform
   end
 end

@@ -15,9 +15,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   end
 
   def generate_brotli_encoded_channel_response(prefix:)
-    ActiveRecord::Base.connection_pool.with_connection do
-      @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
-    end
+    @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     @channel_responses = PublishersPb::ChannelResponseList.new
     @site_banner_lookups.includes(publisher: :uphold_connection).includes(publisher: :paypal_connection).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
