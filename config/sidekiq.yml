@@ -2,6 +2,7 @@
 :concurrency: 20
 :timeout: 8
 :max_retries: 3
+:dead_max_jobs: 50000
 :queues:
   - mailers
   - default
