@@ -9,6 +9,6 @@ class VerifySiteChannel < ApplicationJob
 
   def perform(channel_id:)
     channel = Channel.find(channel_id)
-    SiteChannelVerifier.new(channel: channel).perform
+    SiteChannelVerifier.new(channel: channel).perform unless channel.nil?
   end
 end
