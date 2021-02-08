@@ -39,7 +39,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
         end
         if site_banner_lookup.publisher.bitflyer_connection.present?
           wallet = PublishersPb::Wallet.new
-          bitflyer_wallet = PublishersPb::PaypalWallet.new
+          bitflyer_wallet = PublishersPb::BitflyerWallet.new
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
           bitflyer_wallet.address = site_banner_lookup.publisher.bitflyer_deposit_id
           wallet.bitflyer_wallet = bitflyer_wallet
@@ -85,10 +85,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
   end
 
   def cleanup!
-    begin	    
-      File.open(@temp_file.path, 'r') do |f|	      
-        File.delete(f)	
-      end	
+    File.open(@temp_file.path, 'r') do |f|
+      File.delete(f)
+    end
   rescue Errno::ENOENT
   end
 
