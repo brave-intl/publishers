@@ -10,6 +10,10 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
     return if last_written_at.present? && last_written_at > 2.hours.ago
 
+    # Silencing https://github.com/brave-intl/publishers/issues/2990
+    # Eventually this job will be removed since everyone should be using V4
+    return if ENV["RAILS_ENV"].in?(["staging"])
+
     if ENV["RAILS_ENV"].in?(["staging"])
       @channels_json = gather_channels(staging_info, production_info).to_json
     else

@@ -529,6 +529,7 @@ DEPENDENCIES
   cancancan (~> 3.1.0)
   capybara
   chromedriver-helper
+  connection_pool (~> 2.2.3)
   database_cleaner
   devise (~> 4.7.1)
   dnsruby (~> 1.60.0)

@@ -31,6 +31,8 @@ gem 'brotli', "~> 0.2.3"
 # Authorization
 gem 'cancancan',  "~> 3.1.0"
 
+gem 'connection_pool', "~> 2.2.3"
+
 # Authentication
 gem "devise", "~> 4.7.1"
 

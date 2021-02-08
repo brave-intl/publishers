@@ -17,16 +17,4 @@ class SidekiqConfigurationTest < ActiveJob::TestCase
     end
   end
 
-  test "heavy_sidekiq.yml contains only valid classes" do
-    file_path = Rails.root.join('config/heavy_sidekiq.yml')
-
-    configuration = YAML.load_file(file_path)
-
-    assert configuration.present?
-
-    jobs = configuration.dig(:schedule).keys
-    jobs.each do |job|
-      job.constantize
-    end
-  end
 end
