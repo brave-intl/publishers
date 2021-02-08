@@ -20,7 +20,7 @@ class BitflyerConnection < ApplicationRecord
   end
 
   def payable?
-    is_verified? && status == "Active"
+    true
   end
 
   def japanese_account?
@@ -28,7 +28,7 @@ class BitflyerConnection < ApplicationRecord
   end
 
   def verify_url
-    "#{Rails.application.config.services.bitflyer[:oauth_uri]}/settings/profile"
+    ""
   end
 
   # Public: All the support currency pairs for BAT on the Bitflyer Exchange

@@ -3,6 +3,7 @@
 require "uri"
 require "net/http"
 require 'json'
+require 'uri'
 
 module Payment
   module Connection
@@ -13,60 +14,51 @@ module Payment
 
       def create
         BitflyerConnection.find_or_create_by(publisher: current_publisher)
-        redirect_to "http://demo22oy5z2d2lu6pyoum26m7k.azurewebsites.net/ex/OAuth/authorize?client_id=6cd6f1a070afcd467e198c8039b2c97b&scope=assets+create_deposit_id+withdraw_to_deposit_id&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2Fpublisher%2Fbitflyer_connection%2Fnew&state=100&response_type=code"
+        redirect_to Rails.application.secrets[:bitflyer_host] + '/ex/OAuth/authorize?client_id=' + Rails.application.secrets[:bitflyer_client_id] + '&scope=' + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + '&redirect_uri=' + CGI.escape("https://localhost:3000/publisher/bitflyer_connection/new") + '&state=100&response_type=code'
       end
 
       # This action is after the OAuth connection is redirected.
       def edit
         bitflyer_connection = BitflyerConnection.find_by(publisher: current_publisher)
-        auth_code = params[:code]
-        pub_id = current_publisher.id
-        request_id = SecureRandom.uuid
-        request_id2 = SecureRandom.uuid
 
-        puts params[:code]
-        puts "^ this is the AUTHORIZATION CODE from bitFlyer Auth"
-
-        params = {
+        # Request access token from bitFlyer.
+        access_token_request_params = {
           'grant_type' => 'code',
-          'code' => auth_code,
-          'client_id' => '6cd6f1a070afcd467e198c8039b2c97b',
-          'client_secret' => '8862095b1d7ead05ccd7044ad70d43bfe4b1964b297db4536acf46b26259aa42',
+          'code' => params[:code],
+          'client_id' => Rails.application.secrets[:bitflyer_client_id],
+          'client_secret' => Rails.application.secrets[:bitflyer_client_secret],
           'expires_in' => 259002,
-          'external_acccount_id': pub_id,
-          'request_id': request_id,
-          'redirect_uri': 'https://localhost:3000/publisher/bitflyer_connection/new',
+          'external_acccount_id': current_publisher.id,
+          'request_id': SecureRandom.uuid,
+          'redirect_uri': 'https://' + Rails.application.secrets[:creators_host] + '/publisher/bitflyer_connection/new',
           'request_deposit_id': true,
         }
-        x = Net::HTTP.post_form(URI.parse('https://demo22OY5Z2d2lU6PYoUm26m7k.azurewebsites.net/api/link/v1/token'), params)
-        puts JSON.parse(x.body)["access_token"]
 
-        puts "Access token ^^"
+        # TODO: Bitflyer should provide a display name in this request response.
+        response = Net::HTTP.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/token'), access_token_request_params)
+        access_token = JSON.parse(response.body)["access_token"]
+        refresh_token = JSON.parse(response.body)["refresh_token"]
+        display_name = JSON.parse(response.body)["account_hash"]
 
-        access_token = JSON.parse(x.body)["access_token"]
-        refresh_token = JSON.parse(x.body)["refresh_token"]
-
-        url = URI.parse('https://demo22OY5Z2d2lU6PYoUm26m7k.azurewebsites.net/api/link/v1/account/create-deposit-id?request_id=' + request_id2)
-        req = Net::HTTP::Get.new(url.to_s)
-        req['Authorization'] = "Bearer " + access_token
-
-        res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
+        # Request a deposit id from bitFlyer.
+        url = URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/account/create-deposit-id?request_id=' + SecureRandom.uuid)
+        request = Net::HTTP::Get.new(url.to_s)
+        request['Authorization'] = "Bearer " + access_token
+        response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
           http.request(req)
         end
 
-        puts JSON.parse(res.body)
+        deposit_id = JSON.parse(response.body)["deposit_id"]
 
-        deposit_id = JSON.parse(res.body)["deposit_id"]
-        puts deposit_id
-
-        puts "Deposit id ^^"
-
-        update_params = {
+        # TODO: Does bitFlyer support changes of default currency?
+        update_bitflyer_connection_params = {
           access_token: access_token,
           refresh_token: refresh_token,
+          display_name: display_name,
+          default_currency: "BAT",
         }
 
-        if bitflyer_connection.update(update_params) &&
+        if bitflyer_connection.update(update_bitflyer_connection_params) &&
           current_publisher.update(selected_wallet_provider: bitflyer_connection) &&
           current_publisher.update(bitflyer_deposit_id: deposit_id) &&
           redirect_to(home_publishers_path)

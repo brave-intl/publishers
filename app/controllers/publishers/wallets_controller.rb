@@ -10,6 +10,7 @@ module Publishers
         wallet: wallet,
         uphold_connection: uphold_wallet,
         gemini_connection: gemini_wallet,
+        bitflyer_connection: bitflyer_wallet,
         possible_currencies: current_publisher.uphold_connection.uphold_details&.currencies || [],
       }
 
@@ -45,6 +46,16 @@ module Publishers
     # Returns a hash
     def gemini_wallet
       current_publisher.gemini_connection.as_json(
+        only: [:default_currency, :display_name, :recipient_id],
+        methods: [:payable?, :verify_url]
+      )
+    end
+
+    # Internal: Renders properties associated with the Bitflyer Wallet Connection
+    #
+    # Returns a hash
+    def bitflyer_wallet
+      current_publisher.bitflyer_connection.as_json(
         only: [:default_currency, :display_name, :recipient_id],
         methods: [:payable?, :verify_url]
       )

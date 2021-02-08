@@ -7,6 +7,7 @@ import { LoaderIcon } from "brave-ui/components/icons";
 import GeminiConnection from "./braveConnection/GeminiConnection";
 import NotConnected from "./braveConnection/NotConnected";
 import UpholdConnection from "./braveConnection/UpholdConnection";
+import BitflyerConnection from "./braveConnection/BitflyerConnection";
 
 // This class serves as the entry point for establishing a wallet connection.
 // It allows users to establish a connection to different crypto wallet providers.
@@ -16,6 +17,7 @@ class BraveConnection extends React.Component<any, any> {
     super(props);
 
     this.state = {
+      bitflyerConnection: {},
       geminiConnection: {},
       isLoading: true,
       upholdConnection: {},
@@ -60,8 +62,24 @@ class BraveConnection extends React.Component<any, any> {
           loadData={this.loadData}
         />
       );
+      // If there's a bitflyer connection let's show the BitflyerConnection component
+    }
+    else if (
+      this.props.featureFlags.bitflyer_enabled &&
+      this.state.bitflyerConnection
+    ) {
+      return (
+        <BitflyerConnection
+          defaultCurrency={this.state.bitflyerConnection.default_currency}
+          displayName={this.state.bitflyerConnection.display_name}
+          isPayable={this.state.bitflyerConnection["payable?"]}
+          verifyUrl={this.state.bitflyerConnection.verify_url}
+          loadData={this.loadData}
+        />
+      );
       // Finally if there was no wallets connected we should give the user the ability to connect.
-    } else {
+    }
+    else {
       return <NotConnected featureFlags={this.props.featureFlags} />;
     }
   }
@@ -72,12 +90,16 @@ class BraveConnection extends React.Component<any, any> {
 
     axios.get(routes.publishers.wallet.path).then((response) => {
       const newState = {
+        bitflyerConnection: null,
         geminiConnection: null,
         isLoading: false,
         upholdConnection: null,
       };
 
-      const { uphold_connection, gemini_connection } = response.data;
+      const { bitflyer_connection, uphold_connection, gemini_connection } = response.data;
+      if (bitflyer_connection && bitflyer_connection.display_name) {
+        newState.bitflyerConnection = response.data.bitflyer_connection;
+      }
       if (uphold_connection && uphold_connection.uphold_id) {
         newState.upholdConnection = response.data.uphold_connection;
       }

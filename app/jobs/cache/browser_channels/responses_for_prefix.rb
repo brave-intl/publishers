@@ -85,9 +85,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
   end
 
   def cleanup!
-    File.open(@temp_file.path, 'r') do |f|
-      File.delete(f)
-    end
+    begin	    
+      File.open(@temp_file.path, 'r') do |f|	      
+        File.delete(f)	
+      end	
   rescue Errno::ENOENT
   end
 

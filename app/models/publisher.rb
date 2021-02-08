@@ -47,6 +47,7 @@ class Publisher < ApplicationRecord
   has_one :uphold_connection
   has_one :stripe_connection
   has_one :gemini_connection
+  has_one :bitflyer_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",
@@ -343,7 +344,7 @@ class Publisher < ApplicationRecord
     if super.present?
       super
     else
-      gemini_connection || paypal_connection || uphold_connection
+      bitflyer_connection || gemini_connection || paypal_connection || uphold_connection
     end
   end
 
@@ -371,6 +372,7 @@ class Publisher < ApplicationRecord
   def set_default_features
     feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
     feature_flags[UserFeatureFlags::GEMINI_ENABLED] = true
+    feature_flags[UserFeatureFlags::BITFLYER_ENABLED] = true
   end
 
   def set_created_status
