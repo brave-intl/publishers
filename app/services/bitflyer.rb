@@ -1,5 +1,5 @@
 module Bitflyer
-  @scope = "balances:read,account:read,payments:create"
+  @scope = "assets create_deposit_id withdraw_to_deposit_id"
   @response_type = "code"
 
   class << self
