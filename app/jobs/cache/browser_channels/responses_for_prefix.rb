@@ -80,8 +80,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
-  def get_bitflyer_wallet_state(paypal_connection:)
-    PublishersPb::BitFlyerWalletState::BITFLYER_ACCOUNT_KYC
+  def get_bitflyer_wallet_state(bitflyer_connection:)
+    PublishersPb::BitflyerWalletState::BITFLYER_ACCOUNT_KYC
   end
 
   def cleanup!

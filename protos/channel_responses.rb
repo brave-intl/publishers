@@ -60,4 +60,5 @@ module PublishersPb
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
   UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWalletState").enummodule
   PaypalWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWalletState").enummodule
+  BitflyerWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWalletState").enummodule
 end
