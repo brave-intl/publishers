@@ -14,7 +14,7 @@ module Payment
 
       def create
         BitflyerConnection.find_or_create_by(publisher: current_publisher)
-        redirect_to Rails.application.secrets[:bitflyer_host] + '/ex/OAuth/authorize?client_id=' + Rails.application.secrets[:bitflyer_client_id] + '&scope=' + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + '&redirect_uri=' + CGI.escape("https://localhost:3000/publisher/bitflyer_connection/new") + '&state=100&response_type=code'
+        redirect_to Rails.application.secrets[:bitflyer_host] + '/ex/OAuth/authorize?client_id=' + Rails.application.secrets[:bitflyer_client_id] + '&scope=' + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + '&redirect_uri=' + CGI.escape(Rails.application.secrets[:creators_host]) + '&state=100&response_type=code'
       end
 
       # This action is after the OAuth connection is redirected.
