@@ -90,7 +90,7 @@ class BitflyerConnection < ApplicationRecord
     end
   end
 
-    private
+  private
 
   def selected_wallet_provider
     return unless publisher.selected_wallet_provider.id == id
@@ -104,4 +104,4 @@ class BitflyerConnection < ApplicationRecord
   def encryption_key
     [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
   end
-  end
+end
