@@ -1,5 +1,5 @@
 class CacheBrowserChannelsJsonJobV3 < ApplicationJob
-  queue_as :heavy
+  queue_as :default
 
   MAX_RETRY = 10
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
