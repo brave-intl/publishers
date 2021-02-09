@@ -84,26 +84,6 @@ class BitflyerConnection extends React.Component<any, any> {
                             }}
                         />
                     </div>
-                    <div className="col-1 d-none d-sm-block d-md-block">
-                        <span className="text-muted">|</span>
-                    </div>
-                    <div className="col-5">
-                        <a href="#" onClick={() => this.showCurrencyModal(true)}>
-                            <FormattedMessage id="walletServices.uphold.change" />
-                        </a>
-
-                        <Modal
-                            show={this.state.showCurrencyModal}
-                            size={ModalSize.Small}
-                            handleClose={() => this.showCurrencyModal(false)}
-                        >
-                            <CurrencySelection
-                                setShowModal={this.showCurrencyModal}
-                                loadData={this.props.loadData}
-                                link={"https://bitflyer.com/en-us/commission"}
-                            />
-                        </Modal>
-                    </div>
                 </div>
                 {!this.props.isPayable && (
                     <VerifyButton verifyUrl={this.props.verifyUrl}>

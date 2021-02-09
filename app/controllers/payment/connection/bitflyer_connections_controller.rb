@@ -40,16 +40,6 @@ module Payment
         refresh_token = JSON.parse(response.body)["refresh_token"]
         display_name = JSON.parse(response.body)["account_hash"]
 
-        # Request a deposit id from bitFlyer.
-        url = URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/account/create-deposit-id?request_id=' + SecureRandom.uuid)
-        request = Net::HTTP::Get.new(url.to_s)
-        request['Authorization'] = "Bearer " + access_token
-        response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
-          http.request(req)
-        end
-
-        deposit_id = JSON.parse(response.body)["deposit_id"]
-
         # TODO: Does bitFlyer support changes of default currency?
         update_bitflyer_connection_params = {
           access_token: access_token,
@@ -58,9 +48,22 @@ module Payment
           default_currency: "BAT",
         }
 
+        # Add bitFlyer deposit id to each of the publisher's channels
+        current_publisher.channels.each do |channel|
+          # Request a deposit id from bitFlyer.
+          url = URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/account/create-deposit-id?request_id=' + SecureRandom.uuid)
+          request = Net::HTTP::Get.new(url.to_s)
+          request['Authorization'] = "Bearer " + access_token
+          response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
+            http.request(request)
+          end
+
+          deposit_id = JSON.parse(response.body)["deposit_id"]
+          channel.update_column(:deposit_id, deposit_id)
+        end
+
         if bitflyer_connection.update(update_bitflyer_connection_params) &&
           current_publisher.update(selected_wallet_provider: bitflyer_connection) &&
-          current_publisher.update(bitflyer_deposit_id: deposit_id) &&
           redirect_to(home_publishers_path)
           return
         else

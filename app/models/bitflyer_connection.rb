@@ -2,17 +2,12 @@
 
 class BitflyerConnection < ApplicationRecord
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
+  JAPAN = "JP"
 
   belongs_to :publisher
-
-  validates :recipient_id, uniqueness: true, allow_blank: true
-
   attr_encrypted :access_token, :refresh_token, key: :encryption_key
-
-  after_save :update_default_currency, if: -> { saved_change_to_default_currency? }
-
+  validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
-
   after_destroy :selected_wallet_provider
 
   def prepare_state_token!
@@ -24,7 +19,7 @@ class BitflyerConnection < ApplicationRecord
   end
 
   def japanese_account?
-    country&.upcase == 'JP'
+    country&.upcase == JAPAN
   end
 
   def verify_url
@@ -86,7 +81,6 @@ class BitflyerConnection < ApplicationRecord
     if payable?
       recipient = Bitflyer::RecipientId.find_or_create(token: access_token)
       update(recipient_id: recipient.recipient_id)
-      update_default_currency
     end
   end
 
@@ -95,10 +89,6 @@ class BitflyerConnection < ApplicationRecord
   def selected_wallet_provider
     return unless publisher.selected_wallet_provider.id == id
     publisher.update(selected_wallet_provider: nil)
-  end
-
-  def update_default_currency
-    UpdateBitflyerDefaultCurrencyJob.perform_async(id)
   end
 
   def encryption_key
