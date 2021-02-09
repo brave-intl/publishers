@@ -1,5 +1,5 @@
 class Cache::Metrics::UpholdKycByCountryJob < ApplicationJob
-  queue_as :heavy
+  queue_as :default
 
   METRIC_NAME = "uphold_kyc_by_country_job".freeze
   UPHOLD_CONNECTION_KYCD_BY_COUNTRY = "uphold_connection.kycd_by_country".freeze
