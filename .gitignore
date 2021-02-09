@@ -16,6 +16,7 @@ clifton.sh
 dump.rdb
 yarn-error.log
 .DS_Store
+Procfile.dev
 
 # Ignore assets stored in /storage
 /storage
