@@ -1,5 +1,5 @@
 class CacheBrowserChannelsJsonJobV3P1 < ApplicationJob
-  queue_as :heavy
+  queue_as :default
 
   MAX_RETRY = 10
 

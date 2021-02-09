@@ -1,5 +1,5 @@
 class CacheBrowserChannelsJsonJob < ApplicationJob
-  queue_as :heavy
+  queue_as :default
 
   MAX_RETRY = 10
   LAST_WRITTEN_AT_KEY = "CacheBrowserChannelsJsonJob_last_written_at".freeze
