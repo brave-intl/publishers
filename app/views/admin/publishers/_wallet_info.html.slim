@@ -33,7 +33,7 @@
       .db-field = "Created by:"
       .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
   - ActiveRecord::Base.connected_to(role: :reading)
-    - if @publisher.promo_enabled_2018q1
+    - if @publisher.feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED]
       .db-info-row
         .db-field = "Referral downloads:"
         .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
