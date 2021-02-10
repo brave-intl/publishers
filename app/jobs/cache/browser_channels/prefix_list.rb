@@ -25,12 +25,13 @@ class Cache::BrowserChannels::PrefixList
   end
 
   def save_main_file!
-    result = SiteBannerLookup.find_by_sql(["
+    result = SiteBannerLookup.find_by_sql([
+      "
         SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
         FROM site_banner_lookups",
-        {
-          nibble_length: PREFIX_LENGTH * 2,
-        }
+      {
+        nibble_length: PREFIX_LENGTH * 2,
+      },
     ]).map { |r| r['substring'] }.uniq.sort!
 
     if Rails.env.staging?
@@ -47,26 +48,25 @@ class Cache::BrowserChannels::PrefixList
   end
 
   def save_differential_file!(date:)
-    result = SiteBannerLookup.find_by_sql(["
+    result = SiteBannerLookup.find_by_sql([
+      "
         SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
         FROM site_banner_lookups
         WHERE to_char(\"created_at\", 'YYYY-MM-DD') = :date",
-        {
-          nibble_length: PREFIX_LENGTH * 2,
-          date: date
-        }
+      {
+        nibble_length: PREFIX_LENGTH * 2,
+        date: date,
+      },
     ]).map { |r| r['substring'] }.uniq.sort!
 
     to_protobuf_file(result)
   end
 
   def cleanup!(temp_file_path:)
-    begin
-      File.open(temp_file_path, 'r') do |f|
-        File.delete(f)
-      end
-    rescue Errno::ENOENT
+    File.open(temp_file_path, 'r') do |f|
+      File.delete(f)
     end
+  rescue Errno::ENOENT
   end
 
   def save_to_s3!(temp_file_path:, save_to_filename:)
