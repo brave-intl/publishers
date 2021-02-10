@@ -41,7 +41,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet = PublishersPb::Wallet.new
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
-          bitflyer_wallet.address = site_banner_lookup.publisher.bitflyer_deposit_id
+          bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
         end
