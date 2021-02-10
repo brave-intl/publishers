@@ -47,6 +47,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PAYPAL_ACCOUNT_NO_KYC, 0
       value :PAYPAL_ACCOUNT_KYC, 1
     end
+    add_enum "publishers_pb.BitflyerWalletState" do
+      value :BITFLYER_ACCOUNT_NO_KYC, 0
+      value :BITFLYER_ACCOUNT_KYC, 1
+    end
   end
 end
 
