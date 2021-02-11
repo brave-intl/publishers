@@ -64,6 +64,7 @@ module PublishersPb
   SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
   UpholdWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWallet").msgclass
   PaypalWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWallet").msgclass
+  BitflyerWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWallet").msgclass
   Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
