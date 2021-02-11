@@ -25,6 +25,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "publishers_pb.PaypalWallet" do
       optional :wallet_state, :enum, 1, "publishers_pb.PaypalWalletState"
     end
+    add_message "publishers_pb.BitflyerWallet" do
+      optional :wallet_state, :enum, 1, "publishers_pb.BitflyerWalletState"
+      optional :address, :string, 2
+    end
     add_message "publishers_pb.Wallet" do
       oneof :provider do
         optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
