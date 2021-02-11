@@ -54,7 +54,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
     json = PublishersPb::ChannelResponseList.encode(channel_responses)
     info = Brotli.deflate(json)
-    @temp_file = Tempfile.new.binmode
+    @temp_file = File.new.binmode
     # Write a 4-byte header saying the payload length
     @temp_file.write([info.length].pack("N"))
     @temp_file.write(info)
