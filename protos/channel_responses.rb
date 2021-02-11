@@ -29,6 +29,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       oneof :provider do
         optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
         optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
+        optional :bitflyer_wallet, :message, 3, "publishers_pb.BitflyerWallet"
       end
     end
     add_message "publishers_pb.ChannelResponse" do
