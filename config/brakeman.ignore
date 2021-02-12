@@ -1,6 +1,46 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "d9b4050b26c8bd3c77790f564a7cffaad72412d3072a98b188c0eaad2e28839a",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "bin/rubocop.rb",
+      "line": 96,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`git diff --diff-filter=AM --name-only #{ref}`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DirtyCop",
+        "method": "files_modified_since"
+      },
+      "user_input": "ref",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "e7dbd20fc19ae17d322c44ad2a03c67d64c9bfd45afd9f6668f767f4ed468706",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/promo/registrations_stats_fetcher.rb",
+      "line": 47,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n          UPDATE promo_registrations\\n          SET stats = uv.stats,\\n              aggregate_downloads = uv.aggregate_downloads,\\n              aggregate_installs = uv.aggregate_installs,\\n              aggregate_confirmations = uv.aggregate_confirmations\\n          FROM (VALUES #{[].join(\", \")}) AS uv (id, stats, aggregate_downloads, aggregate_installs, aggregate_confirmations)\\n          WHERE promo_registrations.id = uv.id::uuid\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Promo::RegistrationsStatsFetcher",
+        "method": "perform"
+      },
+      "user_input": "[].join(\", \")",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "f80a3232956f28402148bcc46b7fae2255679f00a0582bbd2c374846e97cbb03",
@@ -32,6 +72,6 @@
       "note": "To set an email address in the publishers database the email must be validated first, thus manipulation of provisioning_uri is mitigated."
     }
   ],
-  "updated": "2020-05-27 16:32:15 -0700",
-  "brakeman_version": "4.8.2"
+  "updated": "2021-02-12 11:03:28 -0800",
+  "brakeman_version": "5.0.0"
 }
