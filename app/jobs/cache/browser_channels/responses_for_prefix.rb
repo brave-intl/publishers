@@ -46,7 +46,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
         end
-      rescue
+      rescue => e
+        require 'newrelic_rpm'
+        NewRelic::Agent.notice_error(e)
         next
       end
       channel_response.site_banner_details = get_site_banner_details(site_banner_lookup)
