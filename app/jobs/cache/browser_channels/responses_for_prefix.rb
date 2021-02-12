@@ -4,6 +4,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   PATH = "publishers/prefixes/".freeze
   PADDING_WORD = "P".freeze
+  BITFLYER_CONNECTION = "BitflyerConnection".freeze
 
   attr_accessor :site_banner_lookups, :channel_responses, :temp_file
 
@@ -22,7 +23,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       # Some malformed data shouldn't prevent the list from being generated.
       begin
-        if site_banner_lookup.publisher.uphold_connection.present?
+        if site_banner_lookup.publisher.uphold_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
           uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
@@ -30,7 +31,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.paypal_connection.present?
+        if site_banner_lookup.publisher.paypal_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
           wallet = PublishersPb::Wallet.new
           paypal_wallet = PublishersPb::PaypalWallet.new
           paypal_wallet.wallet_state = get_paypal_wallet_state(paypal_connection: site_banner_lookup.publisher.paypal_connection)
