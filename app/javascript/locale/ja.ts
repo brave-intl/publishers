@@ -1,5 +1,5 @@
 export default {
-  bat: "BAT ポイント",
+  bat: "BAT ",
   common: {
     unexpectedError: "問題が発生しました。サポートにお問い合わせください。"
   },
@@ -47,7 +47,7 @@ export default {
   siteBanner: {
     addChannel: "+ ユーザ名またはハンドルを追加する",
     apply: "適用",
-    batLocalized: "BATポイント",
+    batLocalized: "BAT",
     cancel: "キャンセル",
     closeBanner: "完了",
     defaultDescription: "ご興味をお持ちいただきありがとうございます。Braveが掲げる、よりプライバシーが守られ、クリエイターが直接支援を受けられる健全なインターネットの実現というビジョンに共感しています。\n\nもしチップを頂けると創作の励みになります！何卒よろしくお願い致します。",
@@ -59,10 +59,10 @@ export default {
     resizeBackgroundImage: "カバー画像のサイズと表示ポジションを調整",
     resizeLogoLabel: "ロゴの画像サイズと表示ポジションの調整",
     saveChanges: "変更を保存",
-    tipOption1: "1 | 10 | 100 BATポイント",
-    tipOption2: "5 | 10 | 20 BATポイント",
-    tipOption3: "10 | 20 | 50 BATポイント",
-    tipOption4: "20 | 50 | 100 BATポイント",
+    tipOption1: "1 | 10 | 100 BAT",
+    tipOption2: "5 | 10 | 20 BAT",
+    tipOption3: "10 | 20 | 50 BAT",
+    tipOption4: "20 | 50 | 100 BAT",
     tipOptionsHeader: "チップ金額の選択肢",
     toggleSharedBannerContent: "同じバナーを全てのチャネルで利用する",
     twitchHint: "Twitchチャンネル",
@@ -70,4 +70,23 @@ export default {
     update24Hours: "24時間以内のバナー変更が反映されます",
     youtubeHint: "Youtubeチャンネル"
   },
+  walletServices: {
+    bitflyer: {
+      connect: "bitFlyerに接続します",
+      disconnect: "接続を切る",
+      notPayable: "翻訳が必要",
+      title: "bitFlyerウォレット",
+    },
+    connected: "接続先",
+    brave: {
+      title: "BATの支払いのウォレット",
+      description: "ウォレットを接続して寄付金などの支払いを受け取れるようにします",
+    },
+    lastDeposit: "   ",
+    lastDepositDate: "   ",
+    title: "ウォレット・サービス",
+    uphold: {
+      depositCurrency: "支払い通貨：BAT"
+    }
+  }
 }

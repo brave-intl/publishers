@@ -20,6 +20,7 @@ class BraveConnection extends React.Component<any, any> {
       bitflyerConnection: {},
       geminiConnection: {},
       isLoading: true,
+      locale: '',
       upholdConnection: {},
     };
   }
@@ -80,7 +81,7 @@ class BraveConnection extends React.Component<any, any> {
       // Finally if there was no wallets connected we should give the user the ability to connect.
     }
     else {
-      return <NotConnected featureFlags={this.props.featureFlags} />;
+      return <NotConnected featureFlags={this.props.featureFlags} locale={this.state.locale} />;
     }
   }
 
@@ -88,11 +89,14 @@ class BraveConnection extends React.Component<any, any> {
   private loadData = () => {
     this.setState({ isLoading: true });
 
+    const locale = new URLSearchParams(window.location.search).get('locale');
+
     axios.get(routes.publishers.wallet.path).then((response) => {
       const newState = {
         bitflyerConnection: null,
         geminiConnection: null,
         isLoading: false,
+        locale: locale,
         upholdConnection: null,
       };
 
