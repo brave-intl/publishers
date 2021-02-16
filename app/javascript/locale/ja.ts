@@ -72,7 +72,7 @@ export default {
   },
   walletServices: {
     bitflyer: {
-      connect: "bitFlyerに接続します。",
+      connect: "bitFlyerに接続",
       disconnect: "接続を切る",
       notPayable: "翻訳が必要",
       title: "bitFlyerウォレット",
