@@ -72,15 +72,15 @@ export default {
   },
   walletServices: {
     bitflyer: {
-      connect: "bitFlyerに接続します",
+      connect: "bitFlyerに接続します。",
       disconnect: "接続を切る",
       notPayable: "翻訳が必要",
       title: "bitFlyerウォレット",
     },
     connected: "接続先",
     brave: {
-      title: "BATの支払いのウォレット",
-      description: "ウォレットを接続して寄付金などの支払いを受け取れるようにします",
+      title: "BAT受け取り用ウォレット",
+      description: "ウォレットを接続してチップなどを受け取れるようにします。",
     },
     lastDeposit: "   ",
     lastDepositDate: "   ",
