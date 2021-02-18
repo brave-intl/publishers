@@ -7,6 +7,7 @@ class IncludePublisherInPayoutReportJob
   GEMINI = :gemini
   PAYPAL = :paypal
   UPHOLD = :uphold
+  BITFLYER = :bitflyer
   MANUAL = :manual
 
   def perform(arguments = {})
@@ -33,6 +34,8 @@ class IncludePublisherInPayoutReportJob
       potential_payment_job = Payout::PaypalService
     when UPHOLD
       potential_payment_job = Payout::UpholdService
+    when BITFLYER
+      potential_payment_job = Payout::BitflyerService
     when MANUAL
       potential_payment_job = Payout::ManualPayoutReportPublisherIncluder
     end
