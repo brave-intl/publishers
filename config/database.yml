@@ -7,17 +7,6 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-stats_redshift_default: &stats_redshift_default
-  adapter: redshift
-  encoding: utf8
-  pool: 3
-  port: <%= ENV["STATS_REDSHIFT_PORT"] %>
-  host: <%= ENV["STATS_REDSHIFT_HOST"] %>
-  database: <%= ENV["STATS_REDSHIFT_DBNAME"] %>
-  username: <%= ENV["STATS_REDSHIFT_USER"] %>
-  password: <%= ENV["STATS_REDSHIFT_PASSWORD"] %>
-  schema_search_path: "stats"
-
 development:
   primary:
     <<: *default
@@ -26,8 +15,6 @@ development:
     <<: *default
     url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
     replica: true
-  stats_redshift:
-    <<: *stats_redshift_default
 
 test:
   primary:
@@ -53,8 +40,6 @@ production:
     <<: *default
     url: <%= ENV['FOLLOWER_DATABASE_URL'] %>
     replica: true
-  stats_redshift:
-    <<: *stats_redshift_default
 
 staging:
   primary:
@@ -64,5 +49,3 @@ staging:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
     replica: true
-  stats_redshift:
-    <<: *stats_redshift_default
