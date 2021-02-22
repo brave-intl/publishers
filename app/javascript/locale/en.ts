@@ -255,6 +255,12 @@ export default {
   totalNumber: "Total Number of Codes",
   walletBalance: "Wallet balance",
   walletServices: {
+    bitflyer: {
+      connect: "Connect to bitFlyer",
+      disconnect: "Disconnect",
+      notPayable: "To receive your payments, you'll need to verify your identity on bitFlyer.",
+      title: "bitFlyer Wallet",
+    },
     brave: {
       description: "Connect a crypto wallet to receive contributions and other payments.",
       title: "Wallet for BAT Payment"
@@ -306,7 +312,7 @@ export default {
         reauthorizationNeeded: "We are having trouble communicating with Uphold. Try reconnecting",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
       },
-      title:"Uphold Wallet"
+      title: "Uphold Wallet"
     },
     verify: "Continue to Verify"
   }
@@ -318,7 +324,7 @@ export const flattenMessages = ((nestedMessages, prefix = '') => {
     return {}
   }
   return Object.keys(nestedMessages).reduce((messages, key) => {
-    const value       = nestedMessages[key]
+    const value = nestedMessages[key]
     const prefixedKey = prefix ? `${prefix}.${key}` : key
 
     if (typeof value === 'string') {

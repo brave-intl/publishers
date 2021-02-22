@@ -25,10 +25,15 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "publishers_pb.PaypalWallet" do
       optional :wallet_state, :enum, 1, "publishers_pb.PaypalWalletState"
     end
+    add_message "publishers_pb.BitflyerWallet" do
+      optional :wallet_state, :enum, 1, "publishers_pb.BitflyerWalletState"
+      optional :address, :string, 2
+    end
     add_message "publishers_pb.Wallet" do
       oneof :provider do
         optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
         optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
+        optional :bitflyer_wallet, :message, 3, "publishers_pb.BitflyerWallet"
       end
     end
     add_message "publishers_pb.ChannelResponse" do
@@ -47,6 +52,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :PAYPAL_ACCOUNT_NO_KYC, 0
       value :PAYPAL_ACCOUNT_KYC, 1
     end
+    add_enum "publishers_pb.BitflyerWalletState" do
+      value :BITFLYER_ACCOUNT_NO_KYC, 0
+      value :BITFLYER_ACCOUNT_KYC, 1
+    end
   end
 end
 
@@ -55,9 +64,11 @@ module PublishersPb
   SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
   UpholdWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWallet").msgclass
   PaypalWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWallet").msgclass
+  BitflyerWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWallet").msgclass
   Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
   UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWalletState").enummodule
   PaypalWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWalletState").enummodule
+  BitflyerWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWalletState").enummodule
 end

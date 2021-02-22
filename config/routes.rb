@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
   get 'publishers/uphold_verified', to: 'payment/connection/uphold_connections#edit'
   get 'publishers/gemini_connection/new', to: 'payment/connection/gemini_connections#edit'
+  get 'publishers/bitflyer_connection/new', to: 'payment/connection/bitflyer_connections#edit'
   get 'publishers/stripe_connection/new', to: 'payment/connection/stripe_connections#edit'
   get 'publishers/paypal_connections/connect_callback', to: 'payment/connection/paypal_connections#connect_callback'
 
@@ -31,6 +32,7 @@ Rails.application.routes.draw do
     resource :currency, only: [:show, :update]
     resource :stripe_connection
     resource :gemini_connection
+    resource :bitflyer_connection
     resource :uphold_connection, except: [:new]
 
     resources :paypal_connections, only: [] do
@@ -280,7 +282,6 @@ Rails.application.routes.draw do
     resources :security
 
     resources :organizations, except: [:destroy]
-
 
     namespace :stats do
       resources :contributions, only: [:index]

@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
 import routes from "../../routes";
 import { FlexWrapper } from "../../style";
+import BitflyerIcon from "./bitflyerConnection/BitflyerIcon";
 import GeminiIcon from "./geminiConnection/GeminiIcon";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
 
@@ -15,8 +16,9 @@ const NotConnected = (props) => (
       <FormattedMessage id="walletServices.brave.description" />
     </div>
     <div className="col-6 d-flex flex-column justify-content-center align-items-end">
-      {props.featureFlags.gemini_enabled && <GeminiConnectButton />}
-      <UpholdConnectButton />
+      {props.featureFlags.gemini_enabled && props.locale !== 'ja' && <GeminiConnectButton />}
+      {props.locale !== 'ja' && <UpholdConnectButton />}
+      {props.featureFlags.bitflyer_enabled && props.locale === 'ja' && <BitflyerConnectButton />}
     </div>
   </div>
 );
@@ -55,6 +57,23 @@ const GeminiConnectButton = () => (
     <FlexWrapper className="align-items-center">
       <FormattedMessage id="walletServices.gemini.connect" />
       <GeminiIcon />
+    </FlexWrapper>
+  </a>
+);
+
+const BitflyerConnectButton = () => (
+  <a
+    className="btn btn-secondary font-weight-bold mb-2"
+    data-piwik-action="BitflyerConnectClicked"
+    data-piwik-name="Clicked"
+    data-piwik-value="Dashboard"
+    rel="nofollow"
+    data-method="post"
+    href={routes.publishers.bitflyer.connect}
+  >
+    <FlexWrapper className="align-items-center">
+      <FormattedMessage id="walletServices.bitflyer.connect" />
+      <BitflyerIcon />
     </FlexWrapper>
   </a>
 );

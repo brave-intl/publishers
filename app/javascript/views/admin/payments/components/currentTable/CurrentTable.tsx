@@ -162,10 +162,10 @@ export default class CurrentTable extends React.Component<
       {
         content: [
           {
-            content: "Total Balance"
+            content: "Overall Balance"
           },
           {
-            content: this.props.current.totalBalance + " BAT"
+            content: this.props.current.overallBalance + " BAT"
           }
         ]
       }

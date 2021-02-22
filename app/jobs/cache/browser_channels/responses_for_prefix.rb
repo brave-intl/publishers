@@ -4,6 +4,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   PATH = "publishers/prefixes/".freeze
   PADDING_WORD = "P".freeze
+  BITFLYER_CONNECTION = "BitflyerConnection".freeze
 
   attr_accessor :site_banner_lookups, :channel_responses, :temp_file
 
@@ -22,7 +23,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       # Some malformed data shouldn't prevent the list from being generated.
       begin
-        if site_banner_lookup.publisher.uphold_connection.present?
+        if site_banner_lookup.publisher.uphold_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
           uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
@@ -30,14 +31,24 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.paypal_connection.present?
+        if site_banner_lookup.publisher.paypal_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
           wallet = PublishersPb::Wallet.new
           paypal_wallet = PublishersPb::PaypalWallet.new
           paypal_wallet.wallet_state = get_paypal_wallet_state(paypal_connection: site_banner_lookup.publisher.paypal_connection)
           wallet.paypal_wallet = paypal_wallet
           channel_response.wallets.push(wallet)
         end
-      rescue
+        if site_banner_lookup.publisher.bitflyer_connection.present?
+          wallet = PublishersPb::Wallet.new
+          bitflyer_wallet = PublishersPb::BitflyerWallet.new
+          bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
+          bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
+          wallet.bitflyer_wallet = bitflyer_wallet
+          channel_response.wallets.push(wallet)
+        end
+      rescue => e
+        require 'newrelic_rpm'
+        NewRelic::Agent.notice_error(e)
         next
       end
       channel_response.site_banner_details = get_site_banner_details(site_banner_lookup)
@@ -46,7 +57,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
     json = PublishersPb::ChannelResponseList.encode(channel_responses)
     info = Brotli.deflate(json)
-    @temp_file = Tempfile.new.binmode
+    string_length = 8
+    @temp_file = File.new("/tmp/" + rand(36**string_length).to_s(36), 'w').binmode
     # Write a 4-byte header saying the payload length
     @temp_file.write([info.length].pack("N"))
     @temp_file.write(info)
@@ -72,13 +84,15 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
+  def get_bitflyer_wallet_state(bitflyer_connection:)
+    PublishersPb::BitflyerWalletState::BITFLYER_ACCOUNT_KYC
+  end
+
   def cleanup!
-    begin
-      File.open(@temp_file.path, 'r') do |f|
-        File.delete(f)
-      end
-    rescue Errno::ENOENT
+    File.open(@temp_file.path, 'r') do |f|
+      File.delete(f)
     end
+  rescue Errno::ENOENT
   end
 
   # We want to hide which file is being downloaded by making all requests be the same size
