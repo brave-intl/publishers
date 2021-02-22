@@ -16,7 +16,6 @@ stats_redshift_default: &stats_redshift_default
   database: <%= ENV["STATS_REDSHIFT_DBNAME"] %>
   username: <%= ENV["STATS_REDSHIFT_USER"] %>
   password: <%= ENV["STATS_REDSHIFT_PASSWORD"] %>
-  schema_search_path: "stats"
 
 development:
   primary:
