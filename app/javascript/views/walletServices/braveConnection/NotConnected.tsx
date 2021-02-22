@@ -16,9 +16,9 @@ const NotConnected = (props) => (
       <FormattedMessage id="walletServices.brave.description" />
     </div>
     <div className="col-6 d-flex flex-column justify-content-center align-items-end">
-      {props.featureFlags.gemini_enabled && <GeminiConnectButton />}
-      <UpholdConnectButton />
-      {props.featureFlags.bitflyer_enabled && <BitflyerConnectButton />}
+      {props.featureFlags.gemini_enabled && props.locale !== 'ja' && <GeminiConnectButton />}
+      {props.locale !== 'ja' && <UpholdConnectButton />}
+      {props.featureFlags.bitflyer_enabled && props.locale === 'ja' && <BitflyerConnectButton />}
     </div>
   </div>
 );

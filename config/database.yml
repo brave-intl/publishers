@@ -26,8 +26,6 @@ development:
     <<: *default
     url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
     replica: true
-  stats_redshift:
-    <<: *stats_redshift_default
 
 test:
   primary:
@@ -53,8 +51,6 @@ production:
     <<: *default
     url: <%= ENV['FOLLOWER_DATABASE_URL'] %>
     replica: true
-  stats_redshift:
-    <<: *stats_redshift_default
 
 staging:
   primary:
@@ -64,5 +60,3 @@ staging:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
     replica: true
-  stats_redshift:
-    <<: *stats_redshift_default

@@ -20,7 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 ja:
-  bat_in_locale: BATポイント
+  bat_in_locale: BAT
   shared:
     add_channel: チャネルを追加
     app_title: Brave Rewards | クリエイター
@@ -215,7 +215,7 @@ ja:
           <tr>
             <td style="vertical-align:top;">&ndash;</td>
             <td>
-                私たちは、Braveに属するBATポイント（UGPの支援金とリファラル報酬を含む）を暴力を助長したり、暴力に従事したりする人には付与しないことを明確にしました。
+                私たちは、Braveに属するBAT（UGPの支援金とリファラル報酬を含む）を暴力を助長したり、暴力に従事したりする人には付与しないことを明確にしました。
             </td>
           </tr>
           <tr>
@@ -369,11 +369,11 @@ ja:
     accept_appeal:
       subject: Brave Rewardsへの異議申し立て — 承認されました
       body: |
-        いただいた申立てについて再度審査させていただいた結果承認しました。 保留されていたBATポイント支払いは、次の支払いサイクルで合わせて支払われます。<br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
+        いただいた申立てについて再度審査させていただいた結果承認しました。 保留されていたBAT支払いは、次の支払いサイクルで合わせて支払われます。<br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
     reject_appeal:
       subject: Brave Rewardsへの異議申し立て — 否認されました
       body: |
-        お客様のアカウントでのアクティビティはBrave Rewardsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATポイントを受け取ることはできますが、Braveが所有するBATポイントを受け取ることはできません。
+        お客様のアカウントでのアクティビティはBrave Rewardsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATを受け取ることはできますが、Braveが所有するBATを受け取ることはできません。
          <br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
 
     uphold_kyc_incomplete:
@@ -415,7 +415,7 @@ ja:
     home_balances:
       balance_pending: 保留中の支払い
       closed_case_description: <a href="/publishers/case">異議申し立てのケース</a>は否認されました。
-      held_funds: 中断されたBATポイント支払い
+      held_funds: 中断されたBAT支払い
       held_funds_description: これらの資金は、不審なアクティビティが確認されたため中断されている。こちらの<a href="/publishers/case/new">手順</a>にしたがって、異議申し立てを行ってください
       next_deposit_date: "次の入金日："
       open_case_description: <a href="/publishers/case">あなたの異議申し立てケース</a>がオープンしました。 定期的に確認してください。
@@ -431,7 +431,7 @@ ja:
       token_invalid: 認証に失敗しました。 ログインリンクの有効期限が切れている可能性があります。 新しいサインインリンクを自分に送信してください。
     cases:
       shared:
-        description: "あなたのアカウントに送られた支援に不審な点が見られました。取り急ぎBraveが所有するBATポイントの支払いを停止しました。 この措置はユーザ所有するBATポイントを用いた支援には影響しませず、Braveが所有するBATポイントのみに影響します。<br/><br/>BATポイント受け取りを再開するには、あなたのアカウントの取引を目視で確認する必要があります。異議申し立てをいただき、事情を説明いただければすぐにレビューを開始します。"
+        description: "あなたのアカウントに送られた支援に不審な点が見られました。取り急ぎBraveが所有するBATの支払いを停止しました。 この措置はユーザ所有するBATを用いた支援には影響しませず、Braveが所有するBATのみに影響します。<br/><br/>BAT受け取りを再開するには、あなたのアカウントの取引を目視で確認する必要があります。異議申し立てをいただき、事情を説明いただければすぐにレビューを開始します。"
         solicit_question: "チップ/支援/リファラルをどのように促しているか、ご説明ください。"
         accident_question: "停止に至った原因として考えられることはありますか？"
         alert: 異議申し立ては1回のみ提出できます。関連する可能性のあるすべての情報を含めてください。
@@ -562,7 +562,7 @@ ja:
       uphold:
         heading: あなたのUpholdウォレット
         deposit_currency_label: "入金通貨："
-        deposit_currency: "BATポイントから "
+        deposit_currency: "BATから "
         check_balance: 残高を確認
         connect_to_a_new_account: 新しいUpholdアカウントに接続
         no_currencies_available: 現在、Upholdから入金通貨を読み込むことはできません。 後でもう一度確認してください。
@@ -579,13 +579,13 @@ ja:
         view_recent_statement: ％{statement_link}の準備ができました。
         unavailable: 利用可能なステートメントはありません。
     paypal_connection_panel:
-      bat_points: BATポイントポイント
+      bat_points: BAT
       change: 変更
       check_balance: 残高を確認する
       connect_with_paypal: Paypalに接続する
       connect: 接続
       connected: 接続済
-      deposit_date_explanation: 支援で受け取ったポイントは、毎月8日に接続したアカウントに入金されます。
+      deposit_date_explanation: 支援で受け取ったは、毎月8日に接続したアカウントに入金されます。
       disconnect: 接続解除
       heading: あなたの口座
       last_deposit: "最近の入金:"
@@ -642,7 +642,7 @@ ja:
       statement_file_name: BravePaymentsステートメント
     suspended_error:
       heading_html: アカウントは審査中です
-      body: "アカウントで異常なアクティビティが発生しています。 そのため、詳細を確認する間、アクセスを停止しました。 理由には、<a href=\"https://support.brave.com/hc/en-us/articles/360029235132\"> BATポイント付与ガイドラインの違反が含まれる場合があります。</a>\nご不便をおかけ申し訳ありませんが、アカウントとBrave Rewardsの保護するため、ご理解とご協力をお願い足します。\n原因に心当たりがございましたら、ご連絡いただくことで早期に解決できる可能性があります。 <a href=\"mailto:suspensions@brave.com\">suspensions@brave.com</a>までご連絡いただければ、担当者が確認しご対応いたします。"
+      body: "アカウントで異常なアクティビティが発生しています。 そのため、詳細を確認する間、アクセスを停止しました。 理由には、<a href=\"https://support.brave.com/hc/en-us/articles/360029235132\"> BAT付与ガイドラインの違反が含まれる場合があります。</a>\nご不便をおかけ申し訳ありませんが、アカウントとBrave Rewardsの保護するため、ご理解とご協力をお願い足します。\n原因に心当たりがございましたら、ご連絡いただくことで早期に解決できる可能性があります。 <a href=\"mailto:suspensions@brave.com\">suspensions@brave.com</a>までご連絡いただければ、担当者が確認しご対応いたします。"
 
 
     two_factor_authentication_removal:
@@ -679,7 +679,7 @@ ja:
     confirm_default_currency_modal:
       headline: ご希望のデポジット通貨を確認してください
       leadin: Braveファンから毎月の支援を、Upholdアカウントを通じて次の通貨で受け取ります
-      fee_disclaimer_html: BATポイント以外の通貨を選択した場合、Upholdは入金時に為替手数料を請求します。 <a href="https://uphold.com/en/pricing">料金を確認</a>
+      fee_disclaimer_html: BAT以外の通貨を選択した場合、Upholdは入金時に為替手数料を請求します。 <a href="https://uphold.com/en/pricing">料金を確認</a>
       confirm: 確認
       saving: 保存中 ...
       redirecting: Upholdの認証画面にリダイレクトしています ...
@@ -741,6 +741,7 @@ ja:
       violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Rewardsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。
       referral: "紹介プロモーションの統計"
       check_statement: "この期間の支払いについては、明細を確認してください。"
+      signups_disabled: "翻訳が必要"
       tooltip:
         downloaded: "ダウンロード - Braveをダウンロードしようとした人数"
         installed: "インストール済み - Braveがインストールされ初回起動された人数"
