@@ -11,6 +11,7 @@ stats_redshift_default: &stats_redshift_default
   adapter: redshift
   encoding: utf8
   pool: 3
+  replica: true
   port: <%= ENV["STATS_REDSHIFT_PORT"] %>
   host: <%= ENV["STATS_REDSHIFT_HOST"] %>
   database: <%= ENV["STATS_REDSHIFT_DBNAME"] %>
