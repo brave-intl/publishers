@@ -47,6 +47,8 @@ class CreateUpholdChannelCardJob < ApplicationJob
       ).id
     end
 
+    channel.update_site_banner_lookup!
+
     card_id
   end
 
