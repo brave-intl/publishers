@@ -12,6 +12,8 @@ gem "active_model_serializers", "~> 0.10.0"
 # ActiveRecord Session store for server side storage of session data
 gem 'activerecord-session_store', '~> 1.1', '>= 1.1.3'
 
+gem 'activerecord6-redshift-adapter', '~> 1.1.3'
+
 # Allowing for URI templates, for HTTP clients
 gem 'addressable', '~> 2.6'
 
@@ -96,9 +98,9 @@ gem "puma", "~> 5.1.1"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 6.0.3.1"
+gem 'railties', "~> 6.0.3.5"
 
-gem "rails", "~> 6.0.3"
+gem "rails", "~> 6.0.3.5"
 gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas

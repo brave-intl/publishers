@@ -31,4 +31,4 @@ module Payout
       end
     end
   end
-  end
+end
