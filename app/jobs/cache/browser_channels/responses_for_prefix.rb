@@ -38,7 +38,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.paypal_wallet = paypal_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.selected_wallet_provider_type == BITFLYER_CONNECTION
+        if site_banner_lookup.publisher.bitflyer_connection.present?
           wallet = PublishersPb::Wallet.new
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
@@ -57,8 +57,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
     json = PublishersPb::ChannelResponseList.encode(channel_responses)
     info = Brotli.deflate(json)
-    string_length = 8
-    @temp_file = File.new("/tmp/" + rand(36**string_length).to_s(36), 'w').binmode
+    @temp_file = Tempfile.new.binmode
     # Write a 4-byte header saying the payload length
     @temp_file.write([info.length].pack("N"))
     @temp_file.write(info)
