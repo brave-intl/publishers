@@ -400,6 +400,7 @@ ActiveRecord::Schema.define(version: 2021_02_09_001133) do
     t.integer "wallet_provider", limit: 2, default: 0
     t.boolean "paypal_bank_account_attached", default: false, null: false
     t.boolean "gemini_is_verified", default: false
+    t.boolean "bitflyer_is_verified", default: false
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
