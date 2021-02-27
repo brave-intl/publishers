@@ -79,8 +79,7 @@ class BitflyerConnection < ApplicationRecord
 
     # Users aren't able to create a recipient id if they are not fully verified
     if payable?
-      recipient = Bitflyer::RecipientId.find_or_create(token: access_token)
-      update(recipient_id: recipient.recipient_id)
+      return true
     end
   end
 
