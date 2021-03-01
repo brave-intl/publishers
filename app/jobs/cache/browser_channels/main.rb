@@ -8,7 +8,7 @@ class Cache::BrowserChannels::Main
 
 
   def perform
-    some_prefixes_run_time = Rails.cache.fetch(LAST_RAN_AT_KEY)
+    previous_run = Rails.cache.fetch(LAST_RAN_AT_KEY)
     all_prefixes_run_time = Rails.cache.fetch(LAST_RAN_ALL_KEY)
     return if previous_run.present? && previous_run.to_time >= 2.hours.ago
     Cache::BrowserChannels::PrefixList.perform_async
@@ -20,12 +20,12 @@ class Cache::BrowserChannels::Main
       end
     if full_refresh_not_ran_recently?(all_prefixes_run_time: all_prefixes_run_time) && queue_depth_small?
       run_all_prefixes
+      Rails.cache.write(LAST_RAN_ALL_KEY, Time.now.to_s)
     else
-      run_some_prefixes(previous_run_time: some_prefixes_run_time)
+      run_changed_prefixes(previous_run: previous_run)
     end
 
     Rails.cache.write(LAST_RAN_AT_KEY, Time.now.to_s)
-    Rails.cache.write(LAST_RAN_ALL_KEY, Time.now.to_s)
   end
 
   def full_refresh_not_ran_recently?(all_prefixes_run_time:)
@@ -50,7 +50,7 @@ class Cache::BrowserChannels::Main
     end
   end
 
-  def run_some_prefixes(previous_run_time:)
+  def run_changed_prefixes(previous_run:)
     result = SiteBannerLookup.find_by_sql(["
       SELECT DISTINCT SUBSTRING(sha2_base16, 1, :nibble_length) as prefix
       FROM site_banner_lookups
