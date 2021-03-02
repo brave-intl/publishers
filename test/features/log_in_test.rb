@@ -123,7 +123,7 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Two-factor Authentication"
     assert_content page, "Insert your security key and press the button on the key when blinking."
 
-    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(:authenticate!))
+    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(:authenticate! => nil))
     u2f_response = canned_u2f_response(u2f_registration)
 
     # Simulate U2F device usage, which submits the form on success
