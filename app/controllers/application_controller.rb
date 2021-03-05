@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
         return I18n.with_locale(:ja, &action)
       end
       new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
-      new_url = request.original_url.sub("\/*$", "")
+      new_url = request.original_url.sub("\/*$", "/")
       redirect_to(new_url + new_query) and return
     end
 
