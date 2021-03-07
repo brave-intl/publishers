@@ -24,7 +24,7 @@ gem "attr_encrypted", "~> 3.1.0"
 gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
 
 # Use AWS gem for s3 uploads
-gem 'aws-sdk-s3', require: false
+gem 'aws-sdk-s3', '~> 1.89.0'
 
 gem "bootstrap", ">= 4.5.0"
 
