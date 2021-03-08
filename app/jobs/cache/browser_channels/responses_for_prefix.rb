@@ -38,7 +38,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.paypal_wallet = paypal_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher&.bitflyer_connection.present?
+        if site_banner_lookup.publisher.bitflyer_connection.present?
           wallet = PublishersPb::Wallet.new
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
