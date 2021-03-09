@@ -19,7 +19,7 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     visit_authentication_url publisher
     assert_redirected_to controller: 'two_factor_authentications'
 
-    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(:authenticate! => nil))
+    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(:authenticate!))
 
     post u2f_authentications_path, params: {
       u2f_response: canned_u2f_response(registration)
