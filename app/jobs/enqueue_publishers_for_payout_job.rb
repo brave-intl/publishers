@@ -60,10 +60,6 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       payout_report_id: payout_report.id,
       publisher_ids: publisher_ids
     )
-    Payout::BitflyerJob.perform_later(
-      payout_report_id: payout_report.id,
-      publisher_ids: publisher_ids
-    )
     Payout::PaypalJob.perform_later(
       payout_report_id: payout_report.id,
       publisher_ids: publisher_ids
