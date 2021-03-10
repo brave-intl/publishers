@@ -23,12 +23,9 @@ class PotentialPayment < ApplicationRecord
   scope :gemini_kyc, -> {
     where(gemini_is_verified: true)
   }
-  scope :bitflyer_kyc, -> {
-    where(bitflyer_is_verified: true)
-  }
 
   scope :to_be_paid, -> {
-    uphold_kyc.or(gemini_kyc).or(bitflyer_kyc).
+    uphold_kyc.or(gemini_kyc).
       where("amount::numeric > ?", 0).
       where.not(address: "").
       where.not(address: nil)
