@@ -9,6 +9,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   attr_accessor :site_banner_lookups, :temp_file
 
   def perform(prefix)
+    return if Rails.env.development?
     generate_brotli_encoded_channel_response(prefix: prefix)
     pad_file!
     save_to_s3!(prefix: prefix) unless Rails.env.test?
