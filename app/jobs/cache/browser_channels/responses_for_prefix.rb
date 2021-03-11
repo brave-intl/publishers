@@ -6,9 +6,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
   PADDING_WORD = "P".freeze
   BITFLYER_CONNECTION = "BitflyerConnection".freeze
 
-  attr_accessor :site_banner_lookups, :channel_responses, :temp_file
+  attr_accessor :site_banner_lookups, :temp_file
 
   def perform(prefix)
+    return if Rails.env.development?
     generate_brotli_encoded_channel_response(prefix: prefix)
     pad_file!
     save_to_s3!(prefix: prefix) unless Rails.env.test?
@@ -17,7 +18,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def generate_brotli_encoded_channel_response(prefix:)
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
-    @channel_responses = PublishersPb::ChannelResponseList.new
+    channel_responses = PublishersPb::ChannelResponseList.new
     @site_banner_lookups.includes(publisher: :uphold_connection).includes(publisher: :paypal_connection).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
@@ -46,10 +47,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
         end
-      rescue => e
-        require 'newrelic_rpm'
-        NewRelic::Agent.notice_error(e)
-        next
+      rescue Exception => e
+        require "sentry-raven"
+        Raven.capture_exception(e)
       end
       channel_response.site_banner_details = get_site_banner_details(site_banner_lookup)
       channel_responses.channel_responses.push(channel_response)
@@ -57,8 +57,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
     json = PublishersPb::ChannelResponseList.encode(channel_responses)
     info = Brotli.deflate(json)
-    string_length = 8
-    @temp_file = File.new("/tmp/" + rand(36**string_length).to_s(36), 'w').binmode
+    @temp_file = Tempfile.new.binmode
+
     # Write a 4-byte header saying the payload length
     @temp_file.write([info.length].pack("N"))
     @temp_file.write(info)
@@ -113,7 +113,11 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def save_to_s3!(prefix:)
     path = @temp_file.path
-    Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_rewards2_access_key_id], Rails.application.secrets[:s3_rewards2_secret_access_key])
+    Aws.config[:credentials] = Aws::Credentials.new(
+      Rails.application.secrets[:s3_rewards2_access_key_id],
+      Rails.application.secrets[:s3_rewards2_secret_access_key]
+    )
+
     s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards2_bucket_region])
     obj = s3.bucket(Rails.application.secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
     obj.upload_file(path)

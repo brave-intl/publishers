@@ -9,7 +9,7 @@ module Payout
 
       connection = @publisher.bitflyer_connection
       # Sync the connection
-      connection.sync_connection!
+      # connection.sync_connection!
 
       potential_payments << PotentialPayment.new(
         payout_report_id: @payout_report&.id,
@@ -18,9 +18,8 @@ module Payout
         fees: "0",
         publisher_id: @publisher.id,
         kind: ::PotentialPayment::REFERRAL,
-        bitflyer_is_verified: true,
         address: connection.recipient_id || '',
-        wallet_provider_id: connection.recipient_id,
+        wallet_provider_id: connection.recipient_id || '',
         wallet_provider: ::PotentialPayment.wallet_providers['bitflyer'],
         suspended: @publisher.suspended?,
         status: @publisher.last_status_update&.status
@@ -36,9 +35,8 @@ module Payout
           channel_id: channel.id,
           kind: ::PotentialPayment::CONTRIBUTION,
           url: "#{channel.details.url}",
-          address: connection.recipient_id || '',
-          bitflyer_is_verified: true,
-          wallet_provider_id: connection.recipient_id,
+          address: channel.deposit_id || '',
+          wallet_provider_id: channel.deposit_id || '',
           wallet_provider: ::PotentialPayment.wallet_providers['bitflyer'],
           suspended: @publisher.suspended?,
           status: @publisher.last_status_update&.status,
