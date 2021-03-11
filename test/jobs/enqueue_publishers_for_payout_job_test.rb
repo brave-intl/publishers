@@ -18,7 +18,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
       final: false
     )
     assert_equal prc + 1, PayoutReport.count
-    assert_enqueued_jobs 4
+    assert_enqueued_jobs 3
   end
 
   test "can specify an existing payout report and a new one won't be created" do
@@ -40,6 +40,6 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
         publisher_ids: publishers.pluck(:id)
       )
     end
-    assert_enqueued_jobs 4
+    assert_enqueued_jobs 3
   end
 end

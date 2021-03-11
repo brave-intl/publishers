@@ -12,7 +12,6 @@ class Cache::BrowserChannels::PrefixList
   end
 
   def perform
-    return if Rails.env.development?
     # We only care about first PREFIX_LENGTH number of nibbles of the prefix.
     # Don't waste memory reading excess
     temp_file = save_main_file!

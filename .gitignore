@@ -39,5 +39,3 @@ coverage
 package-lock.json
 
 .vscode
-
-.irb_history
