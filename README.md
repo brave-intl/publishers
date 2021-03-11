@@ -83,9 +83,7 @@ exception to trust this self-signed certificate. Sometimes this is under an
 
    Issue for [further documentation](https://github.com/deivid-rodriguez/byebug/issues/289).
 
-3. Run Rails server and async worker: 
-`bundle exec puma -C config/puma.rb -e ${RACK_ENV:-development}`
-`bundle exec sidekiq -C config/sidekiq.yml -e ${RACK_ENV:-development}`
+3. Run Rails server and async worker: `foreman start -f Procfile.dev`
 
 4. Visit https://localhost:3000
 

@@ -97,9 +97,9 @@ GEM
       encryptor (~> 3.0.0)
     autoprefixer-rails (10.2.4.0)
       execjs
-    aws-eventstream (1.1.1)
-    aws-partitions (1.431.1)
-    aws-sdk-core (3.112.1)
+    aws-eventstream (1.1.0)
+    aws-partitions (1.426.0)
+    aws-sdk-core (3.112.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
@@ -107,11 +107,11 @@ GEM
     aws-sdk-kms (1.42.0)
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.89.0)
+    aws-sdk-s3 (1.88.0)
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.2.3)
+    aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     better_errors (2.9.1)
@@ -184,7 +184,7 @@ GEM
     execjs (2.7.0)
     faraday (0.17.4)
       multipart-post (>= 1.2, < 3)
-    ffi (1.15.0)
+    ffi (1.14.2)
     font-awesome-rails (4.7.0.7)
       railties (>= 3.2, < 7)
     fugit (1.4.2)
@@ -530,7 +530,7 @@ DEPENDENCIES
   addressable (~> 2.6)
   attr_encrypted (~> 3.1.0)
   autometal-piwik!
-  aws-sdk-s3 (~> 1.89.0)
+  aws-sdk-s3
   better_errors
   binding_of_caller
   bootstrap (>= 4.5.0)
@@ -547,7 +547,6 @@ DEPENDENCIES
   devise (~> 4.7.1)
   dnsruby (~> 1.60.0)
   faraday (~> 0.17.3)
-  ffi (~> 1.15.0)
   font-awesome-rails (~> 4.7.0.4)
   google-protobuf (~> 3.12.0)
   i18n-tasks (~> 0.9.12)
