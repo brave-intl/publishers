@@ -16,7 +16,9 @@ class Rack::Attack
 
   safelist('allow/API_IP_WHITELIST') do |req|
     # Requests are allowed if the return value is truthy
-    API_IP_WHITELIST.include?(req.remote_ip)
+    # TODO: Remove Rails.env.staging? check once bitflyer tested code is deployed.
+    # This is a temporary hack until we can figure out what is wrong with the locale=ja check against rack-attack
+    API_IP_WHITELIST.include?(req.remote_ip) || Rails.env.staging?
   end
 
   ### Configure Cache ###
