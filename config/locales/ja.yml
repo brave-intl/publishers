@@ -195,7 +195,7 @@ ja:
       close: 閉じる
   partner_mailer:
     shared:
-      salutation: こんにちわ{name}さん、
+      salutation: こんにちは{name}さん、
     invoice_file_added:
       subject: "請求書に新しいドキュメントが追加されました"
       body_html: |
@@ -283,7 +283,7 @@ ja:
       private_access_link: プライベートログイン
       private_email_notice: |
         NOTE: このメールにはプライベートログインが含まれています。このリンクを知っている人は誰でも、支払い情報を含むパブリッシャー管理画面にアクセスできます。このメールを転送する前に、受信者が信頼できるかご確認してください。
-      salutation: こんにちわ %{name}さん,
+      salutation: こんにちは %{name}さん,
       updated_email: 新しいメール
       channel_name: "%{channel} リファラルリンク"
     channel_contested:
@@ -343,7 +343,7 @@ ja:
         下のボタンをクリックして、Brave Rewardsアカウントにログインできます。このメールには、一度しか使用できないプライベートログインが含まれています。
       button: Brave Rewardsにログイン
     login_partner_email:
-      salutation: こんにちわ%{name}さん、
+      salutation: こんにちは%{name}さん、
       subject: Brave Rewardsのパートナーとして追加されました
       body_html: |
         Brave Rewardsのパートナーとして追加されました
