@@ -39,7 +39,7 @@ class HealthChecksController < ActionController::Base
   end
 
   def mailer_queue_low?
-    mailer_queue = Sidekiq::Queue.new("mailer")
+    mailer_queue = Sidekiq::Queue.new("mailers")
     mailer_queue.count < 500
   rescue
     false
