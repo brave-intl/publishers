@@ -35,9 +35,12 @@ class ApplicationController < ActionController::Base
       if request.path.split("/").last == "callback"
         return I18n.with_locale(:ja, &action)
       end
-      new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
-      new_url = request.original_url.sub(/\/*$/, "/")
-      redirect_to(new_url + new_query) and return
+      new_url = if URI(request.original_url).query.present?
+        request.original_url + "&locale=ja"
+      else
+        request.original_url.sub(/\/*$/, "/") + "?locale=ja"
+      end
+      redirect_to(new_url) and return
     end
 
     locale = I18n.default_locale if locale.nil? || !locale.to_sym.in?(I18n.available_locales)
