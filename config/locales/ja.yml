@@ -342,6 +342,7 @@ ja:
       body_html: |
         下のボタンをクリックして、Brave Rewardsアカウントにログインできます。このメールには、一度しか使用できないプライベートログインが含まれています。
       button: Brave Rewardsにログイン
+      explicit_url: If the above button doesn't work, paste this link in your browser %{url}
     login_partner_email:
       salutation: こんにちわ%{name}さん、
       subject: Brave Rewardsのパートナーとして追加されました

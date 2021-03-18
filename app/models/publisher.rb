@@ -337,6 +337,17 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  def last_supported_login_locale
+    locale = self.login_activities.order(created_at: :desc).limit(1).first.accept_language.first(2)
+    if locale == "ja"
+      :ja
+    else
+      I18n.default_locale
+    end
+  rescue
+    I18n.default_locale
+  end
+
   # Internal: Defines and memoizes the current wallet provider connection for user.
   #
   # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
