@@ -10,7 +10,7 @@ gem "rack", "~> 2.1.0"
 gem "active_model_serializers", "~> 0.10.0"
 
 # ActiveRecord Session store for server side storage of session data
-gem 'activerecord-session_store', '~> 1.1', '>= 1.1.3'
+gem 'activerecord-session_store', '~> 2.0'
 
 gem 'activerecord6-redshift-adapter', '~> 1.1.3'
 

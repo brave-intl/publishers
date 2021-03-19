@@ -4,8 +4,9 @@ module MailerServices
     attr_accessor :error
     attr_reader :publisher
 
-    def initialize(publisher:)
+    def initialize(publisher:, locale: :en)
       @publisher = publisher
+      @locale = locale
     end
 
     # Returns true if everything worked;
@@ -17,9 +18,9 @@ module MailerServices
     def send_email
       return false if !publisher
       # Updates the authentication_token and saves the publisher
-      token = PublisherTokenGenerator.new(publisher: publisher).perform
+      PublisherTokenGenerator.new(publisher: publisher).perform
 
-      PublisherMailer.verify_email(publisher).deliver_later
+      PublisherMailer.verify_email(publisher: publisher, locale: @locale).deliver_later
 
       if PublisherMailer.should_send_internal_emails?
         PublisherMailer.verify_email_internal(publisher).deliver_later
