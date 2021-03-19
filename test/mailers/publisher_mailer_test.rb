@@ -49,7 +49,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_nothing_raised do
       # (Albert Wang): VerifyEmailEmailer should be tested but it simply runs the below statements
       PublisherTokenGenerator.new(publisher: publisher).perform
-      PublisherMailer.verify_email(publisher).deliver_now
+      PublisherMailer.verify_email(publisher: publisher).deliver_now
     end
 
     publisher.pending_email = "alice_new@default.org"
@@ -57,7 +57,7 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     # verify nothing raised if pending email exists
     assert_nothing_raised do
-      PublisherMailer.verify_email(publisher).deliver_now
+      PublisherMailer.verify_email(publisher: publisher).deliver_now
     end
   end
 end

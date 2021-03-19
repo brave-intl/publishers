@@ -9,11 +9,13 @@ class PublisherMailer < ApplicationMailer
   def login_email(publisher)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
-    mail(
-      to: @publisher.email,
-      asm: transaction_asm_group_id,
-      subject: default_i18n_subject
-    )
+    I18n.with_locale(@publisher.last_supported_login_locale) do
+      mail(
+        to: @publisher.email,
+        asm: transaction_asm_group_id,
+        subject: default_i18n_subject
+      )
+    end
   end
 
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
@@ -55,15 +57,17 @@ class PublisherMailer < ApplicationMailer
 
   # Contains registration details and a private verify_email link
   # Best practice is to use the MailerServices::VerifyEmailEmailer service
-  def verify_email(publisher)
+  def verify_email(publisher:, locale: :en)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
 
     if @publisher.pending_email.present?
-      mail(
-          to: @publisher.pending_email,
-          subject: default_i18n_subject
-      )
+      I18n.with_locale(locale) do
+        mail(
+            to: @publisher.pending_email,
+            subject: default_i18n_subject
+        )
+      end
     else
       begin
         raise "SMTP To address must not be blank for PublisherMailer#verify_email for publisher #{@publisher.id}"
