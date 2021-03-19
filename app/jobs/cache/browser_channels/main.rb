@@ -4,8 +4,6 @@ class Cache::BrowserChannels::Main
 
   LAST_RAN_AT_KEY = "cache_browser_channels_main_last_ran_at".freeze
   LAST_RAN_ALL_KEY = "cache_browser_channels_main_last_ran_all".freeze
-  RESPONSES_PREFIX_LENGTH = 2
-
 
   def perform
     previous_run = Rails.cache.fetch(LAST_RAN_AT_KEY)
@@ -43,7 +41,7 @@ class Cache::BrowserChannels::Main
       FROM site_banner_lookups
       ORDER BY prefix desc",
       {
-        nibble_length: RESPONSES_PREFIX_LENGTH * 2
+        nibble_length: SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES
       }])
     result.each do |site_banner_lookup|
       Cache::BrowserChannels::ResponsesForPrefix.perform_async(site_banner_lookup[:prefix])
@@ -57,7 +55,7 @@ class Cache::BrowserChannels::Main
       WHERE updated_at >= :previous_run
       ORDER BY prefix desc",
       {
-        nibble_length: RESPONSES_PREFIX_LENGTH * 2,
+        nibble_length: SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES,
         previous_run: previous_run
       }
     ])
