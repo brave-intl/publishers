@@ -120,7 +120,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
     s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards2_bucket_region])
     obj = s3.bucket(Rails.application.secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
-    obj.upload_file(path)
+    obj.upload_file(path, {
+      cache_control: "max-age=60"
+    })
   end
 
   def get_site_banner_details(site_banner_lookup)
