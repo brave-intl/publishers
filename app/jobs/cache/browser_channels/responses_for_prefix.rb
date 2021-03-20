@@ -14,6 +14,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     pad_file!
     save_to_s3!(prefix: prefix) unless Rails.env.test?
     cleanup!
+    refresh_cdn!
   end
 
   def generate_brotli_encoded_channel_response(prefix:)
@@ -93,6 +94,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
       File.delete(f)
     end
   rescue Errno::ENOENT
+  end
+
+  def refresh_cdn!
+    Faraday.get(ENV["BRAVE_PCDN_URL"], {}, { "Cache-Control" => "no-cache"})
   end
 
   # We want to hide which file is being downloaded by making all requests be the same size
