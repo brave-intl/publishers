@@ -34,7 +34,7 @@ module Publishers
       @publisher.agreed_to_tos = Time.now if params[:terms_of_service].present?
 
       if params[:terms_of_service] && @publisher.save
-        MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
+        MailerServices::VerifyEmailEmailer.new(publisher: @publisher, locale: locale_from_header).perform
 
         respond_to do |format|
           format.html { render :emailed_authentication_token }
@@ -82,7 +82,7 @@ module Publishers
       enforce_throttle(throttled: throttle_resend_authentication_email?, path: log_in_publishers_path) and return
 
       if @publisher.email.blank?
-        MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
+        MailerServices::VerifyEmailEmailer.new(publisher: @publisher, locale: locale_from_header).perform
         @publisher_email = @publisher.pending_email
       else
         @publisher_email = @publisher.email
@@ -96,6 +96,12 @@ module Publishers
     end
 
     private
+
+    def locale_from_header
+      request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first == 'ja' ? :ja : :en
+    rescue
+      I18n.default_locale
+    end
 
     def filter_email(email)
       # Only keep first and last characters

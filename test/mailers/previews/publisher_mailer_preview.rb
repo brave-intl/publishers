@@ -1,5 +1,6 @@
 # Preview all emails at https://localhost:3000/rails/mailers
-
+# Consider moving away from mailcatcher to use https://github.com/fgrehm/letter_opener_web
+# Also, is this test just dead?
 class PublisherMailerPreview < ActionMailer::Preview
 
   def login_email
@@ -16,7 +17,7 @@ class PublisherMailerPreview < ActionMailer::Preview
     publisher = Publisher.first
     publisher&.pending_email = 'test@brave.com'
     PublisherTokenGenerator.new(publisher: Publisher.first).perform
-    PublisherMailer.verify_email(publisher)
+    PublisherMailer.verify_email(publisher: publisher)
   end
 
   def verification_done

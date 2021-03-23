@@ -11,7 +11,6 @@ module Payment
       class BitflyerError < StandardError; end
       before_action :authenticate_publisher!
       before_action :validate_connection!, only: :new
-      before_action :set_default_locale
 
       def create
         BitflyerConnection.find_or_create_by(publisher: current_publisher)
@@ -98,10 +97,6 @@ module Payment
         raise BitflyerError.new, I18n.t('publishers.stripe_connections.new.missing_state') if connection&.state_token.blank?
         raise BitflyerError.new, I18n.t('publishers.stripe_connections.new.state_mismatch') if connection.state_token != params[:state]
         raise BitflyerError.new, params[:error] if params[:error].present?
-      end
-
-      def set_default_locale
-        I18n.default_locale = :ja
       end
     end
   end

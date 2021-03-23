@@ -10,7 +10,7 @@ gem "rack", "~> 2.1.0"
 gem "active_model_serializers", "~> 0.10.0"
 
 # ActiveRecord Session store for server side storage of session data
-gem 'activerecord-session_store', '~> 1.1', '>= 1.1.3'
+gem 'activerecord-session_store', '~> 2.0'
 
 gem 'activerecord6-redshift-adapter', '~> 1.1.3'
 
@@ -24,7 +24,7 @@ gem "attr_encrypted", "~> 3.1.0"
 gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
 
 # Use AWS gem for s3 uploads
-gem 'aws-sdk-s3', require: false
+gem 'aws-sdk-s3', '~> 1.89.0'
 
 gem "bootstrap", ">= 4.5.0"
 
@@ -42,6 +42,8 @@ gem "dnsruby", "~> 1.60.0", require: false
 
 # HTTP library wrapper
 gem "faraday", "~> 0.17.3"
+
+gem "ffi", "~> 1.15.0"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 

@@ -169,6 +169,23 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "login link of japanese users takes them to home" do
+    publisher = publishers(:completed)
+
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    url = url.gsub("locale=en","locale=ja")
+
+    get(url)
+
+    # verify that verified publishers are taken to expired token page
+    assert_redirected_to home_publishers_path + "?locale=ja"
+    follow_redirect!
+
+    # verify publisher is not redirected to homepage
+    assert_response :success
+  end
+
   test "an unauthenticated html request redirects to home" do
     get home_publishers_path
     assert_response 302

@@ -15,6 +15,7 @@ class HealthChecksController < ActionController::Base
     [
       { name: "cache", healthy: cache_connected? },
       { name: "database", healthy: database_connected? },
+      { name: "mailer_queue", healthy: mailer_queue_low? },
     ]
   end
 
@@ -33,6 +34,13 @@ class HealthChecksController < ActionController::Base
   def database_connected?
     ApplicationRecord.connection
     ApplicationRecord.connected?
+  rescue
+    false
+  end
+
+  def mailer_queue_low?
+    mailer_queue = Sidekiq::Queue.new("mailers")
+    mailer_queue.count < 500
   rescue
     false
   end

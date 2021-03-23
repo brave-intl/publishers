@@ -11,7 +11,7 @@ module Channels
         ## There is a helper function in channel.rb that can help minimize this code
         ## Need to generate new bF deposit ID on channel transfer:
         channel.deposit_id = nil
-        if contested_by.publisher.selected_wallet_provider_type == BITFLYER_CONNECTION
+        if contested_by.publisher.selected_wallet_provider_type == Channel::BITFLYER_CONNECTION
           # Request a deposit id from bitFlyer.
           url = URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/account/create-deposit-id?request_id=' + SecureRandom.uuid)
           request = Net::HTTP::Get.new(url.to_s)
