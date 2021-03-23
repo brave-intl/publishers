@@ -74,7 +74,7 @@ export default {
     bitflyer: {
       connect: "bitFlyerに接続",
       disconnect: "接続を切る",
-      notPayable: "翻訳が必要",
+      notPayable: "リファラルプログラムを用いた新規登録は現在一時停止中です。再開時はお知らせいたします。",
       title: "bitFlyerウォレット",
     },
     connected: "接続先",

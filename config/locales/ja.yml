@@ -187,7 +187,7 @@ ja:
       twitter: Basic Attention Token Twitter
       reddit: Basic Attention Token Reddit
       bat: Basic Attention Token
-      footer_html: Brave Rewardsは<a href="https://brave.com">Brave Softwareのメンバーによって開発され、</a>と<a href="https://www.basicattentiontoken.org">Basic Attention Token.</a>を用いて運営されています。<br />Brave Rewardsの利用規約は<a href="https://basicattentiontoken.org/publisher-terms-of-service/">こちら</a>をご確認ください。
+      footer_html: Brave RewardsはBrave Softwareのメンバーによって開発され、Basic Attention Tokenを用いて運営されています。
   modal_partials:
     two_factor_registration_complete:
       headline: 成功！
@@ -195,7 +195,7 @@ ja:
       close: 閉じる
   partner_mailer:
     shared:
-      salutation: こんにちわ{name}さん、
+      salutation: こんにちは{name}さん、
     invoice_file_added:
       subject: "請求書に新しいドキュメントが追加されました"
       body_html: |
@@ -283,7 +283,7 @@ ja:
       private_access_link: プライベートログイン
       private_email_notice: |
         NOTE: このメールにはプライベートログインが含まれています。このリンクを知っている人は誰でも、支払い情報を含むパブリッシャー管理画面にアクセスできます。このメールを転送する前に、受信者が信頼できるかご確認してください。
-      salutation: こんにちわ %{name}さん,
+      salutation: こんにちは %{name}さん,
       updated_email: 新しいメール
       channel_name: "%{channel} リファラルリンク"
     channel_contested:
@@ -344,7 +344,7 @@ ja:
       button: Brave Rewardsにログイン
       explicit_url: もし上のボタンがうまく動かない場合、ブラウザにこのリンクを貼り付けてください %{url}
     login_partner_email:
-      salutation: こんにちわ%{name}さん、
+      salutation: こんにちは%{name}さん、
       subject: Brave Rewardsのパートナーとして追加されました
       body_html: |
         Brave Rewardsのパートナーとして追加されました
@@ -742,7 +742,7 @@ ja:
       violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Rewardsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。
       referral: "紹介プロモーションの統計"
       check_statement: "この期間の支払いについては、明細を確認してください。"
-      signups_disabled: "翻訳が必要"
+      signups_disabled: "リファラルプログラムを用いた新規登録は現在一時停止中です。再開時はお知らせいたします。"
       tooltip:
         downloaded: "ダウンロード - Braveをダウンロードしようとした人数"
         installed: "インストール済み - Braveがインストールされ初回起動された人数"
@@ -833,9 +833,9 @@ ja:
     setup_current_channel:
       alert: このページはこのチャンネルタイプでは無効です
     site_channel_ads_learn_more_modal: |
-      <p> Braveはサイト内でプライバシー保護した新しい広告を配信し、この収益の70％をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。 Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。オプトインは任意です。</p>
-      <p>この機能について詳しくは <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">コチラ</a>.</p>
-      <p>本機能は近日中に利用可能になる予定です。今後のアップデートは上記のページからご確認ください。</p>
+      <p> Braveはユーザーのプライバシーを保護した新しい「パブリッシャー広告」を配信する際、この収益の70％をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。</p>
+      <p>Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。</p>
+      <p>オプトインは任意です。この機能について詳しくは こちら。本機能は近日中に利用可能になる予定です。今後のアップデートは上記のページからご確認ください。</p>
     verification_background:
       heading: ドメインを検証中です...
       help_html: "<p>この画面を終了できます。24時間以内に<strong>手順を記載したメールをお送りします。</strong> </p>"
