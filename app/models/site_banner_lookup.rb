@@ -2,6 +2,8 @@ class SiteBannerLookup < ActiveRecord::Base
   belongs_to :channel
   belongs_to :publisher
 
+  after_destroy :sync!
+
   NIBBLE_LENGTH_FOR_RESPONSES = 4
 
   connects_to database: { writing: :primary, reading: :secondary }
