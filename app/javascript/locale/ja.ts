@@ -23,7 +23,7 @@ export default {
       second: {
         description: "支払いを受けるには、ウォレットアカウントを接続する必要があります。あなたの希望する支払いオプションのためにPayPalを接続します.",
         number: "2",
-        title: "ウォレットサービスの接続",
+        title: "支払いを受けるために、希望する支払いオプションを接続してください。",
       },
       title: "Brave Rewardsへようこそ",
     }
