@@ -28,10 +28,10 @@ class ApplicationController < ActionController::Base
     return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == 'admin'
 
     locale = params[:locale] if params[:locale].present?
-    if (japanese_header?(locale) || has_paypal_account?(locale)) && request.get?
-      # (Albert Wang): When we get a callback from Youtube, don't try an internal redirect and cause a CSRF token error.
+    if (japanese_header?(locale) || has_paypal_account?(locale) || controller_path.include?("bitflyer")) && request.get?
+      # (yachtcaptain23): When we get a callback from Youtube, don't try an internal redirect and cause a CSRF token error.
       # Relates to https://github.com/brave-intl/publishers/issues/2456
-      if request.path.split("/").last == "callback"
+      if (request.path.split("/").last == "callback" || locale.present?)
         return I18n.with_locale(:ja, &action)
       end
       new_url = if URI(request.original_url).query.present?
