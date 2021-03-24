@@ -430,7 +430,7 @@ class Publisher < ApplicationRecord
   end
 
   def pending_email_can_not_be_in_use
-    if pending_email && Publisher.unscoped.where(email: pending_email).count > 0
+    if pending_email && Publisher.by_email_case_insensitive(pending_email).first.present?
       errors.add(:pending_email, "is taken")
     end
   end
