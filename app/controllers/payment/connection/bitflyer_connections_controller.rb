@@ -4,6 +4,8 @@ require "uri"
 require "net/http"
 require 'json'
 require 'uri'
+require 'digest'
+require 'base64'
 
 module Payment
   module Connection
@@ -14,17 +16,25 @@ module Payment
 
       def create
         BitflyerConnection.find_or_create_by(publisher: current_publisher)
-        redirect_to Rails.application.secrets[:bitflyer_host] + '/ex/OAuth/authorize?client_id=' + Rails.application.secrets[:bitflyer_client_id] + '&scope=' + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + '&redirect_uri=' + CGI.escape('https://' + Rails.application.secrets[:creators_host] + '/publishers/bitflyer_connection/new') + '&state=100&response_type=code'
+
+        # Always send PKCE code verifier and challenge
+        code_verifier = current_publisher.id
+        code_challenge = Digest::SHA256.base64digest(code_verifier).chomp('=').gsub('+', '-').gsub('/', '_')
+        pkce_string = '&code_challenge=' + code_challenge + '&code_challenge_method=S256'
+
+        redirect_to Rails.application.secrets[:bitflyer_host] + '/ex/OAuth/authorize?client_id=' + Rails.application.secrets[:bitflyer_client_id] + '&scope=' + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + '&redirect_uri=' + CGI.escape('https://' + Rails.application.secrets[:creators_host] + '/publishers/bitflyer_connection/new') + '&state=100&response_type=code' + pkce_string
       end
 
       # This action is after the OAuth connection is redirected.
       def edit
+        I18n.locale = :ja
         bitflyer_connection = BitflyerConnection.find_by(publisher: current_publisher)
 
         # Request access token from bitFlyer.
         access_token_request_params = {
           'grant_type' => 'code',
           'code' => params[:code],
+          'code_verifier' => current_publisher.id,
           'client_id' => Rails.application.secrets[:bitflyer_client_id],
           'client_secret' => Rails.application.secrets[:bitflyer_client_secret],
           'expires_in' => 259002,
@@ -36,6 +46,7 @@ module Payment
 
         # TODO: Bitflyer should provide a display name in this request response.
         response = Net::HTTP.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/token'), access_token_request_params)
+
         access_token = JSON.parse(response.body)["access_token"]
         refresh_token = JSON.parse(response.body)["refresh_token"]
         display_name = JSON.parse(response.body)["account_hash"]
@@ -73,6 +84,7 @@ module Payment
       end
 
       def destroy
+        I18n.locale = :ja
         bitflyer_connection = current_publisher.bitflyer_connection
 
         # Destroy our database records

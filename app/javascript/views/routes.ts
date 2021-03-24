@@ -11,7 +11,6 @@ export default {
   publishers: {
     bitflyer: {
       connect: "/connection/bitflyer_connection",
-      show: "/connection/bitflyer_connection",
       destroy: "/connection/bitflyer_connection"
     },
     connections: {
