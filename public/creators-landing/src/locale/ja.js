@@ -31,7 +31,7 @@ export default {
     signin: {
       heading: "Brave Rewardsにログインする",
       subhead:
-        "あなたのメールアドレスに安全なログイン用のリンクが送信されます。",
+        "あなたのメールアドレスにログイン用のメールアドレスが送信されます",
       inputPlaceholder: "メールアドレス",
       btn: "ログイン",
       tinyOne: "新規登録",
