@@ -430,6 +430,12 @@ ja:
     show:
       email_confirmed: 更新されたメールアドレス％{email}が確認されました。
       token_invalid: 認証に失敗しました。 ログインリンクの有効期限が切れている可能性があります。 新しいサインインリンクを自分に送信してください。
+    bitflyer_connections:
+      new:
+        bitflyer_error: Error
+      destroy:
+        removed: Error
+        errors: Error
     cases:
       shared:
         description: "あなたのアカウントに送られた支援に不審な点が見られました。取り急ぎBraveが所有するBATの支払いを停止しました。 この措置はユーザ所有するBATを用いた支援には影響しませず、Braveが所有するBATのみに影響します。<br/><br/>BAT受け取りを再開するには、あなたのアカウントの取引を目視で確認する必要があります。異議申し立てをいただき、事情を説明いただければすぐにレビューを開始します。"

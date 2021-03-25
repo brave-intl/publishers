@@ -27,7 +27,6 @@ module Payment
 
       # This action is after the OAuth connection is redirected.
       def edit
-        I18n.locale = :ja
         bitflyer_connection = BitflyerConnection.find_by(publisher: current_publisher)
 
         # Request access token from bitFlyer.
@@ -84,7 +83,6 @@ module Payment
       end
 
       def destroy
-        I18n.locale = :ja
         bitflyer_connection = current_publisher.bitflyer_connection
 
         # Destroy our database records
