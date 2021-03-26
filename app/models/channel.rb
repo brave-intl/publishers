@@ -295,6 +295,7 @@ class Channel < ApplicationRecord
       publisher_id: publisher_id,
       wallet_address: publisher&.uphold_connection&.address
     )
+    site_banner_lookup.sync!
   end
 
   private
