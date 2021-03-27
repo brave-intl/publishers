@@ -27,6 +27,7 @@ module Channels
         channel.contested_by_channel_id = nil
         channel.contest_token = nil
         channel.contest_timesout_at = nil
+        channel.verified = false
 
         channel.save!
 
