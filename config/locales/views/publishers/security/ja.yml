@@ -3,7 +3,7 @@ ja:
     security:
       prompt:
         heading: アカウントのセキュリティを高めましょう
-        subheading: 2段階認証の設定をしてください
+        subheading: 2要素認証の設定をしてください
         intro: 自分以外による不正なログインを防止するため、二要素認証の設定を推奨しています
         skip: スキップ
         setup: 二要素認証を設定する
