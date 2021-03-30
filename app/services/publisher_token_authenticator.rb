@@ -30,9 +30,9 @@ class PublisherTokenAuthenticator < BaseService
           publisher.email = pending_email
         end
         publisher.pending_email = nil
+        publisher.save!
       end
       publisher.user_authentication_token.update(authentication_token: nil)
-      publisher.save!
     end
     result
   end
