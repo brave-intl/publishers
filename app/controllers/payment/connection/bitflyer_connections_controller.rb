@@ -83,6 +83,7 @@ module Payment
       end
 
       def destroy
+        I18n.locale = :ja
         bitflyer_connection = current_publisher.bitflyer_connection
 
         # Destroy our database records
