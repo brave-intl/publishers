@@ -10,7 +10,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def perform(prefix)
     return if Rails.env.development?
-    generate_brotli_encoded_channel_response(prefix: prefix)
+    ActiveRecord::Base.connected_to(role: :reading) do
+      generate_brotli_encoded_channel_response(prefix: prefix)
+    end
     pad_file!
     save_to_s3!(prefix: prefix) unless Rails.env.test?
     cleanup!
