@@ -28,7 +28,7 @@ class Cache::BrowserChannels::Main
 
   def full_refresh_not_ran_recently?(all_prefixes_run_time:)
     return true if all_prefixes_run_time.nil?
-    all_prefixes_run_time.to_time >= 24.hours.ago
+    all_prefixes_run_time.to_time <= 24.hours.ago
   end
 
   def queue_depth_small?
