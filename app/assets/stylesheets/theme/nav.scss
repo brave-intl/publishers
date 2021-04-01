@@ -52,10 +52,12 @@
     height: 36px;
     border: solid 1px #d3d5d7;
     border-radius: 18px;
+    text-align: center;
 
     svg {
       width: 32px;
       height: 32px;
+      border-radius: 50%;
     }
   }
 
@@ -88,10 +90,12 @@
       .user-avatar {
         width: 44px;
         height: 44px;
+        text-align: center;
 
         svg {
           width: 42px;
           height: 42px;
+          border-radius: 50%;
         }
       }
 
