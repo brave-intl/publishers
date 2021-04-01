@@ -16,7 +16,12 @@ class HealthChecksController < ActionController::Base
       { name: "cache", healthy: cache_connected? },
       { name: "database", healthy: database_connected? },
       { name: "mailer_queue", healthy: mailer_queue_low? },
+      { name: "system_time", healthy: system_time_current_year? },
     ]
+  end
+
+  def system_time_current_year?
+    DateTime.now.to_s.starts_with?("202")
   end
 
   def healthy?(status)

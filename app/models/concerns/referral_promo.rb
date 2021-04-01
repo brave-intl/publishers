@@ -23,7 +23,7 @@ module ReferralPromo
   #
   # Returns a boolean determining if the user's promos can still be used
   def promo_lockout_time_passed?
-    return promo_lockout_time < DateTime.now if promo_lockout_time.present?
+    return promo_lockout_time.to_date < DateTime.now if promo_lockout_time.present?
     false
   end
 
