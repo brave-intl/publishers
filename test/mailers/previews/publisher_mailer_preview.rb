@@ -21,8 +21,9 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def verification_done
-    PublisherTokenGenerator.new(publisher: Publisher.first).perform
-    PublisherMailer.verification_done(Channel.first)
+    publisher = Publisher.joins(:user_authentication_token).first
+    PublisherTokenGenerator.new(publisher: publisher).perform
+    PublisherMailer.verification_done(publisher.channels.first)
   end
 
   def wallet_not_connected
