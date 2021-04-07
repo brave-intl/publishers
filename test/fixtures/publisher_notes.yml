@@ -37,7 +37,7 @@ thread_note:
 
 child_note:
   publisher: just_notes
-  note: "This is child note"
+  note: "This is child note@"
   created_at: "2018-12-04"
   created_by: admin
   thread: thread_note
