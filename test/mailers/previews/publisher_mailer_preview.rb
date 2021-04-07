@@ -86,6 +86,10 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.email_user_on_hold(Publisher.first)
   end
 
+  def update_to_tos
+    BatchMailer.update_to_tos(Publisher.first)
+  end
+
   def kyc_and_referral_update
     BatchMailer.notification_for_kyc(Publisher.first)
   end
