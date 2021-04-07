@@ -21,8 +21,9 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def verification_done
-    PublisherTokenGenerator.new(publisher: Publisher.first).perform
-    PublisherMailer.verification_done(Channel.first)
+    publisher = Publisher.joins(:user_authentication_token).first
+    PublisherTokenGenerator.new(publisher: publisher).perform
+    PublisherMailer.verification_done(publisher.channels.first)
   end
 
   def wallet_not_connected
@@ -83,10 +84,6 @@ class PublisherMailerPreview < ActionMailer::Preview
 
   def email_user_on_hold
     PublisherMailer.email_user_on_hold(Publisher.first)
-  end
-
-  def update_to_tos
-    BatchMailer.update_to_tos(Publisher.first)
   end
 
   def kyc_and_referral_update

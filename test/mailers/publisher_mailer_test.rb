@@ -60,4 +60,13 @@ class PublisherMailerTest < ActionMailer::TestCase
       PublisherMailer.verify_email(publisher: publisher).deliver_now
     end
   end
+
+  test "japanese channel transfer substitutes vars" do
+    email = PublisherMailer.channel_transfer_approved_primary("My Channel", "Test", "test@test.com")
+    assert_emails 1 do
+      email.deliver_now
+    end
+    refute_match '%{', email.body.encoded
+    refute_match '％{', email.body.encoded
+  end
 end
