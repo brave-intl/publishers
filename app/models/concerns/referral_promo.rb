@@ -12,7 +12,7 @@ module ReferralPromo
   def promo_status(promo_running)
     if !promo_running || promo_lockout_time_passed?
       :over
-    elsif feature_flags[UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE]
+    elsif may_create_referrals?
       :active
     else
       :inactive
