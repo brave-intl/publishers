@@ -301,8 +301,11 @@ class Channel < ApplicationRecord
   private
 
   def should_register_channel_for_promo?
-    return false unless publisher.may_create_referrals? && publisher.may_register_promo?
-    saved_change_to_verified? && verified && !publisher.only_user_funds?
+    publisher.may_create_referrals? &&
+      publisher.may_register_promo? &&
+      saved_change_to_verified? &&
+      verified &&
+      !publisher.only_user_funds?
   end
 
   def clear_verified_at_if_necessary
