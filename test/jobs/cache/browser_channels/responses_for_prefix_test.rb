@@ -14,7 +14,9 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     assert site_banner_lookup.present?
 
     service = Cache::BrowserChannels::ResponsesForPrefix.new
-    service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
     assert service.temp_file.present?
     result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
@@ -34,7 +36,9 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
       new_sha = prefix + @other_channel.site_banner_lookup.sha2_base16[SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES, @other_channel.site_banner_lookup.sha2_base16.length]
       @other_channel.site_banner_lookup.update(sha2_base16: new_sha)
       @service = Cache::BrowserChannels::ResponsesForPrefix.new
-      @service.generate_brotli_encoded_channel_response(prefix: prefix)
+      ActiveRecord::Base.connected_to(role: :reading) do
+        @service.generate_brotli_encoded_channel_response(prefix: prefix)
+      end
     end
 
     test "decompress back and has matching responses" do
