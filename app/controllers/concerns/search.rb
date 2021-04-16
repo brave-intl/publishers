@@ -27,7 +27,7 @@ module Search
 
     # Simple optimization to only search for the things that the admins search for the most
     if is_email?(search_query)
-      results = publishers.where('email ILIKE ?', "#{search_query}%")
+      results = publishers.where('lower(email) ILIKE ?', "#{search_query.downcase}%")
     elsif is_promo_code?(search_query)
       results = publishers.left_joins(:channels).joins(channels: :promo_registration).where(promo_registrations: { referral_code: search_query.upcase })
     else
