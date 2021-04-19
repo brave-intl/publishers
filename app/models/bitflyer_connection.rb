@@ -38,24 +38,6 @@ class BitflyerConnection < ApplicationRecord
     access_expiration_time.present? && Time.now > access_expiration_time
   end
 
-  # Makes a request to the Bitflyer API to refresh the current access_token
-  def refresh_authorization!
-    # Ensure we have an refresh_token.
-    return if refresh_token.blank?
-
-    authorization = Bitflyer::Auth.refresh(token: refresh_token)
-
-    # Update with the latest Authorization
-    update!(
-      access_token: authorization.access_token,
-      refresh_token: authorization.refresh_token,
-      expires_in: authorization.expires_in,
-      access_expiration_time: authorization.expires_in.seconds.from_now
-    )
-    # Reload the model so consumers will have the most up to date information.
-    reload
-  end
-
   def sync_connection!
     return if access_token.blank?
 

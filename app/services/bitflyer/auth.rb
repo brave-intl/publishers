@@ -63,28 +63,23 @@ module Bitflyer
     # token - The refresh token made from initial token authorization flow
     #
     # Returns an auth object
-    def self.refresh(token:)
+    def self.refresh(token:, scope: Bitflyer.scope, http_client: Bitflyer::Auth.new)
       # This is a temporary stop gap until this issue is addressed
       # https://github.com/brave-intl/publishers/issues/2779
-      Auth.new.refresh(token: token)
-    end
 
-    # Temporarily keep a method on the class instance for API Requests until the following issue is resolved
-    # https://github.com/brave-intl/publishers/issues/2779
-    def refresh(token:)
       body = {
         client_id: Bitflyer.client_id,
         client_secret: Bitflyer.client_secret,
         grant_type: REFRESH_TOKEN,
+        scope: scope,
         refresh_token: token,
       }
-      response = post(PATH.expand(segments: 'token'), body)
-
+      response = http_client.send(:post, Bitflyer.oauth_path, body)
       Auth.new(JSON.parse(response.body))
     end
 
     def api_base_uri
-      Bitflyer.oauth_uri
+      Bitflyer.api_base_uri
     end
   end
 end
