@@ -12,7 +12,7 @@ module ReferralPromo
   def promo_status(promo_running)
     if !promo_running || promo_lockout_time_passed?
       :over
-    elsif promo_enabled_2018q1
+    elsif may_create_referrals?
       :active
     else
       :inactive

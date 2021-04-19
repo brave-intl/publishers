@@ -80,7 +80,7 @@ noscript
 
     .row.tos-row
       .col.mb-4
-        - if @publisher.promo_enabled_2018q1
+        - if @publisher.may_create_referrals?
           .promo--tos
             = t("promo.shared.tos_2_html")
         - else
