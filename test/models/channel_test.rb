@@ -96,7 +96,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
   test "verifying a channel calls register_channel_for_promo (site)" do
     channel = channels(:default)
     publisher = channel.publisher
-    publisher.promo_enabled_2018q1 = true
     publisher.save!
 
     # verify RegisterChannelForPromoJob is called
@@ -125,7 +124,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
     channel_details_copy = channel_original.details.dup
     channel_original.destroy!
 
-    publisher.promo_enabled_2018q1 = true
     publisher.save!
 
     # check that RegisterChannelForPromoJob is called when it is verified

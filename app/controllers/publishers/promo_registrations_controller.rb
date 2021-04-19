@@ -32,8 +32,6 @@ class Publishers::PromoRegistrationsController < ApplicationController
   def create
     return unless Rails.env.development? || Rails.env.test?
     @publisher = current_publisher
-    @publisher.promo_enabled_2018q1 = true
-    @publisher.save!
     current_publisher.channels.find_each do |channel|
       channel.register_channel_for_promo # Callee does a check
     end
@@ -145,7 +143,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
   end
 
   def require_publisher_promo_disabled
-    redirect_to promo_registrations_path, action: "index" if current_publisher.promo_enabled_2018q1
+    redirect_to promo_registrations_path, action: "index" if current_publisher.may_create_referrals?
   end
 
   def validate_publisher!
