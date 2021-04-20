@@ -138,6 +138,8 @@ gem 'stripe', '~> 5.1', '>= 5.1.1'
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
 
+gem 'uglifier', "~> 4.2.0"
+
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
