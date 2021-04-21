@@ -32,11 +32,11 @@ class BitflyerRefresherTest < ActiveSupport::TestCase
     }
     mock_response = MiniTest::Mock.new.expect(:body, JSON.dump(raw_response))
     mock_http_client = MiniTest::Mock.new.expect(:post, mock_response, [
-      Bitflyer.oauth_path, {
-        client_id: Bitflyer.client_id,
-        client_secret: Bitflyer.client_secret,
+      Bitflyer::Http.oauth_path, {
+        client_id: Bitflyer::Http.client_id,
+        client_secret: Bitflyer::Http.client_secret,
         grant_type: Bitflyer::Refresher::REFRESH_TOKEN,
-        scope: Bitflyer.scope,
+        scope: Bitflyer::Http.oauth_scope,
         refresh_token: token,
       },
     ])
