@@ -9,7 +9,6 @@ module Bitflyer
     # https://www.rfc-editor.org/rfc/rfc6570.txt
     PATH = Addressable::Template.new("/auth{/segments*}{?query*}")
     AUTHORIZATION_CODE = "authorization_code"
-    REFRESH_TOKEN = "refresh_token"
 
     attr_reader :api_authorization_header
     attr_accessor :access_token, :refresh_token, :expires_in
@@ -55,26 +54,6 @@ module Bitflyer
       }
       response = post(PATH.expand(segments: 'token'), body)
 
-      Auth.new(JSON.parse(response.body))
-    end
-
-    # Public: Requests a refresh token from the Bitflyer /auth/token.
-    #
-    # token - The refresh token made from initial token authorization flow
-    #
-    # Returns an auth object
-    def self.refresh(token:, scope: Bitflyer.scope, http_client: Bitflyer::Auth.new)
-      # This is a temporary stop gap until this issue is addressed
-      # https://github.com/brave-intl/publishers/issues/2779
-
-      body = {
-        client_id: Bitflyer.client_id,
-        client_secret: Bitflyer.client_secret,
-        grant_type: REFRESH_TOKEN,
-        scope: scope,
-        refresh_token: token,
-      }
-      response = http_client.send(:post, Bitflyer.oauth_path, body)
       Auth.new(JSON.parse(response.body))
     end
 
