@@ -38,18 +38,18 @@ module Bitflyer
       # token - The refresh token made from initial token authorization flow
       #
       # Returns an auth object
-      def self.refresh(token:, scope: Bitflyer.scope, http_client: Bitflyer::Auth.new)
+      def self.refresh(token:, http_client: Bitflyer::Http.new)
         # This is a temporary stop gap until this issue is addressed
         # https://github.com/brave-intl/publishers/issues/2779
 
         body = {
-          client_id: Bitflyer.client_id,
-          client_secret: Bitflyer.client_secret,
+          client_id: Bitflyer::Http.client_id,
+          client_secret: Bitflyer::Http.client_secret,
           grant_type: REFRESH_TOKEN,
-          scope: scope,
+          scope: Bitflyer::Http.oauth_scope,
           refresh_token: token,
         }
-        response = http_client.send(:post, Bitflyer.oauth_path, body)
+        response = http_client.send(:post, Bitflyer::Http.oauth_path, body)
         JSON.parse(response.body)
       end
     end

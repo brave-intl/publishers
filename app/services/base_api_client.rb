@@ -63,7 +63,7 @@ class BaseApiClient < BaseService
 
     connection.send(method) do |req|
       req.url [api_base_uri, path].join('')
-      req.headers["Authorization"] = authorization || api_authorization_header
+      req.headers["Authorization"] = authorization || (defined?(api_authorization_header) && api_authorization_header)
       req.headers['Content-Type'] = 'application/json'
       req.headers.merge!(headers)
 
