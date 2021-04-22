@@ -341,12 +341,12 @@ class Publisher < ApplicationRecord
     # If we update here, we should also update RegistrationsController.locale_from_header
     locale = login_activities.order(created_at: :desc).limit(1).first.accept_language.first(2)
     case locale
-      in 'ja'
-        :ja
-      in 'jabap'
-        :jabap
-      else
-        I18n.default_locale
+    when 'ja'
+      :ja
+    when 'jabap'
+      :jabap
+    else
+      I18n.default_locale
     end
   rescue
     I18n.default_locale

@@ -100,9 +100,9 @@ module Publishers
     def locale_from_header
       accept_langugage = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
       case accept_langugage
-      in 'ja'
+      when 'ja'
         :ja
-      in 'jabap'
+      when 'jabap'
         :jabap
       else
         :en
