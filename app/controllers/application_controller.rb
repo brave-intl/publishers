@@ -31,18 +31,22 @@ class ApplicationController < ActionController::Base
     if (japanese_header?(locale) || has_paypal_account?(locale) || controller_path.include?("bitflyer")) && request.get?
       # (yachtcaptain23): When we get a callback from Youtube, don't try an internal redirect and cause a CSRF token error.
       # Relates to https://github.com/brave-intl/publishers/issues/2456
-      if (request.path.split("/").last == "callback" || locale.present?)
+      if request.path.split("/").last == "callback" || locale.present?
         return I18n.with_locale(:ja, &action)
       end
       new_url = if URI(request.original_url).query.present?
-        request.original_url + "&locale=ja"
-      else
-        request.original_url.sub(/\/*$/, "/") + "?locale=ja"
+                  request.original_url + "&locale=ja"
+                else
+                  request.original_url.sub(/\/*$/, "/") + "?locale=ja"
       end
       redirect_to(new_url) and return
     end
 
     locale = I18n.default_locale if locale.nil? || !locale.to_sym.in?(I18n.available_locales)
+
+    if locale == 'ja' && current_user && !current_user.bitflyer_enabled?
+      return I18n.with_locale(:jabap, &action)
+    end
     I18n.with_locale(locale, &action)
   end
 
