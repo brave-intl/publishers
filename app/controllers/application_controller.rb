@@ -38,13 +38,12 @@ class ApplicationController < ActionController::Base
                   request.original_url + "&locale=ja"
                 else
                   request.original_url.sub(/\/*$/, "/") + "?locale=ja"
-      end
+                end
       redirect_to(new_url) and return
     end
 
     locale = I18n.default_locale if locale.nil? || !locale.to_sym.in?(I18n.available_locales)
-
-    if locale == 'ja' && current_user && !current_user.bitflyer_enabled?
+    if (locale == 'ja' && current_user && !current_user.bitflyer_enabled?) || locale == 'jabap'
       return I18n.with_locale(:jabap, &action)
     end
     I18n.with_locale(locale, &action)

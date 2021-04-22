@@ -98,7 +98,15 @@ module Publishers
     private
 
     def locale_from_header
-      request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first == 'ja' ? :ja : :en
+      acc_lan = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+      case acc_lan
+      in 'ja'
+        :ja
+      in 'jabap'
+        :jabap
+      else
+        :en
+      end
     rescue
       I18n.default_locale
     end
