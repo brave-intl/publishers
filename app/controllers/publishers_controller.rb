@@ -277,6 +277,7 @@ class PublishersController < ApplicationController
   end
 
   def payout_in_progress?
-    !!Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
+    current_publisher.selected_wallet_provider.present? &&
+      Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS)[current_publisher.selected_wallet_provider.class.name.underscore]
   end
 end
