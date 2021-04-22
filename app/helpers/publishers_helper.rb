@@ -43,8 +43,10 @@ module PublishersHelper
     is_new.present? && publisher.channels.size.zero?
   end
 
-  def payout_in_progress?
-    !!Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
+  def payout_in_progress?(publisher)
+    selected_wallet = publisher.selected_wallet_provider
+    payouts_in_progress = Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS)
+    selected_wallet.present? && payouts_in_progress.present? && payouts_in_progress[publisher.selected_wallet_provider.class.name.underscore]
   end
 
   def next_deposit_date(today: DateTime.now)

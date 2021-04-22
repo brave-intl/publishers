@@ -97,7 +97,6 @@ class Admin::PayoutReportsController < AdminController
 
   def payouts_in_progress
     Rails.cache.write(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS, payouts_in_progress_params)
-    p payouts_in_progress_params
     redirect_to admin_payout_reports_path, flash: { alert: "Set 'payout in progress' to #{payouts_in_progress_params}" }
   end
 

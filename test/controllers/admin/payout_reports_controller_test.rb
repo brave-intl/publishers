@@ -311,25 +311,24 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       sign_in admin
     end
 
-    describe "when payout not in progress" do
-      before do
-        Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, false)
-        post toggle_payout_in_progress_admin_payout_reports_path
-      end
-
-      it "set payout in progress" do
-        assert Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
-      end
-    end
-
     describe "when payout in progress" do
       before do
-        Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, true)
-        post toggle_payout_in_progress_admin_payout_reports_path
+        SetPayoutsInProgressJob.perform_now
       end
 
-      it "set payout in progress" do
-        refute Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
+      it "it disables payout in progress for uphold" do
+        assert Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS)['uphold_connection']
+        put payouts_in_progress_admin_payout_reports_path(
+          {
+            payout_in_progress: {
+              uphold_connection: "0",
+              bitflyer_connection: "1",
+              gemini_connection: "1"
+            }
+          }
+        )
+        refute Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS)['uphold_connection']
       end
-    end  end
+    end
+  end
 end

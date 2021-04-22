@@ -12,7 +12,7 @@
           span.bat-code= " " + I18n.t(".bat_in_locale")
         .converted#converted_amount
           = converted_balance
-        - if payout_in_progress?
+        - if payout_in_progress?(@publisher)
           .payout_in_progress
             span
               - if converted_balance.present? && converted_balance.to_i>= PayoutReport::MINIMUM_BALANCE_AMOUNT
