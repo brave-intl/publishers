@@ -9,6 +9,7 @@ import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 import en, { flattenMessages } from "../locale/en";
 import ja from "../locale/ja";
+import jabap from "../locale/jabap";
 
 export default class BannerPreview extends React.Component {
 
@@ -77,6 +78,9 @@ export default class BannerPreview extends React.Component {
     let localePackage = en;
     if (docLocale === "ja") {
       localePackage = ja;
+    }
+    if (docLocale === "jabap") {
+      localePackage = jabap;
     }
 
     return (

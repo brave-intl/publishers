@@ -310,3 +310,19 @@ publisher_selected_wallet_provider:
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+bitflyer_enabled:
+  email: "bitflyer_enabled@brave.com"
+  name: "Bitflyer Enabled"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+  feature_flags: <%= { UserFeatureFlags::BITFLYER_ENABLED => true }.to_json %>
+
+bitflyer_not_enabled:
+  email: "bitflyer_not_enabled@brave.com"
+  name: "Bitflyer Not Enabled"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+  feature_flags: <%= { UserFeatureFlags::BITFLYER_ENABLED => false }.to_json %>

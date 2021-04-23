@@ -6,6 +6,7 @@ import { submitForm } from "../utils/request";
 import { LoaderIcon } from "brave-ui/components/icons";
 import en, { flattenMessages } from "../locale/en";
 import ja from "../locale/ja";
+import jabap from "../locale/jabap";
 
 import routes from "../views/routes";
 
@@ -186,6 +187,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let localePackage: object = en;
   if (locale === "ja") {
     localePackage = ja;
+  }
+  if (locale === "jabap") {
+    localePackage = jabap;
   }
 
   ReactDOM.render(
