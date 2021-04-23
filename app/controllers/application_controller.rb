@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
     end
 
     locale = I18n.default_locale if locale.nil? || !locale.to_sym.in?(I18n.available_locales)
-    if (locale == 'ja' && current_user && !current_user.bitflyer_enabled?) || locale == 'jabap'
+    if (locale == 'ja' && current_user && (!current_user.bitflyer_enabled? || current_user.selected_wallet_provider_type == "PaypalConnection")) || locale == 'jabap'
       return I18n.with_locale(:jabap, &action)
     end
     I18n.with_locale(locale, &action)
