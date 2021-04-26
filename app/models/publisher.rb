@@ -334,14 +334,17 @@ class Publisher < ApplicationRecord
   end
 
   def paypal_locale?(locale)
-    locale == 'ja'
+    locale == 'ja' || locale == 'jabap'
   end
 
   def last_supported_login_locale
     # If we update here, we should also update RegistrationsController.locale_from_header
     locale = last_login_activity.accept_language.first(2)
-    if locale == "ja"
+    case locale
+    when 'ja'
       :ja
+    when 'jabap'
+      :jabap
     else
       I18n.default_locale
     end
