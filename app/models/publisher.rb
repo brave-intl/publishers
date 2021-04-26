@@ -339,7 +339,7 @@ class Publisher < ApplicationRecord
 
   def last_supported_login_locale
     # If we update here, we should also update RegistrationsController.locale_from_header
-    locale = login_activities.order(created_at: :desc).limit(1).first.accept_language.first(2)
+    locale = last_login_activity.accept_language.first(2)
     if locale == "ja"
       :ja
     else
