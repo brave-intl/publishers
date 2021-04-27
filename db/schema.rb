@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_001133) do
+ActiveRecord::Schema.define(version: 2021_04_26_213029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -352,8 +352,6 @@ ActiveRecord::Schema.define(version: 2021_02_09_001133) do
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.text "encrypted_contents"
-    t.string "encrypted_contents_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
