@@ -13,6 +13,7 @@ class PublishersController < ApplicationController
     :update,
   ].freeze
 
+  before_action :switch_sign_in_locale, only: [:show]
   before_action :authenticate_via_token, only: %i(show)
   before_action :authenticate_publisher!
 
@@ -27,6 +28,8 @@ class PublishersController < ApplicationController
   before_action :prompt_for_two_factor_setup, only: %i(home)
 
   before_action :require_verified_email, only: %i(email_verified complete_signup)
+
+  skip_around_action :switch_locale, only: [:show]
 
   def log_out
     path = after_sign_out_path_for(current_publisher)
@@ -110,6 +113,13 @@ class PublishersController < ApplicationController
 
   def change_email_confirm
     @publisher = current_publisher
+  end
+
+  def switch_sign_in_locale(&action)
+    if japanese_http_header?
+      return I18n.with_locale(preferred_japanese_locale, &action)
+    end
+    I18n.with_locale(I18n.default_locale, &action)
   end
 
   # Entrypoint for the authenticated re-login link.
