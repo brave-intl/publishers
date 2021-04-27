@@ -6,6 +6,7 @@ import WalletServices from "../views/walletServices/WalletServices";
 import { IntlProvider } from "react-intl";
 import en, { flattenMessages } from "../locale/en";
 import ja from "../locale/ja";
+import jabap from "../locale/jabap";
 
 document.addEventListener("DOMContentLoaded", () => {
   const crsfToken = document.head
@@ -18,6 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let localePackage = en;
   if (locale === "ja") {
     localePackage = ja;
+  }
+  if (locale === "jabap") {
+    localePackage = jabap;
   }
 
   const element =  document.getElementsByClassName("wallet-services")[0]
