@@ -13,7 +13,6 @@ class PublishersController < ApplicationController
     :update,
   ].freeze
 
-  before_action :switch_sign_in_locale, only: [:show]
   before_action :authenticate_via_token, only: %i(show)
   before_action :authenticate_publisher!
 
@@ -116,15 +115,13 @@ class PublishersController < ApplicationController
   end
 
   def switch_sign_in_locale(&action)
-    if japanese_http_header?
-      return I18n.with_locale(preferred_japanese_locale, &action)
-    end
-    I18n.with_locale(I18n.default_locale, &action)
   end
 
   # Entrypoint for the authenticated re-login link.
   def show
-    redirect_to(publisher_next_step_path(current_publisher))
+    I18n.with_locale(japanese_http_header? ? preferred_japanese_locale : I18n.default_locale) do
+      redirect_to(publisher_next_step_path(current_publisher))
+    end
   end
 
   def destroy
