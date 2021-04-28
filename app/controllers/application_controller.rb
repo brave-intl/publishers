@@ -101,7 +101,7 @@ class ApplicationController < ActionController::Base
 
   def use_jabap?
     locale = params[:locale]
-    (japanese_http_header? || locale == 'ja' && current_user && (!current_user.bitflyer_enabled? || current_user.selected_wallet_provider_type == "PaypalConnection")) || locale == 'jabap'
+    ((japanese_http_header? || locale == 'ja') && current_user && (!current_user.bitflyer_enabled? || current_user.selected_wallet_provider_type == "PaypalConnection")) || locale == 'jabap'
   end
 
   def extract_locale_from_accept_language_header

@@ -114,9 +114,6 @@ class PublishersController < ApplicationController
     @publisher = current_publisher
   end
 
-  def switch_sign_in_locale(&action)
-  end
-
   # Entrypoint for the authenticated re-login link.
   def show
     I18n.with_locale(japanese_http_header? ? preferred_japanese_locale : I18n.default_locale) do

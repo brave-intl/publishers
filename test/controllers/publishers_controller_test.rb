@@ -169,7 +169,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "login link of japanese users takes them to home" do
+  test "login link of pre-bitflyer enabled japanese users takes them to home" do
     publisher = publishers(:completed)
     headers = {'Accept-Language' => "ja_JP"}
     request_login_email(publisher: publisher)
@@ -179,6 +179,24 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # verify that verified publishers are taken to expired token page
     assert_redirected_to home_publishers_path + "?locale=jabap"
+    follow_redirect!
+
+    # verify publisher is not redirected to homepage
+    assert_response :success
+  end
+
+  test "login link of new japanese users which should use locale=ja" do
+    publisher = publishers(:completed)
+    publisher.feature_flags["bitflyer_enabled"] = true
+    publisher.save
+
+    headers = {'Accept-Language' => "ja_JP"}
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+
+    get(url, headers: headers)
+    # verify that verified publishers are taken to expired token page
+    assert_redirected_to home_publishers_path + "?locale=ja"
     follow_redirect!
 
     # verify publisher is not redirected to homepage
