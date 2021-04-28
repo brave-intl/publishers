@@ -28,6 +28,8 @@ class PublishersController < ApplicationController
 
   before_action :require_verified_email, only: %i(email_verified complete_signup)
 
+  skip_around_action :switch_locale, only: [:show]
+
   def log_out
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
@@ -114,7 +116,9 @@ class PublishersController < ApplicationController
 
   # Entrypoint for the authenticated re-login link.
   def show
-    redirect_to(publisher_next_step_path(current_publisher))
+    I18n.with_locale(japanese_http_header? ? preferred_japanese_locale : I18n.default_locale) do
+      redirect_to(publisher_next_step_path(current_publisher))
+    end
   end
 
   def destroy
