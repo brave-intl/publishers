@@ -171,15 +171,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "login link of japanese users takes them to home" do
     publisher = publishers(:completed)
-
+    headers = {'Accept-Language' => "ja_JP"}
     request_login_email(publisher: publisher)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    url = url.gsub("locale=en","locale=ja")
 
-    get(url)
+    get(url, headers: headers)
 
     # verify that verified publishers are taken to expired token page
-    assert_redirected_to home_publishers_path + "?locale=ja"
+    assert_redirected_to home_publishers_path + "?locale=jabap"
     follow_redirect!
 
     # verify publisher is not redirected to homepage
