@@ -5,6 +5,11 @@ class PublisherTransactionsGetter < BaseApiClient
   OFFLINE_NUMBER_OF_SETTLEMENTS = 2
   OFFLINE_REFERRAL_SETTLEMENT_AMOUNT = "18.81"
   OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT = "56.81"
+  OFFLINE_CANONICAL_PUBLISHER_ID = "publishers#uuid:709033b2-0567-4ab2-9467-95ba3343e568"
+  OFFLINE_UPHOLD_ACCOUNT_ID = "bdfd128a-976e-4a42-b07a-3fab7fb2cbea"
+  OFFLINE_PAYMENT_ACCOUNT_ID = "f6221085-e2e4-45e3-9ba8-17c6572b42fe"
+
+  REFERRAL_DEPRECIATION_ACCOUNT = "referral-depreciation-account"
 
   def initialize(publisher:)
     @publisher = publisher
@@ -18,7 +23,11 @@ class PublisherTransactionsGetter < BaseApiClient
       request.url("v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
     end
 
-    JSON.parse(response.body)
+    transactions = JSON.parse(response.body)
+
+    # In the statements and balances, we don't want to show transactions that balance out the accounting on eyeshade
+    transactions.reject! { |transaction| transaction["to_account"] == PublisherTransactionsGetter::REFERRAL_DEPRECIATION_ACCOUNT }
+    transactions
     # Example eyeshade response
     # [
     #   {
@@ -65,6 +74,8 @@ class PublisherTransactionsGetter < BaseApiClient
 
         # Contributions in
         transactions.push({
+          "from_account" => "helloworld.com",
+          "to_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
           "created_at" => "#{base_date}",
           "description" => "contributions in month x",
           "channel" => "#{channel.details.channel_identifier}",
@@ -76,6 +87,8 @@ class PublisherTransactionsGetter < BaseApiClient
 
         # Contribution fees out
         transactions.push({
+          "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
+          "to_account" => "fees-account",
           "created_at" => "#{base_date}",
           "description" => "settlement fees for contributions",
           "channel" => "#{channel.details.channel_identifier}",
@@ -85,7 +98,10 @@ class PublisherTransactionsGetter < BaseApiClient
         })
 
         # Contribution settlement out
+        # This goes out to the publisher's uphold account
         transactions.push({
+          "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
+          "to_account" => OFFLINE_UPHOLD_ACCOUNT_ID,
           "created_at" => "#{base_date}",
           "description" => "payout for contributions",
           "channel" => "#{channel.details.channel_identifier}",
@@ -97,6 +113,8 @@ class PublisherTransactionsGetter < BaseApiClient
 
         # Referrals in
         transactions.push({
+          "from_account" => OFFLINE_PAYMENT_ACCOUNT_ID,
+          "to_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
           "created_at" => "#{base_date}",
           "description" => "referrals in month x",
           "channel" => "#{channel.details.channel_identifier}",
@@ -105,8 +123,20 @@ class PublisherTransactionsGetter < BaseApiClient
           "settlement_currency" => "ETH",
         })
 
+        # Referral depreciation
+        transactions.push({
+          "from_account" =>  OFFLINE_CANONICAL_PUBLISHER_ID,
+          "to_account" => REFERRAL_DEPRECIATION_ACCOUNT,
+          "created_at" => "#{base_date}",
+          "description" => "Transaction to cancel referrals finalizing past 90 days after 2021-01-23 for legacy referrals.",
+          "amount" => "#{-(referral_amount)}",
+          "transaction_type" => "manual",
+        })
+
         # Referal settlement out
         transactions.push({
+          "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
+          "to_account" => OFFLINE_UPHOLD_ACCOUNT_ID,
           "created_at" => "#{base_date}",
           "description" => "payout for referrals",
           "channel" => "#{channel.publisher.owner_identifier}",
