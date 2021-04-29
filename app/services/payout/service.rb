@@ -2,10 +2,9 @@ module Payout
   class Service
     class WalletError < StandardError; end
 
-    def initialize(payout_report:, publisher:, should_send_notifications:)
+    def initialize(payout_report:, publisher:)
       @publisher = publisher
       @payout_report = payout_report
-      @should_send_notifications = should_send_notifications
     end
 
     def should_only_notify?

@@ -326,3 +326,11 @@ bitflyer_not_enabled:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
   feature_flags: <%= { UserFeatureFlags::BITFLYER_ENABLED => false }.to_json %>
+
+bitflyer_suspended:
+  email: "bitflyer_suspended@completed.org"
+  name: "Bitflyer the suspended"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= DateTime.now %>"
+  subscribed_to_marketing_emails: true
