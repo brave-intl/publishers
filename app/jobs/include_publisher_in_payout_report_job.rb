@@ -26,11 +26,6 @@ class IncludePublisherInPayoutReportJob
     potential_payment_job = nil
     publisher = Publisher.find(publisher_id)
 
-    attrs_payment_job = {
-      publisher: publisher,
-      payout_report: payout_report,
-    }
-
     case arguments[:kind].to_sym
     when GEMINI
       potential_payment_job = Payout::GeminiService
@@ -39,11 +34,13 @@ class IncludePublisherInPayoutReportJob
     when UPHOLD
       potential_payment_job = Payout::UpholdService
     when BITFLYER
-      return Payout::BitflyerService.build.perform(attrs_payment_job)
+      return Payout::BitflyerService.build.perform(publisher: publisher,
+                                                   payout_report: payout_report)
     when MANUAL
       potential_payment_job = Payout::ManualPayoutReportPublisherIncluder
     end
 
-    potential_payment_job.new(attrs_payment_job).perform
+    potential_payment_job.new(publisher: publisher,
+                              payout_report: payout_report).perform
   end
 end
