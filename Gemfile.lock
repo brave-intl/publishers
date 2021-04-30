@@ -540,7 +540,7 @@ DEPENDENCIES
   cancancan (~> 3.1.0)
   capybara
   chromedriver-helper
-  connection_pool (~> 2.2.3)
+  connection_pool (~> 2.2.5)
   database_cleaner
   devise (~> 4.7.1)
   dnsruby (~> 1.60.0)
@@ -549,7 +549,7 @@ DEPENDENCIES
   font-awesome-rails (~> 4.7.0.4)
   google-protobuf (~> 3.12.0)
   i18n-tasks (~> 0.9.12)
-  listen (~> 3.2)
+  listen (~> 3.5)
   lograge (~> 0.4)
   meta-tags (~> 2.13.0)
   mini_magick (~> 4.10.1)
@@ -559,7 +559,7 @@ DEPENDENCIES
   newrelic_rpm (~> 6.12, >= 6.12.0.367)
   nokogiri (~> 1.11.1)
   omniauth-github (~> 1.4.0)
-  omniauth-google-oauth2 (~> 0.8.0)
+  omniauth-google-oauth2 (~> 0.8.2)
   omniauth-rails_csrf_protection (~> 0.1.2)
   omniauth-reddit!
   omniauth-twitch (~> 1.1.0)
@@ -575,7 +575,7 @@ DEPENDENCIES
   puma (~> 5.1.1)
   rack (~> 2.1.0)
   rack-attack (~> 5.0)
-  rails (~> 6.0.3.5)
+  rails (~> 6.0.3.6)
   rails-controller-testing
   rails-i18n (~> 6.0.0)
   railties (~> 6.0.3.5)
