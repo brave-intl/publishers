@@ -33,7 +33,7 @@ gem 'brotli', "~> 0.2.3"
 # Authorization
 gem 'cancancan',  "~> 3.1.0"
 
-gem 'connection_pool', "~> 2.2.3"
+gem 'connection_pool', "~> 2.2.5"
 
 # Authentication
 gem "devise", "~> 4.7.1"
@@ -65,7 +65,7 @@ gem 'newrelic_rpm', '~> 6.12', '>= 6.12.0.367'
 
 gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 # Oauth client for google / youtube
-gem "omniauth-google-oauth2", "~> 0.8.0"
+gem "omniauth-google-oauth2", "~> 0.8.2"
 
 # Oauth client for twitch
 gem "omniauth-twitch", "~> 1.1.0"
@@ -102,7 +102,7 @@ gem "rack-attack", "~> 5.0"
 
 gem 'railties', "~> 6.0.3.5"
 
-gem "rails", "~> 6.0.3.5"
+gem "rails", "~> 6.0.3.6"
 gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
@@ -155,7 +155,7 @@ gem "zendesk_api", "~> 1.26.0"
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  gem 'listen', '~> 3.2'
+  gem 'listen', '~> 3.5'
 
   gem 'bullet'
 
