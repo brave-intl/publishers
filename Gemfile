@@ -199,6 +199,8 @@ group :development, :test do
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test
   gem 'selenium-webdriver', "~> 3.142.0"
+
+  gem 'dotenv-rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

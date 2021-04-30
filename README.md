@@ -35,7 +35,7 @@ Follow these steps to setup the App for [creators.brave.com](https://creators.br
    Your version of Node must be v11.15.0 or earlier. For a node version manager, try [NVM](https://github.com/nvm-sh/nvm).
 
 8. Install [git-secrets](https://github.com/awslabs/git-secrets) with `brew install git-secrets` This prevents AWS keys from being committed.
-9. (Optional) Get an `env.sh` file from another developer which contains development-mode bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
+9. (Optional) Get a `.env` file from another developer which contains development-mode env vars. You can start developing without this, but some functionality may be limited.
 10. Install **Rails**: `gem install rails`
 
     **Be sure to restart your terminal before continuing.**
@@ -83,9 +83,9 @@ exception to trust this self-signed certificate. Sometimes this is under an
 
    Issue for [further documentation](https://github.com/deivid-rodriguez/byebug/issues/289).
 
-3. Run Rails server and async worker: 
-`bundle exec puma -C config/puma.rb -e ${RACK_ENV:-development}`
-`bundle exec sidekiq -C config/sidekiq.yml -e ${RACK_ENV:-development}`
+3. Run Rails server and async worker:
+   `bundle exec puma -C config/puma.rb -e ${RACK_ENV:-development}`
+   `bundle exec sidekiq -C config/sidekiq.yml -e ${RACK_ENV:-development}`
 
 4. Visit https://localhost:3000
 
@@ -207,7 +207,7 @@ export API_PROMO_KEY="1234"
 
 Configuration is set in [config/secrets.yml](https://github.com/brave/publishers/blob/master/config/secrets.yml) via environment variables.
 
-It might be useful to maintain a local bash script with a list of env vars. For an example see [config/secrets.yml](https://github.com/brave/publishers/blob/master/docs/publishers-secrets.example.sh).
+We use the [dotenv gem](https://github.com/bkeepers/dotenv) to load variables specified in `.env` into the rails app, only in the `development` and `test` environments. This makes sure they are only loaded for the context of the running rails app and that they don't pollute the shell environment.
 
 #### Automagic addon vars
 
@@ -306,6 +306,7 @@ file at the top of the repo. Docker compose will automatically load from this
 file when launching services.
 
 Build the docker images
+
 ```sh
 make docker-dev-build
 ```
@@ -340,7 +341,6 @@ to start with docker build the app and eyeshade images
 ```sh
 docker-compose build
 ```
-
 
 ### Create the databases
 
