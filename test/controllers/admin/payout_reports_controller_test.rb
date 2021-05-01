@@ -16,10 +16,13 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
     stub_request(:post, /cards/).to_return(body: { id: "fb25048b-79df-4e64-9c4e-def07c8f5c04" }.to_json)
     stub_request(:get, /address/).to_return(body: [{ formats: [{ format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1" }], type: "anonymous" }].to_json)
+
+    Rails.cache.clear
   end
 
   after do
     Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+    Rails.cache.clear
   end
 
   def delete_publishers_except(publisher_ids)
