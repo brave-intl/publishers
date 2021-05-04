@@ -7,6 +7,7 @@ class Sync::Bitflyer::UpdateMissingDepositJob
   end
 
   def perform
+    return if @channel.deposit_id.present?
     # Request a deposit id from bitFlyer.
     url = URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/account/create-deposit-id?request_id=' + SecureRandom.uuid)
     request = Net::HTTP::Get.new(url.to_s)
