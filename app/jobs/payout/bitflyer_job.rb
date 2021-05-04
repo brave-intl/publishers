@@ -15,6 +15,7 @@ module Payout
         IncludePublisherInPayoutReportJob.perform_async(
           payout_report_id: payout_report_id,
           publisher_id: publisher.id,
+          should_send_notifications: should_send_notifications,
           kind: IncludePublisherInPayoutReportJob::BITFLYER
         )
       end

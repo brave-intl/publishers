@@ -28,6 +28,7 @@ class PaypalServiceTest < ActiveJob::TestCase
 
     describe "when paypal connected" do
       let(:publisher) { publishers(:paypal_connected) }
+      let(:should_send_notifications) { true }
 
       let(:balance_response) do
         [
@@ -48,7 +49,8 @@ class PaypalServiceTest < ActiveJob::TestCase
         perform_enqueued_jobs do
           Payout::PaypalService.new(
             payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
-            publisher: publisher
+            publisher: publisher,
+            should_send_notifications: should_send_notifications
           ).perform
         end
       end
