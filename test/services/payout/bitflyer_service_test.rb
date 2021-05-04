@@ -35,7 +35,7 @@ class BitflyerServiceTest < ActiveSupport::TestCase
     before { subject }
 
     it 'marks the potential payment as suspended' do
-      PotentialPayment.all.each { |pp| assert_equal "suspended", pp.status }
+      PotentialPayment.all.each { |potential_payment| assert_equal "suspended", potential_payment.status }
       refute_equal PotentialPayment.count, 0
     end
   end
@@ -49,11 +49,17 @@ class BitflyerServiceTest < ActiveSupport::TestCase
 
     it 'creates potential payments for the right creator' do
       refute_equal PotentialPayment.count, 0
-      PotentialPayment.all.each { |pp| assert_equal publisher.id, pp.publisher_id }
+      PotentialPayment.all.each { |potential_payment| assert_equal publisher.id, potential_payment.publisher_id }
     end
 
     it 'the address is not empty' do
-      assert PotentialPayment.all.all? { |pp| pp.address.present? }
+      assert PotentialPayment.all.all? { |potential_payment|
+               if potential_payment.kind == ::PotentialPayment::REFERRAL
+                 potential_payment.address == publisher.bitflyer_connection.recipient_id
+               else
+                 potential_payment.address == publisher.channels.verified[0].deposit_id
+               end
+             }
     end
   end
 end
