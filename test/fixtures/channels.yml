@@ -311,3 +311,8 @@ gemini_completed_website:
   publisher: gemini_completed
   verified: true
   details: gemini_completed_website_details (SiteChannelDetails)
+
+bitflyer_enabled_website:
+  publisher: bitflyer_enabled
+  verified: true
+  details: bitflyer_completed_website_details(SiteChannelDetails)

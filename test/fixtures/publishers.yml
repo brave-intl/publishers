@@ -314,6 +314,8 @@ publisher_selected_wallet_provider:
 bitflyer_enabled:
   email: "bitflyer_enabled@brave.com"
   name: "Bitflyer Enabled"
+  selected_wallet_provider_type: BitflyerConnection
+  selected_wallet_provider_id: bitflyer_connections(:selected_wallet_provider_connection)
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"

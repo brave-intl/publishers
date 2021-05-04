@@ -342,16 +342,7 @@ class Channel < ApplicationRecord
   # Needed for bitFlyer, but can likely be used for Uphold too.
   def create_deposit_id
     if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
-      # Request a deposit id from bitFlyer.
-      url = URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/account/create-deposit-id?request_id=' + SecureRandom.uuid)
-      request = Net::HTTP::Get.new(url.to_s)
-      request['Authorization'] = "Bearer " + publisher.bitflyer_connection.access_token
-      response = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') do |http|
-        http.request(request)
-      end
-
-      deposit_id = JSON.parse(response.body)["deposit_id"]
-      update_column(:deposit_id, deposit_id)
+      Sync::Bitflyer::UpdateMissingDepositJob.new(channel.id).perform
     end
   end
 
