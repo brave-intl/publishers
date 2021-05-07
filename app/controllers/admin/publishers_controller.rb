@@ -4,7 +4,7 @@ class Admin::PublishersController < AdminController
   include ActiveRecord::Sanitization::ClassMethods
 
   def index
-    ActiveRecord::Base.connected_to(role: :reading) do
+    ActiveRecord::Base.connected_to(database: :primary) do
       @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
                       Publisher.advanced_sort(sort_column.to_sym, sort_direction)
                     else
