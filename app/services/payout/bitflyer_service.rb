@@ -14,7 +14,7 @@ module Payout
       payout_utils = @payout_utils_class.new(payout_report: payout_report,
                                              publisher: publisher,)
 
-      return if payout_utils.skip_publisher?
+      return if payout_utils.skip_publisher?(is_bitflyer: true)
 
       potential_payments = []
 
