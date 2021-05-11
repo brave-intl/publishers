@@ -32,8 +32,8 @@ class Payout::UpholdJob < ApplicationJob
       IncludePublisherInPayoutReportJob.perform_async(
         payout_report_id: payout_report_id,
         publisher_id: publisher.id,
-        should_send_notifications: should_send_notifications,
-        kind: kind
+        kind: kind,
+        should_send_notifications: should_send_notifications
       )
     end
 

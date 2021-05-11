@@ -35,15 +35,14 @@ class IncludePublisherInPayoutReportJob
     when UPHOLD
       potential_payment_job = Payout::UpholdService
     when BITFLYER
-      potential_payment_job = Payout::BitflyerService
+      return Payout::BitflyerService.build.perform(publisher: publisher,
+                                                   payout_report: payout_report)
     when MANUAL
       potential_payment_job = Payout::ManualPayoutReportPublisherIncluder
     end
 
-    potential_payment_job.new(
-      publisher: publisher,
-      payout_report: payout_report,
-      should_send_notifications: should_send_notifications,
-    ).perform
+    potential_payment_job.new(publisher: publisher,
+                              payout_report: payout_report,
+                              should_send_notifications: should_send_notifications).perform
   end
 end

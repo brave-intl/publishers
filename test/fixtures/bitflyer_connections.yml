@@ -1,5 +1,6 @@
 default_connection:
   publisher: default
+  recipient_id: 'RECIPIENT 1'
 
 connection_with_token:
   publisher: default
@@ -16,3 +17,10 @@ connection_with_token:
     iv: salt
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+
+suspended_bitflyer_connection:
+  publisher: bitflyer_suspended
+
+enabled_bitflyer_connection:
+  publisher: bitflyer_enabled
+  recipient_id: 'bitflyer_enabled_connectionABC'

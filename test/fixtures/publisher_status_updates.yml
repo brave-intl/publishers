@@ -55,3 +55,7 @@ active_<%= item %>:
 gemini_suspended_status:
   publisher: gemini_suspended
   status: "suspended"
+
+bitflyer_suspended_status:
+  publisher: bitflyer_suspended
+  status: "suspended"
