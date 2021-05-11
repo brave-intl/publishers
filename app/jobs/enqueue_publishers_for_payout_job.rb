@@ -43,9 +43,6 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       should_send_notifications: true,
       publisher_ids: publisher_ids
     )
-    Payout::PaypalJob.perform_later(
-      should_send_notifications: true,
-    )
   end
 
   def enqueue_payout(payout_report:, manual:, publisher_ids:)
@@ -61,10 +58,6 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       publisher_ids: publisher_ids
     )
     Payout::BitflyerJob.perform_later(
-      payout_report_id: payout_report.id,
-      publisher_ids: publisher_ids
-    )
-    Payout::PaypalJob.perform_later(
       payout_report_id: payout_report.id,
       publisher_ids: publisher_ids
     )
