@@ -138,7 +138,7 @@ class PublishersController < ApplicationController
       uphold_connection = UpholdConnection.create!(publisher: current_publisher)
     end
 
-    if payout_in_progress? && Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
+    if payout_in_progress?(current_publisher) && Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
       @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
     end
 
@@ -278,9 +278,5 @@ class PublishersController < ApplicationController
   def require_verified_email
     return if current_publisher.email_verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
-  end
-
-  def payout_in_progress?
-    !!Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
   end
 end

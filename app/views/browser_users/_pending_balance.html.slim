@@ -10,7 +10,7 @@
           span.bat-amount--browser-user#bat_amount = publisher_referral_bat_balance(@browser_user)
           span.bat-code= " " + I18n.t(".bat_in_locale")
   .dashboard-panel--content
-    - if payout_in_progress?
+    - if payout_in_progress?(@browser_user)
       .payout_in_progress
         span
           i = t(".payout_in_progress")
