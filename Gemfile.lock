@@ -223,6 +223,8 @@ GEM
     json (2.5.1)
     jsonapi-renderer (0.2.2)
     jwt (2.2.3)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -552,6 +554,7 @@ DEPENDENCIES
   font-awesome-rails (~> 4.7.0.4)
   google-protobuf (~> 3.12.0)
   i18n-tasks (~> 0.9.12)
+  launchy
   listen (~> 3.5)
   lograge (~> 0.4)
   meta-tags (~> 2.13.0)

@@ -44,6 +44,22 @@ Capybara.register_driver "chrome" do |app|
   )
 end
 
+Capybara.register_driver "chromeja" do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: {
+          binary: ENV["CHROME_BINARY"],
+          args: %w{headless no-sandbox disable-gpu window-size=1680,1050 --lang=ja-JP}
+      }.compact,
+      loggingPrefs: { browser: 'ALL' }
+  )
+  driver = Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+  )
+
+end
+
 Capybara.default_driver = "chrome"
 
 VCR.configure do |config|

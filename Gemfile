@@ -176,6 +176,8 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
+  # save_and_open_screenshot for capybara
+  gem "launchy"
 end
 
 group :development, :test do
