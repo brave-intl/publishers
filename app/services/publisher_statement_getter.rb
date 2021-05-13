@@ -50,7 +50,7 @@ class PublisherStatementGetter < BaseApiClient
   def replace_account_identifiers_with_titles(transactions)
     transactions.map do |transaction|
       account_identifier = transaction["channel"]
-      if account_identifier.starts_with?(Publisher::OWNER_PREFIX)
+      if account_identifier&.starts_with?(Publisher::OWNER_PREFIX)
         transaction["channel"] = I18n.t("publishers.statements.index.account")
       elsif account_identifier.blank?
         transaction["channel"] = "Manual"
