@@ -2,7 +2,7 @@ module Payout
   class Service
     class WalletError < StandardError; end
 
-    def initialize(payout_report:, publisher:, should_send_notifications:)
+    def initialize(payout_report:, publisher:, should_send_notifications: false)
       @publisher = publisher
       @payout_report = payout_report
       @should_send_notifications = should_send_notifications
@@ -25,7 +25,7 @@ module Payout
     # Internal: Creates entries for any reason for not paying out a publisher.
     #
     # Returns a boolean
-    def skip_publisher?
+    def skip_publisher?(is_bitflyer: false)
       if !@publisher.has_verified_channel?
         create_message("Publisher has no verified channels")
         return true
@@ -61,12 +61,17 @@ module Payout
         return true
       end
 
-      if self.class != Payout::PaypalService
-        # A publisher can have a uphold_connection and a paypal_connection.
+      if !is_bitflyer && self.class != Payout::PaypalService
+        # A publisher can have a uphold_connection and a bitflyer_connection.
         # Handle the case where the wallet_provider field is nil
         connection = @publisher.selected_wallet_provider
         if connection.japanese_account?
           create_message("Publisher is located in Japan and is not paid out through this job")
+          return true
+        end
+
+        if @publisher.bitflyer_connection.present?
+          create_message("Publisher has a Bitflyer Connection  and is not paid out through this job")
           return true
         end
 

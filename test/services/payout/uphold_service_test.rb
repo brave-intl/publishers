@@ -247,9 +247,28 @@ class UpholdServiceTest < ActiveJob::TestCase
     end
   end
 
+
   describe "for a paypal user" do
     let(:should_send_notifications) { true }
     let(:publisher) { publishers(:paypal_connected) }
+
+    before do
+      @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+      perform_enqueued_jobs do
+        Payout::UpholdService.new(payout_report: @payout_report,
+                                          publisher: publisher,
+                                          should_send_notifications: should_send_notifications).perform
+      end
+    end
+
+    it "account is not included in payout report" do
+      assert_empty PotentialPayment.where(publisher_id: publisher.id)
+    end
+  end
+
+  describe "for a bitflyer user" do
+    let(:should_send_notifications) { true }
+    let(:publisher) { publishers(:bitflyer_enabled) }
 
     before do
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
@@ -270,8 +289,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:subject) do
       perform_enqueued_jobs do
         Payout::UpholdService.new(payout_report: @payout_report,
-                                          publisher: publisher,
-                                          should_send_notifications: should_send_notifications).perform
+                                  publisher: publisher,
+                                  should_send_notifications: should_send_notifications).perform
       end
     end
 

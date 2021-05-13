@@ -44,6 +44,22 @@ Capybara.register_driver "chrome" do |app|
   )
 end
 
+# Have to use FF due to Chrome bug in linux
+# See https://bugs.chromium.org/p/chromium/issues/detail?id=1010288
+Capybara.register_driver "firefoxja" do |app|
+  profile = Selenium::WebDriver::Firefox::Profile.new
+  profile['intl.accept_languages'] = 'ja-JP'
+
+  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
+  opts.args << '--headless'
+
+  driver = Capybara::Selenium::Driver.new(
+      app,
+      browser: :firefox,
+      options: opts
+  )
+end
+
 Capybara.default_driver = "chrome"
 
 VCR.configure do |config|

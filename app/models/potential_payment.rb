@@ -4,7 +4,7 @@ class PotentialPayment < ApplicationRecord
   MANUAL = "manual".freeze
 
   # valid wallet_providers
-  enum wallet_provider: { uphold: 0, paypal: 1, gemini: 2 }
+  enum wallet_provider: { uphold: 0, paypal: 1, gemini: 2, bitflyer: 3 }
 
   belongs_to :payout_report
   belongs_to :publisher

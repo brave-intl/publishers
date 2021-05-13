@@ -95,16 +95,23 @@ class Admin::PayoutReportsController < AdminController
     redirect_to admin_payout_reports_path, flash: { alert: "Something bad happened! Please check Sentry for more details" }
   end
 
-  def toggle_payout_in_progress
-    payout_status = Rails.cache.fetch(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS)
-    Rails.cache.write(SetPayoutInProgressJob::PAYOUT_IN_PROGRESS, !payout_status)
-    redirect_to admin_payout_reports_path, flash: { alert: "Set 'payout in progress' to #{!payout_status}" }
+  def payouts_in_progress
+    Rails.cache.write(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS, payouts_in_progress_params)
+    redirect_to admin_payout_reports_path, flash: { alert: "Set 'payout in progress' to #{payouts_in_progress_params}" }
   end
 
   private
 
   def payout_params
     params.require(:payout_report).permit(:final)
+  end
+
+  def payouts_in_progress_params
+    params.require(:payout_in_progress)
+      .permit(:paypal_connection,
+              :bitflyer_connection,
+              :uphold_connection,
+              :gemini_connection).to_h.transform_values! { |v| v == "1" }
   end
 
   def assign_authority(report_contents)

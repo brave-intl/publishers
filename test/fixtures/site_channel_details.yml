@@ -137,6 +137,12 @@ medium_media_group_abandoned_3_details:
 suspended_details:
   brave_publisher_id: "suspended.org"
 
+bitflyer_suspended_details:
+  brave_publisher_id: "suspendedbitflyer.org"
+
+bitflyer_enabled_details:
+  brave_publisher_id: "enabledbitflyer.org"
+
 fraudulently_verified_site_details:
   brave_publisher_id: "contested.com"
 

@@ -35,13 +35,13 @@ class PaypalServiceTest < ActiveJob::TestCase
           {
             account_id: "publishers#uuid:2fcb973c-7f7c-5351-809f-0eed1de17a77",
             account_type: "owner",
-            balance: "500.00"
+            balance: "500.00",
           },
           {
             account_id: "youtube#channel:",
             account_type: "channel",
-            balance: "500.00"
-          }
+            balance: "500.00",
+          },
         ]
       end
 
@@ -50,7 +50,8 @@ class PaypalServiceTest < ActiveJob::TestCase
           Payout::PaypalService.new(
             payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
             publisher: publisher,
-            should_send_notifications: should_send_notifications).perform
+            should_send_notifications: should_send_notifications
+          ).perform
         end
       end
 

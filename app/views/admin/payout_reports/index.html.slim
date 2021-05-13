@@ -6,10 +6,6 @@
         = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
         .btn.btn-primary Upload Settlement Report
 
-    = form_tag toggle_payout_in_progress_admin_payout_reports_path
-      - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
-      = submit_tag(toggle_text, class: "btn btn-primary")
-
 javascript:
   document.getElementById('settlementFile').addEventListener("change", function() {
     document.getElementById('settlementForm').submit();
@@ -67,3 +63,15 @@ br
     span = "   "
     = submit_tag("Notify publishers", class: "btn btn-primary")
 = will_paginate @payout_reports
+
+br
+
+h4 Change Payout Progress
+= form_for(:payout_in_progress, { method: :put, url: payouts_in_progress_admin_payout_reports_path}) do |f|
+  - payouts_in_progress = Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS) || {}
+  - SetPayoutsInProgressJob::CONNECTIONS.each do |connection_name|
+    = f.check_box(connection_name, checked: payouts_in_progress[connection_name].present?, class: "progress-checkbox")
+    = f.label connection_name
+    br
+  = f.submit("Submit", class: "btn btn-primary")
+

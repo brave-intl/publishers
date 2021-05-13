@@ -26,11 +26,11 @@ class ApplicationController < ActionController::Base
   def switch_locale(&action)
     return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == 'admin'
 
-    if (japanese_http_header? || has_paypal_account? || controller_path.include?("bitflyer")) && request.get?
+    if (japanese_locale_specified? || controller_path.include?("bitflyer")) && request.get?
       # (yachtcaptain23): When we get a callback from Youtube, don't try an internal redirect and cause a CSRF token error.
       # Relates to https://github.com/brave-intl/publishers/issues/2456
-      if (request.path.split("/").last == "callback" || japanese_http_header?)
-        if params[:locale].nil?
+      if (request.path.split("/").last == "callback" || japanese_locale_specified?)
+        if params[:locale].blank?
           new_url = if URI(request.original_url).query.present?
                       request.original_url + "&locale=#{preferred_japanese_locale.to_s}"
                     else
@@ -97,6 +97,10 @@ class ApplicationController < ActionController::Base
 
   def japanese_http_header?
     extract_locale_from_accept_language_header == 'ja'
+  end
+
+  def japanese_locale_specified?
+    japanese_http_header? || (params[:locale] == 'ja' || params[:locale] == 'jabap')
   end
 
   def use_jabap?
