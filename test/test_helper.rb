@@ -48,7 +48,7 @@ Capybara.register_driver "chromeja" do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
           binary: ENV["CHROME_BINARY"],
-          args: %w{headless no-sandbox disable-gpu window-size=1680,1050 --lang=ja-JP}
+          args: %w{no-sandbox window-size=1680,1050 --lang=ja-JP}
       }.compact,
       loggingPrefs: { browser: 'ALL' }
   )
