@@ -128,6 +128,7 @@ class Statements extends React.Component<any, IStatementsState> {
     if (this.state.statements === undefined) {
       this.reloadTable();
     }
+    this.setState({ onAdminPage: window.location.href.includes("admin") })
   }
 
   public async reloadTable() {
@@ -194,11 +195,11 @@ class Statements extends React.Component<any, IStatementsState> {
               <TableHeader className="text-right" style={{ minWidth: "175px" }}>
                 <FormattedMessage id="statements.overview.amountDeposited" />
               </TableHeader>
-              { /*
-              <TableHeader className="text-right">
-                <FormattedMessage id="statements.overview.statement" />
-              </TableHeader>
-                 */ }
+              { this.state.onAdminPage &&
+                <TableHeader className="text-right">
+                  <FormattedMessage id="statements.overview.statement" />
+                </TableHeader>
+              }
             </tr>
           </thead>
           <tbody>
@@ -253,37 +254,37 @@ class Statements extends React.Component<any, IStatementsState> {
                       </DepositBreakdown>
                     ))}
                   </td>
-                 { /*
-                  <td>
-                    <div className="d-flex justify-content-end">
-                      <a
-                        onClick={(event) => {
-                          event.preventDefault();
-                          this.modalClick(statement.earningPeriod);
-                        }}
-                        href={routes.publishers.statements.show.path.replace(
-                          "{period}",
-                          statement.earningPeriod.startDate
-                        )}
-                        className="mr-4"
-                      >
-                        <FormattedMessage id="statements.overview.view" />
-                      </a>
-                      {this.state.statements && (
-                        <Modal
-                          show={statement.isOpen}
-                          size={ModalSize.Medium}
-                          handleClose={() =>
-                            this.modalClick(statement.earningPeriod)
-                          }
-                          padding={false}
+                 { this.state.onAdminPage &&
+                    <td>
+                      <div className="d-flex justify-content-end">
+                        <a
+                          onClick={(event) => {
+                            event.preventDefault();
+                            this.modalClick(statement.earningPeriod);
+                          }}
+                          href={routes.publishers.statements.show.path.replace(
+                            "{period}",
+                            statement.earningPeriod.startDate
+                          )}
+                          className="mr-4"
                         >
-                          <StatementDetails statement={statement} />
-                        </Modal>
-                      )}
-                    </div>
-                  </td>
-                    */ }
+                          <FormattedMessage id="statements.overview.view" />
+                        </a>
+                        {this.state.statements && (
+                          <Modal
+                            show={statement.isOpen}
+                            size={ModalSize.Medium}
+                            handleClose={() =>
+                              this.modalClick(statement.earningPeriod)
+                            }
+                            padding={false}
+                          >
+                            <StatementDetails statement={statement} />
+                          </Modal>
+                        )}
+                      </div>
+                    </td>
+                  }
                 </tr>
               ))}
             {/* No results */}
