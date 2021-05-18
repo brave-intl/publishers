@@ -59,9 +59,9 @@ namespace :database_updates do
         where('publishers.selected_wallet_provider_id IS NULL')
 
       # For testing in dev
-      publisher_ids = UpholdConnection.first(3).map { |p| p.publisher.id }
-      query_base = Publisher.where(id: publisher_ids).
-        joins(:uphold_connection)
+      # publisher_ids = UpholdConnection.first(3).map { |p| p.publisher.id }
+      # query_base = Publisher.where(id: publisher_ids).
+      #   joins(:uphold_connection)
 
       query_base.in_batches(of: limit) do |uphold_batch|
         plucked_batch = uphold_batch.pluck(:id, 'uphold_connections.id')
