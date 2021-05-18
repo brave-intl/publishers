@@ -197,6 +197,7 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-protobuf (3.12.4-universal-darwin)
+    google-protobuf (3.12.4-x86_64-linux)
     hashdiff (1.0.1)
     hashie (4.1.0)
     highline (2.0.3)
@@ -258,6 +259,8 @@ GEM
     nio4r (2.5.7)
     nokogiri (1.11.3-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.11.3-x86_64-linux)
+      racc (~> 1.4)
     oauth (0.5.6)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -318,7 +321,7 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     public_suffix (4.0.6)
-    puma (5.1.1)
+    puma (5.3.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.5.2)
@@ -522,6 +525,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
@@ -575,7 +579,7 @@ DEPENDENCIES
   pry-byebug
   pry-stack_explorer (~> 0.4.9.3)
   public_suffix (~> 4.0.3)
-  puma (~> 5.1.1)
+  puma (~> 5.3.1)
   rack (~> 2.1.0)
   rack-attack (~> 5.0)
   rails (~> 6.0.3.7)
