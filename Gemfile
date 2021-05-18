@@ -53,7 +53,7 @@ gem 'google-protobuf', "~> 3.12.0"
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.11.1"
+gem "nokogiri", "~> 1.11.4"
 
 # Open Graph tag
 gem "meta-tags", "~> 2.13.0"
