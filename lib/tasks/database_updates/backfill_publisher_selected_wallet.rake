@@ -2,11 +2,9 @@ namespace :database_updates do
   desc 'Backfill Publisher Selected Wallets'
   task :backfill_publisher_selected_wallets => :environment do
     def handle_gemini
-      now = Time.zone.now
       gemini_to_set = Publisher.
         joins(:gemini_connection).
         where('gemini_connections.is_verified = TRUE').
-        where('publishers.email IS NOT NULL').
         where('publishers.selected_wallet_provider_id IS NULL').
         pluck(:id, 'gemini_connections.id') # use pluck to avoid loading user_authentication_token
 
@@ -21,8 +19,6 @@ namespace :database_updates do
           id: publisher_gemini[0], # publisher id
           selected_wallet_provider_id: publisher_gemini[1], # gemini connections id
           selected_wallet_provider_type: 'GeminiConnection',
-          created_at: now,
-          updated_at: now,
         }
       end
       puts "Updating #{gemini_to_set.count} Gemini records"
@@ -31,10 +27,8 @@ namespace :database_updates do
     end
 
     def handle_bitflyer
-      now = Time.zone.now
       bitflyer_to_set = Publisher.
         joins(:bitflyer_connection).
-        where('publishers.email IS NOT NULL').
         where('publishers.selected_wallet_provider_id IS NULL').
         pluck(:id, 'bitflyer_connections.id') # use pluck to avoid loading user_authentication_token
 
@@ -49,8 +43,6 @@ namespace :database_updates do
           id: publisher_bitflyer[0], # publisher id
           selected_wallet_provider_id: publisher_bitflyer[1], # bitflyer connections id
           selected_wallet_provider_type: 'BitflyerConnection',
-          created_at: now,
-          updated_at: now,
         }
       end
       puts "Updating #{bitflyer_to_set.count} Bitflyer records"
@@ -60,18 +52,16 @@ namespace :database_updates do
 
     def handle_uphold
       limit = 25000 # To not overwhelm the system
-      now = Time.zone.now
 
       query_base = Publisher.
         joins(:uphold_connection).
         where('uphold_connections.uphold_verified = TRUE').
-        where('publishers.email IS NOT NULL').
         where('publishers.selected_wallet_provider_id IS NULL')
 
       # For testing in dev
-      # publisher_ids = UpholdConnection.first(3).map { |p| p.publisher.id }
-      # query_base = Publisher.where(id: publisher_ids).
-      #   joins(:uphold_connection)
+      publisher_ids = UpholdConnection.first(3).map { |p| p.publisher.id }
+      query_base = Publisher.where(id: publisher_ids).
+        joins(:uphold_connection)
 
       query_base.in_batches(of: limit) do |uphold_batch|
         plucked_batch = uphold_batch.pluck(:id, 'uphold_connections.id')
@@ -81,8 +71,6 @@ namespace :database_updates do
             id: publisher_uphold[0], # publisher id
             selected_wallet_provider_id: publisher_uphold[1], # uphold connections id
             selected_wallet_provider_type: 'UpholdConnection',
-            created_at: now,
-            updated_at: now,
           }
         end
         puts "Updating #{plucked_batch.size} uphold records"
