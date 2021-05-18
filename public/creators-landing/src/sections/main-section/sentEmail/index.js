@@ -82,28 +82,28 @@ const SentEmail = props => {
             <a
               href={locale.sign.iconHelpHref}
               className="sign-icon"
-              title={<FormattedMessage id="sign.iconHelpTitle"/>}
+              title={locale.sign.iconHelpTitle}
             >
               <SignInfoIcon />
             </a>
             <a
               href={locale.sign.iconMessageHref}
               className="sign-icon"
-              title={<FormattedMessage id="sign.iconMessageTitle"/>}
+              title={locale.sign.iconMessageTitle}
             >
               <SignMessageIcon />
             </a>
             <a
               href={locale.sign.iconRedditHref}
               className="sign-icon"
-              title={<FormattedMessage id="sign.iconRedditTitle"/>}
+              title={locale.sign.iconRedditTitle}
             >
               <SignRedditIcon />
             </a>
             <a
               href={locale.sign.iconCommunityHref}
               className="sign-icon"
-              title={<FormattedMessage id="sign.iconCommunityTitle"/>}
+              title={locale.sign.iconCommunityTitle}
             >
               <SignCommunityIcon />
             </a>
