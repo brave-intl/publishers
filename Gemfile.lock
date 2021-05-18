@@ -261,8 +261,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.11.4-x86_64-linux)
       racc (~> 1.4)
-    nokogiri (1.11.3-x86_64-linux)
-      racc (~> 1.4)
     oauth (0.5.6)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
