@@ -19,6 +19,7 @@ namespace :database_updates do
           id: publisher_gemini[0], # publisher id
           selected_wallet_provider_id: publisher_gemini[1], # gemini connections id
           selected_wallet_provider_type: 'GeminiConnection',
+          updated_at: Time.zone.now
         }
       end
       puts "Updating #{gemini_to_set.count} Gemini records"
@@ -43,6 +44,7 @@ namespace :database_updates do
           id: publisher_bitflyer[0], # publisher id
           selected_wallet_provider_id: publisher_bitflyer[1], # bitflyer connections id
           selected_wallet_provider_type: 'BitflyerConnection',
+          updated_at: Time.zone.now
         }
       end
       puts "Updating #{bitflyer_to_set.count} Bitflyer records"
@@ -71,6 +73,7 @@ namespace :database_updates do
             id: publisher_uphold[0], # publisher id
             selected_wallet_provider_id: publisher_uphold[1], # uphold connections id
             selected_wallet_provider_type: 'UpholdConnection',
+            updated_at: Time.zone.now
           }
         end
         puts "Updating #{plucked_batch.size} uphold records"
