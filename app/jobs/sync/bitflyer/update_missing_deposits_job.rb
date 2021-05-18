@@ -9,7 +9,7 @@ class Sync::Bitflyer::UpdateMissingDepositsJob < ApplicationJob
       where(channels: { deposit_id: nil }).
       select("channels.id").
       each do |channel_id|
-      Sync::Bitflyer::UpdateMissingDepositsJob.perform_async(channel_id)
+      Sync::Bitflyer::UpdateMissingDepositJob.perform_async(channel_id)
     end
   end
 end

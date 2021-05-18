@@ -240,18 +240,6 @@ suspended:
   details: suspended_details (SiteChannelDetails)
   verified: true
 
-bitflyer_enabled_channel:
-  publisher: bitflyer_enabled
-  details: bitflyer_enabled_details (SiteChannelDetails)
-  verified: true
-  deposit_id: 'bitflyer_enabled_channel123'
-
-bitflyer_suspended_channel:
-  publisher: bitflyer_suspended
-  details: bitflyer_suspended_details (SiteChannelDetails)
-  verified: true
-  deposit_id: 'bitflyer_enabled_channel321'
-
 fraudulently_verified_site:
   publisher: fraudulent_verifier
   details: fraudulently_verified_site_details (SiteChannelDetails)
@@ -312,7 +300,20 @@ gemini_completed_website:
   verified: true
   details: gemini_completed_website_details (SiteChannelDetails)
 
+bitflyer_enabled_channel:
+  publisher: bitflyer_enabled
+  details: bitflyer_enabled_details (SiteChannelDetails)
+  verified: true
+  deposit_id: 'bitflyer_enabled_channel123'
+
+bitflyer_suspended_channel:
+  publisher: bitflyer_suspended
+  details: bitflyer_suspended_details (SiteChannelDetails)
+  verified: true
+  deposit_id: 'bitflyer_enabled_channel321'
+
 bitflyer_enabled_website:
   publisher: bitflyer_enabled
   verified: true
   details: bitflyer_completed_website_details(SiteChannelDetails)
+  deposit_id: 'bitflyer_enabled_website1'
