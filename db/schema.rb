@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_18_170537) do
+ActiveRecord::Schema.define(version: 2021_02_09_001133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -488,8 +488,8 @@ ActiveRecord::Schema.define(version: 2021_05_18_170537) do
     t.inet "last_sign_in_ip"
     t.boolean "created_via_api", default: false, null: false
     t.string "default_currency"
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
