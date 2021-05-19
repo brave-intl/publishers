@@ -15,8 +15,8 @@ class BitflyerServiceTest < ActiveSupport::TestCase
   end
 
   before do
-    ActionMailer::Base.deliveries.clear
     PotentialPayment.destroy_all
+    ActionMailer::Base.deliveries.clear
   end
 
   describe "when publisher does not have a verified channel" do
@@ -57,7 +57,7 @@ class BitflyerServiceTest < ActiveSupport::TestCase
                if potential_payment.kind == ::PotentialPayment::REFERRAL
                  potential_payment.address == publisher.bitflyer_connection.recipient_id
                else
-                 potential_payment.address == publisher.channels.verified[0].deposit_id
+                 publisher.channels.verified.where(deposit_id: potential_payment.address).present?
                end
              }
     end

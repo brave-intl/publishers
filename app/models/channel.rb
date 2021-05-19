@@ -342,7 +342,7 @@ class Channel < ApplicationRecord
   # Needed for bitFlyer, but can likely be used for Uphold too.
   def create_deposit_id
     if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
-      Sync::Bitflyer::UpdateMissingDepositJob.new(channel.id).perform
+      Sync::Bitflyer::UpdateMissingDepositJob.new(id).perform
     end
   end
 

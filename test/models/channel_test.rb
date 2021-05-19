@@ -358,9 +358,9 @@ class ChannelTest < ActionDispatch::IntegrationTest
     )
 
     channel = channels(:bitflyer_enabled_website)
-
+    # The after_save create_deposit_id creates a deposit_id
+    channel.update(deposit_id: nil)
     assert_nil channel.deposit_id
-    Sync::Bitflyer::UpdateMissingDepositJob.new(channel.id).perform
     assert_equal channel.reload.deposit_id, uuid
   end
 
