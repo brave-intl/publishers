@@ -2,82 +2,59 @@ namespace :database_updates do
   desc 'Backfill Publisher Selected Wallets'
   task :backfill_publisher_selected_wallets => :environment do
     def handle_gemini
-      gemini_to_set = Publisher.
-        joins(:gemini_connection).
-        where('gemini_connections.is_verified = TRUE').
-        where('publishers.selected_wallet_provider_id IS NULL').
-        pluck(:id, 'gemini_connections.id') # use pluck to avoid loading user_authentication_token
+      # Can't use update_all https://github.com/rails/rails/issues/522
+      # https://stackoverflow.com/questions/1293330/how-can-i-do-an-update-statement-with-join-in-sql-server
+      sql = """
+      UPDATE publishers
+        SET selected_wallet_provider_id = gc.id,
+            selected_wallet_provider_type = 'GeminiConnection',
+            updated_at = '#{Time.zone.now}'
+      FROM gemini_connections AS gc
+      WHERE gc.publisher_id = publishers.id
+      AND gc.is_verified = TRUE
+      AND publishers.selected_wallet_provider_id IS NULL;
+      """
 
-      # For testing in dev
-      # publisher_ids = GeminiConnection.first(3).map { |p| p.publisher.id }
-      # gemini_to_set = Publisher.where(id: publisher_ids).
-      #   joins(:gemini_connection).
-      #   pluck(:id, 'gemini_connections.id')
-
-      gemini_new_records = gemini_to_set.map do |publisher_gemini|
-        {
-          id: publisher_gemini[0], # publisher id
-          selected_wallet_provider_id: publisher_gemini[1], # gemini connections id
-          selected_wallet_provider_type: 'GeminiConnection',
-          updated_at: Time.zone.now
-        }
-      end
-      puts "Updating #{gemini_to_set.count} Gemini records"
-
-      Publisher.upsert_all(gemini_new_records) if gemini_new_records.present?
+      Publisher.connection.execute(sql)
     end
 
     def handle_bitflyer
-      bitflyer_to_set = Publisher.
-        joins(:bitflyer_connection).
-        where('publishers.selected_wallet_provider_id IS NULL').
-        pluck(:id, 'bitflyer_connections.id') # use pluck to avoid loading user_authentication_token
+      sql = """
+      UPDATE publishers
+        SET selected_wallet_provider_id = bc.id,
+            selected_wallet_provider_type = 'BitFlyerConnection',
+            updated_at = '#{Time.zone.now}'
+      FROM bitflyer_connections AS bc
+      WHERE bc.publisher_id = publishers.id
+      AND publishers.selected_wallet_provider_id IS NULL;
+      """
 
-      # For testing in dev
-      # publisher_ids = BitflyerConnection.first(2).map { |p| p.publisher.id }
-      # bitflyer_to_set = Publisher.where(id: publisher_ids).
-      #   joins(:bitflyer_connection).
-      #   pluck(:id, 'bitflyer_connections.id')
-
-      bitflyer_new_records = bitflyer_to_set.map do |publisher_bitflyer|
-        {
-          id: publisher_bitflyer[0], # publisher id
-          selected_wallet_provider_id: publisher_bitflyer[1], # bitflyer connections id
-          selected_wallet_provider_type: 'BitflyerConnection',
-          updated_at: Time.zone.now
-        }
-      end
-      puts "Updating #{bitflyer_to_set.count} Bitflyer records"
-
-      Publisher.upsert_all(bitflyer_new_records) if bitflyer_new_records.present?
+      Publisher.connection.execute(sql)
     end
 
     def handle_uphold
-      limit = 25000 # To not overwhelm the system
-
-      query_base = Publisher.
+      ids = Publisher.
         joins(:uphold_connection).
         where('uphold_connections.uphold_verified = TRUE').
-        where('publishers.selected_wallet_provider_id IS NULL')
+        where('publishers.selected_wallet_provider_id IS NULL').pluck(:id)
 
-      # For testing in dev
-      # publisher_ids = UpholdConnection.first(3).map { |p| p.publisher.id }
-      # query_base = Publisher.where(id: publisher_ids).
-      #   joins(:uphold_connection)
+      puts "Have to update #{ids.size} total Uphold accounts"
 
-      query_base.in_batches(of: limit) do |uphold_batch|
-        plucked_batch = uphold_batch.pluck(:id, 'uphold_connections.id')
+      ids.each_slice(500) do |chunk_ids|
 
-        uphold_new_records = plucked_batch.map do |publisher_uphold|
-          {
-            id: publisher_uphold[0], # publisher id
-            selected_wallet_provider_id: publisher_uphold[1], # uphold connections id
-            selected_wallet_provider_type: 'UpholdConnection',
-            updated_at: Time.zone.now
-          }
-        end
-        puts "Updating #{plucked_batch.size} uphold records"
-        Publisher.upsert_all(uphold_new_records)
+        sql = """
+        UPDATE publishers
+          SET selected_wallet_provider_id = uc.id,
+              selected_wallet_provider_type = 'UpholdConnection',
+              updated_at = '#{Time.zone.now}'
+        FROM uphold_connections AS uc
+        WHERE uc.publisher_id = publishers.id
+        AND publishers.selected_wallet_provider_id IS NULL
+        AND uc.uphold_verified = TRUE
+        AND publishers.id IN(#{chunk_ids.map{|id| "'#{id}'"}.join(",")})
+        """
+        puts "Updating #{chunk_ids.size} uphold records"
+        Publisher.connection.execute(sql)
       end
     end
 
