@@ -207,6 +207,8 @@ export API_PROMO_KEY="1234"
 
 ## Development
 
+See [CONTRIBUTING](CONTRIBUTING.md) before submitting any PRs.
+
 ### Config
 
 Configuration is set in [config/secrets.yml](https://github.com/brave/publishers/blob/master/config/secrets.yml) via environment variables.
