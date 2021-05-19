@@ -18,6 +18,7 @@ import routes from "../routes";
 
 interface IStatementsState {
   isLoading: boolean;
+  onAdminPage: boolean;
   statements: IStatementOverview[];
 }
 
@@ -117,6 +118,7 @@ export const CurrencyNumber = (props) => (
 class Statements extends React.Component<any, IStatementsState> {
   public readonly state: IStatementsState = {
     isLoading: true,
+    onAdminPage: false,
     statements: undefined,
   };
 
