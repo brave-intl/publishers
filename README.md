@@ -93,6 +93,10 @@ exception to trust this self-signed certificate. Sometimes this is under an
 
 6. To view the emails sent to your inbox visit: http://localhost:1080
 
+7. Run webpack separately: `./bin/webpack-dev-server`
+
+8. Compile landing page assets: `cd public/landing-page; rake assets:clobber; rake assets:precompile; yarn install; yarn build`
+
 ---
 
 ## API Setups
@@ -202,6 +206,8 @@ export API_PROMO_KEY="1234"
 ```
 
 ## Development
+
+See [CONTRIBUTING](CONTRIBUTING.md) before submitting any PRs.
 
 ### Config
 
