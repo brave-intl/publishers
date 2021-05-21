@@ -103,6 +103,25 @@ class Publisher < ApplicationRecord
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
+
+  def self.uphold_creators
+    where(selected_wallet_provider_type: 'UpholdConnection')
+    .joins(:uphold_connection)
+    .where
+    .not("uphold_connections.country = 'JAPAN'")
+  end
+
+  def self.gemini_creators
+    where(selected_wallet_provider_type: 'GeminiConnection')
+    .joins(:gemini_connection)
+    .where.not("gemini_connections.country ilike 'JP'")
+  end
+
+  def self.bitflyer_creators
+    where(selected_wallet_provider_type: 'BitflyerConnection')
+  end
+
+
   def self.filter_status(status)
     joins(:status_updates).
       where('publisher_status_updates.created_at =
@@ -350,17 +369,6 @@ class Publisher < ApplicationRecord
     end
   rescue
     I18n.default_locale
-  end
-
-  # Internal: Defines and memoizes the current wallet provider connection for user.
-  #
-  # Returns either GeminiConnection, PaypalConnection, or an UpholdConnection
-  def selected_wallet_provider
-    if super.present?
-      super
-    else
-      bitflyer_connection || gemini_connection || paypal_connection || uphold_connection
-    end
   end
 
   def brave_payable?

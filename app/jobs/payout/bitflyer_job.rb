@@ -4,11 +4,9 @@ module Payout
 
     def perform(should_send_notifications: false, payout_report_id: nil, publisher_ids: [])
       if publisher_ids.present?
-        publishers = Publisher.where(selected_wallet_provider_type: [nil, 'BitflyerConnection']).
-          joins(:bitflyer_connection).where(id: publisher_ids)
+        publishers = Publisher.bitflyer_creators.where(id: publisher_ids)
       else
-        publishers = Publisher.where(selected_wallet_provider_type: [nil, 'BitflyerConnection']).
-          joins(:bitflyer_connection).with_verified_channel
+        publishers = Publisher.bitflyer_creators.with_verified_channel
       end
 
       publishers.find_each do |publisher|

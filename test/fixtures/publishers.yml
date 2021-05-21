@@ -175,6 +175,7 @@ uphold_connected_currency_unconfirmed:
   name: "Carol the unconfirmed currency"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+  selected_wallet_provider: verified_no_currency (UpholdConnection)
 
 youtube_initial:
   email: "alice@spud.com"
