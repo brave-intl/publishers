@@ -21,7 +21,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   def generate_brotli_encoded_channel_response(prefix:)
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
-    @site_banner_lookups.includes(publisher: :uphold_connection).includes(publisher: :paypal_connection).each do |site_banner_lookup|
+    @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection, :paypal_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       # Some malformed data shouldn't prevent the list from being generated.
@@ -47,6 +47,14 @@ class Cache::BrowserChannels::ResponsesForPrefix
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
           bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
           wallet.bitflyer_wallet = bitflyer_wallet
+          channel_response.wallets.push(wallet)
+        end
+        if site_banner_lookup.publisher.gemini_connection.present?
+          wallet = PublishersPb::Wallet.new
+          gemini_wallet = PublishersPb::GemniniWallet.new
+          gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: site_banner_lookup.publisher.gemini_connection)
+          gemini_wallet.address = site_banner_lookup.publisher.gemini_connection.recipient_id
+          wallet.gemini_wallet = gemini_wallet
           channel_response.wallets.push(wallet)
         end
       rescue Exception => e
@@ -88,6 +96,14 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def get_bitflyer_wallet_state(bitflyer_connection:)
     PublishersPb::BitflyerWalletState::BITFLYER_ACCOUNT_KYC
+  end
+
+  def get_gemini_wallet_state(gemini_connection:)
+    if gemini_connection.payable?
+      PublishersPb::GeminiWalletState::GEMINI_ACCOUNT_KYC
+    else
+      PublishersPb::GeminiWalletState::GEMINI_ACCOUNT_NO_KYC
+    end
   end
 
   def cleanup!
