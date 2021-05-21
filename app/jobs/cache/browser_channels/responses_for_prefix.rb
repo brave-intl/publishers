@@ -51,7 +51,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
         end
         if site_banner_lookup.publisher.gemini_connection.present?
           wallet = PublishersPb::Wallet.new
-          gemini_wallet = PublishersPb::GemniniWallet.new
+          gemini_wallet = PublishersPb::GeminiWallet.new
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: site_banner_lookup.publisher.gemini_connection)
           gemini_wallet.address = site_banner_lookup.publisher.gemini_connection.recipient_id
           wallet.gemini_wallet = gemini_wallet

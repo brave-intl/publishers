@@ -21,6 +21,7 @@ connection_with_token:
     iv: salt
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+  recipient_id: '123'
 
 connection_not_verified:
   publisher: gemini_not_completed
