@@ -21,7 +21,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   def generate_brotli_encoded_channel_response(prefix:)
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
-    @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection, :paypal_connection]).each do |site_banner_lookup|
+    @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       # Some malformed data shouldn't prevent the list from being generated.
