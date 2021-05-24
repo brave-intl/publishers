@@ -112,9 +112,14 @@ class Publisher < ApplicationRecord
   end
 
   def self.gemini_creators
-    where(selected_wallet_provider_type: 'GeminiConnection')
-    .joins(:gemini_connection)
-    .where.not("gemini_connections.country ilike 'JP'")
+    joins(:gemini_connection)
+    .where('gemini_connections.country IS NULL')
+    .where(selected_wallet_provider_type: 'GeminiConnection')
+    .or(
+      joins(:gemini_connection)
+      .where.not("gemini_connections.country ILIKE 'JP'")
+      .where(selected_wallet_provider_type: 'GeminiConnection')
+    )
   end
 
   def self.bitflyer_creators

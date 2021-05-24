@@ -5,6 +5,10 @@ default_connection:
 suspended_gemini_connection:
   publisher: gemini_suspended
 
+gemini_in_japan_connection:
+  publisher: gemini_in_japan
+  country: 'JP'
+
 connection_with_token:
   publisher: gemini_completed
   is_verified: true
