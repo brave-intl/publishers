@@ -34,13 +34,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.paypal_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
-          wallet = PublishersPb::Wallet.new
-          paypal_wallet = PublishersPb::PaypalWallet.new
-          paypal_wallet.wallet_state = get_paypal_wallet_state(paypal_connection: site_banner_lookup.publisher.paypal_connection)
-          wallet.paypal_wallet = paypal_wallet
-          channel_response.wallets.push(wallet)
-        end
         if site_banner_lookup.publisher.bitflyer_connection.present?
           wallet = PublishersPb::Wallet.new
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
