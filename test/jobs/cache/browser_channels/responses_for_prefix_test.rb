@@ -20,7 +20,25 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     assert service.temp_file.present?
     result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
+    assert result.channel_responses[0].wallets[0].uphold_wallet.address
     assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, channel.uphold_connection.address
+    assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+  end
+
+  test 'gemini wallet generation' do
+    channel = channels(:gemini_completed_website)
+    channel.send(:update_site_banner_lookup!)
+    site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    assert site_banner_lookup.present?
+
+    service = Cache::BrowserChannels::ResponsesForPrefix.new
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
+    assert service.temp_file.present?
+    result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines.join("").slice(4..-1))
+    result = PublishersPb::ChannelResponseList.decode(result)
+    assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.publisher.gemini_connection.recipient_id
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end
 
