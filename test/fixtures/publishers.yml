@@ -17,6 +17,7 @@ verified:
   default_site_banner_mode: true
   email: "alice@verified.org"
   name: "Alice the Verified"
+  selected_wallet_provider: verified_connection (UpholdConnection)
 
 notes:
   <<: *default
@@ -45,6 +46,7 @@ completed:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
+  selected_wallet_provider: unconnected (UpholdConnection)
 
 gemini_completed:
   email: "gemini@completed.org"
@@ -53,6 +55,16 @@ gemini_completed:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
+  selected_wallet_provider: connection_with_token (GeminiConnection)
+
+gemini_in_japan:
+  email: "gemini_in_japan@completed.org"
+  name: "Gemini in Japan"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= DateTime.now %>"
+  subscribed_to_marketing_emails: true
+  selected_wallet_provider: gemini_in_japan_connection (GeminiConnection)
 
 gemini_not_completed:
   email: "gemini_not@completed.org"
@@ -70,6 +82,14 @@ gemini_suspended:
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
 
+uphold_in_japan:
+  email: "uphold_in_japan@completed.org"
+  name: "Uphold in Japan"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= DateTime.now %>"
+  subscribed_to_marketing_emails: true
+  selected_wallet_provider: uphold_in_japan_connection (UpholdConnection)
 
 completed_partner:
   email: "partner@completed.org"
@@ -141,6 +161,7 @@ uphold_connected:
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
+  selected_wallet_provider: basic_connection (UpholdConnection)
 
 uphold_connected_reauthorize:
   email: "alice_reauthorize@upholdconnected.org"
@@ -155,6 +176,7 @@ uphold_connected_details:
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
+  selected_wallet_provider: details_connection (UpholdConnection)
 
 uphold_connected_blocked:
   email: "alice@upholdconnectedandblocked.org"
@@ -175,6 +197,7 @@ uphold_connected_currency_unconfirmed:
   name: "Carol the unconfirmed currency"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+  selected_wallet_provider: verified_no_currency (UpholdConnection)
 
 youtube_initial:
   email: "alice@spud.com"
@@ -318,6 +341,7 @@ bitflyer_enabled:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
   feature_flags: <%= { UserFeatureFlags::BITFLYER_ENABLED => true }.to_json %>
+  selected_wallet_provider: enabled_bitflyer_connection (BitflyerConnection)
 
 bitflyer_not_enabled:
   email: "bitflyer_not_enabled@brave.com"
@@ -334,3 +358,4 @@ bitflyer_suspended:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
+  selected_wallet_provider: suspended_bitflyer_connection (BitflyerConnection)

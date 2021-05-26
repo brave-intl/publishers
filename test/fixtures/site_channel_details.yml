@@ -44,6 +44,12 @@ stats_details:
 uphold_connected_site_channel:
   brave_publisher_id: "uphold_connected_site_channel.org"
 
+uphold_connected_site_channel_japan:
+  brave_publisher_id: "uphold_connected_site_channel_japan.org"
+
+uphold_connected_selected_wallet_site_channel:
+  brave_publisher_id: "uphold_connected_site_channel_selected.org"
+
 <% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
 uphold_connected_<%=item%>:
   brave_publisher_id: "uphold_connected_<%=item%>.org"
