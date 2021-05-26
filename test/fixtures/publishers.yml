@@ -358,4 +358,4 @@ bitflyer_suspended:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
-  selected_wallet_provider: bitflyer_suspended_connection (BitflyerConnection)
+  selected_wallet_provider: suspended_bitflyer_connection (BitflyerConnection)
