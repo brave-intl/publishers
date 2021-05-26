@@ -103,29 +103,31 @@ class Publisher < ApplicationRecord
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
-
   def self.uphold_creators
-    where(selected_wallet_provider_type: 'UpholdConnection')
-    .joins(:uphold_connection)
-    .where
-    .not("uphold_connections.country = 'JAPAN'")
+    joins(:uphold_connection).
+      where('uphold_connections.country IS NULL').
+      where(selected_wallet_provider_type: 'UpholdConnection').
+      or(
+        joins(:uphold_connection).
+        where.not("uphold_connections.country ILIKE '#{UpholdConnection::JAPAN}'").
+        where(selected_wallet_provider_type: 'UpholdConnection')
+      )
   end
 
   def self.gemini_creators
-    joins(:gemini_connection)
-    .where('gemini_connections.country IS NULL')
-    .where(selected_wallet_provider_type: 'GeminiConnection')
-    .or(
-      joins(:gemini_connection)
-      .where.not("gemini_connections.country ILIKE 'JP'")
-      .where(selected_wallet_provider_type: 'GeminiConnection')
-    )
+    joins(:gemini_connection).
+      where('gemini_connections.country IS NULL').
+      where(selected_wallet_provider_type: 'GeminiConnection').
+      or(
+        joins(:gemini_connection).
+        where.not("gemini_connections.country ILIKE '#{GeminiConnection::JAPAN}'").
+        where(selected_wallet_provider_type: 'GeminiConnection')
+      )
   end
 
   def self.bitflyer_creators
     where(selected_wallet_provider_type: 'BitflyerConnection')
   end
-
 
   def self.filter_status(status)
     joins(:status_updates).

@@ -169,6 +169,11 @@ promo_connection:
   publisher: promo_not_registered
   country: "VN"
 
+uphold_in_japan_connection:
+  <<: *base_verified_connection
+  publisher: uphold_in_japan
+  country: "JP"
+
 promo_lockout_connection:
   <<: *base_verified_connection
   publisher: promo_lockout
