@@ -5,7 +5,8 @@ class Payout::UpholdJob < ApplicationJob
     Payout::UpholdJobImplementation.build.call(
       should_send_notifications: should_send_notifications,
       payout_report_id: payout_report_id,
-      publisher_ids: publisher_ids
+      publisher_ids: publisher_ids,
+      manual: manual
     )
   end
 end
