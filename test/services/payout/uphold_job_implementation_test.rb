@@ -9,7 +9,7 @@ class UpholdJobImplementationTest < ActiveSupport::TestCase
     mock_report_job = mock
     mock_report_job.expects(:perform_async).with { |*args| 
       refute Publisher.find(args[0][:publisher_id]).uphold_connection.japanese_account? 
-    }
+    }.at_least_once
     uphold_job = Payout::UpholdJobImplementation.new(payout_report_job: mock_report_job)
     uphold_job.call
   end

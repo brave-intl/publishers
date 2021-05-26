@@ -7,8 +7,10 @@ class BitflyerJobImplementationTest < ActiveSupport::TestCase
     bitflyer_publisher = publishers(:bitflyer_enabled)
     mock_report_job = mock
     mock_report_job.expects(:perform_async).with { |*args|
-      assert Publisher.find(args[0][:publisher_id]).bitflyer_connection
-    }
+      publisher = Publisher.find(args[0][:publisher_id])
+      assert publisher.bitflyer_connection
+      assert publisher.has_verified_channel?
+    }.at_least_once
     bitflyer_job = Payout::BitflyerJobImplementation.new(payout_report_job: mock_report_job)
     bitflyer_job.call
   end
