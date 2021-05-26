@@ -5,10 +5,12 @@ class Sync::Bitflyer::UpdateMissingDepositsJob < ApplicationJob
     Publisher.
       joins(:bitflyer_connection).
       joins(:channels).
-      where(selected_wallet_provider: BitflyerConnection.class.name.to_s).
+      where(selected_wallet_provider_type: BitflyerConnection.name).
+      where.not(selected_wallet_provider_id: nil).
       where(channels: { deposit_id: nil }).
       select("channels.id").
-      each do |channel_id|
+      each do |result|
+      channel_id = result["id"]
       Sync::Bitflyer::UpdateMissingDepositJob.perform_async(channel_id)
     end
   end
