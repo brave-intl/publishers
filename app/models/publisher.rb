@@ -47,9 +47,9 @@ class Publisher < ApplicationRecord
 
   belongs_to :youtube_channel
   belongs_to :selected_wallet_provider, polymorphic: true
-  belongs_to :uphold_for_join, foreign_key: :selected_wallet_provider_id, class_name: UPHOLD_CONNECTION
-  belongs_to :gemini_for_join, foreign_key: :selected_wallet_provider_id, class_name: GEMINI_CONNECTION
-  belongs_to :bitflyer_for_join, foreign_key: :selected_wallet_provider_id, class_name: BITFLYER_CONNECTION
+  belongs_to :uphold_for_join, foreign_key: :selected_wallet_provider_id, class_name: UPHOLD_CONNECTION # rubocop:disable Rails/ReflectionClassName
+  belongs_to :gemini_for_join, foreign_key: :selected_wallet_provider_id, class_name: GEMINI_CONNECTION # rubocop:disable Rails/ReflectionClassName
+  belongs_to :bitflyer_for_join, foreign_key: :selected_wallet_provider_id, class_name: BITFLYER_CONNECTION # rubocop:disable Rails/ReflectionClassName
 
   has_one :uphold_connection
   has_one :stripe_connection
@@ -113,28 +113,26 @@ class Publisher < ApplicationRecord
   def self.valid_payable_uphold_creators
     where(selected_wallet_provider_type: UPHOLD_CONNECTION)
     where('uphold_connections.country IS NULL').
-    or(
-      where(selected_wallet_provider_type: UPHOLD_CONNECTION).
-      where.not("uphold_connections.country ILIKE '#{UpholdConnection::JAPAN}'")
-    ).
-    joins(:uphold_for_join)
-
+      or(
+        where(selected_wallet_provider_type: UPHOLD_CONNECTION).
+        where.not("uphold_connections.country ILIKE '#{UpholdConnection::JAPAN}'")
+      ).
+      joins(:uphold_for_join)
   end
 
   def self.valid_payable_gemini_creators
     where(selected_wallet_provider_type: GEMINI_CONNECTION).
-    where('gemini_connections.country IS NULL').
-    or(
-      where(selected_wallet_provider_type: GEMINI_CONNECTION).
-      where.not("gemini_connections.country ILIKE '#{GeminiConnection::JAPAN}'")
-    ).
-    joins(:gemini_for_join)
+      where('gemini_connections.country IS NULL').
+      or(
+        where(selected_wallet_provider_type: GEMINI_CONNECTION).
+        where.not("gemini_connections.country ILIKE '#{GeminiConnection::JAPAN}'")
+      ).
+      joins(:gemini_for_join)
   end
 
   def self.valid_payable_bitflyer_creators
     joins(:bitflyer_for_join).
-    where(selected_wallet_provider_type: BITFLYER_CONNECTION)
-
+      where(selected_wallet_provider_type: BITFLYER_CONNECTION)
   end
 
   def self.filter_status(status)
