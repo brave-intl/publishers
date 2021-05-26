@@ -24,6 +24,7 @@ unconnected:
 
 suspended_connection:
   publisher: suspended
+  is_member: true
 
 youtube_initial_connection:
   publisher: youtube_initial
@@ -154,6 +155,7 @@ verified_no_currency:
   uphold_state_token:
   publisher: uphold_connected_currency_unconfirmed
   address: "abcdabcd-0000-0000-0000-abcd00000007"
+  is_member: true
 
 small_media_group_connection:
   publisher: small_media_group
