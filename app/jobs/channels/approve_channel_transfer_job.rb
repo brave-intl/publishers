@@ -12,7 +12,7 @@ module Channels
         ## Need to generate new bF deposit ID on channel transfer:
         channel.deposit_id = nil
         if contested_by.publisher.selected_wallet_provider_type == Channel::BITFLYER_CONNECTION
-          Sync::Bitflyer::UpdateMissingDepositJob.new(contested_by.id).perform
+          Sync::Bitflyer::UpdateMissingDepositJob.new.perform(contested_by.id)
         end
         ###################################################################
 

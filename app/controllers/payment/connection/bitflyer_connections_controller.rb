@@ -61,7 +61,7 @@ module Payment
         # Add bitFlyer deposit id to each of the publisher's channels
         current_publisher.channels.each do |channel|
           # Intentional blocking call
-          Sync::Bitflyer::UpdateMissingDepositJob.new(channel.id).perform
+          Sync::Bitflyer::UpdateMissingDepositJob.new.perform(channel.id)
         end
 
         if bitflyer_connection.update(update_bitflyer_connection_params) &&
