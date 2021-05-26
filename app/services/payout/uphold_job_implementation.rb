@@ -12,11 +12,11 @@ module Payout
 
     def call(should_send_notifications: false, manual: false, payout_report_id: nil, publisher_ids: [])
       if publisher_ids.present?
-        publishers = Publisher.uphold_creators.where(id: publisher_ids)
+        publishers = Publisher.valid_payable_uphold_creators.where(id: publisher_ids)
       elsif manual
-        publishers = Publisher.uphold_creators.invoice
+        publishers = Publisher.valid_payable_uphold_creators.invoice
       else
-        publishers = Publisher.uphold_creators.with_verified_channel
+        publishers = Publisher.valid_payable_uphold_creators.with_verified_channel
       end
 
       if payout_report_id.present?

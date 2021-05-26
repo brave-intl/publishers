@@ -110,7 +110,7 @@ class Publisher < ApplicationRecord
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
-  def self.uphold_creators
+  def self.valid_payable_uphold_creators
     where(selected_wallet_provider_type: UPHOLD_CONNECTION)
     where('uphold_connections.country IS NULL').
     or(
@@ -121,7 +121,7 @@ class Publisher < ApplicationRecord
 
   end
 
-  def self.gemini_creators
+  def self.valid_payable_gemini_creators
     where(selected_wallet_provider_type: GEMINI_CONNECTION).
     where('gemini_connections.country IS NULL').
     or(
@@ -131,7 +131,7 @@ class Publisher < ApplicationRecord
     joins(:gemini_for_join)
   end
 
-  def self.bitflyer_creators
+  def self.valid_payable_bitflyer_creators
     joins(:bitflyer_for_join).
     where(selected_wallet_provider_type: BITFLYER_CONNECTION)
 
