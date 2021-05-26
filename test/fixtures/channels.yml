@@ -95,6 +95,16 @@ uphold_connected_channel:
   details: uphold_connected_site_channel (SiteChannelDetails)
   verified: true
 
+uphold_connected_selected_wallet_channel:
+  publisher: publisher_selected_wallet_provider
+  details: uphold_connected_selected_wallet_site_channel (SiteChannelDetails)
+  verified: true
+
+uphold_connected_channel_in_japan:
+  publisher: uphold_in_japan
+  details: uphold_connected_site_channel_japan (SiteChannelDetails)
+  verified: true
+
 <% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
 uphold_connected_<%= item %>:
   publisher: uphold_connected_<%= item %>
