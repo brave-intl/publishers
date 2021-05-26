@@ -25,7 +25,7 @@ module Payout
     # Internal: Creates entries for any reason for not paying out a publisher.
     #
     # Returns a boolean
-    def skip_publisher?()
+    def skip_publisher?
       if !@publisher.has_verified_channel?
         create_message("Publisher has no verified channels")
         return true
