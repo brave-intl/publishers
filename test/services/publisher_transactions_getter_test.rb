@@ -9,7 +9,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
       publisher = publishers(:uphold_connected)
       @mocked_response = PublisherTransactionsGetter.new(publisher: publisher).perform_offline
 
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions").
+      stub_request(:get, /v1\/accounts.*transactions.*/).
         to_return(status: 200, body: @mocked_response.to_json, headers: {})
 
       @transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
