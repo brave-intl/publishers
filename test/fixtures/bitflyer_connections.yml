@@ -14,6 +14,7 @@ connection_with_token:
     iv: salt
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+  display_name: 123
 
 suspended_bitflyer_connection:
   publisher: bitflyer_suspended
