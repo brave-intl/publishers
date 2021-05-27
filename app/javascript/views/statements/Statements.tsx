@@ -202,7 +202,7 @@ class Statements extends React.Component<any, IStatementsState> {
           <tbody>
             {!this.state.statements && (
               <tr>
-                <td colSpan={5} align="center">
+                <td colSpan={6} align="center">
                   <LoadingIcon isLoading={this.state.isLoading} />
                 </td>
               </tr>
@@ -285,7 +285,7 @@ class Statements extends React.Component<any, IStatementsState> {
             {/* No results */}
             {this.state.statements && this.state.statements.length === 0 && (
               <tr>
-                <td colSpan={5} align="center">
+                <td colSpan={6} align="center">
                   <EmptyStatement style={{ width: "100px", height: "71px" }} />
                   <div className="mt-1 text-muted">
                     <FormattedMessage id="statements.overview.noStatements" />
