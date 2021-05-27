@@ -15,7 +15,7 @@ module Publishers
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
     config.middleware.use HttpHeaderMiddleware
     config.middleware.use Rack::Deflater
 
@@ -42,8 +42,8 @@ module Publishers
     config.ssl_options = { redirect: { exclude: -> request { request.path =~ /health-check/ } } }
 
     # config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-#    config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
-#    config.i18n.default_locale = :en
+    #    config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
+    #    config.i18n.default_locale = :en
 
     config.services = config_for(:services)
 

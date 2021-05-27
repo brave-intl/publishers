@@ -1,6 +1,6 @@
 class PromoMailer < ApplicationMailer
   include PromosHelper
-  add_template_helper(PromosHelper)
+  helper PromosHelper
   layout 'promo_mailer'
 
   def activate_promo_2018q1(publisher)
