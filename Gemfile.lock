@@ -521,7 +521,6 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
-  ruby
   x86_64-darwin-20
 
 DEPENDENCIES
