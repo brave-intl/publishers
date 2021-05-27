@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class BitflyerConnection < ApplicationRecord
+  include WalletProviderProperties
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
   JAPAN = "JP"
 
@@ -8,7 +9,6 @@ class BitflyerConnection < ApplicationRecord
   attr_encrypted :access_token, :refresh_token, key: :encryption_key
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
-  after_destroy :selected_wallet_provider
 
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
@@ -66,11 +66,6 @@ class BitflyerConnection < ApplicationRecord
   end
 
   private
-
-  def selected_wallet_provider
-    return unless publisher.selected_wallet_provider.id == id
-    publisher.update(selected_wallet_provider: nil)
-  end
 
   def encryption_key
     [Rails.application.secrets[:attr_encrypted_key]].pack("H*")

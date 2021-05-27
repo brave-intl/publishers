@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GeminiConnection < ApplicationRecord
+  include WalletProviderProperties
+
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
 
   belongs_to :publisher
@@ -12,8 +14,6 @@ class GeminiConnection < ApplicationRecord
   after_save :update_default_currency, if: -> { saved_change_to_default_currency? }
 
   validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
-
-  after_destroy :selected_wallet_provider
 
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
@@ -91,11 +91,6 @@ class GeminiConnection < ApplicationRecord
   end
 
   private
-
-  def selected_wallet_provider
-    return unless publisher.selected_wallet_provider.id == id
-    publisher.update(selected_wallet_provider: nil)
-  end
 
   def update_default_currency
     UpdateGeminiDefaultCurrencyJob.perform_async(id)

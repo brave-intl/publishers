@@ -53,6 +53,7 @@ gemini_completed:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
+  selected_wallet_provider: connection_with_token (GeminiConnection)
 
 gemini_not_completed:
   email: "gemini_not@completed.org"

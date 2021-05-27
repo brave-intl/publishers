@@ -20,6 +20,17 @@ class GeminiConnectionTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'after destroy hook' do
+    let(:gemini_connection) { gemini_connections(:connection_with_token) }
+    let(:publisher) { publishers(:gemini_completed) }
+    test 'publisher no longer has a selected wallet provider' do
+      assert publisher.selected_wallet_provider, gemini_connection
+      gemini_connection.destroy
+      publisher.reload
+      assert_nil publisher.selected_wallet_provider
+    end
+  end
+
   describe 'refresh_authorization! retrieves a new token' do
     let(:gemini_connection) { gemini_connections(:connection_with_token) }
     subject { gemini_connection.refresh_authorization! }
