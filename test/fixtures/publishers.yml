@@ -56,7 +56,7 @@ gemini_completed:
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
   selected_wallet_provider: connection_with_token (GeminiConnection)
-  
+
 gemini_in_japan:
   email: "gemini_in_japan@completed.org"
   name: "Gemini in Japan"

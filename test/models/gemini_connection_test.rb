@@ -24,7 +24,7 @@ class GeminiConnectionTest < ActiveSupport::TestCase
     let(:gemini_connection) { gemini_connections(:connection_with_token) }
     let(:publisher) { publishers(:gemini_completed) }
     test 'publisher no longer has a selected wallet provider' do
-      assert publisher.selected_wallet_provider, gemini_connection
+      assert_equal publisher.selected_wallet_provider, gemini_connection
       gemini_connection.destroy
       publisher.reload
       assert_nil publisher.selected_wallet_provider
