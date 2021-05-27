@@ -10,6 +10,7 @@ Rails.application.configure do
     'Access-Control-Request-Method' => "GET",
     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     'Access-Control-Allow-Methods' => 'GET',
+    'Permissions-Policy' => 'interest-cohort=()',
     'X-Frame-Options' => 'deny'
   }
 
