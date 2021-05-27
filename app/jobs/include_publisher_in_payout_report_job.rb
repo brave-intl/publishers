@@ -30,8 +30,6 @@ class IncludePublisherInPayoutReportJob
     case arguments[:kind].to_sym
     when GEMINI
       potential_payment_job = Payout::GeminiService
-    when PAYPAL
-      potential_payment_job = Payout::PaypalService
     when UPHOLD
       potential_payment_job = Payout::UpholdService
     when BITFLYER

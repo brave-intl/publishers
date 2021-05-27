@@ -79,6 +79,7 @@ class GeminiConnectionTest < ActiveSupport::TestCase
       end
 
       it 'does creates a recipient id' do
+        connection.update(recipient_id: nil)
         refute connection.recipient_id
         subject
         assert connection.recipient_id

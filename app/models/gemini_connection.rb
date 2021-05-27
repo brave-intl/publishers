@@ -4,6 +4,7 @@ class GeminiConnection < ApplicationRecord
   include WalletProviderProperties
 
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
+  JAPAN = 'JP'
 
   belongs_to :publisher
 
@@ -24,7 +25,7 @@ class GeminiConnection < ApplicationRecord
   end
 
   def japanese_account?
-    country&.upcase == 'JP'
+    country&.upcase == JAPAN
   end
 
   def verify_url

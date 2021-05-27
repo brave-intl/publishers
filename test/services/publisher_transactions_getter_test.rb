@@ -26,9 +26,9 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
       end
     end
 
-    test "removes the referral depreciation transaction" do
-      assert_not_empty @mocked_response.select { |transaction| transaction['to_account'] == PublisherTransactionsGetter::REFERRAL_DEPRECIATION_ACCOUNT }
-      assert_empty @transactions.select { |transaction| transaction['to_account'] == PublisherTransactionsGetter::REFERRAL_DEPRECIATION_ACCOUNT }
+    test "removes the referral deprecation transaction" do
+      assert_not_empty @mocked_response.select { |transaction| transaction['to_account'] == PublisherTransactionsGetter::REFERRAL_DEPRECATION_ACCOUNT }
+      assert_empty @transactions.select { |transaction| transaction['to_account'] == PublisherTransactionsGetter::REFERRAL_DEPRECATION_ACCOUNT }
     end
   end
 end
