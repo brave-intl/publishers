@@ -53,13 +53,16 @@ class BitflyerServiceTest < ActiveSupport::TestCase
     end
 
     it 'the address is not empty' do
-      assert PotentialPayment.all.all? { |potential_payment|
-               if potential_payment.kind == ::PotentialPayment::REFERRAL
-                 potential_payment.address == publisher.bitflyer_connection.recipient_id
-               else
-                 publisher.channels.verified.where(deposit_id: potential_payment.address).present?
-               end
-             }
+      assert PotentialPayment.all.all? { |potential_payment| publisher.channels.verified.where(deposit_id: potential_payment.address).present? }
+    end
+
+    it 'sends the display_name unique BF identifier' do
+      assert PotentialPayment.count > 0
+      PotentialPayment.all.each do |potential_payment|
+        assert publisher.bitflyer_connection.display_name.present?
+        assert_equal potential_payment.wallet_provider_id, publisher.bitflyer_connection.display_name
+        assert_equal potential_payment.wallet_provider, 'bitflyer'
+      end
     end
   end
 end
