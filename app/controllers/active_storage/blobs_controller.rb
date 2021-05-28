@@ -32,6 +32,6 @@ class ActiveStorage::BlobsController < ActiveStorage::BaseController
       return
     end
 
-    redirect_to root_path, flash: {  alert: I18n.t('devise.failure.unauthorized') }
+    redirect_to root_path, flash: { alert: I18n.t('devise.failure.unauthorized') }
   end
 end
