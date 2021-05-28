@@ -25,11 +25,11 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       sign_in publishers(:verified)
 
       create_params = {
-          channel: {
-              details_attributes: {
-                  brave_publisher_id_unnormalized: "new_site_54634.org"
-              }
-          }
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "new_site_54634.org",
+          },
+        },
       }
 
       assert_difference('publisher.channels.count') do
@@ -55,7 +55,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     headers = {
       'Accept' => '*/*',
       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Ruby'
+      'User-Agent' => 'Ruby',
     }
     body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
     stub_request(:get, url).
@@ -78,7 +78,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     headers = {
       'Accept' => '*/*',
       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Ruby'
+      'User-Agent' => 'Ruby',
     }
     body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
     stub_request(:get, url).
@@ -101,15 +101,14 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       sign_in publishers(:verified)
 
       create_params = {
-          channel: {
-              details_attributes: {
-                brave_publisher_id_unnormalized: "verified.org"
-              }
-          }
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "verified.org",
+          },
+        },
       }
 
       perform_enqueued_jobs do
-
       end
       assert_difference("Channel.count", 0) do
         post site_channels_url, params: create_params
@@ -133,16 +132,14 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       sign_in publishers(:verified)
 
       create_params = {
-          channel: {
-              details_attributes: {
-                  brave_publisher_id_unnormalized: "newsite.org"
-              }
-          }
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "newsite.org",
+          },
+        },
       }
 
-      perform_enqueued_jobs do
-
-      end
+      perform_enqueued_jobs
 
       assert_difference("Channel.count", 1) do
         post site_channels_url, params: create_params
@@ -165,49 +162,46 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-
   test "a publisher who was registered by youtube channel signup can't add additional site channels" do
-    begin
-      OmniAuth.config.test_mode = true
+    OmniAuth.config.test_mode = true
 
-      token = "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
+    token = "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
 
-      OmniAuth.config.mock_auth[:youtube_login] = OmniAuth::AuthHash.new(
-          {
-              "provider" => "youtube_login",
-              "uid" => "joe123456",
-              "info" => {
-                  "name" => "Joe's awesome stuff",
-                  "email" => "joes-great-channel@pages.plusgoogle.com",
-                  "first_name" => "Joe",
-                  "image" => "https://some_image_host.com/some_image.png"
-              },
-              "credentials" => {
-                  "token" => token,
-                  "expires_at" => 2510156374,
-                  "expires" => true
-              }
-          }
-      )
+    OmniAuth.config.mock_auth[:youtube_login] = OmniAuth::AuthHash.new(
+      {
+        "provider" => "youtube_login",
+        "uid" => "joe123456",
+        "info" => {
+          "name" => "Joe's awesome stuff",
+          "email" => "joes-great-channel@pages.plusgoogle.com",
+          "first_name" => "Joe",
+          "image" => "https://some_image_host.com/some_image.png",
+        },
+        "credentials" => {
+          "token" => token,
+          "expires_at" => 2510156374,
+          "expires" => true,
+        },
+      }
+    )
 
-      post(publisher_youtube_login_omniauth_authorize_url)
+    post(publisher_youtube_login_omniauth_authorize_url)
+    follow_redirect!
+    assert_redirected_to controller: "/publishers", action: "change_email"
+
+    create_params = {
+      channel: {
+        details_attributes: {
+          brave_publisher_id_unnormalized: "new_site_54634.org",
+        },
+      },
+    }
+
+    assert_difference("Channel.count", 0) do
+      post site_channels_url, params: create_params
+      assert_redirected_to controller: "/publishers", action: "home"
       follow_redirect!
       assert_redirected_to controller: "/publishers", action: "change_email"
-
-      create_params = {
-          channel: {
-              details_attributes: {
-                  brave_publisher_id_unnormalized: "new_site_54634.org"
-              }
-          }
-      }
-
-      assert_difference("Channel.count", 0) do
-        post site_channels_url, params: create_params
-        assert_redirected_to controller: "/publishers", action: "home"
-        follow_redirect!
-        assert_redirected_to controller: "/publishers", action: "change_email"
-      end
     end
   end
 
@@ -220,11 +214,11 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       sign_in publishers(:promo_enabled)
 
       create_params = {
-          channel: {
-              details_attributes: {
-                  brave_publisher_id_unnormalized: "new_site_54634.org"
-              }
-          }
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "new_site_54634.org",
+          },
+        },
       }
 
       assert_difference('publisher.channels.count') do
@@ -249,11 +243,11 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       sign_in publishers(:promo_enabled_but_only_user_funds)
 
       create_params = {
-          channel: {
-              details_attributes: {
-                  brave_publisher_id_unnormalized: "new_site_54634.org"
-              }
-          }
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "new_site_54634.org",
+          },
+        },
       }
 
       assert_difference('publisher.channels.count') do
@@ -275,11 +269,11 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     begin
       Rails.application.secrets[:host_inspector_offline] = true
       create_params = {
-          channel: {
-              details_attributes: {
-                  brave_publisher_id_unnormalized: "newsite.org"
-              }
-          }
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "newsite.org",
+          },
+        },
       }
 
       # create the first unverified site channel

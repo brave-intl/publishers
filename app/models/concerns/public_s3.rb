@@ -60,16 +60,16 @@ module PublicS3
         # When building a blob we must ensure the correct S3 service is being specified so that the backing code
         # uploads to the correct bucket. Otherwise it will use the default configured in the config/storage.yml
         def upload_public_#{name}(file)
-          blob = ActiveStorage::Blob.new.tap do |blob|
-            blob.filename     = file[:filename]
-            blob.content_type = file[:content_type]
-            # This ensures that the blob is uploaded to the correct S3 service
-            blob.service = public_s3_service
+          blob = ActiveStorage::Blob.new(
+            filename: file[:filename],
+            content_type: file[:content_type],
             # Prevents the AnalyzeJob from running
-            blob.metadata = { analyzed: true }
+            metadata: { analyzed: true },
+            # This ensures that the blob is uploaded to the correct S3 service
+            service_name: Rails.application.config.active_storage.service
+          )
 
-            blob.upload file[:io]
-          end
+          blob.upload file[:io]
           blob.save
 
           if self.public_send("#{name}_attachment").present?

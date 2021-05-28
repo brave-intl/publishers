@@ -564,6 +564,7 @@ DEPENDENCIES
   listen (~> 3.5)
   lograge (~> 0.4)
   meta-tags (~> 2.14.0)
+  mini_magick (~> 4.11.0)
   minitest
   minitest-rails
   mocha

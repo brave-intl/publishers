@@ -6,28 +6,34 @@ class SiteChannelsController < ApplicationController
   before_action :setup_current_channel,
                 except: %i(new update create)
   before_action :require_unverified_site,
-                only: %i(verification_choose_method
-                         verification_dns_record
-                         verification_wordpress
-                         verification_github
-                         verification_public_file
-                         verification_background
-                         verify
-                         download_verification_file)
+                only: %i(
+                  verification_choose_method
+                  verification_dns_record
+                  verification_wordpress
+                  verification_github
+                  verification_public_file
+                  verification_background
+                  verify
+                  download_verification_file
+                )
   before_action :require_https_enabled_site,
                 only: %i(download_verification_file)
   before_action :require_verification_token,
-                only: %i(verification_dns_record
-                         verification_public_file
-                         verification_github
-                         verification_wordpress
-                         download_verification_file)
-  before_action :update_site_verification_method,   
-                only: %i(verification_dns_record
-                         verification_public_file
-                         verification_support_queue
-                         verification_github
-                         verification_wordpress)
+                only: %i(
+                  verification_dns_record
+                  verification_public_file
+                  verification_github
+                  verification_wordpress
+                  download_verification_file
+                )
+  before_action :update_site_verification_method,
+                only: %i(
+                  verification_dns_record
+                  verification_public_file
+                  verification_support_queue
+                  verification_github
+                  verification_wordpress
+                )
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 only: %i(create)
@@ -135,21 +141,21 @@ class SiteChannelsController < ApplicationController
 
   def require_https_enabled_site
     return if current_channel.details.supports_https?
-    redirect_to(site_last_verification_method_path(channel=current_channel), alert: t("site_channels.require_https_enabled_site.alert"))
+    redirect_to(site_last_verification_method_path(channel = current_channel), alert: t("site_channels.require_https_enabled_site.alert"))
   end
 
   def update_site_verification_method
     case params[:action]
-      when "verification_dns_record"
-        current_channel.details.verification_method = "dns_record"
-      when "verification_public_file"
-        current_channel.details.verification_method = "public_file"
-      when "verification_github"
-        current_channel.details.verification_method = "github"
-      when "verification_wordpress"
-        current_channel.details.verification_method = "wordpress"
-      else
-        raise "unknown action"
+    when "verification_dns_record"
+      current_channel.details.verification_method = "dns_record"
+    when "verification_public_file"
+      current_channel.details.verification_method = "public_file"
+    when "verification_github"
+      current_channel.details.verification_method = "github"
+    when "verification_wordpress"
+      current_channel.details.verification_method = "wordpress"
+    else
+      raise "unknown action"
     end
     current_channel.details.save! if current_channel.details.verification_method_changed?
   end
