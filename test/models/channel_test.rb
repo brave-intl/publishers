@@ -350,6 +350,20 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal channel, found_channel
   end
 
+  test "if a bitflyer address is missing, it creates a deposit_id" do
+    uuid = SecureRandom.uuid
+    stub_request(:get, /api\/link\/v1\/account\/create-deposit-id\?request_id=.*/).to_return(
+      status: 200,
+      body: { deposit_id: uuid }.to_json
+    )
+
+    channel = channels(:bitflyer_enabled_website)
+    # The after_save create_deposit_id creates a deposit_id
+    channel.update(deposit_id: nil)
+    assert_nil channel.deposit_id
+    assert_equal channel.reload.deposit_id, uuid
+  end
+
   describe "#advanced_sort" do
     describe 'youtube view count' do
       it 'sorts by ascending' do

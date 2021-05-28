@@ -22,20 +22,9 @@ module Payout
       # Sync the connection
       @refresher.call(bitflyer_connection: connection)
 
-      potential_payments << PotentialPayment.new(
-        payout_report_id: payout_report&.id,
-        name: publisher.name,
-        amount: "0",
-        fees: "0",
-        publisher_id: publisher.id,
-        kind: ::PotentialPayment::REFERRAL,
-        address: connection.recipient_id || '',
-        wallet_provider_id: connection.recipient_id || '',
-        wallet_provider: ::PotentialPayment.wallet_providers['bitflyer'],
-        suspended: publisher.suspended?,
-        status: publisher.last_status_update&.status
-      )
-
+      # We don't currently support referrals payouts for Bitflyer accounts, so
+      # only payout contributions on channels. To support referrals, we'd need to
+      # create a deposit_id on each connection, not just the channels
       publisher.channels.verified.each do |channel|
         potential_payments << PotentialPayment.new(
           payout_report_id: payout_report&.id,
@@ -47,7 +36,7 @@ module Payout
           kind: ::PotentialPayment::CONTRIBUTION,
           url: "#{channel.details.url}",
           address: channel.deposit_id || '',
-          wallet_provider_id: channel.deposit_id || '',
+          wallet_provider_id: connection.display_name || '', # this is a hash of the account_id
           wallet_provider: ::PotentialPayment.wallet_providers['bitflyer'],
           suspended: publisher.suspended?,
           status: publisher.last_status_update&.status,

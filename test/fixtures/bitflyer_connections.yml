@@ -1,9 +1,6 @@
-default_connection:
-  publisher: default
-  recipient_id: 'RECIPIENT 1'
-
 connection_with_token:
-  publisher: default
+  publisher: bitflyer_enabled
+  recipient_id: 'bitflyer_enabled_connectionABC'
   <% salt = SecureRandom.random_bytes(12) %>
   encrypted_access_token:  "<%= TotpRegistration.encrypt_secret(
     'access_token',
@@ -17,10 +14,7 @@ connection_with_token:
     iv: salt
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+  display_name: 123
 
 suspended_bitflyer_connection:
   publisher: bitflyer_suspended
-
-enabled_bitflyer_connection:
-  publisher: bitflyer_enabled
-  recipient_id: 'bitflyer_enabled_connectionABC'

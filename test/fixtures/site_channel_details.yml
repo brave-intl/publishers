@@ -172,3 +172,6 @@ gemini_not_completed_website_details:
 
 gemini_completed_website_details:
   brave_publisher_id: "gemini_completed_website_details.org"
+
+bitflyer_completed_website_details:
+  brave_publisher_id: "bitflyer_completed_website_details.org"
