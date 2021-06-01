@@ -210,6 +210,10 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def uphold_publisher?
+    selected_wallet_provider_type == UPHOLD_CONNECTION
+  end
+
   def encryption_key
     Publisher.encryption_key
   end

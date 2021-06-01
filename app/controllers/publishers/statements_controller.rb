@@ -6,7 +6,11 @@ module Publishers
     ORIGINAL_GROUP = { id: ORIGINAL_GROUP_ID, name: "Previous Group", amount: "5.0", currency: "USD" }.freeze
 
     def index
-      @uphold_connection = publisher.uphold_connection
+      if publisher.uphold_publisher?
+        if !publisher.uphold_connection.can_read_transactions?
+          @cannot_read_uphold_transactions = true
+        end
+      end
 
       statement_contents = []
       @statement_has_content = statement_contents.length > 0
