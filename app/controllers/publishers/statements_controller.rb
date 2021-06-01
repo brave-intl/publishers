@@ -6,7 +6,7 @@ module Publishers
     ORIGINAL_GROUP = { id: ORIGINAL_GROUP_ID, name: "Previous Group", amount: "5.0", currency: "USD" }.freeze
 
     def index
-      if publisher.uphold_publisher?
+      if publisher.is_selected_wallet_provider_uphold?
         if !publisher.uphold_connection.can_read_transactions?
           @cannot_read_uphold_transactions = true
         end

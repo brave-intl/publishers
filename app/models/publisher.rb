@@ -210,7 +210,7 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def uphold_publisher?
+  def is_selected_wallet_provider_uphold?
     selected_wallet_provider_type == UPHOLD_CONNECTION
   end
 
