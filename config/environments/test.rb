@@ -26,11 +26,7 @@ Rails.application.configure do
   config.public_file_server.headers = {
     "Cache-Control" => "public, max-age=172800"
   }
-  if Rails.application.secrets[:redis_url]
-    config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
-  else
-    config.cache_store = :memory_store, { size: 64.megabytes }
-  end
+  config.cache_store = :memory_store, { size: 64.megabytes }
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
