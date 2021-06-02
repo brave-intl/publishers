@@ -39,6 +39,8 @@ class ApplicationController < ActionController::Base
                     request.original_url.sub(/\/*$/, "/") + "?locale=#{preferred_japanese_locale.to_s}"
                   end
         redirect_to(new_url) and return
+      else
+        I18n.with_locale(preferred_japanese_locale, &action) and return
       end
     end
 
