@@ -1,7 +1,5 @@
-class BaseChannelDetails < ActiveRecord::Base
+class BaseChannelDetails < ApplicationRecord
   self.abstract_class = true
-
-  connects_to database: { writing: :primary, reading: :secondary }
 
   has_one :channel, as: :details
 

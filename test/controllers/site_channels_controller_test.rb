@@ -91,76 +91,74 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to controller: "/site_channels", action: "verification_wordpress", id: channel.id
   end
 
-  # test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
-  #   prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
-  #   begin
-  #     Rails.application.secrets[:host_inspector_offline] = true
+  test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
 
-  #     publisher = publishers(:verified)
+      publisher = publishers(:verified)
 
-  #     sign_in publishers(:verified)
+      sign_in publishers(:verified)
 
-  #     create_params = {
-  #       channel: {
-  #         details_attributes: {
-  #           brave_publisher_id_unnormalized: "verified.org",
-  #         },
-  #       },
-  #     }
+      create_params = {
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "verified.org",
+          },
+        },
+      }
 
-  #     perform_enqueued_jobs do
-  #     end
-  #     assert_difference("Channel.count", 0) do
-  #       post site_channels_url, params: create_params
-  #     end
+      assert_difference("Channel.count", 0) do
+        post site_channels_url, params: create_params
+      end
 
-  #     assert_select("[data-test-flash-message]") do |element|
-  #       assert_match(I18n.t("site_channels.create.duplicate_channel", domain: "verified.org"), element.text)
-  #     end
-  #   ensure
-  #     Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
-  #   end
-  # end
+      assert_select("[data-test-flash-message]") do |element|
+        assert_match(I18n.t("site_channels.create.duplicate_channel", domain: "verified.org"), element.text)
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
 
-  # test "can't create a Site Channel with an existing visible Site Channel with the same brave_publisher_id" do
-  #   prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
-  #   begin
-  #     Rails.application.secrets[:host_inspector_offline] = true
+  test "can't create a Site Channel with an existing visible Site Channel with the same brave_publisher_id" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
 
-  #     publisher = publishers(:verified)
+      publisher = publishers(:verified)
 
-  #     sign_in publishers(:verified)
+      sign_in publishers(:verified)
 
-  #     create_params = {
-  #       channel: {
-  #         details_attributes: {
-  #           brave_publisher_id_unnormalized: "newsite.org",
-  #         },
-  #       },
-  #     }
+      create_params = {
+        channel: {
+          details_attributes: {
+            brave_publisher_id_unnormalized: "newsite.org",
+          },
+        },
+      }
 
-  #     perform_enqueued_jobs
+      perform_enqueued_jobs
 
-  #     assert_difference("Channel.count", 1) do
-  #       post site_channels_url, params: create_params
-  #     end
+      assert_difference("Channel.count", 1) do
+        post site_channels_url, params: create_params
+      end
 
-  #     # Make sure channel will be visible in the channel list
-  #     last_channel = Channel.order(created_at: :asc).last
-  #     last_channel.details.verification_method = "wordpress"
-  #     last_channel.save!
+      # Make sure channel will be visible in the channel list
+      last_channel = Channel.order(created_at: :asc).last
+      last_channel.details.verification_method = "wordpress"
+      last_channel.save!
 
-  #     refute_difference("Channel.count") do
-  #       post site_channels_url, params: create_params
-  #     end
+      refute_difference("Channel.count") do
+        post site_channels_url, params: create_params
+      end
 
-  #     assert_select("[data-test-flash-message]") do |element|
-  #       assert_match("newsite.org is already present.", element.text)
-  #     end
-  #   ensure
-  #     Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
-  #   end
-  # end
+      assert_select("[data-test-flash-message]") do |element|
+        assert_match("newsite.org is already present.", element.text)
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
 
   test "a publisher who was registered by youtube channel signup can't add additional site channels" do
     OmniAuth.config.test_mode = true
