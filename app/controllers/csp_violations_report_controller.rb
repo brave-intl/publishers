@@ -17,6 +17,10 @@ class CspViolationsReportController < ApplicationController
     # We only care about the document-uri, blocked-uri, and directives for now
     report = JSON.parse(request.body.read)['csp-report']
     sliced_report = report.slice('document-uri', 'violated-directive', 'effective-directive', 'blocked-uri')
-    CspViolationReport.create!(report: sliced_report)
+    begin
+      CspViolationReport.create(report: sliced_report)
+    rescue
+      nil
+    end
   end
 end
