@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get 'publishers/stripe_connection/new', to: 'payment/connection/stripe_connections#edit'
   get 'publishers/paypal_connections/connect_callback', to: 'payment/connection/paypal_connections#connect_callback'
 
+  # CSP
+  post 'csp-violation-report', to: 'csp_violations_report#create'
+
   # Routes for Browser Users to login via Uphold
   namespace :uphold_connections do
     get :login
