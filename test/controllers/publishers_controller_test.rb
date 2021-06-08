@@ -21,14 +21,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   SIGNUP_PARAMS = {
     email: "alice@example.com",
-    terms_of_service: true
-  }
+    terms_of_service: true,
+  }.freeze
 
   COMPLETE_SIGNUP_PARAMS = {
     publisher: {
       name: "Alice the Pyramid",
-      visible: true
-    }
+      visible: true,
+    },
   }.freeze
 
   test "publisher can access a publisher's dashboard" do
@@ -171,7 +171,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "login link of pre-bitflyer enabled japanese users takes them to home" do
     publisher = publishers(:completed)
-    headers = {'Accept-Language' => "ja_JP"}
+    headers = { 'Accept-Language' => "ja_JP" }
     request_login_email(publisher: publisher)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
 
@@ -190,7 +190,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher.feature_flags["bitflyer_enabled"] = true
     publisher.save
 
-    headers = {'Accept-Language' => "ja_JP"}
+    headers = { 'Accept-Language' => "ja_JP" }
     request_login_email(publisher: publisher)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
 
@@ -318,7 +318,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # update the publisher email
     perform_enqueued_jobs do
       patch(publishers_path,
-            params: { publisher: {pending_email: 'alice-pending@example.com' } },
+            params: { publisher: { pending_email: 'alice-pending@example.com' } },
             headers: { 'HTTP_ACCEPT' => "application/json" })
     end
 
@@ -379,7 +379,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # update the publisher email
     perform_enqueued_jobs do
       patch(publishers_path,
-            params: { publisher: {pending_email: 'alice-pending@example.com' } },
+            params: { publisher: { pending_email: 'alice-pending@example.com' } },
             headers: { 'HTTP_ACCEPT' => "application/json" })
     end
 
@@ -390,7 +390,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # verify original email still is used
     assert_equal 'alice@example.com', publisher.email
-
 
     # verify 3 emails have been sent after update
     assert ActionMailer::Base.deliveries.count == 5
@@ -416,7 +415,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
     assert_not_nil(email)
 
-
     url = publisher_url(publisher, confirm_email: publisher.pending_email, token: publisher.authentication_token)
     get(url)
     publisher.reload
@@ -428,36 +426,34 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.pending_email)
   end
   test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
-    begin
-      publisher = publishers(:completed)
-      sign_in publisher
+    publisher = publishers(:completed)
+    sign_in publisher
 
-      uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
-      uphold_state_token = SecureRandom.hex(64)
-      publisher.uphold_connection.uphold_state_token = uphold_state_token
+    uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+    uphold_state_token = SecureRandom.hex(64)
+    publisher.uphold_connection.uphold_state_token = uphold_state_token
 
-      publisher.save!
+    publisher.save!
 
-      stub_request(:post, /oauth2\/token/)
-          .with(body: "code=#{uphold_code}&grant_type=authorization_code")
-          .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
+    stub_request(:post, /oauth2\/token/).
+      with(body: "code=#{uphold_code}&grant_type=authorization_code").
+      to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
-      url = publishers_uphold_verified_path
-      get(url, params: { code: uphold_code, state: uphold_state_token })
-      assert(200, response.status)
+    url = publishers_uphold_verified_path
+    get(url, params: { code: uphold_code, state: uphold_state_token })
+    assert(200, response.status)
 
-      publisher.reload
-      # verify that the uphold_state_token has been cleared
-      assert_nil(publisher.uphold_connection.uphold_state_token)
+    publisher.reload
+    # verify that the uphold_state_token has been cleared
+    assert_nil(publisher.uphold_connection.uphold_state_token)
 
-      # verify that the uphold_code has been cleared
-      assert_nil(publisher.uphold_connection.uphold_code)
+    # verify that the uphold_code has been cleared
+    assert_nil(publisher.uphold_connection.uphold_code)
 
-      # verify that the uphold_access_parameters has been set
-      assert_match('FAKEACCESSTOKEN', publisher.uphold_connection.uphold_access_parameters)
+    # verify that the uphold_access_parameters has been set
+    assert_match('FAKEACCESSTOKEN', publisher.uphold_connection.uphold_access_parameters)
 
-      assert_redirected_to controller: "/publishers", action: "home"
-    end
+    assert_redirected_to controller: "/publishers", action: "home"
   end
 
   test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
@@ -475,9 +471,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # simulate return to homepage after creating wallet on uphold.com
     # simulate failed response from uphold.com to get access params
-    stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-      .with(body: "code=#{expected_uphold_code}&grant_type=authorization_code")
-      .to_timeout
+    stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token").
+      with(body: "code=#{expected_uphold_code}&grant_type=authorization_code").
+      to_timeout
     url = publishers_uphold_verified_path
     get(url, params: { code: expected_uphold_code, state: uphold_state_token })
     follow_redirect!
@@ -510,7 +506,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert wallet_response["wallet"]["channel_balances"].present?
   end
 
-  test "a publisher can be disconnected from uphold" do
+  test "a publisher can destroy his uphold connection" do
     publisher = publishers(:uphold_connected_details)
     sign_in publisher
 
@@ -519,7 +515,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
 
     publisher.reload
-    refute publisher.uphold_connection.uphold_verified?
+    refute publisher.uphold_connection
   end
 
   test "home redirects to 2FA prompt on first visit" do
@@ -593,8 +589,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil login
 
     sign_in publisher
-    get home_publishers_path, headers: { "HTTP_USER_AGENT" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36",
-                                         "HTTP_ACCEPT_LANGUAGE" => "en-US,en;q=0.9" }
+    get home_publishers_path, headers: {
+      "HTTP_USER_AGENT" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36",
+      "HTTP_ACCEPT_LANGUAGE" => "en-US,en;q=0.9",
+    }
 
     login = publisher.last_login_activity
     assert login
@@ -650,9 +648,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
 
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-          .with(body: "code=#{uphold_code}&grant_type=authorization_code")
-          .to_timeout
+      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token").
+        with(body: "code=#{uphold_code}&grant_type=authorization_code").
+        to_timeout
 
       url = publishers_uphold_verified_path
       get(url, params: { code: uphold_code, state: uphold_state_token })
@@ -673,5 +671,4 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       refute_match(I18n.t('publishers.finished_header'), response.body)
     end
   end
-
 end
