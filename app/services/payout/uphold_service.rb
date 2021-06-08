@@ -69,9 +69,9 @@ module Payout
           end
         end
       end
+
     rescue StandardError => e
       PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message) unless should_only_notify?
-
       raise e
     end
   end
