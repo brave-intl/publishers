@@ -15,8 +15,10 @@
         - if payout_in_progress?(@publisher)
           .payout_in_progress
             span
-              - if converted_balance.present?
+              - if qualifies_for_payout?(publisher)
                 i = t(".payout_in_progress")
+              - else
+                i = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
         - else
           .next_deposit_date.small.mt-2
             span = t(".next_deposit_date")

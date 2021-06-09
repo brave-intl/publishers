@@ -96,6 +96,29 @@ module PublishersHelper
     result
   end
 
+  def qualifies_for_payout?(publisher)
+    publisher.selected_wallet_provider_type == Publisher::UPHOLD_CONNECTION && has_minimum_usd_for_payout?(publisher)
+  end
+
+  def has_minimum_usd_for_payout?(publisher)
+    amount = nil
+
+    sentry_catcher do
+      if publisher.only_user_funds?
+        amount = publisher.wallet&.contribution_balance&.amount_usd
+      elsif publisher.no_grants?
+        amount = publisher.wallet&.overall_balance&.amount_usd - publisher.wallet&.contribution_balance&.amount_usd
+      else
+        amount = publisher.wallet&.overall_balance&.amount_usd
+      end
+
+      if amount.present? && amount >= PayoutReport::MINIMUM_BALANCE_AMOUNT
+        return true
+      end
+    end
+    false
+  end
+
   def publisher_referral_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
