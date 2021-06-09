@@ -7,6 +7,20 @@ class TwoFactorAuthenticationRemovalJobTest < ActiveJob::TestCase
     assert_not_nil(publisher.totp_registration)
   end
 
+  test "Removes selected wallet" do
+    publisher = publishers(:uphold_connected)
+
+    assert publisher.selected_wallet_provider
+
+    two_factor_authentication_removal = two_factor_authentication_removals(:one)
+    original_date = two_factor_authentication_removal.created_at
+    advanced_date = original_date - 14.days
+    two_factor_authentication_removal.update(created_at: advanced_date)
+    TwoFactorAuthenticationRemovalJob.perform_now
+
+    refute publisher.reload.selected_wallet_provider
+  end
+
   test "Removes publisher's 2fa when timeout period has passed" do
     publisher = publishers(:uphold_connected)
     two_factor_authentication_removal = two_factor_authentication_removals(:one)

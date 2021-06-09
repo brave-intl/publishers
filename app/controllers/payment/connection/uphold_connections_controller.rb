@@ -77,7 +77,7 @@ module Payment
       # publishers/disconnect_uphold
       def destroy
         publisher = current_publisher
-        publisher.uphold_connection.disconnect_uphold
+        publisher.uphold_connection.destroy
 
         render json: {}
       end
