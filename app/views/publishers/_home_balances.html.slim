@@ -15,13 +15,13 @@
         - if payout_in_progress?(@publisher)
           .payout_in_progress
             span
-              - if publisher.is_selected_wallet_provider_uphold?
-                - if qualifies_for_payout?(publisher)
-                  i = t(".payout_in_progress_uphold", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
+              - if @publisher.is_selected_wallet_provider_uphold?
+                - if qualifies_for_payout?(@publisher)
+                  = t(".payout_in_progress_uphold", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
                 - else
-                  i = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
+                  = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
               - else
-                i = t(".payout_in_progress")
+                = t(".payout_in_progress")
         - else
           .next_deposit_date.small.mt-2
             span = t(".next_deposit_date")
