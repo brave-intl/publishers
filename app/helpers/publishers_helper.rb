@@ -54,8 +54,13 @@ module PublishersHelper
     today.strftime("%B 8th")
   end
 
-  def publisher_overall_bat_balance(publisher)
-    balance = I18n.t("helpers.publisher.balance_unavailable")
+  def has_balance?(publisher)
+    amount = publisher_overall_bat_balance_amount(publisher)
+    amount && amount > 0
+  end
+
+  def publisher_overall_bat_balance_amount(publisher)
+    amount = 0.0
     sentry_catcher do
       if publisher.only_user_funds?
         amount = publisher.wallet&.contribution_balance&.amount_bat
@@ -64,10 +69,14 @@ module PublishersHelper
       else
         amount = publisher.wallet&.overall_balance&.amount_bat
       end
-
-      balance = '%.2f' % amount if amount.present?
     end
+    amount
+  end
 
+  def publisher_overall_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    amount = publisher_overall_bat_balance_amount(publisher)
+    balance = '%.2f' % amount if amount.present?
     balance
   end
 
@@ -96,25 +105,10 @@ module PublishersHelper
     result
   end
 
-  def qualifies_for_payout?(publisher)
-    publisher.selected_wallet_provider_type == Publisher::UPHOLD_CONNECTION && has_minimum_usd_for_payout?(publisher)
-  end
-
   def has_minimum_usd_for_payout?(publisher)
-    amount = nil
-
-    sentry_catcher do
-      if publisher.only_user_funds?
-        amount = publisher.wallet&.contribution_balance&.amount_usd
-      elsif publisher.no_grants?
-        amount = publisher.wallet&.overall_balance&.amount_usd - publisher.wallet&.contribution_balance&.amount_usd
-      else
-        amount = publisher.wallet&.overall_balance&.amount_usd
-      end
-
-      if amount.present? && amount >= PayoutReport::MINIMUM_BALANCE_AMOUNT
-        return true
-      end
+    amount = publisher_overall_bat_balance_amount(publisher)
+    if amount.present? && amount >= PayoutReport::MINIMUM_BALANCE_AMOUNT
+      return true
     end
     false
   end

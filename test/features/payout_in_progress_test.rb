@@ -19,9 +19,23 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
     publisher = publishers(:gemini_completed)
 
     sign_in publisher
+
+    PublishersController.view_context_class.any_instance.stubs(:publisher_overall_bat_balance_amount).returns(0.1)
     visit home_publishers_path
 
     assert_content page, I18n.t("publishers.home_balances.payout_in_progress")
+    assert_content page, I18n.t("publishers.payout_status.information.generating")
+  end
+
+  test "Gemini generating in progress but no BAT so no payouts in progress" do
+    publisher = publishers(:gemini_completed)
+
+    sign_in publisher
+
+    PublishersController.view_context_class.any_instance.stubs(:publisher_overall_bat_balance_amount).returns(0.0)
+    visit home_publishers_path
+
+    refute_content page, I18n.t("publishers.home_balances.payout_in_progress")
     assert_content page, I18n.t("publishers.payout_status.information.generating")
   end
 
@@ -39,7 +53,7 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
 
     sign_in publisher
 
-    PublishersController.view_context_class.any_instance.expects(:qualifies_for_payout?).returns(true)
+    PublishersController.view_context_class.any_instance.expects(:has_minimum_usd_for_payout?).returns(true)
     visit home_publishers_path
 
     assert_content page, I18n.t("publishers.home_balances.payout_in_progress_uphold", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)

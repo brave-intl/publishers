@@ -16,11 +16,11 @@
           .payout_in_progress
             span
               - if @publisher.is_selected_wallet_provider_uphold?
-                - if qualifies_for_payout?(@publisher)
+                - if has_minimum_usd_for_payout?(@publisher)
                   = t(".payout_in_progress_uphold", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
                 - else
                   = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
-              - else
+              - elsif has_balance?(@publisher)
                 = t(".payout_in_progress")
         - else
           .next_deposit_date.small.mt-2
