@@ -55,8 +55,13 @@ module PublishersHelper
   end
 
   def has_balance?(publisher)
-    amount = publisher_overall_bat_balance_amount(publisher)
-    amount && amount > 0
+    penny = 0.01
+    publisher.wallet&.contribution_balance&.channel_amounts_usd&.any? do |channel_amount_usd|
+      channel_amount_usd >= penny
+    end
+
+    referral_balance = publisher.wallet&.referral_balance&.amount_usd
+    return referral_balance && referral_balance >= penny
   end
 
   def publisher_overall_bat_balance_amount(publisher)

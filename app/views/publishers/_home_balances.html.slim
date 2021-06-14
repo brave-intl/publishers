@@ -12,16 +12,10 @@
           span.bat-code= " " + I18n.t(".bat_in_locale")
         .converted#converted_amount
           = converted_balance
-        - if payout_in_progress?(@publisher)
+        - if payout_in_progress?(@publisher) && has_balance?(@publisher)
           .payout_in_progress
             span
-              - if @publisher.is_selected_wallet_provider_uphold?
-                - if has_minimum_usd_for_payout?(@publisher)
-                  = t(".payout_in_progress_uphold", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
-                - else
-                  = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
-              - elsif has_balance?(@publisher)
-                = t(".payout_in_progress")
+            = t(".payout_in_progress")
         - else
           .next_deposit_date.small.mt-2
             span = t(".next_deposit_date")
