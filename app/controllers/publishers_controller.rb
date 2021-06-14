@@ -149,7 +149,7 @@ class PublishersController < ApplicationController
       @possible_currencies = uphold_connection.uphold_details&.currencies
     end
 
-    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.paypal_locale?(params[:locale])
+    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.bitflyer_locale?(params[:locale])
     flash[:warning] = I18n.t("publishers.home.referral_program_winddown", blog_link: "https://brave.com/referral-program-update/").html_safe if Time.now < "2020-12-01"
   end
 
