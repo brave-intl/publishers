@@ -20,11 +20,10 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
 
     sign_in publisher
 
-    PublishersController.view_context_class.any_instance.stubs(:publisher_overall_bat_balance_amount).returns(0.1)
+    PublishersController.view_context_class.any_instance.stubs(:has_balance?).returns(true)
     visit home_publishers_path
 
     assert_content page, I18n.t("publishers.home_balances.payout_in_progress")
-    assert_content page, I18n.t("publishers.payout_status.information.generating")
   end
 
   test "Gemini generating in progress but no BAT so no payouts in progress" do
@@ -32,30 +31,9 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
 
     sign_in publisher
 
-    PublishersController.view_context_class.any_instance.stubs(:publisher_overall_bat_balance_amount).returns(0.0)
+    PublishersController.view_context_class.any_instance.stubs(:has_balance?).returns(false)
     visit home_publishers_path
 
     refute_content page, I18n.t("publishers.home_balances.payout_in_progress")
-    assert_content page, I18n.t("publishers.payout_status.information.generating")
-  end
-
-  test "Uphold creator doesn't have enough" do
-    publisher = publishers(:uphold_connected_currency_unconfirmed)
-
-    sign_in publisher
-    visit home_publishers_path
-
-    assert_content page, I18n.t("publishers.home_balances.payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
-  end
-
-  test "Uphold creator has enough and gets message explaining minimums across channels" do
-    publisher = publishers(:uphold_connected_currency_unconfirmed)
-
-    sign_in publisher
-
-    PublishersController.view_context_class.any_instance.expects(:has_minimum_usd_for_payout?).returns(true)
-    visit home_publishers_path
-
-    assert_content page, I18n.t("publishers.home_balances.payout_in_progress_uphold", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT)
   end
 end
