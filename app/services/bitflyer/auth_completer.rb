@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
 module Bitflyer
-  class OauthCompleter
+  class AuthCompleter
     def self.build
-      new
+      new(http_lib: Net::HTTP,
+          missing_deposit_job: Sync::Bitflyer::UpdateMissingDepositJob.new)
+    end
+
+    def initialize(http_lib:, missing_deposit_job:)
+      @http_lib = http_lib
+      @missing_deposit_job = missing_deposit_job
     end
 
     # After the user redirects to us for Oauth completion -- with the access_token, refresh_token
@@ -25,7 +31,7 @@ module Bitflyer
       }
 
       # TODO: Bitflyer should provide a display name in this request response.
-      response = Net::HTTP.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/token'), access_token_request_params)
+      response = @http_lib.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/token'), access_token_request_params)
 
       access_token = JSON.parse(response.body)["access_token"]
       refresh_token = JSON.parse(response.body)["refresh_token"]
@@ -45,7 +51,7 @@ module Bitflyer
         # Add bitFlyer deposit id to each of the publisher's channels
         publisher.channels.each do |channel|
           # Intentional blocking call
-          Sync::Bitflyer::UpdateMissingDepositJob.new.perform(channel.id)
+          @missing_deposit_job.perform(channel.id)
         end
         return true
       end
