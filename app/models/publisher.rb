@@ -369,7 +369,7 @@ class Publisher < ApplicationRecord
     thirty_day_login? ? 30.days : 30.minutes
   end
 
-  def paypal_locale?(locale)
+  def bitflyer_locale?(locale)
     locale == 'ja' || locale == 'jabap'
   end
 
