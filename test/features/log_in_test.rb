@@ -129,7 +129,7 @@ class LogInTest < Capybara::Rails::TestCase
     # Simulate U2F device usage, which submits the form on success
     page.execute_script("document.querySelector('input[name=\"u2f_response\"]').value = '#{u2f_response}';")
     page.execute_script("document.querySelector('form.js-authenticate-u2f').submit();")
-    assert_content page, "BALANCE"
+    assert_content page, "View statements"
   end
 
   test "a user with U2F enabled can choose to use TOTP if they don't have their device" do
