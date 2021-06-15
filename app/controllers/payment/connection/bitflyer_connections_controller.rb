@@ -58,19 +58,20 @@ module Payment
           default_currency: "BAT",
         }
 
-        # Add bitFlyer deposit id to each of the publisher's channels
-        current_publisher.channels.each do |channel|
-          # Intentional blocking call
-          Sync::Bitflyer::UpdateMissingDepositJob.new.perform(channel.id)
-        end
 
         if bitflyer_connection.update(update_bitflyer_connection_params) &&
           current_publisher.update(selected_wallet_provider: bitflyer_connection) &&
+          
+          # Add bitFlyer deposit id to each of the publisher's channels
+          current_publisher.channels.each do |channel|
+          # Intentional blocking call
+            Sync::Bitflyer::UpdateMissingDepositJob.new.perform(channel.id)
+          end
           redirect_to(home_publishers_path)
           return
-        else
-          redirect_to(home_publishers_path, alert: t(".gemini_error", message: gemini_connection.errors.full_messages.join(', ')))
-          return
+        end
+        
+        redirect_to(home_publishers_path, alert: t(".gemini_error", message: gemini_connection.errors.full_messages.join(', ')))
         end
       end
 
