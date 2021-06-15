@@ -27,52 +27,12 @@ module Payment
 
       # This action is after the OAuth connection is redirected.
       def edit
-        bitflyer_connection = BitflyerConnection.find_by(publisher: current_publisher)
-
-        # Request access token from bitFlyer.
-        access_token_request_params = {
-          'grant_type' => 'code',
-          'code' => params[:code],
-          'code_verifier' => current_publisher.id,
-          'client_id' => Rails.application.secrets[:bitflyer_client_id],
-          'client_secret' => Rails.application.secrets[:bitflyer_client_secret],
-          'expires_in' => 259002,
-          'external_acccount_id': current_publisher.id,
-          'request_id': SecureRandom.uuid,
-          'redirect_uri': 'https://' + Rails.application.secrets[:creators_host] + '/publishers/bitflyer_connection/new',
-          'request_deposit_id': true,
-        }
-
-        # TODO: Bitflyer should provide a display name in this request response.
-        response = Net::HTTP.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/token'), access_token_request_params)
-
-        access_token = JSON.parse(response.body)["access_token"]
-        refresh_token = JSON.parse(response.body)["refresh_token"]
-        display_name = JSON.parse(response.body)["account_hash"]
-
-        # TODO: Does bitFlyer support changes of default currency?
-        update_bitflyer_connection_params = {
-          access_token: access_token,
-          refresh_token: refresh_token,
-          display_name: display_name,
-          default_currency: "BAT",
-        }
-
-
-        if bitflyer_connection.update(update_bitflyer_connection_params) &&
-          current_publisher.update(selected_wallet_provider: bitflyer_connection) &&
-          
-          # Add bitFlyer deposit id to each of the publisher's channels
-          current_publisher.channels.each do |channel|
-          # Intentional blocking call
-            Sync::Bitflyer::UpdateMissingDepositJob.new.perform(channel.id)
-          end
+        if Bitflyer::OauthCompleter.build.call(publisher: current_publisher, code: params[:code])
           redirect_to(home_publishers_path)
           return
         end
-        
-        redirect_to(home_publishers_path, alert: t(".gemini_error", message: gemini_connection.errors.full_messages.join(', ')))
-        end
+
+        redirect_to(home_publishers_path, alert: t("publishers.bitflyer_connections.new.bitflyer_error"))
       end
 
       def destroy
