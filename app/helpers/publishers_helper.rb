@@ -2,6 +2,7 @@ module PublishersHelper
   include ChannelsHelper
 
   PAYPAL_TEMPLATE = Addressable::Template.new("https://{host}/connect{?flowEntry,client_id,scope,redirect_uri}")
+  PENNY = 0.01
 
   def sentry_catcher
     yield
@@ -55,15 +56,12 @@ module PublishersHelper
   end
 
   def has_balance?(publisher)
-    penny = 0.01
     publisher.wallet&.contribution_balance&.channel_amounts_usd&.each do |channel_amount_usd|
-      if channel_amount_usd >= penny
-        return true
-      end
+      return true if channel_amount_usd >= PENNY
     end
 
     referral_balance = publisher.wallet&.referral_balance&.amount_usd
-    referral_balance && referral_balance >= penny
+    referral_balance && referral_balance >= PENNY
   end
 
   def publisher_overall_bat_balance_amount(publisher)
