@@ -56,12 +56,14 @@ module PublishersHelper
 
   def has_balance?(publisher)
     penny = 0.01
-    publisher.wallet&.contribution_balance&.channel_amounts_usd&.any? do |channel_amount_usd|
-      channel_amount_usd >= penny
+    publisher.wallet&.contribution_balance&.channel_amounts_usd&.each do |channel_amount_usd|
+      if channel_amount_usd >= penny
+        return true
+      end
     end
 
     referral_balance = publisher.wallet&.referral_balance&.amount_usd
-    return referral_balance && referral_balance >= penny
+    referral_balance && referral_balance >= penny
   end
 
   def publisher_overall_bat_balance_amount(publisher)
@@ -108,14 +110,6 @@ module PublishersHelper
       end
     end
     result
-  end
-
-  def has_minimum_usd_for_payout?(publisher)
-    amount = publisher_overall_bat_balance_amount(publisher)
-    if amount.present? && amount >= PayoutReport::MINIMUM_BALANCE_AMOUNT
-      return true
-    end
-    false
   end
 
   def publisher_referral_bat_balance(publisher)

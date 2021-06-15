@@ -426,8 +426,6 @@ en:
       open_case_description:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
       payout_in_progress: "Payout In Progress"
-      payout_in_progress_uphold: "Payout In Progress. All of your channels which earned at least $%{amount} USD will be paid out"
-      payout_minimum_balance: "Minimum balance for payout is $%{amount} USD"
       rejected_funds_description: |
         <a href="/publishers/case">Your appeal was rejected</a>. This decision is final.
     shared:
