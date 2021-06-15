@@ -6,6 +6,8 @@ class GeminiConnection < ApplicationRecord
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
   JAPAN = 'JP'
 
+  has_paper_trail
+
   belongs_to :publisher
 
   validates :recipient_id, uniqueness: true, allow_blank: true

@@ -111,7 +111,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
         it 'is valid' do
           assert uphold_connection.valid?
         end
-
       end
     end
   end
@@ -143,22 +142,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'disconnect upholds' do
-    let(:uphold_connection) { uphold_connections(:verified_connection) }
-
-    before do
-      uphold_connection.disconnect_uphold
-    end
-
-    it 'not uphold_verified?' do
-      refute uphold_connection.uphold_verified?
-    end
-
-    it 'uphold_connection is valid?' do
-      assert uphold_connection.valid?
-    end
-  end
-
   describe 'verify_uphold_status' do
     uphold_connection = nil
 
@@ -166,7 +149,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       uphold_connection = uphold_connections(:verified_connection)
     end
 
-    describe 'when uphold_code, access_parameters, and uphold_verified are nil'  do
+    describe 'when uphold_code, access_parameters, and uphold_verified are nil' do
       before do
         uphold_connection.uphold_code = nil
         uphold_connection.uphold_access_parameters = nil

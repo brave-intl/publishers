@@ -5,6 +5,8 @@ class BitflyerConnection < ApplicationRecord
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
   JAPAN = "JP"
 
+  has_paper_trail
+
   belongs_to :publisher
   attr_encrypted :access_token, :refresh_token, key: :encryption_key
   validates :recipient_id, uniqueness: true, allow_blank: true

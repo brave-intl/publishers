@@ -22,7 +22,7 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
               raise ActiveRecord::Rollback unless is_deleted
             end
           end
-          publisher.uphold_connection.disconnect_uphold if publisher.uphold_connection.present?
+          publisher.selected_wallet_provider.destroy if publisher.selected_wallet_provider.present?
           publisher.status_updates.create(status: PublisherStatusUpdate::LOCKED)
           two_factor_authentication_removal.update(removal_completed: true)
         end

@@ -1,8 +1,5 @@
 module Payout
   class UpholdService < Service
-    # 5 BAT
-    PROBI_THRESHOLD = 5 * 1E18
-
     def perform
       return if skip_publisher?
 
@@ -73,57 +70,9 @@ module Payout
         end
       end
 
-      # Notify publishers that have money waiting, but will not will not receive funds
-=begin
-      # (yachtcaptain23): TODO: https://github.com/brave-intl/publishers/issues/2967
-      if should_send_emails?(total_probi: total_probi, uphold_connection: uphold_connection)
-        send_emails(uphold_connection, probi_to_bat(total_probi).round(1))
-      end
-=end
     rescue StandardError => e
       PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message) unless should_only_notify?
-
       raise e
-    end
-
-    private
-
-    def send_emails(uphold_connection, total_amount)
-      if !uphold_connection.uphold_verified? || uphold_connection.status.blank?
-        Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are disconnected from Uphold.")
-        PublisherMailer.wallet_not_connected(@publisher, total_amount).deliver_later
-        uphold_connection.update(send_emails: 1.year.from_now)
-      end
-
-      # eyeshade omits the wallet address if the status is not ok
-      # means that the transaction limits have been exceeded
-      if uphold_connection.is_member? && uphold_connection.status != "ok"
-        Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are restricted on Uphold.")
-        PublisherMailer.uphold_member_restricted(@publisher).deliver_later
-        uphold_connection.update(send_emails: 1.year.from_now)
-      end
-
-      # The wallet's uphold account status has to exist because otherwise their wallet is just not connected
-      if uphold_connection.uphold_verified? && uphold_connection.status.present? && !uphold_connection.is_member?
-        Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
-        PublisherMailer.uphold_kyc_incomplete(@publisher, total_amount).deliver_later
-        uphold_connection.update(send_emails: 1.year.from_now)
-      end
-    end
-
-
-    def should_send_emails?(total_probi:, uphold_connection:)
-      total_probi > PROBI_THRESHOLD && @should_send_notifications &&
-        (
-          uphold_connection.send_emails.present? &&
-          uphold_connection.send_emails < DateTime.now &&
-          uphold_connection.send_emails != UpholdConnection::FOREVER_DATE
-        )
-    end
-
-    # Converts Probi to BAT, original implementation Eyeshade::BaseBalance
-    def probi_to_bat(probi)
-      probi.to_d / 1E18
     end
   end
 end

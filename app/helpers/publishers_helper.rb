@@ -2,6 +2,7 @@ module PublishersHelper
   include ChannelsHelper
 
   PAYPAL_TEMPLATE = Addressable::Template.new("https://{host}/connect{?flowEntry,client_id,scope,redirect_uri}")
+  PENNY = 0.01
 
   def sentry_catcher
     yield
@@ -35,10 +36,10 @@ module PublishersHelper
   end
 
   def new_publisher?(publisher)
-    is_new = if publisher.paypal_locale?(I18n.locale)
-               publisher.paypal_connection.blank?
+    is_new = if publisher.bitflyer_locale?(I18n.locale)
+               publisher.bitflyer_connection.blank?
              else
-               publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank? && publisher.bitflyer_connection.blank?
+               publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
              end
     is_new.present? && publisher.channels.size.zero?
   end
@@ -54,8 +55,17 @@ module PublishersHelper
     today.strftime("%B 8th")
   end
 
-  def publisher_overall_bat_balance(publisher)
-    balance = I18n.t("helpers.publisher.balance_unavailable")
+  def has_balance?(publisher)
+    publisher.wallet&.contribution_balance&.channel_amounts_usd&.each do |channel_amount_usd|
+      return true if channel_amount_usd >= PENNY
+    end
+
+    referral_balance = publisher.wallet&.referral_balance&.amount_usd
+    referral_balance && referral_balance >= PENNY
+  end
+
+  def publisher_overall_bat_balance_amount(publisher)
+    amount = 0.0
     sentry_catcher do
       if publisher.only_user_funds?
         amount = publisher.wallet&.contribution_balance&.amount_bat
@@ -64,10 +74,14 @@ module PublishersHelper
       else
         amount = publisher.wallet&.overall_balance&.amount_bat
       end
-
-      balance = '%.2f' % amount if amount.present?
     end
+    amount
+  end
 
+  def publisher_overall_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    amount = publisher_overall_bat_balance_amount(publisher)
+    balance = '%.2f' % amount if amount.present?
     balance
   end
 

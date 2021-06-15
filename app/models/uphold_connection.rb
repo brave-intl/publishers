@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UpholdConnection < ActiveRecord::Base
+  include WalletProviderProperties
+
   has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
@@ -81,21 +83,6 @@ class UpholdConnection < ActiveRecord::Base
       uphold_access_parameters: nil,
       uphold_verified: false,
     )
-  end
-
-  def disconnect_uphold
-    update(
-      address: nil,
-      is_member: false,
-      status: nil,
-      uphold_id: nil,
-      uphold_code: nil,
-      uphold_access_parameters: nil,
-      uphold_verified: false,
-      default_currency_confirmed_at: nil,
-      default_currency: nil,
-    )
-    publisher.update(selected_wallet_provider: nil) if publisher.selected_wallet_provider.id == id
   end
 
   # Public: Determines if a user needs to reconnect their Uphold account.

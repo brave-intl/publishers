@@ -24,7 +24,7 @@
       = f.check_box(:subscribed_to_marketing_emails, class: "form-check-input")
       = f.label(:marketing_emails, class: "form-check-label", for: "publisher_subscribed_to_marketing_emails")
 
-    - unless @publisher.paypal_locale?(params[:locale])
+    - unless @publisher.bitflyer_locale?(params[:locale])
       hr
       = form_with(model: @publisher.uphold_connection, url: connection_uphold_connection_path, html: { id: "update_send_email_form", class: 'mt-4' }) do |f|
         label.d-block= t('.email.snooze')
