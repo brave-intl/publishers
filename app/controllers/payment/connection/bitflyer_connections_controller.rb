@@ -27,7 +27,7 @@ module Payment
 
       # This action is after the OAuth connection is redirected.
       def edit
-        if Bitflyer::OauthCompleter.build.call(publisher: current_publisher, code: params[:code])
+        if Bitflyer::AuthCompleter.build.call(publisher: current_publisher, code: params[:code])
           redirect_to(home_publishers_path)
           return
         end
