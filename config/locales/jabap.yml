@@ -421,7 +421,6 @@ jabap:
       next_deposit_date: "次の入金日："
       open_case_description: <a href="/publishers/case">あなたの異議申し立てケース</a>がオープンしました。 定期的に確認してください。
       payout_in_progress: "進行中の支払い"
-      payout_minimum_balance: "最低出金金額は %{amount} %{currency}です"
       rejected_funds_description: <a href="/publishers/case">あなたの異議申立てケースは否認されました</a>。これは最終決定です。
     shared:
       enter_email: メールアドレスを入力
