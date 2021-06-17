@@ -19,9 +19,6 @@ address = ENV.fetch('ADDRESS') { '127.0.0.1' }
 rails_env = ENV.fetch("RAILS_ENV") { "development" }
 environment rails_env
 
-# Specifies the `pidfile` that Puma will use.
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
-
 if rails_env == "development"
   if ENV["SSL"] == "off"
     bind ENV.fetch("BIND") {
