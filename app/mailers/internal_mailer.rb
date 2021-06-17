@@ -1,6 +1,6 @@
 class InternalMailer < ApplicationMailer
-  add_template_helper(PublishersHelper)
-  add_template_helper(AdminHelper)
+  helper PublishersHelper
+  helper AdminHelper
   layout 'internal_mailer'
 
   # Someone attempted to verify restricted channel and completed the automated steps.
