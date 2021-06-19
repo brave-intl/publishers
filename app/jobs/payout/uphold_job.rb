@@ -1,12 +1,21 @@
-class Payout::UpholdJob < ApplicationJob
-  queue_as :scheduler
+require 'retries_from_last_enqueued_publisher'
 
-  def perform(should_send_notifications: false, manual: false, payout_report_id: nil, publisher_ids: [])
-    Payout::UpholdJobImplementation.build.call(
-      should_send_notifications: should_send_notifications,
-      payout_report_id: payout_report_id,
-      publisher_ids: publisher_ids,
-      manual: manual
-    )
+class Payout::UpholdJob
+  include Sidekiq::Worker
+  sidekiq_options queue: :scheduler
+  include RetriesFromLastEnqueuedPublisher
+
+  attr_reader :payout_report_job, :should_send_notifications, :payout_report_id, :publisher_ids
+  attr_accessor :publishers
+
+  def perform(json_args: {}.to_json)
+    args = JSON.parse(json_args)
+    @should_send_notifications = args["should_send_notifications"]
+    @payout_report_id = args["payout_report_id"]
+    @publisher_ids = args["publisher_ids"]
+    @publishers = Publisher.valid_payable_uphold_creators
+    @kind = args["manual"] && payout_report_id.present? ? IncludePublisherInPayoutReportJob::MANUAL : IncludePublisherInPayoutReportJob::UPHOLD
+
+    enqueue_retryable_potential_payout!
   end
 end

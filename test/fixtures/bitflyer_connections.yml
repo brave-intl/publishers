@@ -1,4 +1,4 @@
-connection_with_token:
+enabled_bitflyer_connection:
   publisher: bitflyer_enabled
   recipient_id: 'bitflyer_enabled_connectionABC'
   <% salt = SecureRandom.random_bytes(12) %>
