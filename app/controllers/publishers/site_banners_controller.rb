@@ -13,21 +13,7 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update
-    if site_banner
-      site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
-      if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
-        site_banner.upload_public_logo(
-          image_properties(attachment_type: SiteBanner::LOGO)
-        )
-      end
-
-      if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
-        site_banner.upload_public_background_image(
-          image_properties(attachment_type: SiteBanner::BACKGROUND)
-        )
-      end
-    end
-    head :ok
+    render status: 400, json: { message: "Banner updating is in maintenance. Please try again at a later time." }.to_json
   rescue MiniMagick::Error
     render status: 400, json: { message: I18n.t('.shared.oh_no') }.to_json
   rescue StandardError => e
