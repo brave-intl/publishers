@@ -19,6 +19,7 @@ class UpholdJobTest < ActiveSupport::TestCase
   end
 
   test "for order and key presence" do
+    Sidekiq::Worker.clear_all
     uphold_job = Payout::UpholdJob.new
     uphold_job.perform(json_args: { payout_report_id: payout_reports(:one).id }.to_json)
     visited_publisher_id = nil

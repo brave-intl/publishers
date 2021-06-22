@@ -4,7 +4,7 @@ require "test_helper"
 
 class BitflyerAuthCompleterTest < ActiveSupport::TestCase
   test 'it completes successfully' do
-    connection = bitflyer_connections(:connection_with_token)
+    connection = bitflyer_connections(:enabled_bitflyer_connection)
     mock_http = mock
     access_token = '123'
     refresh_token = '456'

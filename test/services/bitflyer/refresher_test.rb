@@ -4,7 +4,7 @@ require "test_helper"
 
 class BitflyerRefresherTest < ActiveSupport::TestCase
   test 'refresh success' do
-    connection = bitflyer_connections(:connection_with_token)
+    connection = bitflyer_connections(:enabled_bitflyer_connection)
     mock_auth = MiniTest::Mock.new.expect(:refresh, {
       "access_token" => 'a',
       "refresh_token" => 'b',
