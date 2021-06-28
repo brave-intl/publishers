@@ -47,13 +47,13 @@ gem "ffi", "~> 1.15.0"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
-gem 'google-protobuf', "~> 3.12.0"
+gem 'google-protobuf', "~> 3.17.3"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.11.4"
+gem "nokogiri", "~> 1.11.7"
 
 # Open Graph tag
 gem "meta-tags", "~> 2.14.0"
