@@ -1,4 +1,4 @@
-class BaseChannelDetails < ApplicationRecord
+class BaseChannelDetails < ActiveRecord::Base
   self.abstract_class = true
 
   has_one :channel, as: :details

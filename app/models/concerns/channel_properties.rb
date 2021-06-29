@@ -18,7 +18,7 @@ module ChannelProperties
         send("#{name}_channels").where.not("#{name}_channel_details.#{name}_channel_id": nil)
       }
 
-      belongs_to :"#{name}_channel_details", -> { where(channels: { details_type: "#{name.classify}ChannelDetails" }) }, foreign_key: 'details_id'
+      belongs_to :"#{name}_channel_details", -> { where(channels: { details_type: "#{name.classify}ChannelDetails" }).includes(:channels) }, foreign_key: 'details_id'
     end
   end
 end

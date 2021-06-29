@@ -1,9 +1,9 @@
 class PublisherMailer < ApplicationMailer
   include PublishersHelper
-  helper PublishersHelper
+  add_template_helper(PublishersHelper)
 
   after_action :ensure_fresh_token,
-               only: %i(login_email verify_email verification_done confirm_email_change)
+    only: %i(login_email verify_email verification_done confirm_email_change)
 
   # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
   def login_email(publisher)
@@ -26,8 +26,8 @@ class PublisherMailer < ApplicationMailer
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
-      to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @channel.details.publication_title)
+        to: @publisher.email,
+        subject: default_i18n_subject(publication_title: @channel.details.publication_title)
     )
   end
 
@@ -48,10 +48,10 @@ class PublisherMailer < ApplicationMailer
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.verification_done.subject", publication_title: @channel.details.publication_title)}",
-      template_name: "verification_done"
+        to: INTERNAL_EMAIL,
+        reply_to: @publisher.email,
+        subject: "<Internal> #{t("publisher_mailer.verification_done.subject", publication_title: @channel.details.publication_title)}",
+        template_name: "verification_done"
     )
   end
 
@@ -64,8 +64,8 @@ class PublisherMailer < ApplicationMailer
     if @publisher.pending_email.present?
       I18n.with_locale(locale) do
         mail(
-          to: @publisher.pending_email,
-          subject: default_i18n_subject
+            to: @publisher.pending_email,
+            subject: default_i18n_subject
         )
       end
     else
@@ -85,10 +85,10 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     @private_reauth_url = "{redacted}"
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.verify_email.subject")}",
-      template_name: "verify_email"
+        to: INTERNAL_EMAIL,
+        reply_to: @publisher.email,
+        subject: "<Internal> #{t("publisher_mailer.verify_email.subject")}",
+        template_name: "verify_email"
     )
   end
 
@@ -202,8 +202,8 @@ class PublisherMailer < ApplicationMailer
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
     mail(
-      to: @email,
-      subject: default_i18n_subject(channel_name: @channel.publication_title)
+        to: @email,
+        subject: default_i18n_subject(channel_name: @channel.publication_title)
     )
   end
 
@@ -215,10 +215,10 @@ class PublisherMailer < ApplicationMailer
     @transfer_url = "{redacted}"
 
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @email,
-      subject: "<Internal> #{t("publisher_mailer.channel_contested.subject")}",
-      template_name: "channel_contested"
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_contested.subject")}",
+        template_name: "channel_contested"
     )
   end
 
@@ -228,8 +228,8 @@ class PublisherMailer < ApplicationMailer
     @email = email
 
     mail(
-      to: @email,
-      subject: default_i18n_subject(channel_name: @channel_name)
+        to: @email,
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -239,10 +239,10 @@ class PublisherMailer < ApplicationMailer
     @email = email
 
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @email,
-      subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_primary.subject")}",
-      template_name: "channel_transfer_approved_primary"
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_primary.subject")}",
+        template_name: "channel_transfer_approved_primary"
     )
   end
 
@@ -252,8 +252,8 @@ class PublisherMailer < ApplicationMailer
     @email = channel.publisher.email
 
     mail(
-      to: @email,
-      subject: default_i18n_subject(channel_name: @channel_name)
+        to: @email,
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -263,10 +263,10 @@ class PublisherMailer < ApplicationMailer
     @email = channel.publisher.email
 
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @email,
-      subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_secondary.subject")}",
-      template_name: "channel_transfer_approved_secondary"
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_secondary.subject")}",
+        template_name: "channel_transfer_approved_secondary"
     )
   end
 
@@ -276,8 +276,8 @@ class PublisherMailer < ApplicationMailer
     @email = channel.publisher.email
 
     mail(
-      to: @email,
-      subject: default_i18n_subject(channel_name: @channel_name)
+        to: @email,
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -287,10 +287,10 @@ class PublisherMailer < ApplicationMailer
     @email = channel.publisher.email
 
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @email,
-      subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
-      template_name: "channel_transfer_rejected_primary"
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
+        template_name: "channel_transfer_rejected_primary"
     )
   end
 
@@ -299,17 +299,17 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = publisher_name
 
     mail(
-      to: email,
-      subject: default_i18n_subject(channel_name: @channel_name)
+        to: email,
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
   def channel_transfer_rejected_secondary_internal(channel_name, publisher_name, email)
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: email,
-      subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
-      template_name: "channel_transfer_rejected_secondary"
+        to: INTERNAL_EMAIL,
+        reply_to: email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
+        template_name: "channel_transfer_rejected_secondary"
     )
   end
 
@@ -344,13 +344,14 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+
   def submit_appeal(publisher)
     @name = publisher.name
     @body = I18n.t('.publisher_mailer.submit_appeal.body')
 
     mail(to: publisher.email,
-         subject: I18n.t('.publisher_mailer.submit_appeal.subject'),
-         template_name: 'shared')
+      subject: I18n.t('.publisher_mailer.submit_appeal.subject'),
+      template_name: 'shared')
   end
 
   def accept_appeal(publisher)
@@ -358,8 +359,8 @@ class PublisherMailer < ApplicationMailer
     @body = I18n.t('.publisher_mailer.accept_appeal.body')
 
     mail(to: publisher.email,
-         subject: I18n.t('.publisher_mailer.accept_appeal.subject'),
-         template_name: 'shared')
+      subject: I18n.t('.publisher_mailer.accept_appeal.subject'),
+      template_name: 'shared')
   end
 
   def reject_appeal(publisher)
@@ -367,8 +368,8 @@ class PublisherMailer < ApplicationMailer
     @body = I18n.t('.publisher_mailer.reject_appeal.body')
 
     mail(to: publisher.email,
-         subject: I18n.t('.publisher_mailer.reject_appeal.subject'),
-         template_name: 'shared')
+      subject: I18n.t('.publisher_mailer.reject_appeal.subject'),
+      template_name: 'shared')
   end
 
   private
