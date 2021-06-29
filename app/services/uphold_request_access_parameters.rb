@@ -5,6 +5,7 @@ class UpholdRequestAccessParameters < BaseService
 
   def initialize(uphold_code:, secret_used: nil)
     @uphold_code = uphold_code
+    @secret_used = secret_used
   end
 
   def connection
@@ -22,11 +23,19 @@ class UpholdRequestAccessParameters < BaseService
   end
 
   def client_id
-    Rails.application.secrets[:uphold_client_id]
+    if @secret_used == UpholdConnection::USE_BROWSER
+      Rails.application.secrets[:uphold_login_client_id]
+    else
+      Rails.application.secrets[:uphold_client_id]
+    end
   end
 
   def client_secret
-    Rails.application.secrets[:uphold_client_secret]
+    if @secret_used == UpholdConnection::USE_BROWSER
+      Rails.application.secrets[:uphold_login_client_secret]
+    else
+      Rails.application.secrets[:uphold_client_secret]
+    end
   end
 
   def proxy_url

@@ -44,6 +44,7 @@ import { initLocale } from "brave-ui";
 import locale from "locale/en";
 import en, { flattenMessages } from "../locale/en";
 import ja from "../locale/ja";
+import jabap from "../locale/jabap";
 
 import {
   BatColorIcon,
@@ -73,6 +74,9 @@ export default class BannerEditor extends React.Component {
     let localePackage = en;
     if (locale === "ja") {
       localePackage = ja;
+    }
+    if (locale === "jabap") {
+      localePackage = jabap;
     }
     this.state = {
       loading: true,
@@ -331,6 +335,9 @@ export default class BannerEditor extends React.Component {
     let localePackage = en;
     if (locale === "ja") {
       localePackage = ja;
+    }
+    if (locale === "jabap") {
+      localePackage = jabap;
     }
     switch (this.state.linkOption) {
       case "Youtube":
@@ -970,6 +977,9 @@ export default class BannerEditor extends React.Component {
     if (locale === "ja") {
       localePackage = ja;
     }
+    if (locale === "jabap") {
+      localePackage = jabap;
+    }
     return (
       <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
       <Editor onClick={e => this.handleLinkSelection(e)}>
@@ -1087,7 +1097,7 @@ export default class BannerEditor extends React.Component {
                 <Button donation>
                   <BatColorIcon
                     style={{
-                      display: (locale === "ja") ? "none" : "inline",
+                      display: (locale === "ja" || locale === "jabap") ? "none" : "inline",
                       height: "25px",
                       width: "25px",
                       marginRight: "10px"
@@ -1109,7 +1119,7 @@ export default class BannerEditor extends React.Component {
                 <Button donation>
                   <BatColorIcon
                     style={{
-                      display: (locale === "ja") ? "none" : "inline",
+                      display: (locale === "ja" || locale === "jabap") ? "none" : "inline",
                       height: "25px",
                       width: "25px",
                       marginRight: "10px"
@@ -1131,7 +1141,7 @@ export default class BannerEditor extends React.Component {
                 <Button donation>
                   <BatColorIcon
                     style={{
-                      display: (locale === "ja") ? "none" : "inline",
+                      display: (locale === "ja" || locale === "jabap") ? "none" : "inline",
                       height: "25px",
                       width: "25px",
                       marginRight: "10px"

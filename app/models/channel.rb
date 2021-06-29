@@ -69,7 +69,7 @@ class Channel < ApplicationRecord
   before_destroy :preserve_contested_by_channels
 
   belongs_to :site_channel_details, -> {
-    where(channels: { details_type: 'SiteChannelDetails' })
+    where(channels: { details_type: 'SiteChannelDetails' }).includes(:channels)
   }, foreign_key: 'details_id'
 
   scope :site_channels, -> { joins(:site_channel_details) }

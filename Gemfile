@@ -26,7 +26,7 @@ gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/
 # Use AWS gem for s3 uploads
 gem 'aws-sdk-s3', '~> 1.89.0'
 
-gem "bootstrap", "=4.6.0"
+gem "bootstrap", ">= 4.5.0"
 
 gem 'brotli', "~> 0.2.3"
 
@@ -56,10 +56,10 @@ gem "lograge", "~> 0.4"
 gem "nokogiri", "~> 1.11.4"
 
 # Open Graph tag
-gem "meta-tags", "~> 2.14.0"
+gem "meta-tags", "~> 2.13.0"
 
 # Image conversion library
-gem 'mini_magick', "~> 4.11.0"
+gem 'mini_magick', "~> 4.10.1"
 
 gem 'newrelic_rpm', '~> 6.12', '>= 6.12.0.367'
 
@@ -83,7 +83,7 @@ gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git'
 gem "omniauth-github", "~> 1.4.0"
 
 # Model record auditing
-gem "paper_trail", "~> 11.1.0"
+gem "paper_trail", "~> 10.3.1"
 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
@@ -100,9 +100,9 @@ gem "puma", "~> 5.3.1"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 6.1.3.2"
+gem 'railties', "~> 6.0.3.5"
 
-gem "rails", "~> 6.1.3.2"
+gem "rails", "~> 6.0.3.7"
 gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
@@ -186,7 +186,7 @@ group :development, :test do
   gem "pry"
   gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
-  gem "pry-byebug"
+  gem "pry-byebug", require: false
 
   # Static security vulnerability scanner
   gem "brakeman"

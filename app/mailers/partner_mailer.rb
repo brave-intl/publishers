@@ -1,6 +1,6 @@
 class PartnerMailer < ApplicationMailer
   include PublishersHelper
-  helper PublishersHelper
+  add_template_helper(PublishersHelper)
 
   after_action :ensure_fresh_token, only: [:invoice_file_added]
 

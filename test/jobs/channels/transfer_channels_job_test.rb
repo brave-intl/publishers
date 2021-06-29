@@ -38,9 +38,7 @@ class Channels::TransferChannelsJobTest < ActiveJob::TestCase
       assert_enqueued_jobs 1
       assert_performed_jobs 0
 
-      perform_enqueued_jobs do
-        Channels::TransferChannelsJob.perform_now
-      end
+      perform_enqueued_jobs
 
       # There are 5 jobs enqueued (4 emails and a slack message) when a channel completes transfer
       # and another for Publishers' List
