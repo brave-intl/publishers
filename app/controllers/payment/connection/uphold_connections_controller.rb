@@ -55,7 +55,7 @@ module Payment
         redirect_to(home_publishers_path)
       rescue UpholdError, Faraday::Error => e
         Rails.logger.info("Uphold Error: #{e.message}")
-        redirect_to(home_publishers_path, alert: t(".uphold_error", message: e.message))
+        redirect_to(home_publishers_path, alert: t("publishers.uphold.create.uphold_error", message: e.message))
       end
 
       def update

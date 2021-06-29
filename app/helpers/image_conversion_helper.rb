@@ -24,10 +24,8 @@ module ImageConversionHelper
     temp_file.path
   end
 
-=begin
-  Adding an empty comment adds an arbitrary number of bytes
-  Add a character to a comment adds 5 bytes (4 for padding)
-=end
+  #   Adding an empty comment adds an arbitrary number of bytes
+  #   Add a character to a comment adds 5 bytes (4 for padding)
   def add_padding_to_image(source_image_path:, attachment_type:, quality:)
     # Add initial conversion to get file size
     if attachment_type == SiteBanner::LOGO
