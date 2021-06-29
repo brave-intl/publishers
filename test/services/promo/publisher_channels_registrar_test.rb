@@ -80,14 +80,20 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
     stub_request(:put, "#{Rails.application.secrets[:api_promo_base_uri]}/api/1/promo/publishers")
       .to_return(status: 500)
 
+    assert_performed_jobs 0
+
     assert_difference "PromoRegistration.count", 0 do
       publisher.channels.find_each do |channel|
         Promo::AssignPromoToChannelService.new(channel: channel).perform
         assert_enqueued_with(job: Promo::RegisterChannelForPromoJob, args: [{channel_id: channel.id, attempt_count: 1 }])
       end
     end
-    assert_performed_jobs 0
-    perform_enqueued_jobs(only: Promo::RegisterChannelForPromoJob)
+
+    perform_enqueued_jobs(only: Promo::RegisterChannelForPromoJob) do
+      publisher.channels.find_each do |channel|
+        Promo::AssignPromoToChannelService.new(channel: channel).perform
+      end
+    end
     assert_performed_jobs Promo::AssignPromoToChannelService::MAX_ATTEMPTS
   end
 end
