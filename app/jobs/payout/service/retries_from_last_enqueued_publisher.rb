@@ -20,7 +20,6 @@ class Payout::Service::RetriesFromLastEnqueuedPublisher
     end
 
     publishers = publishers.where("publishers.id > ?", last_enqueued_publisher_id) if last_enqueued_publisher_id.present?
-    publishers = publishers.order("publishers.id ASC")
 
     if payout_report_id.present?
       payout_report = PayoutReport.find(payout_report_id)
@@ -34,14 +33,14 @@ class Payout::Service::RetriesFromLastEnqueuedPublisher
       end
     end
 
-    publishers.pluck(:id).each do |publisher_id|
+    publishers.find_each do |publisher|
       IncludePublisherInPayoutReportJob.perform_async(
         payout_report_id: payout_report_id,
-        publisher_id: publisher_id,
+        publisher_id: publisher.id,
         kind: kind,
         should_send_notifications: @should_send_notifications
       )
-      Rails.cache.write(last_enqueued_publisher_key, publisher_id.to_s, expires_in: 72.hours)
+      Rails.cache.write(last_enqueued_publisher_key, publisher.id.to_s, expires_in: 72.hours)
     end
   end
 end
