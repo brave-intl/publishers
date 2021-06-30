@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "2.7.2"
+ruby '~> 2.7.3'
 
 source "https://rubygems.org"
 
@@ -59,7 +59,6 @@ gem "nokogiri", "~> 1.11.7"
 gem "meta-tags", "~> 2.14.0"
 
 # Image conversion library
-gem 'image_processing', "~> 1.0"
 gem 'mini_magick', "~> 4.11.0"
 
 gem 'newrelic_rpm', '~> 6.12', '>= 6.12.0.367'

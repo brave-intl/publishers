@@ -24,7 +24,7 @@ class Promo::EmailBreakdownsJob
       else
         row << total_for_date(date: 1.days.ago.to_date,
                               referral_code: row[0],
-                              country: row[1],
+                              country: "\"" + row[1] + "\"",
                               publisher_id: publisher_id)
       end
       new_csv << row.join(",")
