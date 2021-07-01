@@ -7,15 +7,6 @@ GIT
       omniauth-oauth2 (~> 1.1)
 
 GIT
-  remote: https://github.com/kwent/activerecord6-redshift-adapter.git
-  revision: 8a46bbbd72dd19053f1766e0119d4b7e0db4024b
-  ref: 8a46bbb
-  specs:
-    activerecord6-redshift-adapter (1.2.1)
-      activerecord (~> 6.0)
-      pg (~> 1.0)
-
-GIT
   remote: https://github.com/matomo-org/piwik-ruby-api.git
   revision: c6fceddfe58f1c41ba9d10b65fec4cd49eee34ef
   branch: master
@@ -85,6 +76,9 @@ GEM
       multi_json (~> 1.11, >= 1.11.2)
       rack (>= 2.0.8, < 3)
       railties (>= 5.2.4.1)
+    activerecord6-redshift-adapter (1.2.1)
+      activerecord (~> 6.0)
+      pg (~> 1.0)
     activestorage (6.1.3.2)
       actionpack (= 6.1.3.2)
       activejob (= 6.1.3.2)
@@ -541,7 +535,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   activerecord-session_store (~> 2.0)
-  activerecord6-redshift-adapter!
+  activerecord6-redshift-adapter (= 1.2.1)
   addressable (~> 2.6)
   attr_encrypted (~> 3.1.0)
   autometal-piwik!
