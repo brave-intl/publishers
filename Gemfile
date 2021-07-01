@@ -12,7 +12,7 @@ gem "active_model_serializers", "~> 0.10.0"
 # ActiveRecord Session store for server side storage of session data
 gem 'activerecord-session_store', '~> 2.0'
 
-gem 'activerecord6-redshift-adapter', '~> 1.1.3'
+gem 'activerecord6-redshift-adapter', '= 1.2.1'
 
 # Allowing for URI templates, for HTTP clients
 gem 'addressable', '~> 2.6'
