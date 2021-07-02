@@ -419,6 +419,7 @@ ja:
       held_funds: 中断されたBAT支払い
       held_funds_description: これらの資金は、不審なアクティビティが確認されたため中断されている。こちらの<a href="/publishers/case/new">手順</a>にしたがって、異議申し立てを行ってください
       next_deposit_date: "次の入金日："
+      payout_moved_to_thirteenth: 7月は支払い日が8日から13日に変更になります。次回の支払い日は7月13日です。
       open_case_description: <a href="/publishers/case">あなたの異議申し立てケース</a>がオープンしました。 定期的に確認してください。
       payout_in_progress: "進行中の支払い"
       rejected_funds_description: <a href="/publishers/case">あなたの異議申立てケースは否認されました</a>。これは最終決定です。
