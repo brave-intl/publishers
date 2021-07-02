@@ -51,8 +51,8 @@ module PublishersHelper
   end
 
   def next_deposit_date(today: DateTime.now)
-    today += 1.month if today.day > 8
-    today.strftime("%B 8th")
+    today += 1.month if today.day > 13
+    today.strftime("%B 13th")
   end
 
   def has_balance?(publisher)

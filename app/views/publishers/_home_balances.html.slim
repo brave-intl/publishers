@@ -18,6 +18,8 @@
             = t(".payout_in_progress")
         - else
           .next_deposit_date.small.mt-2
+            span = t(".payout_moved_to_thirteenth")
+            br
             span = t(".next_deposit_date")
             span = next_deposit_date
   - if @publisher.no_grants?
