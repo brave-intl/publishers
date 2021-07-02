@@ -66,6 +66,8 @@ jobs:
         run: RAILS_ENV=test bundle exec rake db:prepare
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
+      - name: Bundler Audit Update
+        run: bundle-audit update
       - name: Run tests
         run: RAILS_ENV=test bundle exec rails test
         env:
