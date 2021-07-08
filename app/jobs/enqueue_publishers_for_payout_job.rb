@@ -38,29 +38,27 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   private
 
   def enqueue_emails_only(manual:, publisher_ids:)
-    Payout::UpholdJob.perform_later(
-      manual: manual,
+    json_args = {
       should_send_notifications: true,
+      manual: manual,
       publisher_ids: publisher_ids
-    )
+    }.to_json
+    Payout::UpholdJob.perform_async(json_args)
   end
 
   def enqueue_payout(payout_report:, manual:, publisher_ids:)
+    # TODO: We unnecessarily spike Redis memory usage by repeating the amount of publisher_ids we enqueue.
     # Finds all the publishers that have these wallets connected and
     # kicks off IncludePublisherInPayoutReportJob for each one.
-    Payout::UpholdJob.perform_later(
+    json_args = {
+      should_send_notifications: false,
       manual: manual,
       payout_report_id: payout_report.id,
       publisher_ids: publisher_ids
-    )
-    Payout::GeminiJob.perform_later(
-      payout_report_id: payout_report.id,
-      publisher_ids: publisher_ids
-    )
-    Payout::BitflyerJob.perform_later(
-      payout_report_id: payout_report.id,
-      publisher_ids: publisher_ids
-    )
+    }.to_json
+    Payout::UpholdJob.perform_async(json_args)
+    Payout::GeminiJob.perform_async(json_args)
+    Payout::BitflyerJob.perform_async(json_args)
   end
 
   def fee_rate
