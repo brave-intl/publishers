@@ -16,10 +16,12 @@ class PayoutReport < ApplicationRecord
     where(final: true)
   }
 
-  def encryption_key
-    # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
-    # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
-    Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
+  class << self
+    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+      # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      key.byteslice(0, 32)
+    end
   end
 
   def amount
