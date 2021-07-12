@@ -15,7 +15,7 @@ gem 'activerecord-session_store', '~> 2.0'
 gem 'activerecord6-redshift-adapter', '= 1.2.1'
 
 # Allowing for URI templates, for HTTP clients
-gem 'addressable', '~> 2.6'
+gem 'addressable', '~> 2.8'
 
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
