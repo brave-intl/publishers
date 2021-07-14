@@ -13,22 +13,21 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update
-    # if site_banner
-    #   site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
-    #   if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
-    #     site_banner.upload_public_logo(
-    #       image_properties(attachment_type: SiteBanner::LOGO)
-    #     )
-    #   end
+    if site_banner
+      site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
+      if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
+        site_banner.upload_public_logo(
+          image_properties(attachment_type: SiteBanner::LOGO)
+        )
+      end
 
-    #   if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
-    #     site_banner.upload_public_background_image(
-    #       image_properties(attachment_type: SiteBanner::BACKGROUND)
-    #     )
-    #   end
-    # end
-    # head :ok
-    render status: 400, json: { message: "Banner updating is in maintenance. Please try again at a later time." }.to_json
+      if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
+        site_banner.upload_public_background_image(
+          image_properties(attachment_type: SiteBanner::BACKGROUND)
+        )
+      end
+    end
+    head :ok
   rescue MiniMagick::Error
     render status: 400, json: { message: I18n.t('.shared.oh_no') }.to_json
   rescue StandardError => e
@@ -73,35 +72,12 @@ class Publishers::SiteBannersController < ApplicationController
     end
 
     original_image_path = temp_file.path
-
-    resized_jpg_path = resize_to_dimensions_and_convert_to_jpg(
+    temp_file.rewind
+    padded_resized_jpg_path = resize_to_dimensions_and_convert_to_jpg(
       source_image_path: original_image_path,
       attachment_type: attachment_type,
       filename: filename
     )
-
-    padded_resized_jpg_path = nil
-    quality = 50
-    while padded_resized_jpg_path.nil?
-      begin
-        padded_resized_jpg_path = add_padding_to_image(
-          source_image_path: resized_jpg_path,
-          attachment_type: attachment_type,
-          quality: quality
-        )
-      rescue OutsidePaddingRangeError => e
-        if quality <= 5
-          logger.error "Outside padding range #{e.message}"
-          LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: { publisher_id: current_publisher.id })
-          raise StandardError.new("File size too big for #{attachment_type}") # rubocop:disable Style/RaiseArgs
-        end
-      end
-      if quality > 5
-        quality -= 5
-      else
-        break
-      end
-    end
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
 
