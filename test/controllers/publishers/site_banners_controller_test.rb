@@ -29,7 +29,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
         params: { title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json }
 
-    assert_response(400)
+    assert_response(200)
     publisher.reload
   end
 
@@ -59,6 +59,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         params: { logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json }
 
     publisher.reload
-    assert_nil site_banner.logo.attachment
+    assert site_banner.logo.attachment
   end
 end
