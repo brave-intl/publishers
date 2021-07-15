@@ -1,12 +1,8 @@
 require 'test_helper'
+require 'jobs/sidekiq_test_case'
 require 'vcr'
 
-class Sync::Bitflyer::UpdateMissingDepositsJobTest < ActiveJob::TestCase
-  before do
-    Sidekiq::Testing.fake!
-    Sidekiq::Worker.clear_all
-  end
-
+class Sync::Bitflyer::UpdateMissingDepositsJobTest < SidekiqTestCase
   test "enqueue no jobs for default scenario" do
     Sync::Bitflyer::UpdateMissingDepositsJob.perform_now
     assert_equal 0, Sync::Bitflyer::UpdateMissingDepositJob.jobs.size

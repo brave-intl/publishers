@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'jobs/sidekiq_test_case'
 
-class GeminiJobTest < ActiveSupport::TestCase
-  before do
-    Sidekiq::Worker.clear_all
-  end
+class GeminiJobTest < SidekiqTestCase
   test "it doesn't include Japanese payouts" do
     gemini_in_japan = publishers(:gemini_in_japan)
     assert gemini_in_japan.selected_wallet_provider.japanese_account?

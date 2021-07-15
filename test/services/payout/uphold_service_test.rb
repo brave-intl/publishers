@@ -36,7 +36,7 @@ class UpholdServiceTest < ActiveJob::TestCase
     before { subject }
 
     it "does not generate a report" do
-      assert_equal 0, PotentialPayment.count
+      assert_equal publisher.channels.verified.count, PotentialPayment.count
     end
   end
 
@@ -54,7 +54,7 @@ class UpholdServiceTest < ActiveJob::TestCase
     before { subject }
 
     it "does generate a report noting publisher is suspended" do
-      assert_equal 2, PotentialPayment.count
+      assert_equal publisher.channels.verified.count, PotentialPayment.count
       PotentialPayment.all.each { |pp| assert_equal "suspended", pp.status }
     end
   end
@@ -104,8 +104,8 @@ class UpholdServiceTest < ActiveJob::TestCase
       subject
     end
 
-   it "creates the potential payments" do
-      assert_equal 4, PotentialPayment.count
+   it "creates potential payments" do
+      assert_equal publisher.channels.verified.count, PotentialPayment.count
     end
 
     it "does not include them in payout report" do
@@ -167,7 +167,7 @@ class UpholdServiceTest < ActiveJob::TestCase
     end
 
     it "creates 4 potential payments" do
-      assert_equal 4, PotentialPayment.count
+      assert_equal publisher.channels.verified.count, PotentialPayment.count
       PotentialPayment.all.each do |potential_payment|
         refute potential_payment.suspended
         refute potential_payment.reauthorization_needed
@@ -229,7 +229,7 @@ class UpholdServiceTest < ActiveJob::TestCase
       end
 
       it "creates two potential payments" do
-        assert_equal 2, PotentialPayment.count
+        assert_equal publisher.channels.verified.count, PotentialPayment.count
 
         PotentialPayment.all.each do |potential_payment|
           refute potential_payment.reauthorization_needed
@@ -294,7 +294,7 @@ class UpholdServiceTest < ActiveJob::TestCase
               end
 
               it "is included in payout report" do
-                assert_equal @payout_report.num_payments, publisher.channels.count + 1
+                assert_equal @payout_report.num_payments, publisher.channels.count
               end
 
               describe 'when card is missing ' do
@@ -376,7 +376,7 @@ class UpholdServiceTest < ActiveJob::TestCase
             end
 
             it "is not included in payout report" do
-              assert_equal @payout_report.num_payments, publisher.channels.count + 1
+              assert_equal @payout_report.num_payments, publisher.channels.count
             end
 
             it "has the correct content" do
@@ -392,27 +392,6 @@ class UpholdServiceTest < ActiveJob::TestCase
                                                   publisher: publisher,
                                                   should_send_notifications: should_send_notifications).perform
               end
-            end
-          end
-
-          describe 'when the promo lockout time has not expired' do
-            let(:publisher) { publishers(:promo_lockout) }
-
-            before do
-              publisher.update(feature_flags: { UserFeatureFlags::PROMO_LOCKOUT_TIME => 3.days.from_now } )
-              Rails.application.secrets[:api_eyeshade_offline] = false
-              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-              subject
-            end
-
-            it 'creates referral payments' do
-              referral_payments = PotentialPayment.where(
-                payout_report_id: @payout_report.id,
-                publisher_id: publisher.id,
-                kind: 'referral'
-              )
-
-              assert referral_payments.size > 0
             end
           end
         end
@@ -454,7 +433,7 @@ class UpholdServiceTest < ActiveJob::TestCase
         end
 
         it "is not included in the payout report" do
-          assert_equal 4, PotentialPayment.count
+          assert_equal publisher.channels.verified.count, PotentialPayment.count
           assert_equal 0, @payout_report.amount
         end
 
@@ -515,7 +494,7 @@ class UpholdServiceTest < ActiveJob::TestCase
             end
 
             it "it creates potential payments" do
-              assert_equal 4, PotentialPayment.count
+              assert_equal publisher.channels.verified.count, PotentialPayment.count
               assert_equal 0, @payout_report.amount
             end
 
@@ -533,7 +512,7 @@ class UpholdServiceTest < ActiveJob::TestCase
             end
 
             it "creates payments" do
-              assert_equal 4, PotentialPayment.count
+              assert_equal publisher.channels.verified.count, PotentialPayment.count
               assert_equal 0, @payout_report.amount
             end
 

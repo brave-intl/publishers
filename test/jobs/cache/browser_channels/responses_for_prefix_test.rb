@@ -1,6 +1,7 @@
 require 'test_helper'
+require 'jobs/sidekiq_test_case'
 
-class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
+class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
   def self.test_order
     # Runs in order
     # https://api.rubyonrails.org/v4.2.5/classes/ActiveSupport/TestCase.html

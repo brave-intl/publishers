@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'jobs/sidekiq_test_case'
 
-class UpholdJobTest < ActiveSupport::TestCase
+class UpholdJobTest < SidekiqTestCase
   test "it doesn't include Japanese payouts" do
     uphold_in_japan = publishers(:uphold_in_japan)
     assert uphold_in_japan.selected_wallet_provider.japanese_account?
@@ -19,7 +20,6 @@ class UpholdJobTest < ActiveSupport::TestCase
   end
 
   test "for order and key presence" do
-    Sidekiq::Worker.clear_all
     uphold_job = Payout::UpholdJob.new
     uphold_job.perform({ payout_report_id: payout_reports(:one).id }.to_json)
     visited_publisher_id = nil
