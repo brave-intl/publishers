@@ -1,5 +1,6 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
+  include ActiveStorage::SetCurrent
   before_action :authenticate_publisher!
 
   MAX_IMAGE_SIZE = 10_000_000
@@ -16,15 +17,18 @@ class Publishers::SiteBannersController < ApplicationController
     if site_banner
       site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
       if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
-        site_banner.upload_public_logo(
+        site_banner.logo.attach(
           image_properties(attachment_type: SiteBanner::LOGO)
         )
+        site_banner.save!
       end
 
       if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
-        site_banner.upload_public_background_image(
+
+        site_banner.background_image.attach(
           image_properties(attachment_type: SiteBanner::BACKGROUND)
         )
+        site_banner.save!
       end
     end
     head :ok
@@ -80,7 +84,6 @@ class Publishers::SiteBannersController < ApplicationController
     )
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
-
     {
       io: open(padded_resized_jpg_path),
       filename: new_filename + ".jpg",

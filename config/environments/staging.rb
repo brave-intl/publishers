@@ -62,18 +62,19 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  config.cache_store = :redis_cache_store, {
-    url: Rails.application.secrets[:redis_url],
-    connect_timeout: 30,  # Defaults to 20 seconds
-    read_timeout:    5, # Defaults to 1 second
-    write_timeout:   10, # Defaults to 1 second
+  config.cache_store =
+    :redis_cache_store, {
+      url: Rails.application.secrets[:redis_url],
+      connect_timeout: 30, # Defaults to 20 seconds
+      read_timeout: 5, # Defaults to 1 second
+      write_timeout: 10, # Defaults to 1 second
 
-    error_handler: -> (method:, returning:, exception:) {
-      # Report errors to Sentry as warnings
-      Raven.capture_exception exception, level: 'warning',
-        tags: { method: method, returning: returning }
+      error_handler: -> (method:, returning:, exception:) {
+                       # Report errors to Sentry as warnings
+                       Raven.capture_exception exception, level: 'warning',
+                                                          tags: { method: method, returning: returning }
+                     },
     }
-  }
 
   require 'connection_pool'
   REDIS = ConnectionPool.new(size: 5) { Redis.new }
@@ -92,7 +93,7 @@ Rails.application.configure do
     password: Rails.application.secrets[:sendgrid_api_key],
     domain: Rails.application.secrets[:url_host],
     authentication: :plain,
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -104,7 +105,7 @@ Rails.application.configure do
   config.i18n.fallbacks = true
 
   # Use S3 for storage
-  config.active_storage.service = :amazon
+  config.active_storage.service = :amazon_case_notes
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify

@@ -1,0 +1,11 @@
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+amazon_case_notes:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+amazon_banner_images:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
