@@ -245,7 +245,7 @@ export default {
         referralSettlement: "Referral Promo Earnings",
         upholdContributionSettlement: "Direct User Tips",
       },
-      upholdCardLink: "https://uphold.com/dashboard/cards/{cardId}/actvity",
+      upholdCardLink: "https://uphold.com/dashboard/cards/{cardId}/activity",
       view: "View",
       viewMore: "View More"
     }
