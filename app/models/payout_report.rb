@@ -7,8 +7,6 @@ class PayoutReport < ApplicationRecord
   MINIMUM_BALANCE_AMOUNT = 0.01
   BAT = 'bat'.freeze
 
-  attr_encrypted :contents, key: :encryption_key, marshal: true
-
   has_many :potential_payments
   has_many :payout_messages
 
@@ -59,20 +57,6 @@ class PayoutReport < ApplicationRecord
     missing_channels = channels.pluck(:id) - potential_payments.pluck(:channel_id)
     missing_publishers = publishers.pluck(:id) - potential_payments.where(channel_id: nil).pluck(:publisher_id)
     { channels: missing_channels, publishers: missing_publishers }
-  end
-
-  # Updates the JSON summary of the report downloaded by admins
-  # TODO: This appears to be legacy code. Need to make sure we can remove
-  def update_report_contents
-    # Do not update json contents for legacy reports
-    return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
-    if manual
-      payout_report_hash = JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
-      self.contents = payout_report_hash.to_json
-    else
-      self.contents = {}.to_json
-    end
-    save!
   end
 
   class << self

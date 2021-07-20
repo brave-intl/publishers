@@ -142,51 +142,6 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     assert PayoutReport.order(created_at: :desc).first.final
   end
 
-  test "#download inserts the admin's email as the authority" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    admin = publishers(:admin)
-    publisher = publishers(:uphold_connected)
-    delete_publishers_except([admin.id, publisher.id])
-    sign_in admin
-
-
-    wallet = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}
-    balances = [
-      {
-        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-        "account_type" => "owner",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "uphold_connected.org",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "twitch#channel:ucTw",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },      {
-        "account_id" => "twitter#channel:def456",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      }
-    ]
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
-
-    # Create the non blank payout report
-    perform_enqueued_jobs do
-      post admin_payout_reports_path(final: true, manual: true)
-    end
-
-    # Ensure authority is the admin's email when the file is downloaded
-    payout_report = PayoutReport.all.order(created_at: :desc).first
-    payout_report.update_report_contents
-    get download_admin_payout_report_path(payout_report)
-    JSON.parse(response.body).each { |channel| assert_equal channel["authority"], admin.email}
-  end
-
   test "#create sends email if should_send_notifications flag is set" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     admin = publishers(:admin)
@@ -224,16 +179,6 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
           post admin_payout_reports_path(final: true, should_send_notifications: true)
         end
       end
-    end
-  end
-
-  test "#refresh refreshes report contents" do
-    admin = publishers(:admin)
-    sign_in admin
-    payout_report = payout_reports(:one)
-
-    assert_enqueued_with(job: UpdatePayoutReportContentsJob) do
-      patch refresh_admin_payout_report_path(payout_report.id)
     end
   end
 

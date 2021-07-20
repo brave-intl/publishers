@@ -108,11 +108,6 @@ class UpholdServiceTest < ActiveJob::TestCase
       assert_equal 4, PotentialPayment.count
     end
 
-    it "does not include them in payout report" do
-      @payout_report.update_report_contents
-      assert_equal 0, JSON.parse(@payout_report.contents).length
-    end
-
     it "records reauthorizatio was needed for potential payments" do
       PotentialPayment.all.each do |potential_payment|
         assert potential_payment.reauthorization_needed
@@ -181,11 +176,6 @@ class UpholdServiceTest < ActiveJob::TestCase
         end
       end
     end
-
-    it "does not include any in payout report" do
-      @payout_report.update_report_contents
-      assert_equal 0, JSON.parse(@payout_report.contents).length
-    end
   end
 
   describe "publisher has a verified channel" do
@@ -237,12 +227,6 @@ class UpholdServiceTest < ActiveJob::TestCase
           refute potential_payment.suspended
           assert_nil potential_payment.uphold_status
         end
-      end
-
-      it "doesn't include any in payout report" do
-        payout_report = PayoutReport.order("created_at").last
-        payout_report.update_report_contents
-        assert_equal 0, JSON.parse(payout_report.contents).length
       end
     end
   end
@@ -517,11 +501,6 @@ class UpholdServiceTest < ActiveJob::TestCase
             it "it creates potential payments" do
               assert_equal 4, PotentialPayment.count
               assert_equal 0, @payout_report.amount
-            end
-
-            it "does not include them in payout report json" do
-              @payout_report.update_report_contents
-              assert_equal 0, JSON.parse(@payout_report.contents).length
             end
           end
 

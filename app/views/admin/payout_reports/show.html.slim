@@ -7,11 +7,6 @@
 
   .ml-3
     = link_to "Edit", edit_admin_payout_report_path(@payout_report.id), class: 'btn btn-dark mr-1'
-    = link_to "Refresh", refresh_admin_payout_report_path(@payout_report.id), method: :patch, class: 'btn btn-info'
-    - if  @payout_report.encrypted_contents_iv.present?
-      = link_to("Download", download_admin_payout_report_path(@payout_report.id), class: "btn btn-primary")
-    - else
-      span.ml-2.p-2.rounded.alert-info Click 'refresh' to create the contents
 
 h6 Payout Details
 
