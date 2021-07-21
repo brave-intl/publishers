@@ -91,6 +91,12 @@ class Rack::Attack
     end
   end
 
+  throttle("2fa_sign_in_on_publisher", limit: 10, period: 15.minutes) do |req|
+    if req.path.start_with?("/publishers/totp_authentications")
+      req.env['rack.session']["pending_2fa_current_publisher_id"]
+    end
+  end
+
   # Throttle resend auth emails for a publisher
   throttle("resend_authentication_email/publisher_id", limit: 20, period: 20.minutes) do |req|
     if req.path == "/publishers/resend_authentication_email" && req.post?
