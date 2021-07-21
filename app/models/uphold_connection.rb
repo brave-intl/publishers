@@ -211,6 +211,7 @@ class UpholdConnection < ApplicationRecord
     # Set uphold_details to a variable, if uphold_access_parameters is nil
     # we will end up makes N service calls everytime we call uphold_details
     # this is a side effect of the memoization
+    Uphold::Refresher.build.call(uphold_connection: self)
     uphold_information = uphold_details
     return if uphold_information.blank?
 
