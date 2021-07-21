@@ -102,7 +102,7 @@ google_connection:
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write' }.to_json,
+    { scope: 'cards:write', refresh_token: '123' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
