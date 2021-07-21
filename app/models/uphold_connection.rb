@@ -72,6 +72,10 @@ class UpholdConnection < ApplicationRecord
     @scope ||= JSON.parse(uphold_access_parameters || '{}').try(:[], 'scope') || []
   end
 
+  def refresh_token
+    JSON.parse(uphold_access_parameters || '{}').try(:[], 'refresh_token')
+  end
+
   def can_read_transactions?
     scope.include?('transactions:read')
   end
