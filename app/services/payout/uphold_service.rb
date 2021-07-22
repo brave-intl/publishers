@@ -13,8 +13,6 @@ module Payout
         uphold_connection.reload
       end
 
-      uphold_connection.address.nil?
-
       # Create the referral payment for the owner
       potential_payments << PotentialPayment.new(
         payout_report_id: @payout_report&.id,

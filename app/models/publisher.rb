@@ -47,8 +47,6 @@ class Publisher < ApplicationRecord
 
   belongs_to :youtube_channel
   belongs_to :selected_wallet_provider, polymorphic: true
-  belongs_to :gemini_for_join, foreign_key: :selected_wallet_provider_id, class_name: GEMINI_CONNECTION # rubocop:disable Rails/ReflectionClassName
-  belongs_to :bitflyer_for_join, foreign_key: :selected_wallet_provider_id, class_name: BITFLYER_CONNECTION # rubocop:disable Rails/ReflectionClassName
 
   has_one :uphold_connection
   has_one :stripe_connection
@@ -107,6 +105,12 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
+  ###############################
+  #
+  # Uphold scopes
+  #
+  ###############################
+
   scope :uphold_selected_provider, -> {
     joins("INNER JOIN uphold_connections
            ON uphold_connections.id = publishers.selected_wallet_provider_id
@@ -115,27 +119,47 @@ class Publisher < ApplicationRecord
 
   scope :valid_payable_uphold_creators, -> {
     uphold_selected_provider.
-    where.not(uphold_connections: { address: nil }).
     where(uphold_connections: { is_member: true }).
+    where.not(uphold_connections: { address: nil }).
     where.not(uphold_connections: { country: UpholdConnection::JAPAN })
   }
 
+  ###############################
+  #
+  # Bitflyer scopes
+  #
+  ###############################
+
+  scope :bitflyer_selected_provider, -> {
+    joins("INNER JOIN bitflyer_connections
+           ON bitflyer_connections.id = publishers.selected_wallet_provider_id
+           AND publishers.selected_wallet_provider_type = '#{BitflyerConnection.to_s}'")
+  }
+
+  scope :valid_payable_bitflyer_creators, -> {
+    bitflyer_selected_provider
+  }
+
+  ###############################
+  #
+  # Gemini scopes
+  #
+  ######
+
+  scope :gemini_selected_provider, -> {
+    joins("INNER JOIN gemini_connections
+           ON gemini_connections.id = publishers.selected_wallet_provider_id
+           AND publishers.selected_wallet_provider_type = '#{GeminiConnection.to_s}'")
+  }
+
+  scope :valid_payable_gemini_creators, -> {
+    gemini_selected_provider.
+    where(gemini_connections: { is_verified: true }).
+    where.not(gemini_connections: { recipient_id: nil }).
+    where.not(gemini_connections: { country: GeminiConnection::JAPAN })
+  }
+
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
-
-  def self.valid_payable_gemini_creators
-    where(selected_wallet_provider_type: GEMINI_CONNECTION).
-      where('gemini_connections.country IS NULL').
-      or(
-        where(selected_wallet_provider_type: GEMINI_CONNECTION).
-        where.not("gemini_connections.country ILIKE '#{GeminiConnection::JAPAN}'")
-      ).
-      joins(:gemini_for_join)
-  end
-
-  def self.valid_payable_bitflyer_creators
-    joins(:bitflyer_for_join).
-      where(selected_wallet_provider_type: BITFLYER_CONNECTION)
-  end
 
   def self.filter_status(status)
     joins(:status_updates).
