@@ -23,7 +23,7 @@ class UpholdJobTest < ActiveSupport::TestCase
     uphold_job = Payout::UpholdJob.new
     uphold_job.perform({ payout_report_id: payout_reports(:one).id }.to_json)
     visited_publisher_id = nil
-    assert IncludePublisherInPayoutReportJob.jobs.count > 1
+    assert IncludePublisherInPayoutReportJob.jobs.count > 0
     IncludePublisherInPayoutReportJob.jobs.each do |job|
       job_publisher_id = job["args"].first["publisher_id"]
       assert visited_publisher_id <= job_publisher_id if visited_publisher_id.present?

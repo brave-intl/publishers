@@ -117,11 +117,14 @@ class Publisher < ApplicationRecord
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection.to_s}'")
   }
 
+  # We could remove the `country is null` if we change all affected creators to an
+  # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
     uphold_selected_provider.
     where(uphold_connections: { is_member: true }).
     where.not(uphold_connections: { address: nil }).
-    where.not(uphold_connections: { country: UpholdConnection::JAPAN })
+    where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
+          uphold_connections.country is null")
   }
 
   ###############################
@@ -144,7 +147,7 @@ class Publisher < ApplicationRecord
   #
   # Gemini scopes
   #
-  ######
+  ###############################
 
   scope :gemini_selected_provider, -> {
     joins("INNER JOIN gemini_connections

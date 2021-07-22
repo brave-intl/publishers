@@ -1,17 +1,22 @@
-
 default_connection:
   publisher: default
+  recipient_id: <%= SecureRandom.uuid %>
+  country: 'US'
 
 suspended_gemini_connection:
   publisher: gemini_suspended
+  recipient_id: <%= SecureRandom.uuid %>
+  country: 'US'
 
 gemini_in_japan_connection:
   publisher: gemini_in_japan
+  recipient_id: <%= SecureRandom.uuid %>
   country: 'JP'
 
 connection_with_token:
   publisher: gemini_completed
   is_verified: true
+  recipient_id: <%= SecureRandom.uuid %>
   <% salt = SecureRandom.random_bytes(12) %>
   encrypted_access_token:  "<%= TotpRegistration.encrypt_secret(
     'access_token',
@@ -25,7 +30,8 @@ connection_with_token:
     iv: salt
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
-  recipient_id: '123'
+  recipient_id: <%= SecureRandom.uuid %>
+  country: 'US'
 
 connection_not_verified:
   publisher: gemini_not_completed
