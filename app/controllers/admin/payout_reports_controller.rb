@@ -27,19 +27,6 @@ class Admin::PayoutReportsController < AdminController
     end
   end
 
-  def download
-    @payout_report = PayoutReport.find(params[:id])
-    contents = assign_authority(@payout_report.contents)
-    send_data contents,
-      filename: "payout-#{@payout_report.created_at.strftime("%FT%H-%M-%S")}",
-      type: :json
-  end
-
-  def refresh
-    UpdatePayoutReportContentsJob.perform_later(payout_report_ids: [params[:id]])
-    redirect_to admin_payout_reports_path, flash: { notice: "Refreshing report JSON.  Please try downloading in a couple minutes." }
-  end
-
   def create
     EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?, manual: params[:manual].present?)
     redirect_to admin_payout_reports_path, flash: { notice: "Your payout report is being generated, check back soon." }
