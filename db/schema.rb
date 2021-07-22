@@ -374,7 +374,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
-    t.boolean "contents_rekeyed", default: false
   end
 
   create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
