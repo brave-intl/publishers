@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_07_20_165100) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
@@ -63,8 +64,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.string "default_currency"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
-    t.boolean "access_token_rekeyed", default: false
-    t.boolean "refresh_token_rekeyed", default: false
     t.index ["encrypted_access_token_iv"], name: "index_bitflyer_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_bitflyer_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_bitflyer_connections_on_is_verified"
@@ -209,8 +208,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.string "default_currency"
-    t.boolean "access_token_rekeyed", default: false
-    t.boolean "refresh_token_rekeyed", default: false
     t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
@@ -387,7 +384,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "payer_id"
-    t.boolean "refresh_token_rekeyed", default: false
     t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
@@ -616,8 +612,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.jsonb "capabilities"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "access_token_rekeyed", default: false
-    t.boolean "refresh_token_rekeyed", default: false
     t.index ["encrypted_access_token_iv"], name: "index_stripe_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_stripe_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["publisher_id"], name: "index_stripe_connections_on_publisher_id"
@@ -630,7 +624,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.datetime "last_logged_in_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "secret_rekeyed", default: false
     t.index ["publisher_id"], name: "index_totp_registrations_on_publisher_id"
   end
 
@@ -718,8 +711,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
     t.text "card_id"
-    t.boolean "uphold_code_rekeyed", default: false
-    t.boolean "uphold_access_parameters_rekeyed", default: false
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
@@ -739,7 +730,6 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.string "encrypted_authentication_token_iv"
     t.datetime "authentication_token_expires_at"
     t.uuid "user_id", null: false
-    t.boolean "authentication_token_rekeyed", default: false
     t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 
