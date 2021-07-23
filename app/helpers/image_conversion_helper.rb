@@ -1,5 +1,9 @@
+require "wasmer"
 module ImageConversionHelper
   IMAGE_QUALITY = 50
+
+  # Let's compile the module to be able to execute it!
+  WASMModule = Wasmer::Module.new(Wasmer::Store.new, IO.read("#{Rails.root}/wasm_thumbnail.wasm", mode: "rb"))
 
   def resize_to_dimensions_and_convert_to_jpg(source_image_path:, attachment_type:, filename:)
     file = File.binread(source_image_path)
@@ -26,13 +30,8 @@ module ImageConversionHelper
   end
 
   def resize_image_with_wasm(file_bytes:, dimensions:, size: 250000)
-    require "wasmer"
-    store = Wasmer::Store.new
-    # Let's compile the module to be able to execute it!
-    module_ = Wasmer::Module.new store, IO.read("#{Rails.root}/wasm_thumbnail.wasm", mode: "rb")
-
-    # Now the module is compiled, we can instantiate it.
-    instance = Wasmer::Instance.new module_, nil
+    # Now the module is compiled, we can instantiate it. Doing so outside the method where used results in errors.
+    instance = Wasmer::Instance.new(WASMModule, nil)
 
     # This tells us how much space we'll need to put our image in the WASM env
     image_length = file_bytes.length
@@ -68,14 +67,11 @@ module ImageConversionHelper
 
     # The bytes passed back to us are ASCII-encoded, i.e. 8bit bytes. Interpret them as so,
     # and THEN convert to hex to search for the image bytes
-    hex = bytes.pack('C*').unpack('H*')[0]
-    start_jpg = hex.index('ffd8')
-    # +3 to get to the index after the 9 in ffd9, i.e. the end of the image
-    end_jpg = hex.rindex('ffd9') + 3
-    # Extract the image bytes in hex
-    hex_jpeg = hex[start_jpg..end_jpg]
-    # Now give us a binary string, converting from hex
-    [hex_jpeg].pack('H*')
+
+    # The first 4 bytes are a header until the image. The actual image probably ends well before
+    # the whole buffer, but we keep the junk data on the end to make all the images the same size
+    # for privacy concerns.
+    bytes[4..].pack('C*')
   end
 
   #   Adding an empty comment adds an arbitrary number of bytes
