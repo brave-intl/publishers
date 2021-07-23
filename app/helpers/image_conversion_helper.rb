@@ -62,9 +62,9 @@ module ImageConversionHelper
     # FFD8 and FFD9, so we can convert to hex and find the bounds of the image, then write to file
     bytes = memory.to_a.take(size)
 
-    # Deallocate #TODO
-    # instance.exports.deallocate.call(input_pointer, image_length)
-    # instance.exports.deallocate.call(output_pointer, bytes.length)
+    # Deallocate
+    instance.exports.deallocate.call(input_pointer, image_length)
+    instance.exports.deallocate.call(output_pointer, bytes.length)
 
     # The bytes passed back to us are ASCII-encoded, i.e. 8bit bytes. Interpret them as so,
     # and THEN convert to hex to search for the image bytes
