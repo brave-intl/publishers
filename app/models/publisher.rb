@@ -114,17 +114,17 @@ class Publisher < ApplicationRecord
   scope :uphold_selected_provider, -> {
     joins("INNER JOIN uphold_connections
            ON uphold_connections.id = publishers.selected_wallet_provider_id
-           AND publishers.selected_wallet_provider_type = '#{UpholdConnection.to_s}'")
+           AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
 
   # We could remove the `country is null` if we change all affected creators to an
   # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
-    uphold_selected_provider.
-    where(uphold_connections: { is_member: true }).
-    where.not(uphold_connections: { address: nil }).
-    where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
-          uphold_connections.country is null")
+    uphold_selected_provider. # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      where(uphold_connections: { is_member: true }).
+      where.not(uphold_connections: { address: nil }).
+      where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
+            uphold_connections.country is null")
   }
 
   ###############################
@@ -136,7 +136,7 @@ class Publisher < ApplicationRecord
   scope :bitflyer_selected_provider, -> {
     joins("INNER JOIN bitflyer_connections
            ON bitflyer_connections.id = publishers.selected_wallet_provider_id
-           AND publishers.selected_wallet_provider_type = '#{BitflyerConnection.to_s}'")
+           AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
 
   scope :valid_payable_bitflyer_creators, -> {
@@ -152,14 +152,14 @@ class Publisher < ApplicationRecord
   scope :gemini_selected_provider, -> {
     joins("INNER JOIN gemini_connections
            ON gemini_connections.id = publishers.selected_wallet_provider_id
-           AND publishers.selected_wallet_provider_type = '#{GeminiConnection.to_s}'")
+           AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
   }
 
   scope :valid_payable_gemini_creators, -> {
     gemini_selected_provider.
-    where(gemini_connections: { is_verified: true }).
-    where.not(gemini_connections: { recipient_id: nil }).
-    where.not(gemini_connections: { country: GeminiConnection::JAPAN })
+      where(gemini_connections: { is_verified: true }).
+      where.not(gemini_connections: { recipient_id: nil }).
+      where.not(gemini_connections: { country: GeminiConnection::JAPAN })
   }
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
