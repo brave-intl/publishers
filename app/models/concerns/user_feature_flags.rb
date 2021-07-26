@@ -25,6 +25,11 @@ module UserFeatureFlags
     REFERRAL_ENABLED_OVERRIDE,
   ].freeze
 
+  # Values stored in DAILY_EMAILS_FOR_PROMO_STATS
+  DISABLED = "disabled".freeze
+  PREVIOUS_DAY = "previous_day".freeze
+  MONTH_TO_DATE = "month_to_date".freeze
+
   included do
     scope :daily_emails_for_promo_stats, -> { where("feature_flags->'#{DAILY_EMAILS_FOR_PROMO_STATS}' = 'true'") }
     scope :wire_only,      -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
@@ -93,7 +98,11 @@ module UserFeatureFlags
   end
 
   def has_daily_emails_for_promo_stats?
-    feature_flags.symbolize_keys[DAILY_EMAILS_FOR_PROMO_STATS].present?
+    feature_flags.symbolize_keys[DAILY_EMAILS_FOR_PROMO_STATS].present? && feature_flags.symbolize_keys[DAILY_EMAILS_FOR_PROMO_STATS] != DISABLED
+  end
+
+  def receives_mtd_promo_emails?
+    feature_flags.symbolize_keys[DAILY_EMAILS_FOR_PROMO_STATS] == MONTH_TO_DATE
   end
 
   def allowed_to_create_referrals?
