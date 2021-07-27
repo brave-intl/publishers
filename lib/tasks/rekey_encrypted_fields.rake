@@ -60,13 +60,11 @@ end
 def perform_sql_update(records:, field:)
   # Using postgres UPDATE FROM syntax
   # https://www.postgresql.org/docs/current/sql-update.html
-  rekeyed_field_name = "#{field}_rekeyed"
   record = records[0]
   table = record.class.table_name
   sql = """
               UPDATE #{table} as t
-                SET #{rekeyed_field_name} = TRUE,
-                encrypted_#{field} = c.encrypted_field,
+                SET encrypted_#{field} = c.encrypted_field,
                 encrypted_#{field}_iv = c.encrypted_field_iv,
                 updated_at = '#{Time.zone.now}'
               FROM (values
