@@ -31,7 +31,9 @@ module UserFeatureFlags
   MONTH_TO_DATE = "month_to_date".freeze
 
   included do
-    scope :daily_emails_for_promo_stats, -> { where("feature_flags->'#{DAILY_EMAILS_FOR_PROMO_STATS}' = 'true'") }
+    scope :daily_emails_for_promo_stats, -> {
+      where("(feature_flags->'daily_emails_for_promo_stats')::jsonb ?| array['#{MONTH_TO_DATE}', '#{PREVIOUS_DAY}', 'true']")
+    }
     scope :wire_only,      -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
     scope :invoice,        -> { where("feature_flags->'#{INVOICE}' = 'true'") }
     scope :merchant,       -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
