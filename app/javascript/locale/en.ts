@@ -265,7 +265,7 @@ export default {
       description: "Connect a crypto wallet to receive contributions and other payments.",
       title: "Wallet for BAT Payment"
     },
-    connected: "Connected <span>{displayName}</span>",
+    connected: "Connected",
     currencies: {
       description: 'You will receive monthly contributions from your Brave fans in this currency in your account.',
       fees: 'For currency choices other than BAT, This exchange will charge an exchange fee upon deposit. <a>Check fees</a>.',
