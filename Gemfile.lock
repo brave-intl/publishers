@@ -16,6 +16,14 @@ GIT
       rest-client
       xml-simple
 
+GIT
+  remote: https://github.com/tsmartt/wasm-thumbnail-1.git
+  revision: 074b4734a098691bb1d2dbfc4701e34e9ab31b14
+  branch: add-rubygem
+  specs:
+    wasm-thumbnail-rb (0.1.0)
+      wasmer (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -643,7 +651,7 @@ DEPENDENCIES
   tzinfo-data
   u2f (~> 1.0)
   vcr
-  wasmer (~> 1.0)
+  wasm-thumbnail-rb!
   web-console
   webmock (~> 3.0)
   webpacker (~> 4.0.7)

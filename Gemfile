@@ -209,4 +209,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "wasmer", "~> 1.0"
+gem "wasm-thumbnail-rb", git: 'https://github.com/tsmartt/wasm-thumbnail-1.git', branch: 'add-rubygem'

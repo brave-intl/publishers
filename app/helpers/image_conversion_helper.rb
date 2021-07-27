@@ -2,9 +2,6 @@ require "wasmer"
 module ImageConversionHelper
   IMAGE_QUALITY = 50
 
-  # Let's compile the module to be able to execute it!
-  WASMModule = Wasmer::Module.new(Wasmer::Store.new, IO.read("#{Rails.root}/wasm_thumbnail.wasm", mode: "rb"))
-
   def resize_to_dimensions_and_convert_to_jpg(source_image_path:, attachment_type:, filename:)
     file = File.binread(source_image_path)
     file_bytes = file.unpack("C*")
@@ -31,13 +28,34 @@ module ImageConversionHelper
 
   def resize_image_with_wasm(file_bytes:, dimensions:, size: 250000)
     # Now the module is compiled, we can instantiate it. Doing so outside the method where used results in errors.
-    instance = Wasmer::Instance.new(WASMModule, nil)
+    def register_panic(msg_ptr = nil, msg_len = nil, file_ptr = nil, file_len = nil, line = nil, column = nil)
+      Rails.logger.debug("WASM pacnicked")
+    end
+
+    wasm_store = Wasmer::Store.new
+    wasm_import_object = Wasmer::ImportObject.new
+    wasm_import_object.register(
+      "env",
+      {
+        :register_panic => Wasmer::Function.new(
+          wasm_store,
+          method(:register_panic),
+          Wasmer::FunctionType.new([Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32], [])
+        ),
+      }
+    )
+
+    # Let's compile the module to be able to execute it!
+    wasm_instance = Wasmer::Instance.new(
+      Wasmer::Module.new(wasm_store, IO.read("#{Gem.loaded_specs['wasm-thumbnail-rb'].full_gem_path}/lib/wasm/thumbnail/rb/data/wasm_thumbnail.wasm", mode: "rb")),
+      wasm_import_object
+    )
 
     # This tells us how much space we'll need to put our image in the WASM env
     image_length = file_bytes.length
-    input_pointer = instance.exports.allocate.call(image_length)
+    input_pointer = wasm_instance.exports.allocate.call(image_length)
     # Get a pointer on the allocated memory so we can write to it
-    memory = instance.exports.memory.uint8_view input_pointer
+    memory = wasm_instance.exports.memory.uint8_view input_pointer
 
     # Put the image to resize in the allocated space
     for nth in 0..image_length - 1
@@ -48,12 +66,12 @@ module ImageConversionHelper
     # Note that this writes to a portion of memory the new JPEG file, but right pads the rest of the space
     # we gave it with 0.
     begin
-      output_pointer = instance.exports.resize_and_pad.call(input_pointer, image_length, dimensions[0], dimensions[1], size)
+      output_pointer = wasm_instance.exports.resize_and_pad.call(input_pointer, image_length, dimensions[0], dimensions[1], size)
     rescue RuntimeError
       raise "Error processing the image."
     end
     # Get a pointer to the result
-    memory = instance.exports.memory.uint8_view output_pointer
+    memory = wasm_instance.exports.memory.uint8_view output_pointer
 
     # Only take the buffer that we told the rust function we needed. The resize function
     # makes a smaller image than the buffer we said, and then pads out the rest so we have to
@@ -62,8 +80,8 @@ module ImageConversionHelper
     bytes = memory.to_a.take(size)
 
     # Deallocate
-    instance.exports.deallocate.call(input_pointer, image_length)
-    instance.exports.deallocate.call(output_pointer, bytes.length)
+    wasm_instance.exports.deallocate.call(input_pointer, image_length)
+    wasm_instance.exports.deallocate.call(output_pointer, bytes.length)
 
     # The bytes passed back to us are ASCII-encoded, i.e. 8bit bytes. Interpret them as so,
     # and THEN convert to hex to search for the image bytes
