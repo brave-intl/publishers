@@ -10,7 +10,7 @@ task rekey: :environment do
   hash_model_to_columns.except(UserAuthenticationToken).each do |model, encrypted_fields|
     encrypted_fields.each do |field|
       puts "Rekeying #{model} #{field}"
-      model.find_in_batches(batch_size: 10000) do |batch_of_records|
+      model.order(created_at: :asc).find_in_batches(batch_size: 10000) do |batch_of_records|
         updated_records = []
         batch_of_records.each do |record|
           Rails.logger.debug("Rekeying #{model} #{field} #{record.id}")
