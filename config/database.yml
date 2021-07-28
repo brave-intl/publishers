@@ -3,7 +3,7 @@
 # https://github.com/rails/rails/blob/3df3d80ade705dd096ec481845ff0fc2d70427b0/railties/lib/rails/generators/rails/app/templates/config/databases/postgresql.yml
 
 default: &default
-  adapter: postgresql
+  adapter: <%= ENV['DB_ADAPTER'] ||= 'postgresql' %>
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 

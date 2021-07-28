@@ -201,6 +201,8 @@ group :development, :test do
   gem 'selenium-webdriver', "~> 3.142.0"
   gem 'solargraph'
   gem 'dotenv-rails', "2.7.6"
+
+  gem 'activerecord-nulldb-adapter', git: 'https://github.com/tsmartt/nulldb.git', branch: 'tsmartt-patch-1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
