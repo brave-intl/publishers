@@ -4,10 +4,16 @@ class Promo::EmailBreakdownsJob
 
   def perform(publisher_id)
     referral_codes = PromoRegistration.where(publisher_id: publisher_id).pluck(:referral_code)
+    publisher = Publisher.find_by(id: publisher_id)
+
+    end_date = 1.days.ago.to_date
+    start_date = publisher.receives_mtd_promo_emails? ? Date.today.at_beginning_of_month.to_date : 1.days.ago.to_date
+    start_date = start_date > end_date ? end_date : start_date
+
     csv = CSV.parse(Promo::RegistrationStatsReportGenerator.new(
       referral_codes: referral_codes,
-      start_date: 1.days.ago.to_date,
-      end_date: 1.days.ago.to_date,
+      start_date: start_date,
+      end_date: end_date,
       reporting_interval: PromoRegistration::DAILY,
       is_geo: true,
       include_ratios: false
@@ -29,7 +35,6 @@ class Promo::EmailBreakdownsJob
       end
       new_csv << row.join(",")
     end
-    publisher = Publisher.find_by(id: publisher_id)
     PublisherMailer.promo_breakdowns(publisher, new_csv.join("\n")).deliver_now
   end
 

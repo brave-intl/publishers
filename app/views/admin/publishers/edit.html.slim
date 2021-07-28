@@ -2,8 +2,9 @@
 
 #publisher
   #publisher-section
-    h4.m-0.p-0 Settings
+    h3.m-0.p-0 Settings
     p Toggle settings on or off for this publisher.
+    br
 
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
       .form-group.border-bottom.pb-2
@@ -25,21 +26,31 @@
           = f.check_box UserFeatureFlags::MERCHANT, {}, checked: @publisher.merchant?
           = " Merchant Feature"
         .text-dark Enables the abililty to create API Keys to interact with SKUs
+
+      h4.m-0.border-bottom.p-0 Referrals Section
       .form-group.border-bottom.pb-2
+        label
+        p.text-dark Sets the date when the publishers promo codes will no longer be active.
+        = "Promo Lockout Time"
+        = f.date_field(UserFeatureFlags::PROMO_LOCKOUT_TIME, value: @publisher.promo_lockout_time, class: 'ml-2')
+      .form-group.border-bottom.pb-2
+        p.text-dark Enforces KYC for users to join the referral promo program.
         label
           = f.check_box UserFeatureFlags::REFERRAL_KYC_REQUIRED, {}, checked: @publisher.referral_kyc_required?
           = " Referral KYC Required"
-        p.text-dark Enforces KYC for users to join the referral promo program.
       .form-group.border-bottom.pb-2
+        p.text-dark Kinds of Daily Emails sent to promoters
         label
-          = "Promo Lockout Time"
-        = f.date_field(UserFeatureFlags::PROMO_LOCKOUT_TIME, value: @publisher.promo_lockout_time, class: 'ml-2')
-        p.text-dark Sets the date when the publishers promo codes will no longer be active.
-      .form-group.border-bottom.pb-2
+          = f.radio_button(UserFeatureFlags::DAILY_EMAILS_FOR_PROMO_STATS, UserFeatureFlags::DISABLED, checked: !@publisher.has_daily_emails_for_promo_stats?)
+          = " Disabled"
+        br
         label
-          = f.check_box UserFeatureFlags::DAILY_EMAILS_FOR_PROMO_STATS, {}, checked: @publisher.has_daily_emails_for_promo_stats?
-          = " Daily Emails for Promo Stats"
-        p.text-dark Sets daily emails for promos
+          = f.radio_button(UserFeatureFlags::DAILY_EMAILS_FOR_PROMO_STATS, UserFeatureFlags::PREVIOUS_DAY, checked: @publisher.has_daily_emails_for_promo_stats? && !@publisher.receives_mtd_promo_emails?)
+          = " Previous day"
+        br
+        label
+          = f.radio_button(UserFeatureFlags::DAILY_EMAILS_FOR_PROMO_STATS, UserFeatureFlags::MONTH_TO_DATE, checked: @publisher.receives_mtd_promo_emails?)
+          = " From start of month to previous day"
       .form-group.border-bottom.pb-2
         label
           = f.check_box UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE, {}, checked: @publisher.allowed_to_create_referrals?

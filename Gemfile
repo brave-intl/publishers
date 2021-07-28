@@ -199,7 +199,7 @@ group :development, :test do
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test
   gem 'selenium-webdriver', "~> 3.142.0"
-
+  gem 'solargraph'
   gem 'dotenv-rails', "2.7.6"
 end
 
