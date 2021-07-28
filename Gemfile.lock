@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://github.com/tsmartt/wasm-thumbnail-1.git
-  revision: 074b4734a098691bb1d2dbfc4701e34e9ab31b14
+  revision: e59539dff16a13e6de49c8d20f462748638197bd
   branch: add-rubygem
   specs:
     wasm-thumbnail-rb (0.1.0)
