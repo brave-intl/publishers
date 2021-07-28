@@ -1,4 +1,6 @@
-FROM ruby:2.7-slim
+FROM ruby:2.7.3
+
+RUN useradd -ms /bin/bash limited_user
 
 RUN apt-get update -qq && apt-get install -y build-essential
 
@@ -19,7 +21,6 @@ RUN gem install bundler
 
 RUN NODE_ENV=production
 RUN RAILS_ENV=production
-
 
 WORKDIR /var/www/
 
@@ -49,5 +50,6 @@ RUN bundle exec rails assets:precompile
 
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
+USER limited_user
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
 
