@@ -27,29 +27,8 @@ module ImageConversionHelper
   end
 
   def resize_image_with_wasm(file_bytes:, dimensions:, size: 250000)
-    # Now the module is compiled, we can instantiate it. Doing so outside the method where used results in errors.
-    def register_panic(msg_ptr = nil, msg_len = nil, file_ptr = nil, file_len = nil, line = nil, column = nil)
-      Rails.logger.debug("WASM pacnicked")
-    end
-
-    wasm_store = Wasmer::Store.new
-    wasm_import_object = Wasmer::ImportObject.new
-    wasm_import_object.register(
-      "env",
-      {
-        :register_panic => Wasmer::Function.new(
-          wasm_store,
-          method(:register_panic),
-          Wasmer::FunctionType.new([Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32, Wasmer::Type::I32], [])
-        ),
-      }
-    )
-
     # Let's compile the module to be able to execute it!
-    wasm_instance = Wasmer::Instance.new(
-      Wasmer::Module.new(wasm_store, IO.read("#{Gem.loaded_specs['wasm-thumbnail-rb'].full_gem_path}/lib/wasm/thumbnail/rb/data/wasm_thumbnail.wasm", mode: "rb")),
-      wasm_import_object
-    )
+    wasm_instance = Wasm::Thumbnail::Rb::GetWasmInstance.call
 
     # This tells us how much space we'll need to put our image in the WASM env
     image_length = file_bytes.length
