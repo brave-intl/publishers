@@ -202,7 +202,7 @@ group :development, :test do
   gem 'solargraph'
   gem 'dotenv-rails', "2.7.6"
 
-  gem 'activerecord-nulldb-adapter', git: 'https://github.com/brave-intl/nulldb.git', branch: 'tsmartt-patch-1'
+  gem 'activerecord-nulldb-adapter'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
