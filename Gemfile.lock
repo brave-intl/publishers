@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/brave-intl/nulldb.git
+  revision: 1db1ff143f8c05e8aee80e02e8597b8f97ae96f1
+  branch: tsmartt-patch-1
+  specs:
+    activerecord-nulldb-adapter (0.7.0)
+      activerecord (>= 5.2.0, < 6.3)
+
+GIT
   remote: https://github.com/dlipeles/omniauth-reddit.git
   revision: a9abff8c5a6de217811945dc6f2949d26debfb29
   branch: master
@@ -15,14 +23,6 @@ GIT
       activesupport (>= 3.0, < 7.0)
       rest-client
       xml-simple
-
-GIT
-  remote: https://github.com/tsmartt/nulldb.git
-  revision: 158c7e7fc5fb09d7e777589a6b9a1197e4c87ccc
-  branch: tsmartt-patch-1
-  specs:
-    activerecord-nulldb-adapter (0.7.0)
-      activerecord (>= 5.2.0, < 6.3)
 
 GEM
   remote: https://rubygems.org/
