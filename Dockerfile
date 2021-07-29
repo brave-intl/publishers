@@ -1,4 +1,4 @@
-FROM ruby:2.7.3
+FROM ruby:2.7-slim
 
 RUN useradd -ms /bin/bash limited_user
 
@@ -52,4 +52,3 @@ EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 USER limited_user
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
-
