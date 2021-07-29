@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/brave-intl/wasm-thumbnail.git
+  revision: 695f6acf23dd831af793d0562117503275df7cf9
+  tag: 0.0.1
+  specs:
+    wasm-thumbnail-rb (0.1.0)
+      wasmer (~> 1.0)
+
+GIT
   remote: https://github.com/dlipeles/omniauth-reddit.git
   revision: a9abff8c5a6de217811945dc6f2949d26debfb29
   branch: master
@@ -15,14 +23,6 @@ GIT
       activesupport (>= 3.0, < 7.0)
       rest-client
       xml-simple
-
-GIT
-  remote: https://github.com/tsmartt/wasm-thumbnail-1.git
-  revision: a172bcf425054072600df77eabb7cbf4ab96d138
-  branch: add-rubygem
-  specs:
-    wasm-thumbnail-rb (0.1.0)
-      wasmer (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
