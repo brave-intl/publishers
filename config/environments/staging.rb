@@ -105,7 +105,7 @@ Rails.application.configure do
   config.i18n.fallbacks = true
 
   # Use S3 for storage
-  config.active_storage.service = :amazon_case_notes
+  config.active_storage.service = :amazon_internal_bucket
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify

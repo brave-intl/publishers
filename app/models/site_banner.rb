@@ -4,8 +4,8 @@ class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::SanitizeHelper
 
-  has_one_attached :logo, service: :amazon_banner_images
-  has_one_attached :background_image, service: :amazon_banner_images
+  has_one_attached :logo, service: :amazon_public_bucket
+  has_one_attached :background_image, service: :amazon_public_bucket
 
   belongs_to :publisher
   belongs_to :channel

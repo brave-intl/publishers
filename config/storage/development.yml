@@ -2,10 +2,10 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-amazon_case_notes:
+amazon_internal_bucket:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-amazon_banner_images:
+amazon_public_bucket:
   service: Disk
   root: <%= Rails.root.join("storage") %>
