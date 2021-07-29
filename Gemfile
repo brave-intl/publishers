@@ -202,7 +202,7 @@ group :development, :test do
   gem 'solargraph'
   gem 'dotenv-rails', "2.7.6"
 
-  gem 'activerecord-nulldb-adapter'
+  gem 'activerecord-nulldb-adapter', "0.7.0"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
