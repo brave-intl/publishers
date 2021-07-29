@@ -90,6 +90,10 @@ module ActiveSupport
     fixtures :all
     self.use_transactional_tests = true
 
+    setup do
+      Rails.cache.clear
+    end
+
     # Add more helper methods to be used by all tests here...
   end
 end

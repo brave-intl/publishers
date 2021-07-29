@@ -21,7 +21,6 @@ class BitflyerJobTest < ActiveSupport::TestCase
 
   test "for order and key presence" do
     Sidekiq::Worker.clear_all
-    Rails.cache.clear
     bitflyer_job = Payout::BitflyerJob.new
     bitflyer_job.perform({ payout_report_id: payout_reports(:one).id }.to_json)
     visited_publisher_id = nil
