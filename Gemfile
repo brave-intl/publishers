@@ -176,6 +176,7 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
+  gem "minitest-retry"
 end
 
 group :development, :test do
