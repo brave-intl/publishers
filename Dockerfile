@@ -1,22 +1,15 @@
-FROM ruby:2.7-slim
+FROM ruby:2.7-alpine
 
-RUN useradd -ms /bin/bash limited_user
+RUN addgroup -S limited_user_group && adduser -S limited_user -G limited_user_group
 
-RUN apt-get update -qq && apt-get install -y build-essential
-
-RUN apt-get install -y nodejs \
-  libpq-dev \
+RUN apk update; apk add nodejs \
+  libpq \
   git \
   curl \
   imagemagick \
-  libjemalloc2
+  nodejs \
+  npm
 
-RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
-ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
-
-SHELL [ "/bin/bash", "-l", "-c" ]
-
-RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN gem install bundler
 
 RUN NODE_ENV=production
@@ -30,10 +23,9 @@ WORKDIR /var/www/
 # This will also ensure that gems are cached and only updated when they change.
 COPY Gemfile ./
 COPY Gemfile.lock ./
-COPY package.json yarn.lock .nvmrc ./
+COPY package.json yarn.lock ./
 
 # Install the dependencies.
-RUN nvm install && nvm use
 RUN bundle check || bundle install --jobs 20 --retry 5
 RUN node --version
 RUN npm install -g yarn
