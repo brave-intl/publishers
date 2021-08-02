@@ -38,10 +38,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     site_banner = site_banners(:default)
     sign_in publisher
 
-    fake_data = "A" * Publishers::SiteBannersController::MAX_IMAGE_SIZE
+    fake_data = "A" * SiteBanner::LOGO_UNIVERSAL_FILE_SIZE
     put '/publishers/' + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000",
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
         params: { logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json }
+
+    assert_equal JSON.parse(@response.body)["message"], I18n.t("banner.upload_too_big")
 
     publisher.reload
     assert_nil site_banner.logo.attachment

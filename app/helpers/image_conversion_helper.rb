@@ -21,11 +21,14 @@ module ImageConversionHelper
       return nil
     end
 
-    actual_jpeg_to_save = Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
-                                                             width: dimensions[0],
-                                                             height: dimensions[1],
-                                                             size: target_file_size)
-
+    begin
+      actual_jpeg_to_save = Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
+                                                               width: dimensions[0],
+                                                               height: dimensions[1],
+                                                               size: target_file_size)
+    rescue RuntimeError
+      raise t("banner.upload_too_big")
+    end
     new_filename = filename + "_resized"
     temp_file = Tempfile.new([new_filename, ".jpg"], binmode: true)
     temp_file.write(actual_jpeg_to_save)
