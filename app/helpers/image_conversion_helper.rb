@@ -6,11 +6,14 @@ module ImageConversionHelper
     file = File.binread(source_image_path)
     file_bytes = file.unpack("C*")
 
+    target_file_size = nil
     dimensions = nil
     if attachment_type == SiteBanner::LOGO
+      target_file_size = SiteBanner::LOGO_UNIVERSAL_FILE_SIZE
       dimensions = SiteBanner::LOGO_DIMENSIONS
     elsif attachment_type == SiteBanner::BACKGROUND
       dimensions = SiteBanner::BACKGROUND_DIMENSIONS
+      target_file_size = SiteBanner::BACKGROUND_UNIVERSAL_FILE_SIZE
     end
 
     if !dimensions
@@ -21,7 +24,7 @@ module ImageConversionHelper
     actual_jpeg_to_save = Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
                                                              width: dimensions[0],
                                                              height: dimensions[1],
-                                                             size: 2500000)
+                                                             size: target_file_size)
 
     new_filename = filename + "_resized"
     temp_file = Tempfile.new([new_filename, ".jpg"], binmode: true)
