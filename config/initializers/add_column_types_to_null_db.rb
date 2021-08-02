@@ -1,5 +1,6 @@
-require 'nulldb'
-class ActiveRecord::ConnectionAdapters::NullDBAdapter::TableDefinition
-  alias_method :serial, :integer
-  alias_method :inet, :string
+Rails.configuration.to_prepare do
+  ActiveRecord::ConnectionAdapters::NullDBAdapter::TableDefinition.class_eval do
+    alias_method :serial, :integer
+    alias_method :inet, :string
+  end
 end
