@@ -15,11 +15,19 @@ require "test_helpers/mock_gemini_responses"
 require 'capybara/rails'
 require 'capybara/minitest'
 require 'minitest/rails'
+require 'minitest/retry'
+
+Minitest::Retry.use!(
+  retry_count: 3, # The number of times to retry. The default is 3.
+  verbose: true,           # Whether or not to display the message at the time of retry. The default is true.
+  io: $stdout,             # Display destination of retry when the message. The default is stdout.
+  exceptions_to_retry: [], # List of exceptions that will trigger a retry (when empty, all exceptions will).
+  methods_to_retry: [] # List of methods that will trigger a retry (when empty, all methods will).
+)
 
 Webpacker.compile
 
 Sidekiq::Testing.fake!
-
 
 WebMock.allow_net_connect!
 
@@ -31,16 +39,16 @@ Chromedriver.set_version "2.38"
 
 Capybara.register_driver "chrome" do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: {
-          binary: ENV["CHROME_BINARY"],
-          args: %w{headless no-sandbox disable-gpu window-size=1680,1050}
-      }.compact,
-      loggingPrefs: { browser: 'ALL' }
+    chromeOptions: {
+      binary: ENV["CHROME_BINARY"],
+      args: %w(headless no-sandbox disable-gpu window-size=1680,1050),
+    }.compact,
+    loggingPrefs: { browser: 'ALL' }
   )
   driver = Capybara::Selenium::Driver.new(
-      app,
-      browser: :chrome,
-      desired_capabilities: capabilities
+    app,
+    browser: :chrome,
+    desired_capabilities: capabilities
   )
 end
 
@@ -54,9 +62,9 @@ Capybara.register_driver "firefoxja" do |app|
   opts.args << '--headless'
 
   driver = Capybara::Selenium::Driver.new(
-      app,
-      browser: :firefox,
-      options: opts
+    app,
+    browser: :firefox,
+    options: opts
   )
 end
 
@@ -76,12 +84,15 @@ VCR.configure do |config|
   config.default_cassette_options = { match_requests_on: [:method, :uri, :body], decode_compressed_response: true }
 end
 
-
 module ActiveSupport
   class TestCase
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
     self.use_transactional_tests = true
+
+    setup do
+      Rails.cache.clear
+    end
 
     # Add more helper methods to be used by all tests here...
   end
@@ -118,7 +129,6 @@ end
 
 module ActionDispatch
   class IntegrationTest
-
     self.use_transactional_tests = true
 
     setup do

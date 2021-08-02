@@ -21,6 +21,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
+  config.middleware.use(Rack::Attack)
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -107,6 +108,7 @@ Rails.application.configure do
   config.after_initialize do
     Bullet.enable = true
     Bullet.rails_logger = true
+    Util::AttrEncrypted.monkey_patch_old_key_fallback
   end
 
   # Uncomment if you wish to allow Action Cable access from any origin.
