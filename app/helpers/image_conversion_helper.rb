@@ -21,7 +21,7 @@ module ImageConversionHelper
     actual_jpeg_to_save = Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
                                                              width: dimensions[0],
                                                              height: dimensions[1],
-                                                             size: 250000)
+                                                             size: 2500000)
 
     new_filename = filename + "_resized"
     temp_file = Tempfile.new([new_filename, ".jpg"], binmode: true)
