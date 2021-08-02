@@ -40,6 +40,7 @@ class Util::AttrEncrypted
 
   def self.get_value_using_key(record:, field:, key:)
     field_name_iv = record.send("encrypted_#{field}_iv")
+    return nil unless field_name_iv
     field_name_encrypted = record.send("encrypted_#{field}")
     iv = Base64.decode64(field_name_iv)
     record.class.send("decrypt_#{field}",
