@@ -21,18 +21,33 @@ module ImageConversionHelper
       return nil
     end
 
-    begin
-      actual_jpeg_to_save = Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
-                                                               width: dimensions[0],
-                                                               height: dimensions[1],
-                                                               size: target_file_size)
-    rescue RuntimeError
-      raise t("banner.upload_too_big")
-    end
+    actual_jpeg_to_save = retry_quality(file_bytes: file_bytes,
+                                        width: dimensions[0],
+                                        height: dimensions[1],
+                                        size: target_file_size,
+                                        quality: 50)
+
     new_filename = filename + "_resized"
     temp_file = Tempfile.new([new_filename, ".jpg"], binmode: true)
     temp_file.write(actual_jpeg_to_save)
     temp_file.path
+  end
+
+  def retry_quality(file_bytes:, width:, height:, size:, quality:)
+    Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
+                                       width: width,
+                                       height: height,
+                                       size: size,
+                                       quality: quality)
+  rescue RuntimeError
+    raise t("banner.upload_too_big") if quality <= 15
+
+    # Try with reduced quality, start with 50, go down by 5 each time
+    retry_quality(file_bytes: file_bytes,
+                  width: width,
+                  height: height,
+                  size: size,
+                  quality: quality - 5)
   end
 
   def generate_filename(source_image_path:)
