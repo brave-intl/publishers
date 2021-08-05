@@ -3,12 +3,17 @@ FROM ruby:2.7-alpine
 RUN addgroup -S limited_user_group && adduser -S limited_user -G limited_user_group
 
 RUN apk update; apk add nodejs \
+  build-base \
   libpq \
   git \
   curl \
   imagemagick \
   nodejs \
-  npm
+  npm;
+
+RUN echo 'export PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.bash_profile
+RUN gem pristine --all
+RUN gem install nokogiri
 
 RUN gem install bundler
 
