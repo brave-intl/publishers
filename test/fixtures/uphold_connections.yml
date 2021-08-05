@@ -102,7 +102,7 @@ google_connection:
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write', refresh_token: '123' }.to_json,
+    { scope: 'cards:write', access_token: '222', refresh_token: '123' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -117,7 +117,7 @@ basic_connection:
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write' }.to_json,
+    { scope: 'cards:write', access_token: '333' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -132,7 +132,7 @@ blocked_connection:
   status: blocked
   publisher: uphold_connected_blocked
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write' }.to_json,
+    { scope: 'cards:write', access_token: '111' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -147,7 +147,7 @@ restricted_member:
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   send_emails: 2019-01-01
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write' }.to_json,
+    { scope: 'cards:write', access_token: '444' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -156,7 +156,7 @@ restricted_member:
 verified_no_currency:
   uphold_verified: true
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write' }.to_json,
+    { scope: 'cards:write', access_token: '555' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"

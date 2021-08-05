@@ -9,6 +9,9 @@ gem "rack", "~> 2.1.0"
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
+# For bulk updates/imports
+gem "activerecord-import", "1.2.0"
+
 # ActiveRecord Session store for server side storage of session data
 gem 'activerecord-session_store', '~> 2.0'
 
