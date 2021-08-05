@@ -15,16 +15,22 @@ class Publishers::SiteBannersController < ApplicationController
 
   def update
     if site_banner
+      logo_length = params[:logo]&.length || 0
+      cover_length = params[:cover]&.length || 0
+
+      if cover_length > MAX_IMAGE_SIZE or logo_length > MAX_IMAGE_SIZE
+        raise t("banner.upload_too_big")
+      end
+
       site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
-      if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
+      if params[:logo]
         site_banner.logo.attach(
           image_properties(attachment_type: SiteBanner::LOGO)
         )
         site_banner.save!
       end
 
-      if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
-
+      if params[:cover]
         site_banner.background_image.attach(
           image_properties(attachment_type: SiteBanner::BACKGROUND)
         )
@@ -32,8 +38,6 @@ class Publishers::SiteBannersController < ApplicationController
       end
     end
     head :ok
-  rescue MiniMagick::Error
-    render status: 400, json: { message: I18n.t('.shared.oh_no') }.to_json
   rescue StandardError => e
     render status: 400, json: { message: e.message }.to_json
   end
