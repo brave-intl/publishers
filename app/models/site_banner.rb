@@ -3,11 +3,10 @@ require 'addressable'
 class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::SanitizeHelper
-  include PublicS3
 
-  has_one_public_s3 :logo
+  has_one_attached :logo, service: :amazon_public_bucket
+  has_one_attached :background_image, service: :amazon_public_bucket
 
-  has_one_public_s3 :background_image
   belongs_to :publisher
   belongs_to :channel
 
@@ -99,8 +98,8 @@ class SiteBanner < ApplicationRecord
     {
       title: title,
       description: description,
-      backgroundUrl: public_background_image_url,
-      logoUrl: public_logo_url,
+      backgroundUrl: background_image.url,
+      logoUrl: logo.url,
       donationAmounts: donation_amounts,
       socialLinks: social_links,
     }

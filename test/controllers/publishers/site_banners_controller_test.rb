@@ -29,7 +29,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
         params: { title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json }
 
-    assert_response(400)
+    assert_response(200)
     publisher.reload
   end
 
@@ -43,6 +43,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
         params: { logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json }
 
+    assert_equal JSON.parse(@response.body)["message"], I18n.t("banner.upload_too_big")
+
     publisher.reload
     assert_nil site_banner.logo.attachment
   end
@@ -50,15 +52,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "publisher can upload a normally sized file" do
     publisher = publishers(:default)
     site_banner = site_banners(:default)
+    refute site_banner.logo.attachment
+
     sign_in publisher
 
     source_image_path = "./app/assets/images/brave-lion@3x.jpg"
     fake_data = Base64.encode64(open(source_image_path) { |io| io.read })
     put '/publishers/' + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000",
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
-        params: { logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json }
+        params: { logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 20].to_json }
 
     publisher.reload
-    assert_nil site_banner.logo.attachment
+    assert site_banner.reload.logo.attachment
   end
 end

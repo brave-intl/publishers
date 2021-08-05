@@ -9,6 +9,9 @@ RUN apt-get install -y nodejs \
   imagemagick \
   libjemalloc2
 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
 RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
