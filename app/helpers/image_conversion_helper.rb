@@ -43,7 +43,7 @@ module ImageConversionHelper
           width: width,
           height: height,
           size: size,
-          quality: quality
+          quality: quality_to_try
         )
 
       rescue RuntimeError
