@@ -514,6 +514,8 @@ GEM
     tilt (2.0.10)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2021.1)
+      tzinfo (>= 1.0.0)
     u2f (1.0.0)
     unf (0.1.4)
       unf_ext
@@ -635,7 +637,7 @@ DEPENDENCIES
   solargraph
   stripe (~> 5.1, >= 5.1.1)
   temping
-  tzinfo-data
+  tzinfo-data (~> 1.2021)
   u2f (~> 1.0)
   vcr
   web-console

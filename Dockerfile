@@ -2,14 +2,15 @@ FROM ruby:2.7-alpine
 
 RUN addgroup -S limited_user_group && adduser -S limited_user -G limited_user_group
 
-RUN apk update; apk add nodejs \
-  build-base \
+RUN apk update; apk add build-base \
   libpq \
   git \
   curl \
   imagemagick \
   nodejs \
   npm;
+
+RUN apk add postgresql-client postgresql-dev
 
 RUN echo 'export PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.bash_profile
 RUN gem pristine --all

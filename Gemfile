@@ -141,6 +141,8 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
+gem "tzinfo-data", "~> 1.2021"
+
 gem 'webpacker', '~> 5.4.0'
 
 # pagination support for models
@@ -202,6 +204,3 @@ group :development, :test do
   gem 'solargraph'
   gem 'dotenv-rails', "2.7.6"
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
