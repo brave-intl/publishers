@@ -10,7 +10,6 @@ RUN apt-get install -y nodejs \
   libjemalloc2
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="${PATH}:/root/.cargo/bin"
 
 RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
@@ -36,7 +35,7 @@ COPY package.json yarn.lock .nvmrc ./
 
 # Install the dependencies.
 RUN nvm install && nvm use
-RUN bundle check || bundle install --jobs 20 --retry 5
+RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --jobs 20 --retry 5
 RUN node --version
 RUN npm install -g yarn
 RUN yarn install --frozen-lockfile
