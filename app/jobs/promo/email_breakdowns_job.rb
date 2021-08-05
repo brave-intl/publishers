@@ -23,12 +23,11 @@ class Promo::EmailBreakdownsJob
     csv.each do |row|
       row = row.dup
       row.delete_at(5) # delete the 30-day-confirmation column
-      row.delete_at(2) # delete Day column
       if header
         row << "Confirmations received"
         header = false
       else
-        row << total_for_date(date: 1.days.ago.to_date,
+        row << total_for_date(date: row[2].to_date,
                               referral_code: row[0],
                               country: "\"" + (row[1] || "") + "\"",
                               publisher_id: publisher_id)
