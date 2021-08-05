@@ -34,20 +34,24 @@ module ImageConversionHelper
   end
 
   def retry_quality(file_bytes:, width:, height:, size:, quality:)
-    Wasm::Thumbnail::Rb.resize_and_pad(file_bytes: file_bytes,
-                                       width: width,
-                                       height: height,
-                                       size: size,
-                                       quality: quality)
-  rescue RuntimeError
-    raise t("banner.upload_too_big") if quality <= 15
+    quality_to_try = quality
 
-    # Try with reduced quality, start with 50, go down by 5 each time
-    retry_quality(file_bytes: file_bytes,
-                  width: width,
-                  height: height,
-                  size: size,
-                  quality: quality - 5)
+    while quality_to_try > 15
+      begin
+        return Wasm::Thumbnail::Rb.resize_and_pad(
+          file_bytes: file_bytes,
+          width: width,
+          height: height,
+          size: size,
+          quality: quality
+        )
+
+      rescue RuntimeError
+        quality_to_try -= 5
+        next
+      end
+    end
+    raise t("banner.upload_too_big")
   end
 
   def generate_filename(source_image_path:)
