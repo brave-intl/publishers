@@ -1,25 +1,17 @@
 FROM ruby:2.7-alpine
 
-RUN addgroup -S limited_user_group && adduser -S limited_user -G limited_user_group
-
-RUN apk update; apk add build-base \
+RUN addgroup -S limited_user_group && adduser -S limited_user -G limited_user_group && \ apk update; apk add build-base \
   libpq \
   git \
   curl \
   imagemagick \
   nodejs \
-  npm;
-
-RUN apk add postgresql-client postgresql-dev
+  npm \
+  postgresql-client \
+  postgresql-dev;
 
 RUN echo 'export PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.bash_profile
-RUN gem pristine --all
-RUN gem install nokogiri
-
-RUN gem install bundler
-
-RUN NODE_ENV=production
-RUN RAILS_ENV=production
+RUN gem pristine --all; gem install nokogiri bundler
 
 WORKDIR /var/www/
 
