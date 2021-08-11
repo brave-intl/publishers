@@ -40,7 +40,7 @@ RUN nvm install && nvm use
 RUN gem install wasmer -v 1.0.0
 RUN bundle package --all
 RUN bundle config set --local deployment 'true'
-RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --jobs 20 --retry 5
+RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --without test development --jobs 20 --retry 5
 RUN node --version
 RUN npm install -g yarn
 RUN yarn install --frozen-lockfile

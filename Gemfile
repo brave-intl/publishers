@@ -58,9 +58,6 @@ gem "nokogiri", "~> 1.11.7"
 # Open Graph tag
 gem "meta-tags", "~> 2.14.0"
 
-# Image information library
-gem 'fastimage', "~> 2.2.5"
-
 gem 'newrelic_rpm', '~> 6.12', '>= 6.12.0.367'
 
 gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
@@ -184,6 +181,9 @@ group :test do
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
   gem "minitest-retry"
+
+  # Image information library
+  gem 'fastimage', "~> 2.2.5"
 end
 
 group :development, :test do
