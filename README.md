@@ -287,11 +287,7 @@ And on mac with:
 brew cask install chromium
 ```
 
-We also use ImageMagick to process user uploaded images. If you don't have it already, you might get an error "You must have ImageMagick or GraphicsMagick installed". You can install on mac with:
-
-```
-brew install imagemagick
-```
+We use [ThumbnailWasm](https://github.com/brave-intl/wasm-thumbnail) to process user uploaded images. You'll need rust installed to compile it, see https://rustup.rs/ for more details.
 
 ### Javascript
 
