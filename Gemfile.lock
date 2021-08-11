@@ -79,6 +79,8 @@ GEM
     activerecord (6.1.4)
       activemodel (= 6.1.4)
       activesupport (= 6.1.4)
+    activerecord-import (1.2.0)
+      activerecord (>= 3.2)
     activerecord-nulldb-adapter (0.7.0)
       activerecord (>= 5.2.0, < 6.3)
     activerecord-session_store (2.0.0)
@@ -113,7 +115,7 @@ GEM
     autoprefixer-rails (10.3.1.0)
       execjs (~> 2)
     aws-eventstream (1.1.1)
-    aws-partitions (1.484.0)
+    aws-partitions (1.485.0)
     aws-sdk-core (3.119.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
@@ -215,7 +217,6 @@ GEM
       raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    google-protobuf (3.17.3)
     google-protobuf (3.17.3-universal-darwin)
     hashdiff (1.0.1)
     hashie (4.1.0)
@@ -255,7 +256,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.11.0)
+    loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -268,7 +269,6 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0704)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.3)
     minitest (5.14.4)
     minitest-rails (6.1.0)
       minitest (~> 5.10)
@@ -282,9 +282,6 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (6.15.0)
     nio4r (2.5.8)
-    nokogiri (1.11.7)
-      mini_portile2 (~> 2.5.0)
-      racc (~> 1.4)
     nokogiri (1.11.7-x86_64-darwin)
       racc (~> 1.4)
     oauth (0.5.6)
@@ -513,7 +510,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    stripe (5.37.0)
+    stripe (5.38.0)
     temping (3.10.0)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
@@ -568,7 +565,6 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
-  ruby
   x86_64-darwin-20
 
 DEPENDENCIES
