@@ -37,7 +37,7 @@ COPY package.json yarn.lock .nvmrc ./
 
 # Install the dependencies.
 RUN nvm install && nvm use
-RUN gem install wasmer
+RUN gem install wasmer -v 1.0.0
 RUN bundle package --all
 RUN bundle config set --local deployment 'true'
 RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --jobs 20 --retry 5
@@ -57,4 +57,3 @@ RUN bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb:/
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
-
