@@ -439,6 +439,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       with(body: "code=#{uphold_code}&grant_type=authorization_code").
       to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
+    stub_request(:any, /.*uphold-api.*/).
+      to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
+
     url = publishers_uphold_verified_path
     get(url, params: { code: uphold_code, state: uphold_state_token })
     assert(200, response.status)
