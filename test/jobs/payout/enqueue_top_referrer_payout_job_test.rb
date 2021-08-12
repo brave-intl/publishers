@@ -29,4 +29,15 @@ class EnqueueTopReferrerPayoutJobTest < SidekiqTestCase
       IncludePublisherInPayoutReportJob.new.perform(args)
     end
   end
+
+  test 'excludes top publishers from the normal PayoutReport' do
+    EnqueuePublishersForPayoutJob.new.perform
+    job = Payout::UpholdJob.jobs.first
+    Payout::UpholdJob.new.perform(job["args"].first)
+    assert IncludePublisherInPayoutReportJob.jobs.count >= 1
+    top_publisher_ids = Publisher.with_verified_channel.in_top_referrer_program.pluck(:id)
+    IncludePublisherInPayoutReportJob.jobs.each do |job|
+      assert_not job["args"].first["publisher_id"].in?(top_publisher_ids)
+    end
+  end
 end
