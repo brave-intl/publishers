@@ -1,6 +1,7 @@
 require 'test_helper'
+require 'jobs/sidekiq_test_case'
 
-class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
+class EnqueuePublishersForPayoutJobTest < SidekiqTestCase
   include ActiveJob::TestHelper
   include MockGeminiResponses
 
@@ -9,7 +10,6 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
     mock_gemini_auth_request!
     mock_gemini_account_request!
     mock_gemini_recipient_id!
-    Sidekiq::Worker.clear_all
   end
 
   test "launches a job per payout type" do

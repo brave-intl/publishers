@@ -1,14 +1,12 @@
 require "test_helper"
 require "webmock/minitest"
-require 'sidekiq/testing'
+require "jobs/sidekiq_test_case"
 
-class Channels::ApproveChannelTransferJobTest < ActiveJob::TestCase
+class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
   test "verifies contested_by and destroys original channel, sends email" do
     channel = channels(:fraudulently_verified_site)
     contested_by_channel = channels(:locked_out_site)
 
-    Sidekiq::Testing.fake!
-    Sidekiq::Worker.clear_all
     # contest the channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
 
