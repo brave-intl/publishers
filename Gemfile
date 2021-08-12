@@ -58,9 +58,6 @@ gem "nokogiri", "~> 1.11.7"
 # Open Graph tag
 gem "meta-tags", "~> 2.14.0"
 
-# Image conversion library
-gem 'mini_magick', "~> 4.11.0"
-
 gem 'newrelic_rpm', '~> 6.12', '>= 6.12.0.367'
 
 gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
@@ -100,9 +97,9 @@ gem "puma", "~> 5.3.1"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 6.1.3.2"
+gem 'railties', "~> 6.1.4"
 
-gem "rails", "~> 6.1.3.2"
+gem "rails", "~> 6.1.4"
 gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
@@ -154,6 +151,11 @@ gem "zendesk_api", "~> 1.26.0"
 
 gem 'activerecord-nulldb-adapter', "0.7.0"
 
+gem "wasm-thumbnail-rb", git: 'https://github.com/brave-intl/wasm-thumbnail.git', tag: '0.0.3', glob: 'wasm-thumbnail-rb/*.gemspec'
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
@@ -179,6 +181,9 @@ group :test do
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
   gem "minitest-retry"
+
+  # Image information library
+  gem 'fastimage', "~> 2.2.5"
 end
 
 group :development, :test do
@@ -205,6 +210,3 @@ group :development, :test do
   gem 'solargraph'
   gem 'dotenv-rails', "2.7.6"
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]

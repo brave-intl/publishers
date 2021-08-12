@@ -9,11 +9,15 @@ RUN apt-get install -y nodejs \
   imagemagick \
   libjemalloc2
 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+
 RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 SHELL [ "/bin/bash", "-l", "-c" ]
 
+ENV PATH="/root/.cargo/bin:${PATH}"
 RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN gem install bundler
 
@@ -33,7 +37,10 @@ COPY package.json yarn.lock .nvmrc ./
 
 # Install the dependencies.
 RUN nvm install && nvm use
-RUN bundle check || bundle install --jobs 20 --retry 5
+RUN gem install wasmer -v 1.0.0
+RUN bundle package --all
+RUN bundle config set --local deployment 'true'
+RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --without test development --jobs 20 --retry 5
 RUN node --version
 RUN npm install -g yarn
 RUN yarn install --frozen-lockfile
@@ -50,4 +57,3 @@ RUN bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb:/
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
-

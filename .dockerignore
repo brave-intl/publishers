@@ -3,6 +3,7 @@
 logs/
 tmp/
 node_modules/
+storage/
 
 # Ignore bundler config.
 /.bundle
@@ -24,6 +25,8 @@ coverage
 /public/c/*
 /public/i/*
 /public/assets/*
+/public/packs-test/
+/public/creators-landing/node_modules/
 
 # Ignore node_modules
 node_modules/

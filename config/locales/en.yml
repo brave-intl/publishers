@@ -852,6 +852,7 @@ en:
   banner:
     headline: "Brave Rewards"
     tagline: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content."
+    upload_too_big: "The image is too big to resize, please try a smaller file"
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.
