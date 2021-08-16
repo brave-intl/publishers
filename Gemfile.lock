@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/brave-intl/wasm-thumbnail.git
-  revision: 73ae439ee366156fb2353015a9ee5d487502f2a7
-  tag: 0.0.3
+  revision: 095efbf367e626f8a20ac1cfb4db3d2ade58433b
+  tag: 0.0.4
   glob: wasm-thumbnail-rb/*.gemspec
   specs:
     wasm-thumbnail-rb (0.1.0)
