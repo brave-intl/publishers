@@ -217,7 +217,7 @@ GEM
       raabro (~> 1.4)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    google-protobuf (3.17.3-universal-darwin)
+    google-protobuf (3.17.3-x86_64-linux)
     hashdiff (1.0.1)
     hashie (4.1.0)
     highline (2.0.3)
@@ -282,7 +282,7 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (6.15.0)
     nio4r (2.5.8)
-    nokogiri (1.11.7-x86_64-darwin)
+    nokogiri (1.11.7-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.6)
     oauth2 (1.4.7)
@@ -566,6 +566,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
