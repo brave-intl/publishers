@@ -8,7 +8,7 @@ class UpholdRefresherTest < ActiveSupport::TestCase
   end
 
   test 'refresh no previous token' do
-    connection = uphold_connections(:google_connection)
+    connection = uphold_connections(:completed_partner_connection)
     assert_nil connection.refresh_token
     mock_auth = MiniTest::Mock.new.expect(:refresh, received_from_uphold,
                                           [connection])
@@ -20,7 +20,7 @@ class UpholdRefresherTest < ActiveSupport::TestCase
   end
 
   test 'refresh with previous token' do
-    connection = uphold_connections(:basic_connection)
+    connection = uphold_connections(:google_connection)
     refute_nil connection.refresh_token
     refute_equal(connection.reload.refresh_token, '82b0')
 
