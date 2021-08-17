@@ -173,6 +173,7 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   config.after_initialize do
-    Util::AttrEncrypted.monkey_patch_old_key_fallback
+    # Enable this if rotating keys for encrypted fields
+    # Util::AttrEncrypted.monkey_patch_old_key_fallback
   end
 end
