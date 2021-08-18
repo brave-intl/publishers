@@ -28,10 +28,8 @@ RUN RAILS_ENV=development
 
 
 # Install the gems.
-RUN bundle config build.nokogiri --use-system-libraries
+RUN gem install nokogiri
 RUN bundle check || bundle install --jobs 20 --retry 5
-
-# COPY . .
 
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 14.16.1
@@ -45,13 +43,9 @@ RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/inst
   && nvm alias default $NODE_VERSION \
   && nvm use default
 
-# RUN [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
 RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose
-
-
 
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]
