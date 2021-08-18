@@ -70,10 +70,6 @@
     args: ['send_notifications']
     description: "Notifies publishers their wallet is disconnected on the 23rd of every month."
     queue: scheduler
-  Sync::LaunchTokenRefreshJobsJob:
-    cron: "0 0 25 * *"
-    description: "Refreshes access tokens for wallets a few days before payout so we don't have to when generating potential payments."
-    queue: scheduler
   EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
