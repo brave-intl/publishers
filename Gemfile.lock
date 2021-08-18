@@ -25,6 +25,13 @@ GIT
       rest-client
       xml-simple
 
+GIT
+  remote: https://github.com/tsmartt/wasmer-ruby.git
+  revision: d151839fccf755e83a89870c2e8517c72280c820
+  branch: remove-bundle-install-rakefile
+  specs:
+    wasmer (1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -535,7 +542,6 @@ GEM
     vcr (6.0.0)
     warden (1.2.9)
       rack (>= 2.0.9)
-    wasmer (1.0.0)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -654,6 +660,7 @@ DEPENDENCIES
   u2f (~> 1.0)
   vcr
   wasm-thumbnail-rb!
+  wasmer!
   web-console
   webmock (~> 3.0)
   webpacker (~> 4.0.7)

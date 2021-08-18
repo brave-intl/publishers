@@ -155,6 +155,7 @@ gem "zendesk_api", "~> 1.26.0"
 gem 'activerecord-nulldb-adapter', "0.7.0"
 
 gem "wasm-thumbnail-rb", git: 'https://github.com/brave-intl/wasm-thumbnail.git', tag: '0.0.5', glob: 'wasm-thumbnail-rb/*.gemspec'
+gem "wasmer", git: 'https://github.com/tsmartt/wasmer-ruby.git', branch: 'remove-bundle-install-rakefile'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
