@@ -37,7 +37,7 @@ module Uphold
         )
 
         req_options = {
-          use_ssl: uri.scheme == "https",
+          use_ssl: true
         }
 
         Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
