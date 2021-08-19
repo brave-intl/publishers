@@ -5,7 +5,7 @@ require 'uri'
 
 module Uphold
   module Models
-    class Refreshment < Client
+    class Authorization < Client
       PATH = "/oauth2/token"
 
       attr_accessor :access_token, :token_type, :expires_in, :refresh_token, :scope
@@ -18,7 +18,7 @@ module Uphold
       # Can also reduce scope if you pass in a scope reduction
       #
       # @param [UpholdConnection] connection The uphold connection to refresh.
-      def refresh(uphold_connection)
+      def refresh_authorization(uphold_connection)
         refresh_token = uphold_connection.refresh_token
         response = post_to_uphold(refresh_token)
         response.body

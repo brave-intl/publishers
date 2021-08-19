@@ -50,10 +50,6 @@ class UpholdConnection < ApplicationRecord
       where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 
-  scope :with_details, -> {
-    where.not(encrypted_uphold_access_parameters: nil)
-  }
-
   # If the user became KYC'd let's create the uphold card for them
   after_save :create_uphold_cards, if: -> { saved_change_to_is_member? || saved_change_to_default_currency? }
   after_save :update_site_banner_lookup!, if: -> { saved_change_to_is_member? }

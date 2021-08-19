@@ -2,10 +2,8 @@
 
 module Uphold
   class Refresher
-    REFRESH_TOKEN = "refresh_token"
-
     def self.build
-      new(impl_refresher: Uphold::Models::Refreshment.new)
+      new(impl_refresher: Uphold::Models::Authorization.new)
     end
 
     def initialize(impl_refresher:)
