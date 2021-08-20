@@ -10,24 +10,38 @@ class UpholdRefresherTest < ActiveSupport::TestCase
   test 'refresh no previous token' do
     connection = uphold_connections(:completed_partner_connection)
     assert_nil connection.refresh_token
-    mock_auth = MiniTest::Mock.new.expect(:refresh, received_from_uphold,
+    mock_auth = MiniTest::Mock.new.expect(:refresh_authorization, received_from_uphold,
                                           [connection])
     refresher = Uphold::Refresher.new(impl_refresher: mock_auth)
 
     updated = refresher.call(uphold_connection: connection)
-    assert_equal(updated, nil)
+    assert_nil updated
     assert_nil connection.refresh_token
   end
 
-  test 'refresh with previous token' do
+  test 'do not refresh because token too new' do
     connection = uphold_connections(:google_connection)
     refute_nil connection.refresh_token
     refute_equal(connection.reload.refresh_token, '82b0')
 
-    mock_auth = MiniTest::Mock.new.expect(:refresh, received_from_uphold,
+    mock_auth = MiniTest::Mock.new.expect(:refresh_authorization, received_from_uphold,
                                           [connection])
     refresher = Uphold::Refresher.new(impl_refresher: mock_auth)
     refresher.call(uphold_connection: connection)
+    refute_equal(connection.reload.refresh_token, '82b0')
+  end
+
+  test 'refresh with previously expired token' do
+    connection = uphold_connections(:google_connection)
+    refute_nil connection.refresh_token
+    refute_equal(connection.reload.refresh_token, '82b0')
+
+    mock_auth = MiniTest::Mock.new.expect(:refresh_authorization, received_from_uphold,
+                                          [connection])
+    refresher = Uphold::Refresher.new(impl_refresher: mock_auth)
+    travel 2.days do
+      refresher.call(uphold_connection: connection)
+    end
     assert_equal(connection.reload.refresh_token, '82b0')
   end
 end

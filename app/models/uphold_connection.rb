@@ -72,10 +72,6 @@ class UpholdConnection < ApplicationRecord
     @scope ||= JSON.parse(uphold_access_parameters || '{}').try(:[], 'scope') || []
   end
 
-  def refresh_token
-    JSON.parse(uphold_access_parameters || '{}').try(:[], 'refresh_token')
-  end
-
   def can_read_transactions?
     scope.include?('transactions:read')
   end
@@ -204,6 +200,15 @@ class UpholdConnection < ApplicationRecord
     # We'll get an HTTP Status 403 when the User doesn't have access to create cards
     # or the access_token has expired.
     false
+  end
+
+  def refresh_token
+    JSON.parse(uphold_access_parameters || '{}').try(:[], 'refresh_token')
+  end
+
+  def authorization_expires_at
+    exp_date = JSON.parse(uphold_access_parameters || '{}').try(:[], 'expiration_date')
+    exp_date.to_datetime
   end
 
   # Makes an HTTP Request to Uphold and sychronizes

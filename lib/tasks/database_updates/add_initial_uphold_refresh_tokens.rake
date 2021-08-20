@@ -11,6 +11,8 @@ namespace :database_updates do
         access_token_to_refresh_token[row["accessToken"]] = row["refreshToken"]
       end
 
+      expiration_date = 1.hour.seconds.from_now.to_s
+
       records_to_update = []
       UpholdConnection.find_each do |uphold_connection|
         access_params = uphold_connection.uphold_access_parameters
@@ -19,6 +21,7 @@ namespace :database_updates do
           refresh_token = access_token_to_refresh_token[parsed_access_params["access_token"]]
           if refresh_token
             parsed_access_params["refresh_token"] = refresh_token
+            parsed_access_params["expiration_date"] = expiration_date
             uphold_connection.uphold_access_parameters = JSON.dump(parsed_access_params)
             records_to_update << uphold_connection
           end

@@ -16,11 +16,17 @@ module Uphold
       refresh_token = uphold_connection.refresh_token
 
       return if refresh_token.blank?
+      return if uphold_connection.authorization_expires_at > Time.zone.now
 
-      refreshment = @impl_refresher.refresh(uphold_connection)
+      authorization = @impl_refresher.refresh_authorization(uphold_connection)
+
+      # add expiration time
+      authorization_hash = JSON.parse(authorization)
+
+      authorization_hash["expiration_date"] = authorization_hash["expires_in"].to_i.seconds.from_now.to_s
 
       # Update with the latest Authorization
-      uphold_connection.uphold_access_parameters = refreshment
+      uphold_connection.uphold_access_parameters = JSON.dump(authorization_hash)
       uphold_connection.save!
 
       uphold_connection.reload
