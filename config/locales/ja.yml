@@ -707,7 +707,7 @@ ja:
         state_mismatch: 具体的には、Upholdとの間にステータスの不一致がありました。
         missing_state: トークンが見つかりませんでした。戻るボタンをクリックした場合に発生した可能性があります。
   promo:
-    publisher_not_found: "このプロモーションのパブリッシャーは見つかりませんでした。お問い合わせください https://community.brave.com"
+    publisher_not_found: "このプロモーションのパブリッシャーは見つかりませんでした。ご不明点は https://community.brave.com/c/japanese-support/148 にてお問い合わせください。"
     activate:
       header: "あなたのファンに紹介する"
       limited_time_offer: "期間限定"
