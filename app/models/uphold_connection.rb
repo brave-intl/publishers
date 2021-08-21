@@ -208,7 +208,7 @@ class UpholdConnection < ApplicationRecord
 
   def authorization_expires_at
     exp_date = JSON.parse(uphold_access_parameters || '{}').try(:[], 'expiration_date')
-    exp_date.to_datetime
+    exp_date.to_datetime if exp_date
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
