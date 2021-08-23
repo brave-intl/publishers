@@ -203,12 +203,15 @@ class UpholdConnection < ApplicationRecord
   end
 
   def refresh_token
-    JSON.parse(uphold_access_parameters || '{}').try(:[], 'refresh_token')
+    JSON.parse(uphold_access_parameters || '{}').fetch('refresh_token', nil)
   end
 
   def authorization_expires_at
-    exp_date = JSON.parse(uphold_access_parameters || '{}').try(:[], 'expiration_date')
-    exp_date.to_datetime if exp_date
+    JSON.parse(uphold_access_parameters || '{}').fetch('expiration_date', nil)&.to_datetime
+  end
+
+  def authorization_expired?
+    authorization_expires_at&. > Time.zone.now
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
