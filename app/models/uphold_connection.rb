@@ -207,7 +207,7 @@ class UpholdConnection < ApplicationRecord
   end
 
   def authorization_expires_at
-    JSON.parse(uphold_access_parameters || '{}').fetch('expiration_date', nil)&.to_datetime
+    JSON.parse(uphold_access_parameters || '{}').fetch('expiration_time', nil)&.to_datetime
   end
 
   def authorization_expired?

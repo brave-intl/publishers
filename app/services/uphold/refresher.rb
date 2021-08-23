@@ -23,7 +23,7 @@ module Uphold
       # add expiration time
       authorization_hash = JSON.parse(authorization)
 
-      authorization_hash["expiration_date"] = authorization_hash["expires_in"].to_i.seconds.from_now.to_s
+      authorization_hash["expiration_time"] = authorization_hash["expires_in"].to_i.seconds.from_now.to_s
 
       # Update with the latest Authorization
       uphold_connection.uphold_access_parameters = JSON.dump(authorization_hash)
