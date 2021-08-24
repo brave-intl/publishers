@@ -18,9 +18,8 @@ namespace :database_updates do
         access_params = uphold_connection.uphold_access_parameters
         if access_params
           parsed_access_params = JSON.parse(access_params)
-          refresh_token = access_token_to_refresh_token[parsed_access_params["access_token"]]
-          if refresh_token
-            parsed_access_params["refresh_token"] = refresh_token
+          if access_token_to_refresh_token.include?(parsed_access_params["access_token"])
+            parsed_access_params["refresh_token"] = access_token_to_refresh_token[parsed_access_params["access_token"]]
             parsed_access_params["expiration_time"] = expiration_time
             uphold_connection.uphold_access_parameters = JSON.dump(parsed_access_params)
             records_to_update << uphold_connection
