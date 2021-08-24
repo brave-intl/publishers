@@ -202,11 +202,24 @@ class UpholdConnection < ApplicationRecord
     false
   end
 
+  def refresh_token
+    JSON.parse(uphold_access_parameters || '{}').fetch('refresh_token', nil)
+  end
+
+  def authorization_expires_at
+    JSON.parse(uphold_access_parameters || '{}').fetch('expiration_time', nil)&.to_datetime
+  end
+
+  def authorization_expired?
+    authorization_expires_at.present? && authorization_expires_at > Time.zone.now
+  end
+
   # Makes an HTTP Request to Uphold and sychronizes
   def sync_connection!
     # Set uphold_details to a variable, if uphold_access_parameters is nil
     # we will end up makes N service calls everytime we call uphold_details
     # this is a side effect of the memoization
+    Uphold::Refresher.build.call(uphold_connection: self)
     uphold_information = uphold_details
     return if uphold_information.blank?
 
