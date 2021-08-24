@@ -14,7 +14,7 @@ namespace :database_updates do
       expiration_time = 1.hour.seconds.from_now.to_s
 
       records_to_update = []
-      UpholdConnection.find_each do |uphold_connection|
+      UpholdConnection.where.not(encrypted_uphold_access_parameters: nil).order(id: :asc).find_each do |uphold_connection|
         access_params = uphold_connection.uphold_access_parameters
         if access_params
           parsed_access_params = JSON.parse(access_params)
