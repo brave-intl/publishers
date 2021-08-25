@@ -141,6 +141,8 @@ module Publishers
       assert_not_nil channel.details.youtube_channel_id
       assert_equal "register_youtube_channel", channel.details.auth_provider
       assert_equal "DIY", channel.details.title
+      assert_not_nil channel.details.channel_identifier
+      assert_equal channel.derived_brave_publisher_id, channel.details.channel_identifier
     end
 
     test "a publisher who adds a youtube channel taken by another will see the channel contention message" do

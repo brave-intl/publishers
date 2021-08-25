@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_20_165100) do
+ActiveRecord::Schema.define(version: 2021_08_23_203807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 2021_07_20_165100) do
     t.string "contest_token"
     t.datetime "contest_timesout_at"
     t.string "deposit_id"
+    t.text "derived_brave_publisher_id"
     t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
