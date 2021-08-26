@@ -9,16 +9,16 @@ class PublisherBalanceGetter < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    accounts_response = connection.get do |request|
-      request.options.open_timeout = 5
-      request.options.timeout = 20
-      request.headers["Authorization"] = api_authorization_header
-      request.options.params_encoder = Faraday::FlatParamsEncoder
-      request.url("v1/accounts/balances?account=#{URI.encode_www_form_component(publisher.owner_identifier)}#{channels_query_string}&pending=true")
+    accounts_response = connection.send(:post) do |req|
+      req.options.open_timeout = 5
+      req.options.timeout = 20
+      req.url [api_base_uri, "/v1/accounts/balances"].join('')
+      req.headers["Authorization"] = api_authorization_header
+      req.headers['Content-Type'] = 'application/json'
+      req.body = JSON.dump({ account: [publisher.owner_identifier] + channels_accounts, pending: true })
     end
 
     accounts = JSON.parse(accounts_response.body)
-
     complete_accounts = fill_in_missing_accounts(accounts)
     complete_accounts
 
@@ -33,14 +33,13 @@ class PublisherBalanceGetter < BaseApiClient
 
   def perform_offline
     accounts = fill_in_missing_accounts([])
-    accounts.each { |account| account["balance"] = "294.617182149806375904"}
+    accounts.each { |account| account["balance"] = "294.617182149806375904" }
   end
 
   private
 
-  def channels_query_string
-    return "" if publisher.channels.verified.count == 0
-    publisher.channels.verified.map { |channel| "&account=#{URI.encode_www_form_component(channel.details.channel_identifier)}"}.reduce(:+)
+  def channels_accounts
+    publisher.channels.verified.map { |channel| channel.details.channel_identifier }
   end
 
   # Eyeshade may return a 0 balance or an empty response for accounts (channel and owner)
@@ -76,7 +75,7 @@ class PublisherBalanceGetter < BaseApiClient
       accounts.push({
         "account_id" => "#{publisher.owner_identifier}",
         "account_type" => "owner",
-        "balance" => "0.00"
+        "balance" => "0.00",
       })
     end
 
