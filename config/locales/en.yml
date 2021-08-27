@@ -28,7 +28,7 @@ en:
     cancel: Cancel
     channel_created: Channel created. Your verified status will be displayed in the Brave browser within the next 24-48 hours.
     channel_contested: Channel will be transferred from current owner in %{time_until_transfer}.
-    channel_could_not_be_contested: Channel could not be contested. If you think this is in error, please email us at support+publishers@basicattentiontoken.org
+    channel_could_not_be_contested: Channel could not be contested. If you think this is in error, please contact us at https://community.brave.com/
     channel_transfer_rejected: Channel transfer rejected.
     time_until_transfer_fallback: a short time
     channel_contested_by: Channel has been verified by another publisher and will be transferred to their account in %{time_until_transfer} unless you reject.
@@ -55,8 +55,8 @@ en:
     ok: OK
     oh_no: "Oh no!"
     choose_different_verification_method: Choose Different Verification Method
-    support_note_html: If you have any questions, please contact the Brave Rewards team at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>
-    warning_note_html: This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Rewards team at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>
+    support_note_html: If you have any questions, please contact the Brave Rewards team at <a href="https://community.brave.com/">https://community.brave.com/</a>
+    warning_note_html: This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Rewards team at <a href="https://community.brave.com/">https://community.brave.com/</a>
 
   activerecord:
     shared:
@@ -81,10 +81,8 @@ en:
           attributes:
             brave_publisher_id:
               api_error_cant_normalize: Can't be normalized because of an API error
-              # TODO: Configurable email here
-              exclusion_list_error: Is on the Brave Publisher website exclusion list. Contact support+publishers@basicattentiontoken.org for additional help.
-              # TODO: Configurable email here
-              taken: The domain you entered is already verified and added to a different account. Contact support+publishers@basicattentiontoken.org for additional help.
+              exclusion_list_error: Is on the Brave Publisher website exclusion list. Refer to https://community.brave.com/ for additional help.
+              taken: The domain you entered is already verified and added to a different account. Refer to https://community.brave.com/ for additional help.
               invalid_uri: Invalid domain URI
     models:
       publisher: Publisher
@@ -242,7 +240,7 @@ en:
       subject: "The %{channel_name} channel has been successfully transferred"
       title: Channel transfer approved
       intro_html: |
-        The %{channel_name} channel has been successfully transferred. If you did not intend for this to happen, please reach out to the Brave Rewards team at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
+        The %{channel_name} channel has been successfully transferred. If you did not intend for this to happen, please reach out to the Brave Rewards team at https://community.brave.com/.
     channel_transfer_approved_secondary:
       subject: "Your request to transfer the %{channel_name} channel has been approved"
       title: Channel transfer approved
@@ -300,7 +298,7 @@ en:
       subject: Notification of Brave Rewards email change
       title: Notification of email change
       intro: This email confirms an update made to your email address with Brave Rewards. If you made this change, check your new email account for a link to confirm it.
-      contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
+      contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at https://community.brave.com/.
     paypal:
       missing_bank_account:
         body_html:
@@ -315,7 +313,7 @@ en:
     suspend_publisher:
       subject: Your Brave Rewards account has been temporarily frozen
       intro: Thank you for being a Brave publisher.
-      body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
+      body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="https://community.brave.com/">https://community.brave.com/</a>
       closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
     suspend_publisher_for_brand_bidding:
@@ -760,7 +758,7 @@ en:
         removed: Removed Stripe Connection
         errors: There were some errors removing your stripe account. %{errors}
   promo:
-    publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
+    publisher_not_found: "No publisher found for this promo, please contact https://community.brave.com/."
     activate:
       header: "Refer Your Fans"
       limited_time_offer: "Limited Time Offer"

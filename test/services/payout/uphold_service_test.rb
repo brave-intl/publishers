@@ -28,8 +28,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:subject) do
       perform_enqueued_jobs do
         Payout::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
-                                          publisher: publisher,
-                                          should_send_notifications: true).perform
+                                  publisher: publisher,
+                                  should_send_notifications: true).perform
       end
     end
 
@@ -46,8 +46,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:subject) do
       perform_enqueued_jobs do
         Payout::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
-                                          publisher: publisher,
-                                          should_send_notifications: true).perform
+                                  publisher: publisher,
+                                  should_send_notifications: true).perform
       end
     end
 
@@ -65,8 +65,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let (:subject) do
       perform_enqueued_jobs do
         Payout::UpholdService.new(payout_report: @payout_report,
-                                          publisher: publisher,
-                                          should_send_notifications: false).perform
+                                  publisher: publisher,
+                                  should_send_notifications: false).perform
       end
     end
 
@@ -75,22 +75,22 @@ class UpholdServiceTest < ActiveJob::TestCase
         {
           account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
           account_type: "owner",
-          balance: "20.00"
+          balance: "20.00",
         },
         {
           account_id: "uphold_connected.org",
           account_type: "channel",
-          balance: "20.00"
+          balance: "20.00",
         },
         {
           account_id: "twitch#author:ucTw",
           account_type: "channel",
-          balance: "20.00"
+          balance: "20.00",
         }, {
           account_id: "twitter#channel:def456",
           account_type: "channel",
-          balance: "20.00"
-        }
+          balance: "20.00",
+        },
       ]
     end
 
@@ -104,7 +104,7 @@ class UpholdServiceTest < ActiveJob::TestCase
       subject
     end
 
-   it "creates potential payments" do
+    it "creates potential payments" do
       assert_equal publisher.channels.verified.count, PotentialPayment.count
     end
 
@@ -121,8 +121,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:subject) do
       perform_enqueued_jobs do
         Payout::UpholdService.new(payout_report: @payout_report,
-                                          publisher: publisher,
-                                          should_send_notifications: false).perform
+                                  publisher: publisher,
+                                  should_send_notifications: false).perform
       end
     end
 
@@ -131,22 +131,22 @@ class UpholdServiceTest < ActiveJob::TestCase
         {
           account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
           account_type: "owner",
-          balance: "20.00"
+          balance: "20.00",
         },
         {
           account_id: "uphold_connected_blocked.org",
           account_type: "channel",
-          balance: "20.00"
+          balance: "20.00",
         },
         {
           account_id: "twitch#author:blocked",
           account_type: "channel",
-          balance: "20.00"
+          balance: "20.00",
         }, {
           account_id: "twitter#channel:blocked",
           account_type: "channel",
-          balance: "20.00"
-        }
+          balance: "20.00",
+        },
       ]
     end
 
@@ -156,7 +156,9 @@ class UpholdServiceTest < ActiveJob::TestCase
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
       stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-      stub_request(:get, uphold_url).to_return(body: { status: "blocked", memberAt: "2019" }.to_json)
+      stub_request(:get, uphold_url).to_return(body: { status: "blocked" }.to_json)
+      stub_request(:any, /.*uphold-api.*/).
+        to_return(body: { status: "blocked" }.to_json)
 
       subject
     end
@@ -171,7 +173,7 @@ class UpholdServiceTest < ActiveJob::TestCase
           assert_equal "0", potential_payment.fees
           assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
         elsif potential_payment.kind == PotentialPayment::CONTRIBUTION
-          assert_equal  "0", potential_payment.fees
+          assert_equal "0", potential_payment.fees
           assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
         end
       end
@@ -192,28 +194,28 @@ class UpholdServiceTest < ActiveJob::TestCase
           {
             account_id: "publishers#uuid:2fcb973c-7f7c-5351-809f-0eed1de17a77",
             account_type: "owner",
-            balance: "500.00"
+            balance: "500.00",
           },
           {
             account_id: "youtube#channel:",
             account_type: "channel",
-            balance: "500.00"
-          }
+            balance: "500.00",
+          },
         ]
       end
 
       let(:subject) do
         perform_enqueued_jobs do
           Payout::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
-                                            publisher: publisher,
-                                            should_send_notifications: should_send_notifications).perform
+                                    publisher: publisher,
+                                    should_send_notifications: should_send_notifications).perform
         end
       end
 
       before do
         Rails.application.secrets[:api_eyeshade_offline] = false
         stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-        stub_request(:get, uphold_url).to_return(body: { }.to_json)
+        stub_request(:get, uphold_url).to_return(body: {}.to_json)
 
         subject
       end
@@ -334,8 +336,8 @@ class UpholdServiceTest < ActiveJob::TestCase
               it "does not create any extra payments" do
                 assert_difference -> { PotentialPayment.count }, 0 do
                   Payout::UpholdService.new(payout_report: @payout_report,
-                                                    publisher: publisher,
-                                                    should_send_notifications: should_send_notifications).perform
+                                            publisher: publisher,
+                                            should_send_notifications: should_send_notifications).perform
                 end
               end
 
@@ -373,133 +375,132 @@ class UpholdServiceTest < ActiveJob::TestCase
             it "does not create any extra payments" do
               assert_difference -> { PotentialPayment.count }, 0 do
                 Payout::UpholdService.new(payout_report: @payout_report,
-                                                  publisher: publisher,
-                                                  should_send_notifications: should_send_notifications).perform
+                                          publisher: publisher,
+                                          should_send_notifications: should_send_notifications).perform
               end
             end
           end
         end
 
-
-      describe "without balance" do
-        let(:balance_response) do
+        describe "without balance" do
+          let(:balance_response) do
             [
               {
                 account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
                 account_type: "owner",
-                balance: "0.00"
+                balance: "0.00",
               },
               {
                 account_id: "uphold_connected_details.org",
                 account_type: "channel",
-                balance: "0.00"
+                balance: "0.00",
               },
               {
                 account_id: "twitch#author:ucTw",
                 account_type: "channel",
-                balance: "0.00"
+                balance: "0.00",
               }, {
                 account_id: "twitter#channel:def456",
                 account_type: "channel",
-                balance: "0.00"
-              }
+                balance: "0.00",
+              },
             ]
           end
-        let(:should_send_notifications) { true }
-        let(:publisher) { publishers(:uphold_connected_details) }
-
-        before do
-          Rails.application.secrets[:fee_rate] = 0.05
-          Rails.application.secrets[:api_eyeshade_offline] = false
-          @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-          stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-          subject
-        end
-
-        it "is not included in the payout report" do
-          assert_equal publisher.channels.verified.count, PotentialPayment.count
-          assert_equal 0, @payout_report.amount
-        end
-
-        it "recieves no emails" do
-          assert_empty ActionMailer::Base.deliveries
-        end
-      end
-    end
-
-    describe "without address" do
-      describe "with balance" do
-        let(:balance_response) do
-          [
-            {
-              account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-              account_type: "owner",
-              balance: "20.00"
-            },
-            {
-              account_id: "uphold_connected_details.org",
-              account_type: "channel",
-              balance: "20.00"
-            },
-            {
-              account_id: "twitch#author:restricted_member",
-              account_type: "channel",
-              balance: "20.00"
-            }, {
-              account_id: "twitter#channel:restrcted_member",
-              account_type: "channel",
-              balance: "20.00"
-            }
-          ]
-        end
-
-        before do
-          Rails.application.secrets[:fee_rate] = 0.05
-          Rails.application.secrets[:api_eyeshade_offline] = false
-          @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-          stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-        end
-
-        # Technically this path would only be possible if the user was restricted
-        #  eyeshade omits the wallet address if the status is not ok
-        describe "is a member and restricted" do
-          let(:publisher) { publishers(:uphold_connected_restricted_member) }
+          let(:should_send_notifications) { true }
+          let(:publisher) { publishers(:uphold_connected_details) }
 
           before do
+            Rails.application.secrets[:fee_rate] = 0.05
+            Rails.application.secrets[:api_eyeshade_offline] = false
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
             stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-            stub_request(:get, uphold_url).to_return(body: { status: "restricted", memberAt: "2019" }.to_json)
+            subject
           end
 
-          describe "should_send_notifications is true" do
-            let(:should_send_notifications) { true }
-
-            before do
-              subject
-            end
-
-            it "it creates potential payments" do
-              assert_equal publisher.channels.verified.count, PotentialPayment.count
-              assert_equal 0, @payout_report.amount
-            end
+          it "is not included in the payout report" do
+            assert_equal publisher.channels.verified.count, PotentialPayment.count
+            assert_equal 0, @payout_report.amount
           end
 
-          describe "should_send_notifications is false" do
-            let(:should_send_notifications) { false }
-
-            before do
-              subject
-            end
-
-            it "creates payments" do
-              assert_equal publisher.channels.verified.count, PotentialPayment.count
-              assert_equal 0, @payout_report.amount
-            end
-
-            it "does not recieve any emails" do
-              assert_empty ActionMailer::Base.deliveries
-            end
+          it "recieves no emails" do
+            assert_empty ActionMailer::Base.deliveries
           end
         end
+      end
+
+      describe "without address" do
+        describe "with balance" do
+          let(:balance_response) do
+            [
+              {
+                account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+                account_type: "owner",
+                balance: "20.00",
+              },
+              {
+                account_id: "uphold_connected_details.org",
+                account_type: "channel",
+                balance: "20.00",
+              },
+              {
+                account_id: "twitch#author:restricted_member",
+                account_type: "channel",
+                balance: "20.00",
+              }, {
+                account_id: "twitter#channel:restrcted_member",
+                account_type: "channel",
+                balance: "20.00",
+              },
+            ]
+          end
+
+          before do
+            Rails.application.secrets[:fee_rate] = 0.05
+            Rails.application.secrets[:api_eyeshade_offline] = false
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+            stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+          end
+
+          # Technically this path would only be possible if the user was restricted
+          #  eyeshade omits the wallet address if the status is not ok
+          describe "is a member and restricted" do
+            let(:publisher) { publishers(:uphold_connected_restricted_member) }
+
+            before do
+              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+              stub_request(:get, uphold_url).to_return(body: { status: "restricted", memberAt: "2019" }.to_json)
+            end
+
+            describe "should_send_notifications is true" do
+              let(:should_send_notifications) { true }
+
+              before do
+                subject
+              end
+
+              it "it creates potential payments" do
+                assert_equal publisher.channels.verified.count, PotentialPayment.count
+                assert_equal 0, @payout_report.amount
+              end
+            end
+
+            describe "should_send_notifications is false" do
+              let(:should_send_notifications) { false }
+
+              before do
+                subject
+              end
+
+              it "creates payments" do
+                assert_equal publisher.channels.verified.count, PotentialPayment.count
+                assert_equal 0, @payout_report.amount
+              end
+
+              it "does not recieve any emails" do
+                assert_empty ActionMailer::Base.deliveries
+              end
+            end
+          end
         end
       end
     end

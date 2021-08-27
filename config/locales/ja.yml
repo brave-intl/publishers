@@ -53,8 +53,8 @@ ja:
     ok: OK
     oh_no: "おや？"
     choose_different_verification_method: 別の認証方法を選択する
-    support_note_html: ご質問がある場合は、<a href="mailto:support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>のBrave Rewardsチームにお問い合わせください。
-    warning_note_html: このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href="mailto:support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>のBrave Rewardsチームにお問い合わせください。
+    support_note_html: ご質問がある場合は、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>のBrave Rewardsチームにお問い合わせください。
+    warning_note_html: このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>のBrave Rewardsチームにお問い合わせください。
 
   activerecord:
     shared:
@@ -78,9 +78,9 @@ ja:
             brave_publisher_id:
               api_error_cant_normalize: APIエラーのために正規化できません
               # TODO: Configurable email here
-              exclusion_list_error: Brave Publisherの除外リストに含まれていました。 さらにサポートが必要な場合は、support + publishers@basicattentiontoken.orgにお問い合わせください。
+              exclusion_list_error: Brave Publisherの除外リストに含まれていました。 さらにサポートが必要な場合は、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>にお問い合わせください。
               # TODO: Configurable email here
-              taken: 入力したドメインは既に認証されており、別のアカウントに追加されています。 さらにサポートが必要な場合は、support+publishers@basicattentiontoken.orgにお問い合わせください。
+              taken: 入力したドメインは既に認証されており、別のアカウントに追加されています。 さらにサポートが必要な場合は、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>にお問い合わせください。
               invalid_uri: 無効なドメインURI
     models:
       publisher: パブリッシャー
@@ -298,7 +298,7 @@ ja:
       subject: "%{channel_name}チャンネルは正常に移管されました"
       title: チャンネルの移管が承認されました
       intro_html: |
-        %{channel_name}チャンネルは正常に移管されました。お心当りのない場合は<a href="mailto:support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>からBrave Rewardsチームに連絡してください。
+        %{channel_name}チャンネルは正常に移管されました。お心当りのない場合は<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>からBrave Rewardsチームに連絡してください。
     channel_transfer_approved_secondary:
       subject: "%{channel_name}チャンネルを移管するリクエストが承認されました"
       title: チャンネルの移管が承認されました
@@ -356,11 +356,11 @@ ja:
       subject: Brave Rewardsのメールアドレス変更のお知らせ
       title: メールアドレス変更のお知らせ
       intro: このメールは、Brave Rewardsでメールアドレスが更新されたことを確認するものです。 この変更を行った場合は、新しいメールアドレスからリンクをご確認ください。
-      contact_support_html: お心当りのない場合は<a href="support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>からBrave Rewardsチームにご連絡ください。
+      contact_support_html: お心当りのない場合は<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>からBrave Rewardsチームにご連絡ください。
     suspend_publisher:
       subject: Brave Rewardsアカウントは一時的に凍結されました
       intro: Braveパブリッシャーの皆様、
-      body_html: Brave Rewardsアカウントへの異常なまたは不審な支援が確認されました。そのため、アカウントへの支払いが一時的に凍結されています。<br /> <br /> 例えば、小さなチャンネルに対する不当に大きな支援や、ユーザーの成長プール資金ばかりが送られていたケースがそれに当たります。<br /> <br /> 詳しくは<a href="support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>までお問い合わせください。
+      body_html: Brave Rewardsアカウントへの異常なまたは不審な支援が確認されました。そのため、アカウントへの支払いが一時的に凍結されています。<br /> <br /> 例えば、小さなチャンネルに対する不当に大きな支援や、ユーザーの成長プール資金ばかりが送られていたケースがそれに当たります。<br /> <br /> 詳しくは<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>までお問い合わせください。
       closing_html: ご確認をよろしくお願いいたします.<br/>Brave Rewardsチーム
       contact_support: この変更がご自身で行なったものでない場合は、できるだけ早くサポートにご連絡ください
     submit_appeal:
@@ -707,7 +707,7 @@ ja:
         state_mismatch: 具体的には、Upholdとの間にステータスの不一致がありました。
         missing_state: トークンが見つかりませんでした。戻るボタンをクリックした場合に発生した可能性があります。
   promo:
-    publisher_not_found: "このプロモーションのパブリッシャーは見つかりませんでした。お問い合わせください support+publishers@basicattentiontoken.org."
+    publisher_not_found: "このプロモーションのパブリッシャーは見つかりませんでした。ご不明点は https://community.brave.com/c/japanese-support/148 にてお問い合わせください。"
     activate:
       header: "あなたのファンに紹介する"
       limited_time_offer: "期間限定"

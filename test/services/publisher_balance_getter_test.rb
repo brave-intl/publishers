@@ -22,7 +22,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     }]
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:get, /v1\/accounts\/balances/).
+    stub_request(:post, /v1\/accounts\/balances/).
       to_return(status: 200, body: stubbed_response_body.to_json)
 
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
@@ -48,7 +48,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     end
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:get, /v1\/accounts\/balances/).
+    stub_request(:post, /v1\/accounts\/balances/).
       to_return(status: 200, body: stubbed_response_body.to_json)
 
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
