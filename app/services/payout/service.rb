@@ -2,23 +2,17 @@ module Payout
   class Service
     class WalletError < StandardError; end
 
-    def initialize(payout_report:, publisher:, should_send_notifications: false)
+    def initialize(class_name:, payout_report:, publisher:)
+      @class_name = class_name
       @publisher = publisher
       @payout_report = payout_report
-      @should_send_notifications = should_send_notifications
-    end
-
-    def should_only_notify?
-      @payout_report.nil?
     end
 
     def create_message(message)
-      return if should_only_notify?
-
       PayoutMessage.create(
         payout_report: @payout_report,
         publisher: @publisher,
-        message: "#{self.class.name} #{message}"
+        message: "#{@classs_name} #{message}"
       )
     end
 
