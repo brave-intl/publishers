@@ -32,9 +32,9 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                    [{ service: Payout::ManualPayoutReportPublisherIncluder.new, initial_publishers: filtered_publishers.invoice }]
                                  else
                                    [
-                                     { service: Payout::UpholdService.new, initial_publishers: filtered_publishers.valid_payable_bitflyer_creators },
+                                     { service: Payout::UpholdService.new, initial_publishers: filtered_publishers.valid_payable_uphold_creators },
                                      { service: Payout::GeminiService.new, initial_publishers: filtered_publishers.valid_payable_gemini_creators },
-                                     { service: Payout::BitflyerService.build, initial_publishers: filtered_publishers.valid_payable_uphold_creators },
+                                     { service: Payout::BitflyerService.build, initial_publishers: filtered_publishers.valid_payable_bitflyer_creators },
                                    ]
                                  end
 

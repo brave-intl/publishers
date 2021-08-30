@@ -8,11 +8,6 @@ module Payout
       potential_payments = []
       uphold_connection = publisher.uphold_connection
 
-      if uphold_connection.missing_card?
-        # Create the cards when connecting the wallet. Can run a background job to look for missing cards.
-        return []
-      end
-
       # Create the referral payment for the owner
       if publisher.may_create_referrals?
         potential_payments << PotentialPayment.new(
