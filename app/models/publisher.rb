@@ -112,8 +112,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :uphold_selected_provider, -> {
-    joins("INNER JOIN uphold_connections
-           ON uphold_connections.id = publishers.selected_wallet_provider_id
+    where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
 
@@ -134,8 +133,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :bitflyer_selected_provider, -> {
-    joins("INNER JOIN bitflyer_connections
-           ON bitflyer_connections.id = publishers.selected_wallet_provider_id
+    where("bitflyer_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
 
@@ -150,8 +148,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :gemini_selected_provider, -> {
-    joins("INNER JOIN gemini_connections
-           ON gemini_connections.id = publishers.selected_wallet_provider_id
+    where("gemini_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
   }
 

@@ -25,16 +25,34 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   private
 
   def enqueue_payout(payout_report:, manual:)
-    filtered_publishers = Publisher.with_verified_channel.not_in_top_referrer_program
+    filtered_publishers = Publisher.strict_loading.includes(
+      :channels,
+      :status_updates,
+    ).with_verified_channel.not_in_top_referrer_program
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
     wallet_providers_to_insert = if manual
                                    [{ service: Payout::ManualPayoutReportPublisherIncluder.new, initial_publishers: filtered_publishers.invoice }]
                                  else
                                    [
-                                     { service: Payout::UpholdService.new, initial_publishers: filtered_publishers.valid_payable_uphold_creators },
-                                     { service: Payout::GeminiService.new, initial_publishers: filtered_publishers.valid_payable_gemini_creators },
-                                     { service: Payout::BitflyerService.build, initial_publishers: filtered_publishers.valid_payable_bitflyer_creators },
+                                     {
+                                       service: Payout::UpholdService.new,
+                                       initial_publishers: filtered_publishers.
+                                         includes(:uphold_connection).
+                                         valid_payable_uphold_creators,
+                                     },
+                                     {
+                                       service: Payout::GeminiService.new,
+                                       initial_publishers: filtered_publishers.
+                                         includes(:gemini_connection).
+                                         valid_payable_gemini_creators,
+                                     },
+                                     {
+                                       service: Payout::BitflyerService.build,
+                                       initial_publishers: filtered_publishers.
+                                         includes(:bitflyer_connection).
+                                         valid_payable_bitflyer_creators,
+                                     },
                                    ]
                                  end
 
