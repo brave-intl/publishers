@@ -18,6 +18,16 @@ top_referrer_channel:
   details: top_referrer_verified_details (SiteChannelDetails)
   verified: true
 
+top_referrer_gemini_channel:
+  publisher: top_referrer_gemini
+  details: top_referrer_gemini_verified_details (SiteChannelDetails)
+  verified: true
+
+top_referrer_bitflyer_channel:
+  publisher: top_referrer_bitflyer
+  details: top_referrer_bitflyer_verified_details (SiteChannelDetails)
+  verified: true
+
 verified_exclude:
   publisher: medium_media_group
   details: verified_exclude_details (SiteChannelDetails)

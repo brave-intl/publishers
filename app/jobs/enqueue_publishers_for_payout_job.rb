@@ -2,7 +2,7 @@
 class EnqueuePublishersForPayoutJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(final: true, manual: false, payout_report_id: "", args: [])
+  def perform(final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
     Rails.logger.info("Enqueuing publishers for payment.")
 
     if payout_report_id.present?
@@ -16,7 +16,8 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
 
     enqueue_payout(
       manual: manual,
-      payout_report: payout_report
+      payout_report: payout_report,
+      publisher_ids: publisher_ids
     )
 
     payout_report
@@ -24,11 +25,17 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
 
   private
 
-  def enqueue_payout(payout_report:, manual:)
-    filtered_publishers = Publisher.strict_loading.includes(
+  def enqueue_payout(payout_report:, manual:, publisher_ids:)
+    base_publishers = Publisher.strict_loading.includes(
       :channels,
       :status_updates,
-    ).with_verified_channel.not_in_top_referrer_program
+      :user_authentication_token
+    )
+    filtered_publishers = if publisher_ids.present?
+                            base_publishers.where(id: publisher_ids)
+                          else
+                            base_publishers.with_verified_channel.not_in_top_referrer_program
+                          end
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
     wallet_providers_to_insert = if manual
@@ -39,18 +46,21 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                        service: Payout::UpholdService.new,
                                        initial_publishers: filtered_publishers.
                                          includes(:uphold_connection).
+                                         joins(:uphold_connection).
                                          valid_payable_uphold_creators,
                                      },
                                      {
                                        service: Payout::GeminiService.new,
                                        initial_publishers: filtered_publishers.
                                          includes(:gemini_connection).
+                                         joins(:gemini_connection).
                                          valid_payable_gemini_creators,
                                      },
                                      {
                                        service: Payout::BitflyerService.build,
                                        initial_publishers: filtered_publishers.
                                          includes(:bitflyer_connection).
+                                         joins(:bitflyer_connection).
                                          valid_payable_bitflyer_creators,
                                      },
                                    ]
@@ -61,25 +71,33 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       service = wallet_provider_info[:service]
       publishers = wallet_provider_info[:initial_publishers]
 
-      # EXPECTED NUMBER OF PAYMENTS
-      number_of_payments = PayoutReport.expected_num_payments(publishers)
-      payout_report.with_lock do
-        payout_report.reload
-        payout_report.expected_num_payments = number_of_payments + payout_report.expected_num_payments
-        payout_report.save!
+      generate_payments_and_save(
+        publishers: publishers,
+        payout_report: payout_report,
+        service: service
+      )
+    end
+  end
+
+  def generate_payments_and_save(publishers:, payout_report:, service:)
+    # EXPECTED NUMBER OF PAYMENTS
+    number_of_payments = PayoutReport.expected_num_payments(publishers)
+    payout_report.with_lock do
+      payout_report.reload
+      payout_report.expected_num_payments = number_of_payments + payout_report.expected_num_payments
+      payout_report.save!
+    end
+
+    # CALL POTENTIAL PAYMENT OBJECT CREATION
+    publishers.find_in_batches(batch_size: 10000) do |group|
+      potential_payments = []
+
+      group.each do |publisher|
+        potential_payments += service.perform(publisher: publisher, payout_report: payout_report)
       end
 
-      # CALL POTENTIAL PAYMENT OBJECT CREATION
-      publishers.find_in_batches(batch_size: 10000) do |group|
-        potential_payments = []
-
-        group.each do |publisher|
-          potential_payments += service.perform(publisher: publisher, payout_report: payout_report)
-        end
-
-        # DB Insert
-        PotentialPayment.import(potential_payments, validate: false)
-      end
+      # DB Insert
+      PotentialPayment.import(potential_payments, validate: false)
     end
   end
 

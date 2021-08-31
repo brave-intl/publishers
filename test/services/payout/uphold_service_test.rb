@@ -1,9 +1,6 @@
 require "test_helper"
-require "webmock/minitest"
 
 class UpholdServiceTest < ActiveJob::TestCase
-  include EyeshadeHelper
-
   before do
     PotentialPayment.destroy_all
     @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
@@ -194,7 +191,6 @@ class UpholdServiceTest < ActiveJob::TestCase
 
       before do
         Rails.application.secrets[:api_eyeshade_offline] = false
-        # stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
         subject
       end
 
@@ -235,7 +231,6 @@ class UpholdServiceTest < ActiveJob::TestCase
         before do
           Rails.application.secrets[:fee_rate] = 0.05
           @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-          # stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
         end
 
         describe "when is a member" do
@@ -244,12 +239,12 @@ class UpholdServiceTest < ActiveJob::TestCase
           describe "when payout_report exists" do
             before do
               Rails.application.secrets[:api_eyeshade_offline] = false
-              # stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
               subject
             end
 
             it "is included in payout report" do
               assert_equal @results.length, publisher.channels.count
+              assert_equal @results.length, 3
               assert @results.all? { |result| result.payout_report_id == @payout_report.id }
             end
 
@@ -269,14 +264,6 @@ class UpholdServiceTest < ActiveJob::TestCase
                 assert potential_payment.uphold_member
                 refute potential_payment.suspended
               end
-            end
-
-            it "does not create any extra payments" do
-              results = Payout::UpholdService.new.perform(
-                payout_report: @payout_report,
-                publisher: publisher,
-              )
-              assert_equal results.length, 0
             end
           end
         end
@@ -309,9 +296,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            # Rails.application.secrets[:api_eyeshade_offline] = false
             @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-            # stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
             subject
           end
 
@@ -321,51 +306,6 @@ class UpholdServiceTest < ActiveJob::TestCase
           end
         end
       end
-
-      # describe "without address" do
-      #   describe "with balance" do
-      #     let(:balance_response) do
-      #       [
-      #         {
-      #           account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-      #           account_type: "owner",
-      #           balance: "20.00",
-      #         },
-      #         {
-      #           account_id: "uphold_connected_details.org",
-      #           account_type: "channel",
-      #           balance: "20.00",
-      #         },
-      #         {
-      #           account_id: "twitch#author:restricted_member",
-      #           account_type: "channel",
-      #           balance: "20.00",
-      #         }, {
-      #           account_id: "twitter#channel:restrcted_member",
-      #           account_type: "channel",
-      #           balance: "20.00",
-      #         },
-      #       ]
-      #     end
-
-      #     # before do
-      #     #   Rails.application.secrets[:fee_rate] = 0.05
-      #     #   # Rails.application.secrets[:api_eyeshade_offline] = false
-      #     #   @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-      #     #   # stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-      #     # end
-
-      #     # Technically this path would only be possible if the user was restricted
-      #     #  eyeshade omits the wallet address if the status is not ok
-      #     # describe "is a member and restricted" do
-      #     #   let(:publisher) { publishers(:uphold_connected_restricted_member) }
-
-      #     #   before do
-      #     #     # stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-      #     #   end
-      #     # end
-      #   end
-      # end
     end
   end
 end

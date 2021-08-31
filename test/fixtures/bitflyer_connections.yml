@@ -18,3 +18,6 @@ enabled_bitflyer_connection:
 
 suspended_bitflyer_connection:
   publisher: bitflyer_suspended
+
+top_referrer_bitflyer_connected:
+  publisher: top_referrer_bitflyer
