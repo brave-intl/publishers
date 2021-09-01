@@ -66,16 +66,20 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                    ]
                                  end
 
-    # LOOP FOR EACH TYPE OF CONNECTION
-    wallet_providers_to_insert.each do |wallet_provider_info|
-      service = wallet_provider_info[:service]
-      publishers = wallet_provider_info[:initial_publishers]
+    # Roll back if there's any problem. Use read_uncommitted to not lock any
+    # tables for maximum performance
+    ActiveRecord::Base.transaction(isolation: :read_uncommitted) do
+      # LOOP FOR EACH TYPE OF CONNECTION
+      wallet_providers_to_insert.each do |wallet_provider_info|
+        service = wallet_provider_info[:service]
+        publishers = wallet_provider_info[:initial_publishers]
 
-      generate_payments_and_save(
-        publishers: publishers,
-        payout_report: payout_report,
-        service: service
-      )
+        generate_payments_and_save(
+          publishers: publishers,
+          payout_report: payout_report,
+          service: service
+        )
+      end
     end
   end
 
@@ -93,7 +97,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       potential_payments = []
 
       group.each do |publisher|
-        potential_payments += service.perform(publisher: publisher, payout_report: payout_report)
+        potential_payments.concat(service.perform(publisher: publisher, payout_report: payout_report))
       end
 
       # DB Insert
