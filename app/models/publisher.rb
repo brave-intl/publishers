@@ -120,6 +120,8 @@ class Publisher < ApplicationRecord
   # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
     uphold_selected_provider. # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      includes(:uphold_connection).
+      joins(:uphold_connection).
       where(uphold_connections: { is_member: true }).
       where.not(uphold_connections: { address: nil }).
       where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
@@ -138,6 +140,8 @@ class Publisher < ApplicationRecord
   }
 
   scope :valid_payable_bitflyer_creators, -> {
+    includes(:bitflyer_connection).
+    joins(:bitflyer_connection).
     bitflyer_selected_provider
   }
 
@@ -153,6 +157,8 @@ class Publisher < ApplicationRecord
   }
 
   scope :valid_payable_gemini_creators, -> {
+    includes(:gemini_connection).
+    joins(:gemini_connection).
     gemini_selected_provider.
       where(gemini_connections: { is_verified: true }).
       where.not(gemini_connections: { recipient_id: nil }).

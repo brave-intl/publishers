@@ -45,22 +45,16 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                      {
                                        service: Payout::UpholdService.new,
                                        initial_publishers: filtered_publishers.
-                                         includes(:uphold_connection).
-                                         joins(:uphold_connection).
                                          valid_payable_uphold_creators,
                                      },
                                      {
                                        service: Payout::GeminiService.new,
                                        initial_publishers: filtered_publishers.
-                                         includes(:gemini_connection).
-                                         joins(:gemini_connection).
                                          valid_payable_gemini_creators,
                                      },
                                      {
                                        service: Payout::BitflyerService.build,
                                        initial_publishers: filtered_publishers.
-                                         includes(:bitflyer_connection).
-                                         joins(:bitflyer_connection).
                                          valid_payable_bitflyer_creators,
                                      },
                                    ]
