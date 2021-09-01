@@ -176,4 +176,18 @@ class Minitest::Spec
   end
 end
 
+class NoTransactDBBleanupTest < ActiveSupport::TestCase
+  def setup
+    super
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+  end
+
+  def teardown
+    super
+    DatabaseCleaner.clean
+    DatabaseCleaner.strategy = :transaction
+  end
+end
+
 require 'mocha/minitest'

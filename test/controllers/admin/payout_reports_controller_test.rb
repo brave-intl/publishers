@@ -2,6 +2,8 @@ require 'test_helper'
 require "webmock/minitest"
 
 class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
+  self.use_transactional_tests = false
+
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
   include EyeshadeHelper
