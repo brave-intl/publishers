@@ -26,9 +26,9 @@ GIT
       xml-simple
 
 GIT
-  remote: https://github.com/tsmartt/wasmer-ruby.git
-  revision: d151839fccf755e83a89870c2e8517c72280c820
-  branch: remove-bundle-install-rakefile
+  remote: https://github.com/wasmerio/wasmer-ruby.git
+  revision: dab7d537748ce410c660c3fe683df4a2af369f82
+  ref: dab7d537748ce410c660c3fe683df4a2af369f82
   specs:
     wasmer (1.0.0)
 
