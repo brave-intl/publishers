@@ -141,12 +141,12 @@ class Publisher < ApplicationRecord
 
   scope :valid_payable_bitflyer_creators, -> {
     includes(:bitflyer_connection).
-    joins(:bitflyer_connection).
-    bitflyer_selected_provider
+      joins(:bitflyer_connection).
+      bitflyer_selected_provider
   }
 
   ###############################
-  #
+  # rub
   # Gemini scopes
   #
   ###############################
@@ -158,8 +158,8 @@ class Publisher < ApplicationRecord
 
   scope :valid_payable_gemini_creators, -> {
     includes(:gemini_connection).
-    joins(:gemini_connection).
-    gemini_selected_provider.
+      joins(:gemini_connection).
+      gemini_selected_provider.
       where(gemini_connections: { is_verified: true }).
       where.not(gemini_connections: { recipient_id: nil }).
       where.not(gemini_connections: { country: GeminiConnection::JAPAN })

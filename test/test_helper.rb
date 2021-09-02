@@ -149,8 +149,10 @@ end
 module Publishers
   module Service
     class PublicS3Service
-      def upload(a, b, c) ; end
-      def url_expires_in ; end
+      def upload(a, b, c); end
+
+      def url_expires_in; end
+
       def url(a, b)
         'mock'
       end
