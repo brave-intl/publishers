@@ -146,7 +146,7 @@ class Publisher < ApplicationRecord
   }
 
   ###############################
-  # rub
+  #
   # Gemini scopes
   #
   ###############################
