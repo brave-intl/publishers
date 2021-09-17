@@ -1,7 +1,7 @@
 module Payout
   class GeminiService
     def perform(payout_report:, publisher:)
-      return [] if Payout::Service.new(class_name: self,
+      return [] if Payout::Service.new(class_name: self.name,
                                        payout_report: payout_report,
                                        publisher: publisher).skip_publisher?
 
