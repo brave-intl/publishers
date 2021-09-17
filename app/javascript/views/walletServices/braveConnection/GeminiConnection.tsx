@@ -17,7 +17,7 @@ class GeminiConnection extends React.Component<any, any> {
 
     this.state = {
       error: null,
-      showCurrencyModal: !defaultCurrencyPresent,
+      showCurrencyModal: false, // (Albert): At the moment, we don't support the currency modal. Please revert once we do
     };
   }
 
