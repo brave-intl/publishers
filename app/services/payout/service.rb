@@ -12,7 +12,7 @@ module Payout
       PayoutMessage.create(
         payout_report: @payout_report,
         publisher: @publisher,
-        message: "#{@classs_name} #{message}"
+        message: "#{@class_name} #{message}"
       )
     end
 
