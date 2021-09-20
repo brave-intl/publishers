@@ -6,7 +6,6 @@ RUN apt-get install -y nodejs \
   libpq-dev \
   git \
   curl \
-  imagemagick \
   libjemalloc2
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
