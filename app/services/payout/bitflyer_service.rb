@@ -1,5 +1,5 @@
 module Payout
-  class BitflyerService
+  class BitflyerService < Service
     def self.build
       new(payout_utils_class: Payout::Service)
     end
@@ -10,9 +10,7 @@ module Payout
 
     # Change to call as soon as we refactor the other services
     def perform(publisher:, payout_report:)
-      return [] if @payout_utils_class.new(class_name: self,
-                                           payout_report: payout_report,
-                                           publisher: publisher).skip_publisher?
+      return [] if skip_publisher?(payout_report: payout_report, publisher: publisher)
 
       potential_payments = []
 

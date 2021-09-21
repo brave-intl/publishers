@@ -1,9 +1,7 @@
 module Payout
-  class UpholdService
+  class UpholdService < Service
     def perform(payout_report:, publisher:)
-      return [] if Payout::Service.new(class_name: self,
-                                       payout_report: payout_report,
-                                       publisher: publisher).skip_publisher?
+      return [] if skip_publisher?(payout_report: payout_report, publisher: publisher)
 
       potential_payments = []
       uphold_connection = publisher.uphold_connection
