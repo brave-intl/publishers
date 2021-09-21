@@ -58,6 +58,7 @@ class Channel < ApplicationRecord
 
   after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
   after_save :create_deposit_id
+  before_save :set_derived_brave_publisher_id, if: -> { derived_brave_publisher_id.nil? }
 
   # *ChannelDetails get autosaved from above.
   after_save :update_site_banner_lookup!, if: -> { :saved_change_to_verified? && verified? }
@@ -344,6 +345,10 @@ class Channel < ApplicationRecord
     if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
       Sync::Bitflyer::UpdateMissingDepositJob.new.perform(id)
     end
+  end
+
+  def set_derived_brave_publisher_id
+    self.derived_brave_publisher_id = details.channel_identifier
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
