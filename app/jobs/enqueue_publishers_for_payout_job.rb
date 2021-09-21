@@ -29,7 +29,6 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     base_publishers = Publisher.strict_loading.includes(
       :channels,
       :status_updates,
-      :user_authentication_token
     )
     filtered_publishers = if publisher_ids.present?
                             base_publishers.where(id: publisher_ids)

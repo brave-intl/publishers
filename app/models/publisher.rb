@@ -112,9 +112,9 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :uphold_selected_provider, -> {
-    includes(:uphold_connection).
-    joins(:uphold_connection).
-    where("uphold_connections.id = publishers.selected_wallet_provider_id
+    includes(:uphold_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      joins(:uphold_connection).
+      where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
 
@@ -135,14 +135,14 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :bitflyer_selected_provider, -> {
-    includes(:bitflyer_connection).
+    includes(:bitflyer_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
       joins(:bitflyer_connection).
       where("bitflyer_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
 
   scope :valid_payable_bitflyer_creators, -> {
-      bitflyer_selected_provider
+    bitflyer_selected_provider
   }
 
   ###############################
@@ -152,9 +152,9 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :gemini_selected_provider, -> {
-    joins(:gemini_connection).
-    gemini_selected_provider.
-    where("gemini_connections.id = publishers.selected_wallet_provider_id
+    joins(:gemini_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      gemini_selected_provider.
+      where("gemini_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
   }
 
