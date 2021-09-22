@@ -1,4 +1,5 @@
 import Rails from "@rails/ujs";
+import DOMPurify from 'dompurify';
 
 const shiftClick = () => {
   // get array of items
@@ -83,9 +84,11 @@ function selected(e) {
 
   event.target.value = "";
 
-  const assignedHTML = `<div class="text-dark">${
+  const assignedHTML = DOMPurify.sanitize(`<div class="text-dark">${
     e.detail.item.original.key
-  }</div>`;
+  }</div>`, {
+    RETURN_TRUSTED_TYPE: true
+  });
 
   assignCheckboxes(e, event.target, assignedHTML);
 
