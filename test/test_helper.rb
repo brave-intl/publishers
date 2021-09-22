@@ -149,8 +149,10 @@ end
 module Publishers
   module Service
     class PublicS3Service
-      def upload(a, b, c) ; end
-      def url_expires_in ; end
+      def upload(a, b, c); end
+
+      def url_expires_in; end
+
       def url(a, b)
         'mock'
       end
@@ -173,6 +175,20 @@ class Minitest::Spec
 
   after :each do
     DatabaseCleaner.clean
+  end
+end
+
+class NoTransactDBBleanupTest < ActiveSupport::TestCase
+  def setup
+    super
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+  end
+
+  def teardown
+    super
+    DatabaseCleaner.clean
+    DatabaseCleaner.strategy = :transaction
   end
 end
 

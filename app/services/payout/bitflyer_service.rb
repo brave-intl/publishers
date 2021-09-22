@@ -1,26 +1,20 @@
 module Payout
-  class BitflyerService
+  class BitflyerService < Service
     def self.build
-      new(refresher: Bitflyer::Refresher.build, payout_utils_class: Payout::Service)
+      new(payout_utils_class: Payout::Service)
     end
 
-    def initialize(refresher:, payout_utils_class:)
-      @refresher = refresher
+    def initialize(payout_utils_class:)
       @payout_utils_class = payout_utils_class
     end
 
     # Change to call as soon as we refactor the other services
     def perform(publisher:, payout_report:)
-      payout_utils = @payout_utils_class.new(payout_report: payout_report,
-                                             publisher: publisher,)
-
-      return if payout_utils.skip_publisher?
+      return [] if skip_publisher?(payout_report: payout_report, publisher: publisher)
 
       potential_payments = []
 
       connection = publisher.bitflyer_connection
-      # Sync the connection
-      @refresher.call(bitflyer_connection: connection)
 
       # We don't currently support referrals payouts for Bitflyer accounts, so
       # only payout contributions on channels. To support referrals, we'd need to
@@ -45,14 +39,7 @@ module Payout
         )
       end
 
-      unless payout_utils.should_only_notify?
-        potential_payments.each do |payment|
-          unless payment.save
-            # If the payment couldn't save then we created a PayoutMessage
-            payout_utils.create_message("Could not save the potential_payment: #{payment.errors&.full_messages&.join(', ')}")
-          end
-        end
-      end
+      potential_payments
     end
   end
 end

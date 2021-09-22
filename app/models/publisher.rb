@@ -112,8 +112,9 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :uphold_selected_provider, -> {
-    joins("INNER JOIN uphold_connections
-           ON uphold_connections.id = publishers.selected_wallet_provider_id
+    includes(:uphold_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      joins(:uphold_connection).
+      where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
 
@@ -134,8 +135,9 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :bitflyer_selected_provider, -> {
-    joins("INNER JOIN bitflyer_connections
-           ON bitflyer_connections.id = publishers.selected_wallet_provider_id
+    includes(:bitflyer_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      joins(:bitflyer_connection).
+      where("bitflyer_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
 
@@ -150,13 +152,14 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :gemini_selected_provider, -> {
-    joins("INNER JOIN gemini_connections
-           ON gemini_connections.id = publishers.selected_wallet_provider_id
+    joins(:gemini_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
+      gemini_selected_provider.
+      where("gemini_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
   }
 
   scope :valid_payable_gemini_creators, -> {
-    gemini_selected_provider.
+    includes(:gemini_connection).
       where(gemini_connections: { is_verified: true }).
       where.not(gemini_connections: { recipient_id: nil }).
       where.not(gemini_connections: { country: GeminiConnection::JAPAN })

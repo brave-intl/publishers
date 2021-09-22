@@ -2,6 +2,8 @@ require 'test_helper'
 require "webmock/minitest"
 
 class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
+  self.use_transactional_tests = false
+
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
   include EyeshadeHelper
@@ -140,82 +142,6 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     # Ensure payout report was not marked as final
     assert PayoutReport.order(created_at: :desc).first.final
-  end
-
-  test "#create sends email if should_send_notifications flag is set" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    admin = publishers(:admin)
-    publisher = publishers(:uphold_connected)
-    delete_publishers_except([admin.id, publisher.id])
-    sign_in admin
-
-    balances = [
-      {
-        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-        "account_type" => "owner",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "uphold_connected.org",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "twitch#channel:ucTw",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },      {
-        "account_id" => "twitter#channel:def456",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      }
-    ]
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balances)
-
-    assert_difference("PayoutReport.count", 1) do
-      assert_difference("ActionMailer::Base.deliveries.count", 0) do
-        perform_enqueued_jobs do
-          post admin_payout_reports_path(final: true, should_send_notifications: true)
-        end
-      end
-    end
-  end
-
-  test "#notify sends emails to" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    admin = publishers(:admin)
-    publisher = publishers(:completed)
-    delete_publishers_except([admin.id, publisher.id])
-    sign_in admin
-
-    # Stub disconnected /wallet response
-    wallet_response = {}
-
-    # Stub /balances response
-    balance_response = [
-      {
-        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-        "account_type" => "owner",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "uphold_connected.org",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "twitch#channel:ucTw",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },      {
-        "account_id" => "twitter#channel:def456",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      }
-    ]
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
   end
 
   describe "#upload_settlement_report" do

@@ -2,22 +2,10 @@ module Payout
   class Service
     class WalletError < StandardError; end
 
-    def initialize(payout_report:, publisher:, should_send_notifications: false)
-      @publisher = publisher
-      @payout_report = payout_report
-      @should_send_notifications = should_send_notifications
-    end
-
-    def should_only_notify?
-      @payout_report.nil?
-    end
-
-    def create_message(message)
-      return if should_only_notify?
-
+    def create_message(payout_report:, publisher:, message:)
       PayoutMessage.create(
-        payout_report: @payout_report,
-        publisher: @publisher,
+        payout_report: payout_report,
+        publisher: publisher,
         message: "#{self.class.name} #{message}"
       )
     end
@@ -25,29 +13,29 @@ module Payout
     # Internal: Creates entries for any reason for not paying out a publisher.
     #
     # Returns a boolean
-    def skip_publisher?
-      if !@publisher.has_verified_channel?
-        create_message("Publisher has no verified channels")
+    def skip_publisher?(payout_report:, publisher:)
+      if !publisher.has_verified_channel?
+        create_message(message: "Publisher has no verified channels", payout_report: payout_report, publisher: publisher)
         return true
       end
 
-      if @publisher.excluded_from_payout?
-        create_message("Publisher has been marked as excluded from payout")
+      if publisher.excluded_from_payout?
+        create_message(message: "Publisher has been marked as excluded from payout", payout_report: payout_report, publisher: publisher)
         return true
       end
 
-      if @publisher.hold?
-        create_message("Publisher is currently in hold status")
+      if publisher.hold?
+        create_message(message: "Publisher is currently in hold status", payout_report: payout_report, publisher: publisher)
         return true
       end
 
-      if @publisher.locked?
-        create_message("Publisher is currently in lock status")
+      if publisher.locked?
+        create_message(message: "Publisher is currently in lock status", payout_report: payout_report, publisher: publisher)
         return true
       end
 
-      if @publisher.wire_only?
-        create_message("Publisher is only meant to receive wire transfers")
+      if publisher.wire_only?
+        create_message(message: "Publisher is only meant to receive wire transfers", payout_report: payout_report, publisher: publisher)
         return true
       end
 

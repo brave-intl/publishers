@@ -50,3 +50,9 @@ connection_not_verified:
     iv: salt
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+
+top_referrer_gemini_connected:
+  publisher: top_referrer_gemini
+  recipient_id: <%= SecureRandom.uuid %>
+  country: 'US'
+  is_verified: true
