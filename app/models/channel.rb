@@ -14,6 +14,7 @@ class Channel < ApplicationRecord
   SUBSCRIBER_COUNT = :subscriber_count
   ADVANCED_SORTABLE_COLUMNS = [YOUTUBE_VIEW_COUNT, TWITCH_VIEW_COUNT, VIDEO_COUNT, SUBSCRIBER_COUNT, FOLLOWER_COUNT].freeze
   BITFLYER_CONNECTION = "BitflyerConnection".freeze
+  GEMINI_CONNECTION = "GeminiConnection".freeze
 
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
@@ -344,6 +345,10 @@ class Channel < ApplicationRecord
   def create_deposit_id
     if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
       Sync::Bitflyer::UpdateMissingDepositJob.new.perform(id)
+    end
+
+    if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_recipient_id.nil?
+      publisher.selected_wallet_provider.sync_connection!
     end
   end
 

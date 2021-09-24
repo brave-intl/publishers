@@ -18,6 +18,11 @@ class GeminiConnection < ApplicationRecord
 
   validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
 
+  scope :payable, -> {
+    where(is_verified: true).
+      where(status: 'Active')
+  }
+
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
   end
@@ -90,6 +95,12 @@ class GeminiConnection < ApplicationRecord
       recipient = Gemini::RecipientId.find_or_create(token: access_token)
       update(recipient_id: recipient.recipient_id)
       update_default_currency
+
+      # Add bitFlyer deposit id to each of the publisher's channels
+      publisher.channels.each do |channel|
+        channel_recipient = Gemini::RecipientId.find_or_create(token: access_token, label: channel.id)
+        channel.update(gemini_recipient_id: channel_recipient.recipient_id)
+      end
     end
   end
 
