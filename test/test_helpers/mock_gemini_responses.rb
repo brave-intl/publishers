@@ -72,4 +72,12 @@ module MockGeminiResponses
     response = [{ "recipient_id": "5f0cdc2f-622b-4c30-ad9f-3a5e6dc85079", "label": "Brave Rewards | Creators" }, { "recipient_id": "5f0cdcb3-5f3f-45bb-a982-150a3e41acb1", "label": "Brave Rewards | Creators" }]
     stub_request(:get, regex).to_return(body: response.to_json)
   end
+
+  def mock_gemini_channels_recipient_id!
+    path = Gemini::RecipientId::PATH
+    regex = Regexp.new(path)
+
+    response = { "recipient_id": "5f0cdc2f-622b-4c30-ad9f-3a5e6dc85079", "label": "Brave Rewards | Creators" }
+    stub_request(:post, regex).to_return(body: response.to_json)
+  end
 end

@@ -347,6 +347,7 @@ class Channel < ApplicationRecord
       Sync::Bitflyer::UpdateMissingDepositJob.new.perform(id)
     end
 
+    # We don't have a deposit ID on this channel, need one!
     if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_recipient_id.nil?
       publisher.selected_wallet_provider.sync_connection!
     end

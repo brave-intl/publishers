@@ -13,6 +13,7 @@ module Sync
           mock_gemini_auth_request!
           mock_gemini_account_request!
           mock_gemini_recipient_id!
+          mock_gemini_channels_recipient_id!
           subject
         end
 

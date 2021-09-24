@@ -5,7 +5,6 @@ require "webmock/minitest"
 class GeminiConnectionTest < ActiveSupport::TestCase
   include MockGeminiResponses
 
-
   describe 'validations' do
     let(:gemini_connection) { gemini_connections(:default_connection) }
 
@@ -76,6 +75,7 @@ class GeminiConnectionTest < ActiveSupport::TestCase
       before do
         mock_gemini_account_request!
         mock_gemini_recipient_id!
+        mock_gemini_channels_recipient_id!
       end
 
       it 'does creates a recipient id' do
@@ -83,6 +83,8 @@ class GeminiConnectionTest < ActiveSupport::TestCase
         refute connection.recipient_id
         subject
         assert connection.recipient_id
+
+        connection.publisher.channels.each { |c| assert c.reload.gemini_recipient_id }
       end
     end
   end

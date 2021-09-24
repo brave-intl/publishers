@@ -324,6 +324,7 @@ gemini_not_completed_website:
 gemini_completed_website:
   publisher: gemini_completed
   verified: true
+  gemini_recipient_id: '2134'
   details: gemini_completed_website_details (SiteChannelDetails)
 
 bitflyer_enabled_channel:

@@ -99,7 +99,7 @@ class GeminiConnection < ApplicationRecord
       # Add bitFlyer deposit id to each of the publisher's channels
       publisher.channels.each do |channel|
         channel_recipient = Gemini::RecipientId.find_or_create(token: access_token, label: channel.id)
-        channel.update(gemini_recipient_id: channel_recipient.recipient_id)
+        channel.update_column(:gemini_recipient_id, channel_recipient.recipient_id)
       end
     end
   end
