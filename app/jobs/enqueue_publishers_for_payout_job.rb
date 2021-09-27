@@ -27,8 +27,9 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
 
   def enqueue_payout(payout_report:, manual:, publisher_ids:)
     base_publishers = Publisher.strict_loading.includes(
-      :channels,
       :status_updates,
+    ).preload(
+      channels: :details
     )
     filtered_publishers = if publisher_ids.present?
                             base_publishers.where(id: publisher_ids)
