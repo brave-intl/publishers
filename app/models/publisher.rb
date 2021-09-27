@@ -57,8 +57,6 @@ class Publisher < ApplicationRecord
   has_many :created_users, class_name: "Publisher",
                            foreign_key: "created_by_id"
 
-  attr_encrypted :authentication_token, key: proc { |record| record.class.encryption_key }
-
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
   validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
