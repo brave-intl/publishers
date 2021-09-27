@@ -36,6 +36,7 @@ test:
     url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
   secondary:
     <<: *default
+    replica: true
     url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
