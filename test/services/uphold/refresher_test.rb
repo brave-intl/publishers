@@ -19,18 +19,6 @@ class UpholdRefresherTest < ActiveSupport::TestCase
     assert_nil connection.refresh_token
   end
 
-  test 'do not refresh because token too new' do
-    connection = uphold_connections(:google_connection)
-    refute_nil connection.refresh_token
-    refute_equal(connection.reload.refresh_token, '82b0')
-
-    mock_auth = MiniTest::Mock.new.expect(:refresh_authorization, received_from_uphold,
-                                          [connection])
-    refresher = Uphold::Refresher.new(impl_refresher: mock_auth)
-    refresher.call(uphold_connection: connection)
-    refute_equal(connection.reload.refresh_token, '82b0')
-  end
-
   test 'refresh with previously expired token' do
     connection = uphold_connections(:google_connection)
     refute_nil connection.refresh_token
