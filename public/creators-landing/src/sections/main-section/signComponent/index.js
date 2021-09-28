@@ -81,7 +81,7 @@ const SignComponent = props => {
 
               <PrimaryButton
                 label={props.btn}
-                icon={props.loading ? <Loading /> : <span />}
+                icon={props.loading ? <Loading /> : null}
                 type="submit"
                 alignSelf="center"
               />
@@ -112,7 +112,7 @@ const SignComponent = props => {
               color="rgba(255, 255, 255, .8)"
               size="small"
             />
-            <Text>|</Text>
+            <Text color="rgba(255, 255, 255, .8)">|</Text>
             <Anchor
               label={props.footerTwo}
               href={props.footerTwoHref}
