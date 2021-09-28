@@ -17,10 +17,6 @@ module Sync
           subject
         end
 
-        it 'sets the recipient id' do
-          assert_equal '5f0cdc2f-622b-4c30-ad9f-3a5e6dc85079', gemini_connection.recipient_id
-        end
-
         it 'sets the display name' do
           assert_equal 'Alice Publisher', gemini_connection.display_name
         end

@@ -324,8 +324,12 @@ gemini_not_completed_website:
 gemini_completed_website:
   publisher: gemini_completed
   verified: true
-  gemini_recipient_id: '2134'
   details: gemini_completed_website_details (SiteChannelDetails)
+
+gemini_in_japan_completed_website:
+  publisher: gemini_in_japan
+  verified: true
+  details: gemini_in_japan_website_details (SiteChannelDetails)
 
 bitflyer_enabled_channel:
   publisher: bitflyer_enabled

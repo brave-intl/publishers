@@ -32,6 +32,7 @@ connection_with_token:
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
   recipient_id: <%= SecureRandom.uuid %>
   country: 'US'
+  default_currency: 'USD'
 
 connection_not_verified:
   publisher: gemini_not_completed

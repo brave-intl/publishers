@@ -46,46 +46,4 @@ class GeminiConnectionTest < ActiveSupport::TestCase
       assert_equal gemini_connection.access_token, 'km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm'
     end
   end
-
-  describe '#sync_connection' do
-    let(:subject) { connection.sync_connection! }
-
-    describe 'when a connection is not payable' do
-      let(:connection) { gemini_connections(:connection_not_verified) }
-      before do
-        mock_gemini_unverified_account_request!
-      end
-
-      it 'does not create a recipient id' do
-        refute connection.recipient_id
-        subject
-        refute connection.recipient_id
-      end
-
-      it 'updates other properties' do
-        refute connection.display_name
-        subject
-        assert connection.display_name
-      end
-    end
-
-    describe 'when a connection is payable' do
-      let(:connection) { gemini_connections(:connection_with_token) }
-
-      before do
-        mock_gemini_account_request!
-        mock_gemini_recipient_id!
-        mock_gemini_channels_recipient_id!
-      end
-
-      it 'does creates a recipient id' do
-        connection.update(recipient_id: nil)
-        refute connection.recipient_id
-        subject
-        assert connection.recipient_id
-
-        connection.publisher.channels.each { |c| assert c.reload.gemini_recipient_id }
-      end
-    end
-  end
 end

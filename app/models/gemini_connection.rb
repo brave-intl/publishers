@@ -9,6 +9,7 @@ class GeminiConnection < ApplicationRecord
   has_paper_trail
 
   belongs_to :publisher
+  has_many :gemini_connection_for_channels
 
   validates :recipient_id, uniqueness: true, allow_blank: true
 
@@ -90,18 +91,7 @@ class GeminiConnection < ApplicationRecord
       is_verified: user.is_verified,
     )
 
-    # Users aren't able to create a recipient id if they are not fully verified
-    if payable?
-      recipient = Gemini::RecipientId.find_or_create(token: access_token)
-      update(recipient_id: recipient.recipient_id)
-      update_default_currency
-
-      # Add bitFlyer deposit id to each of the publisher's channels
-      publisher.channels.each do |channel|
-        channel_recipient = Gemini::RecipientId.find_or_create(token: access_token, label: channel.id)
-        channel.update_column(:gemini_recipient_id, channel_recipient.recipient_id)
-      end
-    end
+    CreateGeminiRecipientIdsJob.perform_later(gemini_connection_id: id)
   end
 
   class << self
@@ -109,8 +99,6 @@ class GeminiConnection < ApplicationRecord
       [key].pack("H*")
     end
   end
-
-  private
 
   def update_default_currency
     UpdateGeminiDefaultCurrencyJob.perform_async(id)

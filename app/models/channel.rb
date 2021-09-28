@@ -29,6 +29,7 @@ class Channel < ApplicationRecord
 
   has_one :promo_registration, dependent: :destroy
   has_many :uphold_connection_for_channel
+  has_many :gemini_connection_for_channel
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
@@ -274,6 +275,10 @@ class Channel < ApplicationRecord
     @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher.uphold_connection.default_currency }
   end
 
+  def gemini_connection
+    @gemini_connection ||= gemini_connection_for_channel.detect { |connection| connection.currency == publisher.gemini_connection.default_currency }
+  end
+
   def register_channel_for_promo
     Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
   end
@@ -348,7 +353,7 @@ class Channel < ApplicationRecord
     end
 
     # We don't have a deposit ID on this channel, need one!
-    if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_recipient_id.nil?
+    if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_connection_for_channel.blank?
       publisher.selected_wallet_provider.sync_connection!
     end
   end
