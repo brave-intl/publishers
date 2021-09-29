@@ -17,7 +17,7 @@ class CreateGeminiRecipientIdsJob < ApplicationJob
           channel_identifier: channel.details.channel_identifier
         ).first_or_create(channel_id: channel.id)
 
-        channel_recipient = Gemini::RecipientId.find_or_create(token: gemini_connection.access_token, label: channel.id)
+        channel_recipient = Gemini::RecipientId.find_or_create(token: gemini_connection.access_token, label: channel.details.brave_publisher_id)
 
         # If the channel was deleted and then recreated we should update this to be the new channel id
         gemini_connection_for_channel.update(
