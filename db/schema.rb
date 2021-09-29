@@ -200,7 +200,6 @@ ActiveRecord::Schema.define(version: 2021_09_29_150807) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["channel_id"], name: "index_gemini_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "gemini_connection_id"], name: "unique_gemini_connection_for_channels", unique: true
-    t.index ["channel_identifier"], name: "index_gemini_connection_for_channels_on_channel_identifier"
     t.index ["gemini_connection_id"], name: "index_gemini_connection_for_channels_on_gemini_connection_id"
     t.index ["recipient_id"], name: "index_gemini_connection_for_channels_on_recipient_id"
   end
