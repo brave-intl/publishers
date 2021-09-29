@@ -8,7 +8,6 @@ class CreateGeminiRecipientIdsJob < ApplicationJob
     if gemini_connection.payable?
       recipient = Gemini::RecipientId.find_or_create(token: gemini_connection.access_token)
       gemini_connection.update(recipient_id: recipient.recipient_id)
-      gemini_connection.update_default_currency
 
       gemini_connection.publisher.channels.each do |channel|
         gemini_connection_for_channel = GeminiConnectionForChannel.where(
