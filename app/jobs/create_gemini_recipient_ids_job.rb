@@ -3,7 +3,7 @@ class CreateGeminiRecipientIdsJob
   include Sidekiq::Worker
   sidekiq_options queue: :scheduler
 
-  def perform(gemini_connection_id:)
+  def perform(gemini_connection_id)
     gemini_connection = GeminiConnection.find(gemini_connection_id)
     # Users aren't able to create a recipient id if they are not fully verified
     if gemini_connection.payable?

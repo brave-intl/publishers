@@ -82,7 +82,7 @@ class GeminiConnection < ApplicationRecord
       is_verified: user.is_verified,
     )
 
-    CreateGeminiRecipientIdsJob.perform_async(gemini_connection_id: id)
+    CreateGeminiRecipientIdsJob.perform_async(id)
   end
 
   class << self

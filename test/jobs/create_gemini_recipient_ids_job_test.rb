@@ -11,7 +11,7 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
     let(:recipient_id) { 'abcd' }
     let(:recipient_id_channel) { '1234' }
 
-    subject { CreateGeminiRecipientIdsJob.new.perform(gemini_connection_id: gemini_connection.id) }
+    subject { CreateGeminiRecipientIdsJob.new.perform(gemini_connection.id) }
 
     before do
       gemini_connection.update(is_verified: true,
