@@ -50,7 +50,7 @@ class GeminiConnectionTest < ActiveSupport::TestCase
 
   describe '#sync_connection' do
     let(:subject) { connection.sync_connection! }
-    let(:connection) { gemini_connections(:connection_not_verified) }
+    let(:connection) { gemini_connections(:connection_with_token) }
 
     before do
       mock_gemini_unverified_account_request!
@@ -58,7 +58,7 @@ class GeminiConnectionTest < ActiveSupport::TestCase
 
     it 'queues a CreateGeminiRecipientIdsJob job' do
       subject
-      assert_enqueued_with(job: CreateGeminiRecipientIdsJob)
+      assert_equal 1, CreateGeminiRecipientIdsJob.jobs.size
     end
   end
 end

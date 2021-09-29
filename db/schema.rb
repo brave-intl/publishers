@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_28_154029) do
+ActiveRecord::Schema.define(version: 2021_09_29_150807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -194,15 +194,12 @@ ActiveRecord::Schema.define(version: 2021_09_28_154029) do
   create_table "gemini_connection_for_channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "gemini_connection_id", null: false
     t.uuid "channel_id", null: false
-    t.string "currency"
     t.string "channel_identifier"
     t.string "recipient_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["channel_id"], name: "index_gemini_connection_for_channels_on_channel_id"
-    t.index ["channel_identifier", "currency", "gemini_connection_id"], name: "unique_gemini_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_gemini_connection_for_channels_on_channel_identifier"
-    t.index ["currency"], name: "index_gemini_connection_for_channels_on_currency"
     t.index ["gemini_connection_id"], name: "index_gemini_connection_for_channels_on_gemini_connection_id"
     t.index ["recipient_id"], name: "index_gemini_connection_for_channels_on_recipient_id"
   end
@@ -224,7 +221,6 @@ ActiveRecord::Schema.define(version: 2021_09_28_154029) do
     t.string "recipient_id"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
-    t.string "default_currency"
     t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"

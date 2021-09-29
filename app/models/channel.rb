@@ -276,7 +276,7 @@ class Channel < ApplicationRecord
   end
 
   def gemini_connection
-    @gemini_connection ||= gemini_connection_for_channel.detect { |connection| connection.currency == publisher.gemini_connection.default_currency }
+    @gemini_connection ||= gemini_connection_for_channel.first
   end
 
   def register_channel_for_promo

@@ -3,7 +3,6 @@
 class GeminiConnection < ApplicationRecord
   include WalletProviderProperties
 
-  SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
   JAPAN = 'JP'
 
   has_paper_trail
@@ -14,10 +13,6 @@ class GeminiConnection < ApplicationRecord
   validates :recipient_id, uniqueness: true, allow_blank: true
 
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
-
-  after_save :update_default_currency, if: -> { saved_change_to_default_currency? }
-
-  validates :default_currency, inclusion: { in: SUPPORTED_CURRENCIES }, allow_nil: true
 
   scope :payable, -> {
     where(is_verified: true).
@@ -32,20 +27,16 @@ class GeminiConnection < ApplicationRecord
     is_verified? && status == "Active"
   end
 
+  def default_currency
+    "BAT"
+  end
+
   def japanese_account?
     country&.upcase == JAPAN
   end
 
   def verify_url
     "#{Rails.application.config.services.gemini[:oauth_uri]}/settings/profile"
-  end
-
-  # Public: All the support currency pairs for BAT on the Gemini Exchange
-  # https://docs.gemini.com/rest-api/#symbols-and-minimums
-  #
-  # Returns an array of currencies.
-  def supported_currencies
-    SUPPORTED_CURRENCIES
   end
 
   def access_token_expired?
@@ -91,16 +82,12 @@ class GeminiConnection < ApplicationRecord
       is_verified: user.is_verified,
     )
 
-    CreateGeminiRecipientIdsJob.perform_later(gemini_connection_id: id)
+    CreateGeminiRecipientIdsJob.perform_async(gemini_connection_id: id)
   end
 
   class << self
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       [key].pack("H*")
     end
-  end
-
-  def update_default_currency
-    UpdateGeminiDefaultCurrencyJob.perform_async(id)
   end
 end

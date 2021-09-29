@@ -13,7 +13,6 @@ class CreateGeminiRecipientIdsJob
       gemini_connection.publisher.channels.each do |channel|
         gemini_connection_for_channel = GeminiConnectionForChannel.where(
           gemini_connection: gemini_connection,
-          currency: gemini_connection.default_currency,
           channel_identifier: channel.details.channel_identifier
         ).first_or_create(channel_id: channel.id)
 

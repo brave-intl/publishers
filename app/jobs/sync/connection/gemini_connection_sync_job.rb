@@ -2,8 +2,9 @@
 
 module Sync
   module Connection
-    class GeminiConnectionSyncJob < ApplicationJob
-      queue_as :default
+    class GeminiConnectionSyncJob
+      include Sidekiq::Worker
+      sidekiq_options queue: :scheduler
 
       def perform(publisher_id:)
         gemini_connection = Publisher.find(publisher_id).gemini_connection

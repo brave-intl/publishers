@@ -23,7 +23,6 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
     it 'does not have an existing gemini connection' do
       refute GeminiConnectionForChannel.find_by(
         gemini_connection: gemini_connection,
-        currency: gemini_connection.default_currency,
         channel_identifier: channel.details.channel_identifier
       )
     end
@@ -38,7 +37,6 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
 
       assert GeminiConnectionForChannel.find_by(
         gemini_connection: gemini_connection,
-        currency: gemini_connection.default_currency,
         channel_identifier: channel.details.channel_identifier,
         recipient_id: recipient_id_channel
       )
@@ -48,7 +46,6 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
       gemini_connection.update(recipient_id: recipient_id_channel)
       GeminiConnectionForChannel.create(
         gemini_connection: gemini_connection,
-        currency: gemini_connection.default_currency,
         channel_identifier: channel.details.channel_identifier,
         channel: channel,
         recipient_id: recipient_id
@@ -57,7 +54,6 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
       assert gemini_connection.reload.recipient_id == recipient_id_channel
       assert GeminiConnectionForChannel.find_by(
         gemini_connection: gemini_connection,
-        currency: gemini_connection.default_currency,
         channel_identifier: channel.details.channel_identifier,
         recipient_id: recipient_id
       )
@@ -67,7 +63,6 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
       assert gemini_connection.reload.recipient_id == recipient_id
       assert GeminiConnectionForChannel.find_by(
         gemini_connection: gemini_connection,
-        currency: gemini_connection.default_currency,
         channel_identifier: channel.details.channel_identifier,
         recipient_id: recipient_id_channel
       )
