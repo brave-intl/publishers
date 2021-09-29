@@ -13,6 +13,8 @@ class Channel < ApplicationRecord
   VIDEO_COUNT = :video_count
   SUBSCRIBER_COUNT = :subscriber_count
   ADVANCED_SORTABLE_COLUMNS = [YOUTUBE_VIEW_COUNT, TWITCH_VIEW_COUNT, VIDEO_COUNT, SUBSCRIBER_COUNT, FOLLOWER_COUNT].freeze
+  BITFLYER_CONNECTION = "BitflyerConnection".freeze
+  GEMINI_CONNECTION = "GeminiConnection".freeze
 
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
@@ -346,12 +348,12 @@ class Channel < ApplicationRecord
 
   # Needed for bitFlyer, but can likely be used for Uphold too.
   def create_deposit_id
-    if publisher.selected_wallet_provider_type == BitflyerConnection.to_s && deposit_id.nil?
+    if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
       Sync::Bitflyer::UpdateMissingDepositJob.new.perform(id)
     end
 
     # We don't have a deposit ID on this channel, need one!
-    if publisher.selected_wallet_provider_type == GeminiConnection.to_s && gemini_connection_for_channel.blank?
+    if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_connection_for_channel.blank?
       publisher.selected_wallet_provider.sync_connection!
     end
   end
