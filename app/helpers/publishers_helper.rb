@@ -80,7 +80,7 @@ module PublishersHelper
 
   def publisher_overall_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
-    amount = publisher_overall_bat_balance_amount(publisher)
+    amount = [publisher_overall_bat_balance_amount(publisher), 0].compact.max
     balance = '%.2f' % amount if amount.present?
     balance
   end
@@ -98,6 +98,8 @@ module PublishersHelper
       else
         balance = publisher.wallet&.overall_balance&.amount_default_currency
       end
+
+      balance = [balance, 0].max
 
       if balance.present?
         result = I18n.t(

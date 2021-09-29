@@ -68,6 +68,44 @@ class PublishersHelperTest < ActionView::TestCase
   test "can extract the uuid from an owner_identifier" do
     assert_equal "b8317d8a-78a4-48a6-9eeb-a2674c6455c4", publisher_id_from_owner_identifier("publishers#uuid:b8317d8a-78a4-48a6-9eeb-a2674c6455c4")
   end
+  
+  test "publishers_last_settlement_balance should return at least a positive 0 value" do
+    publisher = FakePublisher.new(
+      uphold_connection: {
+        default_currency: 'USD',
+      },
+      rates: {
+        "payload" => {
+          "BTC" => 0.00005418424016883016,
+          "ETH" => 0.000795331082073117,
+          "USD" => 0.2363863335301452,
+          "EUR" => 0.20187818378874756,
+          "GBP" => 0.1799810085548496,
+        },
+      },
+      accounts: [
+        {
+          "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
+          "account_type" => "owner",
+          "balance" => "-58.217204799751874334",
+        },
+      ],
+      transactions: [
+        {
+          "created_at" => "2018-11-07 00:00:00 -0800",
+          "description" => "payout for referrals",
+          "channel" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
+          "amount" => "-94.617182149806375904",
+          "settlement_currency" => "ETH",
+          "settlement_amount" => "18.81",
+          "type" => "referral_settlement",
+        },
+      ]
+    )
+    assert_not_nil publisher.wallet
+    assert_equal "~ 0.00 USD", publisher_converted_overall_balance(publisher)
+    assert_equal "0.00", publisher_overall_bat_balance(publisher)
+  end
 
   test "publishers_last_settlement_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
     publisher = FakePublisher.new(
