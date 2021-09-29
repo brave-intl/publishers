@@ -4,6 +4,7 @@ require "webmock/minitest"
 
 class GeminiConnectionTest < ActiveSupport::TestCase
   include MockGeminiResponses
+  include ActionMailer::TestHelper
 
   describe 'validations' do
     let(:gemini_connection) { gemini_connections(:default_connection) }
@@ -44,6 +45,20 @@ class GeminiConnectionTest < ActiveSupport::TestCase
       assert_equal gemini_connection.access_token, 'access_token'
       subject
       assert_equal gemini_connection.access_token, 'km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm'
+    end
+  end
+
+  describe '#sync_connection' do
+    let(:subject) { connection.sync_connection! }
+    let(:connection) { gemini_connections(:connection_not_verified) }
+
+    before do
+      mock_gemini_unverified_account_request!
+    end
+
+    it 'queues a CreateGeminiRecipientIdsJob job' do
+      subject
+      assert_enqueued_with(job: CreateGeminiRecipientIdsJob)
     end
   end
 end

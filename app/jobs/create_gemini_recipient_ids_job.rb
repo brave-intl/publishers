@@ -1,6 +1,7 @@
 # Creates the Uphold Cards for a publisher
-class CreateGeminiRecipientIdsJob < ApplicationJob
-  queue_as :default
+class CreateGeminiRecipientIdsJob
+  include Sidekiq::Worker
+  sidekiq_options queue: :scheduler
 
   def perform(gemini_connection_id:)
     gemini_connection = GeminiConnection.find(gemini_connection_id)
