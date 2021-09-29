@@ -14,7 +14,7 @@ class CreateGeminiRecipientIdsJob
         gemini_connection_for_channel = GeminiConnectionForChannel.where(
           gemini_connection: gemini_connection,
           channel_identifier: channel.details.channel_identifier
-        ).first_or_create(channel_id: channel.id)
+        ).find_or_initialize_by(channel_id: channel.id)
 
         channel_recipient = Gemini::RecipientId.find_or_create(token: gemini_connection.access_token, label: channel.details.brave_publisher_id)
 
