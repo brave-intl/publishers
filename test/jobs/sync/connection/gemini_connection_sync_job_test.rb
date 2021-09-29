@@ -7,17 +7,14 @@ module Sync
 
       describe 'the GeminiConnectionSyncJob runs' do
         let(:gemini_connection) { publishers(:gemini_completed).gemini_connection }
-        let(:subject) { Sync::Connection::GeminiConnectionSyncJob.perform_now(publisher_id: publishers(:gemini_completed).id) }
+        let(:subject) { Sync::Connection::GeminiConnectionSyncJob.new.perform(publisher_id: publishers(:gemini_completed).id) }
 
         before do
           mock_gemini_auth_request!
           mock_gemini_account_request!
           mock_gemini_recipient_id!
+          mock_gemini_channels_recipient_id!
           subject
-        end
-
-        it 'sets the recipient id' do
-          assert_equal '5f0cdc2f-622b-4c30-ad9f-3a5e6dc85079', gemini_connection.recipient_id
         end
 
         it 'sets the display name' do

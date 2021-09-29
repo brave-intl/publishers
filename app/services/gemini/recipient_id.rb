@@ -64,7 +64,7 @@ module Gemini
 
     def create(label:)
       payload = { label: label }
-      headers = { "X-GEMINI-PAYLOAD" => Base64.encode64(payload.to_json) }
+      headers = { "X-GEMINI-PAYLOAD" => Base64.strict_encode64(payload.to_json) }
 
       response = post(PATH, {}, api_authorization_header, headers)
 
