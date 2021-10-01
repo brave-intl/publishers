@@ -25,7 +25,16 @@ export default {
       if (!element) {
         element = document.createElement('div');
         element.id = elementId;
-        element.innerHTML = '<div class="cssload-container"><div class="cssload-loading"><i></i><i></i></div></div>';
+
+        const outerDiv = document.createElement('div')
+        outerDiv.setAttribute('class', 'cssload-container')
+        const innerDiv = document.createElement('div')
+        innerDiv.setAttribute('class', 'cssload-loading')
+
+        element.appendChild(outerDiv)
+        outerDiv.appendChild(innerDiv)
+        innerDiv.appendChild(document.createElement('i'))
+        innerDiv.appendChild(document.createElement('i'))
 
         let parentElement;
         if (parentElementOrId) {
