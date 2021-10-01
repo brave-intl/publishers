@@ -1,0 +1,15 @@
+default_gemini_connection_for_channel: &default_gemini_connection_for_channel
+  recipient_id: 6dfe6c26-e83b-4c5d-833f-3ad95a0e2f93
+  gemini_connection: connection_with_token
+  channel: gemini_completed_website
+
+gemini_connected_for_channels_twitch_details:
+  <<: *default_gemini_connection_for_channel
+  channel_identifier: "twitch#author:details"
+
+verified_gemini_connection_for_channel:
+  <<: *default_gemini_connection_for_channel
+  channel_identifier: "verified.org"
+  channel: verified
+  gemini_connection: top_referrer_gemini_connected
+  recipient_id: <%= SecureRandom.uuid %>

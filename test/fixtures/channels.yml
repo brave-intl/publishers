@@ -326,6 +326,11 @@ gemini_completed_website:
   verified: true
   details: gemini_completed_website_details (SiteChannelDetails)
 
+gemini_in_japan_completed_website:
+  publisher: gemini_in_japan
+  verified: true
+  details: gemini_in_japan_website_details (SiteChannelDetails)
+
 bitflyer_enabled_channel:
   publisher: bitflyer_enabled
   details: bitflyer_enabled_details (SiteChannelDetails)

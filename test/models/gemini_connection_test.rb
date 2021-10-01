@@ -4,7 +4,7 @@ require "webmock/minitest"
 
 class GeminiConnectionTest < ActiveSupport::TestCase
   include MockGeminiResponses
-
+  include ActionMailer::TestHelper
 
   describe 'validations' do
     let(:gemini_connection) { gemini_connections(:default_connection) }
@@ -50,40 +50,15 @@ class GeminiConnectionTest < ActiveSupport::TestCase
 
   describe '#sync_connection' do
     let(:subject) { connection.sync_connection! }
+    let(:connection) { gemini_connections(:connection_with_token) }
 
-    describe 'when a connection is not payable' do
-      let(:connection) { gemini_connections(:connection_not_verified) }
-      before do
-        mock_gemini_unverified_account_request!
-      end
-
-      it 'does not create a recipient id' do
-        refute connection.recipient_id
-        subject
-        refute connection.recipient_id
-      end
-
-      it 'updates other properties' do
-        refute connection.display_name
-        subject
-        assert connection.display_name
-      end
+    before do
+      mock_gemini_unverified_account_request!
     end
 
-    describe 'when a connection is payable' do
-      let(:connection) { gemini_connections(:connection_with_token) }
-
-      before do
-        mock_gemini_account_request!
-        mock_gemini_recipient_id!
-      end
-
-      it 'does creates a recipient id' do
-        connection.update(recipient_id: nil)
-        refute connection.recipient_id
-        subject
-        assert connection.recipient_id
-      end
+    it 'queues a CreateGeminiRecipientIdsJob job' do
+      subject
+      assert_equal 1, CreateGeminiRecipientIdsJob.jobs.size
     end
   end
 end
