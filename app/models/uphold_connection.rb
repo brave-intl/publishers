@@ -101,12 +101,11 @@ class UpholdConnection < ApplicationRecord
   # TODO should we actually call uphold_user?
 
   def uphold_details
+    sync_connection!
     @user ||= UpholdClient.user.find(self)
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
-      Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
-      update(uphold_access_parameters: nil)
-      nil
+      Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
     else
       raise
     end
