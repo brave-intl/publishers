@@ -1,10 +1,9 @@
 require "test_helper"
-require "shared/mailer_test_helper"
 require "webmock/minitest"
+require "jobs/sidekiq_test_case"
 
-class GeminiConnectionTest < ActiveSupport::TestCase
+class GeminiConnectionTest < SidekiqTestCase
   include MockGeminiResponses
-  include ActionMailer::TestHelper
 
   describe 'validations' do
     let(:gemini_connection) { gemini_connections(:default_connection) }
@@ -57,8 +56,9 @@ class GeminiConnectionTest < ActiveSupport::TestCase
     end
 
     it 'queues a CreateGeminiRecipientIdsJob job' do
-      subject
-      assert_equal 1, CreateGeminiRecipientIdsJob.jobs.size
+      assert_difference -> { CreateGeminiRecipientIdsJob.jobs.size } do
+        subject
+      end
     end
   end
 end

@@ -14,7 +14,7 @@ export default {
     var containerElement = flashElement();
     var messageElement = document.createElement('div');
     messageElement.className = 'alert flash alert-' + type;
-    messageElement.innerHTML = message;
+    messageElement.innerText = message;
     containerElement.appendChild(messageElement);
   },
 

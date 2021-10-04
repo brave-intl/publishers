@@ -2,10 +2,11 @@
 
 module Sync
   module Connection
-    class UpholdConnectionSyncJob < ApplicationJob
-      queue_as :default
+    class UpholdConnectionSyncJob
+      include Sidekiq::Worker
+      sidekiq_options queue: :scheduler
 
-      def perform(publisher_id:)
+      def perform(publisher_id)
         uphold_connection = Publisher.find(publisher_id)&.uphold_connection
         return if uphold_connection.blank?
         return if uphold_connection.uphold_details.blank?

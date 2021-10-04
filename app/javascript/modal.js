@@ -84,7 +84,7 @@ var MODAL_SHOW_CLASS = "modal-show";
  * On demand open a modal.
  */
 self.openModal = function openModal(
-  html,
+  template,
   confirmCallback,
   denyCallback,
   identifier
@@ -93,7 +93,7 @@ self.openModal = function openModal(
   var contentElement = modalElement.querySelector(".modal-panel--content");
   var containerElement = modalElement.querySelector(".modal-container");
 
-  contentElement.innerHTML = html;
+  contentElement.innerHTML = template.innerHTML;
 
   let identifierClass =
     identifier && `modal-container--modal-identifier--${identifier}`;
@@ -164,7 +164,7 @@ function confirmWithModal(confirmableLink) {
   var template = document.getElementById(identifier);
 
   openModal(
-    template.innerHTML,
+    template,
     function() {
       confirmableLink.setAttribute("data-user-verified", "");
       confirmableLink.click();
@@ -195,7 +195,7 @@ function detectModals() {
   var modalTemplate = document.getElementById("js-open-modal-on-load");
   if (modalTemplate) {
     openModal(
-      modalTemplate.innerHTML,
+      modalTemplate,
       function() {},
       function() {
         modalTemplate.parentNode.removeChild(modalTemplate);

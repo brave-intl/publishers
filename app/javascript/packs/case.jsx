@@ -76,8 +76,8 @@ document.body.addEventListener("ajax:before", function(event) {
 document.body.addEventListener("ajax:error", function(event) {
   const errorMessage = document.createElement("div");
   errorMessage.classList = "mt-3 alert alert-warning";
-  errorMessage.innerHTML =
-    'An unknown error occurred 😳. Try refreshing the page or letting a team member know at <a href="community.brave.com">the Brave Community</a>';
+  errorMessage.innerText =
+    'An unknown error occurred 😳. Try refreshing the page or letting a team member know on https://community.brave.com.';
 
   const form = document.querySelector("form");
   form.appendChild(errorMessage);

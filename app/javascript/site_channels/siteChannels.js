@@ -1,6 +1,6 @@
 function openFailedVerificationModal() {
   let template = document.querySelector('#verification_failed_modal_wrapper');
-  let closeFn = openModal(template.innerHTML);
+  let closeFn = openModal(template);
 }
 
 function isAVerificationPage(){

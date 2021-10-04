@@ -12,6 +12,9 @@ Rails.application.config.content_security_policy do |policy|
   policy.script_src  :self, :https
   policy.style_src   :self, :https
 
+  # Enable once updated to Rails 7
+  # policy.require_trusted_types_for "'script'"
+
   # Specify URI for violation reports
   policy.report_uri "/csp-violation-report"
 end

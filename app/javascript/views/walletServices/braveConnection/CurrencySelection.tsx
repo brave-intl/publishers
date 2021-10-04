@@ -86,7 +86,7 @@ const CurrencySelection = (props) => {
           <FormattedMessage
             id="walletServices.currencies.fees"
             values={{
-              a: (chunks) => <a target="_blank" href={props.link}>{chunks}</a>,
+              a: (chunks) => <a target="_blank" rel="noopener noreferrer" href={props.link}>{chunks}</a>,
             }}
           />
           </span>

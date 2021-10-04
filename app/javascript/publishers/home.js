@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
           '[data-js-channel-removal-confirmation-template="' + channelId + '"]'
         );
         openModal(
-          template.innerHTML,
+          template,
           function() {
             removeChannel(channelId);
           },
