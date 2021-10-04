@@ -232,11 +232,11 @@ class Publisher < ApplicationRecord
   # Returns nil
   def sync_wallet_connections
     if gemini_connection.present? && gemini_connection.updated_at < 2.hours.ago
-      Sync::Connection::GeminiConnectionSyncJob.perform_later(publisher_id: id)
+      Sync::Connection::GeminiConnectionSyncJob.perform_async(id)
     end
 
     if uphold_connection.present? && uphold_connection.updated_at < 2.hours.ago
-      Sync::Connection::UpholdConnectionSyncJob.perform_later(publisher_id: id)
+      Sync::Connection::UpholdConnectionSyncJob.perform_async(id)
     end
   end
 
