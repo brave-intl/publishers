@@ -101,12 +101,11 @@ class UpholdConnection < ApplicationRecord
   # TODO should we actually call uphold_user?
 
   def uphold_details
+    Uphold::Refresher.build.call(uphold_connection: self)
     @user ||= UpholdClient.user.find(self)
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
-      Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
-      update(uphold_access_parameters: nil)
-      nil
+      Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
     else
       raise
     end
@@ -219,7 +218,6 @@ class UpholdConnection < ApplicationRecord
     # Set uphold_details to a variable, if uphold_access_parameters is nil
     # we will end up makes N service calls everytime we call uphold_details
     # this is a side effect of the memoization
-    Uphold::Refresher.build.call(uphold_connection: self)
     uphold_information = uphold_details
     return if uphold_information.blank?
 
