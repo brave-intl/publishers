@@ -6,7 +6,7 @@ module Sync
       include Sidekiq::Worker
       sidekiq_options queue: :scheduler
 
-      def perform(publisher_id:)
+      def perform(publisher_id)
         gemini_connection = Publisher.find(publisher_id).gemini_connection
         gemini_connection.sync_connection!
       end
