@@ -210,7 +210,7 @@ class UpholdConnection < ApplicationRecord
   end
 
   def authorization_expired?
-    authorization_expires_at.present? && authorization_expires_at > Time.zone.now
+    authorization_expires_at.present? && authorization_expires_at < Time.zone.now
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
