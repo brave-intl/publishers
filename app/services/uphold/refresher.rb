@@ -19,16 +19,22 @@ module Uphold
 
       authorization = @impl_refresher.refresh_authorization(uphold_connection)
 
-      # add expiration time
-      authorization_hash = JSON.parse(authorization)
+      if authorization
+        # add expiration time
+        authorization_hash = JSON.parse(authorization)
 
-      authorization_hash["expiration_time"] = authorization_hash["expires_in"].to_i.seconds.from_now
+        if authorization_hash["error"]
+          return
+        end
 
-      # Update with the latest Authorization
-      uphold_connection.uphold_access_parameters = JSON.dump(authorization_hash)
-      uphold_connection.save!
+        authorization_hash["expiration_time"] = authorization_hash["expires_in"].to_i.seconds.from_now
 
-      uphold_connection.reload
+        # Update with the latest Authorization
+        uphold_connection.uphold_access_parameters = JSON.dump(authorization_hash)
+        uphold_connection.save!
+
+        uphold_connection.reload
+      end
     end
   end
 end
