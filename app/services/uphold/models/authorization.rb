@@ -21,6 +21,9 @@ module Uphold
       def refresh_authorization(uphold_connection)
         refresh_token = uphold_connection.refresh_token
         response = post_to_uphold(refresh_token)
+        if !response.is_a? Net::HTTPSuccess
+          return
+        end
         response.body
       end
 
