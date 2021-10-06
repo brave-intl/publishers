@@ -4,6 +4,8 @@ class Publisher < ApplicationRecord
   include UserFeatureFlags
   include ReferralPromo
 
+  validates_with HtmlValidator, attributes: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
+
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
