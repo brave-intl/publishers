@@ -106,6 +106,7 @@ class UpholdConnection < ApplicationRecord
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
       Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
+      nil
     else
       raise
     end
