@@ -19,6 +19,12 @@ class TotpRegistrationsController < ApplicationController
       totp_registration.publisher = current_publisher
       totp_registration.save!
 
+      # Revalidate session and invalidate every other session on 2FA change
+      current_publisher.invalidate_all_sessions!
+      publisher = Publisher.find(current_publisher.id)
+      sign_out(current_publisher)
+      sign_in(:publisher, publisher)
+
       handle_redirect_after_2fa_registration
     else
       Rails.logger.info "ROTP::TOTP! Failed to verify unsaved #{totp_registration} for publisher #{current_publisher.owner_identifier} with password '#{params[:totp_password]}'"

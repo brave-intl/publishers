@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_29_150807) do
+ActiveRecord::Schema.define(version: 2021_10_28_205253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -532,6 +532,7 @@ ActiveRecord::Schema.define(version: 2021_09_29_150807) do
     t.string "selected_wallet_provider_type"
     t.uuid "selected_wallet_provider_id"
     t.string "bitflyer_deposit_id"
+    t.string "session_salt"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"

@@ -41,6 +41,12 @@ class U2fRegistrationsController < ApplicationController
       })
     )
 
+    # Revalidate session and invalidate every other session on 2FA change
+    current_publisher.invalidate_all_sessions!
+    publisher = Publisher.find(current_publisher.id)
+    sign_out(current_publisher)
+    sign_in(:publisher, publisher)
+
     handle_redirect_after_2fa_registration
   end
 
