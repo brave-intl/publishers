@@ -36,9 +36,6 @@ COPY package.json yarn.lock .nvmrc ./
 
 # Install the dependencies.
 RUN nvm install && nvm use
-RUN gem install wasmer -v 1.0.0
-RUN bundle package --all
-RUN bundle config set --local deployment 'true'
 RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --without test development --jobs 20 --retry 5
 RUN node --version
 RUN npm install -g yarn
@@ -51,7 +48,7 @@ RUN yarn install --frozen-lockfile
 # The second dot will copy it to the WORKDIR!
 COPY . .
 
-RUN bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
+RUN RAILS_ENV=production SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
 
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]

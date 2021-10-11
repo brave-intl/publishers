@@ -126,7 +126,7 @@ gem "sendgrid-ruby", "~> 6.2.1"
 gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 6.1.2"
+gem "sidekiq", "~> 6.2.1"
 
 gem "sidekiq-scheduler", "~> 3.0.1"
 
@@ -155,6 +155,7 @@ gem "zendesk_api", "~> 1.26.0"
 gem 'activerecord-nulldb-adapter', "0.7.0"
 
 gem "wasm-thumbnail-rb", git: 'https://github.com/brave-intl/wasm-thumbnail.git', tag: '0.0.5', glob: 'wasm-thumbnail-rb/*.gemspec'
+gem "wasmer", git: 'https://github.com/wasmerio/wasmer-ruby.git', ref: 'dab7d537748ce410c660c3fe683df4a2af369f82'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]

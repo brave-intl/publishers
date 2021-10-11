@@ -1,31 +1,17 @@
-FROM ruby:2.7.2-alpine
+FROM ruby:2.7-slim
 
-RUN apk add --update --no-cache \
-  bash \
-  binutils-gold \
-  build-base \
-  curl \
-  file \
-  g++ \
-  gcc \
+RUN apt-get update -qq && apt-get install -y build-essential
+
+RUN apt-get install -y nodejs \
+  libpq-dev \
   git \
-  less \
-  libstdc++ \
-  libffi-dev \
-  libc-dev \
-  linux-headers \
-  libxml2-dev \
-  libxslt-dev \
-  libgcrypt-dev \
-  make \
-  netcat-openbsd \
-  openssl \
-  pkgconfig \
-  postgresql-dev \
-  tzdata \
-  yarn
+  curl \
+  libjemalloc2
 
 RUN gem install bundler
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /var/www/
 
@@ -35,20 +21,31 @@ WORKDIR /var/www/
 # This will also ensure that gems are cached and only updated when they change.
 COPY Gemfile ./
 COPY Gemfile.lock ./
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock .nvmrc ./
+
+RUN NODE_ENV=development
+RUN RAILS_ENV=development
+
 
 # Install the gems.
-RUN bundle config build.nokogiri --use-system-libraries
+RUN gem install nokogiri
 RUN bundle check || bundle install --jobs 20 --retry 5
+
+ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION 14.16.1
+ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+RUN mkdir $NVM_DIR
+RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash \
+  && . $NVM_DIR/nvm.sh \
+  && nvm install $NODE_VERSION \
+  && nvm alias default $NODE_VERSION \
+  && nvm use default
+
+RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose
-
-# We copy all the files from the current directory to our
-# /app directory
-# Pay close attention to the dot (.)
-# The first one will select ALL The files of the current directory,
-# The second dot will copy it to the WORKDIR!
-COPY . .
 
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]
