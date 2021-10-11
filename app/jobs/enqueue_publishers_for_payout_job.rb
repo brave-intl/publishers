@@ -26,11 +26,8 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   private
 
   def enqueue_payout(payout_report:, manual:, publisher_ids:)
-    base_publishers = Publisher.strict_loading.includes(
-      :status_updates,
-    ).preload(
-      channels: :details
-    )
+    base_publishers = Publisher
+
     filtered_publishers = if publisher_ids.present?
                             base_publishers.where(id: publisher_ids)
                           else
@@ -68,8 +65,18 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
         service = wallet_provider_info[:service]
         publishers = wallet_provider_info[:initial_publishers]
 
+        pids = publishers.pluck(:id)
+        eager_loaded_publishers = Publisher.strict_loading.includes(
+          :status_updates,
+          :uphold_connection,
+          :gemini_connection,
+          :bitflyer_connection
+        ).preload(
+          channels: :details
+        ).where(id: pids)
+
         generate_payments_and_save(
-          publishers: publishers,
+          publishers: eager_loaded_publishers,
           payout_report: payout_report,
           service: service
         )

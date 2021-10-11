@@ -211,6 +211,7 @@ class UpholdConnection < ApplicationRecord
   end
 
   def authorization_expired?
+    return true if authorization_expires_at.blank?
     authorization_expires_at.present? && authorization_expires_at < Time.zone.now
   end
 
