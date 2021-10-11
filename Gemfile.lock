@@ -25,6 +25,13 @@ GIT
       rest-client
       xml-simple
 
+GIT
+  remote: https://github.com/wasmerio/wasmer-ruby.git
+  revision: dab7d537748ce410c660c3fe683df4a2af369f82
+  ref: dab7d537748ce410c660c3fe683df4a2af369f82
+  specs:
+    wasmer (1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -540,7 +547,6 @@ GEM
     vcr (6.0.0)
     warden (1.2.9)
       rack (>= 2.0.9)
-    wasmer (1.0.0)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -660,6 +666,7 @@ DEPENDENCIES
   u2f (~> 1.0)
   vcr
   wasm-thumbnail-rb!
+  wasmer!
   web-console
   webmock (~> 3.0)
   webpacker (~> 4.0.7)
