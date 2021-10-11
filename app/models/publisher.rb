@@ -110,7 +110,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :uphold_selected_provider, -> {
-    joins(:uphold_connection).
+    joins(:uphold_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
       where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
@@ -132,7 +132,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :bitflyer_selected_provider, -> {
-    joins(:bitflyer_connection).
+    joins(:bitflyer_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
       where("bitflyer_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
