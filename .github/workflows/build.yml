@@ -74,5 +74,5 @@ jobs:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
       - name: Brakeman
         run: bundle exec brakeman
-      - name: Rubocop
-        run: bundle exec rubocop
+      - name: Standard
+        run: bundle exec standard
