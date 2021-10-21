@@ -1,8 +1,8 @@
 namespace :database_updates do
   task migrate_versions: :environment do
-    class LegacyVersion < ApplicationRecord; end
+    class LegacyVersion < ApplicationRecord; end # standard:disable Lint/ConstantDefinitionInBlock
 
-    class Version < ApplicationRecord; end
+    class Version < ApplicationRecord; end # standard:disable Lint/ConstantDefinitionInBlock
 
     total = LegacyVersion.count
 

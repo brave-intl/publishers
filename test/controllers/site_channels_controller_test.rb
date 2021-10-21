@@ -46,7 +46,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
   test "verify can verify the channel and redirect to the dashboard" do
     Rails.application.secrets[:host_inspector_offline] = false
-    publisher = publishers(:global_media_group)
     channel = channels(:global_inprocess)
 
     sign_in publishers(:global_media_group)
@@ -96,8 +95,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     begin
       Rails.application.secrets[:host_inspector_offline] = true
 
-      publisher = publishers(:verified)
-
       sign_in publishers(:verified)
 
       create_params = {
@@ -124,8 +121,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
       Rails.application.secrets[:host_inspector_offline] = true
-
-      publisher = publishers(:verified)
 
       sign_in publishers(:verified)
 

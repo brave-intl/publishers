@@ -12,7 +12,7 @@ class PromoMailerPreview < ActionMailer::Preview
     publisher = Publisher.first
     channel = publisher.channels.first
     referral_code = "BATS-321"
-    promo_registration = PromoRegistration.new(channel_id: channel.id,
+    PromoRegistration.new(channel_id: channel.id,
       promo_id: "free-bats-2018q1",
       kind: "channel",
       publisher_id: publisher.id,
@@ -25,7 +25,7 @@ class PromoMailerPreview < ActionMailer::Preview
     publisher = Publisher.first
     channel = publisher.channels.first
     referral_code = "BATS-321"
-    promo_registration = PromoRegistration.new(channel_id: channel.id,
+    PromoRegistration.new(channel_id: channel.id,
       promo_id: "free-bats-2018q1",
       kind: "channel",
       publisher_id: publisher.id,

@@ -22,7 +22,7 @@ class PublisherMailerInternalPreview < ActionMailer::Preview
   end
 
   def channel_transfer_rejected_secondary_internal
-    channel = Channel.where("contested_by_channel_id is not null").first
+    Channel.where("contested_by_channel_id is not null").first
     PublisherMailer.channel_transfer_rejected_secondary_internal("My Channel", "test", "test@test.com")
   end
 

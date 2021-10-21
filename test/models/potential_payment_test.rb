@@ -38,7 +38,6 @@ class PotentialPaymentTest < ActiveSupport::TestCase
     publisher.channels.each { |c| c.destroy! }
     publisher.destroy!
 
-    potential_payment = potential_payments(:publisher).reload
     assert_equal PotentialPayment.count, 4
   end
 

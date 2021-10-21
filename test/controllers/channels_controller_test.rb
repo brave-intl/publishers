@@ -97,7 +97,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     get(verification_status_channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"})
     assert_response 200
     assert_match(
-      '{"status":"failed",' +
+      '{"status":"failed",' \
         '"details":"We could not find TXT records in your domain\'s DNS records. ', # This is I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
       response.body
     )
@@ -108,7 +108,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     get(verification_status_channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"})
     assert_response 200
     assert_match(
-      '{"status":"verified",' +
+      '{"status":"verified",' \
       '"details":"Of an unknown reason. "}',
       response.body
     )

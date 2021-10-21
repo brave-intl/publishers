@@ -57,7 +57,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     source_image_path = "./app/assets/images/brave-lion@3x.jpg"
-    fake_data = Base64.encode64(open(source_image_path) { |io| io.read })
+    fake_data = Base64.encode64(open(source_image_path) { |io| io.read }) # standard:disable Security/Open
     put "/publishers/" + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000",
       headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"},
       params: {logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 20].to_json}

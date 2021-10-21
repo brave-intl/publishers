@@ -11,7 +11,6 @@ namespace :database_updates do
         stats = stats.each { |x| x["referral_code"] = promo.referral_code }
 
         date = Date.today
-        entry = stats.reverse.each_slice(2).map do |a, b|
           next if a.nil?
           a["ymd"] = date
           next if b.nil?

@@ -5,7 +5,6 @@ class PromoRegistrationTest < ActiveSupport::TestCase
   REFERRAL_CODE = "BATS-123"
 
   test "promo registration doesn't need an associated channel_id if the kind is unattached" do
-    channel = channels(:verified)
     promo_registration = PromoRegistration.new(channel_id: nil, promo_id: PROMO_ID, kind: "unattached", referral_code: REFERRAL_CODE)
     assert promo_registration.valid?
   end
