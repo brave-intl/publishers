@@ -3,7 +3,7 @@
 class GeminiConnection < ApplicationRecord
   include WalletProviderProperties
 
-  JAPAN = 'JP'
+  JAPAN = "JP"
 
   has_paper_trail
 
@@ -15,8 +15,8 @@ class GeminiConnection < ApplicationRecord
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
 
   scope :payable, -> {
-    where(is_verified: true).
-      where(status: 'Active')
+    where(is_verified: true)
+      .where(status: "Active")
   }
 
   def prepare_state_token!
@@ -70,7 +70,7 @@ class GeminiConnection < ApplicationRecord
     end
 
     users = Gemini::Account.find(token: access_token).users
-    user = users.find { |u| u.is_verified && u.status == 'Active' }
+    user = users.find { |u| u.is_verified && u.status == "Active" }
 
     # If we couldn't find a verified account we'll take the first user.
     user ||= users.first
@@ -79,7 +79,7 @@ class GeminiConnection < ApplicationRecord
       display_name: user.name,
       status: user.status,
       country: user.country_code,
-      is_verified: user.is_verified,
+      is_verified: user.is_verified
     )
 
     CreateGeminiRecipientIdsJob.perform_async(id)

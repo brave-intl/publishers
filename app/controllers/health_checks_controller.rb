@@ -5,7 +5,7 @@ class HealthChecksController < ActionController::Base
 
     respond_to do |format|
       format.html {}
-      format.json { render json: { healthy: @healthy, services: @services }, status: @healthy ? 200 : 503 }
+      format.json { render json: {healthy: @healthy, services: @services}, status: @healthy ? 200 : 503 }
     end
   end
 
@@ -13,9 +13,9 @@ class HealthChecksController < ActionController::Base
 
   def system_status
     [
-      { name: "cache", healthy: cache_connected? },
-      { name: "database", healthy: database_connected? },
-      { name: "mailer_queue", healthy: mailer_queue_low? },
+      {name: "cache", healthy: cache_connected?},
+      {name: "database", healthy: database_connected?},
+      {name: "mailer_queue", healthy: mailer_queue_low?}
     ]
   end
 
@@ -27,7 +27,7 @@ class HealthChecksController < ActionController::Base
     REDIS.with do |conn|
       conn.ping == "PONG"
     end
-  rescue StandardError
+  rescue
     false
   end
 

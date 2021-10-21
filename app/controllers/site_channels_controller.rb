@@ -4,39 +4,39 @@ class SiteChannelsController < ApplicationController
 
   before_action :authenticate_publisher!
   before_action :setup_current_channel,
-                except: %i(new update create)
+    except: %i[new update create]
   before_action :require_unverified_site,
-                only: %i(
-                  verification_choose_method
-                  verification_dns_record
-                  verification_wordpress
-                  verification_github
-                  verification_public_file
-                  verification_background
-                  verify
-                  download_verification_file
-                )
+    only: %i[
+      verification_choose_method
+      verification_dns_record
+      verification_wordpress
+      verification_github
+      verification_public_file
+      verification_background
+      verify
+      download_verification_file
+    ]
   before_action :require_https_enabled_site,
-                only: %i(download_verification_file)
+    only: %i[download_verification_file]
   before_action :require_verification_token,
-                only: %i(
-                  verification_dns_record
-                  verification_public_file
-                  verification_github
-                  verification_wordpress
-                  download_verification_file
-                )
+    only: %i[
+      verification_dns_record
+      verification_public_file
+      verification_github
+      verification_wordpress
+      download_verification_file
+    ]
   before_action :update_site_verification_method,
-                only: %i(
-                  verification_dns_record
-                  verification_public_file
-                  verification_support_queue
-                  verification_github
-                  verification_wordpress
-                )
+    only: %i[
+      verification_dns_record
+      verification_public_file
+      verification_support_queue
+      verification_github
+      verification_wordpress
+    ]
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
-                only: %i(create)
+    only: %i[create]
 
   attr_reader :current_channel
 
@@ -63,7 +63,7 @@ class SiteChannelsController < ApplicationController
 
       @channel = @current_channel
       flash.now[:warning_model_errors] = @channel.details
-      render :action => "new"
+      render action: "new"
     end
   end
 
@@ -135,7 +135,7 @@ class SiteChannelsController < ApplicationController
   end
 
   def require_unverified_site
-    return if !current_channel.verified?
+    return unless current_channel.verified?
     redirect_to(channel_next_step_path(current_channel), alert: t(".alert"))
   end
 

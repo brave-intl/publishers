@@ -7,14 +7,14 @@ class SiteChannelDetails < BaseChannelDetails
   validates :brave_publisher_id, absence: true, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
   validate :brave_publisher_id_not_changed_once_initialized
 
-  VERIFICATION_METHODS = %w(dns_record public_file github wordpress).freeze
-  validates :verification_method, allow_blank: true, inclusion: { in: VERIFICATION_METHODS }
+  VERIFICATION_METHODS = %w[dns_record public_file github wordpress].freeze
+  validates :verification_method, allow_blank: true, inclusion: {in: VERIFICATION_METHODS}
 
   alias_attribute :site_channel_id, :brave_publisher_id
 
   class VerificationTokenValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
-      unless value =~ /\A[a-z0-9]{64}\z/i
+      unless /\A[a-z0-9]{64}\z/i.match?(value)
         record.errors[attribute] << (options[:message] || "is not a valid verification token with 64 hex digits")
       end
     end
@@ -26,24 +26,24 @@ class SiteChannelDetails < BaseChannelDetails
   # clear/register domain errors as appropriate
   before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
-  scope :recent_unverified_site_channels, -> (max_age: 1.weeks) {
-    SiteChannelDetails.unscoped.joins(:channel).
-      where.not(brave_publisher_id: SiteChannelDetails.unscoped.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true)).
-      where("channels.created_at": max_age.ago..Time.now)
+  scope :recent_unverified_site_channels, ->(max_age: 1.weeks) {
+    SiteChannelDetails.unscoped.joins(:channel)
+      .where.not(brave_publisher_id: SiteChannelDetails.unscoped.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true))
+      .where("channels.created_at": max_age.ago..Time.now)
   }
 
-  scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
-    SiteChannelDetails.unscoped.joins(:channel).
-      where.not(
-        brave_publisher_id: SiteChannelDetails.
-                            unscoped.
-                            joins(:channel).
-                            select(:brave_publisher_id).
-                            distinct.
-                            where("channels.verified": true)
-      ).
-      where.not(verification_method: nil).
-      where("channels.updated_at": max_age.ago..Time.now)
+  scope :recent_ready_to_verify_site_channels, ->(max_age: 6.weeks) {
+    SiteChannelDetails.unscoped.joins(:channel)
+      .where.not(
+        brave_publisher_id: SiteChannelDetails
+                            .unscoped
+                            .joins(:channel)
+                            .select(:brave_publisher_id)
+                            .distinct
+                            .where("channels.verified": true)
+      )
+      .where.not(verification_method: nil)
+      .where("channels.updated_at": max_age.ago..Time.now)
   }
 
   def initialized?

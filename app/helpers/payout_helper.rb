@@ -65,11 +65,11 @@ module PayoutHelper
   end
 
   def payout_amount(payout_report, publisher)
-    amount = payout_report.potential_payments.
-      where(publisher: publisher).
-      select(&:amount).
-      map { |x| x.amount.to_d }.
-      sum
+    amount = payout_report.potential_payments
+      .where(publisher: publisher)
+      .select(&:amount)
+      .map { |x| x.amount.to_d }
+      .sum
 
     (amount / 1E18).round(2)
   end

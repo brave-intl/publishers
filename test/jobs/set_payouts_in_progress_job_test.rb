@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class SetPayoutsInProgressJobTest < ActiveJob::TestCase
   test "Sets payout in progress" do

@@ -1,8 +1,6 @@
-
 # Preview all emails at https://localhost:3000/rails/mailers
 
 class PublisherMailerInternalPreview < ActionMailer::Preview
-
   def verification_done_internal
     PublisherMailer.verification_done_internal(Channel.first)
   end
@@ -30,8 +28,7 @@ class PublisherMailerInternalPreview < ActionMailer::Preview
 
   def confirm_email_change_internal
     publisher = Publisher.first
-    publisher.pending_email = 'pending@brave.com'
+    publisher.pending_email = "pending@brave.com"
     PublisherMailer.confirm_email_change_internal(publisher)
   end
-
 end

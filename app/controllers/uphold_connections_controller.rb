@@ -6,10 +6,10 @@ class UpholdConnectionsController < ApplicationController
     render(status: 400, json: {}) and return unless uphold_card_id&.length == UUID_LENGTH
     state = SecureRandom.hex(64).to_s
     Rails.cache.write(state, uphold_card_id, expires_in: 10.minutes)
-    redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
-      gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_login_client_id]).
-      gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
-      gsub('<STATE>', state)
+    redirect_to Rails.application.secrets[:uphold_authorization_endpoint]
+      .gsub("<UPHOLD_CLIENT_ID>", Rails.application.secrets[:uphold_login_client_id])
+      .gsub("<UPHOLD_SCOPE>", Rails.application.secrets[:uphold_scope])
+      .gsub("<STATE>", state)
   end
 
   def confirm
@@ -19,8 +19,8 @@ class UpholdConnectionsController < ApplicationController
       uphold_code: params[:code]
     )
 
-    redirect_to(root_path, flash: { alert: I18n.t(".out_of_time_alert") }) and return if uphold_card.blank?
-    redirect_to(root_path, flash: { alert: I18n.t(".invalid_credentials_alert") }) and return unless uphold_card.id == uphold_card_id
+    redirect_to(root_path, flash: {alert: I18n.t(".out_of_time_alert")}) and return if uphold_card.blank?
+    redirect_to(root_path, flash: {alert: I18n.t(".invalid_credentials_alert")}) and return unless uphold_card.id == uphold_card_id
 
     signup_user_if_necessary_or_signin(
       uphold_model_card: uphold_card,

@@ -1,7 +1,8 @@
 namespace :database_updates do
-  task :migrate_versions => :environment do
-    class LegacyVersion < ApplicationRecord ; end
-    class Version < ApplicationRecord ; end
+  task migrate_versions: :environment do
+    class LegacyVersion < ApplicationRecord; end
+
+    class Version < ApplicationRecord; end
 
     total = LegacyVersion.count
 
@@ -11,7 +12,7 @@ namespace :database_updates do
     values = []
 
     LegacyVersion.in_batches.each_record.with_index do |legacy_version, index|
-      printf("\rPercentage: %.2f%", (index/total.to_f * 100))
+      printf("\rPercentage: %.2f%", (index / total.to_f * 100))
 
       item_id = extract_id(legacy_version.object || legacy_version.object_changes)
 
@@ -45,7 +46,6 @@ namespace :database_updates do
       end
     end
 
-
     Rails.logger.info "[#{Time.now.iso8601}] #{total}/#{total} - migration complete ✨"
     puts "[#{Time.now.iso8601}] #{total}/#{total} - migration complete ✨"
   end
@@ -62,7 +62,7 @@ namespace :database_updates do
     # Creating is different than update
     id = properties[index + 1] if id == "id:"
 
-    id.sub("id: ", "").sub("- ", "").gsub("'", "").strip
+    id.sub("id: ", "").sub("- ", "").delete("'").strip
   end
 
   def is_a_class?(item)

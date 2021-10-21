@@ -1,5 +1,5 @@
 namespace :database_updates do
-  task :migrate_site_banners => :environment do
+  task migrate_site_banners: :environment do
     # Update record_id's to use uuids instead of bigints, set existing banners to default banners.
     total = SiteBanner.all.count
     SiteBanner.find_each.with_index do |banner, index|

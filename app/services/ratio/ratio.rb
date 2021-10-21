@@ -3,7 +3,7 @@
 module Ratio
   class Ratio < BaseApiClient
     PATH = "/v1/"
-    RATES_CACHE_KEY = "rates_cache".freeze
+    RATES_CACHE_KEY = "rates_cache"
 
     def all
       return JSON.parse(all_mock_response) if Rails.application.secrets[:bat_ratios_token].blank?

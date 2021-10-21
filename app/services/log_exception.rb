@@ -2,10 +2,10 @@ class LogException
   def self.perform(error, publisher: {}, params: {}, force: false)
     if Rails.env.production? || Rails.env.staging? || force
 
-      require 'newrelic_rpm'
+      require "newrelic_rpm"
       NewRelic::Agent.notice_error(error, new_relic_params(publisher, params))
 
-      require 'sentry-raven'
+      require "sentry-raven"
       Raven.capture_exception(error, sentry_params(publisher, params))
 
       true

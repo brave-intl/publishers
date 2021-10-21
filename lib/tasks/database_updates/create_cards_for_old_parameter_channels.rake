@@ -14,6 +14,6 @@ namespace :database_updates do
       end
       puts "Changed for connection_id: #{connection.id}"
     end
-    puts 'Done!'
+    puts "Done!"
   end
 end

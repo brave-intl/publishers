@@ -4,7 +4,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   def canned_u2f_response
-    return ActiveSupport::JSON.encode({
+    ActiveSupport::JSON.encode({
       registrationData: "BQSM6EVrCw0w-PctTplo08E-Fsv567-cM5cEAaOwy4D_FX04ydGc7se5g6UzpgLGfmTn142VGOWPfN62RAPgxfXqQF3cRU0FNxZec4Mn6JMgkf8sKixGtH8Zj7-u2kllPxfmxZHVKSgGuotS4dyykc2Puf-30FKWuGTGxhK5HgUT-LswggJKMIIBMqADAgECAgRXFvfAMA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMTI1l1YmljbyBVMkYgUm9vdCBDQSBTZXJpYWwgNDU3MjAwNjMxMCAXDTE0MDgwMTAwMDAwMFoYDzIwNTAwOTA0MDAwMDAwWjAsMSowKAYDVQQDDCFZdWJpY28gVTJGIEVFIFNlcmlhbCAyNTA1NjkyMjYxNzYwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARk2RxU1tlXjdOwYHhMRjbVSKOYOq81J87rLcbjK2eeM_zp6GMUrbz4V1IbL0xJn5SvcFVlviIZWym2Tk2tDdBiozswOTAiBgkrBgEEAYLECgIEFTEuMy42LjEuNC4xLjQxNDgyLjEuNTATBgsrBgEEAYLlHAIBAQQEAwIFIDANBgkqhkiG9w0BAQsFAAOCAQEAeJsYypuk23Yg4viLjP3pUSZtKiJ31eP76baMmqDpGmpI6nVM7wveWYQDba5_i6P95ktRdgTDoRsubXVNSjcZ76h2kw-g4PMGP1pMoLygMU9_BaPqXU7dkdNKZrVdXI-obgDnv1_dgCN-s9uCPjTjEmezSarHnCSnEqWegEqqjWupJSaid6dx3jFqc788cR_FTSJmJ_rXleT0ThtwA08J_P44t94peJP7WayLHDPPxca-XY5Mwn9KH0b2-ET4eMByi9wd-6Zx2hCH9Yzjjllro_Kf0FlBXcUKoy-JFHzT2wgBN9TmW7zrC7_lQYgYjswUMRh5UZKrOnOHqaVyfxBIhjBFAiEAzu8YCpqP1z6N99lihFuzs_56EThtxm5tMYQmoCBLNdUCIDHfgiU3Sdu82ZwYTWz_oV9VpgvBtAQdPDOmQCNsLXvC",
       version: "U2F_V2",
       challenge: "4DXURTQ3_1pzkPTYqSAQeb4TOnaiN4L5Td2dQpnn7nY",
@@ -27,16 +27,16 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
       public_key: "sdf",
       counter: 1
     )
-    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(:register! => mock_u2f_registration))
+    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(register!: mock_u2f_registration))
 
     assert_difference("U2fRegistration.count") do
       post u2f_registrations_path, params: {
-        u2f_registration: { name: "Name" },
+        u2f_registration: {name: "Name"},
         u2f_response: canned_u2f_response
       }
     end
 
-    assert_redirected_to controller: '/publishers/security', action: 'index'
+    assert_redirected_to controller: "/publishers/security", action: "index"
     refute @request.flash[:modal_partial]
   end
 
@@ -49,23 +49,23 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
       public_key: "sdf",
       counter: 1
     )
-    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(:register! => mock_u2f_registration))
+    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(register!: mock_u2f_registration))
 
     get prompt_security_publishers_path
 
     assert_difference("U2fRegistration.count") do
       post u2f_registrations_path, params: {
-        u2f_registration: { name: "Name" },
+        u2f_registration: {name: "Name"},
         u2f_response: canned_u2f_response
       }
     end
 
-    assert_redirected_to controller: '/publishers', action: 'home'
+    assert_redirected_to controller: "/publishers", action: "home"
     assert @request.flash[:modal_partial]
 
     follow_redirect!
 
-    assert_select '#js-open-modal-on-load'
+    assert_select "#js-open-modal-on-load"
   end
 
   test "delete removes registered key" do
@@ -76,7 +76,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     delete u2f_registration_path(u2f_registration)
 
-    assert_redirected_to controller: '/publishers/security', action: 'index'
+    assert_redirected_to controller: "/publishers/security", action: "index"
     follow_redirect!
     assert_response :success
     assert_no_match u2f_registration.name, response.body, "page does not show deleted u2f_registration"

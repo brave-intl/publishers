@@ -1,12 +1,12 @@
-require 'csv'
+require "csv"
 
 module Admin
   class UpholdStatusReportsController < AdminController
     def index
-      @uphold_status_reports = UpholdStatusReport.
-        group('(EXTRACT(YEAR FROM created_at))::integer').
-        group('(EXTRACT(MONTH FROM created_at))::integer').
-        order('2 DESC, 3 DESC').count
+      @uphold_status_reports = UpholdStatusReport
+        .group("(EXTRACT(YEAR FROM created_at))::integer")
+        .group("(EXTRACT(MONTH FROM created_at))::integer")
+        .order("2 DESC, 3 DESC").count
     end
 
     def show
@@ -23,7 +23,7 @@ module Admin
         generated << [report.publisher_id, report.publisher.created_at, report.uphold_id, report.created_at].to_csv
       end
 
-      send_data generated.join(''), filename: "uphold-#{params[:id]}.csv"
+      send_data generated.join(""), filename: "uphold-#{params[:id]}.csv"
     end
   end
 end

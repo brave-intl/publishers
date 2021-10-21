@@ -22,16 +22,16 @@ module Payout
       publisher.channels.verified.each do |channel|
         potential_payments << PotentialPayment.new(
           payout_report_id: payout_report&.id,
-          name: "#{channel.publication_title}",
+          name: channel.publication_title.to_s,
           amount: "0",
           fees: "0",
           publisher_id: publisher.id,
           channel_id: channel.id,
           kind: ::PotentialPayment::CONTRIBUTION,
-          url: "#{channel.details.url}",
-          address: channel.deposit_id || '',
-          wallet_provider_id: connection.display_name || '', # this is a hash of the account_id
-          wallet_provider: ::PotentialPayment.wallet_providers['bitflyer'],
+          url: channel.details.url.to_s,
+          address: channel.deposit_id || "",
+          wallet_provider_id: connection.display_name || "", # this is a hash of the account_id
+          wallet_provider: ::PotentialPayment.wallet_providers["bitflyer"],
           suspended: publisher.suspended?,
           status: publisher.last_status_update&.status,
           channel_stats: channel.details.stats,

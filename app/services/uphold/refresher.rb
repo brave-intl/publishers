@@ -14,7 +14,7 @@ module Uphold
     def call(uphold_connection:)
       # Ensure we have an refresh_token.
 
-      return if !uphold_connection.authorization_expired?
+      return unless uphold_connection.authorization_expired?
       return if uphold_connection.refresh_token.blank?
 
       authorization = @impl_refresher.refresh_authorization(uphold_connection)

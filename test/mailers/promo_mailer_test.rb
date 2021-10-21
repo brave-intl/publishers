@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 require "shared/mailer_test_helper"
 
 class PromoMailerTest < ActionMailer::TestCase
@@ -18,7 +18,7 @@ class PromoMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal ["brave-publishers@localhost.local"], email.from
     assert_equal [publisher.email], email.to
 
     promo_token = publisher.promo_token_2018q1
@@ -33,10 +33,10 @@ class PromoMailerTest < ActionMailer::TestCase
 
     referral_code = "BATS-321"
     promo_registration = PromoRegistration.new(channel_id: channel.id,
-                                               promo_id: "free-bats-2018q1",
-                                               kind: "channel",
-                                               publisher_id: publisher.id,
-                                               referral_code: referral_code)
+      promo_id: "free-bats-2018q1",
+      kind: "channel",
+      publisher_id: publisher.id,
+      referral_code: referral_code)
     promo_registration.save!
     promo_enabled_channels = publisher.channels.joins(:promo_registration)
 
@@ -47,7 +47,7 @@ class PromoMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal ["brave-publishers@localhost.local"], email.from
     assert_equal [publisher.email], email.to
 
     referral_link = https_referral_url(referral_code)
@@ -61,10 +61,10 @@ class PromoMailerTest < ActionMailer::TestCase
 
     referral_code = "BATS-321"
     promo_registration = PromoRegistration.new(channel_id: channel.id,
-                                               promo_id: "free-bats-2018q1",
-                                               kind: "channel",
-                                               publisher_id: publisher.id,
-                                               referral_code: referral_code)
+      promo_id: "free-bats-2018q1",
+      kind: "channel",
+      publisher_id: publisher.id,
+      referral_code: referral_code)
 
     promo_registration.save!
     email = PromoMailer.new_channel_registered_2018q1(publisher, channel)
@@ -74,6 +74,6 @@ class PromoMailerTest < ActionMailer::TestCase
     end
 
     referral_link = https_referral_url(referral_code)
-
-    assert_email_body_matches(matcher: referral_link, email: email)  end
+    assert_email_body_matches(matcher: referral_link, email: email)
+  end
 end

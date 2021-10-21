@@ -14,7 +14,7 @@ class Promo::RegistrationInstallerTypeSetter < BaseApiClient
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
       request.url("/api/2/promo/referral/installerType")
-      request.body = {"referralCodes" => @referral_codes, "installerType" => @installer_type }.to_json
+      request.body = {"referralCodes" => @referral_codes, "installerType" => @installer_type}.to_json
     end
 
     @promo_registrations.update_all(installer_type: @installer_type)

@@ -16,7 +16,7 @@
 # end
 
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.uncountable %w(
+  inflect.uncountable %w[
     site_channel_details
     youtube_channel_details
     twitch_channel_details
@@ -25,6 +25,6 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
     reddit_channel_details
     github_channel_details
     stripe
-  )
-  inflect.acronym 'OAuth'
+  ]
+  inflect.acronym "OAuth"
 end

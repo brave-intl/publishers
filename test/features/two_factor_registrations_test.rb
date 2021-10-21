@@ -12,18 +12,18 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     assert_content page, "Enabled"
     refute_content page, "Set Up" # TOTP setup is not available
 
-    click_link('Disable') # Disable TOTP
+    click_link("Disable") # Disable TOTP
 
     assert_content "Disable Authenticator App?"
 
     click_link("Do Not Disable")
-    wait_until { !page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }
+    wait_until { !page.find(".js-shared-modal :first-child", match: :first, visible: :all).visible? }
 
     refute_content "Disable Authenticator App?"
 
-    click_link('Disable') # Disable TOTP
+    click_link("Disable") # Disable TOTP
 
-    wait_until { page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }
+    wait_until { page.find(".js-shared-modal :first-child", match: :first, visible: :all).visible? }
 
     assert_content page, "Disable Authenticator App?"
 
@@ -40,26 +40,26 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     assert_content page, "My U2F Key" # Key is present
     refute_content page, "No keys have been added" # "No key" warning is not visible
 
-    click_link('Remove') # Disable TOTP
+    click_link("Remove") # Disable TOTP
 
-    wait_until { page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }
+    wait_until { page.find(".js-shared-modal :first-child", match: :first, visible: :all).visible? }
 
     assert_content page, "Remove Security Key?"
 
     click_link("Do Not Remove")
 
-    wait_until { !page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }
+    wait_until { !page.find(".js-shared-modal :first-child", match: :first, visible: :all).visible? }
 
     refute_content "Remove Security Key?"
-    click_link('Remove') # Disable TOTP
+    click_link("Remove") # Disable TOTP
 
-    wait_until { page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }
+    wait_until { page.find(".js-shared-modal :first-child", match: :first, visible: :all).visible? }
 
     assert_content page, "Remove Security Key?"
 
     click_link("Remove Security Key")
 
-    wait_until { !page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }
+    wait_until { !page.find(".js-shared-modal :first-child", match: :first, visible: :all).visible? }
 
     refute_content page, "My U2F Key" # Key is not present
 
@@ -67,5 +67,4 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     # or provide params[:u2f]. See issue #442
     assert_content page, "No keys have been added" # "No key" warning is visible
   end
-
 end

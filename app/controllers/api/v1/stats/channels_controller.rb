@@ -15,7 +15,7 @@ class Api::V1::Stats::ChannelsController < Api::V1::StatsController
       else
         channel_type = channel.type_display.downcase
         channel_name = channel_details.name
-      end
+    end
 
     data = {
       channel_id: channel.id,
@@ -30,15 +30,14 @@ class Api::V1::Stats::ChannelsController < Api::V1::StatsController
     }
 
     render(status: 200, json: data) and return
-
-    rescue ActiveRecord::RecordNotFound
-      error_response = {
-        errors: [{
-          status: "404",
-          title: "Not Found",
-          detail: "Channel with id #{params[:channel_id]} not found"
-          }]
-        }
+  rescue ActiveRecord::RecordNotFound
+    error_response = {
+      errors: [{
+        status: "404",
+        title: "Not Found",
+        detail: "Channel with id #{params[:channel_id]} not found"
+      }]
+    }
 
     render(status: 404, json: error_response) and return
   end
@@ -46,42 +45,42 @@ class Api::V1::Stats::ChannelsController < Api::V1::StatsController
   # Returns an array of buckets of site channel ids, where each bucket is defined by total channel views
   def twitch_channels_by_view_count
     # 0 - 1000 views
-    bucket_one = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "0").
-                                      where("stats -> 'view_count' < ?", "1000").
-                                      select(:id).map {|details| details.id}
+    bucket_one = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "0")
+      .where("stats -> 'view_count' < ?", "1000")
+      .select(:id).map { |details| details.id }
 
     # 1000 - 10,000 views
-    bucket_two = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "1000").
-                                      where("stats -> 'view_count' < ?", "10000").
-                                      select(:id).map {|details| details.id}
+    bucket_two = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "1000")
+      .where("stats -> 'view_count' < ?", "10000")
+      .select(:id).map { |details| details.id }
     # 10,000 - 100,000 views
-    bucket_three = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "10000").
-                                        where("stats -> 'view_count' < ?", "100000").
-                                        select(:id).map {|details| details.id}
+    bucket_three = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "10000")
+      .where("stats -> 'view_count' < ?", "100000")
+      .select(:id).map { |details| details.id }
     # >= 100,000
-    bucket_four = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "100000").
-                                       select(:id).map {|details| details.id}
+    bucket_four = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "100000")
+      .select(:id).map { |details| details.id }
 
     render(json: [bucket_one, bucket_two, bucket_three, bucket_four].to_json, status: 200)
   end
 
   def youtube_channels_by_view_count
     # 0 - 1000 views
-    bucket_one = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "0").
-                                       where("stats -> 'view_count' < ?", "1000").
-                                       select(:id).map {|details| details.id}
+    bucket_one = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "0")
+      .where("stats -> 'view_count' < ?", "1000")
+      .select(:id).map { |details| details.id }
 
     # 1000 - 10,000 views
-    bucket_two = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "1000").
-                                       where("stats -> 'view_count' < ?", "10000").
-                                       select(:id).map {|details| details.id}
+    bucket_two = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "1000")
+      .where("stats -> 'view_count' < ?", "10000")
+      .select(:id).map { |details| details.id }
     # 10,000 - 100,000 views
-    bucket_three = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "10000").
-                                         where("stats -> 'view_count' < ?", "100000").
-                                         select(:id).map {|details| details.id}
+    bucket_three = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "10000")
+      .where("stats -> 'view_count' < ?", "100000")
+      .select(:id).map { |details| details.id }
     # >= 100,000
-    bucket_four = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "100000").
-                                        select(:id).map {|details| details.id}
+    bucket_four = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "100000")
+      .select(:id).map { |details| details.id }
 
     render(json: [bucket_one, bucket_two, bucket_three, bucket_four].to_json, status: 200)
   end

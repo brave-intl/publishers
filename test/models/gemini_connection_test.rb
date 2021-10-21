@@ -5,24 +5,24 @@ require "jobs/sidekiq_test_case"
 class GeminiConnectionTest < SidekiqTestCase
   include MockGeminiResponses
 
-  describe 'validations' do
+  describe "validations" do
     let(:gemini_connection) { gemini_connections(:default_connection) }
 
-    describe 'when recipient_id is nil' do
+    describe "when recipient_id is nil" do
       before do
         gemini_connection.recipient_id = nil
       end
 
-      it 'is valid' do
+      it "is valid" do
         assert gemini_connection.valid?
       end
     end
   end
 
-  describe 'after destroy hook' do
+  describe "after destroy hook" do
     let(:gemini_connection) { gemini_connections(:connection_with_token) }
     let(:publisher) { publishers(:gemini_completed) }
-    test 'publisher no longer has a selected wallet provider' do
+    test "publisher no longer has a selected wallet provider" do
       assert_equal publisher.selected_wallet_provider, gemini_connection
       gemini_connection.destroy
       publisher.reload
@@ -30,7 +30,7 @@ class GeminiConnectionTest < SidekiqTestCase
     end
   end
 
-  describe 'refresh_authorization! retrieves a new token' do
+  describe "refresh_authorization! retrieves a new token" do
     let(:gemini_connection) { gemini_connections(:connection_with_token) }
     subject { gemini_connection.refresh_authorization! }
 
@@ -40,14 +40,14 @@ class GeminiConnectionTest < SidekiqTestCase
       mock_gemini_recipient_id!
     end
 
-    it 'refreshes the token' do
-      assert_equal gemini_connection.access_token, 'access_token'
+    it "refreshes the token" do
+      assert_equal gemini_connection.access_token, "access_token"
       subject
-      assert_equal gemini_connection.access_token, 'km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm'
+      assert_equal gemini_connection.access_token, "km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm"
     end
   end
 
-  describe '#sync_connection' do
+  describe "#sync_connection" do
     let(:subject) { connection.sync_connection! }
     let(:connection) { gemini_connections(:connection_with_token) }
 
@@ -55,7 +55,7 @@ class GeminiConnectionTest < SidekiqTestCase
       mock_gemini_unverified_account_request!
     end
 
-    it 'queues a CreateGeminiRecipientIdsJob job' do
+    it "queues a CreateGeminiRecipientIdsJob job" do
       assert_difference -> { CreateGeminiRecipientIdsJob.jobs.size } do
         subject
       end

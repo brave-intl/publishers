@@ -9,7 +9,7 @@ class CspCreatedTest < Capybara::Rails::TestCase
     CspViolationReport.destroy_all
     publisher = publishers(:small_media_group)
     sign_in publisher
-    assert_changes 'CspViolationReport.count' do
+    assert_changes "CspViolationReport.count" do
       visit home_publishers_path
     end
   end

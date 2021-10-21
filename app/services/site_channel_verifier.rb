@@ -1,4 +1,4 @@
-require 'publishers/fetch'
+require "publishers/fetch"
 
 class SiteChannelVerifier < BaseService
   include Publishers::Fetch
@@ -7,7 +7,7 @@ class SiteChannelVerifier < BaseService
 
   # has_admin_approval signifies that an admin is manually initiating verification and
   # confirming the request is legit. do NOT run it automatically!
-  def initialize(has_admin_approval: false, channel:)
+  def initialize(channel:, has_admin_approval: false)
     @has_admin_approval = has_admin_approval
     @channel = channel
     raise UnsupportedChannelType.new unless @channel && @channel.details.is_a?(SiteChannelDetails)
@@ -88,7 +88,7 @@ class SiteChannelVerifier < BaseService
     answer.each do |answer_part|
       next if !answer_part.respond_to?(:strings) || answer_part.strings.blank?
       answer_part.strings.each do |string|
-        token_match = /^brave\-ledger\-verification\=([a-zA-Z0-9]+)$/.match(string)
+        token_match = /^brave-ledger-verification=([a-zA-Z0-9]+)$/.match(string)
         next if !token_match || !token_match[1]
         Rails.logger.info("Found token on #{channel.details.brave_publisher_id}: #{token_match[1]}")
         if channel.details.verification_token == token_match[1]
@@ -105,7 +105,7 @@ class SiteChannelVerifier < BaseService
   rescue Dnsruby::NXDomain
     Rails.logger.debug("Dnsruby::NXDomain")
     @verification_details = "domain_not_found"
-    return false
+    false
   rescue Dnsruby::ServFail
     @verification_details = "domain_not_found"
     false

@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class CleanAbandonedSiteChannelsJobTest < ActiveJob::TestCase
   test "cleans non-visible (abandoned) site channels older than one day" do
@@ -7,7 +7,7 @@ class CleanAbandonedSiteChannelsJobTest < ActiveJob::TestCase
     assert SiteChannelDetails.find_by(brave_publisher_id: "medium_2.org")
 
     assert_difference("Channel.count", -1 * Channel.not_visible_site_channels.count) do
-      assert_difference("publisher.channels.count", -1 ) do
+      assert_difference("publisher.channels.count", -1) do
         CleanAbandonedSiteChannelsJob.perform_now
       end
     end

@@ -15,7 +15,7 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
         # Remove 2fa registrations, remove channels, disconnect wallet, and put publisher into LOCKED state.
         ActiveRecord::Base.transaction do
           publisher.totp_registration.destroy if publisher.totp_registration.present?
-          publisher.u2f_registrations.destroy_all if !publisher.u2f_registrations.empty?
+          publisher.u2f_registrations.destroy_all unless publisher.u2f_registrations.empty?
           if !publisher.channels.empty?
             publisher.channels.each do |channel|
               is_deleted = DeletePublisherChannelJob.perform_now(channel_id: channel.id)

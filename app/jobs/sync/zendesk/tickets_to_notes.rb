@@ -2,7 +2,7 @@ class Sync::Zendesk::TicketsToNotes
   include Sidekiq::Worker
 
   def perform(page_number = 0, start_date = nil)
-    require 'zendesk_api'
+    require "zendesk_api"
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
 
@@ -47,8 +47,7 @@ class Sync::Zendesk::TicketsToNotes
     response = client.search(query:
                               "type:ticket " +
                               "group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}" +
-                              (start_date.present? ? " updated>#{start_date}" : "")
-                            ).page(page_number)
+                              (start_date.present? ? " updated>#{start_date}" : "")).page(page_number)
     response.each do |result|
       Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)
     end

@@ -16,8 +16,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:publisher) { publishers(:fake1) }
 
     let(:subject) do
-      @results = Payout::UpholdService.new.
-        perform(
+      @results = Payout::UpholdService.new
+        .perform(
           payout_report:
             PayoutReport.create(
               expected_num_payments:
@@ -38,8 +38,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:publisher) { publishers(:suspended) }
 
     let(:subject) do
-      @results = Payout::UpholdService.new.
-        perform(
+      @results = Payout::UpholdService.new
+        .perform(
           payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
           publisher: publisher
         )
@@ -57,8 +57,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     let(:publisher) { publishers(:uphold_connected_reauthorize) }
 
     let(:subject) do
-      @results = Payout::UpholdService.new.
-        perform(
+      @results = Payout::UpholdService.new
+        .perform(
           payout_report: @payout_report,
           publisher: publisher
         )
@@ -69,22 +69,22 @@ class UpholdServiceTest < ActiveJob::TestCase
         {
           account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
           account_type: "owner",
-          balance: "20.00",
+          balance: "20.00"
         },
         {
           account_id: "uphold_connected.org",
           account_type: "channel",
-          balance: "20.00",
+          balance: "20.00"
         },
         {
           account_id: "twitch#author:ucTw",
           account_type: "channel",
-          balance: "20.00",
+          balance: "20.00"
         }, {
           account_id: "twitter#channel:def456",
           account_type: "channel",
-          balance: "20.00",
-        },
+          balance: "20.00"
+        }
       ]
     end
 
@@ -109,7 +109,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
     let(:subject) do
       @results = Payout::UpholdService.new.perform(payout_report: @payout_report,
-                                                   publisher: publisher)
+        publisher: publisher)
     end
 
     let(:balance_response) do
@@ -117,22 +117,22 @@ class UpholdServiceTest < ActiveJob::TestCase
         {
           account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
           account_type: "owner",
-          balance: "20.00",
+          balance: "20.00"
         },
         {
           account_id: "uphold_connected_blocked.org",
           account_type: "channel",
-          balance: "20.00",
+          balance: "20.00"
         },
         {
           account_id: "twitch#author:blocked",
           account_type: "channel",
-          balance: "20.00",
+          balance: "20.00"
         }, {
           account_id: "twitter#channel:blocked",
           account_type: "channel",
-          balance: "20.00",
-        },
+          balance: "20.00"
+        }
       ]
     end
 
@@ -152,10 +152,10 @@ class UpholdServiceTest < ActiveJob::TestCase
         assert_equal "blocked", potential_payment.uphold_status
         if potential_payment.kind == PotentialPayment::REFERRAL
           assert_equal "0", potential_payment.fees
-          assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
+          assert_equal "uphold", potential_payment.wallet_provider # uphold enum
         elsif potential_payment.kind == PotentialPayment::CONTRIBUTION
           assert_equal "0", potential_payment.fees
-          assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
+          assert_equal "uphold", potential_payment.wallet_provider # uphold enum
         end
       end
     end
@@ -174,19 +174,19 @@ class UpholdServiceTest < ActiveJob::TestCase
           {
             account_id: "publishers#uuid:2fcb973c-7f7c-5351-809f-0eed1de17a77",
             account_type: "owner",
-            balance: "500.00",
+            balance: "500.00"
           },
           {
             account_id: "youtube#channel:",
             account_type: "channel",
-            balance: "500.00",
-          },
+            balance: "500.00"
+          }
         ]
       end
 
       let(:subject) do
         @results = Payout::UpholdService.new.perform(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
-                                                     publisher: publisher)
+          publisher: publisher)
       end
 
       before do
@@ -210,7 +210,7 @@ class UpholdServiceTest < ActiveJob::TestCase
   describe "when uphold verified" do
     let(:subject) do
       @results = Payout::UpholdService.new.perform(payout_report: @payout_report,
-                                                   publisher: publisher)
+        publisher: publisher)
     end
 
     # All members should have addresses
@@ -218,13 +218,13 @@ class UpholdServiceTest < ActiveJob::TestCase
       describe "with balance" do
         let(:balance_response) do
           [
-            { account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8", account_type: "owner", balance: "20.00" },
-            { account_id: publishers(:promo_not_registered).owner_identifier, account_type: "owner", balance: "20.00" },
-            { account_id: publishers(:promo_lockout).owner_identifier, account_type: "owner", balance: "20.00" },
-            { account_id: "uphold_connected_details.org", account_type: "channel", balance: "20.00" },
-            { account_id: "twitch#author:details", account_type: "channel", balance: "20.00" },
-            { account_id: "twitter#channel:details", account_type: "channel", balance: "20.00" },
-            { account_id: channels(:reddit_promo_registered).details.channel_identifier, account_type: "channel", balance: "20.00" },
+            {account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8", account_type: "owner", balance: "20.00"},
+            {account_id: publishers(:promo_not_registered).owner_identifier, account_type: "owner", balance: "20.00"},
+            {account_id: publishers(:promo_lockout).owner_identifier, account_type: "owner", balance: "20.00"},
+            {account_id: "uphold_connected_details.org", account_type: "channel", balance: "20.00"},
+            {account_id: "twitch#author:details", account_type: "channel", balance: "20.00"},
+            {account_id: "twitter#channel:details", account_type: "channel", balance: "20.00"},
+            {account_id: channels(:reddit_promo_registered).details.channel_identifier, account_type: "channel", balance: "20.00"}
           ]
         end
 
@@ -274,22 +274,22 @@ class UpholdServiceTest < ActiveJob::TestCase
               {
                 account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
                 account_type: "owner",
-                balance: "0.00",
+                balance: "0.00"
               },
               {
                 account_id: "uphold_connected_details.org",
                 account_type: "channel",
-                balance: "0.00",
+                balance: "0.00"
               },
               {
                 account_id: "twitch#author:ucTw",
                 account_type: "channel",
-                balance: "0.00",
+                balance: "0.00"
               }, {
                 account_id: "twitter#channel:def456",
                 account_type: "channel",
-                balance: "0.00",
-              },
+                balance: "0.00"
+              }
             ]
           end
           let(:publisher) { publishers(:uphold_connected_details) }

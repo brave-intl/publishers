@@ -21,14 +21,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   SIGNUP_PARAMS = {
     email: "alice@example.com",
-    terms_of_service: true,
+    terms_of_service: true
   }.freeze
 
   COMPLETE_SIGNUP_PARAMS = {
     publisher: {
       name: "Alice the Pyramid",
-      visible: true,
-    },
+      visible: true
+    }
   }.freeze
 
   test "publisher can access a publisher's dashboard" do
@@ -98,7 +98,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference("Publisher.count") do
       # Login email should be generated
       assert_enqueued_emails(1) do
-        post(registrations_path, params: { email: "alice@verified.org" })
+        post(registrations_path, params: {email: "alice@verified.org"})
       end
     end
     assert_response :success
@@ -171,7 +171,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "login link of pre-bitflyer enabled japanese users takes them to home" do
     publisher = publishers(:completed)
-    headers = { 'Accept-Language' => "ja_JP" }
+    headers = {"Accept-Language" => "ja_JP"}
     request_login_email(publisher: publisher)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
 
@@ -190,7 +190,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher.feature_flags["bitflyer_enabled"] = true
     publisher.save
 
-    headers = { 'Accept-Language' => "ja_JP" }
+    headers = {"Accept-Language" => "ja_JP"}
     request_login_email(publisher: publisher)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
 
@@ -209,14 +209,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "an unauthenticated json request returns a 401" do
-    get home_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    get home_publishers_path, headers: {"HTTP_ACCEPT" => "application/json"}
     assert_response 401
   end
 
   def request_login_email(publisher:)
     perform_enqueued_jobs do
       get(log_in_publishers_path)
-      params = publisher.attributes.slice(*%w(brave_publisher_id email))
+      params = publisher.attributes.slice(*%w[brave_publisher_id email])
       put(registrations_path, params: params)
     end
   end
@@ -224,7 +224,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   def request_login_email_uppercase_email(publisher:)
     perform_enqueued_jobs do
       get(log_in_publishers_path)
-      params = { email: publisher.email.upcase }
+      params = {email: publisher.email.upcase}
       put(registrations_path, params: params)
     end
   end
@@ -294,10 +294,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     publisher.reload
 
-    complete_params = { publisher: { name: "Alice" * 13, visible: true } }
+    complete_params = {publisher: {name: "Alice" * 13, visible: true}}
 
     patch(complete_signup_publishers_path, params: complete_params)
-    assert_equal 'Your Name is too long (maximum is 64 characters)', flash[:alert]
+    assert_equal "Your Name is too long (maximum is 64 characters)", flash[:alert]
   end
 
   test "publisher updating contact email address will trigger 3 emails and allow publishers confirm new address" do
@@ -318,17 +318,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # update the publisher email
     perform_enqueued_jobs do
       patch(publishers_path,
-            params: { publisher: { pending_email: 'alice-pending@example.com' } },
-            headers: { 'HTTP_ACCEPT' => "application/json" })
+        params: {publisher: {pending_email: "alice-pending@example.com"}},
+        headers: {"HTTP_ACCEPT" => "application/json"})
     end
 
     publisher.reload
 
     # verify pending email has been updated
-    assert_equal 'alice-pending@example.com', publisher.pending_email
+    assert_equal "alice-pending@example.com", publisher.pending_email
 
     # verify original email still is used
-    assert_equal 'alice@example.com', publisher.email
+    assert_equal "alice@example.com", publisher.email
 
     # verify 3 emails have been sent after update
     assert ActionMailer::Base.deliveries.count == 5
@@ -336,21 +336,21 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify notification email sent to original address
     email = ActionMailer::Base.deliveries.find do |message|
       message.to == publisher.email
-      message.subject == I18n.t('publisher_mailer.notify_email_change.subject', publication_title: publisher.name)
+      message.subject == I18n.t("publisher_mailer.notify_email_change.subject", publication_title: publisher.name)
     end
     assert_not_nil(email)
 
     # verify brave gets an internal email copy of confirmation email
     email = ActionMailer::Base.deliveries.find do |message|
       message.to.first == Rails.application.secrets[:internal_email]
-      message.subject == "<Internal> #{I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: publisher.name)}"
+      message.subject == "<Internal> #{I18n.t("publisher_mailer.confirm_email_change.subject", publication_title: publisher.name)}"
     end
     assert_not_nil(email)
 
     # verify confirmation email sent to pending address
     email = ActionMailer::Base.deliveries.find do |message|
       message.to == publisher.pending_email
-      message.subject == I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: publisher.name)
+      message.subject == I18n.t("publisher_mailer.confirm_email_change.subject", publication_title: publisher.name)
     end
     assert_not_nil(email)
 
@@ -359,7 +359,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher.reload
 
     # verify email changes after confirmation
-    assert_equal('alice-pending@example.com', publisher.email)
+    assert_equal("alice-pending@example.com", publisher.email)
 
     # verify pending email is removed after confirmation
     assert_nil(publisher.pending_email)
@@ -379,17 +379,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # update the publisher email
     perform_enqueued_jobs do
       patch(publishers_path,
-            params: { publisher: { pending_email: 'alice-pending@example.com' } },
-            headers: { 'HTTP_ACCEPT' => "application/json" })
+        params: {publisher: {pending_email: "alice-pending@example.com"}},
+        headers: {"HTTP_ACCEPT" => "application/json"})
     end
 
     publisher.reload
 
     # verify pending email has been updated
-    assert_equal 'alice-pending@example.com', publisher.pending_email
+    assert_equal "alice-pending@example.com", publisher.pending_email
 
     # verify original email still is used
-    assert_equal 'alice@example.com', publisher.email
+    assert_equal "alice@example.com", publisher.email
 
     # verify 3 emails have been sent after update
     assert ActionMailer::Base.deliveries.count == 5
@@ -397,21 +397,21 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify notification email sent to original address
     email = ActionMailer::Base.deliveries.find do |message|
       message.to == publisher.email
-      message.subject == I18n.t('publisher_mailer.notify_email_change.subject', publication_title: publisher.name)
+      message.subject == I18n.t("publisher_mailer.notify_email_change.subject", publication_title: publisher.name)
     end
     assert_not_nil(email)
 
     # verify brave gets an internal email copy of confirmation email
     email = ActionMailer::Base.deliveries.find do |message|
       message.to.first == Rails.application.secrets[:internal_email]
-      message.subject == "<Internal> #{I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: publisher.name)}"
+      message.subject == "<Internal> #{I18n.t("publisher_mailer.confirm_email_change.subject", publication_title: publisher.name)}"
     end
     assert_not_nil(email)
 
     # verify confirmation email sent to pending address
     email = ActionMailer::Base.deliveries.find do |message|
       message.to == publisher.pending_email
-      message.subject == I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: publisher.name)
+      message.subject == I18n.t("publisher_mailer.confirm_email_change.subject", publication_title: publisher.name)
     end
     assert_not_nil(email)
 
@@ -420,7 +420,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher.reload
 
     # verify email changes after confirmation
-    assert_equal('alice-pending@example.com', publisher.email)
+    assert_equal("alice-pending@example.com", publisher.email)
 
     # verify pending email is removed after confirmation
     assert_nil(publisher.pending_email)
@@ -429,21 +429,21 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
 
-    uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+    uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
     uphold_state_token = SecureRandom.hex(64)
     publisher.uphold_connection.uphold_state_token = uphold_state_token
 
     publisher.save!
 
-    stub_request(:post, /oauth2\/token/).
-      with(body: "code=#{uphold_code}&grant_type=authorization_code").
-      to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
+    stub_request(:post, /oauth2\/token/)
+      .with(body: "code=#{uphold_code}&grant_type=authorization_code")
+      .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
-    stub_request(:any, /.*uphold-api.*/).
-      to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
+    stub_request(:any, /.*uphold-api.*/)
+      .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
     url = publishers_uphold_verified_path
-    get(url, params: { code: uphold_code, state: uphold_state_token })
+    get(url, params: {code: uphold_code, state: uphold_state_token})
     assert(200, response.status)
 
     publisher.reload
@@ -454,7 +454,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.uphold_connection.uphold_code)
 
     # verify that the uphold_access_parameters has been set
-    assert_match('FAKEACCESSTOKEN', publisher.uphold_connection.uphold_access_parameters)
+    assert_match("FAKEACCESSTOKEN", publisher.uphold_connection.uphold_access_parameters)
 
     assert_redirected_to controller: "/publishers", action: "home"
   end
@@ -469,16 +469,16 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # give pub uphold state token
     uphold_state_token = SecureRandom.hex(64)
     publisher.uphold_connection.uphold_state_token = uphold_state_token
-    expected_uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+    expected_uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
     publisher.save
 
     # simulate return to homepage after creating wallet on uphold.com
     # simulate failed response from uphold.com to get access params
-    stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token").
-      with(body: "code=#{expected_uphold_code}&grant_type=authorization_code").
-      to_timeout
+    stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+      .with(body: "code=#{expected_uphold_code}&grant_type=authorization_code")
+      .to_timeout
     url = publishers_uphold_verified_path
-    get(url, params: { code: expected_uphold_code, state: uphold_state_token })
+    get(url, params: {code: expected_uphold_code, state: uphold_state_token})
     follow_redirect!
 
     # verify uphold :code_acquired but not :access params
@@ -498,9 +498,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "a publisher's wallet can be polled via ajax" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
-    stub_request(:get, /me/).to_return(body: { currencies: [] }.to_json)
+    stub_request(:get, /me/).to_return(body: {currencies: []}.to_json)
 
-    get wallet_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    get wallet_path, headers: {"HTTP_ACCEPT" => "application/json"}
 
     assert_response 200
 
@@ -513,7 +513,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:uphold_connected_details)
     sign_in publisher
 
-    delete connection_uphold_connection_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    delete connection_uphold_connection_path, headers: {"HTTP_ACCEPT" => "application/json"}
 
     assert_response 200
 
@@ -536,7 +536,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "og meta tags should be set" do
     # ensure meta tags appear on static home apge
     get root_path
-    ['og:image', 'og:title', 'og:description', 'og:url', 'og:type'].each do |meta_tag|
+    ["og:image", "og:title", "og:description", "og:url", "og:type"].each do |meta_tag|
       assert_select "meta[property='#{meta_tag}']"
     end
 
@@ -545,7 +545,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     get home_publishers_path
 
-    ['og:image', 'og:title', 'og:description', 'og:url', 'og:type'].each do |meta_tag|
+    ["og:image", "og:title", "og:description", "og:url", "og:type"].each do |meta_tag|
       assert_select "meta[property='#{meta_tag}']"
     end
   end
@@ -594,7 +594,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     get home_publishers_path, headers: {
       "HTTP_USER_AGENT" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36",
-      "HTTP_ACCEPT_LANGUAGE" => "en-US,en;q=0.9",
+      "HTTP_ACCEPT_LANGUAGE" => "en-US,en;q=0.9"
     }
 
     login = publisher.last_login_activity
@@ -609,7 +609,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publisher
 
-    confirm_default_currency_params = { default_currency: "BAT" }
+    confirm_default_currency_params = {default_currency: "BAT"}
 
     assert_enqueued_with(job: CreateUpholdCardsJob) do
       patch(connection_currency_path, params: confirm_default_currency_params)
@@ -624,7 +624,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:uphold_connected_currency_unconfirmed)
     sign_in publisher
 
-    confirm_default_currency_params = { default_currency: "BTC" }
+    confirm_default_currency_params = {default_currency: "BTC"}
 
     assert_enqueued_with(job: CreateUpholdCardsJob) do
       patch(connection_currency_path, params: confirm_default_currency_params)
@@ -633,7 +633,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert publisher.uphold_connection.default_currency == "BTC"
   end
 
-  describe 'publisher integration with uphold' do
+  describe "publisher integration with uphold" do
     let(:publisher) { publishers(:completed) }
     before(:example) do
       sign_in publisher
@@ -649,14 +649,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       publisher.save!
 
-      uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+      uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
 
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token").
-        with(body: "code=#{uphold_code}&grant_type=authorization_code").
-        to_timeout
+      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+        .with(body: "code=#{uphold_code}&grant_type=authorization_code")
+        .to_timeout
 
       url = publishers_uphold_verified_path
-      get(url, params: { code: uphold_code, state: uphold_state_token })
+      get(url, params: {code: uphold_code, state: uphold_state_token})
       assert(200, response.status)
       publisher.reload
 
@@ -665,13 +665,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       # verify that the uphold_code has been set
       assert_not_nil(publisher.uphold_connection.uphold_code)
-      assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_connection.uphold_code)
+      assert_equal("ebb18043eb2e106fccb9d13d82bec119d8cd016c", publisher.uphold_connection.uphold_code)
 
       # verify that the uphold_access_parameters has not been set
       assert_nil(publisher.uphold_connection.uphold_access_parameters)
 
       # verify that the finished_header was not displayed
-      refute_match(I18n.t('publishers.finished_header'), response.body)
+      refute_match(I18n.t("publishers.finished_header"), response.body)
     end
   end
 end

@@ -31,7 +31,7 @@ class Channel < ApplicationRecord
   has_many :uphold_connection_for_channel
   has_many :gemini_connection_for_channel
 
-  has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
+  has_one :contesting_channel, class_name: "Channel", foreign_key: "contested_by_channel_id"
 
   has_one :site_banner, dependent: :destroy
   has_one :site_banner_lookup, dependent: :destroy
@@ -48,13 +48,13 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
+  validates :verification_status, inclusion: {in: %w[failed awaiting_admin_approval approved_by_admin]}, allow_nil: true
 
   validates :verification_details, inclusion: {
-    in: %w(domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https),
+    in: %w[domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https]
   }, allow_nil: true
 
-  validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
+  validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == "SiteChannelDetails" }
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
@@ -72,24 +72,24 @@ class Channel < ApplicationRecord
   before_destroy :preserve_contested_by_channels
 
   belongs_to :site_channel_details, -> {
-    where(channels: { details_type: 'SiteChannelDetails' })
-  }, foreign_key: 'details_id'
+    where(channels: {details_type: "SiteChannelDetails"})
+  }, foreign_key: "details_id"
 
   scope :site_channels, -> { joins(:site_channel_details) }
-  scope :other_verified_site_channels, -> (id:) { site_channels.where(verified: true).where.not(id: id) }
+  scope :other_verified_site_channels, ->(id:) { site_channels.where(verified: true).where.not(id: id) }
 
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
   scope :visible_site_channels, -> {
-    site_channels.where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
+    site_channels.where("channels.verified = true or NOT site_channel_details.verification_method IS NULL")
   }
   scope :not_visible_site_channels, -> {
-    site_channels.where(verified: [false, nil]).where(site_channel_details: { verification_method: nil })
+    site_channels.where(verified: [false, nil]).where(site_channel_details: {verification_method: nil})
   }
 
   scope :visible, -> {
-    left_outer_joins(:site_channel_details).
-      where('(channels.verified = true or channels.verification_pending) or NOT site_channel_details.verification_method IS NULL')
+    left_outer_joins(:site_channel_details)
+      .where("(channels.verified = true or channels.verification_pending) or NOT site_channel_details.verification_method IS NULL")
   }
 
   scope :contested_channels_ready_to_transfer, -> {
@@ -104,7 +104,7 @@ class Channel < ApplicationRecord
 
     properties.merge({
       all_channels: Channel.verified.count,
-      site: Channel.verified.site_channels.count,
+      site: Channel.verified.site_channels.count
     })
   end
 
@@ -155,9 +155,9 @@ class Channel < ApplicationRecord
   # => <Channel id: "55ecd577-0425-420f-8796-78598b06c8a0",...,>
   def self.find_by_channel_identifier(identifier)
     name, property = identifier.split("#")
-    _, value = property&.split(':')
+    _, value = property&.split(":")
 
-    if name == 'twitch'
+    if name == "twitch"
       Channel.twitch_channels.verified.where("twitch_channel_details.name": value).first
     elsif PROPERTIES.include?(name)
       public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
@@ -170,19 +170,19 @@ class Channel < ApplicationRecord
     promo_registration&.referral_code&.present?
   end
 
-  def verification_failed!(details = nil) # rubocop:disable Airbnb/OptArgParameters
+  def verification_failed!(details = nil) # standard:disable Airbnb/OptArgParameters
     # Clear changes so we don't bypass validations when saving without checking them
     reload
 
     self.verified = false
     self.verified_at = nil
-    self.verification_status = 'failed'
+    self.verification_status = "failed"
     self.verification_details = details
     save!
   end
 
   def verification_awaiting_admin_approval!
-    update!(verified: false, verification_status: 'awaiting_admin_approval', verification_details: nil)
+    update!(verified: false, verification_status: "awaiting_admin_approval", verification_details: nil)
   end
 
   def verification_succeeded!(has_admin_approval)
@@ -198,10 +198,10 @@ class Channel < ApplicationRecord
     end
 
     update!(verified: true,
-            verification_pending: false,
-            verification_status: verification_status,
-            verification_details: nil,
-            verified_at: Time.now)
+      verification_pending: false,
+      verification_status: verification_status,
+      verification_details: nil,
+      verified_at: Time.now)
   end
 
   def needs_admin_approval?
@@ -211,39 +211,39 @@ class Channel < ApplicationRecord
   def self.search(query)
     query = query.downcase
 
-    base_channel = Channel.
-      joins(:publisher).
-      left_outer_joins(:site_channel_details).
-      left_outer_joins(:youtube_channel_details).
-      left_outer_joins(:twitch_channel_details)
+    base_channel = Channel
+      .joins(:publisher)
+      .left_outer_joins(:site_channel_details)
+      .left_outer_joins(:youtube_channel_details)
+      .left_outer_joins(:twitch_channel_details)
 
     channel = base_channel
-    query.split(' ').each do |q|
-      channel = channel.
-        where("lower(publishers.email) LIKE ?", q).
-        or(base_channel.where("lower(publishers.name) LIKE ?", q)).
-        or(base_channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", q)).
-        or(base_channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", q)).
-        or(base_channel.where("lower(twitch_channel_details.display_name) LIKE ?", q)).
-        or(base_channel.where("lower(twitch_channel_details.email) LIKE ?", q)).
-        or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q)).
-        or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q)).
-        or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
+    query.split(" ").each do |q|
+      channel = channel
+        .where("lower(publishers.email) LIKE ?", q)
+        .or(base_channel.where("lower(publishers.name) LIKE ?", q))
+        .or(base_channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.display_name) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.email) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
     end
 
     channel
   end
 
   def verification_failed?
-    verification_status == 'failed'
+    verification_status == "failed"
   end
 
   def verification_awaiting_admin_approval?
-    verification_status == 'awaiting_admin_approval'
+    verification_status == "awaiting_admin_approval"
   end
 
   def verification_approved_by_admin?
-    verification_status == 'approved_by_admin'
+    verification_status == "approved_by_admin"
   end
 
   def update_last_verification_timestamp
@@ -286,7 +286,7 @@ class Channel < ApplicationRecord
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
     return unless verified?
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
-      channel_identifier: details&.channel_identifier,
+      channel_identifier: details&.channel_identifier
     )
     site_banner_lookup.set_sha2_base16
     site_banner_lookup.derived_site_banner_info =
@@ -363,9 +363,9 @@ class Channel < ApplicationRecord
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
-    duplicate_unverified_channels = publisher.channels.visible_site_channels.
-      where(site_channel_details: { brave_publisher_id: details.brave_publisher_id }).
-      where.not(id: id)
+    duplicate_unverified_channels = publisher.channels.visible_site_channels
+      .where(site_channel_details: {brave_publisher_id: details.brave_publisher_id})
+      .where.not(id: id)
 
     if duplicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
@@ -381,9 +381,9 @@ class Channel < ApplicationRecord
   def verified_duplicate_channels_must_be_contested
     name = type_display.downcase
     if PROPERTIES.include?(name)
-      duplicate_verified_channels = Channel.send("other_verified_#{name}_channels", id: id).where("#{name}_channel_details": { "#{name}_channel_id": details.send("#{name}_channel_id") })
+      duplicate_verified_channels = Channel.send("other_verified_#{name}_channels", id: id).where("#{name}_channel_details": {"#{name}_channel_id": details.send("#{name}_channel_id")})
     elsif details_type == "SiteChannelDetails"
-      duplicate_verified_channels = Channel.other_verified_site_channels(id: id).where(site_channel_details: { brave_publisher_id: details.brave_publisher_id })
+      duplicate_verified_channels = Channel.other_verified_site_channels(id: id).where(site_channel_details: {brave_publisher_id: details.brave_publisher_id})
     end
 
     if duplicate_verified_channels.any?

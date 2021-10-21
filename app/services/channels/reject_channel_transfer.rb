@@ -1,6 +1,5 @@
 module Channels
   class RejectChannelTransfer < BaseService
-
     def initialize(channel:, should_delete: true)
       @channel = channel
       @contested_by = @channel.contested_by_channel

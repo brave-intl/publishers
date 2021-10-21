@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class SlackMessenger < BaseApiClient
   attr_reader :channel, :message
 
@@ -8,7 +9,7 @@ class SlackMessenger < BaseApiClient
     !!api_base_uri
   end
 
-  def initialize(channel: nil, message:)
+  def initialize(message:, channel: nil)
     @channel = channel
     @message = message
   end
@@ -21,7 +22,7 @@ class SlackMessenger < BaseApiClient
     params = {
       "icon_emoji" => ":coconut:",
       "username" => "coconut the dolphin",
-      "text" => message,
+      "text" => message
     }
     params["channel"] = channel if channel
     connection.post do |request|

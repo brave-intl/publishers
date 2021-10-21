@@ -11,7 +11,7 @@ module Bitflyer
     end
 
     def self.oauth_path
-      '/api/link/v1/token'
+      "/api/link/v1/token"
     end
 
     def self.oauth_scope

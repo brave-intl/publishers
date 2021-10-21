@@ -58,12 +58,13 @@ class ContestChannelTest < ActiveJob::TestCase
     channel = channels(:fraudulently_verified_site)
     contested_by_channel_one = channels(:locked_out_site)
     contested_by_channel_two = Channel.new(publisher: Publisher.new(email: "contest@verified.org"),
-                                           details: SiteChannelDetails.new(brave_publisher_id: channel.details.brave_publisher_id))
+      details: SiteChannelDetails.new(brave_publisher_id: channel.details.brave_publisher_id))
     contested_by_channel_two.save!
 
     # contest channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel_one).perform
-    channel.reload; contested_by_channel_one.reload
+    channel.reload
+    contested_by_channel_one.reload
 
     assert_equal channel.contested_by_channel, contested_by_channel_one
     assert_equal contested_by_channel_one.contesting_channel, channel

@@ -5,7 +5,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   test "new requires authentication" do
     get new_totp_registration_path
-    assert_redirected_to root_path, locale: 'en'
+    assert_redirected_to root_path, locale: "en"
   end
 
   test "new renders when authenticated with new key form" do
@@ -43,7 +43,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
         totp_password: "123456",
-        totp_registration: { secret: ROTP::Base32.random_base32 }
+        totp_registration: {secret: ROTP::Base32.random_base32}
       }
     end
 
@@ -61,7 +61,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
         totp_password: "123456",
-        totp_registration: { secret: ROTP::Base32.random_base32 }
+        totp_registration: {secret: ROTP::Base32.random_base32}
       }
     end
 
@@ -70,7 +70,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    assert_select '#js-open-modal-on-load'
+    assert_select "#js-open-modal-on-load"
   end
 
   test "TOTP registration reconfiguration" do
@@ -85,7 +85,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
         totp_password: "123456",
-        totp_registration: { secret: ROTP::Base32.random_base32 }
+        totp_registration: {secret: ROTP::Base32.random_base32}
       }
     end
 

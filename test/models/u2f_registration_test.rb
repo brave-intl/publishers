@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class U2fRegistrationTest < ActiveSupport::TestCase
   test "U2f Registration belongs to a Publisher" do

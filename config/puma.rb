@@ -15,20 +15,20 @@ worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
 # Specifies the `environment` that Puma will run in.
 #
-address = ENV.fetch('ADDRESS') { '127.0.0.1' }
+address = ENV.fetch("ADDRESS") { "127.0.0.1" }
 rails_env = ENV.fetch("RAILS_ENV") { "development" }
 environment rails_env
 
 if rails_env == "development"
   if ENV["SSL"] == "off"
     bind ENV.fetch("BIND") {
-           "tcp://0.0.0.0:#{ENV.fetch('PORT') { 3000 }}"
+           "tcp://0.0.0.0:#{ENV.fetch("PORT") { 3000 }}"
          }
   else
-    ssl_bind address, '3000', {
-      key: ENV.fetch("SSL_KEY_PATH") { 'ssl/server.key' },
-      cert: ENV.fetch("SSL_CERT_PATH") { 'ssl/server.crt' },
-      verify_mode: 'none',
+    ssl_bind address, "3000", {
+      key: ENV.fetch("SSL_KEY_PATH") { "ssl/server.key" },
+      cert: ENV.fetch("SSL_CERT_PATH") { "ssl/server.crt" },
+      verify_mode: "none"
     }
   end
 else

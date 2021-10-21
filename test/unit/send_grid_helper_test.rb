@@ -1,6 +1,6 @@
 require "test_helper"
 require "send_grid/api_helper"
-require 'vcr'
+require "vcr"
 
 class SendGridHelperTest < ActiveSupport::TestCase
   before do
@@ -12,14 +12,14 @@ class SendGridHelperTest < ActiveSupport::TestCase
   end
 
   test "can find a contact by email" do
-    contact = SendGrid::ApiHelper.get_contact_by_email(email: 'alice@completed.org')
+    contact = SendGrid::ApiHelper.get_contact_by_email(email: "alice@completed.org")
 
-    assert_equal 'alice@completed.org', contact['email']
+    assert_equal "alice@completed.org", contact["email"]
   end
 
   test "raises an exception if it can not find a contact by email" do
     assert_raises SendGrid::NotFoundError do
-      contact = SendGrid::ApiHelper.get_contact_by_email(email: 'frank@completed.org')
+      contact = SendGrid::ApiHelper.get_contact_by_email(email: "frank@completed.org")
     end
   end
 
@@ -27,7 +27,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
     publisher = publishers(:completed)
     ids = SendGrid::ApiHelper.upsert_contacts(publishers: [publisher])
 
-    assert_equal ['YWxpY2VAY29tcGxldGVkLm9yZw=='], ids
+    assert_equal ["YWxpY2VAY29tcGxldGVkLm9yZw=="], ids
   end
 
   test "upserts multiple(two) contacts and returns their sendgrid ids" do
@@ -36,7 +36,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
 
     ids = SendGrid::ApiHelper.upsert_contacts(publishers: [publisher1, publisher2])
 
-    assert_equal ['YWxpY2VAY29tcGxldGVkLm9yZw==', 'YWxpY2UyQHZlcmlmaWVkLm9yZw=='], ids
+    assert_equal ["YWxpY2VAY29tcGxldGVkLm9yZw==", "YWxpY2UyQHZlcmlmaWVkLm9yZw=="], ids
   end
 
   test "upserts one contact and returns their sendgrid id" do
@@ -44,7 +44,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
 
     id = SendGrid::ApiHelper.upsert_contact(publisher: publisher)
 
-    assert_equal 'YWxpY2VAY29tcGxldGVkLm9yZw==', id
+    assert_equal "YWxpY2VAY29tcGxldGVkLm9yZw==", id
   end
 
   # Note: Cassette modified to produce error
@@ -59,23 +59,23 @@ class SendGridHelperTest < ActiveSupport::TestCase
   end
 
   test "can add a contact, by email, to a list" do
-    assert SendGrid::ApiHelper.add_contact_by_email_to_list(email: 'alice@completed.org', list_id: '3986776')
+    assert SendGrid::ApiHelper.add_contact_by_email_to_list(email: "alice@completed.org", list_id: "3986776")
   end
 
   test "raises trying to add a contact, by email, to a missing list" do
     exp = assert_raises SendGrid::NotFoundError do
-      SendGrid::ApiHelper.add_contact_by_email_to_list(email: 'alice@completed.org', list_id: '1234')
+      SendGrid::ApiHelper.add_contact_by_email_to_list(email: "alice@completed.org", list_id: "1234")
     end
     assert_equal "{\"errors\":[{\"message\":\"List ID does not exist\"}]}\n", exp.message
   end
 
   test "can remove a contact, by email, from a list" do
-    assert SendGrid::ApiHelper.remove_contact_by_email_from_list(email: 'alice@completed.org', list_id: '3986776')
+    assert SendGrid::ApiHelper.remove_contact_by_email_from_list(email: "alice@completed.org", list_id: "3986776")
   end
 
   test "raises trying to remove a contact, by email, to a missing list" do
     exp = assert_raises SendGrid::NotFoundError do
-      SendGrid::ApiHelper.remove_contact_by_email_from_list(email: 'alice@completed.org', list_id: '1234')
+      SendGrid::ApiHelper.remove_contact_by_email_from_list(email: "alice@completed.org", list_id: "1234")
     end
     assert_equal "{\"errors\":[{\"message\":\"List ID does not exist\"}]}\n", exp.message
   end

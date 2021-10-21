@@ -8,10 +8,10 @@ module Admin
       @cases = Case.all
       @cases = search if params[:q].present?
 
-      if sort_column == :id
-        @cases = @cases.order(open_at: :asc)
+      @cases = if sort_column == :id
+        @cases.order(open_at: :asc)
       else
-        @cases = @cases.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
+        @cases.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
       end
 
       @cases = @cases.paginate(page: params[:page])
@@ -27,16 +27,16 @@ module Admin
 
       # Search by case
       if query.include?("#") || query.length == 5
-        case_id = query.split('#').second
+        case_id = query.split("#").second
         case_id = query if case_id.blank?
         search_case = Case.where("case_number = ?", case_id)
       elsif query.include?(":")
         # Search for each type on the db model, like assignee = ""
-        search_case = parse_search(search_case, query.split(' '))
+        search_case = parse_search(search_case, query.split(" "))
       else
         search_query = "%#{query}%"
-        search_case = Case.joins(:publisher).where('publishers.name LIKE ?', search_query).or(
-          Case.joins(:publisher).where('publishers.email LIKE ?', search_query)
+        search_case = Case.joins(:publisher).where("publishers.name LIKE ?", search_query).or(
+          Case.joins(:publisher).where("publishers.email LIKE ?", search_query)
         )
       end
 
@@ -48,7 +48,7 @@ module Admin
       @assigned_cases = Case.where(assignee: current_user, status: Case::IN_PROGRESS)
 
       @case_status = Case.all.group(:status).count
-      @assigned = Case.all.joins(:assignee).group('publishers.name', :status).count
+      @assigned = Case.all.joins(:assignee).group("publishers.name", :status).count
 
       @assigned = @assigned.sort_by { |x, y| y }.reverse
 
@@ -87,11 +87,11 @@ module Admin
         @case.publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE, publisher_note: note)
       end
 
-      return redirect_to [:admin, @case], flash: { notice: "Case has been moved back to in progress"} if params[:status] == Case::IN_PROGRESS
+      return redirect_to [:admin, @case], flash: {notice: "Case has been moved back to in progress"} if params[:status] == Case::IN_PROGRESS
 
       next_case = Case.where(assignee: current_user, status: Case::IN_PROGRESS).take
       if next_case
-        redirect_to [:admin, next_case], flash: { notice: "Previous case #{@case.number} has been marked #{params[:status]}"}
+        redirect_to [:admin, next_case], flash: {notice: "Previous case #{@case.number} has been marked #{params[:status]}"}
       else
         redirect_to admin_cases_path
       end
@@ -100,18 +100,18 @@ module Admin
     private
 
     def parse_search(search_case, queries)
-      statuses = queries.select { |x| x.include?("status") }.map { |x| x.split(':').last&.gsub(/[^0-9a-z_]/i, '') }
-      assigned = queries.select { |x| x.include?("assigned") }.map { |x| x.split(':').last&.gsub(/[^0-9a-z_]/i, '') }
+      statuses = queries.select { |x| x.include?("status") }.map { |x| x.split(":").last&.gsub(/[^0-9a-z_]/i, "") }
+      assigned = queries.select { |x| x.include?("assigned") }.map { |x| x.split(":").last&.gsub(/[^0-9a-z_]/i, "") }
 
       search_case = search_case.where(status: statuses) if statuses.present?
 
       first_assigned = assigned[0]
       if first_assigned.present?
         value = first_assigned
-        search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "#{value}%")
+        search_case = search_case.joins(:assignee).where("publishers.email LIKE ?", "#{value}%")
 
         assigned[1..-1].each do |value|
-          search_case = search_case.or(Case.joins(:assignee).where('publishers.email LIKE ?', "#{value}%"))
+          search_case = search_case.or(Case.joins(:assignee).where("publishers.email LIKE ?", "#{value}%"))
         end
       end
 
@@ -127,10 +127,10 @@ module Admin
     end
 
     def redirect_on_no_filter
-      return if  has_filter?
+      return if has_filter?
 
       if Case.where(assignee: current_user, status: Case::IN_PROGRESS).size.positive?
-        redirect_to admin_cases_path(q: "status:#{Case::IN_PROGRESS} assigned:#{current_user.email.sub("@brave.com", '')}") and return
+        redirect_to admin_cases_path(q: "status:#{Case::IN_PROGRESS} assigned:#{current_user.email.sub("@brave.com", "")}") and return
       else
         redirect_to admin_cases_path(q: "status:#{Case::OPEN}")
       end

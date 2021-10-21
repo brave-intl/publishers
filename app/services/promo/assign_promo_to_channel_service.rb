@@ -26,10 +26,10 @@ class Promo::AssignPromoToChannelService < BaseApiClient
     begin
       if referral_code.present?
         promo_registration = PromoRegistration.new(channel_id: channel.id,
-                                                   promo_id: @promo_id,
-                                                   kind: PromoRegistration::CHANNEL,
-                                                   publisher_id: channel.publisher_id,
-                                                   referral_code: referral_code)
+          promo_id: @promo_id,
+          kind: PromoRegistration::CHANNEL,
+          publisher_id: channel.publisher_id,
+          referral_code: referral_code)
 
         success = promo_registration.save!
         if success
@@ -64,8 +64,6 @@ class Promo::AssignPromoToChannelService < BaseApiClient
   rescue Faraday::Error::ClientError => e
     if e.response[:status] == 409
       change_ownership(channel)
-    else
-      nil
     end
   rescue Faraday::Error => e
     require "sentry-raven"
@@ -109,31 +107,31 @@ class Promo::AssignPromoToChannelService < BaseApiClient
   def request_body(channel)
     case channel.details_type
     when "SiteChannelDetails"
-      return site_request_body(channel)
+      site_request_body(channel)
     else
-      return channel_request_body(channel)
+      channel_request_body(channel)
     end
   end
 
   def channel_request_body(channel)
     {
-      "owner_id": channel.publisher_id,
-      "promo": @promo_id,
-      "channel": channel.channel_id,
-      "title": channel.publication_title,
-      "channel_type": channel.type_display.downcase,
-      "thumbnail_url": channel.details.thumbnail_url,
-      "description": nil
+      owner_id: channel.publisher_id,
+      promo: @promo_id,
+      channel: channel.channel_id,
+      title: channel.publication_title,
+      channel_type: channel.type_display.downcase,
+      thumbnail_url: channel.details.thumbnail_url,
+      description: nil
     }.to_json
   end
 
   def site_request_body(channel)
     {
-      "owner_id": channel.publisher_id,
-      "promo": @promo_id,
-      "channel": channel.channel_id,
-      "title": channel.publication_title,
-      "channel_type": "website",
+      owner_id: channel.publisher_id,
+      promo: @promo_id,
+      channel: channel.channel_id,
+      title: channel.publication_title,
+      channel_type: "website"
     }.to_json
   end
 end

@@ -4,7 +4,7 @@ class ChannelsController < ApplicationController
   before_action :authenticate_publisher!
 
   before_action :setup_current_channel,
-                except: %i(cancel_add)
+    except: %i[cancel_add]
 
   attr_reader :current_channel
 
@@ -16,7 +16,7 @@ class ChannelsController < ApplicationController
         if success
           head :no_content
         else
-          render(json: { errors: current_channel.errors }, status: 400)
+          render(json: {errors: current_channel.errors}, status: 400)
         end
       }
     end
@@ -33,9 +33,9 @@ class ChannelsController < ApplicationController
   def verification_status
     respond_to do |format|
       format.json {
-        render(json: { status: channel_verification_status(current_channel),
-                       details: failed_verification_details(current_channel).nil? ? nil : failed_verification_details(current_channel).upcase_first },
-               status: 200)
+        render(json: {status: channel_verification_status(current_channel),
+                      details: failed_verification_details(current_channel).nil? ? nil : failed_verification_details(current_channel).upcase_first},
+          status: 200)
       }
     end
   end

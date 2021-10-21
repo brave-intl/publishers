@@ -8,16 +8,14 @@ class UpholdRequestAccessParameters < BaseService
   end
 
   def connection
-    @connection ||= begin
-      Faraday.new(url: api_base_uri) do |faraday|
-        faraday.proxy = proxy_url if proxy_url.present?
-        # Log level info: Brief summaries
-        # Log level debug: Detailed bodies and headers
-        faraday.response(:logger, Rails.logger, bodies: true, headers: true)
-        faraday.use(Faraday::Response::RaiseError)
-        faraday.basic_auth(client_id, client_secret)
-        faraday.adapter Faraday.default_adapter
-      end
+    @connection ||= Faraday.new(url: api_base_uri) do |faraday|
+      faraday.proxy = proxy_url if proxy_url.present?
+      # Log level info: Brief summaries
+      # Log level debug: Detailed bodies and headers
+      faraday.response(:logger, Rails.logger, bodies: true, headers: true)
+      faraday.use(Faraday::Response::RaiseError)
+      faraday.basic_auth(client_id, client_secret)
+      faraday.adapter Faraday.default_adapter
     end
   end
 
@@ -46,8 +44,6 @@ class UpholdRequestAccessParameters < BaseService
       # The Code was invalid and could not be used to retrieve access parameters. Raise an exception so this
       # can be handled externally
       raise InvalidGrantError.new
-    else
-      nil
     end
   rescue Faraday::Error => e
     Rails.logger.warn("UpholdRequestAccessParameters #perform error: #{e}")

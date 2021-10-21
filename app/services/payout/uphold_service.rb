@@ -15,13 +15,13 @@ module Payout
           fees: "0",
           publisher_id: publisher.id,
           kind: ::PotentialPayment::REFERRAL,
-          address: "#{uphold_connection.address}",
+          address: uphold_connection.address.to_s,
           uphold_status: uphold_connection.status,
           reauthorization_needed: uphold_connection.uphold_access_parameters.blank?,
           uphold_member: uphold_connection.is_member?,
           uphold_id: uphold_connection.uphold_id,
           wallet_provider_id: uphold_connection.uphold_id,
-          wallet_provider: ::PotentialPayment.wallet_providers['uphold'],
+          wallet_provider: ::PotentialPayment.wallet_providers["uphold"],
           suspended: publisher.suspended?,
           status: publisher.last_status_update&.status
         )
@@ -31,20 +31,20 @@ module Payout
       publisher.channels.verified.each do |channel|
         potential_payments << PotentialPayment.new(
           payout_report_id: payout_report&.id,
-          name: "#{channel.publication_title}",
+          name: channel.publication_title.to_s,
           amount: "0",
           fees: "0",
           publisher_id: publisher.id,
           channel_id: channel.id,
           kind: ::PotentialPayment::CONTRIBUTION,
-          address: "#{uphold_connection.address}",
-          url: "#{channel.details.url}",
+          address: uphold_connection.address.to_s,
+          url: channel.details.url.to_s,
           uphold_status: uphold_connection.status,
           reauthorization_needed: uphold_connection.uphold_access_parameters.blank?,
           uphold_member: uphold_connection.is_member?,
           uphold_id: uphold_connection.uphold_id,
           wallet_provider_id: uphold_connection.uphold_id,
-          wallet_provider: ::PotentialPayment.wallet_providers['uphold'],
+          wallet_provider: ::PotentialPayment.wallet_providers["uphold"],
           suspended: publisher.suspended?,
           status: publisher.last_status_update&.status,
           channel_stats: channel.details.stats,
@@ -53,7 +53,7 @@ module Payout
       end
 
       potential_payments
-    rescue StandardError => e
+    rescue => e
       PayoutMessage.create(payout_report: payout_report, publisher: publisher, message: e.message)
       raise e
     end

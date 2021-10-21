@@ -1,13 +1,13 @@
 class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersController
   def index
     get_publisher
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({navbarSelection: "Dashboard"}).to_json
     @publisher_status_updates = @publisher.status_updates
   end
 
   def create
     if @publisher.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(params[:publisher_status])
-      render(status: 403, json: { "reason": "Cannot suspend whitelisted publisher" }) and return
+      render(status: 403, json: {reason: "Cannot suspend whitelisted publisher"}) and return
     end
 
     note = @publisher.notes.create(note: params[:note], created_by_id: current_publisher.id)

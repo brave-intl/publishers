@@ -1,6 +1,6 @@
 namespace :database_updates do
-  desc 'Reset Permalocked users'
-  task :reset_permalocked_users => :environment do
+  desc "Reset Permalocked users"
+  task reset_permalocked_users: :environment do
     publisher_ids = []
     PublisherStatusUpdate.select(:status, :publisher_id).where(status: "locked").group(:publisher_id, :status).having("count(*) > 1").each do |psu|
       publisher_ids.append(psu.publisher_id)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'net/http'
-require 'uri'
+require "net/http"
+require "uri"
 
 module Uphold
   module Models
@@ -36,11 +36,11 @@ module Uphold
         request.content_type = "application/x-www-form-urlencoded"
         request.set_form_data(
           "grant_type" => "refresh_token",
-          "refresh_token" => refresh_token,
+          "refresh_token" => refresh_token
         )
 
         req_options = {
-          use_ssl: true,
+          use_ssl: true
         }
 
         Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|

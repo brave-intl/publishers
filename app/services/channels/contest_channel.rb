@@ -53,11 +53,13 @@ module Channels
           @channel.details.channel_identifier == @contested_by.details.channel_identifier
       end
 
-      raise ChannelIdMismatchError if !channel_ids_match
+      raise ChannelIdMismatchError unless channel_ids_match
     end
 
     class ChannelTypeMismatchError < RuntimeError; end
+
     class ChannelIdMismatchError < RuntimeError; end
+
     class SuspendedPublisherError < RuntimeError; end
   end
 end

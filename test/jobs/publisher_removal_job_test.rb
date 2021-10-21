@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class PublisherRemovalJobTest < ActiveJob::TestCase
-
   test "deletes a publisher and his or her channels" do
     publisher = publishers(:google_verified)
     publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)

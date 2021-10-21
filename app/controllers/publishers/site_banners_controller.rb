@@ -18,7 +18,7 @@ class Publishers::SiteBannersController < ApplicationController
       logo_length = params[:logo]&.length || 0
       cover_length = params[:cover]&.length || 0
 
-      if cover_length > MAX_IMAGE_SIZE or logo_length > MAX_IMAGE_SIZE
+      if (cover_length > MAX_IMAGE_SIZE) || (logo_length > MAX_IMAGE_SIZE)
         raise t("banner.upload_too_big")
       end
 
@@ -38,8 +38,8 @@ class Publishers::SiteBannersController < ApplicationController
       end
     end
     head :ok
-  rescue StandardError => e
-    render status: 400, json: { message: e.message }.to_json
+  rescue => e
+    render status: 400, json: {message: e.message}.to_json
   end
 
   def set_default_site_banner_mode
@@ -54,9 +54,9 @@ class Publishers::SiteBannersController < ApplicationController
 
   def image_properties(attachment_type:)
     if attachment_type === SiteBanner::LOGO
-      data_url = params[:logo].split(',')[0]
+      data_url = params[:logo].split(",")[0]
     elsif attachment_type === SiteBanner::BACKGROUND
-      data_url = params[:cover].split(',')[0]
+      data_url = params[:cover].split(",")[0]
     end
     if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
       extension = ".jpg"
@@ -68,14 +68,14 @@ class Publishers::SiteBannersController < ApplicationController
       LogException.perform(StandardError.new("Unknown image format:" + data_url), params: {})
       return nil
     end
-    filename = Time.now.to_s.gsub!(" ", "_").gsub!(":", "_") + current_publisher.id
+    filename = Time.now.to_s.tr!(" ", "_").tr!(":", "_") + current_publisher.id
 
     temp_file = Tempfile.new([filename, extension])
-    File.open(temp_file.path, 'wb') do |f|
+    File.open(temp_file.path, "wb") do |f|
       if attachment_type === SiteBanner::LOGO
-        f.write(Base64.decode64(params[:logo].split(',')[1]))
+        f.write(Base64.decode64(params[:logo].split(",")[1]))
       elsif attachment_type === SiteBanner::BACKGROUND
-        f.write(Base64.decode64(params[:cover].split(',')[1]))
+        f.write(Base64.decode64(params[:cover].split(",")[1]))
       end
     end
 
@@ -91,7 +91,7 @@ class Publishers::SiteBannersController < ApplicationController
     {
       io: open(padded_resized_jpg_path),
       filename: new_filename + ".jpg",
-      content_type: "image/jpg",
+      content_type: "image/jpg"
     }
   end
 end

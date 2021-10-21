@@ -4,7 +4,7 @@ require "rails/all"
 
 # Have to require this middleware
 # https://github.com/rails/rails/issues/25525
-require_relative 'middlewares/http_header_middleware'
+require_relative "middlewares/http_header_middleware"
 
 # Require the gems listed in Gemfile, including any gems
 # you"ve limited to :test, :development, or :production.
@@ -21,14 +21,14 @@ module Publishers
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.autoload_paths += %W(#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/protos #{config.root}/app/models/stats_redshift #{config.root}/app/jobs/payout/concerns/)
+    config.autoload_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/protos #{config.root}/app/models/stats_redshift #{config.root}/app/jobs/payout/concerns/]
 
     config.exceptions_app = routes
 
-    if Rails.application.secrets[:log_verbose].present?
-      config.log_level = :debug
+    config.log_level = if Rails.application.secrets[:log_verbose].present?
+      :debug
     else
-      config.log_level = :info
+      :info
     end
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
@@ -38,8 +38,8 @@ module Publishers
     config.active_record.default_timezone = :local
 
     config.active_storage.queues.analysis = :low
-    config.active_storage.queues.purge    = :low
-    config.ssl_options = { redirect: { exclude: -> request { request.path =~ /health-check/ } } }
+    config.active_storage.queues.purge = :low
+    config.ssl_options = {redirect: {exclude: ->(request) { request.path =~ /health-check/ }}}
 
     # config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     #    config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]

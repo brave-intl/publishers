@@ -5,7 +5,7 @@ module ReferralPromo
   included do
     MAX_PROMO_REGISTRATIONS = 500
 
-    validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
+    validates :promo_registrations, length: {maximum: MAX_PROMO_REGISTRATIONS}
     validates :promo_token_2018q1, uniqueness: true, allow_nil: true
   end
 

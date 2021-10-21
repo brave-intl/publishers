@@ -1,4 +1,4 @@
-desc 'Rekey (change keys) of all encrypted fields'
+desc "Rekey (change keys) of all encrypted fields"
 task rekey: :environment do
   old_key = Rails.application.secrets[:attr_encrypted_key_old]
   new_key = Rails.application.secrets[:attr_encrypted_key]
@@ -19,15 +19,15 @@ task rekey: :environment do
           field_name_encrypted = record.send("encrypted_#{field}")
           old_field_name_iv = record.send("encrypted_#{field}_iv")
 
-          if field_name_encrypted.blank? or old_field_name_iv.blank?
+          if field_name_encrypted.blank? || old_field_name_iv.blank?
             Rails.logger.debug("Skipping #{model} #{field} #{record.id} due to this field being nil")
             next
           end
 
           begin
             old_field_value = Util::AttrEncrypted.get_value_using_key(record: record,
-                                                                      field: field,
-                                                                      key: old_key)
+              field: field,
+              key: old_key)
           rescue OpenSSL::Cipher::CipherError
             Rails.logger.debug("Already Rekeyed #{model} #{field} #{record.id}")
             # Already rekeyed
@@ -36,10 +36,10 @@ task rekey: :environment do
 
           # Perform the rekey on the object in memory using the new key
           Util::AttrEncrypted.rekey(object: record,
-                                    field: field,
-                                    old_key: old_key,
-                                    new_key: new_key,
-                                    field_value: old_field_value)
+            field: field,
+            old_key: old_key,
+            new_key: new_key,
+            field_value: old_field_value)
 
           updated_records << record
           Rails.logger.debug("Rekeyed #{model} #{field} #{record.id}")
@@ -62,7 +62,7 @@ def perform_sql_update(records:, field:)
   # https://www.postgresql.org/docs/current/sql-update.html
   record = records[0]
   table = record.class.table_name
-  sql = """
+  sql = "
               UPDATE #{table} as t
                 SET encrypted_#{field} = c.encrypted_field,
                 encrypted_#{field}_iv = c.encrypted_field_iv,
@@ -71,7 +71,7 @@ def perform_sql_update(records:, field:)
                   #{records.map { |r| "(  '#{r.id}'::UUID, '#{r.send("encrypted_#{field}")}', '#{r.send("encrypted_#{field}_iv")}'  )" }.join(",\n")}
               ) as c(id, encrypted_field, encrypted_field_iv)
               where c.id = t.id
-              """
+              "
   Rails.logger.debug(sql)
   record.class.connection.execute(sql)
 end

@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'webmock/minitest'
+require "test_helper"
+require "webmock/minitest"
 
 class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
   test "sets uphold_access_parameters and schedules new UploadUpholdAccessParametersJob on success" do
@@ -11,7 +11,6 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
     stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
       .with(body: "code=#{uphold_connection.uphold_code}&grant_type=authorization_code")
       .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
-
   end
 
   test "clears uphold_code on invalid_grant" do

@@ -1,5 +1,5 @@
 require "test_helper"
-require 'pry'
+require "pry"
 
 class StatementsTest < ActiveSupport::TestCase
   let(:subject) { Views::User::Statements.new(publisher: publishers(:default)).overviews }
@@ -22,14 +22,14 @@ class StatementsTest < ActiveSupport::TestCase
           description: "contributions through Oct",
           transaction_type: "contribution",
           amount: 94986.42173631497819143,
-          created_at: "2019-10-09".to_date,
+          created_at: "2019-10-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
           description: "settlement fees",
           transaction_type: "fees",
           amount: -4749.321086815748909571,
-          created_at: "2019-10-09".to_date,
+          created_at: "2019-10-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -40,8 +40,8 @@ class StatementsTest < ActiveSupport::TestCase
           settlement_amount: 17903.78,
           settlement_destination_type: "uphold",
           settlement_destination: "69d842d3-c8f8-438f-969b-36c3d6e3e182",
-          created_at: "2019-10-09".to_date,
-        ),
+          created_at: "2019-10-09".to_date
+        )
       ]
     end
 
@@ -50,10 +50,10 @@ class StatementsTest < ActiveSupport::TestCase
       @statement_mock.expect(:perform, statements)
     end
 
-    it 'has the correct date range' do
+    it "has the correct date range" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-09-01')
-        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-10-09')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal("2019-09-01")
+        expect(subject.first.earning_period[:end_date].to_s).must_equal("2019-10-09")
       end
     end
 
@@ -88,14 +88,14 @@ class StatementsTest < ActiveSupport::TestCase
           description: "contributions through Oct",
           transaction_type: "contribution",
           amount: 94986.42173631497819143,
-          created_at: "2019-10-09".to_date,
+          created_at: "2019-10-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
           description: "settlement fees",
           transaction_type: "fees",
           amount: -4749.321086815748909571,
-          created_at: "2019-10-09".to_date,
+          created_at: "2019-10-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -106,7 +106,7 @@ class StatementsTest < ActiveSupport::TestCase
           settlement_amount: 17903.78,
           settlement_destination_type: "uphold",
           settlement_destination: "69d842d3-c8f8-438f-969b-36c3d6e3e182",
-          created_at: "2019-10-09".to_date,
+          created_at: "2019-10-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -114,7 +114,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -122,7 +122,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 0.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -130,7 +130,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -138,7 +138,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -146,7 +146,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -154,7 +154,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.96,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -162,7 +162,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -170,7 +170,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -178,7 +178,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -186,7 +186,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.97,
-          created_at: "2019-9-14".to_date,
+          created_at: "2019-9-14".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -194,7 +194,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.2,
-          created_at: "2019-9-15".to_date,
+          created_at: "2019-9-15".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -202,7 +202,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 0.98,
-          created_at: "2019-9-15".to_date,
+          created_at: "2019-9-15".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -210,7 +210,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -218,7 +218,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 1.0,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -226,7 +226,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 2.85,
           settlement_currency: "USD",
           settlement_amount: 0.59,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -234,7 +234,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 0.98,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -242,7 +242,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.89,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -250,7 +250,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.18,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -258,7 +258,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 0.94,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -266,7 +266,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 1.9,
-          created_at: "2019-9-16".to_date,
+          created_at: "2019-9-16".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -274,7 +274,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.2,
-          created_at: "2019-9-17".to_date,
+          created_at: "2019-9-17".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -282,7 +282,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 1.05,
-          created_at: "2019-9-17".to_date,
+          created_at: "2019-9-17".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -290,7 +290,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 2.11,
-          created_at: "2019-9-17".to_date,
+          created_at: "2019-9-17".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -298,7 +298,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 1.05,
-          created_at: "2019-9-17".to_date,
+          created_at: "2019-9-17".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -306,7 +306,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.2,
-          created_at: "2019-9-17".to_date,
+          created_at: "2019-9-17".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -314,7 +314,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 3.8,
           settlement_currency: "USD",
           settlement_amount: 0.81,
-          created_at: "2019-9-18".to_date,
+          created_at: "2019-9-18".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -322,7 +322,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-18".to_date,
+          created_at: "2019-9-18".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -330,7 +330,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.2,
-          created_at: "2019-9-18".to_date,
+          created_at: "2019-9-18".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -338,7 +338,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 1.01,
-          created_at: "2019-9-18".to_date,
+          created_at: "2019-9-18".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -346,7 +346,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.2,
-          created_at: "2019-9-18".to_date,
+          created_at: "2019-9-18".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -354,7 +354,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-19".to_date,
+          created_at: "2019-9-19".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -362,7 +362,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-19".to_date,
+          created_at: "2019-9-19".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -370,7 +370,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-20".to_date,
+          created_at: "2019-9-20".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -378,7 +378,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.18,
-          created_at: "2019-9-20".to_date,
+          created_at: "2019-9-20".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -386,7 +386,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.18,
-          created_at: "2019-9-20".to_date,
+          created_at: "2019-9-20".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -394,7 +394,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.18,
-          created_at: "2019-9-20".to_date,
+          created_at: "2019-9-20".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -402,7 +402,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.18,
-          created_at: "2019-9-20".to_date,
+          created_at: "2019-9-20".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -410,7 +410,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.18,
-          created_at: "2019-9-20".to_date,
+          created_at: "2019-9-20".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -418,7 +418,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 8.55,
           settlement_currency: "USD",
           settlement_amount: 1.81,
-          created_at: "2019-9-21".to_date,
+          created_at: "2019-9-21".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -426,7 +426,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 8.55,
           settlement_currency: "USD",
           settlement_amount: 1.81,
-          created_at: "2019-9-21".to_date,
+          created_at: "2019-9-21".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -434,7 +434,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.19,
-          created_at: "2019-9-21".to_date,
+          created_at: "2019-9-21".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -442,7 +442,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.21,
-          created_at: "2019-9-22".to_date,
+          created_at: "2019-9-22".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -450,7 +450,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.21,
-          created_at: "2019-9-22".to_date,
+          created_at: "2019-9-22".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -458,7 +458,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.2,
-          created_at: "2019-9-22".to_date,
+          created_at: "2019-9-22".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -466,7 +466,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 1.13,
-          created_at: "2019-9-23".to_date,
+          created_at: "2019-9-23".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -474,7 +474,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.22,
-          created_at: "2019-9-23".to_date,
+          created_at: "2019-9-23".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -482,7 +482,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 4.75,
           settlement_currency: "USD",
           settlement_amount: 1.1,
-          created_at: "2019-9-23".to_date,
+          created_at: "2019-9-23".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -490,7 +490,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 2.85,
           settlement_currency: "USD",
           settlement_amount: 0.65,
-          created_at: "2019-9-23".to_date,
+          created_at: "2019-9-23".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -498,7 +498,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 0.95,
           settlement_currency: "USD",
           settlement_amount: 0.21,
-          created_at: "2019-9-23".to_date,
+          created_at: "2019-9-23".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -506,7 +506,7 @@ class StatementsTest < ActiveSupport::TestCase
           amount: 9.5,
           settlement_currency: "USD",
           settlement_amount: 2.15,
-          created_at: "2019-9-23".to_date,
+          created_at: "2019-9-23".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -514,8 +514,8 @@ class StatementsTest < ActiveSupport::TestCase
           amount: -209.95,
           settlement_currency: "BAT",
           settlement_amount: 209.95,
-          created_at: "2019-9-29".to_date,
-        ),
+          created_at: "2019-9-29".to_date
+        )
       ]
     end
 
@@ -524,10 +524,10 @@ class StatementsTest < ActiveSupport::TestCase
       @statement_mock.expect(:perform, statements)
     end
 
-    it 'has the correct date range' do
+    it "has the correct date range" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-09-01')
-        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-10-09')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal("2019-09-01")
+        expect(subject.first.earning_period[:end_date].to_s).must_equal("2019-10-09")
       end
     end
 
@@ -566,21 +566,21 @@ class StatementsTest < ActiveSupport::TestCase
           settlement_amount: 8.19,
           settlement_destination_type: "uphold",
           settlement_destination: "",
-          created_at: "2019-04-09".to_date,
+          created_at: "2019-04-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
           description: "contributions through Apr",
           transaction_type: "contribution",
           amount: 20.0,
-          created_at: "2019-04-09".to_date,
+          created_at: "2019-04-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
           description: "settlement fees",
           transaction_type: "fees",
           amount: -1.0,
-          created_at: "2019-04-09".to_date,
+          created_at: "2019-04-09".to_date
         ),
         PublisherStatementGetter::Statement.new(
           channel: "website.com",
@@ -591,8 +591,8 @@ class StatementsTest < ActiveSupport::TestCase
           settlement_amount: 5.34,
           settlement_destination_type: "uphold",
           settlement_destination: "",
-          created_at: "2019-04-09".to_date,
-        ),
+          created_at: "2019-04-09".to_date
+        )
       ]
     end
 
@@ -601,10 +601,10 @@ class StatementsTest < ActiveSupport::TestCase
       @statement_mock.expect(:perform, statements)
     end
 
-    it 'has the correct date range' do
+    it "has the correct date range" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-03-01')
-        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-04-09')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal("2019-03-01")
+        expect(subject.first.earning_period[:end_date].to_s).must_equal("2019-04-09")
       end
     end
 

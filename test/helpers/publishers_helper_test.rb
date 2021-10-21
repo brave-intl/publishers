@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'eyeshade/wallet'
+require "test_helper"
+require "eyeshade/wallet"
 
 class PublishersHelperTest < ActionView::TestCase
   let(:rates) do
@@ -9,8 +9,8 @@ class PublishersHelperTest < ActionView::TestCase
         "ETH" => 0.000795331082073117,
         "USD" => 2.2363863335301452,
         "EUR" => 0.20187818378874756,
-        "GBP" => 0.1799810085548496,
-      },
+        "GBP" => 0.1799810085548496
+      }
     }
   end
 
@@ -68,11 +68,11 @@ class PublishersHelperTest < ActionView::TestCase
   test "can extract the uuid from an owner_identifier" do
     assert_equal "b8317d8a-78a4-48a6-9eeb-a2674c6455c4", publisher_id_from_owner_identifier("publishers#uuid:b8317d8a-78a4-48a6-9eeb-a2674c6455c4")
   end
-  
+
   test "publishers_last_settlement_balance should return at least a positive 0 value" do
     publisher = FakePublisher.new(
       uphold_connection: {
-        default_currency: 'USD',
+        default_currency: "USD"
       },
       rates: {
         "payload" => {
@@ -80,15 +80,15 @@ class PublishersHelperTest < ActionView::TestCase
           "ETH" => 0.000795331082073117,
           "USD" => 0.2363863335301452,
           "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496,
-        },
+          "GBP" => 0.1799810085548496
+        }
       },
       accounts: [
         {
           "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
           "account_type" => "owner",
-          "balance" => "-58.217204799751874334",
-        },
+          "balance" => "-58.217204799751874334"
+        }
       ],
       transactions: [
         {
@@ -98,8 +98,8 @@ class PublishersHelperTest < ActionView::TestCase
           "amount" => "-94.617182149806375904",
           "settlement_currency" => "ETH",
           "settlement_amount" => "18.81",
-          "type" => "referral_settlement",
-        },
+          "type" => "referral_settlement"
+        }
       ]
     )
     assert_not_nil publisher.wallet
@@ -110,7 +110,7 @@ class PublishersHelperTest < ActionView::TestCase
   test "publishers_last_settlement_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
     publisher = FakePublisher.new(
       uphold_connection: {
-        default_currency: 'USD',
+        default_currency: "USD"
       },
       rates: {
         "payload" => {
@@ -118,15 +118,15 @@ class PublishersHelperTest < ActionView::TestCase
           "ETH" => 0.000795331082073117,
           "USD" => 0.2363863335301452,
           "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496,
-        },
+          "GBP" => 0.1799810085548496
+        }
       },
       accounts: [
         {
           "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
           "account_type" => "owner",
-          "balance" => "58.217204799751874334",
-        },
+          "balance" => "58.217204799751874334"
+        }
       ],
       transactions: [
         {
@@ -136,8 +136,8 @@ class PublishersHelperTest < ActionView::TestCase
           "amount" => "-94.617182149806375904",
           "settlement_currency" => "ETH",
           "settlement_amount" => "18.81",
-          "type" => "referral_settlement",
-        },
+          "type" => "referral_settlement"
+        }
       ]
     )
     assert_not_nil publisher.wallet
@@ -148,7 +148,7 @@ class PublishersHelperTest < ActionView::TestCase
       rates: {},
       accounts: [],
       transactions: [],
-      uphold_connection: { default_currency: 'USD' }
+      uphold_connection: {default_currency: "USD"}
     )
 
     assert_equal "USD unavailable", publisher_converted_overall_balance(publisher)
@@ -158,6 +158,7 @@ class PublishersHelperTest < ActionView::TestCase
     class PublisherWithUpholdStatus
       attr_accessor :uphold_connection
     end
+
     class AnonymousUpholdConnection
       attr_accessor :uphold_status
     end
@@ -187,58 +188,58 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal "uphold-complete", uphold_status_class(publisher)
   end
 
-  test '#next_deposit_date when it is midnight UTC displays the current month' do
+  test "#next_deposit_date when it is midnight UTC displays the current month" do
     date = DateTime.parse("2019-05-01T00:00:00+0000")
     assert_equal next_deposit_date(today: date), "May 13th"
   end
 
-  test '#next_deposit_date when it is midnight PST displays current month' do
+  test "#next_deposit_date when it is midnight PST displays current month" do
     date = DateTime.parse("2019-05-01T00:00:00-0800")
     assert_equal next_deposit_date(today: date), "May 13th"
   end
 
-  test 'has_balance yes b/c has referral' do
+  test "has_balance yes b/c has referral" do
     accounts = [
       {
         "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
         "account_type" => "owner",
-        "balance" => "0.01",
-      },
+        "balance" => "0.01"
+      }
     ]
     transactions = []
-    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: 'BAT')
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
     publisher = mock
     publisher.expects(:wallet).returns(fake_wallet).at_least_once
     assert fake_wallet.referral_balance.amount_usd > 0
     assert has_balance?(publisher)
   end
 
-  test 'has_balance yes b/c has contribution' do
+  test "has_balance yes b/c has contribution" do
     accounts = [
       {
         "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
         "account_type" => "channel",
-        "balance" => "0.01",
-      },
+        "balance" => "0.01"
+      }
     ]
     transactions = []
-    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: 'BAT')
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
     publisher = mock
     publisher.expects(:wallet).returns(fake_wallet).once
     assert fake_wallet.contribution_balance.channel_amounts_usd[0] > 0
     assert has_balance?(publisher)
   end
 
-  test 'does not have balance' do
+  test "does not have balance" do
     accounts = [
       {
         "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
         "account_type" => "channel",
-        "balance" => "0.000000009",
-      },
+        "balance" => "0.000000009"
+      }
     ]
     transactions = []
-    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: 'BAT')
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
     publisher = mock
     publisher.expects(:wallet).returns(fake_wallet).at_least_once
     refute has_balance?(publisher)

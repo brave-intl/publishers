@@ -7,7 +7,7 @@ class PotentialPaymentTest < ActiveSupport::TestCase
 
     # ensure two payments to the same channel_id within the same report is invalid
     refute potential_payment_copy.valid?
-    assert potential_payment_copy.errors.details[:channel_id].any? {|e| e[:error] == :taken}
+    assert potential_payment_copy.errors.details[:channel_id].any? { |e| e[:error] == :taken }
 
     # ensure two payments to the same channel_id with two different reports is valid
     new_payout_report = PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
@@ -34,12 +34,12 @@ class PotentialPaymentTest < ActiveSupport::TestCase
   end
 
   test "potential payments are not deleted when their channel or publisher is destroyed" do
-     publisher = publishers(:potentially_paid)
-     publisher.channels.each {|c| c.destroy!}
-     publisher.destroy!
+    publisher = publishers(:potentially_paid)
+    publisher.channels.each { |c| c.destroy! }
+    publisher.destroy!
 
-     potential_payment = potential_payments(:publisher).reload
-     assert_equal PotentialPayment.count, 4
+    potential_payment = potential_payments(:publisher).reload
+    assert_equal PotentialPayment.count, 4
   end
 
   test "to_be_paid scope only includes 'ok' uphold status" do

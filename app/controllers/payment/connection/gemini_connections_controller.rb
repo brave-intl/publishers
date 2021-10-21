@@ -31,15 +31,15 @@ module Payment
           access_token: authorization.access_token,
           refresh_token: authorization.refresh_token,
           expires_in: authorization.expires_in,
-          access_expiration_time: authorization.expires_in.seconds.from_now,
+          access_expiration_time: authorization.expires_in.seconds.from_now
         }
 
         if gemini_connection.update(update_params) &&
-          current_publisher.update(selected_wallet_provider: gemini_connection) &&
-          gemini_connection.sync_connection!
+            current_publisher.update(selected_wallet_provider: gemini_connection) &&
+            gemini_connection.sync_connection!
           redirect_to(home_publishers_path)
         else
-          redirect_to(home_publishers_path, alert:  t(".gemini_error", message: gemini_connection.errors.full_messages.join(', ')))
+          redirect_to(home_publishers_path, alert: t(".gemini_error", message: gemini_connection.errors.full_messages.join(", ")))
         end
       rescue GeminiError => e
         redirect_to(home_publishers_path, alert: t(".gemini_error", message: e.message))
@@ -56,7 +56,7 @@ module Payment
             home_publishers_path,
             alert: I18n.t(
               "publishers.gemini_connections.destroy.error",
-              errors: gemini_connection.errors.full_messages.join(', ')
+              errors: gemini_connection.errors.full_messages.join(", ")
             )
           )
         end
@@ -67,11 +67,10 @@ module Payment
       def validate_connection!
         connection = current_publisher.gemini_connection
 
-        raise GeminiError.new, I18n.t('publishers.stripe_connections.new.missing_state') if connection&.state_token.blank?
-        raise GeminiError.new, I18n.t('publishers.stripe_connections.new.state_mismatch') if connection.state_token != params[:state]
+        raise GeminiError.new, I18n.t("publishers.stripe_connections.new.missing_state") if connection&.state_token.blank?
+        raise GeminiError.new, I18n.t("publishers.stripe_connections.new.state_mismatch") if connection.state_token != params[:state]
         raise GeminiError.new, params[:error] if params[:error].present?
       end
     end
   end
-
 end

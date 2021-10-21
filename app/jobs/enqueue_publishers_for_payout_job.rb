@@ -5,13 +5,13 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   def perform(final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
     Rails.logger.info("Enqueuing publishers for payment.")
 
-    if payout_report_id.present?
-      payout_report = PayoutReport.find(payout_report_id)
+    payout_report = if payout_report_id.present?
+      PayoutReport.find(payout_report_id)
     else
-      payout_report = PayoutReport.create(final: final,
-                                          manual: manual,
-                                          fee_rate: fee_rate,
-                                          expected_num_payments: 0)
+      PayoutReport.create(final: final,
+        manual: manual,
+        fee_rate: fee_rate,
+        expected_num_payments: 0)
     end
 
     enqueue_payout(
@@ -29,33 +29,33 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     base_publishers = Publisher
 
     filtered_publishers = if publisher_ids.present?
-                            base_publishers.where(id: publisher_ids)
-                          else
-                            base_publishers.with_verified_channel.not_in_top_referrer_program
-                          end
+      base_publishers.where(id: publisher_ids)
+    else
+      base_publishers.with_verified_channel.not_in_top_referrer_program
+    end
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
     wallet_providers_to_insert = if manual
-                                   [{ service: Payout::ManualPayoutReportPublisherIncluder.new, initial_publishers: filtered_publishers.invoice }]
-                                 else
-                                   [
-                                     {
-                                       service: Payout::UpholdService.new,
-                                       initial_publishers: filtered_publishers.
-                                         valid_payable_uphold_creators,
-                                     },
-                                     {
-                                       service: Payout::GeminiService.new,
-                                       initial_publishers: filtered_publishers.
-                                         valid_payable_gemini_creators,
-                                     },
-                                     {
-                                       service: Payout::BitflyerService.build,
-                                       initial_publishers: filtered_publishers.
-                                         valid_payable_bitflyer_creators,
-                                     },
-                                   ]
-                                 end
+      [{service: Payout::ManualPayoutReportPublisherIncluder.new, initial_publishers: filtered_publishers.invoice}]
+    else
+      [
+        {
+          service: Payout::UpholdService.new,
+          initial_publishers: filtered_publishers
+            .valid_payable_uphold_creators
+        },
+        {
+          service: Payout::GeminiService.new,
+          initial_publishers: filtered_publishers
+            .valid_payable_gemini_creators
+        },
+        {
+          service: Payout::BitflyerService.build,
+          initial_publishers: filtered_publishers
+            .valid_payable_bitflyer_creators
+        }
+      ]
+    end
 
     # Roll back if there's any problem. Use read_uncommitted to not lock any
     # tables for maximum performance

@@ -5,9 +5,9 @@ class BitflyerServiceTest < ActiveSupport::TestCase
 
   let(:subject) do
     @results = Payout::BitflyerService.new(
-      payout_utils_class: Payout::Service,
+      payout_utils_class: Payout::Service
     ).perform(payout_report: payout_report,
-              publisher: publisher)
+      publisher: publisher)
   end
 
   describe "when publisher does not have a verified channel" do
@@ -25,34 +25,34 @@ class BitflyerServiceTest < ActiveSupport::TestCase
 
     before { subject }
 
-    it 'marks the potential payment as suspended' do
+    it "marks the potential payment as suspended" do
       @results.each { |potential_payment| assert_equal "suspended", potential_payment.status }
       refute_equal @results.length, 0
     end
   end
 
-  describe 'when a creator in good standing' do
+  describe "when a creator in good standing" do
     let(:publisher) { publishers(:bitflyer_enabled) }
 
     before do
       subject
     end
 
-    it 'creates potential payments for the right creator' do
+    it "creates potential payments for the right creator" do
       refute_equal @results.length, 0
       @results.each { |potential_payment| assert_equal publisher.id, potential_payment.publisher_id }
     end
 
-    it 'the address is not empty' do
+    it "the address is not empty" do
       assert @results.all? { |potential_payment| publisher.channels.verified.where(deposit_id: potential_payment.address).present? }
     end
 
-    it 'sends the display_name unique BF identifier' do
+    it "sends the display_name unique BF identifier" do
       assert @results.length > 0
       @results.each do |potential_payment|
         assert publisher.bitflyer_connection.display_name.present?
         assert_equal potential_payment.wallet_provider_id, publisher.bitflyer_connection.display_name
-        assert_equal potential_payment.wallet_provider, 'bitflyer'
+        assert_equal potential_payment.wallet_provider, "bitflyer"
       end
     end
   end

@@ -17,7 +17,7 @@ module ErrorHandler
   end
 
   def handle_standard_error(exception)
-    if %w(production staging).include?(Rails.env)
+    if %w[production staging].include?(Rails.env)
       require "sentry-raven"
       if publisher = introspect_publisher
         Raven.user_context(
@@ -40,7 +40,7 @@ module ErrorHandler
       return @publisher
     end
     if defined?(current_publisher) && current_publisher
-      return current_publisher
+      current_publisher
     end
   end
 end

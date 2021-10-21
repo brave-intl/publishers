@@ -23,10 +23,10 @@ module Bitflyer
 
       # Update with the latest Authorization
       bitflyer_connection.update!(
-        access_token: authorization['access_token'],
-        refresh_token: authorization['refresh_token'],
-        expires_in: authorization['expires_in'],
-        access_expiration_time: authorization['expires_in'].seconds.from_now
+        access_token: authorization["access_token"],
+        refresh_token: authorization["refresh_token"],
+        expires_in: authorization["expires_in"],
+        access_expiration_time: authorization["expires_in"].seconds.from_now
       )
       # Reload the model so consumers will have the most up to date information.
       bitflyer_connection.reload
@@ -47,7 +47,7 @@ module Bitflyer
           client_secret: Bitflyer::Http.client_secret,
           grant_type: REFRESH_TOKEN,
           scope: Bitflyer::Http.oauth_scope,
-          refresh_token: token,
+          refresh_token: token
         }
         response = http_client.send(:post, Bitflyer::Http.oauth_path, body)
         JSON.parse(response.body)

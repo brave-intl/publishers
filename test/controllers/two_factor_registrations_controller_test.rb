@@ -27,7 +27,7 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_match u2f_registration.name, response.body
-    assert_match /Set up an authenticator as\sthe secondary 2FA/, response.body
+    assert_match(/Set up an authenticator as\sthe secondary 2FA/, response.body)
     assert_select "a[data-method=delete][href=?]", u2f_registration_path(id: u2f_registration.id, locale: :en)
   end
 

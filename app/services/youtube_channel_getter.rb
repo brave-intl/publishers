@@ -1,4 +1,4 @@
-require 'sentry-raven'
+require "sentry-raven"
 
 class YoutubeChannelGetter < BaseApiClient
   attr_reader :token, :channel_id
@@ -18,10 +18,8 @@ class YoutubeChannelGetter < BaseApiClient
       end
     end
     response_hash = JSON.parse(response.body)
-    if response_hash['items']
-      return response_hash['items'][0]
-    else
-      return nil
+    if response_hash["items"]
+      response_hash["items"][0]
     end
   rescue Faraday::Error => e
     Rails.logger.warn("YoutubeChannelGetter #perform error: #{e}")

@@ -1,7 +1,7 @@
 class PromoMailer < ApplicationMailer
   include PromosHelper
   helper PromosHelper
-  layout 'promo_mailer'
+  layout "promo_mailer"
 
   def activate_promo_2018q1(publisher)
     @publisher = publisher

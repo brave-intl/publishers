@@ -13,11 +13,11 @@ module PublishersHelper
 
   def paypal_connect_url
     PAYPAL_TEMPLATE.expand(
-      host: Rails.application.secrets[:paypal_connect_uri]&.sub('https://', ''),
-      flowEntry: 'static',
+      host: Rails.application.secrets[:paypal_connect_uri]&.sub("https://", ""),
+      flowEntry: "static",
       client_id: Rails.application.secrets[:paypal_client_id],
       scope: "openid email address https://uri.paypal.com/services/paypalattributes",
-      redirect_uri: publishers_paypal_connections_connect_callback_url(locale: nil),
+      redirect_uri: publishers_paypal_connections_connect_callback_url(locale: nil)
     ).to_s
   end
 
@@ -30,17 +30,17 @@ module PublishersHelper
         image: image_url("open-graph-preview.png"),
         description: t("shared.app_description"),
         url: request.url,
-        type: "website",
-      },
+        type: "website"
+      }
     }
   end
 
   def new_publisher?(publisher)
     is_new = if publisher.bitflyer_locale?(I18n.locale)
-               publisher.bitflyer_connection.blank?
-             else
-               publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
-             end
+      publisher.bitflyer_connection.blank?
+    else
+      publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
+    end
     is_new.present? && publisher.channels.size.zero?
   end
 
@@ -67,12 +67,12 @@ module PublishersHelper
   def publisher_overall_bat_balance_amount(publisher)
     amount = 0.0
     sentry_catcher do
-      if publisher.only_user_funds?
-        amount = publisher.wallet&.contribution_balance&.amount_bat
+      amount = if publisher.only_user_funds?
+        publisher.wallet&.contribution_balance&.amount_bat
       elsif publisher.no_grants?
-        amount = publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
+        publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
       else
-        amount = publisher.wallet&.overall_balance&.amount_bat
+        publisher.wallet&.overall_balance&.amount_bat
       end
     end
     amount
@@ -81,7 +81,7 @@ module PublishersHelper
   def publisher_overall_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     amount = [publisher_overall_bat_balance_amount(publisher), 0].compact.max
-    balance = '%.2f' % amount if amount.present?
+    balance = "%.2f" % amount if amount.present?
     balance
   end
 
@@ -91,12 +91,12 @@ module PublishersHelper
 
     result = I18n.t("helpers.publisher.conversion_unavailable", code: default_currency)
     sentry_catcher do
-      if publisher.only_user_funds?
-        balance = publisher.wallet&.contribution_balance&.amount_default_currency
+      balance = if publisher.only_user_funds?
+        publisher.wallet&.contribution_balance&.amount_default_currency
       elsif publisher.no_grants?
-        balance = publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+        publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
       else
-        balance = publisher.wallet&.overall_balance&.amount_default_currency
+        publisher.wallet&.overall_balance&.amount_default_currency
       end
 
       balance = [balance, 0].max
@@ -104,8 +104,8 @@ module PublishersHelper
       if balance.present?
         result = I18n.t(
           "helpers.publisher.balance_pending_approximate",
-          amount: '%.2f' % balance,
-          code: default_currency,
+          amount: "%.2f" % balance,
+          code: default_currency
         )
       end
     end
@@ -116,7 +116,7 @@ module PublishersHelper
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
       amount = publisher.wallet&.referral_balance&.amount_bat
-      balance = '%.2f' % amount if amount.present?
+      balance = "%.2f" % amount if amount.present?
     end
 
     balance
@@ -126,7 +126,7 @@ module PublishersHelper
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
       amount = publisher.wallet&.contribution_balance&.amount_bat
-      balance = '%.2f' % amount if amount.present?
+      balance = "%.2f" % amount if amount.present?
     end
 
     balance
@@ -136,7 +136,7 @@ module PublishersHelper
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
       channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
-      balance = '%.2f' % channel_balance.amount_bat if channel_balance&.amount_bat.present?
+      balance = "%.2f" % channel_balance.amount_bat if channel_balance&.amount_bat.present?
     end
 
     balance
@@ -148,7 +148,7 @@ module PublishersHelper
     total = contribution + referrals
     {
       contribution: number_to_percentage(contribution / total * 100, precision: 1),
-      referrals: number_to_percentage(referrals / total * 100, precision: 1),
+      referrals: number_to_percentage(referrals / total * 100, precision: 1)
     }
   end
 
@@ -165,15 +165,15 @@ module PublishersHelper
     when :verified, UpholdConnection::UpholdAccountState::BLOCKED
       # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
       # Uphold account
-      'uphold-complete'
+      "uphold-complete"
     when :code_acquired, :access_parameters_acquired
-      'uphold-processing'
+      "uphold-processing"
     when :reauthorization_needed
-      'uphold-reauthorization-needed'
+      "uphold-reauthorization-needed"
     when UpholdConnection::UpholdAccountState::RESTRICTED
-      'uphold-' + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
+      "uphold-" + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
     else
-      'uphold-unconnected'
+      "uphold-unconnected"
     end
   end
 
@@ -250,21 +250,21 @@ module PublishersHelper
   # mailer services
   def publisher_private_reauth_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
-    options = { token: token }
+    options = {token: token}
     options[:confirm_email] = confirm_email if confirm_email
     publisher_url(publisher, options)
   end
 
   def publisher_private_two_factor_removal_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
-    options = { id: publisher.id, token: token }
+    options = {id: publisher.id, token: token}
     options[:confirm_email] = confirm_email if confirm_email
     confirm_two_factor_authentication_removal_publishers_url(nil, options)
   end
 
   def publisher_private_two_factor_cancellation_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
-    options = { id: publisher.id, token: token }
+    options = {id: publisher.id, token: token}
     options[:confirm_email] = confirm_email if confirm_email
     cancel_two_factor_authentication_removal_publishers_url(nil, options)
   end
@@ -275,10 +275,9 @@ module PublishersHelper
 
   def publisher_statement_period(transactions)
     return "" if transactions.empty?
-    statement_begin_date = "#{transactions.first["created_at"].to_time.strftime("%Y-%m-%d")}"
-    statement_end_date = "#{transactions.last["created_at"].to_time.strftime("%Y-%m-%d")}"
-    statement_period = statement_begin_date == statement_end_date ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
-    statement_period
+    statement_begin_date = transactions.first["created_at"].to_time.strftime("%Y-%m-%d").to_s
+    statement_end_date = transactions.last["created_at"].to_time.strftime("%Y-%m-%d").to_s
+    statement_begin_date == statement_end_date ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
   end
 
   def publishers_statement_file_name(publisher_statement_period)
@@ -371,7 +370,7 @@ module PublishersHelper
   def channel_type_icon_url(channel)
     case channel&.details
     when SiteChannelDetails
-      asset_url('publishers-home/website-icon_32x32.png')
+      asset_url("publishers-home/website-icon_32x32.png")
     else
       asset_url("publishers-home/#{channel.type_display.downcase}-icon_32x32.png")
     end
@@ -380,7 +379,7 @@ module PublishersHelper
   def channel_thumbnail_url(channel)
     url = channel.details.thumbnail_url if channel.details.respond_to?(:thumbnail_url)
 
-    url || asset_url('default-channel.png')
+    url || asset_url("default-channel.png")
   end
 
   def publisher_id_from_owner_identifier(owner_identifier)

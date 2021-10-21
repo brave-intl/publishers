@@ -57,7 +57,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       reporting_interval_column_header(@reporting_interval),
       event_type_column_header(PromoRegistration::RETRIEVALS),
       event_type_column_header(PromoRegistration::FIRST_RUNS),
-      event_type_column_header(PromoRegistration::FINALIZED),
+      event_type_column_header(PromoRegistration::FINALIZED)
     ]
 
     headers.delete("Country") unless broken_down_by_country?
@@ -95,7 +95,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       total_eligible_installs,
       total_30_days,
       install_to_download_ratio,
-      install_to_30_days_ratio,
+      install_to_30_days_ratio
     ]
 
     # Delete the country from the array unless it's we're currently looking for geography information
@@ -111,7 +111,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       ymd: date.to_s,
       retrievals: 0,
       first_runs: 0,
-      finalized: 0,
+      finalized: 0
     }
 
     events&.each do |event|
@@ -126,7 +126,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def group_by_country(events)
-    return { nil => events } unless broken_down_by_country?
+    return {nil => events} unless broken_down_by_country?
 
     events.sort_by do |event|
       event[PromoRegistration::COUNTRY] || ""
@@ -183,7 +183,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def date_interval
-    Proc.new do |date|
+    proc do |date|
       case @reporting_interval
       when PromoRegistration::DAILY
         date

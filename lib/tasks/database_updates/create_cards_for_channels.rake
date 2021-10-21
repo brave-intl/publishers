@@ -1,6 +1,5 @@
 namespace :database_updates do
-  task :create_cards_for_channels => :environment do
-
+  task create_cards_for_channels: :environment do
     completed_kyc = UpholdConnection.where(is_member: true)
 
     puts "Queueing up create cards for #{completed_kyc.size} users"
@@ -11,6 +10,6 @@ namespace :database_updates do
         CreateUpholdChannelCardJob.perform_later(uphold_connection_id: connection.id, channel_id: channel.id)
       end
     end
-    puts 'Done!'
+    puts "Done!"
   end
 end

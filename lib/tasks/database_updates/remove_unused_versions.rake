@@ -1,7 +1,8 @@
 namespace :database_updates do
-  task :remove_unused_versions => :environment do
-    class LegacyVersion < ApplicationRecord ; end
-    class Version < ApplicationRecord ; end
+  task remove_unused_versions: :environment do
+    class LegacyVersion < ApplicationRecord; end
+
+    class Version < ApplicationRecord; end
     puts "[#{Time.now.iso8601}] Starting migration to remove unused version details"
 
     LegacyVersion.where(item_type: YoutubeChannelDetails.to_s).delete_all

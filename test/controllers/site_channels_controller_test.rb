@@ -27,12 +27,12 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       create_params = {
         channel: {
           details_attributes: {
-            brave_publisher_id_unnormalized: "new_site_54634.org",
-          },
-        },
+            brave_publisher_id_unnormalized: "new_site_54634.org"
+          }
+        }
       }
 
-      assert_difference('publisher.channels.count') do
+      assert_difference("publisher.channels.count") do
         post site_channels_url, params: create_params
       end
 
@@ -53,14 +53,14 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
-      'Accept' => '*/*',
-      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Ruby',
+      "Accept" => "*/*",
+      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+      "User-Agent" => "Ruby"
     }
     body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
-    stub_request(:get, url).
-      with(headers: headers).
-      to_return(status: 200, body: body, headers: {})
+    stub_request(:get, url)
+      .with(headers: headers)
+      .to_return(status: 200, body: body, headers: {})
 
     patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
@@ -76,14 +76,14 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
-      'Accept' => '*/*',
-      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Ruby',
+      "Accept" => "*/*",
+      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+      "User-Agent" => "Ruby"
     }
     body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
-    stub_request(:get, url).
-      with(headers: headers).
-      to_return(status: 404, body: nil, headers: {})
+    stub_request(:get, url)
+      .with(headers: headers)
+      .to_return(status: 404, body: nil, headers: {})
 
     patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
@@ -103,9 +103,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       create_params = {
         channel: {
           details_attributes: {
-            brave_publisher_id_unnormalized: "verified.org",
-          },
-        },
+            brave_publisher_id_unnormalized: "verified.org"
+          }
+        }
       }
 
       assert_difference("Channel.count", 0) do
@@ -132,9 +132,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       create_params = {
         channel: {
           details_attributes: {
-            brave_publisher_id_unnormalized: "newsite.org",
-          },
-        },
+            brave_publisher_id_unnormalized: "newsite.org"
+          }
+        }
       }
 
       perform_enqueued_jobs
@@ -173,13 +173,13 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
           "name" => "Joe's awesome stuff",
           "email" => "joes-great-channel@pages.plusgoogle.com",
           "first_name" => "Joe",
-          "image" => "https://some_image_host.com/some_image.png",
+          "image" => "https://some_image_host.com/some_image.png"
         },
         "credentials" => {
           "token" => token,
           "expires_at" => 2510156374,
-          "expires" => true,
-        },
+          "expires" => true
+        }
       }
     )
 
@@ -190,9 +190,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     create_params = {
       channel: {
         details_attributes: {
-          brave_publisher_id_unnormalized: "new_site_54634.org",
-        },
-      },
+          brave_publisher_id_unnormalized: "new_site_54634.org"
+        }
+      }
     }
 
     assert_difference("Channel.count", 0) do
@@ -203,7 +203,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'when a channel is created a promotion is registered' do
+  test "when a channel is created a promotion is registered" do
     prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
       Rails.application.secrets[:host_inspector_offline] = true
@@ -214,12 +214,12 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       create_params = {
         channel: {
           details_attributes: {
-            brave_publisher_id_unnormalized: "new_site_54634.org",
-          },
-        },
+            brave_publisher_id_unnormalized: "new_site_54634.org"
+          }
+        }
       }
 
-      assert_difference('publisher.channels.count') do
+      assert_difference("publisher.channels.count") do
         post site_channels_url, params: create_params
       end
 
@@ -243,12 +243,12 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       create_params = {
         channel: {
           details_attributes: {
-            brave_publisher_id_unnormalized: "new_site_54634.org",
-          },
-        },
+            brave_publisher_id_unnormalized: "new_site_54634.org"
+          }
+        }
       }
 
-      assert_difference('publisher.channels.count') do
+      assert_difference("publisher.channels.count") do
         post site_channels_url, params: create_params
       end
 
@@ -269,9 +269,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       create_params = {
         channel: {
           details_attributes: {
-            brave_publisher_id_unnormalized: "newsite.org",
-          },
-        },
+            brave_publisher_id_unnormalized: "newsite.org"
+          }
+        }
       }
 
       # create the first unverified site channel
@@ -293,7 +293,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       end
 
       assert SiteChannelDetails.where(brave_publisher_id: "newsite.org").count, 2
-
     ensure
       Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end

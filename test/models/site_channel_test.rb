@@ -1,7 +1,6 @@
 require "test_helper"
 
 class SiteChannelTest < ActiveSupport::TestCase
-
   test "a channel cannot change brave_publisher_id" do
     details = site_channel_details(:verified_details)
     assert details.valid?
@@ -51,18 +50,18 @@ class SiteChannelTest < ActiveSupport::TestCase
     details = SiteChannelDetails.new
     assert details.valid?
 
-    details.brave_publisher_id = 'asdf asdf'
+    details.brave_publisher_id = "asdf asdf"
     details.brave_publisher_id_error_code = :invalid_uri
 
     refute details.valid?
-    assert_equal [:"brave_publisher_id_unnormalized"], details.errors.keys
+    assert_equal [:brave_publisher_id_unnormalized], details.errors.keys
     assert_equal "invalid_uri", details.brave_publisher_id_error_code
     assert_equal I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
   end
 
   test "a site channel assigned a brave_publisher_id_error_code and brave_publisher_id_unnormalized will not be valid" do
     details = SiteChannelDetails.new
-    details.brave_publisher_id_unnormalized = 'asdf asdf'
+    details.brave_publisher_id_unnormalized = "asdf asdf"
     assert details.save
 
     details.brave_publisher_id_error_code = :invalid_uri
@@ -74,7 +73,6 @@ class SiteChannelTest < ActiveSupport::TestCase
   end
 
   test "recent unverified site_channels can be found" do
-
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
 
     assert_equal 17, brave_publisher_ids.length

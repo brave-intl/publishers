@@ -1,5 +1,5 @@
 namespace :database_updates do
-  task :set_existing_publishers_to_default_banner_mode_true => :environment do
+  task set_existing_publishers_to_default_banner_mode_true: :environment do
     # Update record_id's to use uuids instead of bigints, set existing banners to default banners.
     total = SiteBanner.all.count
     SiteBanner.find_each.with_index do |banner, index|

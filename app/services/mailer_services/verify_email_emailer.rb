@@ -16,7 +16,7 @@ module MailerServices
     end
 
     def send_email
-      return false if !publisher
+      return false unless publisher
       # Updates the authentication_token and saves the publisher
       PublisherTokenGenerator.new(publisher: publisher).perform
 

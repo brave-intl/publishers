@@ -11,7 +11,7 @@ class PublisherStatementGetter < BaseApiClient
     REFERRAL_SETTLEMENT = "referral_settlement"
 
     def fee?
-      transaction_type == 'fees'
+      transaction_type == "fees"
     end
 
     def eyeshade_settlement?
@@ -50,12 +50,12 @@ class PublisherStatementGetter < BaseApiClient
   def replace_account_identifiers_with_titles(transactions)
     transactions.map do |transaction|
       account_identifier = transaction["channel"]
-      if account_identifier&.starts_with?(Publisher::OWNER_PREFIX)
-        transaction["channel"] = I18n.t("publishers.statements.index.account")
+      transaction["channel"] = if account_identifier&.starts_with?(Publisher::OWNER_PREFIX)
+        I18n.t("publishers.statements.index.account")
       elsif account_identifier.blank?
-        transaction["channel"] = "Manual"
+        "Manual"
       else
-        transaction["channel"] = channel_name(account_identifier)
+        channel_name(account_identifier)
       end
 
       Statement.new(
@@ -67,7 +67,7 @@ class PublisherStatementGetter < BaseApiClient
         settlement_amount: transaction["settlement_amount"]&.to_d,
         settlement_destination_type: transaction["settlement_destination_type"],
         settlement_destination: transaction["settlement_destination"],
-        created_at: transaction["created_at"].to_date,
+        created_at: transaction["created_at"].to_date
       )
     end
   end
@@ -103,7 +103,7 @@ class PublisherStatementGetter < BaseApiClient
             settlement_currency: currency,
             settlement_amount: settlement_amount,
             settlement_destination: settlement_destination,
-            created_at: date,
+            created_at: date
           )
         end
       end

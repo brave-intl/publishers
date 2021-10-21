@@ -50,7 +50,7 @@ module Publishers
     def request_login_email(publisher:)
       perform_enqueued_jobs do
         get(log_in_publishers_path)
-        params = publisher.attributes.slice(*%w(email))
+        params = publisher.attributes.slice(*%w[email])
         post(registrations_path, params: params)
       end
     end
@@ -60,11 +60,11 @@ module Publishers
       @active_promo_id_original = Rails.application.secrets[:active_promo_id]
       Rails.application.secrets[:active_promo_id] = ""
       uphold_url = Rails.application.secrets[:uphold_api_uri] + "/v0/me"
-      stub_request(:get, uphold_url).to_return(body: { status: "pending", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
+      stub_request(:get, uphold_url).to_return(body: {status: "pending", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000"}.to_json)
       # Mock out the creation of cards
       stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
-      stub_request(:post, /cards/).to_return(body: { id: "fb25048b-79df-4e64-9c4e-def07c8f5c04" }.to_json)
-      stub_request(:get, /address/).to_return(body: [{ formats: [{ format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1" }], type: "anonymous" }].to_json)
+      stub_request(:post, /cards/).to_return(body: {id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"}.to_json)
+      stub_request(:get, /address/).to_return(body: [{formats: [{format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1"}], type: "anonymous"}].to_json)
     end
 
     after(:example) do
@@ -87,13 +87,13 @@ module Publishers
             "name" => "Test Brand Account",
             "email" => "brand@nonfunctional.google.com",
             "first_name" => "Test Brand Account",
-            "image" => "https://lh4.googleusercontent.com/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg",
+            "image" => "https://lh4.googleusercontent.com/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg"
           },
           "credentials" => {
             "token" => token,
             "expires_at" => 2510156374,
-            "expires" => true,
-          },
+            "expires" => true
+          }
         }
       )
     end
@@ -106,16 +106,15 @@ module Publishers
           "description" => "DIY Description",
           "thumbnails" => {
             "default" => {
-              "url" => "http://some_host.com/thumb.png",
-            },
-          },
+              "url" => "http://some_host.com/thumb.png"
+            }
+          }
         },
         "statistics" => {
-          "subscriberCount" => 12,
-        },
+          "subscriberCount" => 12
+        }
       }.deep_merge(options)
     end
-
 
     test "a publisher can add a youtube channel" do
       publisher = publishers(:uphold_connected)
@@ -126,7 +125,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: {items: [channel_data]}.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -154,7 +153,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: {items: [channel_data("id" => "323541525412313421")]}.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -163,7 +162,7 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('span.channel-contested') do |element|
+      assert_select("span.channel-contested") do |element|
         assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)), element.text)
       end
     end
@@ -177,7 +176,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: {items: [channel_data("id" => "323541525412313421")]}.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -197,14 +196,13 @@ module Publishers
       get(url)
       follow_redirect!
 
-
       post(publisher_register_youtube_channel_omniauth_authorize_url)
       follow_redirect!
       assert_redirected_to controller: "/publishers", action: "home"
       follow_redirect!
 
       # Channel was transferred
-      assert_select('span.channel-contested') do |element|
+      assert_select("span.channel-contested") do |element|
         assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)), element.text)
       end
 
@@ -217,7 +215,7 @@ module Publishers
       get(url)
       follow_redirect!
 
-      assert_select('.channel-secondary-information') do |element|
+      assert_select(".channel-secondary-information") do |element|
         refute_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(Channel.where(verification_pending: true).first)), element.text)
       end
     end
@@ -231,7 +229,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data("id" => "78032")] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: {items: [channel_data("id" => "78032")]}.to_json, headers: {})
 
       assert_difference("Channel.count", 0) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -240,7 +238,7 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('div.notifications') do |element|
+      assert_select("div.notifications") do |element|
         assert_match(I18n.t("publishers.omniauth_callbacks.register_youtube_channel.channel_already_registered"), element.text)
       end
     end
@@ -260,13 +258,13 @@ module Publishers
             "name" => "Joe's awesome stuff",
             "email" => "joes-great-channel@pages.plusgoogle.com",
             "first_name" => "Joe",
-            "image" => "https://some_image_host.com/some_image.png",
+            "image" => "https://some_image_host.com/some_image.png"
           },
           "credentials" => {
             "token" => token,
             "expires_at" => 2510156374,
-            "expires" => true,
-          },
+            "expires" => true
+          }
         }.deep_merge(options)
       )
     end
@@ -285,7 +283,7 @@ module Publishers
         "info" => {
           "name" => "Global 1",
           "email" => "global_yt1_details@pages.plusgoogle.com",
-          "first_name" => "Global 1",
+          "first_name" => "Global 1"
         }
       )
 
@@ -309,13 +307,13 @@ module Publishers
             "name" => "Test Brand Account",
             "email" => "brand@nonfunctional.google.com",
             "first_name" => "Test Brand Account",
-            "image" => "https://lh4.googleusercontent.com/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg",
+            "image" => "https://lh4.googleusercontent.com/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg"
           },
           "credentials" => {
             "token" => token,
             "expires_at" => 2510156374,
-            "expires" => true,
-          },
+            "expires" => true
+          }
         }
       )
 
@@ -326,16 +324,16 @@ module Publishers
           "description" => "DIY Description",
           "thumbnails" => {
             "default" => {
-              "url" => "http://some_host.com/thumb.png",
-            },
-          },
+              "url" => "http://some_host.com/thumb.png"
+            }
+          }
         },
         "statistics" => {
-          "subscriberCount" => 12,
-        },
+          "subscriberCount" => 12
+        }
       }
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [register_youtube_channel_data] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: {items: [register_youtube_channel_data]}.to_json, headers: {})
 
       assert_difference("Channel.count", 0) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -361,13 +359,13 @@ module Publishers
             "name" => "TwTwTw",
             "nickname" => "twtwtw",
             "email" => "brand@nonfunctional.google.com",
-            "image" => "https://some_host/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg",
+            "image" => "https://some_host/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg"
           },
           "credentials" => {
             "token" => token,
             "expires_at" => 2510156374,
-            "expires" => true,
-          },
+            "expires" => true
+          }
         }.deep_merge(options)
       )
     end
@@ -412,7 +410,7 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('div.notifications') do |element|
+      assert_select("div.notifications") do |element|
         assert_match(
           I18n.t(
             "publishers.omniauth_callbacks.register_twitch_channel.channel_already_registered",
@@ -437,19 +435,19 @@ module Publishers
           "info" => {
             "name" => "Ted the Twitter User",
             "email" => "ted@example.com",
-            "image" => "https://pbs.twimg.com/profile_images/974726646438744064/ivNCZILF_normal.jpg",
+            "image" => "https://pbs.twimg.com/profile_images/974726646438744064/ivNCZILF_normal.jpg"
           },
           "credentials" => {
-            "token" => token,
+            "token" => token
           },
           "extra" => {
             "raw_info" => {
               "screen_name" => "tedthetwitteruser",
               "followers_count" => 456,
               "statuses_count" => 1000,
-              "verified" => false,
-            },
-          },
+              "verified" => false
+            }
+          }
         }.deep_merge(options)
       )
     end
@@ -499,9 +497,9 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('span.channel-contested') do |element|
+      assert_select("span.channel-contested") do |element|
         assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
-                    element.text)
+          element.text)
       end
     end
 
@@ -522,7 +520,7 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('div.notifications') do |element|
+      assert_select("div.notifications") do |element|
         assert_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
       end
     end
@@ -543,22 +541,22 @@ module Publishers
             "id" => "1000",
             "pictures" => [
               {
-                link: "https://vimeo.com/small_image.jpg",
+                link: "https://vimeo.com/small_image.jpg"
               },
               {
-                link: "https://vimeo.com/medium_image.jpg",
+                link: "https://vimeo.com/medium_image.jpg"
               },
               {
-                link: "https://vimeo.com/big_image.jpg",
-              },
+                link: "https://vimeo.com/big_image.jpg"
+              }
             ],
             "link" => "http://vimeo.com/user12345678",
             "nickname" => "Vince Channel",
-            "auth_provider" => "register_vimeo_channel",
+            "auth_provider" => "register_vimeo_channel"
           },
           "credentials" => {
-            "token" => token,
-          },
+            "token" => token
+          }
         }.deep_merge(options)
       )
     end
@@ -596,7 +594,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(
         uid: verified_details.vimeo_channel_id,
-        info: { id: verified_details.vimeo_channel_id }
+        info: {id: verified_details.vimeo_channel_id}
       )
 
       assert_difference("Channel.count", 1) do
@@ -606,10 +604,9 @@ module Publishers
         follow_redirect!
       end
 
-
-      assert_select('span.channel-contested') do |element|
+      assert_select("span.channel-contested") do |element|
         assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
-                    element.text)
+          element.text)
       end
     end
 
@@ -623,7 +620,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(
         uid: verified_details.vimeo_channel_id,
-        info: { id: verified_details.vimeo_channel_id }
+        info: {id: verified_details.vimeo_channel_id}
       )
 
       assert_difference("Channel.count", 0) do
@@ -633,8 +630,8 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('body') do |element|
-        assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_vimeo_channel.channel_already_registered")
+      assert_select("body") do |element|
+        assert_select "div.alert", I18n.t("publishers.omniauth_callbacks.register_vimeo_channel.channel_already_registered")
       end
     end
   end
@@ -650,13 +647,13 @@ module Publishers
           "uid" => "12345678",
           "provider" => "register_reddit_channel",
           "info" => {
-            "name" => "Reggie the Redditor",
+            "name" => "Reggie the Redditor"
           },
           "extra" => {
             "raw_info" => {
-              "icon_img" => "abc.com",
-            },
-          },
+              "icon_img" => "abc.com"
+            }
+          }
         }.deep_merge(options)
       )
     end
@@ -694,7 +691,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_reddit_channel] = auth_hash(
         uid: verified_details.reddit_channel_id,
-        info: { id: verified_details.reddit_channel_id }
+        info: {id: verified_details.reddit_channel_id}
       )
 
       assert_difference("Channel.count", 1) do
@@ -704,9 +701,9 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('span.channel-contested') do |element|
+      assert_select("span.channel-contested") do |element|
         assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
-                    element.text)
+          element.text)
       end
     end
 
@@ -720,7 +717,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_reddit_channel] = auth_hash(
         uid: verified_details.reddit_channel_id,
-        info: { id: verified_details.reddit_channel_id }
+        info: {id: verified_details.reddit_channel_id}
       )
 
       assert_difference("Channel.count", 0) do
@@ -730,8 +727,8 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('body') do |element|
-        assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_reddit_channel.channel_already_registered")
+      assert_select("body") do |element|
+        assert_select "div.alert", I18n.t("publishers.omniauth_callbacks.register_reddit_channel.channel_already_registered")
       end
     end
   end
@@ -750,9 +747,9 @@ module Publishers
             "name" => "GitHub New",
             "image" => "https://some_image_host.com/some_image.png",
             "urls" => {
-              "GitHub": "https://github.com/user/user12345678",
-            },
-          },
+              GitHub: "https://github.com/user/user12345678"
+            }
+          }
         }.deep_merge(options)
       )
     end
@@ -790,7 +787,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_github_channel] = auth_hash(
         uid: verified_details.github_channel_id,
-        info: { id: verified_details.github_channel_id }
+        info: {id: verified_details.github_channel_id}
       )
 
       assert_difference("Channel.count", 1) do
@@ -800,9 +797,9 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('span.channel-contested') do |element|
+      assert_select("span.channel-contested") do |element|
         assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
-                    element.text)
+          element.text)
       end
     end
 
@@ -816,7 +813,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_github_channel] = auth_hash(
         uid: verified_details.github_channel_id,
-        info: { id: verified_details.github_channel_id }
+        info: {id: verified_details.github_channel_id}
       )
 
       assert_difference("Channel.count", 0) do
@@ -826,8 +823,8 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('body') do |element|
-        assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_github_channel.channel_already_registered")
+      assert_select("body") do |element|
+        assert_select "div.alert", I18n.t("publishers.omniauth_callbacks.register_github_channel.channel_already_registered")
       end
     end
   end
