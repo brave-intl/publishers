@@ -19,7 +19,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
 
   test "raises an exception if it can not find a contact by email" do
     assert_raises SendGrid::NotFoundError do
-      contact = SendGrid::ApiHelper.get_contact_by_email(email: "frank@completed.org")
+      SendGrid::ApiHelper.get_contact_by_email(email: "frank@completed.org")
     end
   end
 

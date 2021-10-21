@@ -192,7 +192,7 @@ class WalletTest < ActiveSupport::TestCase
 
   test "overall balance has correct BAT and probi amounts" do
     total_balance_probi = accounts.count.times.sum { 58217204799751874334 }
-    total_fees_probi = accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.count.times.sum { 2910860239987593716 }
+    total_fees_probi = accounts.count { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.times.sum { 2910860239987593716 }
     overall_balance = test_wallet.overall_balance
     assert_equal (overall_balance.amount_probi + overall_balance.fees_probi), total_balance_probi
     assert_equal overall_balance.fees_probi, total_fees_probi

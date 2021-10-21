@@ -44,7 +44,7 @@ class ChannelsController < ApplicationController
 
   def setup_current_channel
     @current_channel = current_publisher.channels.find(params[:id])
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     respond_to do |format|
       format.json {
         head 404

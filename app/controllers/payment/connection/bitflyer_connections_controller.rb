@@ -3,7 +3,6 @@
 require "uri"
 require "net/http"
 require "json"
-require "uri"
 require "digest"
 require "base64"
 

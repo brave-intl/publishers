@@ -42,12 +42,12 @@ class Admin::FaqsController < AdminController
 
   # DELETE /admin/faqs/1
   def destroy
-    if false
-      redirect_to admin_faq_categories_url, notice: "FAQ was successfully destroyed."
-    else
-      flash[:alert] = "Something went wrong"
-      render :edit
-    end
+    # if false
+    # redirect_to admin_faq_categories_url, notice: "FAQ was successfully destroyed."
+    # else
+    flash[:alert] = "Something went wrong"
+    render :edit
+    # end
   end
 
   private

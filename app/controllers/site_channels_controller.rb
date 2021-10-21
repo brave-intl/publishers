@@ -123,7 +123,7 @@ class SiteChannelsController < ApplicationController
     @current_channel = current_publisher.channels.find(params[:id])
     return if current_channel && current_channel.details.is_a?(SiteChannelDetails)
     redirect_to(home_publishers_path(current_publisher), alert: t(".alert"))
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     redirect_to(home_publishers_path, alert: t("shared.channel_not_found"))
   end
 
@@ -141,7 +141,7 @@ class SiteChannelsController < ApplicationController
 
   def require_https_enabled_site
     return if current_channel.details.supports_https?
-    redirect_to(site_last_verification_method_path(channel = current_channel), alert: t("site_channels.require_https_enabled_site.alert"))
+    redirect_to(site_last_verification_method_path(current_channel), alert: t("site_channels.require_https_enabled_site.alert"))
   end
 
   def update_site_verification_method

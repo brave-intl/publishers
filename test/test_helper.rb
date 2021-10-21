@@ -45,7 +45,7 @@ Capybara.register_driver "chrome" do |app|
     }.compact,
     loggingPrefs: {browser: "ALL"}
   )
-  driver = Capybara::Selenium::Driver.new(
+  Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,
     desired_capabilities: capabilities
@@ -61,7 +61,7 @@ Capybara.register_driver "firefoxja" do |app|
   opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
   opts.args << "--headless"
 
-  driver = Capybara::Selenium::Driver.new(
+  Capybara::Selenium::Driver.new(
     app,
     browser: :firefox,
     options: opts
@@ -119,7 +119,7 @@ module Capybara
       def wait_until
         require "timeout"
         Timeout.timeout(Capybara.default_max_wait_time) do
-          sleep(0.1) until value = yield
+          sleep(0.1) until (value = yield)
           value
         end
       end

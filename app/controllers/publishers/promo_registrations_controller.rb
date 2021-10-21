@@ -124,7 +124,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
   #
   # Returns a hash
   def october_2019_totals(month, counts)
-    return unless (GROUP_START_DATE...GROUP_START_DATE.at_end_of_month).include?(month)
+    return unless (GROUP_START_DATE...GROUP_START_DATE.at_end_of_month).cover?(month)
 
     legacy_counts = counts.select { |x| x.nil? }.dig(nil)
     {
