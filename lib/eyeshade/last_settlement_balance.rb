@@ -26,9 +26,9 @@ module Eyeshade
     def calculate_last_settlement(transactions)
       return {} if transactions.blank?
       # Find most recent settlement transaction
-      last_transaction = transactions.select { |transaction|
+      last_transaction = transactions.reverse { |transaction|
         transaction["settlement_amount"].present?
-      }.last # Eyeshade returns transactions ordered_by created_at
+      }.find # Eyeshade returns transactions ordered_by created_at
 
       return {} if last_transaction.nil?
 
@@ -41,7 +41,7 @@ module Eyeshade
       }
 
       # Sum the all the settlement transactions
-      last_settlement_currency = last_settlement_transactions&.first["settlement_currency"] || nil
+      last_settlement_currency = last_settlement_transactions&.first&.[]("settlement_currency") || nil
 
       # The amount is the BAT that was withdrawn from our ledger. This is a negative value.
       last_settlement_amount_bat = last_settlement_transactions.map { |transaction|

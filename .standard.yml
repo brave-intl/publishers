@@ -5,7 +5,11 @@ parallel: true          # default: false
 default_ignores: true   # default: true
 
 ignore:                 # default: []
+  - Lint/ConstantDefinitionInBlock
   - 'db/**/*'
   - 'vendor/**/*'
   - 'bin/**/*'
   - 'protos/**/*'
+  - 'config/puma.rb'
+  - 'config/environments/**'
+  

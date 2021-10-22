@@ -24,20 +24,16 @@ class YoutubeChannelGetter < BaseApiClient
   rescue Faraday::Error => e
     Rails.logger.warn("YoutubeChannelGetter #perform error: #{e}")
     Raven.capture_exception(e)
-    case e.response[:status]
+    new_exception = case e.response[:status]
       when 403
-        new_exception = ChannelForbiddenError.new(e.response[:body])
-        Raven.capture_exception(new_exception)
-        raise new_exception
+        ChannelForbiddenError.new(e.response[:body])
       when 404
-        new_exception = ChannelNotFoundError.new(e.response[:body])
-        Raven.capture_exception(new_exception)
-        raise new_exception
+        ChannelNotFoundError.new(e.response[:body])
       else
-        new_exception = ChannelBadRequestError.new(e.response[:body])
-        Raven.capture_exception(new_exception)
-        raise new_exception
+        ChannelBadRequestError.new(e.response[:body])
     end
+    Raven.capture_exception(new_exception)
+    raise new_exception
   end
 
   private

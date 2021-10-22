@@ -17,7 +17,7 @@ module MailerServices
     def send_email
       return false unless publisher
       # Updates the authentication_token and saves the publisher
-      token = PublisherTokenGenerator.new(publisher: publisher).perform
+      PublisherTokenGenerator.new(publisher: publisher).perform
 
       # Notify the previous email address
       PublisherMailer.notify_email_change(publisher).deliver_later

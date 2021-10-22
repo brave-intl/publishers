@@ -19,7 +19,7 @@ module ErrorHandler
   def handle_standard_error(exception)
     if %w[production staging].include?(Rails.env)
       require "sentry-raven"
-      if publisher = introspect_publisher
+      if (publisher = introspect_publisher)
         Raven.user_context(
           publisher_id: publisher.id,
           email: publisher.email

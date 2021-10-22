@@ -71,7 +71,6 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   describe "search" do
     before do
       admin = publishers(:admin)
-      publisher = publishers(:completed)
       sign_in admin
     end
 

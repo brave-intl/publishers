@@ -19,7 +19,7 @@ class PublisherStatementGetter < BaseApiClient
     end
 
     def uphold_contribution?
-      transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT || transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT
+      transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT
     end
 
     def earning_period

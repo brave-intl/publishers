@@ -50,7 +50,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.gemini_wallet = gemini_wallet
           channel_response.wallets.push(wallet)
         end
-      rescue Exception => e
+      rescue => e
         require "sentry-raven"
         Raven.capture_exception(e)
       end

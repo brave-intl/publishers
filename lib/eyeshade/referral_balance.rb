@@ -5,7 +5,7 @@ module Eyeshade
 
     def initialize(rates, default_currency, accounts)
       super(rates, default_currency)
-      owner_account = accounts.select { |account| account["account_type"] == OWNER }.first || {}
+      owner_account = accounts.find { |account| account["account_type"] == OWNER } || {}
 
       @amount_bat = if owner_account["balance"].nil?
         0.to_d

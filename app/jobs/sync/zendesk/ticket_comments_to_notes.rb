@@ -33,9 +33,6 @@ class Sync::Zendesk::TicketCommentsToNotes
     admin = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email])
     zendesk_comments = client.ticket.find(id: zendesk_ticket_id).comments
     (0...zendesk_comments.count).each do |index|
-      from_email = nil
-      to_email = nil
-
       # The first email should be the publisher's email. Would be surprising otherwise
       comment = zendesk_comments[index]
       from_email = comment&.via&.source&.from&.address

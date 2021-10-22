@@ -11,7 +11,7 @@ module AdminHelper
     formatted_note = note.lines.map do |line|
       line = line.split(" ").map do |word|
         if word.starts_with?("@")
-          publisher = Publisher.where("email LIKE ?", "#{word[1..-1]}@brave.com").first
+          publisher = Publisher.where("email LIKE ?", "#{word[1..]}@brave.com").first
           # Assuming the administrator is a brave.com email address :)
           word = link_to("@#{publisher.name}", admin_publisher_url(publisher)) if publisher.present?
         end
@@ -99,8 +99,7 @@ module AdminHelper
 
     if account_type == "owner"
       "#{report_date} Payout (Referrals)"
-    else
-      account_type == "channel"
+    elsif account_type == "channel"
       "#{report_date} Payout Contributions"
     end
   end

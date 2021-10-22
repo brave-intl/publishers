@@ -68,7 +68,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "verify can fail verification" do
-    publisher = publishers(:global_media_group)
     channel = channels(:global_inprocess)
 
     sign_in publishers(:global_media_group)
@@ -79,7 +78,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "User-Agent" => "Ruby"
     }
-    body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
+    SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
     stub_request(:get, url)
       .with(headers: headers)
       .to_return(status: 404, body: nil, headers: {})

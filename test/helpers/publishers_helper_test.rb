@@ -155,16 +155,8 @@ class PublishersHelperTest < ActionView::TestCase
   end
 
   test "uphold_status_class returns a css class that corresponds to a publisher's uphold_status" do
-    class PublisherWithUpholdStatus
-      attr_accessor :uphold_connection
-    end
-
-    class AnonymousUpholdConnection
-      attr_accessor :uphold_status
-    end
-
-    publisher = PublisherWithUpholdStatus.new
-    publisher.uphold_connection = AnonymousUpholdConnection.new
+    publisher = OpenStruct.new
+    publisher.uphold_connection = OpenStruct.new
 
     publisher.uphold_connection.uphold_status = :verified
     assert_equal "uphold-complete", uphold_status_class(publisher)

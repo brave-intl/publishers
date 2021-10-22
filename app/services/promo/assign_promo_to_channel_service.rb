@@ -43,7 +43,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       Raven.extra_context referral_code: referral_code
       Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
     end
-  rescue Faraday::Error::ClientError => e
+  rescue Faraday::Error::ClientError
     # When the owner is "no-ugp" the promo server will return 409.
     nil
   end

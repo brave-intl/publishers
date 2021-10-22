@@ -10,7 +10,7 @@ class Promo::RegistrationInstallerTypeSetter < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
-    response = connection.put do |request|
+    connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
       request.url("/api/2/promo/referral/installerType")

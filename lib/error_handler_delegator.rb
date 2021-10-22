@@ -8,7 +8,7 @@ class ErrorHandlerDelegator
     @target = target
   end
 
-  def method_missing(...)
+  def method_missing(...) # standard:disable all
     handle_known_exceptions do
       @target.send(...)
     end

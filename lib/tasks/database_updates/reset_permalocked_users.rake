@@ -10,7 +10,7 @@ namespace :database_updates do
 
     Publisher.includes(:status_updates).where(id: publisher_ids).find_each do |publisher|
       if publisher.locked?
-        previous_status = publisher.status_updates.select { |status_update| status_update.status != PublisherStatusUpdate::LOCKED }.first.status
+        previous_status = publisher.status_updates.find { |status_update| status_update.status != PublisherStatusUpdate::LOCKED }.status
         publisher.status_updates.create(status: previous_status)
       end
     end

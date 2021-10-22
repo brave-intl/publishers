@@ -9,7 +9,7 @@ namespace :database_updates do
         attachment.update!(record_id: banner.id)
       end
       publisher = Publisher.find_by(id: banner.publisher_id)
-      publisher&..update!(default_site_banner_id: banner.id)
+      publisher&.update!(default_site_banner_id: banner.id)
     end
   end
 end

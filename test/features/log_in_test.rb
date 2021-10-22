@@ -134,7 +134,6 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "a user with U2F enabled can choose to use TOTP if they don't have their device" do
     publisher = publishers(:verified)
-    u2f_registration = u2f_registrations(:default)
 
     visit log_in_publishers_path
     assert_content page, "Log In"

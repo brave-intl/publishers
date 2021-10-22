@@ -5,9 +5,7 @@ namespace :database_updates do
     SiteBanner.find_each.with_index do |banner, index|
       puts "#{index} / #{total} complete" if index % 5 == 0
       publisher = Publisher.find_by(id: banner.publisher_id)
-      if publisher
-        publisher.update!(default_site_banner_mode: true)
-      end
+      publisher&.update!(default_site_banner_mode: true)
     end
   end
 end

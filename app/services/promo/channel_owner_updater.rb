@@ -10,7 +10,7 @@ class Promo::ChannelOwnerUpdater < BaseApiClient
   def perform
     return perform_offline if perform_promo_offline?
     return nil if @referral_code.nil?
-    response = connection.put do |request|
+    connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
       request.url("/api/1/promo/publishers/#{@referral_code}")

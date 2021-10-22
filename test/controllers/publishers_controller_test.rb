@@ -335,7 +335,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # verify notification email sent to original address
     email = ActionMailer::Base.deliveries.find do |message|
-      message.to == publisher.email
+      assert message.to == publisher.email
       message.subject == I18n.t("publisher_mailer.notify_email_change.subject", publication_title: publisher.name)
     end
     assert_not_nil(email)
