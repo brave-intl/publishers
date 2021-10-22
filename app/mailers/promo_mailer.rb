@@ -18,7 +18,7 @@ class PromoMailer < ApplicationMailer
     @promo_enabled_channels = promo_enabled_channels
     @publisher = publisher
 
-    promo_token = publisher.promo_token_2018q1
+    publisher.promo_token_2018q1
     mail(
       to: @publisher.email,
       subject: default_i18n_subject

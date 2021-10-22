@@ -26,9 +26,9 @@ module Eyeshade
     def calculate_last_settlement(transactions)
       return {} if transactions.blank?
       # Find most recent settlement transaction
-      last_transaction = transactions.reverse { |transaction|
+      last_transaction = transactions.select { |transaction|
         transaction["settlement_amount"].present?
-      }.find # Eyeshade returns transactions ordered_by created_at
+      }.last # Eyeshade returns transactions ordered_by created_at
 
       return {} if last_transaction.nil?
 

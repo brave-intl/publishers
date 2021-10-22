@@ -70,7 +70,7 @@ module PublishersHelper
       amount = if publisher.only_user_funds?
         publisher.wallet&.contribution_balance&.amount_bat
       elsif publisher.no_grants?
-        publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
+        (publisher.wallet&.overall_balance&.amount_bat || 0) - (publisher.wallet&.contribution_balance&.amount_bat || 0)
       else
         publisher.wallet&.overall_balance&.amount_bat
       end
@@ -359,9 +359,6 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       link_to(home_publishers_path)
-
-    when YoutubeChannelDetails
-
     else
       link_to(home_publishers_path)
     end

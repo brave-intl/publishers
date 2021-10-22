@@ -7,7 +7,7 @@ class SendGrid::DeleteEmailJob < ApplicationJob
   def perform(email:)
     contact_id = SendGrid::ApiHelper.find_contact_by_email(email: email)["id"]
     SendGrid::ApiHelper.delete_contact(contact_id: contact_id) if contact_id.present?
-  rescue SendGrid::NotFoundError => e
+  rescue SendGrid::NotFoundError
     #   Ignore since the contact may not have been in the system before
   end
 end

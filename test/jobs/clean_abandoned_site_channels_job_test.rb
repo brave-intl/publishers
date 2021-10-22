@@ -3,6 +3,7 @@ require "test_helper"
 class CleanAbandonedSiteChannelsJobTest < ActiveJob::TestCase
   test "cleans non-visible (abandoned) site channels older than one day" do
     assert SiteChannelDetails.find_by(brave_publisher_id: "medium_2.org")
+    publisher = publishers(:medium_media_group) # standard:disable all
 
     assert_difference("Channel.count", -1 * Channel.not_visible_site_channels.count) do
       assert_difference("publisher.channels.count", -1) do
