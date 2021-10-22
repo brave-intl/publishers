@@ -7,7 +7,7 @@ module ApplicationHelper
     host = URI.parse(request.original_url).host
     domain = PublicSuffix.parse(host).domain.to_s
     if domain.in?(["basicattentiontoken.org", "brave.com"])
-      piwik_domain = "#{Rails.application.secrets[:piwik_host_prefix]}.#{domain}/"
+      "#{Rails.application.secrets[:piwik_host_prefix]}.#{domain}/"
     end
   end
 end

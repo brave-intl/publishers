@@ -3,7 +3,7 @@ module ChannelProperties
   include ActiveSupport::Inflector
 
   included do
-    PROPERTIES = [] # standard:disable Style/MutableConstant
+    PROPERTIES = [] # standard:disable all
 
     def self.has_property(name, dependent: :purge_later)
       name = name.to_s

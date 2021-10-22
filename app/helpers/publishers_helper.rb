@@ -94,7 +94,7 @@ module PublishersHelper
       balance = if publisher.only_user_funds?
         publisher.wallet&.contribution_balance&.amount_default_currency
       elsif publisher.no_grants?
-        publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+        (publisher.wallet&.overall_balance&.amount_default_currency || 0) - (publisher.wallet&.contribution_balance&.amount_default_currency || 0)
       else
         publisher.wallet&.overall_balance&.amount_default_currency
       end
@@ -356,12 +356,7 @@ module PublishersHelper
   end
 
   def channel_edit_link(channel)
-    case channel.details
-    when SiteChannelDetails
-      link_to(home_publishers_path)
-    else
-      link_to(home_publishers_path)
-    end
+    link_to(home_publishers_path)
   end
 
   def channel_type_icon_url(channel)

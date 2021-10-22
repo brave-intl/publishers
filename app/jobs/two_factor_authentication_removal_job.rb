@@ -32,7 +32,7 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
         # Return publisher to previous state.
         ActiveRecord::Base.transaction do
           if publisher.locked?
-            previous_status = publisher.status_updates.select { |status_update| status_update.status != PublisherStatusUpdate::LOCKED }.first.status
+            previous_status = publisher.status_updates.find { |status_update| status_update.status != PublisherStatusUpdate::LOCKED }.status
             publisher.status_updates.create(status: previous_status)
           end
 
