@@ -14,9 +14,9 @@ class Paypal::RefreshIdentity < BaseService
     end
 
     user_info_response = Faraday.get("#{Rails.application.secrets[:paypal_api_uri]}/v1/identity/oauth2/userinfo") do |req|
-      req.headers['Authorization'] = "Bearer #{access_token}"
-      req.headers['Accept'] = 'application/json'
-      req.params['schema'] = "paypalv1.1"
+      req.headers["Authorization"] = "Bearer #{access_token}"
+      req.headers["Accept"] = "application/json"
+      req.params["schema"] = "paypalv1.1"
     end
 
     user_info = JSON.parse(user_info_response.body)
@@ -25,10 +25,10 @@ class Paypal::RefreshIdentity < BaseService
       hidden: false
     )
     paypal_connection.update(
-      country: user_info.dig('address', 'country'),
-      verified_account: user_info.dig('verified_account'),
-      paypal_account_id: user_info.dig('user_id'),
-      payer_id: user_info.dig('payer_id')
+      country: user_info.dig("address", "country"),
+      verified_account: user_info.dig("verified_account"),
+      paypal_account_id: user_info.dig("user_id"),
+      payer_id: user_info.dig("payer_id")
     )
   end
 
@@ -40,13 +40,13 @@ class Paypal::RefreshIdentity < BaseService
 
   def fetch_access_token
     result = Faraday.post("#{Rails.application.secrets[:paypal_api_uri]}/v1/oauth2/token") do |req|
-      req.headers['Authorization'] = "Basic " + Base64.encode64("#{Rails.application.secrets[:paypal_client_id]}:#{Rails.application.secrets[:paypal_client_secret]}").rstrip.tr("\n", "")
-      req.headers['Accept'] = 'application/json'
-      req.headers['Accept-Language'] = "en_US"
-      req.params['grant_type'] = "refresh_token"
-      req.params['refresh_token'] = @paypal_connection.refresh_token
+      req.headers["Authorization"] = "Basic " + Base64.encode64("#{Rails.application.secrets[:paypal_client_id]}:#{Rails.application.secrets[:paypal_client_secret]}").rstrip.tr("\n", "")
+      req.headers["Accept"] = "application/json"
+      req.headers["Accept-Language"] = "en_US"
+      req.params["grant_type"] = "refresh_token"
+      req.params["refresh_token"] = @paypal_connection.refresh_token
     end
 
-    JSON.parse(result.body)['access_token']
+    JSON.parse(result.body)["access_token"]
   end
 end

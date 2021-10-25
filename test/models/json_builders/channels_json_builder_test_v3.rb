@@ -1,11 +1,11 @@
-require 'test_helper'
+require "test_helper"
 require "publishers/excluded_channels"
 
 class ChannelsJsonBuilderTestV3 < ActiveSupport::TestCase
   let(:subject) { JSON.parse(JsonBuilders::ChannelsJsonBuilderV3.new.build) }
 
   describe "When a user has completed KYC" do
-    it 'has their channel marked as verified' do
+    it "has their channel marked as verified" do
       identifier = channels(:uphold_connected_twitch_details).details.channel_identifier
       result = subject.detect { |x| x[0] == identifier }
 
@@ -13,7 +13,7 @@ class ChannelsJsonBuilderTestV3 < ActiveSupport::TestCase
     end
   end
   describe "When a user has not completed KYC" do
-    it 'has their channel marked as verified' do
+    it "has their channel marked as verified" do
       identifier = channels(:youtube_initial).details.channel_identifier
       result = subject.detect { |x| x[0] == identifier }
 

@@ -8,7 +8,7 @@ class StaticController < ApplicationController
   end
 
   def no_js
-    render(:layout => "layouts/no_js")
+    render(layout: "layouts/no_js")
   end
 
   private

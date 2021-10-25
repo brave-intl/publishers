@@ -32,7 +32,7 @@ namespace :data_sanitizer do
         auth_name: "User #{Random.rand(10_000)}",
         auth_email: auth_email_digest && "publishers-staging+2+#{auth_email_digest}@basicattentiontoken.org"
       )
-      STDOUT << "."
+      $stdout << "."
     end
     # encrypted_secret is environment specific, and we're not going to load prod
     # decryption keys into staging or dev

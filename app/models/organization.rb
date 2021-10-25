@@ -5,7 +5,7 @@ class Organization < ApplicationRecord
 
   alias_attribute :permissions, :organization_permission
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, uniqueness: {case_sensitive: false}
   validates :organization_permission, presence: true
 
   def to_s

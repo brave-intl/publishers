@@ -98,7 +98,7 @@ module Publishers
     private
 
     def locale_from_header
-      request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first == 'ja' ? :ja : :en
+      request.env["HTTP_ACCEPT_LANGUAGE"].scan(/^[a-z]{2}/).first == "ja" ? :ja : :en
     rescue
       I18n.default_locale
     end
@@ -106,7 +106,7 @@ module Publishers
     def filter_email(email)
       # Only keep first and last characters
       range = 1...-1
-      identifier, provider = email.split('@')
+      identifier, provider = email.split("@")
       identifier.tap { |x| x[range] = ("*" * x[range].length) }
       "#{identifier}@#{provider}"
     end
@@ -131,7 +131,7 @@ module Publishers
       respond_to do |format|
         format.html { redirect_to path, alert: t(".access_throttled") and return true }
         format.json do
-          render json: { message: t(".access_throttled") }, status: :too_many_requests
+          render json: {message: t(".access_throttled")}, status: :too_many_requests
         end
       end
     end

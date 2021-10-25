@@ -10,9 +10,9 @@ class Api::V1::TransactionsController < Api::BaseController
 
     render json: transaction
   rescue GetTransactionError => e
-    render json: { errors: e.message }, status: 404
+    render json: {errors: e.message}, status: 404
   rescue Faraday::ResourceNotFound
-    render json: { errors: "Could not find the specified transaction under the publishers account" }, status: 400
+    render json: {errors: "Could not find the specified transaction under the publishers account"}, status: 400
   end
 
   def get_channel!(channel)

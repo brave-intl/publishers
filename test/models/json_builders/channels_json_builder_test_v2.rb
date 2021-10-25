@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ChannelsJsonBuilderTestV2 < ActiveSupport::TestCase
   test "each verified channel in V2 Json has an associated KYC'd Uphold Connection" do

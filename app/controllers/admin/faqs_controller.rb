@@ -3,11 +3,11 @@ class Admin::FaqsController < AdminController
 
   before_action :set_faq, only: [:edit, :update, :destroy]
 
-  layout 'admin'
+  layout "admin"
 
   # GET /admin/faqs/new
   def new
-    max_rank = Faq.maximum("rank") ? Faq.maximum("rank") : 0
+    max_rank = Faq.maximum("rank") || 0
     faq_category_id = params[:faq_category_id]
     @faq = Faq.new(faq_category_id: faq_category_id, rank: max_rank + 10)
   end
@@ -22,7 +22,7 @@ class Admin::FaqsController < AdminController
 
     respond_to do |format|
       if @faq.save
-        format.html { redirect_to admin_faq_categories_url, notice: 'FAQ was successfully created.' }
+        format.html { redirect_to admin_faq_categories_url, notice: "FAQ was successfully created." }
       else
         format.html { render :new }
       end
@@ -33,7 +33,7 @@ class Admin::FaqsController < AdminController
   def update
     respond_to do |format|
       if @faq.update(faq_params)
-        format.html { redirect_to admin_faq_categories_url, notice: 'FAQ was successfully updated.' }
+        format.html { redirect_to admin_faq_categories_url, notice: "FAQ was successfully updated." }
       else
         format.html { render :edit }
       end
@@ -42,22 +42,23 @@ class Admin::FaqsController < AdminController
 
   # DELETE /admin/faqs/1
   def destroy
-    if false
-      redirect_to admin_faq_categories_url, notice: 'FAQ was successfully destroyed.'
-    else
-      flash[:alert] = "Something went wrong"
-      render :edit
-    end
+    # if false
+    # redirect_to admin_faq_categories_url, notice: "FAQ was successfully destroyed."
+    # else
+    flash[:alert] = "Something went wrong"
+    render :edit
+    # end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_faq
-      @faq = Faq.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def faq_params
-      params.require(:faq).permit(:question, :answer, :rank, :faq_category_id, :published)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_faq
+    @faq = Faq.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def faq_params
+    params.require(:faq).permit(:question, :answer, :rank, :faq_category_id, :published)
+  end
 end

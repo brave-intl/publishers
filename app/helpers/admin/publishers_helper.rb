@@ -12,7 +12,6 @@ module Admin
       label = case status
       when PublisherStatusUpdate::SUSPENDED, PublisherStatusUpdate::ONLY_USER_FUNDS
         "badge-danger"
-        "badge-danger"
       when PublisherStatusUpdate::LOCKED
         "badge-warning"
       when PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::HOLD

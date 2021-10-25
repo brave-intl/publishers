@@ -7,11 +7,10 @@ class SiteChannelHostInspector < BaseService
   attr_reader :url, :follow_local_redirects, :follow_all_redirects, :require_https
 
   def initialize(url:,
-                 follow_local_redirects: true,
-                 follow_all_redirects: false,
-                 require_https: false,
-                 response_body: false
-                 )
+    follow_local_redirects: true,
+    follow_all_redirects: false,
+    require_https: false,
+    response_body: false)
     @url = url
     @follow_local_redirects = follow_local_redirects
     @follow_all_redirects = follow_all_redirects
@@ -23,13 +22,13 @@ class SiteChannelHostInspector < BaseService
   # TODO: perform better https test than just raising when the connection is refused?
   def inspect_uri(uri)
     response = fetch(uri: uri,
-                     follow_all_redirects: follow_all_redirects,
-                     follow_local_redirects: follow_local_redirects)
+      follow_all_redirects: follow_all_redirects,
+      follow_local_redirects: follow_local_redirects)
 
-    { response: response }
+    {response: response}
   rescue => e
     Rails.logger.warn("PublisherHostInspector #{url} #inspect_uri error: #{e}")
-    { response: e }
+    {response: e}
   end
 
   def perform
@@ -52,10 +51,10 @@ class SiteChannelHostInspector < BaseService
     # test HTTP last
     http_result = inspect_uri(URI("http://#{url}"))
     if success_response?(http_result)
-      return response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
+      response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
     else
       # We want to pass in the https result so that the error gets properly shown to the suer
-      return failure_result(https_result[:response])
+      failure_result(https_result[:response])
     end
   end
 
@@ -66,7 +65,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def response_result(inspect_result:, https:, https_error: nil)
-    result = { host_connection_verified: true, https: https }
+    result = {host_connection_verified: true, https: https}
     result[:https_error] = https_error_message(https_error)
     result[:web_host] = web_host(response: inspect_result[:response])
     result[:response_body] = inspect_result[:response].body if @response_body
@@ -75,7 +74,7 @@ class SiteChannelHostInspector < BaseService
 
   def failure_result(error_response)
     Rails.logger.warn("PublisherHostInspector #{url} #perform failure: #{error_response}")
-    result = { response: error_response, host_connection_verified: false, https: false }
+    result = {response: error_response, host_connection_verified: false, https: false}
     result[:https_error] = https_error_message(error_response)
     result[:web_host] = web_host(response: error_response)
     result[:verification_details] = verification_details(error_response)
@@ -89,7 +88,7 @@ class SiteChannelHostInspector < BaseService
     when Net::OpenTimeout
       "timeout"
     when NotFoundError
-      if url.include? '.well-known'
+      if url.include? ".well-known"
         "connection_failed"
       else
         "domain_not_found"

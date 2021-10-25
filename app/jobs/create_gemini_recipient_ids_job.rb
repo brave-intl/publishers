@@ -22,7 +22,7 @@ class CreateGeminiRecipientIdsJob
         gemini_connection_for_channel.update(
           recipient_id: channel_recipient.recipient_id,
           # It's possible a channel can be removed, so this covers re-linking an existing gemini_connection_for_channel to the re-added channel.
-          channel_id: channel.id,
+          channel_id: channel.id
         )
       end
     end

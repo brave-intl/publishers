@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class PublisherNoteTest < ActiveSupport::TestCase
   test "can create a note and assign to publisher" do

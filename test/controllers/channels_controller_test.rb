@@ -14,7 +14,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     assert_difference("publisher.channels.count", -1) do
       assert_difference("SiteChannelDetails.count", -1) do
-        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        delete channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"}
         assert_response 204
       end
     end
@@ -26,7 +26,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     assert_difference("publisher.channels.count", -1) do
       assert_difference("SiteChannelDetails.count", -1) do
-        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        delete channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"}
         assert_response 204
       end
     end
@@ -38,7 +38,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
-        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        delete channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"}
         assert_response 404
       end
     end
@@ -56,7 +56,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
-        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        delete channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"}
         assert_response 404
       end
     end
@@ -94,21 +94,23 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     channel.verification_failed!("no_txt_records")
-    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    get(verification_status_channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"})
     assert_response 200
     assert_match(
-      '{"status":"failed",' +
+      '{"status":"failed",' \
         '"details":"We could not find TXT records in your domain\'s DNS records. ', # This is I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
-      response.body)
+      response.body
+    )
 
     SiteChannelDomainSetter.new(channel_details: channel.details).perform
     channel.verification_succeeded!(false)
 
-    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    get(verification_status_channel_path(channel), headers: {"HTTP_ACCEPT" => "application/json"})
     assert_response 200
     assert_match(
-      '{"status":"verified",' +
+      '{"status":"verified",' \
       '"details":"Of an unknown reason. "}',
-      response.body)
+      response.body
+    )
   end
 end

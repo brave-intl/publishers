@@ -5,7 +5,7 @@ class PayoutReport < ApplicationRecord
   LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800".freeze
 
   MINIMUM_BALANCE_AMOUNT = 0.01
-  BAT = 'bat'.freeze
+  BAT = "bat".freeze
 
   has_many :potential_payments
   has_many :payout_messages
@@ -58,7 +58,7 @@ class PayoutReport < ApplicationRecord
 
     missing_channels = channels.pluck(:id) - potential_payments.pluck(:channel_id)
     missing_publishers = publishers.pluck(:id) - potential_payments.where(channel_id: nil).pluck(:publisher_id)
-    { channels: missing_channels, publishers: missing_publishers }
+    {channels: missing_channels, publishers: missing_publishers}
   end
 
   class << self

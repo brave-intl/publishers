@@ -37,5 +37,4 @@ class TotpRegistrationsController < ApplicationController
   def totp_registration_params
     params.require(:totp_registration).permit(:secret)
   end
-
 end

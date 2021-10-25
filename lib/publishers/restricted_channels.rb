@@ -11,12 +11,12 @@ module Publishers
     end
 
     def self.restricted?(thing)
-      if thing.kind_of?(Channel)
+      if thing.is_a?(Channel)
         restricted?(thing.details)
-      elsif thing.kind_of?(SiteChannelDetails)
+      elsif thing.is_a?(SiteChannelDetails)
         restricted_brave_publisher_id?(thing.brave_publisher_id)
       # TODO Replace this check with general Details check.
-      elsif thing.kind_of?(TwitchChannelDetails) || thing.kind_of?(YoutubeChannelDetails)
+      elsif thing.is_a?(TwitchChannelDetails) || thing.is_a?(YoutubeChannelDetails)
         false
       else
         Rails.logger.warn("Checked verification restriction on something which is not a Channel or ChannelDetails.")

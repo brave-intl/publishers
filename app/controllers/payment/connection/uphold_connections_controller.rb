@@ -13,10 +13,10 @@ module Payment
         uphold_connection = UpholdConnection.find_or_create_by(publisher: current_publisher)
         uphold_connection.prepare_uphold_state_token!
 
-        redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
-          gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
-          gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
-          gsub('<STATE>', uphold_connection.uphold_state_token)
+        redirect_to Rails.application.secrets[:uphold_authorization_endpoint]
+          .gsub("<UPHOLD_CLIENT_ID>", Rails.application.secrets[:uphold_client_id])
+          .gsub("<UPHOLD_SCOPE>", Rails.application.secrets[:uphold_scope])
+          .gsub("<STATE>", uphold_connection.uphold_state_token)
       end
 
       def show
@@ -29,7 +29,7 @@ module Payment
               uphold_status_summary: uphold_status_summary(publisher),
               uphold_status_description: uphold_status_description(publisher),
               default_currency: publisher.uphold_connection&.default_currency,
-              uphold_username: publisher.uphold_connection&.uphold_details&.username,
+              uphold_username: publisher.uphold_connection&.uphold_details&.username
             }, status: 200)
           end
         end
@@ -65,9 +65,9 @@ module Payment
         send_emails = DateTime.now
 
         case params[:send_emails]
-        when 'forever'
+        when "forever"
           send_emails = UpholdConnection::FOREVER_DATE
-        when 'next_year'
+        when "next_year"
           send_emails = 1.year.from_now
         end
 
@@ -100,7 +100,7 @@ module Payment
 
       def validate_uphold!(connection)
         # Ensure the uphold_state_token has been set. If not send back to try again
-        raise UpholdError.new, t('.missing_state') if connection&.uphold_state_token.blank? && !connection.uphold_verified?
+        raise UpholdError.new, t(".missing_state") if connection&.uphold_state_token.blank? && !connection.uphold_verified?
 
         # Alert for any errors from Uphold
         raise UpholdError.new, params[:error] if params[:error].present?
@@ -108,7 +108,7 @@ module Payment
 
       def validate_state!(connection)
         state_token = params[:state]
-        raise UpholdError.new, t('.state_mismatch') if connection.uphold_state_token != state_token
+        raise UpholdError.new, t(".state_mismatch") if connection.uphold_state_token != state_token
       end
     end
   end

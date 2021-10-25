@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class ChannelsJsonBuilderTest < ActiveSupport::TestCase
-
   SITE_BANNER_INDEX = 3
 
   def get_channel_from_json(channels, channel_id)

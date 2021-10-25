@@ -14,7 +14,7 @@ module MailerServices
     end
 
     def send_email
-      return false if !publisher
+      return false unless publisher
       PublisherTokenGenerator.new(publisher: publisher).perform
       PublisherMailer.two_factor_authentication_removal_cancellation(publisher).deliver
     end

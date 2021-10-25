@@ -24,7 +24,7 @@ class ChannelTransferController < ApplicationController
         }
       end
     end
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     respond_to do |format|
       format.json {
         head 404

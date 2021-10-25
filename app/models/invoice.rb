@@ -20,9 +20,9 @@ class Invoice < ApplicationRecord
   STATUS_FIELDS = [PENDING, PAID, IN_PROGRESS].freeze
 
   validates :publisher_id, :date, presence: true
-  validates :status, inclusion: { in: STATUS_FIELDS }
+  validates :status, inclusion: {in: STATUS_FIELDS}
 
-  validates :date, uniqueness: { scope: :publisher_id }
+  validates :date, uniqueness: {scope: :publisher_id}
 
   # Ensure these two values are numbers even though field is a string
   validates :amount, numericality: true, allow_nil: true
@@ -67,7 +67,7 @@ class Invoice < ApplicationRecord
       paid: paid?,
       paymentDate: payment_date,
       finalizedAmount: finalized_amount,
-      createdAt: created_at.strftime("%b %d, %Y"),
+      createdAt: created_at.strftime("%b %d, %Y")
     }
   end
 end

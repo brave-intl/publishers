@@ -9,7 +9,7 @@ module Admin
 
     def create
       CaseReply.create(reply_params)
-      redirect_to admin_case_replies_path, flash: { notice: "Your saved reply was created successfully."}
+      redirect_to admin_case_replies_path, flash: {notice: "Your saved reply was created successfully."}
     end
 
     def edit
@@ -20,14 +20,13 @@ module Admin
 
     def update
       CaseReply.find(params[:id]).update(reply_params)
-      redirect_to admin_case_replies_path, flash: { notice: "Your saved reply was updated successfully."}
+      redirect_to admin_case_replies_path, flash: {notice: "Your saved reply was updated successfully."}
     end
 
     def destroy
       CaseReply.find(params[:id]).destroy
-      redirect_to admin_case_replies_path, flash: { notice: "Deleted the reply"}
+      redirect_to admin_case_replies_path, flash: {notice: "Deleted the reply"}
     end
-
 
     private
 

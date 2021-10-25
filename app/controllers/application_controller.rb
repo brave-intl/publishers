@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
-    return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == 'admin'
+    return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == "admin"
 
     if (japanese_locale_specified? || controller_path.include?("bitflyer")) && request.get?
       # (yachtcaptain23): When we get a callback from Youtube, don't try an internal redirect and cause a CSRF token error.
@@ -34,10 +34,10 @@ class ApplicationController < ActionController::Base
       # Append locale=ja when it isn't given
       if japanese_locale_specified? && params[:locale].blank?
         new_url = if URI(request.original_url).query.present?
-                    request.original_url + "&locale=#{preferred_japanese_locale.to_s}"
-                  else
-                    request.original_url.sub(/\/*$/, "/") + "?locale=#{preferred_japanese_locale.to_s}"
-                  end
+          request.original_url + "&locale=#{preferred_japanese_locale}"
+        else
+          request.original_url.sub(/\/*$/, "/") + "?locale=#{preferred_japanese_locale}"
+        end
         redirect_to(new_url) and return
       else
         I18n.with_locale(preferred_japanese_locale, &action) and return
@@ -48,12 +48,12 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { locale: I18n.locale }
+    {locale: I18n.locale}
   end
 
   def no_cache
-    return if controller_name == 'static' # We want to cache on the homepage
-    response.headers['Cache-Control'] = 'no-cache, no-store'
+    return if controller_name == "static" # We want to cache on the homepage
+    response.headers["Cache-Control"] = "no-cache, no-store"
   end
 
   def current_user
@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
         super
       }
       format.json {
-        render json: { message: 'Unverified request' }, status: 401
+        render json: {message: "Unverified request"}, status: 401
       }
     end
   end
@@ -97,11 +97,11 @@ class ApplicationController < ActionController::Base
   end
 
   def japanese_http_header?
-    extract_locale_from_accept_language_header == 'ja'
+    extract_locale_from_accept_language_header == "ja"
   end
 
   def japanese_locale_specified?
-    japanese_http_header? || params[:locale] == 'ja'
+    japanese_http_header? || params[:locale] == "ja"
   end
 
   def path_is_a_callback_method?
@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
   end
 
   def extract_locale_from_accept_language_header
-    request.env['HTTP_ACCEPT_LANGUAGE']&.scan(/^[a-z]{2}/)&.first
+    request.env["HTTP_ACCEPT_LANGUAGE"]&.scan(/^[a-z]{2}/)&.first
   end
 
   def preferred_japanese_locale

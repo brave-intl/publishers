@@ -76,10 +76,10 @@ class PublisherTransactionsGetter < BaseApiClient
         transactions.push({
           "from_account" => "helloworld.com",
           "to_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
-          "created_at" => "#{base_date}",
+          "created_at" => base_date.to_s,
           "description" => "contributions in month x",
-          "channel" => "#{channel.details.channel_identifier}",
-          "amount" => "#{contribution_amount}",
+          "channel" => channel.details.channel_identifier.to_s,
+          "amount" => contribution_amount.to_s,
           "transaction_type" => "contribution",
           "settlement_currency" => "ETH",
           "type" => "contribution"
@@ -89,12 +89,12 @@ class PublisherTransactionsGetter < BaseApiClient
         transactions.push({
           "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
           "to_account" => "fees-account",
-          "created_at" => "#{base_date}",
+          "created_at" => base_date.to_s,
           "description" => "settlement fees for contributions",
-          "channel" => "#{channel.details.channel_identifier}",
-          "amount" => "#{contribution_fees_amount}",
+          "channel" => channel.details.channel_identifier.to_s,
+          "amount" => contribution_fees_amount.to_s,
           "transaction_type" => "fees",
-          "settlement_currency" => "ETH",
+          "settlement_currency" => "ETH"
         })
 
         # Contribution settlement out
@@ -102,48 +102,48 @@ class PublisherTransactionsGetter < BaseApiClient
         transactions.push({
           "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
           "to_account" => OFFLINE_UPHOLD_ACCOUNT_ID,
-          "created_at" => "#{base_date}",
+          "created_at" => base_date.to_s,
           "description" => "payout for contributions",
-          "channel" => "#{channel.details.channel_identifier}",
-          "amount" => "#{contribution_settlement_amount}",
+          "channel" => channel.details.channel_identifier.to_s,
+          "amount" => contribution_settlement_amount.to_s,
           "transaction_type" => "contribution_settlement",
           "settlement_currency" => "ETH",
-          "settlement_amount" => OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT,
+          "settlement_amount" => OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT
         })
 
         # Referrals in
         transactions.push({
           "from_account" => OFFLINE_PAYMENT_ACCOUNT_ID,
           "to_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
-          "created_at" => "#{base_date}",
+          "created_at" => base_date.to_s,
           "description" => "referrals in month x",
-          "channel" => "#{channel.details.channel_identifier}",
-          "amount" => "#{referral_amount}",
+          "channel" => channel.details.channel_identifier.to_s,
+          "amount" => referral_amount.to_s,
           "transaction_type" => "referral",
-          "settlement_currency" => "ETH",
+          "settlement_currency" => "ETH"
         })
 
         # Referral deprecation
         transactions.push({
-          "from_account" =>  OFFLINE_CANONICAL_PUBLISHER_ID,
+          "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
           "to_account" => REFERRAL_DEPRECATION_ACCOUNT,
-          "created_at" => "#{base_date}",
+          "created_at" => base_date.to_s,
           "description" => "Transaction to cancel referrals finalizing past 90 days after 2021-01-23 for legacy referrals.",
-          "amount" => "#{-(referral_amount)}",
-          "transaction_type" => "manual",
+          "amount" => (-referral_amount).to_s,
+          "transaction_type" => "manual"
         })
 
         # Referal settlement out
         transactions.push({
           "from_account" => OFFLINE_CANONICAL_PUBLISHER_ID,
           "to_account" => OFFLINE_UPHOLD_ACCOUNT_ID,
-          "created_at" => "#{base_date}",
+          "created_at" => base_date.to_s,
           "description" => "payout for referrals",
-          "channel" => "#{channel.publisher.owner_identifier}",
-          "amount" => "#{referral_settlement_amount}",
+          "channel" => channel.publisher.owner_identifier.to_s,
+          "amount" => referral_settlement_amount.to_s,
           "transaction_type" => "referral_settlement",
           "settlement_currency" => "ETH",
-          "settlement_amount" => OFFLINE_REFERRAL_SETTLEMENT_AMOUNT,
+          "settlement_amount" => OFFLINE_REFERRAL_SETTLEMENT_AMOUNT
         })
       end
       i += 1

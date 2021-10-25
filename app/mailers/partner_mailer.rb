@@ -38,7 +38,7 @@ class PartnerMailer < ApplicationMailer
     begin
       raise "missing token" if @publisher.authentication_token.nil?
     rescue => e
-      require 'sentry-raven'
+      require "sentry-raven"
       Raven.capture_exception(e)
       raise
     end

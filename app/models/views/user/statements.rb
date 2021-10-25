@@ -20,9 +20,9 @@ module Views
       # An easy way to do this is to look at the statements which have a negative amount, signifying that we paid them out and subtracted it from their balance.
       # Then we can group the payouts into monthly periods for the statement
       def group_by_earning_period(statements)
-        statements.
-          select { |s| s.amount.negative? }.
-          group_by { |s| s.earning_period }
+        statements
+          .select { |s| s.amount.negative? }
+          .group_by { |s| s.earning_period }
       end
 
       def build_statement_overviews(earning_periods)
@@ -33,7 +33,7 @@ module Views
             publisher_id: @publisher.id,
             name: @publisher.name,
             email: @publisher.email,
-            settled_transactions: payout_entries.deep_dup,
+            settled_transactions: payout_entries.deep_dup
           )
 
           total_brave_settled = 0

@@ -6,56 +6,56 @@ class LogInTest < Capybara::Rails::TestCase
   include Rails.application.routes.url_helpers
 
   def canned_u2f_response(registration)
-    return ActiveSupport::JSON.encode({
-                                        keyHandle: registration.key_handle,
-                                        clientData: "eyJ0eXAiOiJuYXZpZ2F0b3IuaWQuZ2V0QXNzZXJ0aW9uIiwiY2hhbGxlbmdlIjoiMEVxTHk3TExoYWQyVVN1Wk9ScWRqZThsdG9VWHZQVUU5aHQyRU5sZ2N5VSIsIm9yaWdpbiI6Imh0dHBzOi8vbG9jYWxob3N0OjMwMDAiLCJjaWRfcHVia2V5IjoidW51c2VkIn0",
-                                        signatureData: "AQAAAAowRQIgfFLvGl1joGFlmZKPgIkimfJGt5glVEdiUYDtF8olMJgCIQCHIMR9ofM7VE7U6xURkDce8boCHwLq-vyVB9rWcKcscQ"
-                                      })
+    ActiveSupport::JSON.encode({
+      keyHandle: registration.key_handle,
+      clientData: "eyJ0eXAiOiJuYXZpZ2F0b3IuaWQuZ2V0QXNzZXJ0aW9uIiwiY2hhbGxlbmdlIjoiMEVxTHk3TExoYWQyVVN1Wk9ScWRqZThsdG9VWHZQVUU5aHQyRU5sZ2N5VSIsIm9yaWdpbiI6Imh0dHBzOi8vbG9jYWxob3N0OjMwMDAiLCJjaWRfcHVia2V5IjoidW51c2VkIn0",
+      signatureData: "AQAAAAowRQIgfFLvGl1joGFlmZKPgIkimfJGt5glVEdiUYDtF8olMJgCIQCHIMR9ofM7VE7U6xURkDce8boCHwLq-vyVB9rWcKcscQ"
+    })
   end
 
   test "can navigate to log in from landing page" do
     visit root_path
     assert_content page, "Brave Rewards"
-    click_link('log in')
+    click_link("log in")
     assert_content page, "Log in"
   end
 
   test "a user with an existing email can receive a login email" do
-    email = 'alice@verified.org'
+    email = "alice@verified.org"
 
     visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'email', with: email
+    fill_in "email", with: email
 
-    click_button('Log In')
+    click_button("Log In")
 
     assert_content page, "We just sent an access link to #{email}"
   end
 
   test "after failed login, user can create an account instead" do
-    email = 'new-test@example.com'
+    email = "new-test@example.com"
 
     visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'email', with: email
-    click_button('Log In')
+    fill_in "email", with: email
+    click_button("Log In")
 
     assert_content page, "An email is on its way"
   end
 
   test "a user can resend log in email" do
-    email = 'alice@verified.org'
+    email = "alice@verified.org"
 
     visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'email', with: email
-    click_button('Log In')
+    fill_in "email", with: email
+    click_button("Log In")
 
     assert_enqueued_emails(1) do
-      click_link('try again')
+      click_link("try again")
     end
   end
 
@@ -64,8 +64,8 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'email', with: publisher.email
-    click_button 'Log In'
+    fill_in "email", with: publisher.email
+    click_button "Log In"
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "BALANCE"
   end
@@ -75,16 +75,16 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'email', with: publisher.email
-    click_button 'Log In'
+    fill_in "email", with: publisher.email
+    click_button "Log In"
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
     assert_content page, "Enter the authentication code from your mobile app to verify your identity."
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
 
-    fill_in 'totp_password', with: '123456'
-    click_button 'Verify'
+    fill_in "totp_password", with: "123456"
+    click_button "Verify"
     assert_content page, "BALANCE"
   end
 
@@ -93,20 +93,20 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'email', with: publisher.email
-    click_button 'Log In'
+    fill_in "email", with: publisher.email
+    click_button "Log In"
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
     assert_content page, "Enter the authentication code from your mobile app to verify your identity."
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(false)
-    fill_in 'totp_password', with: 'wrong'
-    click_button 'Verify'
+    fill_in "totp_password", with: "wrong"
+    click_button "Verify"
     assert_content page, "Invalid 6-digit code. Please try again."
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
-    fill_in 'totp_password', with: '123456'
-    click_button 'Verify'
+    fill_in "totp_password", with: "123456"
+    click_button "Verify"
     assert_content page, "BALANCE"
   end
 
@@ -117,13 +117,13 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'email', with: publisher.email
-    click_button 'Log In'
+    fill_in "email", with: publisher.email
+    click_button "Log In"
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
     assert_content page, "Insert your security key and press the button on the key when blinking."
 
-    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(:authenticate! => nil))
+    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(authenticate!: nil))
     u2f_response = canned_u2f_response(u2f_registration)
 
     # Simulate U2F device usage, which submits the form on success
@@ -134,13 +134,12 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "a user with U2F enabled can choose to use TOTP if they don't have their device" do
     publisher = publishers(:verified)
-    u2f_registration = u2f_registrations(:default)
 
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'email', with: publisher.email
-    click_button 'Log In'
+    fill_in "email", with: publisher.email
+    click_button "Log In"
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
     assert_content page, "Insert your security key and press the button on the key when blinking."
@@ -152,8 +151,8 @@ class LogInTest < Capybara::Rails::TestCase
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
 
-    fill_in 'totp_password', with: '123456'
-    click_button 'Verify'
+    fill_in "totp_password", with: "123456"
+    click_button "Verify"
     assert_content page, "BALANCE"
   end
 end

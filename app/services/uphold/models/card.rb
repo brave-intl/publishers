@@ -45,7 +45,7 @@ module Uphold
 
         query = "currency:" + (currency || uphold_connection.default_currency)
 
-        response = get(PATH, { q: query }, authorization(uphold_connection))
+        response = get(PATH, {q: query}, authorization(uphold_connection))
 
         cards = []
         if response.headers["Content-Encoding"].eql?("gzip")
@@ -74,7 +74,7 @@ module Uphold
         params = {
           currency: currency || uphold_connection.default_currency,
           label: label,
-          settings: { starred: true },
+          settings: {starred: true}
         }
 
         response = post(PATH, params, authorization(uphold_connection))

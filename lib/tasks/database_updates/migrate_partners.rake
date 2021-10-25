@@ -1,7 +1,6 @@
 namespace :database_updates do
-  task :migrate_partners => :environment do
+  task migrate_partners: :environment do
     puts "Running partner migration"
-
 
     Partner.find_each do |partner|
       partner.membership.destroy if partner.membership.present?

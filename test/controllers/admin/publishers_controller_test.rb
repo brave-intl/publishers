@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 require "webmock/minitest"
 
 class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
@@ -8,14 +8,14 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   def stub_verification_public_file(channel, body: nil, status: 200)
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
-      'Accept' => '*/*',
-      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Ruby'
+      "Accept" => "*/*",
+      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+      "User-Agent" => "Ruby"
     }
     body ||= SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
-    stub_request(:get, url).
-      with(headers: headers).
-      to_return(status: status, body: body, headers: {})
+    stub_request(:get, url)
+      .with(headers: headers)
+      .to_return(status: status, body: body, headers: {})
   end
 
   before do
@@ -31,7 +31,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     get admin_publishers_path
-    assert_select 'title', "Not authorized"
+    assert_select "title", "Not authorized"
   end
 
   test "admin can access" do
@@ -49,42 +49,41 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     get admin_publishers_path
     assert_response :success
-    assert_select 'tbody' do
-      assert_select 'tr' do
-        assert_select 'td', publisher.id
+    assert_select "tbody" do
+      assert_select "tr" do
+        assert_select "td", publisher.id
       end
     end
 
-    get admin_publishers_path, params: {q: "#{publisher.name}"}
+    get admin_publishers_path, params: {q: publisher.name.to_s}
     assert_response :success
-    assert_select 'tbody' do
-      assert_select 'tr', true
+    assert_select "tbody" do
+      assert_select "tr", true
     end
 
     get admin_publishers_path, params: {q: "#{publisher.name}failure"}
     assert_response :success
-    assert_select 'tbody' do
-      assert_select 'tr', false
+    assert_select "tbody" do
+      assert_select "tr", false
     end
   end
 
-  describe 'search' do
+  describe "search" do
     before do
       admin = publishers(:admin)
-      publisher = publishers(:completed)
       sign_in admin
     end
 
-    it 'searches referral codes' do
-      get admin_publishers_path, params: { q: "PRO123" }
+    it "searches referral codes" do
+      get admin_publishers_path, params: {q: "PRO123"}
 
       publishers = controller.instance_variable_get("@publishers")
       assert_equal publishers.length, 1
       assert_equal publishers.first, publishers(:promo_enabled)
     end
 
-    it 'only shows suspended when suspended filter is on' do
-      get admin_publishers_path, params: { status: "suspended" }
+    it "only shows suspended when suspended filter is on" do
+      get admin_publishers_path, params: {status: "suspended"}
 
       publishers = controller.instance_variable_get("@publishers")
 
@@ -93,24 +92,24 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       end
     end
 
-    it 'filters correctly on name' do
-      get admin_publishers_path, params: { q: "#{publishers(:completed).name}" }
+    it "filters correctly on name" do
+      get admin_publishers_path, params: {q: publishers(:completed).name.to_s}
 
       publishers = controller.instance_variable_get("@publishers")
       assert_equal publishers.length, 1
       assert_equal publishers.first, publishers(:completed)
     end
 
-    it 'returns no results when not found' do
-      get admin_publishers_path, params: { q: "404 not found" }
+    it "returns no results when not found" do
+      get admin_publishers_path, params: {q: "404 not found"}
 
       publishers = controller.instance_variable_get("@publishers")
       assert_equal publishers.length, 0
     end
   end
 
-  describe 'index' do
-    let(:subject) { get admin_publishers_path(format: :json, params: { role: 'admin' }) }
+  describe "index" do
+    let(:subject) { get admin_publishers_path(format: :json, params: {role: "admin"}) }
 
     before do
       admin = publishers(:admin)
@@ -118,17 +117,17 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       subject
     end
 
-    it 'returns json' do
+    it "returns json" do
       body = JSON.parse(response.body)
       assert body
     end
 
-    it 'returns the id, and email of publishers' do
+    it "returns the id, and email of publishers" do
       body = JSON.parse(response.body)
       body.each do |entry|
-        assert entry.dig('id')
-        assert entry.dig('email')
-        assert entry.dig('name')
+        assert entry.dig("id")
+        assert entry.dig("email")
+        assert entry.dig("name")
       end
     end
   end
@@ -148,7 +147,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     admin = publishers(:admin)
     sign_in admin
 
-    get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
+    get admin_publishers_path, headers: {"REMOTE_ADDR" => "1.2.3.4"} # not on whitelist
 
     assert_template "admin/errors/whitelist"
   end

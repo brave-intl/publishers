@@ -3,19 +3,19 @@
 require "test_helper"
 
 class BitflyerAuthCompleterTest < ActiveSupport::TestCase
-  test 'it completes successfully' do
+  test "it completes successfully" do
     connection = bitflyer_connections(:enabled_bitflyer_connection)
     mock_http = mock
-    access_token = '123'
-    refresh_token = '456'
-    account_hash = '789'
+    access_token = "123"
+    refresh_token = "456"
+    account_hash = "789"
 
     data = OpenStruct.new(
       body: JSON.dump(
         {
           access_token: access_token,
           refresh_token: refresh_token,
-          account_hash: account_hash,
+          account_hash: account_hash
         }
       )
     )
@@ -29,9 +29,9 @@ class BitflyerAuthCompleterTest < ActiveSupport::TestCase
     refute_equal(connection.display_name, account_hash)
 
     completer = Bitflyer::AuthCompleter.new(http_lib: mock_http,
-                                            missing_deposit_job: mock_deposit_job)
+      missing_deposit_job: mock_deposit_job)
 
-    result = completer.call(publisher: connection.publisher, code: 'ABC')
+    result = completer.call(publisher: connection.publisher, code: "ABC")
 
     connection.reload
 

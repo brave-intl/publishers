@@ -1,4 +1,4 @@
-require 'sidekiq/testing'
+require "sidekiq/testing"
 
 class SidekiqTestCase < ActiveJob::TestCase
   before do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Fees applied
 module Eyeshade
   class ChannelBalance < BaseBalance

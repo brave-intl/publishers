@@ -22,7 +22,7 @@ class PaypalConnection < ApplicationRecord
   end
 
   def default_currency
-    'YEN'
+    "YEN"
   end
 
   def japanese_account?

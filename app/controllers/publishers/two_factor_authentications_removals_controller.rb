@@ -12,7 +12,7 @@ module Publishers
       publisher.reload
 
       MailerServices::TwoFactorAuthenticationRemovalReminderEmailer.new(publisher: publisher).perform
-      redirect_to two_factor_authentications_path, flash: { notice: t("publishers.two_factor_authentication_removal.request_success") }
+      redirect_to two_factor_authentications_path, flash: {notice: t("publishers.two_factor_authentication_removal.request_success")}
     end
 
     def destroy
@@ -20,7 +20,7 @@ module Publishers
 
       publisher.two_factor_authentication_removal.destroy if publisher.two_factor_authentication_removal.present?
 
-      redirect_to two_factor_authentications_path, flash: { notice: t("publishers.two_factor_authentication_removal.confirm_cancel_flash") }
+      redirect_to two_factor_authentications_path, flash: {notice: t("publishers.two_factor_authentication_removal.confirm_cancel_flash")}
     end
   end
 end

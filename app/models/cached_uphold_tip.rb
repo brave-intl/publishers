@@ -13,7 +13,7 @@ class CachedUpholdTip < ApplicationRecord
       settlement_currency: settlement_currency,
       settlement_amount: settlement_amount&.to_d,
       settlement_destination: uphold_connection_for_channel.card_id,
-      created_at: uphold_created_at,
+      created_at: uphold_created_at
     )
   end
 end

@@ -6,7 +6,7 @@ module Admin
 
     def show
       @publisher = Publisher.find(params[:id])
-      @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection:"Payments"}).to_json
+      @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({navbarSelection: "Payments"}).to_json
 
       @transfers = ChannelTransfer.where(transfer_from: @publisher).or(
         ChannelTransfer.where(transfer_to: @publisher)

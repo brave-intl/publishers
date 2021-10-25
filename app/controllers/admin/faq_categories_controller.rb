@@ -3,7 +3,7 @@ class Admin::FaqCategoriesController < AdminController
 
   before_action :set_faq_category, only: [:show, :edit, :update, :destroy]
 
-  layout 'admin'
+  layout "admin"
 
   # GET /admin/faq_categories
   def index
@@ -16,7 +16,7 @@ class Admin::FaqCategoriesController < AdminController
 
   # GET /admin/faq_categories/new
   def new
-    max_rank = FaqCategory.maximum("rank") ? FaqCategory.maximum("rank") : 0
+    max_rank = FaqCategory.maximum("rank") || 0
     @faq_category = FaqCategory.new(rank: max_rank + 10)
   end
 
@@ -30,7 +30,7 @@ class Admin::FaqCategoriesController < AdminController
 
     respond_to do |format|
       if @faq_category.save
-        format.html { redirect_to admin_faq_categories_url, notice: 'Category was successfully created.' }
+        format.html { redirect_to admin_faq_categories_url, notice: "Category was successfully created." }
       else
         format.html { render :new }
       end
@@ -41,7 +41,7 @@ class Admin::FaqCategoriesController < AdminController
   def update
     respond_to do |format|
       if @faq_category.update(category_params)
-        format.html { redirect_to admin_faq_categories_url, notice: 'Category was successfully updated.' }
+        format.html { redirect_to admin_faq_categories_url, notice: "Category was successfully updated." }
       else
         format.html { render :edit }
       end
@@ -52,18 +52,19 @@ class Admin::FaqCategoriesController < AdminController
   def destroy
     @faq_category.destroy
     respond_to do |format|
-      format.html { redirect_to admin_faq_categories_url, notice: 'Category was successfully destroyed.' }
+      format.html { redirect_to admin_faq_categories_url, notice: "Category was successfully destroyed." }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_faq_category
-      @faq_category = FaqCategory.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def category_params
-      params.require(:faq_category).permit(:name, :rank)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_faq_category
+    @faq_category = FaqCategory.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def category_params
+    params.require(:faq_category).permit(:name, :rank)
+  end
 end

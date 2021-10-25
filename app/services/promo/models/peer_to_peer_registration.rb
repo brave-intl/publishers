@@ -1,5 +1,5 @@
-require 'addressable/template'
-require 'json'
+require "addressable/template"
+require "json"
 
 module Promo
   module Models

@@ -28,8 +28,8 @@ module Views
             id: publisher.id,
             name: name,
             status: publisher.last_status_update&.status,
-            avatar: avatar,
-          },
+            avatar: avatar
+          }
         }
       end
     end

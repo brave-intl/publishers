@@ -54,11 +54,11 @@ module ChannelsHelper
 
   def channel_verification_status(channel)
     if channel.verified?
-      'verified'
+      "verified"
     elsif channel.verification_status.present?
       channel.verification_status
     else
-      'incomplete'
+      "incomplete"
     end
   end
 

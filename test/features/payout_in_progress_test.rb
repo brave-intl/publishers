@@ -1,6 +1,6 @@
 require "test_helper"
 require "webmock/minitest"
-require 'mocha/test_unit'
+require "mocha/test_unit"
 
 class PayoutInProgressTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
@@ -12,7 +12,7 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
 
   after do
     # Turn payouts off
-    Rails.cache.write(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS, Hash[SetPayoutsInProgressJob::CONNECTIONS.collect { |connection| [connection, false] }])
+    Rails.cache.write(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS, SetPayoutsInProgressJob::CONNECTIONS.collect { |connection| [connection, false] }.to_h)
   end
 
   test "Gemini generating in progress" do

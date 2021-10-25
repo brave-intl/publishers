@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 require "webmock/minitest"
 
 class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::IntegrationTest
@@ -10,8 +10,8 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
     sign_in admin
   end
 
-  describe 'index' do
-    it 'assigns @publisher and @publisher_status_updates' do
+  describe "index" do
+    it "assigns @publisher and @publisher_status_updates" do
       get admin_publisher_publisher_status_updates_path(publishers(:notes))
 
       assert controller.instance_variable_get("@publisher")
@@ -19,7 +19,7 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
     end
   end
 
-  test 'updates the status of the publisher' do
+  test "updates the status of the publisher" do
     admin = publishers(:admin)
     sign_in admin
     publisher = publishers(:uphold_connected)
@@ -33,14 +33,14 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
       ),
       params: {},
       headers: {
-        'HTTP_REFERER' => admin_publisher_publisher_status_updates_path(publisher_id: publisher.id)
+        "HTTP_REFERER" => admin_publisher_publisher_status_updates_path(publisher_id: publisher.id)
       }
     )
 
     assert_equal publisher.status_updates.count, 2
     assert_equal publisher.last_status_update.status, PublisherStatusUpdate::SUSPENDED
 
-    post admin_publisher_publisher_status_updates_path(publisher_id: publisher.id, publisher_status: PublisherStatusUpdate::ACTIVE), params: {}, headers: {'HTTP_REFERER' => admin_publisher_publisher_status_updates_path(publisher_id: publisher.id) }
+    post admin_publisher_publisher_status_updates_path(publisher_id: publisher.id, publisher_status: PublisherStatusUpdate::ACTIVE), params: {}, headers: {"HTTP_REFERER" => admin_publisher_publisher_status_updates_path(publisher_id: publisher.id)}
     assert_equal publisher.status_updates.count, 3
     assert_equal publisher.last_status_update.status, PublisherStatusUpdate::ACTIVE
   end
@@ -71,7 +71,7 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
       post(
         admin_publisher_publisher_status_updates_path(
           publisher_id: publisher.id,
-          publisher_status: PublisherStatusUpdate::SUSPENDED,
+          publisher_status: PublisherStatusUpdate::SUSPENDED
         )
       )
     end

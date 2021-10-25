@@ -7,11 +7,11 @@ Rails.application.configure do
   config.webpacker.check_yarn_integrity = false
   # Allow images from CDN
   config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => "https://localhost:3000",
-    'Access-Control-Request-Method' => "GET",
-    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET',
-    'Permissions-Policy' => 'interest-cohort=()',
+    "Access-Control-Allow-Origin" => "https://localhost:3000",
+    "Access-Control-Request-Method" => "GET",
+    "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    "Access-Control-Allow-Methods" => "GET",
+    "Permissions-Policy" => "interest-cohort=()"
   }
 
   # In the development environment your application's code is reloaded any time
@@ -28,20 +28,19 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join("tmp", "caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store =
-      :redis_cache_store, {
-        url: Rails.application.secrets[:redis_url],
-        error_handler: -> (method:, returning:, exception:) { raise exception },
-      }
+    config.cache_store = :redis_cache_store, {
+      url: Rails.application.secrets[:redis_url],
+      error_handler: ->(method:, returning:, exception:) { raise exception }
+    }
     config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}",
+      "Cache-Control" => "public, max-age=#{2.days.to_i}"
     }
 
-    require 'connection_pool'
+    require "connection_pool"
     REDIS = ConnectionPool.new(size: 5) { Redis.new }
   else
     config.action_controller.perform_caching = false
@@ -49,7 +48,7 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: 'https' }
+  config.action_mailer.default_url_options = {host: "localhost", port: 3000, protocol: "https"}
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
@@ -57,7 +56,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     port: Rails.application.secrets[:smtp_server_port] || 1025,
-    address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1",
+    address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1"
   }
 
   # Don't care if the mailer can't send.
@@ -102,8 +101,8 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Resolves docker error "Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1"
-  config.web_console.whitelisted_ips = ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16']
-  config.logger = ActiveSupport::Logger.new(config.paths['log'].first, 1, 50.megabytes)
+  config.web_console.whitelisted_ips = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  config.logger = ActiveSupport::Logger.new(config.paths["log"].first, 1, 50.megabytes)
   config.log_level = :debug
   config.after_initialize do
     Bullet.enable = true

@@ -8,7 +8,7 @@ class Partner < Publisher
 
   # Ensure that the role is always Partner
   def ensure_role
-    self.role = 'partner'
+    self.role = "partner"
   end
 
   def balance

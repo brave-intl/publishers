@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest
   self.use_transactional_tests = false
@@ -18,7 +18,7 @@ class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest
     payout_report = payout_reports(:one)
     assert_no_difference -> { PayoutReport.count } do
       EnqueuePublishersForPayoutJob.perform_now(final: false,
-                                                payout_report_id: payout_report.id)
+        payout_report_id: payout_report.id)
     end
   end
 end

@@ -11,7 +11,7 @@ module Publishers
         uphold_connection: uphold_wallet,
         gemini_connection: gemini_wallet,
         bitflyer_connection: bitflyer_wallet,
-        possible_currencies: current_publisher.uphold_connection&.uphold_details&.currencies || [],
+        possible_currencies: current_publisher.uphold_connection&.uphold_details&.currencies || []
       }
 
       render(json: wallet_data)
@@ -26,7 +26,7 @@ module Publishers
         include_transactions: true
       ).perform
 
-      render json: { lastSettlement: wallet.last_settlement_balance }
+      render json: {lastSettlement: wallet.last_settlement_balance}
     end
 
     private

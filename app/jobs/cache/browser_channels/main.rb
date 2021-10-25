@@ -57,8 +57,7 @@ class Cache::BrowserChannels::Main
       {
         nibble_length: SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES,
         previous_run: previous_run
-      }
-    ])
+      }])
     result.each do |site_banner_lookup|
       Cache::BrowserChannels::ResponsesForPrefix.perform_async(site_banner_lookup[:prefix])
     end

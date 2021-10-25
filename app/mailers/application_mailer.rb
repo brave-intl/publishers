@@ -8,7 +8,7 @@ class ApplicationMailer < ActionMailer::Base
   layout "mailer"
 
   before_action :require_premailer
-  before_action :add_images, unless: -> { self.class == InternalMailer }
+  before_action :add_images, unless: -> { instance_of?(InternalMailer) }
 
   def self.should_send_internal_emails?
     INTERNAL_EMAIL.present?

@@ -3,7 +3,7 @@
 class Eyeshade::Publishers < Eyeshade::BaseApiClient
   RESOURCE = "/v2/publishers"
 
-  def create_settlement(body: )
+  def create_settlement(body:)
     return {} if Rails.application.secrets[:api_eyeshade_offline]
 
     response = connection.post do |request|

@@ -1,7 +1,6 @@
 require "test_helper"
 
 class YoutubeChannelTest < ActiveSupport::TestCase
-
   test "a channel cannot change youtube channel ids" do
     details = youtube_channel_details(:google_verified_details)
     assert details.valid?

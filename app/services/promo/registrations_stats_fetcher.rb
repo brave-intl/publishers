@@ -67,11 +67,11 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
       (1..6).reverse_each do |i|
         (1..3).each do |j|
           event = {
-            "referral_code" => "#{referral_code}",
+            "referral_code" => referral_code.to_s,
             PromoRegistration::RETRIEVALS => rand(50..75),
             PromoRegistration::FIRST_RUNS => rand(30..50),
             PromoRegistration::FINALIZED => rand(1..30),
-            "ymd" => "#{i.month.ago.utc.to_date}",
+            "ymd" => i.month.ago.utc.to_date.to_s
           }
           events.push(event)
           stats.push(event)

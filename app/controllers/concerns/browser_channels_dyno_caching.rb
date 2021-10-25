@@ -1,6 +1,6 @@
 module BrowserChannelsDynoCaching
   extend ActiveSupport::Concern
-  require 'sentry-raven'
+  require "sentry-raven"
 
   PAGE_PREFIX = "_page_".freeze
 
@@ -8,12 +8,10 @@ module BrowserChannelsDynoCaching
     clear_if_old_lock
     have_lock = set_lock_to_now
     render(status: 429) and return unless have_lock
-=begin
-  # Might be worth re-adding, but I think for now let's disable since we don't have overburdening memory
-    if dyno_cache_expired? || invalid_dyno_cache?
-      update_dyno_cache
-    end
-=end
+    #   # Might be worth re-adding, but I think for now let's disable since we don't have overburdening memory
+    #     if dyno_cache_expired? || invalid_dyno_cache?
+    #       update_dyno_cache
+    #     end
     result = read_from_redis(page: params[:page]&.to_i)
     if result.nil?
       render(status: 204)
@@ -50,7 +48,7 @@ module BrowserChannelsDynoCaching
 
   def dyno_cache_expired?
     expiration_time = Rails.cache.fetch(dyno_expiration_key)
-    return expiration_time.nil? || Time.parse(expiration_time) <= Time.now
+    expiration_time.nil? || Time.parse(expiration_time) <= Time.now
   end
 
   def invalid_dyno_cache?
@@ -64,7 +62,7 @@ module BrowserChannelsDynoCaching
     end
     if redis_value.present?
       self.class.class_variable_set(klass_dyno_cache, redis_value)
-      Rails.cache.write(dyno_expiration_key, 1.hour.from_now.to_s, expires_in: 1.hour.from_now )
+      Rails.cache.write(dyno_expiration_key, 1.hour.from_now.to_s, expires_in: 1.hour.from_now)
     end
   end
 

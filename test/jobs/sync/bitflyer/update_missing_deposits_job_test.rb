@@ -1,6 +1,6 @@
-require 'test_helper'
-require 'jobs/sidekiq_test_case'
-require 'vcr'
+require "test_helper"
+require "jobs/sidekiq_test_case"
+require "vcr"
 
 class Sync::Bitflyer::UpdateMissingDepositsJobTest < SidekiqTestCase
   test "enqueue no jobs for default scenario" do

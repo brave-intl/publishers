@@ -19,9 +19,9 @@ module Gemini
     end
 
     def set_payment_currency(payment_currency:)
-      payload = { payment_currency: payment_currency }
-      headers = { "X-GEMINI-PAYLOAD" => Base64.encode64(payload.to_json) }
-      response = post(PATH.expand(segments: 'paymentCurrency'), {}, api_authorization_header, headers)
+      payload = {payment_currency: payment_currency}
+      headers = {"X-GEMINI-PAYLOAD" => Base64.encode64(payload.to_json)}
+      response = post(PATH.expand(segments: "paymentCurrency"), {}, api_authorization_header, headers)
 
       Gemini::Setting.new(JSON.parse(response.body))
     end

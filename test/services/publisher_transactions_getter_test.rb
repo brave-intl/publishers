@@ -9,8 +9,8 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
       publisher = publishers(:uphold_connected)
       @mocked_response = PublisherTransactionsGetter.new(publisher: publisher).perform_offline
 
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions").
-        to_return(status: 200, body: @mocked_response.to_json, headers: {})
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
+        .to_return(status: 200, body: @mocked_response.to_json, headers: {})
 
       @transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
     end
@@ -27,8 +27,8 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     end
 
     test "removes the referral deprecation transaction" do
-      assert_not_empty @mocked_response.select { |transaction| transaction['to_account'] == PublisherTransactionsGetter::REFERRAL_DEPRECATION_ACCOUNT }
-      assert_empty @transactions.select { |transaction| transaction['to_account'] == PublisherTransactionsGetter::REFERRAL_DEPRECATION_ACCOUNT }
+      assert_not_empty @mocked_response.select { |transaction| transaction["to_account"] == PublisherTransactionsGetter::REFERRAL_DEPRECATION_ACCOUNT }
+      assert_empty @transactions.select { |transaction| transaction["to_account"] == PublisherTransactionsGetter::REFERRAL_DEPRECATION_ACCOUNT }
     end
   end
 end

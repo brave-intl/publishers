@@ -34,7 +34,7 @@ module Admin
         @invoice = load_invoice
         @invoice.update(status: Invoice::IN_PROGRESS, finalized_by: current_user)
 
-        redirect_to [:admin, @invoice.publisher, @invoice], flash: { notice: "Invoice has been marked as 'In Progress'" }
+        redirect_to [:admin, @invoice.publisher, @invoice], flash: {notice: "Invoice has been marked as 'In Progress'"}
       end
 
       def update
@@ -63,9 +63,9 @@ module Admin
 
         if params[:file].present? && invoice_file.save
           PartnerMailer.invoice_file_added(invoice_file, @invoice.publisher).deliver_later
-          redirect_to path, flash: { notice: "Your document was uploaded successfully" }
+          redirect_to path, flash: {notice: "Your document was uploaded successfully"}
         else
-          redirect_to path, flash: { alert: "Your document could not be uploaded" }
+          redirect_to path, flash: {alert: "Your document could not be uploaded"}
         end
       end
 

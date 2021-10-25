@@ -21,20 +21,20 @@ class Admin::PayoutReportsController < AdminController
   def update
     @payout_report = PayoutReport.find(params[:id])
     if @payout_report.update(payout_params)
-      redirect_to admin_payout_report_path(@payout_report), flash: { notice: "Saved"}
+      redirect_to admin_payout_report_path(@payout_report), flash: {notice: "Saved"}
     else
-      redirect_to admin_payout_report_path(@payout_report), flash: { alert: "Could not save"}
+      redirect_to admin_payout_report_path(@payout_report), flash: {alert: "Could not save"}
     end
   end
 
   def create
     EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?, manual: params[:manual].present?)
-    redirect_to admin_payout_reports_path, flash: { notice: "Your payout report is being generated, check back soon." }
+    redirect_to admin_payout_reports_path, flash: {notice: "Your payout report is being generated, check back soon."}
   end
 
   def notify
     EnqueuePublishersForPayoutJob.perform_later(args: [EnqueuePublishersForPayoutJob::SEND_NOTIFICATIONS])
-    redirect_to admin_payout_reports_path, flash: { notice: "Sending notifications to publishers with disconnected wallets." }
+    redirect_to admin_payout_reports_path, flash: {notice: "Sending notifications to publishers with disconnected wallets."}
   end
 
   def upload_settlement_report
@@ -47,7 +47,7 @@ class Admin::PayoutReportsController < AdminController
       next unless entry["type"] == MANUAL && entry["owner"] && entry["amount"]
 
       begin
-        invoice = Invoice.find(entry.dig('documentId'))
+        invoice = Invoice.find(entry.dig("documentId"))
       rescue ActiveRecord::RecordNotFound
         publisher_id = entry["owner"].sub(Publisher::OWNER_PREFIX, "")
         invoice = Invoice.where(
@@ -58,7 +58,7 @@ class Admin::PayoutReportsController < AdminController
       end
 
       if invoice.blank?
-        not_found << "#{entry.dig('publisher')} - transactionId: #{entry.dig('transactionId')}\n" if invoice.blank?
+        not_found << "#{entry.dig("publisher")} - transactionId: #{entry.dig("transactionId")}\n" if invoice.blank?
         next
       end
 
@@ -72,19 +72,19 @@ class Admin::PayoutReportsController < AdminController
     notice = "Successfully uploaded settlement report"
     notice += "Could not find #{not_found}" if not_found.present?
 
-    redirect_to admin_payout_reports_path, flash: { notice: notice }
+    redirect_to admin_payout_reports_path, flash: {notice: notice}
   rescue JSON::ParserError => e
-    redirect_to admin_payout_reports_path, flash: { alert: "Could not parse JSON. #{e.message}" }
+    redirect_to admin_payout_reports_path, flash: {alert: "Could not parse JSON. #{e.message}"}
   rescue Faraday::ClientError
-    redirect_to admin_payout_reports_path, flash: { alert: "Eyeshade responded with a 400 🤷‍️" }
-  rescue StandardError => e
+    redirect_to admin_payout_reports_path, flash: {alert: "Eyeshade responded with a 400 🤷‍️"}
+  rescue => e
     Raven.capture_exception(e)
-    redirect_to admin_payout_reports_path, flash: { alert: "Something bad happened! Please check Sentry for more details" }
+    redirect_to admin_payout_reports_path, flash: {alert: "Something bad happened! Please check Sentry for more details"}
   end
 
   def payouts_in_progress
     Rails.cache.write(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS, payouts_in_progress_params)
-    redirect_to admin_payout_reports_path, flash: { alert: "Set 'payout in progress' to #{payouts_in_progress_params}" }
+    redirect_to admin_payout_reports_path, flash: {alert: "Set 'payout in progress' to #{payouts_in_progress_params}"}
   end
 
   private
@@ -96,9 +96,9 @@ class Admin::PayoutReportsController < AdminController
   def payouts_in_progress_params
     params.require(:payout_in_progress)
       .permit(:paypal_connection,
-              :bitflyer_connection,
-              :uphold_connection,
-              :gemini_connection).to_h.transform_values! { |v| v == "1" }
+        :bitflyer_connection,
+        :uphold_connection,
+        :gemini_connection).to_h.transform_values! { |v| v == "1" }
   end
 
   def assign_authority(report_contents)

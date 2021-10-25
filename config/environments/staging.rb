@@ -1,15 +1,15 @@
-require 'sentry-raven'
+require "sentry-raven"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   # Allow images from CDN
   config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => "https://rewards-stg.bravesoftware.com",
-    'Access-Control-Request-Method' => "GET",
-    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET',
-    'Permissions-Policy' => 'interest-cohort=()',
-    'X-Frame-Options' => 'deny',
+    "Access-Control-Allow-Origin" => "https://rewards-stg.bravesoftware.com",
+    "Access-Control-Request-Method" => "GET",
+    "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    "Access-Control-Allow-Methods" => "GET",
+    "Permissions-Policy" => "interest-cohort=()",
+    "X-Frame-Options" => "deny"
   }
 
   # Rate limiting
@@ -25,7 +25,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since
@@ -62,21 +62,20 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  config.cache_store =
-    :redis_cache_store, {
-      url: Rails.application.secrets[:redis_url],
-      connect_timeout: 30, # Defaults to 20 seconds
-      read_timeout: 5, # Defaults to 1 second
-      write_timeout: 10, # Defaults to 1 second
+  config.cache_store = :redis_cache_store, {
+    url: Rails.application.secrets[:redis_url],
+    connect_timeout: 30, # Defaults to 20 seconds
+    read_timeout: 5, # Defaults to 1 second
+    write_timeout: 10, # Defaults to 1 second
 
-      error_handler: -> (method:, returning:, exception:) {
-                       # Report errors to Sentry as warnings
-                       Raven.capture_exception exception, level: 'warning',
-                                                          tags: { method: method, returning: returning }
-                     },
-    }
+    error_handler: ->(method:, returning:, exception:) {
+                     # Report errors to Sentry as warnings
+                     Raven.capture_exception exception, level: "warning",
+                                                        tags: {method: method, returning: returning}
+                   }
+  }
 
-  require 'connection_pool'
+  require "connection_pool"
   REDIS = ConnectionPool.new(size: 5) { Redis.new }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
@@ -84,7 +83,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "publishers_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:url_host] }
+  config.action_mailer.default_url_options = {host: Rails.application.secrets[:url_host]}
 
   config.action_mailer.smtp_settings = {
     port: Rails.application.secrets[:smtp_server_port],
@@ -93,7 +92,7 @@ Rails.application.configure do
     password: Rails.application.secrets[:sendgrid_api_key],
     domain: Rails.application.secrets[:url_host],
     authentication: :plain,
-    enable_starttls_auto: true,
+    enable_starttls_auto: true
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -118,7 +117,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end

@@ -10,8 +10,8 @@ module Views
       YEAR_FORMAT = "%b %e, %Y".freeze
 
       attr_accessor :earning_period, :payment_date, :destination, :totals, :deposited, :deposited_types, :total_earned,
-                    :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :bat_total_deposited,
-                    :publisher_id, :settlement_destination
+        :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :bat_total_deposited,
+        :publisher_id, :settlement_destination
 
       def initialize(attributes = {})
         super
@@ -22,15 +22,15 @@ module Views
       #
       # Returns nil
       def populate_default_values
-        @name ||= ''
-        @email ||= ''
+        @name ||= ""
+        @email ||= ""
         @total_earned ||= 0
         @totals ||= {
           contribution_settlement: 0,
           fees: 0,
           referral_settlement: 0,
           total_brave_settled: 0,
-          uphold_contribution_settlement: 0,
+          uphold_contribution_settlement: 0
         }
         @bat_total_deposited ||= 0
         @deposited ||= {}
@@ -41,7 +41,7 @@ module Views
         @payment_date ||= brave_settled_date
         @earning_period ||= {
           start_date: settled_transactions.first.earning_period,
-          end_date: brave_settled_date,
+          end_date: brave_settled_date
         }
       end
 
@@ -52,7 +52,7 @@ module Views
         json.merge({
           deposited: deposited,
           isOpen: false,
-          showRateCards: show_rate_cards,
+          showRateCards: show_rate_cards
         })
       end
 
@@ -127,7 +127,7 @@ module Views
             description: I18n.t("publishers.statements.index.#{type}_description"),
             amount: total_amount,
             transactions: results,
-            type: type,
+            type: type
           )
         end
 

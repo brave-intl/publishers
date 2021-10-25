@@ -26,11 +26,11 @@ class Util::AttrEncrypted
 
     hash_model_to_columns = {}
     models.each do |model|
-      encrypted_fields = model.
-        column_names.
-        reject { |field| field.ends_with?('iv') }.
-        select { |field| field.starts_with?('encrypted_') }.
-        map { |field| field.sub(/^encrypted\_/, '') }
+      encrypted_fields = model
+        .column_names
+        .reject { |field| field.ends_with?("iv") }
+        .select { |field| field.starts_with?("encrypted_") }
+        .map { |field| field.sub(/^encrypted_/, "") }
       if encrypted_fields.present?
         hash_model_to_columns[model] = encrypted_fields
       end
@@ -44,9 +44,9 @@ class Util::AttrEncrypted
     field_name_encrypted = record.send("encrypted_#{field}")
     iv = Base64.decode64(field_name_iv)
     record.class.send("decrypt_#{field}",
-                      field_name_encrypted,
-                      iv: iv,
-                      key: record.class.encryption_key(key: key))
+      field_name_encrypted,
+      iv: iv,
+      key: record.class.encryption_key(key: key))
   end
 
   def self.monkey_patch_old_key_fallback

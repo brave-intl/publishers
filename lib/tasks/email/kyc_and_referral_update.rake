@@ -1,6 +1,5 @@
 namespace :email do
-  task :kyc_and_referral_update, [:id ] => :environment do |t, args|
-
+  task :kyc_and_referral_update, [:id] => :environment do |t, args|
     publisher = Publisher
     if args[:id].present?
       publisher = publisher.where("id > ?", args[:id])
@@ -13,7 +12,7 @@ namespace :email do
 
         Batch::EmailUpdateToUserJob.perform_later(publisher_id: user.id)
 
-        print '.' if index % 1000 == 0
+        print "." if index % 1000 == 0
       rescue => ex
         puts
         puts "Rescued from exception: #{ex.message}"

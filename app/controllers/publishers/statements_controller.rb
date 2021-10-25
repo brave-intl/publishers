@@ -3,7 +3,7 @@ module Publishers
     before_action :authenticate_publisher!
 
     ORIGINAL_GROUP_ID = "71341fc9-aeab-4766-acf0-d91d3ffb0bfa".freeze
-    ORIGINAL_GROUP = { id: ORIGINAL_GROUP_ID, name: "Previous Group", amount: "5.0", currency: "USD" }.freeze
+    ORIGINAL_GROUP = {id: ORIGINAL_GROUP_ID, name: "Previous Group", amount: "5.0", currency: "USD"}.freeze
 
     def index
       @cannot_read_uphold_transactions = false

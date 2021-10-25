@@ -22,10 +22,10 @@ module ImageConversionHelper
     end
 
     actual_jpeg_to_save = retry_quality(file_bytes: file_bytes,
-                                        width: dimensions[0],
-                                        height: dimensions[1],
-                                        size: target_file_size,
-                                        quality: 50)
+      width: dimensions[0],
+      height: dimensions[1],
+      size: target_file_size,
+      quality: 50)
 
     new_filename = filename + "_resized"
     temp_file = Tempfile.new([new_filename, ".jpg"], binmode: true)
@@ -45,7 +45,6 @@ module ImageConversionHelper
           size: size,
           quality: quality_to_try
         )
-
       rescue RuntimeError
         quality_to_try -= 5
         next
@@ -55,7 +54,7 @@ module ImageConversionHelper
   end
 
   def generate_filename(source_image_path:)
-    File.open(source_image_path, 'r') do |f|
+    File.open(source_image_path, "r") do |f|
       Digest::SHA256.hexdigest f.read
     end
   end

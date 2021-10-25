@@ -1,5 +1,5 @@
-require 'addressable/template'
-require 'json'
+require "addressable/template"
+require "json"
 
 module Promo
   module Models
@@ -14,12 +14,12 @@ module Promo
         params = {
           start_date: start_date,
           end_date: end_date,
-          interval: interval,
+          interval: interval
         }
 
         geo_stats = []
         referral_codes.each_slice(BATCH_SIZE).to_a.each do |batch|
-          response = get(path, { referral_code: batch }.merge(params))
+          response = get(path, {referral_code: batch}.merge(params))
 
           geo_stats += JSON.parse(response.body)
         end
@@ -37,7 +37,7 @@ module Promo
               PromoRegistration::RETRIEVALS => 1,
               PromoRegistration::FIRST_RUNS => 1,
               PromoRegistration::FINALIZED => 1,
-              "ymd" => day.to_s,
+              "ymd" => day.to_s
             }
 
             mexico_event = usa_event.dup

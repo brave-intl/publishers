@@ -4,7 +4,7 @@ class HttpHeaderMiddleware
   end
 
   def call(env)
-   env.delete('HTTP_X_FORWARDED_HOST')
+    env.delete("HTTP_X_FORWARDED_HOST")
     @app.call(env)
   end
 end

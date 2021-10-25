@@ -11,7 +11,7 @@ namespace :assets do
     webpack_manifest = Rails.root.join("public", "packs", "manifest.json")
     sprockets_manifest = Dir[Rails.root.join("public", "assets", ".*.json")].first
 
-    sha = ENV['SOURCE_VERSION'] || `git rev-parse HEAD`.strip()
+    sha = ENV["SOURCE_VERSION"] || `git rev-parse HEAD`.strip
     WebpackManifest.new(file: webpack_manifest, sha: sha).execute!
     SprocketsManifest.new(file: sprockets_manifest, sha: sha).execute!
 
@@ -32,9 +32,9 @@ class Manifest
   end
 
   def manifest_entry
-    Proc.new do |value|
+    proc do |value|
       new_value = value
-      if value =~ DIGEST_REGEX
+      if DIGEST_REGEX.match?(value)
         new_value = new_value.gsub(DIGEST_REGEX, "-#{sha}.")
         FileUtils.copy("#{directory}/#{value}", "#{directory}/#{new_value}")
       end

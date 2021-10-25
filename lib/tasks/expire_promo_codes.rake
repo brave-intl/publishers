@@ -1,5 +1,5 @@
-task :expire_promo_codes => :environment do
-  puts "Expiring promo codes for non-KYC and the following countries #{PromoRegistration::RESTRICTED_COUNTRIES.join(', ')}"
+task expire_promo_codes: :environment do
+  puts "Expiring promo codes for non-KYC and the following countries #{PromoRegistration::RESTRICTED_COUNTRIES.join(", ")}"
 
   publishers = Publisher.find_by_sql("
     select publishers.id

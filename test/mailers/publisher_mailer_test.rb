@@ -1,7 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
 class PublisherMailerTest < ActionMailer::TestCase
-
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
@@ -18,7 +17,7 @@ class PublisherMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal ["brave-publishers@localhost.local"], email.from
     assert_equal [publisher.email], email.to
   end
 
@@ -35,7 +34,7 @@ class PublisherMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal ["brave-publishers@localhost.local"], email.from
     assert_equal [publisher.pending_email], email.to
   end
 
@@ -66,7 +65,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_emails 1 do
       email.deliver_now
     end
-    refute_match '%{', email.body.encoded
-    refute_match '％{', email.body.encoded
+    refute_match "%{", email.body.encoded
+    refute_match "％{", email.body.encoded
   end
 end

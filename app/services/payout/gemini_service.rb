@@ -15,9 +15,9 @@ module Payout
           publisher_id: publisher.id,
           kind: ::PotentialPayment::REFERRAL,
           gemini_is_verified: connection.payable?,
-          address: connection.recipient_id || '',
+          address: connection.recipient_id || "",
           wallet_provider_id: connection.recipient_id,
-          wallet_provider: ::PotentialPayment.wallet_providers['gemini'],
+          wallet_provider: ::PotentialPayment.wallet_providers["gemini"],
           suspended: publisher.suspended?,
           status: publisher.last_status_update&.status
         )
@@ -26,17 +26,17 @@ module Payout
       publisher.channels.verified.each do |channel|
         potential_payments << PotentialPayment.new(
           payout_report_id: payout_report&.id,
-          name: "#{channel.publication_title}",
+          name: channel.publication_title.to_s,
           amount: "0",
           fees: "0",
           publisher_id: publisher.id,
           channel_id: channel.id,
           kind: ::PotentialPayment::CONTRIBUTION,
-          url: "#{channel.details.url}",
-          address: connection.recipient_id || '',
+          url: channel.details.url.to_s,
+          address: connection.recipient_id || "",
           gemini_is_verified: connection.payable?,
           wallet_provider_id: connection.recipient_id,
-          wallet_provider: ::PotentialPayment.wallet_providers['gemini'],
+          wallet_provider: ::PotentialPayment.wallet_providers["gemini"],
           suspended: publisher.suspended?,
           status: publisher.last_status_update&.status,
           channel_stats: channel.details.stats,

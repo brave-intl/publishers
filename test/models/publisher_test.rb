@@ -33,14 +33,14 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   test "Publisher is able to have created_by assigned" do
-    publisher = Publisher.new(email: 'new@new.com')
+    publisher = Publisher.new(email: "new@new.com")
     publisher.created_by = Publisher.first
     assert publisher.save
-    assert Publisher.find_by(email: 'new@new.com').created_by
+    assert Publisher.find_by(email: "new@new.com").created_by
   end
 
   test "Publisher is able to have not have a created_by set" do
-    publisher = Publisher.new(email: 'jane@example.com')
+    publisher = Publisher.new(email: "jane@example.com")
     assert publisher.valid?
     assert publisher.save
   end
@@ -121,7 +121,6 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.uphold_connection.updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
     publisher.uphold_connection.save
     assert_equal UpholdConnection.has_stale_uphold_code.count, 1
-
 
     ActiveRecord::Base.record_timestamps = true
     # verify scope does not include publisher if uphold_code exists and within timeout
@@ -328,28 +327,28 @@ class PublisherTest < ActiveSupport::TestCase
   test "publisher channel_count" do
     result = Publisher.advanced_sort(Publisher::VERIFIED_CHANNEL_COUNT, "asc")
     assert_equal(
-      Channel.
-      where(verified: true).
-      joins(:publisher).
-      where(publishers: {role: Publisher::PUBLISHER}).
-      pluck(:publisher_id).
-      uniq.
-      count, result.length
+      Channel
+      .where(verified: true)
+      .joins(:publisher)
+      .where(publishers: {role: Publisher::PUBLISHER})
+      .pluck(:publisher_id)
+      .uniq
+      .count, result.length
     )
   end
 
-  describe '#selected_wallet_provider' do
-    describe 'when the publisher has a selected_wallet_provider' do
+  describe "#selected_wallet_provider" do
+    describe "when the publisher has a selected_wallet_provider" do
       let(:publisher) { publishers(:publisher_selected_wallet_provider) }
-      it 'is the right kind' do
+      it "is the right kind" do
         assert publisher.selected_wallet_provider.class, UpholdConnection
       end
     end
 
-    describe 'when the publisher does not have the selected_wallet_provider' do
+    describe "when the publisher does not have the selected_wallet_provider" do
       let(:publisher) { publishers(:gemini_completed) }
 
-      it 'is the right kind' do
+      it "is the right kind" do
         assert publisher.selected_wallet_provider.class, GeminiConnection
       end
     end
@@ -357,7 +356,7 @@ class PublisherTest < ActiveSupport::TestCase
 
   describe "#history" do
     describe "when the publisher has notes" do
-      it 'shows just the notes' do
+      it "shows just the notes" do
         histories = publishers(:just_notes).history
         histories.each do |history|
           assert_equal history.class, PublisherNote
@@ -366,24 +365,24 @@ class PublisherTest < ActiveSupport::TestCase
     end
 
     describe "when the publisher has notes and statuses" do
-      it 'interweaves the objects' do
+      it "interweaves the objects" do
         histories = publishers(:notes).history
 
         assert histories.any? { |h| h.is_a? PublisherNote }
         assert histories.any? { |h| h.is_a? PublisherStatusUpdate }
       end
 
-      it 'sorts the object by created_at time' do
+      it "sorts the object by created_at time" do
         histories = publishers(:notes).history
         histories.each_with_index do |history, index|
           next if index == 0
-          assert history.created_at < histories[index-1].created_at
+          assert history.created_at < histories[index - 1].created_at
         end
       end
     end
 
-    describe 'when the publisher just has statuses' do
-      it 'just shows the statuses' do
+    describe "when the publisher just has statuses" do
+      it "just shows the statuses" do
         histories = publishers(:default).history
         histories.each do |history|
           assert_equal history.class, PublisherStatusUpdate

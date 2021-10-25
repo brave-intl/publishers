@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'webmock/minitest'
+require "test_helper"
+require "webmock/minitest"
 
 class CreateUpholdCardsJobTest < ActiveJob::TestCase
   include Devise::Test::IntegrationHelpers
@@ -24,22 +24,20 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     publisher.save!
 
     # stub wallet response
-    wallet = { "wallet" => { "defaultCurrency" => "USD",
-                             "authorized" => true,
-                             "isMember" => true,
-                             "status" => "ok",
-                             "possibleCurrencies" => "BAT",
-                             "scope" => "cards:read, cards:write, user:read",
-                           },
-               "contributions" => { "currency" => "USD"}
-    }
+    wallet = {"wallet" => {"defaultCurrency" => "USD",
+                           "authorized" => true,
+                           "isMember" => true,
+                           "status" => "ok",
+                           "possibleCurrencies" => "BAT",
+                           "scope" => "cards:read, cards:write, user:read"},
+              "contributions" => {"currency" => "USD"}}
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
     CreateUpholdCardsJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
     publisher.uphold_connection.reload
 
-    assert_equal publisher.uphold_connection.address, '123e4567-e89b-12d3-a456-426655440000'
+    assert_equal publisher.uphold_connection.address, "123e4567-e89b-12d3-a456-426655440000"
   end
 
   test "does not create default currency card if wallet address present" do
@@ -49,23 +47,21 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     publisher.default_currency = "BAT"
     publisher.save!
 
-    wallet = { "wallet" => { "defaultCurrency" => "USD",
-                             "authorized" => true,
-                             "isMember" => true,
-                             "status" => "ok",
-                             "possibleCurrencies" => "BAT",
-                             "scope" => "cards:read, cards:write, user:read",
-                             "address" => "cc053a27-cdcd-4fdb-aa90-f0417df26242"
-                           },
-               "rates" => {},
-               "contributions" => { "currency" => "USD"}
-    }
+    wallet = {"wallet" => {"defaultCurrency" => "USD",
+                           "authorized" => true,
+                           "isMember" => true,
+                           "status" => "ok",
+                           "possibleCurrencies" => "BAT",
+                           "scope" => "cards:read, cards:write, user:read",
+                           "address" => "cc053a27-cdcd-4fdb-aa90-f0417df26242"},
+              "rates" => {},
+              "contributions" => {"currency" => "USD"}}
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
     CreateUpholdCardsJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
     publisher.uphold_connection.reload
 
-    assert_equal publisher.uphold_connection.address, '123e4567-e89b-12d3-a456-426655440000'
+    assert_equal publisher.uphold_connection.address, "123e4567-e89b-12d3-a456-426655440000"
   end
 end

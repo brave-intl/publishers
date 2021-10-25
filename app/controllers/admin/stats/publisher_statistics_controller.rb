@@ -11,7 +11,7 @@ module Admin
         @email_verified_with_a_channel = stats[:email_verified_with_a_channel]
         @email_verified_with_a_verified_channel = stats[:email_verified_with_a_verified_channel]
 
-        @countries = UpholdConnection.where.not(country: nil).group(:country).count.sort_by { |k,v| v }.reverse
+        @countries = UpholdConnection.where.not(country: nil).group(:country).count.sort_by { |k, v| v }.reverse
         respond_to do |format|
           format.html {}
           format.csv do
@@ -45,12 +45,12 @@ module Admin
           verified_with_channel =
             Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("(channels.verified_at is null or channels.verified_at < ?) and channels.created_at < ?", current_date, current_date).distinct(:id).count
           verified_with_verified_channel_count =
-            Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).where("(channels.verified_at is null or channels.verified_at < ?) and channels.created_at < ?", current_date, current_date).distinct(:id).count
+            Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: {verified: true}).where("(channels.verified_at is null or channels.verified_at < ?) and channels.created_at < ?", current_date, current_date).distinct(:id).count
 
-          all_publishers << { label: current_date.strftime("%Y-%m-%d"), value: all_pub_count }
-          email_verified << { label: current_date.strftime("%Y-%m-%d"), value: verified_email }
-          email_verified_with_a_channel << { label: current_date.strftime("%Y-%m-%d"), value: verified_with_channel }
-          email_verified_with_a_verified_channel << { label: current_date.strftime("%Y-%m-%d"), value: verified_with_verified_channel_count }
+          all_publishers << {label: current_date.strftime("%Y-%m-%d"), value: all_pub_count}
+          email_verified << {label: current_date.strftime("%Y-%m-%d"), value: verified_email}
+          email_verified_with_a_channel << {label: current_date.strftime("%Y-%m-%d"), value: verified_with_channel}
+          email_verified_with_a_verified_channel << {label: current_date.strftime("%Y-%m-%d"), value: verified_with_verified_channel_count}
 
           current_date = current_date.next_month
         end
@@ -62,7 +62,6 @@ module Admin
           email_verified_with_a_verified_channel: email_verified_with_a_verified_channel
         }
       end
-
     end
   end
 end
