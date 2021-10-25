@@ -98,7 +98,7 @@ en:
     shared:
       heading: Error
       body: Oops, sorry about that. You can try to refresh the page or return to
-      contact: "For assistance please contact us at http://community.brave.com"
+      contact: "For assistance please contact us at https://community.brave.com"
   faqs:
     index:
       title: Frequently Asked Questions
