@@ -56,7 +56,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     port: Rails.application.secrets[:smtp_server_port] || 1025,
-    address: Rails.applic\ation.secrets[:smtp_server_address] || "127.0.0.1"
+    address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1"
   }
 
   # Don't care if the mailer can't send.
