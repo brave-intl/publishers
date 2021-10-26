@@ -173,6 +173,12 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
+  def create_new_untethered_referral_code
+    @publisher = current_publisher
+
+    # Register the promo....TODO
+  end
+
   def get_site_banner_data
     prepare_site_banner_data
     default_site_banner_mode = current_publisher.default_site_banner_mode

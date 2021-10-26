@@ -74,6 +74,18 @@ noscript
           class: 'channel-placeholder' \
         )
 
+    - if true #@publisher.may_create_referrals?
+      .row id="add_promo_code_placeholder"
+        .col.mb-4
+          = link_to(\
+            "+ #{t "shared.add_promo_code"}", \
+            '#', \
+            data: {"js-confirm-with-modal": "add-promo-code"}, \
+            class: 'channel-placeholder' \
+          )
+      script id="add-promo-code" type="text/html"
+        = render "home_modal__add_promo_code"
+
     .row.tos-row
       .col.mb-4
         - if @publisher.may_create_referrals?
