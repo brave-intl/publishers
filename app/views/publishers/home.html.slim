@@ -74,7 +74,7 @@ noscript
           class: 'channel-placeholder' \
         )
 
-    - if true #@publisher.may_create_referrals?
+    - if @publisher.may_create_referrals?
       .row id="add_promo_code_placeholder"
         .col.mb-4
           = link_to(\
