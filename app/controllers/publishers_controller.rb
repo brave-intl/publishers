@@ -144,6 +144,7 @@ class PublishersController < ApplicationController
 
     @possible_currencies = []
     @channels = @publisher.channels.visible.paginate(page: params[:page], per_page: 10)
+    @publisher_unattached_promo_registrations = @publisher.promo_registrations.unattached_only
 
     if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
@@ -171,6 +172,18 @@ class PublishersController < ApplicationController
   end
 
   def choose_new_channel_type
+  end
+
+  def create_new_untethered_referral_code
+    @publisher = current_publisher
+    if @publisher.may_create_referrals?
+      Promo::UnattachedRegistrar.new(number: 1,
+        promo_id: "unattached_referral_pubs",
+        publisher: @publisher,
+        description: params["promo-name"]).perform
+      flash[:notice] = "Promo code created successfully."
+      redirect_to(root_path)
+    end
   end
 
   def get_site_banner_data

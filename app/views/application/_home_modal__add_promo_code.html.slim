@@ -1,0 +1,7 @@
+.modal-buttons
+    = form_with(method: :post, \
+        url: create_new_untethered_referral_code_publishers_path(@publisher)) do |f|
+            = f.label("Promo Name", class: "control-label", for: "promo-name")
+            = f.text_field("promo-name", class: "form-control", id: "promo-name", required: true)
+            = f.submit("Add Promo Code", class: "js-deny btn btn-wide btn-primary")
+    = link_to t(".close"), "#", class: "js-deny btn btn-outline-primary"
