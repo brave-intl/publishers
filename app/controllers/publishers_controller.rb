@@ -175,12 +175,14 @@ class PublishersController < ApplicationController
 
   def create_new_untethered_referral_code
     @publisher = current_publisher
-    Promo::UnattachedRegistrar.new(number: 1,
-      promo_id: "unattached_referral_pubs",
-      publisher: @publisher,
-      description: params["promo-name"]).perform
-    flash[:notice] = "Promo code created successfully."
-    redirect_to(root_path)
+    if @publisher.may_create_referrals?
+      Promo::UnattachedRegistrar.new(number: 1,
+        promo_id: "unattached_referral_pubs",
+        publisher: @publisher,
+        description: params["promo-name"]).perform
+      flash[:notice] = "Promo code created successfully."
+      redirect_to(root_path)
+    end
   end
 
   def get_site_banner_data
