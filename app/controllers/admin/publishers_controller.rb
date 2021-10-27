@@ -5,10 +5,10 @@ class Admin::PublishersController < AdminController
 
   def index
     @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
-                    Publisher.advanced_sort(sort_column.to_sym, sort_direction)
-                  else
-                    Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
-                  end
+      Publisher.advanced_sort(sort_column.to_sym, sort_direction)
+    else
+      Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
+    end
 
     if params[:q].present?
 
@@ -26,7 +26,7 @@ class Admin::PublishersController < AdminController
     end
 
     if params[:uphold_status].present?
-      @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
+      @publishers = @publishers.joins(:uphold_connection).where("uphold_connections.status = ?", params[:uphold_status])
     end
 
     if params[:feature_flag].present?
@@ -49,7 +49,7 @@ class Admin::PublishersController < AdminController
 
   def show
     @publisher = Publisher.find(params[:id])
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({navbarSelection: "Dashboard"}).to_json
     @current_user = current_user
 
     if payout_in_progress?(current_user) || Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
@@ -67,14 +67,14 @@ class Admin::PublishersController < AdminController
 
   def edit
     @publisher = Publisher.find(params[:id])
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({navbarSelection: "Dashboard"}).to_json
   end
 
   def update
     @publisher.update(update_params)
     @publisher.update_feature_flags_from_form(update_feature_flag_params)
 
-    redirect_to admin_publisher_path(@publisher), flash: { notice: "Saved successfully" }
+    redirect_to admin_publisher_path(@publisher), flash: {notice: "Saved successfully"}
   end
 
   def destroy
@@ -109,7 +109,7 @@ class Admin::PublishersController < AdminController
   def cancel_two_factor_authentication_removal
     publisher = Publisher.find(params[:id])
     publisher.two_factor_authentication_removal.destroy
-    redirect_to(admin_publisher_path(publisher), flash: { alert: "2fa removal was cancelled" })
+    redirect_to(admin_publisher_path(publisher), flash: {alert: "2fa removal was cancelled"})
   end
 
   def refresh_uphold
@@ -124,7 +124,7 @@ class Admin::PublishersController < AdminController
   def sign_in_as_user
     if @publisher.admin?
       render status: 401, json: {
-        error: "You cannot sign in as another admin",
+        error: "You cannot sign in as another admin"
       }
     end
 
@@ -134,11 +134,11 @@ class Admin::PublishersController < AdminController
     if @publisher.totp_registration.present?
       render json: {
         login_url: login_url,
-        totp: ROTP::TOTP.new(@publisher.totp_registration.secret).now,
+        totp: ROTP::TOTP.new(@publisher.totp_registration.secret).now
       }
     else
       render json: {
-        login_url: login_url,
+        login_url: login_url
       }
     end
   end
@@ -149,7 +149,7 @@ class Admin::PublishersController < AdminController
   #
   # Returns the number of entries in the Publishers table
   def total_publishers
-    Rails.cache.fetch('total_publishers', expires_in: 12.hours) do
+    Rails.cache.fetch("total_publishers", expires_in: 12.hours) do
       Publisher.all.count
     end
   end

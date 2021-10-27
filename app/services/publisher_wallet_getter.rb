@@ -25,7 +25,6 @@ class PublisherWalletGetter < BaseApiClient
       transactions: transactions,
       default_currency: publisher.selected_wallet_provider&.default_currency
     )
-
   rescue Faraday::Error => e
     Rails.logger.warn("PublisherWalletGetter #perform error: #{e}")
     nil

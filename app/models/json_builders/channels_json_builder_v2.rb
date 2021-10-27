@@ -45,7 +45,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
       Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
       Channel.verified.vimeo_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
       Channel.verified.reddit_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.github_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.github_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection)
     ]
   end
 
@@ -64,7 +64,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
       true,
       false,
       wallet_address_id,
-      site_banner_details(verified_channel),
+      site_banner_details(verified_channel)
     ])
     append_wallet_address(wallet_address_id)
   end

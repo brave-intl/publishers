@@ -1,4 +1,4 @@
-require 'docker/eyeshade_helper'
+require "docker/eyeshade_helper"
 
 namespace :docker do
   desc "Adds contribution balance"
@@ -6,10 +6,10 @@ namespace :docker do
     channel_identifier = args.channel_identifier
     amount = args.amount
 
-    eyeshade_postgres_cointainer_id = `docker inspect --format="{{.Id}}" eyeshade-postgres`.gsub("\n",'')
+    eyeshade_postgres_cointainer_id = `docker inspect --format="{{.Id}}" eyeshade-postgres`.delete("\n")
     abort("Balance not added because could not find eyeshade postgres docker container.") if eyeshade_postgres_cointainer_id.blank?
 
-    transaction_id = SecureRandom.uuid()
+    transaction_id = SecureRandom.uuid
     sql = Docker::EyeshadeHelper.insert_contribution_transaction_sql(channel_identifier, amount, transaction_id)
     sql += Docker::EyeshadeHelper.refresh_account_balances_sql
 
@@ -23,10 +23,10 @@ namespace :docker do
     owner_identifier = args.owner_identifier
     amount = args.amount
 
-    eyeshade_postgres_cointainer_id = `docker inspect --format="{{.Id}}" eyeshade-postgres`.gsub("\n",'')
+    eyeshade_postgres_cointainer_id = `docker inspect --format="{{.Id}}" eyeshade-postgres`.delete("\n")
     abort("Balance not added because could not find eyeshade postgres docker container.") if eyeshade_postgres_cointainer_id.blank?
 
-    transaction_id = SecureRandom.uuid()
+    transaction_id = SecureRandom.uuid
     sql = Docker::EyeshadeHelper.insert_referral_transaction_sql(owner_identifier, amount, transaction_id)
     sql += Docker::EyeshadeHelper.refresh_account_balances_sql
 

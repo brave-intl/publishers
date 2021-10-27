@@ -11,7 +11,7 @@ class YoutubeUserGetter < BaseApiClient
     end
     response_hash = JSON.parse(response.body)
     if response_hash["items"]
-      response_hash['items'][0]&.fetch("id")
+      response_hash["items"][0]&.fetch("id")
     end
   rescue Faraday::Error => e
     Rails.logger.warn("YoutubeUserGetter #perform error: #{e}")

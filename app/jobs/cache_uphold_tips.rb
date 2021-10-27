@@ -17,7 +17,7 @@ class CacheUpholdTips < ApplicationJob
     return if transactions.blank?
 
     transactions.each do |transaction|
-       # Filter out transactions that weren't made by Brave Browser
+      # Filter out transactions that weren't made by Brave Browser
       next unless transaction.anonymous_origin?
 
       cached_tip = CachedUpholdTip.find_or_initialize_by(uphold_transaction_id: transaction.id)
@@ -26,7 +26,7 @@ class CacheUpholdTips < ApplicationJob
         amount: transaction.origin.dig("amount"),
         settlement_currency: transaction.destination.dig("currency"),
         settlement_amount: transaction.destination.dig("amount"),
-        uphold_created_at: transaction.createdAt.to_date,
+        uphold_created_at: transaction.createdAt.to_date
       )
     end
   end

@@ -10,7 +10,7 @@ module TwoFactorRegistration
     if prompted_at
       session.delete(:prompted_for_two_factor_registration_at_signup)
       if prompted_at > 10.minutes.ago
-        flash[:modal_partial] = 'two_factor_registration_complete'
+        flash[:modal_partial] = "two_factor_registration_complete"
         return redirect_to home_publishers_path
       end
     end

@@ -13,25 +13,23 @@ class SiteChannelDomainSetter < BaseService
   private
 
   def normalize_domain
-    require 'addressable'
-    require 'domain_name'
+    require "addressable"
+    require "domain_name"
 
     remove_protocol_and_suffix(channel_details)
 
-=begin
-    May 24, 2018
-    (Albert Wang): We've been supporting subdomains, so we need to use the PublicSuffix list
-
-    E.g.
-      > PublicSuffix.domain("m.reddit.com")
-     => "reddit.com"
-
-      > PublicSuffix.domain("helloworld.github.io")
-     => "helloworld.github.io"
-
-      > PublicSuffix.domain("hello.blogspot.com")
-     => "hello.blogspot.com"
-=end
+    #     May 24, 2018
+    #     (Albert Wang): We've been supporting subdomains, so we need to use the PublicSuffix list
+    #
+    #     E.g.
+    #       > PublicSuffix.domain("m.reddit.com")
+    #      => "reddit.com"
+    #
+    #       > PublicSuffix.domain("helloworld.github.io")
+    #      => "helloworld.github.io"
+    #
+    #       > PublicSuffix.domain("hello.blogspot.com")
+    #      => "hello.blogspot.com"
     channel_details.brave_publisher_id = normalize_from_ruleset(channel_details.brave_publisher_id_unnormalized)
 
     # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
@@ -59,7 +57,7 @@ class SiteChannelDomainSetter < BaseService
   end
 
   def remove_protocol_and_suffix(channel_details)
-    unless channel_details.brave_publisher_id_unnormalized.starts_with?(*["http://", "https://"])
+    unless channel_details.brave_publisher_id_unnormalized.starts_with?("http://", "https://")
       channel_details.brave_publisher_id_unnormalized.prepend("http://")
     end
     channel_details.brave_publisher_id_unnormalized = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).normalize.host

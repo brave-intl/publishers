@@ -7,11 +7,11 @@ class UpholdRefresherTest < ActiveSupport::TestCase
     "{\"access_token\":\"3f2\",\"token_type\":\"bearer\",\"expires_in\":3599,\"refresh_token\":\"82b0\",\"scope\":\"cards:read user:read\"}"
   end
 
-  test 'refresh no previous token' do
+  test "refresh no previous token" do
     connection = uphold_connections(:completed_partner_connection)
     assert_nil connection.refresh_token
     mock_auth = MiniTest::Mock.new.expect(:refresh_authorization, received_from_uphold,
-                                          [connection])
+      [connection])
     refresher = Uphold::Refresher.new(impl_refresher: mock_auth)
 
     updated = refresher.call(uphold_connection: connection)
@@ -19,17 +19,17 @@ class UpholdRefresherTest < ActiveSupport::TestCase
     assert_nil connection.refresh_token
   end
 
-  test 'refresh with previously expired token' do
+  test "refresh with previously expired token" do
     connection = uphold_connections(:google_connection)
     refute_nil connection.refresh_token
-    refute_equal(connection.reload.refresh_token, '82b0')
+    refute_equal(connection.reload.refresh_token, "82b0")
 
     mock_auth = MiniTest::Mock.new.expect(:refresh_authorization, received_from_uphold,
-                                          [connection])
+      [connection])
     refresher = Uphold::Refresher.new(impl_refresher: mock_auth)
     travel 2.days do
       refresher.call(uphold_connection: connection)
     end
-    assert_equal(connection.reload.refresh_token, '82b0')
+    assert_equal(connection.reload.refresh_token, "82b0")
   end
 end

@@ -13,8 +13,7 @@ class Admin::DashboardController < AdminController
     type.to_sym.in?([
       :events,
       :visits,
-      :devices_detection]
-    )
+      :devices_detection
+    ])
   end
-
 end

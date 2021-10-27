@@ -1,7 +1,6 @@
 require "test_helper"
 
 class PublisherBalanceGetterTest < ActiveJob::TestCase
-
   before(:example) do
     @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
@@ -16,14 +15,14 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
 
     # Only include owner account in response
     stubbed_response_body = [{
-      "account_id" => "#{publisher.owner_identifier}",
+      "account_id" => publisher.owner_identifier.to_s,
       "account_type" => "owner",
       "balance" => "900"
     }]
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:post, /v1\/accounts\/balances/).
-      to_return(status: 200, body: stubbed_response_body.to_json)
+    stub_request(:post, /v1\/accounts\/balances/)
+      .to_return(status: 200, body: stubbed_response_body.to_json)
 
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
     assert_equal 4, accounts.length
@@ -41,15 +40,15 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     # Owner balance not included in response
     stubbed_response_body = publisher.channels.verified.map do |channel|
       {
-        "account_id" => "#{channel.details.channel_identifier}",
+        "account_id" => channel.details.channel_identifier.to_s,
         "account_type" => "channel",
         "balance" => "900"
       }
     end
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:post, /v1\/accounts\/balances/).
-      to_return(status: 200, body: stubbed_response_body.to_json)
+    stub_request(:post, /v1\/accounts\/balances/)
+      .to_return(status: 200, body: stubbed_response_body.to_json)
 
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
 

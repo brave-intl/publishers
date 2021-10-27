@@ -1,9 +1,8 @@
 class Eyeshade::TopBalances < Eyeshade::BaseApiClient
-
   # Valid types
-  CHANNEL = 'channel'.freeze
-  OWNER = 'owner'.freeze
-  UPHOLD = 'uphold'.freeze
+  CHANNEL = "channel".freeze
+  OWNER = "owner".freeze
+  UPHOLD = "uphold".freeze
 
   def initialize(type:)
     @type = type
@@ -34,9 +33,9 @@ class Eyeshade::TopBalances < Eyeshade::BaseApiClient
   def perform_offline_channel
     [
       {
-        "account_type"=>"channel",
-        "account_id"=>"brave.com",
-        "balance"=>"199.866965493802047491"
+        "account_type" => "channel",
+        "account_id" => "brave.com",
+        "balance" => "199.866965493802047491"
       }
     ]
   end
@@ -59,11 +58,10 @@ class Eyeshade::TopBalances < Eyeshade::BaseApiClient
   def perform_offline_uphold
     [
       {
-        "account_type"=>"channel",
-        "account_id"=>"brave.com",
-        "balance"=>"199.866965493802047491"
+        "account_type" => "channel",
+        "account_id" => "brave.com",
+        "balance" => "199.866965493802047491"
       }
     ]
   end
 end
-

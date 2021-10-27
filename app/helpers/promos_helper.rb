@@ -14,12 +14,11 @@ module PromosHelper
   end
 
   def offline_referral_code
-    referral_code = "BATS-#{rand(0..10000)}"
-    referral_code
+    "BATS-#{rand(0..10000)}"
   end
 
   def offline_promo_stats
-    { "times" => [Time.now.to_s], "series" => { "name" => "downloads", "values" => [rand(0..1000)] }, "aggregate" => { "downloads" => 200, "finalized" => 30 } }
+    {"times" => [Time.now.to_s], "series" => {"name" => "downloads", "values" => [rand(0..1000)]}, "aggregate" => {"downloads" => 200, "finalized" => 30}}
   end
 
   def publisher_referrals_last_update(publisher)
@@ -38,7 +37,7 @@ module PromosHelper
     {
       PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
       PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
-      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED],
+      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED]
     }
   end
 
@@ -51,7 +50,7 @@ module PromosHelper
     {
       PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
       PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
-      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED],
+      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED]
     }
   end
 
@@ -67,16 +66,14 @@ module PromosHelper
     referral_link = referral_url(referral_code)
     twitter_preamble = "https://twitter.com/intent/tweet/?text="
     tweet_content = I18n.t("promo.shared.tweet_content") + "&url=https%3A%2F%2F" + referral_link
-    tweet_content_url = tweet_content.gsub(/\s/, '%20')
-    full_tweet_url = twitter_preamble + tweet_content_url
-    full_tweet_url
+    tweet_content_url = tweet_content.gsub(/\s/, "%20")
+    twitter_preamble + tweet_content_url
   end
 
   def facebook_url(referral_code)
     referral_link = referral_url(referral_code)
     base_facebook_link = "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2F"
-    sharable_facebook_link = base_facebook_link + referral_link
-    sharable_facebook_link
+    base_facebook_link + referral_link
   end
 
   def base_referral_url
@@ -86,7 +83,7 @@ module PromosHelper
   def on_channel_type(channel)
     case channel.details_type
     when "SiteChannelDetails"
-      "#{channel.publication_title.upcase}"
+      channel.publication_title.upcase.to_s
     else
       "#{channel.publication_title.upcase} #{t("promo.shared.on_#{channel.type_display.downcase}")}"
     end

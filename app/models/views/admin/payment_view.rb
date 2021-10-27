@@ -19,7 +19,7 @@ module Views
           channel_balances.push({
             title: channel_title,
             url: channel_url,
-            balance: channel_balance,
+            balance: channel_balance
           })
         end
         channel_balances
@@ -35,15 +35,15 @@ module Views
             channelBalances: channel_balances,
             referralBalance: publisher_referral_bat_balance(@publisher),
             contributionBalance: publisher_contribution_bat_balance(@publisher),
-            overallBalance: publisher_overall_bat_balance(@publisher),
+            overallBalance: publisher_overall_bat_balance(@publisher)
 
           },
           historic: {
             downloads: publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS],
             installs: publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS],
             confirmations: publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED],
-            transactions: PublisherStatementGetter.new(publisher: @publisher).perform,
-          },
+            transactions: PublisherStatementGetter.new(publisher: @publisher).perform
+          }
         }.merge(NavigationView.new(@publisher).as_json)
       end
     end

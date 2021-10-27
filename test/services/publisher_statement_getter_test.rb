@@ -1,7 +1,6 @@
 require "test_helper"
 
 class PublisherStatementGetterTest < ActiveJob::TestCase
-
   before(:example) do
     @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
@@ -14,8 +13,8 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions").
-      to_return(status: 200, body: [].to_json, headers: {})
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
+      .to_return(status: 200, body: [].to_json, headers: {})
 
     # This will raise an error if the stubbed request format isn't correct
     PublisherStatementGetter.new(publisher: publisher).perform

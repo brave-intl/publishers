@@ -17,15 +17,15 @@ class UpholdConnection < ApplicationRecord
   attr_encrypted :uphold_access_parameters, key: proc { |record| record.class.encryption_key }
 
   class UpholdAccountState
-    REAUTHORIZATION_NEEDED      = :reauthorization_needed
-    VERIFIED                    = :verified
-    ACCESS_PARAMETERS_ACQUIRED  = :access_parameters_acquired
-    CODE_ACQUIRED               = :code_acquired
-    UNCONNECTED                 = :unconnected
+    REAUTHORIZATION_NEEDED = :reauthorization_needed
+    VERIFIED = :verified
+    ACCESS_PARAMETERS_ACQUIRED = :access_parameters_acquired
+    CODE_ACQUIRED = :code_acquired
+    UNCONNECTED = :unconnected
     # (Albert Wang): Consider adding refactoring all of the above states as they
     # aren't valid states: https://uphold.com/en/developer/api/documentation/#user-object
-    RESTRICTED      = :restricted
-    BLOCKED         = :blocked
+    RESTRICTED = :restricted
+    BLOCKED = :blocked
   end
 
   OK = "ok"
@@ -46,8 +46,8 @@ class UpholdConnection < ApplicationRecord
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
-    where.not(encrypted_uphold_code: nil).
-      where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
+    where.not(encrypted_uphold_code: nil)
+      .where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 
   # If the user became KYC'd let's create the uphold card for them
@@ -58,8 +58,8 @@ class UpholdConnection < ApplicationRecord
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
   scope :has_stale_uphold_access_parameters, -> {
-    where.not(encrypted_uphold_access_parameters: nil).
-      where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
+    where.not(encrypted_uphold_access_parameters: nil)
+      .where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
   # This state token is generated and must be unique when connecting to uphold.
@@ -69,11 +69,11 @@ class UpholdConnection < ApplicationRecord
   end
 
   def scope
-    @scope ||= JSON.parse(uphold_access_parameters || '{}').try(:[], 'scope') || []
+    @scope ||= JSON.parse(uphold_access_parameters || "{}").try(:[], "scope") || []
   end
 
   def can_read_transactions?
-    scope.include?('transactions:read')
+    scope.include?("transactions:read")
   end
 
   def receive_uphold_code(code)
@@ -81,7 +81,7 @@ class UpholdConnection < ApplicationRecord
       uphold_code: code,
       uphold_state_token: nil,
       uphold_access_parameters: nil,
-      uphold_verified: false,
+      uphold_verified: false
     )
   end
 
@@ -94,7 +94,7 @@ class UpholdConnection < ApplicationRecord
     # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
     # Perhaps through a rescue on 401
     uphold_verified? &&
-      (uphold_access_parameters.blank? || scope.exclude?('cards:write') || uphold_details.nil?)
+      (uphold_access_parameters.blank? || scope.exclude?("cards:write") || uphold_details.nil?)
   end
 
   # Makes a remote HTTP call to Uphold to get more details
@@ -203,11 +203,11 @@ class UpholdConnection < ApplicationRecord
   end
 
   def refresh_token
-    JSON.parse(uphold_access_parameters || '{}').fetch('refresh_token', nil)
+    JSON.parse(uphold_access_parameters || "{}").fetch("refresh_token", nil)
   end
 
   def authorization_expires_at
-    JSON.parse(uphold_access_parameters || '{}').fetch('expiration_time', nil)&.to_datetime
+    JSON.parse(uphold_access_parameters || "{}").fetch("expiration_time", nil)&.to_datetime
   end
 
   def authorization_expired?

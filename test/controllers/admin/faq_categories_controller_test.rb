@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 require "webmock/minitest"
 
 class Admin::FaqCategoriesControllerTest < ActionDispatch::IntegrationTest

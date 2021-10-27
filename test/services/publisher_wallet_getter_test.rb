@@ -17,7 +17,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     publisher = publishers(:verified)
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
-    assert result.kind_of?(Eyeshade::Wallet)
+    assert result.is_a?(Eyeshade::Wallet)
   end
 
   describe "when online" do
@@ -26,27 +26,27 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     end
     let(:eyeshade_response) {
       {
-        "wallet": {
-          "provider": "uphold",
-          "authorized": true,
-          "isMember": true,
-          "status": "ok",
-          "defaultCurrency": "USD",
-          "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-          "scope": ["cards:write"]
+        wallet: {
+          provider: "uphold",
+          authorized: true,
+          isMember: true,
+          status: "ok",
+          defaultCurrency: "USD",
+          possibleCurrencies: ["USD", "EUR", "BTC", "ETH", "BAT"],
+          scope: ["cards:write"]
         },
-        "rates": {
-          "BTC": 3.138e-05,
-          "XAU": 0.00019228366919698587
+        rates: {
+          BTC: 3.138e-05,
+          XAU: 0.00019228366919698587
         },
-        "contributions": {
-          "amount": "5.71",
-          "currency": "USD",
-          "altcurrency": "BAT",
-          "probi": "24881568585439183646"
+        contributions: {
+          amount: "5.71",
+          currency: "USD",
+          altcurrency: "BAT",
+          probi: "24881568585439183646"
         },
-        "status": {
-          "provider": "uphold"
+        status: {
+          provider: "uphold"
         }
       }
     }
@@ -71,7 +71,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response, balances: channel_balances_response)
       result = PublisherWalletGetter.new(publisher: publisher).perform
 
-      assert result.kind_of?(Eyeshade::Wallet)
+      assert result.is_a?(Eyeshade::Wallet)
 
       assert_equal(
         25.0,
@@ -97,7 +97,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
       result = PublisherWalletGetter.new(publisher: publisher).perform
 
-      assert result.kind_of?(Eyeshade::Wallet)
+      assert result.is_a?(Eyeshade::Wallet)
     end
 
     test "overall balance is sum of channel and owner accounts" do
@@ -132,7 +132,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       wallet = PublisherWalletGetter.new(publisher: publisher).perform
 
       assert_equal wallet.overall_balance.amount_bat + wallet.overall_balance.fees_bat, 80
-      assert_equal wallet.overall_balance.amount_probi + wallet.overall_balance.fees_probi,  80 * BigDecimal('1.0e18')
+      assert_equal wallet.overall_balance.amount_probi + wallet.overall_balance.fees_probi, 80 * BigDecimal("1.0e18")
     end
   end
 
@@ -142,12 +142,12 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     publisher = publishers(:google_verified)
     publisher.channels.delete_all
     wallet = {
-      "wallet": {
-        "provider": "uphold",
-        "authorized": true,
-        "defaultCurrency": "USD",
-        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope": ["cards:write"]
+      wallet: {
+        provider: "uphold",
+        authorized: true,
+        defaultCurrency: "USD",
+        possibleCurrencies: ["USD", "EUR", "BTC", "ETH", "BAT"],
+        scope: ["cards:write"]
       }
     }
 
@@ -155,7 +155,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
-    assert result.kind_of?(Eyeshade::Wallet)
+    assert result.is_a?(Eyeshade::Wallet)
   end
 
   test "when online returns a wallet with channel data" do
@@ -163,12 +163,12 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
     publisher = publishers(:completed)
     wallet = {
-      "wallet": {
-        "provider": "uphold",
-        "authorized": true,
-        "defaultCurrency": "USD",
-        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope": ["cards:write"]
+      wallet: {
+        provider: "uphold",
+        authorized: true,
+        defaultCurrency: "USD",
+        possibleCurrencies: ["USD", "EUR", "BTC", "ETH", "BAT"],
+        scope: ["cards:write"]
       }
     }
 
@@ -189,7 +189,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
-    assert result.kind_of?(Eyeshade::Wallet)
+    assert result.is_a?(Eyeshade::Wallet)
     assert_equal "23.75", result.channel_balances["completed.org"].amount_bat.to_s
   end
 
@@ -198,12 +198,12 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     # Has one verified, and one unverified channel
     publisher = publishers(:partially_completed)
     wallet = {
-      "wallet": {
-        "provider": "uphold",
-        "authorized": true,
-        "defaultCurrency": "USD",
-        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope": ["cards:write"]
+      wallet: {
+        provider: "uphold",
+        authorized: true,
+        defaultCurrency: "USD",
+        possibleCurrencies: ["USD", "EUR", "BTC", "ETH", "BAT"],
+        scope: ["cards:write"]
       }
     }
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
@@ -217,9 +217,9 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     publisher = publishers(:uphold_connected)
 
     wallet = {
-      "rates"=> {
-        "BTC"=>3.138e-05,
-        "XAU"=>0.00019228366919698587
+      "rates" => {
+        "BTC" => 3.138e-05,
+        "XAU" => 0.00019228366919698587
       }
     }
 
@@ -253,7 +253,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     owner_amounts_after_fees = 20
     overall_amount_after_fees = (channel_amount_after_fees * 3 + owner_amounts_after_fees).to_s
     assert_equal wallet.overall_balance.amount_bat.to_s, overall_amount_after_fees
-    assert_equal wallet.overall_balance.amount_probi,  (overall_amount_after_fees.to_d * BigDecimal('1.0e18')).to_i
+    assert_equal wallet.overall_balance.amount_probi, (overall_amount_after_fees.to_d * BigDecimal("1.0e18")).to_i
   end
 
   test "uses the PublisherTransactionsGetter to get last settlement information" do
@@ -262,12 +262,12 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
     wallet = {
       "rates" => {
-          "BTC" => 0.00005418424016883016,
-          "ETH" => 0.000795331082073117,
-          "USD" => 0.2363863335301452,
-          "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496
-      },
+        "BTC" => 0.00005418424016883016,
+        "ETH" => 0.000795331082073117,
+        "USD" => 0.2363863335301452,
+        "EUR" => 0.20187818378874756,
+        "GBP" => 0.1799810085548496
+      }
     }
     transactions = PublisherTransactionsGetter.new(publisher: publisher).perform_offline
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, transactions: transactions)

@@ -1,4 +1,4 @@
-require 'addressable'
+require "addressable"
 
 class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
@@ -19,11 +19,11 @@ class SiteBanner < ApplicationRecord
   BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
   NUMBER_OF_DONATION_AMOUNTS = 3
-  DONATION_AMOUNT_PRESETS = ['1,10,100', '5,10,20', '10,20,50', '20,50,100'].freeze
+  DONATION_AMOUNT_PRESETS = ["1,10,100", "5,10,20", "10,20,50", "20,50,100"].freeze
   MAX_DONATION_AMOUNT = 999
 
-  DEFAULT_TITLE = I18n.t('banner.headline')
-  DEFAULT_DESCRIPTION = I18n.t('banner.tagline')
+  DEFAULT_TITLE = I18n.t("banner.headline")
+  DEFAULT_DESCRIPTION = I18n.t("banner.tagline")
   DEFAULT_AMOUNTS = [1, 10, 100].freeze
 
   validates_presence_of :title, :description, :publisher
@@ -33,7 +33,7 @@ class SiteBanner < ApplicationRecord
 
   def donation_amounts_in_scope
     return if errors.present?
-    errors.add(:base, "Must be an approved tip preset") unless donation_amounts.nil? || DONATION_AMOUNT_PRESETS.include?(donation_amounts.join(','))
+    errors.add(:base, "Must be an approved tip preset") unless donation_amounts.nil? || DONATION_AMOUNT_PRESETS.include?(donation_amounts.join(","))
   end
 
   def update_site_banner_lookup!
@@ -49,15 +49,15 @@ class SiteBanner < ApplicationRecord
     return if errors.present? || social_links.nil?
     self.social_links = social_links.select { |key, _| key.in?(["twitch", "youtube", "twitter"]) }
 
-    unless social_links["twitch"].blank? || Addressable::URI.parse(social_links["twitch"]).to_s.starts_with?('https://www.twitch.tv/', 'https://twitch.tv/', 'www.twitch.tv/', 'twitch.tv/')
+    unless social_links["twitch"].blank? || Addressable::URI.parse(social_links["twitch"]).to_s.starts_with?("https://www.twitch.tv/", "https://twitch.tv/", "www.twitch.tv/", "twitch.tv/")
       social_links["twitch"] = ""
     end
 
-    unless social_links["youtube"].blank? || Addressable::URI.parse(social_links["youtube"]).to_s.starts_with?('https://www.youtube.com/', 'https://youtube.com/', 'www.youtube.com/', 'youtube.com/')
+    unless social_links["youtube"].blank? || Addressable::URI.parse(social_links["youtube"]).to_s.starts_with?("https://www.youtube.com/", "https://youtube.com/", "www.youtube.com/", "youtube.com/")
       social_links["youtube"] = ""
     end
 
-    unless social_links["twitter"].blank? || Addressable::URI.parse(social_links["twitter"]).to_s.starts_with?('https://www.twitter.com/', 'https://twitter.com/', 'www.twitter.com/', 'twitter.com/')
+    unless social_links["twitter"].blank? || Addressable::URI.parse(social_links["twitter"]).to_s.starts_with?("https://www.twitter.com/", "https://twitter.com/", "www.twitter.com/", "twitter.com/")
       social_links["twitter"] = ""
     end
   end
@@ -72,7 +72,7 @@ class SiteBanner < ApplicationRecord
       channel_id: channel_id,
       title: DEFAULT_TITLE,
       description: DEFAULT_DESCRIPTION,
-      social_links: { youtube: '', twitter: '', twitch: '' }
+      social_links: {youtube: "", twitter: "", twitch: ""}
     )
   end
 
@@ -101,7 +101,7 @@ class SiteBanner < ApplicationRecord
       backgroundUrl: background_image.url,
       logoUrl: logo.url,
       donationAmounts: donation_amounts,
-      socialLinks: social_links,
+      socialLinks: social_links
     }
   end
 

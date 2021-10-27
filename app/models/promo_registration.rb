@@ -28,11 +28,11 @@ class PromoRegistration < ApplicationRecord
   MOBILE = "mobile".freeze
   STANDARD = "standard".freeze
 
-  BASE_STATS = { RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0, EYESHADE_CONFIRMED => 0 }.freeze
+  BASE_STATS = {RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0, EYESHADE_CONFIRMED => 0}.freeze
 
   # Restricting the following countries from entering the referral program
   # Vietnam, Russia, Indonesia, China, Ukraine
-  RESTRICTED_COUNTRIES = ['VN', 'RU', 'ID', 'CN', 'UA'].freeze
+  RESTRICTED_COUNTRIES = ["VN", "RU", "ID", "CN", "UA"].freeze
 
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
@@ -43,8 +43,8 @@ class PromoRegistration < ApplicationRecord
 
   validates :promo_id, presence: true
   validates :kind, presence: true
-  validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
-  validates :referral_code, presence: true, uniqueness: { scope: :promo_id }
+  validates :kind, inclusion: {in: KINDS, message: "%{value} is not a valid kind of promo registration."}
+  validates :referral_code, presence: true, uniqueness: {scope: :promo_id}
 
   scope :owner_only, -> { where(kind: OWNER) }
   scope :unattached_only, -> { where(kind: UNATTACHED) }
@@ -66,7 +66,7 @@ class PromoRegistration < ApplicationRecord
   def aggregate_stats_by_period(period_start, period_end)
     parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
     parsed = parsed.select do |event|
-      date = event['ymd'].to_date
+      date = event["ymd"].to_date
       date >= period_start && date <= period_end
     end
 
@@ -79,17 +79,17 @@ class PromoRegistration < ApplicationRecord
     starting_date = nil
     parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
     parsed.each do |stat|
-      starting_date ||= stat['ymd'] if starting_date.nil?
-      unless compressed_stats.key?(stat['ymd'])
-        compressed_stats[stat['ymd']] = {}
-        compressed_stats[stat['ymd']]['retrievals'] = 0
-        compressed_stats[stat['ymd']]['first_runs'] = 0
-        compressed_stats[stat['ymd']]['finalized'] = 0
-        compressed_stats[stat['ymd']]['ymd'] = stat['ymd']
+      starting_date ||= stat["ymd"] if starting_date.nil?
+      unless compressed_stats.key?(stat["ymd"])
+        compressed_stats[stat["ymd"]] = {}
+        compressed_stats[stat["ymd"]]["retrievals"] = 0
+        compressed_stats[stat["ymd"]]["first_runs"] = 0
+        compressed_stats[stat["ymd"]]["finalized"] = 0
+        compressed_stats[stat["ymd"]]["ymd"] = stat["ymd"]
       end
-      compressed_stats[stat['ymd']]['retrievals'] += stat['retrievals']
-      compressed_stats[stat['ymd']]['first_runs'] += stat['first_runs']
-      compressed_stats[stat['ymd']]['finalized'] += stat['finalized']
+      compressed_stats[stat["ymd"]]["retrievals"] += stat["retrievals"]
+      compressed_stats[stat["ymd"]]["first_runs"] += stat["first_runs"]
+      compressed_stats[stat["ymd"]]["finalized"] += stat["finalized"]
     end
 
     return [] if starting_date.nil?
@@ -99,28 +99,28 @@ class PromoRegistration < ApplicationRecord
       formatted_date = rolling_date.strftime("%Y-%m-%d")
       unless compressed_stats.key?(formatted_date)
         compressed_stats[formatted_date] = {}
-        compressed_stats[formatted_date]['retrievals'] = 0
-        compressed_stats[formatted_date]['first_runs'] = 0
-        compressed_stats[formatted_date]['finalized'] = 0
-        compressed_stats[formatted_date]['ymd'] = formatted_date
+        compressed_stats[formatted_date]["retrievals"] = 0
+        compressed_stats[formatted_date]["first_runs"] = 0
+        compressed_stats[formatted_date]["finalized"] = 0
+        compressed_stats[formatted_date]["ymd"] = formatted_date
       end
       rolling_date = rolling_date.tomorrow
     end
 
-    compressed_stats.values.sort_by! { |h| h['ymd'] }
+    compressed_stats.values.sort_by! { |h| h["ymd"] }
   end
 
   class << self
     # Returns the aggregate totals for each event type given a
     # ActiveRecord::Association of PromoRegistrations
     def stats_for_registrations(promo_registrations:, start_date: Date.new, end_date: Date.today.at_end_of_day)
-      promo_registrations.
-        map { |pr| pr.aggregate_stats_by_period(start_date, end_date) }.
-        reduce(PromoRegistration::BASE_STATS.deep_dup, &PromoRegistration.sum_stats)
+      promo_registrations
+        .map { |pr| pr.aggregate_stats_by_period(start_date, end_date) }
+        .reduce(PromoRegistration::BASE_STATS.deep_dup, &PromoRegistration.sum_stats)
     end
 
     def sum_stats
-      Proc.new do |aggregate_stats, event|
+      proc do |aggregate_stats, event|
         aggregate_stats.keys.each do |key|
           aggregate_stats[key] += event[key].to_i
         end

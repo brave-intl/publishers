@@ -22,5 +22,4 @@ class TwoFactorAuthenticationsController < ApplicationController
 
     @totp_enabled = totp_enabled?(pending_2fa_current_publisher)
   end
-
 end

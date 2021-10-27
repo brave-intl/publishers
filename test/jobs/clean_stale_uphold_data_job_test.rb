@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class CleanStaleUpholdDataJobTest < ActiveJob::TestCase
   test "cleans uphold codes sitting longer than timeout" do

@@ -18,7 +18,7 @@ class Case < ApplicationRecord
     "application/vnd",
     "image",
     "application/pdf",
-    "application/msword",
+    "application/msword"
   ].freeze
 
   belongs_to :assignee, class_name: "Publisher"
@@ -26,12 +26,12 @@ class Case < ApplicationRecord
 
   has_many :case_notes
 
-  validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
+  validates :status, presence: true, inclusion: {in: ALL_STATUSES}
 
   has_many_attached :files
 
   before_save :updated_status, if: :assignee_id_changed?
-  before_save :add_open_at, if: Proc.new { |_| will_save_change_to_status?(from: NEW) }
+  before_save :add_open_at, if: proc { |_| will_save_change_to_status?(from: NEW) }
 
   after_save :send_out_emails, if: :saved_change_to_status?
 

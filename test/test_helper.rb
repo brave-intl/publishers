@@ -1,6 +1,6 @@
 ENV["RAILS_ENV"] ||= "test"
-require 'simplecov'
-SimpleCov.start 'rails'
+require "simplecov"
+SimpleCov.start "rails"
 
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
@@ -12,15 +12,15 @@ require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/mock_uphold_responses"
 require "test_helpers/mock_gemini_responses"
-require 'capybara/rails'
-require 'capybara/minitest'
-require 'minitest/rails'
-require 'minitest/retry'
+require "capybara/rails"
+require "capybara/minitest"
+require "minitest/rails"
+require "minitest/retry"
 
 Minitest::Retry.use!(
   retry_count: 3, # The number of times to retry. The default is 3.
-  verbose: true,           # Whether or not to display the message at the time of retry. The default is true.
-  io: $stdout,             # Display destination of retry when the message. The default is stdout.
+  verbose: true, # Whether or not to display the message at the time of retry. The default is true.
+  io: $stdout, # Display destination of retry when the message. The default is stdout.
   exceptions_to_retry: [], # List of exceptions that will trigger a retry (when empty, all exceptions will).
   methods_to_retry: [] # List of methods that will trigger a retry (when empty, all methods will).
 )
@@ -41,11 +41,11 @@ Capybara.register_driver "chrome" do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: {
       binary: ENV["CHROME_BINARY"],
-      args: %w(headless no-sandbox disable-gpu window-size=1680,1050),
+      args: %w[headless no-sandbox disable-gpu window-size=1680,1050]
     }.compact,
-    loggingPrefs: { browser: 'ALL' }
+    loggingPrefs: {browser: "ALL"}
   )
-  driver = Capybara::Selenium::Driver.new(
+  Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,
     desired_capabilities: capabilities
@@ -56,12 +56,12 @@ end
 # See https://bugs.chromium.org/p/chromium/issues/detail?id=1010288
 Capybara.register_driver "firefoxja" do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
-  profile['intl.accept_languages'] = 'ja-JP'
+  profile["intl.accept_languages"] = "ja-JP"
 
   opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
-  opts.args << '--headless'
+  opts.args << "--headless"
 
-  driver = Capybara::Selenium::Driver.new(
+  Capybara::Selenium::Driver.new(
     app,
     browser: :firefox,
     options: opts
@@ -75,13 +75,13 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.filter_sensitive_data("<ENCODED API KEY>") { Rails.application.secrets[:sendgrid_api_key] }
   config.before_record do |i|
-    i.response.body.force_encoding('UTF-8')
-    i.response.headers.delete('Set-Cookie')
-    i.request.headers.delete('Authorization')
+    i.response.body.force_encoding("UTF-8")
+    i.response.headers.delete("Set-Cookie")
+    i.request.headers.delete("Authorization")
   end
-  config.ignore_hosts '127.0.0.1', 'localhost'
+  config.ignore_hosts "127.0.0.1", "localhost"
   config.allow_http_connections_when_no_cassette = true
-  config.default_cassette_options = { match_requests_on: [:method, :uri, :body], decode_compressed_response: true }
+  config.default_cassette_options = {match_requests_on: [:method, :uri, :body], decode_compressed_response: true}
 end
 
 module ActiveSupport
@@ -119,7 +119,7 @@ module Capybara
       def wait_until
         require "timeout"
         Timeout.timeout(Capybara.default_max_wait_time) do
-          sleep(0.1) until value = yield
+          sleep(0.1) until (value = yield)
           value
         end
       end
@@ -149,19 +149,21 @@ end
 module Publishers
   module Service
     class PublicS3Service
-      def upload(a, b, c); end
+      def upload(a, b, c)
+      end
 
-      def url_expires_in; end
+      def url_expires_in
+      end
 
       def url(a, b)
-        'mock'
+        "mock"
       end
     end
   end
 end
 
 # Load rake tasks here so it only happens one time. If tasks are loaded again they will run once for each time loaded.
-require 'rake'
+require "rake"
 Publishers::Application.load_tasks
 
 # One time test suite setup.
@@ -192,4 +194,4 @@ class NoTransactDBBleanupTest < ActiveSupport::TestCase
   end
 end
 
-require 'mocha/minitest'
+require "mocha/minitest"

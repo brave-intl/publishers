@@ -12,18 +12,17 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
   end
 
-
   def stub_verification_public_file(channel, body: nil, status: 200)
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
-      'Accept' => '*/*',
-      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      'User-Agent' => 'Ruby'
+      "Accept" => "*/*",
+      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+      "User-Agent" => "Ruby"
     }
     body ||= SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
-    stub_request(:get, url).
-      with(headers: headers).
-      to_return(status: status, body: body, headers: {})
+    stub_request(:get, url)
+      .with(headers: headers)
+      .to_return(status: status, body: body, headers: {})
   end
 
   test "Cancel and Choose Different Verification Method buttons only appear in appropriate places" do
@@ -56,8 +55,8 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
   test "When bad ssl happens" do
     Rails.application.secrets[:host_inspector_offline] = false
-    stub_request(:get, "https://self-signed.badssl.com").
-      to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+    stub_request(:get, "https://self-signed.badssl.com")
+      .to_raise(OpenSSL::SSL::SSLError.new("SSL_connect returned=1 errno=0 state=error: certificate verify failed"))
 
     publisher = publishers(:default)
     sign_in publisher
@@ -101,7 +100,7 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     channel = publisher.channels.first
     assert_nil channel.details.verification_method
 
-    stub_verification_public_file(channel , body: "", status: 404)
+    stub_verification_public_file(channel, body: "", status: 404)
 
     visit verification_public_file_site_channel_path(channel)
     refute_content("Retry Verification")
@@ -152,6 +151,6 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     visit verification_public_file_site_channel_path(channel)
     click_link(I18n.t("site_channels.shared.finish_verification_later"))
 
-    assert_content (I18n.t("publishers.channel.one_more_step"))
+    assert_content(I18n.t("publishers.channel.one_more_step"))
   end
 end

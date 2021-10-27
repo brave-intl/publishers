@@ -11,18 +11,18 @@ module Admin
       end
 
       if params[:q].present?
-        query = params[:q].split(' ').map { |q| "%#{remove_prefix_if_necessary(q)}%" }.join(' ')
+        query = params[:q].split(" ").map { |q| "%#{remove_prefix_if_necessary(q)}%" }.join(" ")
         @channels = @channels.search(query)
       end
 
       @channels = @channels.verified if params[:verified].present?
 
       case params[:type]
-      when 'website'
+      when "website"
         @channels = @channels.site_channels
-      when 'youtube'
+      when "youtube"
         @channels = @channels.youtube_channels
-      when 'twitch'
+      when "twitch"
         @channels = @channels.twitch_channels
       end
 

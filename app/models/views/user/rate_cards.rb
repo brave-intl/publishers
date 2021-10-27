@@ -12,7 +12,7 @@ module Views
 
       def as_json(*)
         {
-          rateCardStatement: rate_cards,
+          rateCardStatement: rate_cards
         }
       end
 
@@ -22,7 +22,7 @@ module Views
         by_property.each do |property, statements|
           rate_card = {
             referral_code: referral_code_for_channel(property),
-            details: [],
+            details: []
           }
 
           statements.group_by { |s| s[:groupId] }.each do |group_id, entries|
@@ -34,7 +34,7 @@ module Views
               group: group,
               confirmations: entries.size,
               average_paid_per_confirmation: average_amount_paid,
-              total_bat: total_bat,
+              total_bat: total_bat
             }
           end
           rate_card[:details] = rate_card[:details].sort_by { |x| x[:group][:name] }

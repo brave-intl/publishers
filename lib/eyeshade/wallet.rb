@@ -1,4 +1,4 @@
-require 'eyeshade/base_balance'
+require "eyeshade/base_balance"
 require "eyeshade/contribution_balance"
 require "eyeshade/overall_balance"
 require "eyeshade/channel_balance"
@@ -8,11 +8,11 @@ require "eyeshade/last_settlement_balance"
 module Eyeshade
   class Wallet
     attr_reader :rates,
-                :channel_balances,
-                :contribution_balance,
-                :referral_balance,
-                :overall_balance,
-                :last_settlement_balance
+      :channel_balances,
+      :contribution_balance,
+      :referral_balance,
+      :overall_balance,
+      :last_settlement_balance
 
     def initialize(rates: {}, accounts: [], transactions: [], default_currency: nil)
       # Wallet information

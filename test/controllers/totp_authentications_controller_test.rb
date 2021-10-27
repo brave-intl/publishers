@@ -9,7 +9,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, registration)
 
     visit_authentication_url publisher
-    assert_redirected_to controller: '/two_factor_authentications', action: 'index'
+    assert_redirected_to controller: "/two_factor_authentications", action: "index"
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
 
@@ -26,7 +26,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, registration)
 
     visit_authentication_url publisher
-    assert_redirected_to controller: '/two_factor_authentications', action: 'index'
+    assert_redirected_to controller: "/two_factor_authentications", action: "index"
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(false)
 
@@ -35,6 +35,6 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to two_factor_authentications_path(request_totp: true), "error redirects to 2fa authentication forcing totp"
-    assert_redirected_to controller: '/two_factor_authentications', action: 'index', request_totp: true
+    assert_redirected_to controller: "/two_factor_authentications", action: "index", request_totp: true
   end
 end

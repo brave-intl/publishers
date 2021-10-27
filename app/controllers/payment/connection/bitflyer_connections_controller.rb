@@ -2,10 +2,9 @@
 
 require "uri"
 require "net/http"
-require 'json'
-require 'uri'
-require 'digest'
-require 'base64'
+require "json"
+require "digest"
+require "base64"
 
 module Payment
   module Connection
@@ -19,10 +18,10 @@ module Payment
 
         # Always send PKCE code verifier and challenge
         code_verifier = current_publisher.id
-        code_challenge = Digest::SHA256.base64digest(code_verifier).chomp('=').gsub('+', '-').gsub('/', '_')
-        pkce_string = '&code_challenge=' + code_challenge + '&code_challenge_method=S256'
+        code_challenge = Digest::SHA256.base64digest(code_verifier).chomp("=").tr("+", "-").tr("/", "_")
+        pkce_string = "&code_challenge=" + code_challenge + "&code_challenge_method=S256"
 
-        redirect_to Rails.application.secrets[:bitflyer_host] + '/ex/OAuth/authorize?client_id=' + Rails.application.secrets[:bitflyer_client_id] + '&scope=' + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + '&redirect_uri=' + CGI.escape('https://' + Rails.application.secrets[:creators_host] + '/publishers/bitflyer_connection/new') + '&state=100&response_type=code' + pkce_string
+        redirect_to Rails.application.secrets[:bitflyer_host] + "/ex/OAuth/authorize?client_id=" + Rails.application.secrets[:bitflyer_client_id] + "&scope=" + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + "&redirect_uri=" + CGI.escape("https://" + Rails.application.secrets[:creators_host] + "/publishers/bitflyer_connection/new") + "&state=100&response_type=code" + pkce_string
       end
 
       # This action is after the OAuth connection is redirected.
@@ -47,7 +46,7 @@ module Payment
             home_publishers_path,
             alert: I18n.t(
               "publishers.bitflyer_connections.destroy.error",
-              errors: bitflyer_connection.errors.full_messages.join(', ')
+              errors: bitflyer_connection.errors.full_messages.join(", ")
             )
           )
         end
@@ -58,8 +57,8 @@ module Payment
       def validate_connection!
         connection = current_publisher.bitflyer_connection
 
-        raise BitflyerError.new, I18n.t('publishers.stripe_connections.new.missing_state') if connection&.state_token.blank?
-        raise BitflyerError.new, I18n.t('publishers.stripe_connections.new.state_mismatch') if connection.state_token != params[:state]
+        raise BitflyerError.new, I18n.t("publishers.stripe_connections.new.missing_state") if connection&.state_token.blank?
+        raise BitflyerError.new, I18n.t("publishers.stripe_connections.new.state_mismatch") if connection.state_token != params[:state]
         raise BitflyerError.new, params[:error] if params[:error].present?
       end
     end

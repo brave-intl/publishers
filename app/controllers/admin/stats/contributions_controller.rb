@@ -1,11 +1,10 @@
 class Admin::Stats::ContributionsController < AdminController
   def index
     @result = Rails.cache.fetch(Cache::EyeshadeStatsJob::EYESHADE_CONTRIBUTION_TOTALS) || []
-    @publishers = Publisher.where(id: @result.map { |entry| entry['account_id'].split(":")[1] }).load
+    @publishers = Publisher.where(id: @result.map { |entry| entry["account_id"].split(":")[1] }).load
     @youtube_channel_details = YoutubeChannelDetails
       .where(youtube_channel_id:
-             @result.select { |entry| entry['channel'].starts_with?(YoutubeChannelDetails::PREFIX) }
-                    .map{ |entry| entry['channel'].remove(YoutubeChannelDetails::PREFIX) }
-      ).load
+             @result.select { |entry| entry["channel"].starts_with?(YoutubeChannelDetails::PREFIX) }
+                    .map { |entry| entry["channel"].remove(YoutubeChannelDetails::PREFIX) }).load
   end
 end

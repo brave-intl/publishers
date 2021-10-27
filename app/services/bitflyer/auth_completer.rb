@@ -4,7 +4,7 @@ module Bitflyer
   class AuthCompleter
     def self.build
       new(http_lib: Net::HTTP,
-          missing_deposit_job: Sync::Bitflyer::UpdateMissingDepositJob.new)
+        missing_deposit_job: Sync::Bitflyer::UpdateMissingDepositJob.new)
     end
 
     def initialize(http_lib:, missing_deposit_job:)
@@ -18,20 +18,20 @@ module Bitflyer
 
       # Request access token from bitFlyer.
       access_token_request_params = {
-        'grant_type' => 'code',
-        'code' => code,
-        'code_verifier' => publisher.id,
-        'client_id' => Rails.application.secrets[:bitflyer_client_id],
-        'client_secret' => Rails.application.secrets[:bitflyer_client_secret],
-        'expires_in' => 259002,
-        'external_acccount_id': publisher.id,
-        'request_id': SecureRandom.uuid,
-        'redirect_uri': 'https://' + Rails.application.secrets[:creators_host] + '/publishers/bitflyer_connection/new',
-        'request_deposit_id': true,
+        "grant_type" => "code",
+        "code" => code,
+        "code_verifier" => publisher.id,
+        "client_id" => Rails.application.secrets[:bitflyer_client_id],
+        "client_secret" => Rails.application.secrets[:bitflyer_client_secret],
+        "expires_in" => 259002,
+        :external_acccount_id => publisher.id,
+        :request_id => SecureRandom.uuid,
+        :redirect_uri => "https://" + Rails.application.secrets[:creators_host] + "/publishers/bitflyer_connection/new",
+        :request_deposit_id => true
       }
 
       # TODO: Bitflyer should provide a display name in this request response.
-      response = @http_lib.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + '/api/link/v1/token'), access_token_request_params)
+      response = @http_lib.post_form(URI.parse(Rails.application.secrets[:bitflyer_host] + "/api/link/v1/token"), access_token_request_params)
 
       access_token = JSON.parse(response.body)["access_token"]
       refresh_token = JSON.parse(response.body)["refresh_token"]
@@ -42,17 +42,17 @@ module Bitflyer
         access_token: access_token,
         refresh_token: refresh_token,
         display_name: display_name,
-        default_currency: "BAT",
+        default_currency: "BAT"
       }
 
       if bitflyer_connection.update(update_bitflyer_connection_params) &&
-        publisher.update(selected_wallet_provider: bitflyer_connection) &&
+          publisher.update(selected_wallet_provider: bitflyer_connection) &&
 
-        # Add bitFlyer deposit id to each of the publisher's channels
-        publisher.channels.each do |channel|
-          # Intentional blocking call
-          @missing_deposit_job.perform(channel.id)
-        end
+          # Add bitFlyer deposit id to each of the publisher's channels
+          publisher.channels.each do |channel|
+            # Intentional blocking call
+            @missing_deposit_job.perform(channel.id)
+          end
         return true
       end
       false

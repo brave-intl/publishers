@@ -12,16 +12,14 @@ class PublisherBalanceGetter < BaseApiClient
     accounts_response = connection.send(:post) do |req|
       req.options.open_timeout = 5
       req.options.timeout = 20
-      req.url [api_base_uri, "/v1/accounts/balances"].join('')
+      req.url [api_base_uri, "/v1/accounts/balances"].join("")
       req.headers["Authorization"] = api_authorization_header
-      req.headers['Content-Type'] = 'application/json'
-      req.body = JSON.dump({ account: [publisher.owner_identifier] + channels_accounts, pending: true })
+      req.headers["Content-Type"] = "application/json"
+      req.body = JSON.dump({account: [publisher.owner_identifier] + channels_accounts, pending: true})
     end
 
     accounts = JSON.parse(accounts_response.body)
-    complete_accounts = fill_in_missing_accounts(accounts)
-    complete_accounts
-
+    fill_in_missing_accounts(accounts)
   rescue Faraday::ClientError => e
     Rails.logger.info("Error receiving eyeshade balance #{e.message}")
     :unavailable
@@ -64,18 +62,18 @@ class PublisherBalanceGetter < BaseApiClient
 
     accounts += channel_ids_to_fill_in.map do |channel_id|
       {
-        "account_id" => "#{channel_id}",
+        "account_id" => channel_id.to_s,
         "account_type" => "channel",
-        "balance" => "0.00",
+        "balance" => "0.00"
       }
     end
 
     # Fill in missing owner account if needed
     unless accounts_include_owner_account
       accounts.push({
-        "account_id" => "#{publisher.owner_identifier}",
+        "account_id" => publisher.owner_identifier.to_s,
         "account_type" => "owner",
-        "balance" => "0.00",
+        "balance" => "0.00"
       })
     end
 

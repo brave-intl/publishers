@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 require "webmock/minitest"
 
 class Admin::Publishers::PublisherWhitelistUpdatesControllerTest < ActionDispatch::IntegrationTest
@@ -10,7 +10,7 @@ class Admin::Publishers::PublisherWhitelistUpdatesControllerTest < ActionDispatc
     sign_in admin
   end
 
-  test '#create adds a whitelist' do
+  test "#create adds a whitelist" do
     admin = publishers(:admin)
     sign_in admin
     publisher = publishers(:uphold_connected)
@@ -20,9 +20,9 @@ class Admin::Publishers::PublisherWhitelistUpdatesControllerTest < ActionDispatc
 
     post(
       admin_publisher_publisher_whitelist_updates_path(
-        publisher_id: publisher.id,
+        publisher_id: publisher.id
       ),
-      params: {note: note, enable: true},
+      params: {note: note, enable: true}
     )
 
     refute publisher.last_whitelist_update.nil?
@@ -31,9 +31,9 @@ class Admin::Publishers::PublisherWhitelistUpdatesControllerTest < ActionDispatc
 
     post(
       admin_publisher_publisher_whitelist_updates_path(
-        publisher_id: publisher.id,
+        publisher_id: publisher.id
       ),
-      params: {note: note, enable: false},
+      params: {note: note, enable: false}
     )
 
     assert_equal publisher.last_whitelist_update.enabled, false

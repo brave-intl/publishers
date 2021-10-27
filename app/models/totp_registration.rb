@@ -20,7 +20,7 @@ class TotpRegistration < ApplicationRecord
     issuer = "Brave Rewards"
 
     environment = Rails.env
-    if %w(development staging).include?(environment)
+    if %w[development staging].include?(environment)
       issuer += " (#{environment.capitalize})"
     end
 

@@ -10,7 +10,7 @@ class SiteBannerTest < ActiveSupport::TestCase
     site_banner.description = "World"
     assert site_banner.save
 
-    site_banner.donation_amounts = [1,10,100]
+    site_banner.donation_amounts = [1, 10, 100]
     assert site_banner.save
 
     site_banner.default_donation = 5
@@ -42,35 +42,35 @@ class SiteBannerTest < ActiveSupport::TestCase
       default_donation: 5,
       donation_amounts: [1, 10, 100]
     )
-    site_banner.social_links = {"youku": "abcd"}
+    site_banner.social_links = {youku: "abcd"}
     site_banner.save
     assert site_banner.social_links.blank?
 
     # Test for youtube
-    site_banner.social_links = {"youtube": "http://example.com"}
+    site_banner.social_links = {youtube: "http://example.com"}
     site_banner.save
     assert site_banner.social_links["youtube"].blank?
 
-    site_banner.social_links = {"youtube": "https://youtube.com/user/DrDisRespect"}
+    site_banner.social_links = {youtube: "https://youtube.com/user/DrDisRespect"}
     site_banner.save
     assert site_banner.social_links["youtube"] == "https://youtube.com/user/DrDisRespect"
 
     # Test for twitch
-    site_banner.social_links = {"twitch": "http://example.com"}
+    site_banner.social_links = {twitch: "http://example.com"}
     site_banner.save
     assert site_banner.social_links["twitch"].blank?
     ["https://twitch.tv/shroud", "https://www.twitch.tv/shroud"].each do |twitch_link|
-      site_banner.social_links = {"twitch": twitch_link}
+      site_banner.social_links = {twitch: twitch_link}
       site_banner.save
       assert site_banner.social_links["twitch"] == twitch_link
     end
 
     # Test for twitter
-    site_banner.social_links = {"twitter": "https://tw.tr/brave"}
+    site_banner.social_links = {twitter: "https://tw.tr/brave"}
     site_banner.save
     assert site_banner.social_links["twitter"].blank?
     ["https://twitter.com/brave", "https://www.twitter.com/brave"].each do |twitter_link|
-      site_banner.social_links = {"twitter": twitter_link}
+      site_banner.social_links = {twitter: twitter_link}
       site_banner.save
       assert site_banner.social_links["twitter"] == twitter_link
     end

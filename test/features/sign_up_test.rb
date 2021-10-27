@@ -32,7 +32,7 @@ class SignUpTest < Capybara::Rails::TestCase
 
   test "a user can resend a log in email" do
     email = "unique@verified.org"
-    assert Publisher.where(email: email).count == 0  # ensure we don't send log in link
+    assert Publisher.where(email: email).count == 0 # ensure we don't send log in link
 
     visit sign_up_path
     assert_content page, "Create account"

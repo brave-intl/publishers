@@ -3,18 +3,18 @@ class Rack::Attack
   # https://github.com/kickstarter/rack-attack/blob/master/lib/rack/attack/request.rb
   class Request < ::Rack::Request
     def remote_ip
-      @remote_ip ||= (env['action_dispatch.remote_ip'] || ip).to_s
+      @remote_ip ||= (env["action_dispatch.remote_ip"] || ip).to_s
     end
   end
 
   # Safelists
-  if Rails.application.secrets[:api_ip_whitelist]
-    API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").freeze
+  API_IP_WHITELIST = if Rails.application.secrets[:api_ip_whitelist]
+    Rails.application.secrets[:api_ip_whitelist].split(",").freeze
   else
-    API_IP_WHITELIST = [].freeze
+    [].freeze
   end
 
-  safelist('allow/API_IP_WHITELIST') do |req|
+  safelist("allow/API_IP_WHITELIST") do |req|
     # Requests are allowed if the return value is truthy
     # TODO: Remove Rails.env.staging? check once bitflyer tested code is deployed.
     # This is a temporary hack until we can figure out what is wrong with the locale=ja check against rack-attack
@@ -46,18 +46,18 @@ class Rack::Attack
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.remote_ip}"
   throttle("req/ip", limit: 300, period: 5.minutes) do |req|
-    req.remote_ip if !req.path.start_with?("/assets")
+    req.remote_ip unless req.path.start_with?("/assets")
   end
 
-  blocklist('fail2ban pentesters') do |req|
+  blocklist("fail2ban pentesters") do |req|
     # `filter` returns truthy value if request fails, or if it's from a previously banned IP
     # so the request is blocked
     Rack::Attack::Fail2Ban.filter("pentesters-#{req.remote_ip}", maxretry: 3, findtime: 1.hour, bantime: 7.days) do
       # The count for the IP is incremented if the return value is truthy
       CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
-      req.path.include?('/etc/passwd') ||
-      req.path.include?('wp-admin') ||
-      req.path.include?('wp-login')
+        req.path.include?("/etc/passwd") ||
+        req.path.include?("wp-admin") ||
+        req.path.include?("wp-login")
     end
   end
 
@@ -93,14 +93,14 @@ class Rack::Attack
 
   throttle("2fa_sign_in_on_publisher", limit: 10, period: 15.minutes) do |req|
     if req.path.start_with?("/publishers/totp_authentications")
-      req.env['rack.session']["pending_2fa_current_publisher_id"]
+      req.env["rack.session"]["pending_2fa_current_publisher_id"]
     end
   end
 
   # Throttle resend auth emails for a publisher
   throttle("resend_authentication_email/publisher_id", limit: 20, period: 20.minutes) do |req|
     if req.path == "/publishers/resend_authentication_email" && req.post?
-      req['publisher_id']
+      req["publisher_id"]
     end
   end
 
@@ -135,7 +135,7 @@ class Rack::Attack
   # on wood!)
   # throttle("logins/email", :limit => 5, :period => 20.seconds) do |req|
   #   if req.path.start_with?("/publishers/") && req.params["token"]
-      # return the email if present, nil otherwise
+  # return the email if present, nil otherwise
   #     req.params["email"].presence
   #   end
   # end
@@ -143,7 +143,7 @@ class Rack::Attack
   throttle("registrations/create", limit: 10, period: 1.hour) do |req|
     if (req.path.starts_with?("/publishers/registrations") ||
         req.path.starts_with?("/publishers/resend_authentication_email")
-        ) && (req.post? || req.patch? || req.put?)
+       ) && (req.post? || req.patch? || req.put?)
       req.remote_ip
     end
   end

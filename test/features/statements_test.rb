@@ -10,7 +10,7 @@ class StatementTest < Capybara::Rails::TestCase
     sign_in publisher
 
     visit statements_path
-    refute_content page, I18n.t('publishers.statements.index.missing_scope')
+    refute_content page, I18n.t("publishers.statements.index.missing_scope")
   end
 
   test "statements page shows uphold message for uphold user" do
@@ -18,6 +18,6 @@ class StatementTest < Capybara::Rails::TestCase
     sign_in publisher
 
     visit statements_path
-    assert_content page, I18n.t('publishers.statements.index.missing_scope')
+    assert_content page, I18n.t("publishers.statements.index.missing_scope")
   end
 end

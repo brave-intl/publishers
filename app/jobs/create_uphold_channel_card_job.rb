@@ -62,7 +62,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
 
   def get_address(uphold_connection, card_id)
     address = addresses(uphold_connection, card_id).detect { |a| a.type == UpholdConnectionForChannel::NETWORK }
-    address = address.formats.first.dig('value') if address.present?
+    address = address.formats.first.dig("value") if address.present?
 
     return address if address.present?
 

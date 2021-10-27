@@ -1,7 +1,7 @@
 class PropertyGenerator < Rails::Generators::NamedBase
   include Rails::Generators::Migration
 
-  source_root File.expand_path('templates', __dir__)
+  source_root File.expand_path("templates", __dir__)
 
   def create_migration_file
     migration_template "create_table_migration.rb.erb", File.join("db/migrate", "create_#{table_name}.rb")

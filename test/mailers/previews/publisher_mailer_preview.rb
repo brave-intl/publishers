@@ -2,7 +2,6 @@
 # Consider moving away from mailcatcher to use https://github.com/fgrehm/letter_opener_web
 # Also, is this test just dead?
 class PublisherMailerPreview < ActionMailer::Preview
-
   def login_email
     PublisherTokenGenerator.new(publisher: Publisher.first).perform
     PublisherMailer.login_email(Publisher.first)
@@ -15,7 +14,7 @@ class PublisherMailerPreview < ActionMailer::Preview
 
   def verify_email
     publisher = Publisher.first
-    publisher&.pending_email = 'test@brave.com'
+    publisher&.pending_email = "test@brave.com"
     PublisherTokenGenerator.new(publisher: Publisher.first).perform
     PublisherMailer.verify_email(publisher: publisher)
   end
@@ -40,7 +39,7 @@ class PublisherMailerPreview < ActionMailer::Preview
 
   def channel_contested
     channel = Channel.first
-    channel.contest_token = ''
+    channel.contest_token = ""
     PublisherMailer.channel_contested(channel)
   end
 
@@ -57,7 +56,6 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def channel_transfer_rejected_secondary
-    channel = Channel.where("contested_by_channel_id is not null").first
     PublisherMailer.channel_transfer_rejected_secondary("My Channel", "test", "test@test.com")
   end
 
@@ -67,19 +65,19 @@ class PublisherMailerPreview < ActionMailer::Preview
 
   def notify_email_change
     publisher = Publisher.first
-    publisher.pending_email = 'pending@brave.com'
+    publisher.pending_email = "pending@brave.com"
     PublisherMailer.notify_email_change(publisher)
   end
 
   def confirm_email_change
     publisher = Publisher.first
-    publisher.pending_email = 'pending@brave.com'
+    publisher.pending_email = "pending@brave.com"
     PublisherTokenGenerator.new(publisher: Publisher.first).perform
     PublisherMailer.confirm_email_change(publisher)
   end
 
   def tagged_in_note
-    InternalMailer.tagged_in_note(tagged_user: Publisher.where(role: 'admin').first, note: PublisherNote.where("note LIKE ?", "%@%").first)
+    InternalMailer.tagged_in_note(tagged_user: Publisher.where(role: "admin").first, note: PublisherNote.where("note LIKE ?", "%@%").first)
   end
 
   def email_user_on_hold

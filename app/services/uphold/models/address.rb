@@ -41,7 +41,7 @@ module Uphold
       def create(uphold_connection:, id:, network: "anonymous")
         Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
 
-        response = post(PATH.expand(id: id), { network: network }, authorization(uphold_connection))
+        response = post(PATH.expand(id: id), {network: network}, authorization(uphold_connection))
 
         JSON.parse(response.body).dig("id")
       end

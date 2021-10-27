@@ -37,7 +37,7 @@ class U2fRegistrationsController < ApplicationController
         certificate: registration.certificate,
         key_handle: registration.key_handle,
         public_key: registration.public_key,
-        counter: registration.counter,
+        counter: registration.counter
       })
     )
 
@@ -50,5 +50,4 @@ class U2fRegistrationsController < ApplicationController
 
     redirect_to security_publishers_path
   end
-
 end

@@ -27,14 +27,14 @@ class Promo::EmailBreakdownsJob
       referral_codes.each do |referral_code|
         start_of_day = date.beginning_of_day
         end_of_day = date.end_of_day
-        result = ReferralDownload.where(referral_code: referral_code, owner_id: publisher_id).
-          where("finalized_ts >= ?",start_of_day).
-          where("finalized_ts <= ?", end_of_day)
+        result = ReferralDownload.where(referral_code: referral_code, owner_id: publisher_id)
+          .where("finalized_ts >= ?", start_of_day)
+          .where("finalized_ts <= ?", end_of_day)
         result.each do |referral_download|
           csv.append(
             [
-              referral_download["finalized_ts"].to_date, 
-              referral_download["country_code"], 
+              referral_download["finalized_ts"].to_date,
+              referral_download["country_code"],
               referral_download["total"]
             ].join(",")
           )

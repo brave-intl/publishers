@@ -1,8 +1,8 @@
-require 'test_helper'
+require "test_helper"
 
 class SidekiqConfigurationTest < ActiveJob::TestCase
   test "sidekiq.yml contains only valid classes" do
-    file_path = Rails.root.join('config/sidekiq.yml')
+    file_path = Rails.root.join("config/sidekiq.yml")
 
     configuration = YAML.load_file(file_path)
 
@@ -16,5 +16,4 @@ class SidekiqConfigurationTest < ActiveJob::TestCase
       job.constantize
     end
   end
-
 end

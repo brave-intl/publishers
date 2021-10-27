@@ -28,7 +28,7 @@ module Gemini
       client = RecipientId.new(token: token)
       all_ids = client.all
 
-      found = all_ids.select { |r| r.label == label }.first
+      found = all_ids.find { |r| r.label == label }
       if found.blank?
         found = client.create(label: label)
       end
@@ -63,8 +63,8 @@ module Gemini
     end
 
     def create(label:)
-      payload = { label: label }
-      headers = { "X-GEMINI-PAYLOAD" => Base64.strict_encode64(payload.to_json) }
+      payload = {label: label}
+      headers = {"X-GEMINI-PAYLOAD" => Base64.strict_encode64(payload.to_json)}
 
       response = post(PATH, {}, api_authorization_header, headers)
 

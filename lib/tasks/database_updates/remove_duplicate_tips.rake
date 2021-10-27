@@ -1,5 +1,5 @@
 namespace :database_updates do
-  task :remove_duplicate_tips => :environment do
+  task remove_duplicate_tips: :environment do
     cached_uphold_tips = CachedUpholdTip.select(:uphold_transaction_id).group(:uphold_transaction_id).having("count(*) > 1")
 
     cached_uphold_tips.each do |cached_uphold_tip|
@@ -13,6 +13,6 @@ namespace :database_updates do
       end
     end
 
-    puts 'Done!'
+    puts "Done!"
   end
 end

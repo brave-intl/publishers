@@ -1,4 +1,4 @@
-require 'digest/md5'
+require "digest/md5"
 
 class Publisher < ApplicationRecord
   include UserFeatureFlags
@@ -37,11 +37,11 @@ class Publisher < ApplicationRecord
   has_many :promo_registrations, dependent: :destroy
   has_many :promo_campaigns, dependent: :destroy
   has_many :site_banners
-  has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
-  has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
-  has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
-  has_many :whitelist_updates, -> { order(created_at: :desc) }, class_name: 'PublisherWhitelistUpdate'
-  has_many :notes, class_name: 'PublisherNote', dependent: :destroy
+  has_many :site_channel_details, through: :channels, source: :details, source_type: "SiteChannelDetails"
+  has_many :youtube_channel_details, through: :channels, source: :details, source_type: "YoutubeChannelDetails"
+  has_many :status_updates, -> { order(created_at: :desc) }, class_name: "PublisherStatusUpdate"
+  has_many :whitelist_updates, -> { order(created_at: :desc) }, class_name: "PublisherWhitelistUpdate"
+  has_many :notes, class_name: "PublisherNote", dependent: :destroy
   has_many :potential_payments
   has_many :invoices
 
@@ -59,11 +59,11 @@ class Publisher < ApplicationRecord
 
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
-  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
+  validates :pending_email, email: {strict_mode: true}, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
   validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
-  validates :name, presence: true, allow_blank: true, length: { maximum: 64 }
+  validates :name, presence: true, allow_blank: true, length: {maximum: 64}
   before_save :cleanup_name, if: -> { name_changed? }
 
   validates_inclusion_of :role, in: ROLES
@@ -71,8 +71,8 @@ class Publisher < ApplicationRecord
   before_create :build_default_channel, :set_default_features
   before_destroy :dont_destroy_publishers_with_channels
 
-  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
-  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find&.downcase) }
+  scope :by_email_case_insensitive, ->(email_to_find) { where("lower(publishers.email) = :email_to_find", email_to_find: email_to_find&.downcase) }
+  scope :by_pending_email_case_insensitive, ->(email_to_find) { where("lower(publishers.pending_email) = :email_to_find", email_to_find: email_to_find&.downcase) }
 
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
@@ -100,7 +100,7 @@ class Publisher < ApplicationRecord
   }
 
   scope :with_verified_channel, -> {
-    joins(:channels).where('channels.verified = true').distinct
+    joins(:channels).where("channels.verified = true").distinct
   }
 
   ###############################
@@ -110,18 +110,18 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :uphold_selected_provider, -> {
-    joins(:uphold_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
-      where("uphold_connections.id = publishers.selected_wallet_provider_id
+    joins(:uphold_connection) # standard:disable Airbnb/RiskyActiverecordInvocation
+      .where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
 
   # We could remove the `country is null` if we change all affected creators to an
   # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
-    uphold_selected_provider. # rubocop:disable Airbnb/RiskyActiverecordInvocation
-      where(uphold_connections: { is_member: true }).
-      where.not(uphold_connections: { address: nil }).
-      where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
+    uphold_selected_provider # standard:disable Airbnb/RiskyActiverecordInvocation
+      .where(uphold_connections: {is_member: true})
+      .where.not(uphold_connections: {address: nil})
+      .where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
             uphold_connections.country is null")
   }
 
@@ -132,8 +132,8 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :bitflyer_selected_provider, -> {
-    joins(:bitflyer_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
-      where("bitflyer_connections.id = publishers.selected_wallet_provider_id
+    joins(:bitflyer_connection) # standard:disable Airbnb/RiskyActiverecordInvocation
+      .where("bitflyer_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
 
@@ -148,51 +148,51 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :gemini_selected_provider, -> {
-    joins(:gemini_connection). # rubocop:disable Airbnb/RiskyActiverecordInvocation
-      where("gemini_connections.id = publishers.selected_wallet_provider_id
+    joins(:gemini_connection) # standard:disable Airbnb/RiskyActiverecordInvocation
+      .where("gemini_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
   }
 
   scope :valid_payable_gemini_creators, -> {
-    gemini_selected_provider.
-      where(gemini_connections: { is_verified: true }).
-      where.not(gemini_connections: { recipient_id: nil }).
-      where.not(gemini_connections: { country: GeminiConnection::JAPAN })
+    gemini_selected_provider
+      .where(gemini_connections: {is_verified: true})
+      .where.not(gemini_connections: {recipient_id: nil})
+      .where.not(gemini_connections: {country: GeminiConnection::JAPAN})
   }
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
   def self.filter_status(status)
-    joins(:status_updates).
-      where('publisher_status_updates.created_at =
+    joins(:status_updates)
+      .where('publisher_status_updates.created_at =
             (SELECT MAX(publisher_status_updates.created_at)
             FROM publisher_status_updates
-            WHERE publisher_status_updates.publisher_id = publishers.id)').
-      where("publisher_status_updates.status = ?", status)
+            WHERE publisher_status_updates.publisher_id = publishers.id)')
+      .where("publisher_status_updates.status = ?", status)
   end
 
   # Because the status_updates wasn't backfilled we also include those who have no status to be "Active"
   def self.active
-    joins('LEFT OUTER JOIN publisher_status_updates ON publisher_status_updates.publisher_id = publishers.id').
-      where('publisher_status_updates.created_at =
+    joins("LEFT OUTER JOIN publisher_status_updates ON publisher_status_updates.publisher_id = publishers.id")
+      .where('publisher_status_updates.created_at =
             (
               SELECT MAX(publisher_status_updates.created_at)
               FROM publisher_status_updates
               WHERE publisher_status_updates.publisher_id = publishers.id
             ) OR
-            publisher_status_updates.publisher_id is NULL').
-      where("publisher_status_updates.status = ? OR publisher_status_updates.status is NULL", PublisherStatusUpdate::ACTIVE)
+            publisher_status_updates.publisher_id is NULL')
+      .where("publisher_status_updates.status = ? OR publisher_status_updates.status is NULL", PublisherStatusUpdate::ACTIVE)
   end
 
   def self.statistical_totals(up_to_date: 1.day.from_now)
     # TODO change this
     {
-      email_verified_with_a_verified_channel_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_verified_channel_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.joins(:channels).where(channels: {verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.distinct(:id).count,
-      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.uphold_verified': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
-      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.uphold_verified': true).email_verified.joins(:channels).where(channels: {verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: {verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
-      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", up_to_date).distinct(:id).count
     }
   end
 
@@ -208,13 +208,13 @@ class Publisher < ApplicationRecord
     # Please update ADVANCED_SORTABLE_COLUMNS
     case column
     when VERIFIED_CHANNEL_COUNT
-      Publisher.
-        where(role: Publisher::PUBLISHER).
-        left_joins(:channels).
-        where(channels: { verified: true }).
-        group(:id).
-        select("publishers.*", "count(channels.id) channels_count").
-        order(sanitize_sql_for_order("channels_count #{sort_direction}"))
+      Publisher
+        .where(role: Publisher::PUBLISHER)
+        .left_joins(:channels)
+        .where(channels: {verified: true})
+        .group(:id)
+        .select("publishers.*", "count(channels.id) channels_count")
+        .order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
   end
 
@@ -257,12 +257,12 @@ class Publisher < ApplicationRecord
     # Create hash with created_at time as the key
     # Then we can merge and sort by the key to get history
     notes = self.notes.where(thread_id: nil)
-    status = status_updates.map { |s| { s.created_at => s } }
+    status = status_updates.map { |s| {s.created_at => s} }
 
     statuses_with_notes = status_updates.select { |s| s.publisher_note_id.present? }.map(&:publisher_note_id)
     notes = notes.to_a.delete_if { |n| statuses_with_notes.include?(n.id) }
 
-    notes.map! { |n| { n.created_at => n } }
+    notes.map! { |n| {n.created_at => n} }
 
     combined = notes + status + case_history
     combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
@@ -281,7 +281,7 @@ class Publisher < ApplicationRecord
       end
       c.number = case_number
 
-      { c.created_at => c }
+      {c.created_at => c}
     end
   end
 
@@ -354,9 +354,9 @@ class Publisher < ApplicationRecord
   def inferred_status
     return last_status_update.status if last_status_update.present?
     if verified?
-      return PublisherStatusUpdate::ACTIVE
+      PublisherStatusUpdate::ACTIVE
     else
-      return PublisherStatusUpdate::ONBOARDING
+      PublisherStatusUpdate::ONBOARDING
     end
   end
 
@@ -393,14 +393,14 @@ class Publisher < ApplicationRecord
   end
 
   def bitflyer_locale?(locale)
-    locale == 'ja'
+    locale == "ja"
   end
 
   def last_supported_login_locale
     # If we update here, we should also update RegistrationsController.locale_from_header
     locale = last_login_activity.accept_language.first(2)
     case locale
-    when 'ja'
+    when "ja"
       :ja
     else
       I18n.default_locale

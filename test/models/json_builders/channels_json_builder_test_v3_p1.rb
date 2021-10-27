@@ -1,11 +1,11 @@
-require 'test_helper'
+require "test_helper"
 require "publishers/excluded_channels"
 
 class ChannelsJsonBuilderTestV3P1 < ActiveSupport::TestCase
   let(:subject) { JSON.parse(JsonBuilders::ChannelsJsonBuilderV3P1.new.build) }
 
   describe "When a user enabled publisher ads" do
-    it 'their channel has publisher ads enabled' do
+    it "their channel has publisher ads enabled" do
       identifier = channels(:global_verified).details.channel_identifier
       result = subject.detect { |x| x[0] == identifier }
 

@@ -8,7 +8,7 @@ module Payment
     end
 
     def key
-      @key ||= Payment::Models::Key.new(self.as_json)
+      @key ||= Payment::Models::Key.new(as_json)
     end
   end
 end

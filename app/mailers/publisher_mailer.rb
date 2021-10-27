@@ -3,7 +3,7 @@ class PublisherMailer < ApplicationMailer
   helper PublishersHelper
 
   after_action :ensure_fresh_token,
-               only: %i(login_email verify_email verification_done confirm_email_change)
+    only: %i[login_email verify_email verification_done confirm_email_change]
 
   # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
   def login_email(publisher)
@@ -32,16 +32,16 @@ class PublisherMailer < ApplicationMailer
   end
 
   def promo_breakdowns(publisher, attachment)
-    attachments['promos.csv'] = attachment
+    attachments["promos.csv"] = attachment
     mail(
-      to: publisher.email,
+      to: publisher.email
     )
   end
 
   # TODO: Refactor
   # Like the above but without the private access link
   def verification_done_internal(channel)
-    raise if !self.class.should_send_internal_emails?
+    raise unless self.class.should_send_internal_emails?
     @channel = channel
     @publisher = @channel.publisher
     @private_reauth_url = "{redacted}"
@@ -72,7 +72,7 @@ class PublisherMailer < ApplicationMailer
       begin
         raise "SMTP To address must not be blank for PublisherMailer#verify_email for publisher #{@publisher.id}"
       rescue => e
-        require 'sentry-raven'
+        require "sentry-raven"
         Raven.capture_exception(e)
       end
     end
@@ -81,7 +81,7 @@ class PublisherMailer < ApplicationMailer
   # TODO: Refactor
   # Like the above but without the verify_email link
   def verify_email_internal(publisher)
-    raise if !self.class.should_send_internal_emails?
+    raise unless self.class.should_send_internal_emails?
     @publisher = publisher
     @private_reauth_url = "{redacted}"
     mail(
@@ -323,7 +323,7 @@ class PublisherMailer < ApplicationMailer
       begin
         raise "#{@publisher.id}'s wallet is connected."
       rescue => e
-        require 'sentry-raven'
+        require "sentry-raven"
         Raven.capture_exception(e)
       end
     else
@@ -346,29 +346,29 @@ class PublisherMailer < ApplicationMailer
 
   def submit_appeal(publisher)
     @name = publisher.name
-    @body = I18n.t('.publisher_mailer.submit_appeal.body')
+    @body = I18n.t(".publisher_mailer.submit_appeal.body")
 
     mail(to: publisher.email,
-         subject: I18n.t('.publisher_mailer.submit_appeal.subject'),
-         template_name: 'shared')
+      subject: I18n.t(".publisher_mailer.submit_appeal.subject"),
+      template_name: "shared")
   end
 
   def accept_appeal(publisher)
     @name = publisher.name
-    @body = I18n.t('.publisher_mailer.accept_appeal.body')
+    @body = I18n.t(".publisher_mailer.accept_appeal.body")
 
     mail(to: publisher.email,
-         subject: I18n.t('.publisher_mailer.accept_appeal.subject'),
-         template_name: 'shared')
+      subject: I18n.t(".publisher_mailer.accept_appeal.subject"),
+      template_name: "shared")
   end
 
   def reject_appeal(publisher)
     @name = publisher.name
-    @body = I18n.t('.publisher_mailer.reject_appeal.body')
+    @body = I18n.t(".publisher_mailer.reject_appeal.body")
 
     mail(to: publisher.email,
-         subject: I18n.t('.publisher_mailer.reject_appeal.subject'),
-         template_name: 'shared')
+      subject: I18n.t(".publisher_mailer.reject_appeal.subject"),
+      template_name: "shared")
   end
 
   private
@@ -384,7 +384,7 @@ class PublisherMailer < ApplicationMailer
     begin
       raise "missing token" if @publisher.authentication_token.nil?
     rescue => e
-      require 'sentry-raven'
+      require "sentry-raven"
       Raven.capture_exception(e)
       raise
     end

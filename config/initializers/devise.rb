@@ -241,69 +241,69 @@ Devise.setup do |config|
   # config.omniauth :github, "APP_ID", "APP_SECRET", scope: "user,public_repo"
 
   config.omniauth :google_oauth2,
-                  Rails.application.secrets[:google_client_id],
-                  Rails.application.secrets[:google_client_secret],
-                  {
-                    name: 'register_youtube_channel',
-                    scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly",
-                  }
+    Rails.application.secrets[:google_client_id],
+    Rails.application.secrets[:google_client_secret],
+    {
+      name: "register_youtube_channel",
+      scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
+    }
 
   config.omniauth :google_oauth2,
-                  Rails.application.secrets[:google_client_id],
-                  Rails.application.secrets[:google_client_secret],
-                  {
-                    name: 'youtube_login',
-                    scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly",
-                  }
+    Rails.application.secrets[:google_client_id],
+    Rails.application.secrets[:google_client_secret],
+    {
+      name: "youtube_login",
+      scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
+    }
 
   config.omniauth :twitch,
-                  Rails.application.secrets[:twitch_client_id],
-                  Rails.application.secrets[:twitch_client_secret],
-                  {
-                    name: 'register_twitch_channel',
-                  }
+    Rails.application.secrets[:twitch_client_id],
+    Rails.application.secrets[:twitch_client_secret],
+    {
+      name: "register_twitch_channel"
+    }
 
   config.omniauth :twitter,
-                  Rails.application.secrets[:twitter_client_id],
-                  Rails.application.secrets[:twitter_client_secret],
-                  {
-                    name: 'register_twitter_channel',
-                    secure_image_url: true,
-                    image_size: 'normal',
-                    authorize_params: {
-                      force_login: true,
-                    },
-                  }
+    Rails.application.secrets[:twitter_client_id],
+    Rails.application.secrets[:twitter_client_secret],
+    {
+      name: "register_twitter_channel",
+      secure_image_url: true,
+      image_size: "normal",
+      authorize_params: {
+        force_login: true
+      }
+    }
 
   config.omniauth :vimeo,
-                  Rails.application.secrets[:vimeo_client_id],
-                  Rails.application.secrets[:vimeo_client_secret],
-                  {
-                    name: 'register_vimeo_channel',
-                  }
+    Rails.application.secrets[:vimeo_client_id],
+    Rails.application.secrets[:vimeo_client_secret],
+    {
+      name: "register_vimeo_channel"
+    }
 
   config.omniauth :reddit,
-                  Rails.application.secrets[:reddit_client_id],
-                  Rails.application.secrets[:reddit_client_secret],
-                  {
-                    name: 'register_reddit_channel',
-                    scope: "identity",
-                  }
+    Rails.application.secrets[:reddit_client_id],
+    Rails.application.secrets[:reddit_client_secret],
+    {
+      name: "register_reddit_channel",
+      scope: "identity"
+    }
 
   config.omniauth :github,
-                  Rails.application.secrets[:github_client_id],
-                  Rails.application.secrets[:github_client_secret],
-                  {
-                    name: 'register_github_channel',
-                    scope: "identity",
-                  }
+    Rails.application.secrets[:github_client_id],
+    Rails.application.secrets[:github_client_secret],
+    {
+      name: "register_github_channel",
+      scope: "identity"
+    }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
-#  config.warden do |manager|
-#    manager.failure_app = CustomFailureApp
-#  end
+  #  config.warden do |manager|
+  #    manager.failure_app = CustomFailureApp
+  #  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let"s call it `MyEngine`, and this engine

@@ -1,6 +1,6 @@
 class PromoCampaign < ApplicationRecord
   has_many :promo_registrations
-  validates :name, :uniqueness => { :case_sensitive => false }, presence: true
+  validates :name, uniqueness: {case_sensitive: false}, presence: true
   belongs_to :partner, foreign_key: :publisher_id
 
   PEER_TO_PEER = "peer_to_peer".freeze
@@ -11,7 +11,7 @@ class PromoCampaign < ApplicationRecord
       promo_campaign_id: id,
       name: name,
       created_at: created_at,
-      promo_registrations: promo_registrations,
+      promo_registrations: promo_registrations
     }
   end
 end

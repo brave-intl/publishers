@@ -6,7 +6,7 @@ begin
   response = Faraday.get(CLOUDFRONT_API)
   list = JSON.parse(response.body)
   proxy_list = list.dig("CLOUDFRONT_GLOBAL_IP_LIST")
-rescue StandardError => e
+rescue => e
   puts "Failed to load trusted_proxies from Cloudfront. Error: #{e.message}"
 end
 

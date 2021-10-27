@@ -10,23 +10,23 @@ class PublishersController < ApplicationController
     :home,
     :statement,
     :statements,
-    :update,
+    :update
   ].freeze
 
-  before_action :authenticate_via_token, only: %i(show)
+  before_action :authenticate_via_token, only: %i[show]
   before_action :authenticate_publisher!
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
-                except: %i(update_email change_email)
+    except: %i[update_email change_email]
 
   before_action :require_publisher_email_verified_through_youtube_auth,
-                only: %i(update_email)
+    only: %i[update_email]
 
-  before_action :protect, only: %i(show home)
+  before_action :protect, only: %i[show home]
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
-  before_action :prompt_for_two_factor_setup, only: %i(home)
+  before_action :prompt_for_two_factor_setup, only: %i[home]
 
-  before_action :require_verified_email, only: %i(email_verified complete_signup)
+  before_action :require_verified_email, only: %i[email_verified complete_signup]
 
   skip_around_action :switch_locale, only: [:show]
 
@@ -53,7 +53,7 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
-      flash[:alert] = @publisher.errors.full_messages.join(', ')
+      flash[:alert] = @publisher.errors.full_messages.join(", ")
       render(:email_verified)
     end
   end
@@ -92,7 +92,7 @@ class PublishersController < ApplicationController
         format.json { render json: {} }
         format.html { redirect_to home_publishers_path }
       else
-        format.json { render(json: { errors: current_publisher.errors }, status: 400) }
+        format.json { render(json: {errors: current_publisher.errors}, status: 400) }
         format.html { render(status: 400) }
       end
     end
@@ -176,17 +176,17 @@ class PublishersController < ApplicationController
   def get_site_banner_data
     prepare_site_banner_data
     default_site_banner_mode = current_publisher.default_site_banner_mode
-    default_site_banner = { :id => current_publisher.default_site_banner_id, :name => "Default", :type => "Default" }
+    default_site_banner = {id: current_publisher.default_site_banner_id, name: "Default", type: "Default"}
     site_banners_channel_to_id = current_publisher.site_banners.map { |sb| [sb.channel_id, sb.id] }.to_h
     # This could be sped up to avoid O(n) queries against the *Details tables, but it's still indexes so it's not worth tackling quite yet
     channel_banners = current_publisher.channels.map do |channel|
       {
         id: site_banners_channel_to_id[channel.id],
         name: channel.publication_title,
-        type: channel.details_type,
+        type: channel.details_type
       }
     end
-    data = { default_site_banner_mode: default_site_banner_mode, default_site_banner: default_site_banner, channel_banners: channel_banners }
+    data = {default_site_banner_mode: default_site_banner_mode, default_site_banner: default_site_banner, channel_banners: channel_banners}
     render(json: data.to_json)
   end
 

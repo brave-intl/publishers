@@ -22,7 +22,7 @@ module UserFeatureFlags
     PROMO_LOCKOUT_TIME,
     STRIPE_ENABLED,
     GEMINI_ENABLED,
-    REFERRAL_ENABLED_OVERRIDE,
+    REFERRAL_ENABLED_OVERRIDE
   ].freeze
 
   # Values stored in DAILY_EMAILS_FOR_PROMO_STATS
@@ -34,9 +34,9 @@ module UserFeatureFlags
     scope :daily_emails_for_promo_stats, -> {
       where("(feature_flags->'daily_emails_for_promo_stats')::jsonb ?| array['#{MONTH_TO_DATE}', '#{PREVIOUS_DAY}', 'true']")
     }
-    scope :wire_only,      -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
-    scope :invoice,        -> { where("feature_flags->'#{INVOICE}' = 'true'") }
-    scope :merchant,       -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
+    scope :wire_only, -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
+    scope :invoice, -> { where("feature_flags->'#{INVOICE}' = 'true'") }
+    scope :merchant, -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
     scope :stripe_enabled, -> { where("feature_flags->'#{STRIPE_ENABLED}' = 'true'") }
     scope :gemini_enabled, -> { where("feature_flags->'#{GEMINI_ENABLED}' = 'true'") }
     scope :bitflyer_enabled, -> { where("feature_flags->'#{BITFLYER_ENABLED}' = 'true'") }

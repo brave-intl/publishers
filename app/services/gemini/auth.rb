@@ -26,7 +26,7 @@ module Gemini
         response_type: Gemini.response_type,
         scope: Gemini.scope,
         state: state,
-        redirect_uri: redirect_uri,
+        redirect_uri: redirect_uri
       }
 
       authorization_path = PATH.expand(query: query, segments: nil)
@@ -51,9 +51,9 @@ module Gemini
         client_secret: Gemini.client_secret,
         grant_type: AUTHORIZATION_CODE,
         code: code,
-        redirect_uri: redirect_uri,
+        redirect_uri: redirect_uri
       }
-      response = post(PATH.expand(segments: 'token'), body)
+      response = post(PATH.expand(segments: "token"), body)
 
       Auth.new(JSON.parse(response.body))
     end
@@ -76,9 +76,9 @@ module Gemini
         client_id: Gemini.client_id,
         client_secret: Gemini.client_secret,
         grant_type: REFRESH_TOKEN,
-        refresh_token: token,
+        refresh_token: token
       }
-      response = post(PATH.expand(segments: 'token'), body)
+      response = post(PATH.expand(segments: "token"), body)
 
       Auth.new(JSON.parse(response.body))
     end

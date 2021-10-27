@@ -1,7 +1,7 @@
 class InternalMailer < ApplicationMailer
   helper PublishersHelper
   helper AdminHelper
-  layout 'internal_mailer'
+  layout "internal_mailer"
 
   # Someone attempted to verify restricted channel and completed the automated steps.
   # An admin needs to manually confirm to finish the process.
@@ -17,7 +17,7 @@ class InternalMailer < ApplicationMailer
   end
 
   def email_report(email:, subject:, body:, filename:)
-    name = filename.split('/').last
+    name = filename.split("/").last
     attachments[name] = File.read(filename)
 
     mail(to: email, subject: subject, body: body)

@@ -10,12 +10,12 @@ class PublisherBalanceFeeCalculator < BaseApiClient
   def perform
     fee = (probi * fee_rate).to_i
     balance_after_fee = probi - fee
-    
+
     if balance_after_fee + fee != probi # sanity check
       raise "Balance calculation mismatch. fee: #{fee}, balance_after_fee #{balance_after_fee} probi #{probi}"
     else
       {
-        fee: fee, 
+        fee: fee,
         balance_after_fee: balance_after_fee
       }
     end

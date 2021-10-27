@@ -4,7 +4,7 @@ module Admin
     include PublishersHelper
     def index
       publisher = Publisher.find(params[:publisher_id])
-      @navigation_view = Views::Admin::NavigationView.new(publisher).as_json.merge({ navbarSelection:"Payments"}).to_json
+      @navigation_view = Views::Admin::NavigationView.new(publisher).as_json.merge({navbarSelection: "Payments"}).to_json
 
       respond_to do |format|
         format.html do

@@ -49,7 +49,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.gemini_wallet = gemini_wallet
           channel_response.wallets.push(wallet)
         end
-      rescue Exception => e
+      rescue => e
         require "sentry-raven"
         Raven.capture_exception(e)
       end
@@ -99,7 +99,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   end
 
   def cleanup!
-    File.open(@temp_file.path, 'r') do |f|
+    File.open(@temp_file.path, "r") do |f|
       File.delete(f)
     end
   rescue Errno::ENOENT
@@ -115,7 +115,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     delta = new_size - file_size
     # I'm assuming padding will be fast in a for loop, this can be optimized if this is slow
     # if moving around the file on disk is a frequent operation
-    File.open(path, 'ab') do |f|
+    File.open(path, "ab") do |f|
       f.write(PADDING_WORD * delta)
       f.close
     end

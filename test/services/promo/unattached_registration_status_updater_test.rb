@@ -26,7 +26,7 @@ class Promo::UnattachedRegistrationStatusUpdaterTest < ActiveJob::TestCase
       .with(body: request_body)
       .to_return(status: 200)
     response = Promo::UnattachedRegistrationStatusUpdater.new(promo_registrations: PromoRegistration.where(referral_code: ["NIC123", "NIC456"]),
-                                                              status: "paused").perform
-    assert_equal response.status, 200 
+      status: "paused").perform
+    assert_equal response.status, 200
   end
 end

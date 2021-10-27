@@ -5,10 +5,10 @@ class Api::BaseController < ActionController::API
 
   API_AUTH_TOKEN = Rails.application.secrets[:api_auth_token].freeze
 
-  if Rails.application.secrets[:api_ip_whitelist]
-    API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
+  API_IP_WHITELIST = if Rails.application.secrets[:api_ip_whitelist]
+    Rails.application.secrets[:api_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
   else
-    API_IP_WHITELIST = [].freeze
+    [].freeze
   end
 
   include ActionController::HttpAuthentication::Token::ControllerMethods
@@ -16,7 +16,7 @@ class Api::BaseController < ActionController::API
   before_action :authenticate
 
   rescue_from ActiveRecord::RecordInvalid do |e|
-    render(json: { message: e.message }, status: :unprocessable_entity)
+    render(json: {message: e.message}, status: :unprocessable_entity)
   end
 
   private
@@ -39,8 +39,7 @@ class Api::BaseController < ActionController::API
 
   def authenticate_ip
     return true if API_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
-    ip_auth_result = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(request.remote_ip) }
-    ip_auth_result
+    API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(request.remote_ip) }
   end
 
   def authenticate_token
@@ -65,11 +64,11 @@ class Api::BaseController < ActionController::API
   end
 
   def render_unauthorized
-    render(json: { message: "authentication failed 🎷" }, status: 403)
+    render(json: {message: "authentication failed 🎷"}, status: 403)
   end
 
   def ensure_json_content_type
-    return if request.content_type == 'application/json'
-    render(json: { message: "Content-Type must be application/json" }, status: 406)
+    return if request.content_type == "application/json"
+    render(json: {message: "Content-Type must be application/json"}, status: 406)
   end
 end

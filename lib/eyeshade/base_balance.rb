@@ -1,14 +1,15 @@
 # frozen_string_literal: true
+
 module Eyeshade
   class BaseBalance
     attr_reader :rates,
-                :default_currency,
-                :amount_probi,
-                :amount_bat,
-                :amount_default_currency,
-                :fees_probi,
-                :fees_bat,
-                :fees_default_currency
+      :default_currency,
+      :amount_probi,
+      :amount_bat,
+      :amount_default_currency,
+      :fees_probi,
+      :fees_bat,
+      :fees_default_currency
 
     # Account types
     CHANNEL = "channel"
@@ -53,7 +54,7 @@ module Eyeshade
       # (Albert Wang): It's possible that the resulting parameter is actually a String,
       # so we'll cast it
       if @rates[currency].is_a? String
-        require 'bigdecimal'
+        require "bigdecimal"
         amount_bat * BigDecimal(@rates[currency])
       else
         amount_bat * @rates[currency]

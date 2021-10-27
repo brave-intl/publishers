@@ -4,28 +4,28 @@ class Publishers::PromoRegistrationsController < ApplicationController
   include PromosHelper
 
   before_action :authenticate_publisher!
-  before_action :require_publisher_promo_disabled, :require_promo_running, only: %i(create)
+  before_action :require_publisher_promo_disabled, :require_promo_running, only: %i[create]
   before_action :validate_publisher!
 
   layout "promo_registrations", only: [:index, :create]
 
   GROUP_START_DATE = Date.new(2019, 10, 1)
 
-  ORIGINAL_GROUP_ID = '71341fc9-aeab-4766-acf0-d91d3ffb0bfa'
+  ORIGINAL_GROUP_ID = "71341fc9-aeab-4766-acf0-d91d3ffb0bfa"
 
   RETRIEVALS = "RETRIEVALS" # downloads
   FIRST_RUNS = "FIRST_RUNS" # installs
-  FINALIZED = "FINALIZED"   # confirmations
+  FINALIZED = "FINALIZED" # confirmations
 
   GROUP_CACHE_KEY = "eyeshade-groups"
 
   def index
     @publisher = current_publisher
     @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-    if Rails.env.development? || Rails.env.test?
-      @publisher_promo_status = @publisher.promo_status(promo_running?)
+    @publisher_promo_status = if Rails.env.development? || Rails.env.test?
+      @publisher.promo_status(promo_running?)
     else
-      @publisher_promo_status = :over
+      :over
     end
   end
 
@@ -45,7 +45,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
     render :unauthorized and return if promo_registration.nil?
     render json: {
       stats: promo_registration.aggregate_stats,
-      data: promo_registration.stats_by_date,
+      data: promo_registration.stats_by_date
     }
   end
 
@@ -69,7 +69,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
     render json: {
       groups: groups.compact,
       totals: sum_counts(group_counts.values),
-      lastUpdated: publisher_referrals_last_update(user),
+      lastUpdated: publisher_referrals_last_update(user)
     }
   end
 
@@ -98,11 +98,9 @@ class Publishers::PromoRegistrationsController < ApplicationController
     # Transpose the group id to the country_counts
     country_counts = country_counts.each { |x| x["group_id"] = countries[x["country_code"]] }
 
-    group_counts = country_counts.
-      group_by { |x| x['group_id'] }.
-      transform_values! { |v| sum_counts(v) }
-
-    group_counts
+    country_counts
+      .group_by { |x| x["group_id"] }
+      .transform_values! { |v| sum_counts(v) }
   end
 
   # Internal: Sums an array of referral hashes to get a total account
@@ -126,15 +124,15 @@ class Publishers::PromoRegistrationsController < ApplicationController
   #
   # Returns a hash
   def october_2019_totals(month, counts)
-    return unless (GROUP_START_DATE...GROUP_START_DATE.at_end_of_month).include?(month)
+    return unless (GROUP_START_DATE...GROUP_START_DATE.at_end_of_month).cover?(month)
 
     legacy_counts = counts.select { |x| x.nil? }.dig(nil)
     {
       id: SecureRandom.uuid,
-      name: 'Previous Rate',
+      name: "Previous Rate",
       amount: "5.00",
       currency: "USD",
-      counts: legacy_counts || {},
+      counts: legacy_counts || {}
     }
   end
 
@@ -149,7 +147,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
   def validate_publisher!
     return if user.referral_kyc_not_required? && !user.promo_lockout_time_passed?
 
-    redirect_to root_path, flash: { alert: I18n.t('promo.dashboard.ineligible') } unless user.may_register_promo? && !user.promo_lockout_time_passed?
+    redirect_to root_path, flash: {alert: I18n.t("promo.dashboard.ineligible")} unless user.may_register_promo? && !user.promo_lockout_time_passed?
   end
 
   def user

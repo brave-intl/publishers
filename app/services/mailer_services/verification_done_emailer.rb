@@ -17,7 +17,7 @@ module MailerServices
     def send_email
       return false if !verified_channel || !verified_channel.publisher
       # Updates the authentication_token and saves the publisher
-      token = PublisherTokenGenerator.new(publisher: verified_channel.publisher).perform
+      PublisherTokenGenerator.new(publisher: verified_channel.publisher).perform
 
       PublisherMailer.verification_done(verified_channel).deliver_later
 

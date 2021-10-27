@@ -43,6 +43,7 @@ package-lock.json
 .vscode
 
 .irb_history
+.history
 
 /public/packs
 /public/packs-test

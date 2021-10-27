@@ -31,7 +31,7 @@ module Payment
         stripe_response = Stripe::OAuth.token({
           client_secret: Stripe.api_key,
           code: params[:code],
-          grant_type: "authorization_code",
+          grant_type: "authorization_code"
         })
 
         account = Stripe::Account.retrieve(stripe_response.stripe_user_id)
@@ -70,7 +70,7 @@ module Payment
             home_publishers_path,
             alert: I18n.t(
               "publishers.stripe_connections.destroy.error",
-              errors: stripe_connection.errors.full_messages.join(', ')
+              errors: stripe_connection.errors.full_messages.join(", ")
             )
           )
         end
@@ -85,8 +85,8 @@ module Payment
       def validate_connection!
         connection = current_publisher.stripe_connection
 
-        raise StripeError.new, I18n.t('publishers.stripe_connections.new.missing_state') if connection&.state_token.blank?
-        raise StripeError.new, I18n.t('publishers.stripe_connections.new.state_mismatch') if connection.state_token != params[:state]
+        raise StripeError.new, I18n.t("publishers.stripe_connections.new.missing_state") if connection&.state_token.blank?
+        raise StripeError.new, I18n.t("publishers.stripe_connections.new.state_mismatch") if connection.state_token != params[:state]
         raise StripeError.new, params[:error] if params[:error].present?
       end
     end

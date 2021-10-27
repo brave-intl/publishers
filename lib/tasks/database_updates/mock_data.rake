@@ -1,8 +1,8 @@
-require_relative './referral_code_data'
+require_relative "./referral_code_data"
 
 namespace :database_updates do
   namespace :mock_data do
-    task :populate_promo_stats => :environment do
+    task populate_promo_stats: :environment do
       raise unless Rails.env.development?
       puts "Running populate promo stats"
 
@@ -11,7 +11,7 @@ namespace :database_updates do
         stats = stats.each { |x| x["referral_code"] = promo.referral_code }
 
         date = Date.today
-        entry = stats.reverse.each_slice(2).map do |a, b|
+        stats.reverse.each_slice(2).map do |a, b|
           next if a.nil?
           a["ymd"] = date
           next if b.nil?

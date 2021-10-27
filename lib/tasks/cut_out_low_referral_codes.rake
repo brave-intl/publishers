@@ -1,11 +1,11 @@
-task :expire_low_performing_promo_codes => :environment do
+task expire_low_performing_promo_codes: :environment do
   puts "Expiring promo codes for non-approved referral codes"
 
   # usage:
   # rake expire_low_performing_promo_codes 2020-11-23 ebf60735-19ec-4db9-86f2-b455940e04aa 436b96e5-36ee-49aa-8e44-d3aee5136cf1 ...
 
   # convert arguments to strings
-  ARGV.each { |a| task a.to_s do ; end }
+  ARGV.each { |a| task { a.to_s } }
 
   # get the timestamp
   target_time = ARGV[1]

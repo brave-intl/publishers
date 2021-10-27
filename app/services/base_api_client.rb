@@ -62,9 +62,9 @@ class BaseApiClient < BaseService
     return Struct.new(:body).new("{}") if perform_offline?
 
     connection.send(method) do |req|
-      req.url [api_base_uri, path].join('')
+      req.url [api_base_uri, path].join("")
       req.headers["Authorization"] = authorization || (defined?(api_authorization_header) && api_authorization_header)
-      req.headers['Content-Type'] = 'application/json'
+      req.headers["Content-Type"] = "application/json"
       req.headers.merge!(headers)
 
       req.body = payload.to_json if method.to_sym.eql?(:post) || method.to_sym.eql?(:delete)

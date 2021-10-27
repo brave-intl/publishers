@@ -9,7 +9,7 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     get admin_publishers_path
-    assert_select 'title', "Not authorized"
+    assert_select "title", "Not authorized"
   end
 
   test "filters correctly" do
@@ -27,14 +27,14 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
       end
     end
 
-    get admin_channels_path, params: { q: query }
+    get admin_channels_path, params: {q: query}
     assert_response :success
     assert_select "tbody" do
       assert_select "tr", 6
       assert_select "td", channel.id
     end
 
-    get admin_channels_path, params: { q: "failure" }
+    get admin_channels_path, params: {q: "failure"}
     assert_response :success
     assert_select "tbody" do
       assert_select "tr", false
