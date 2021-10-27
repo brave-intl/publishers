@@ -1,7 +1,8 @@
 class PromoRegistration < ApplicationRecord
   # A promo registration can belong to a channel,
   # a publisher, or be unattached.  Unattached codes
-  # are created by admins.
+  # used to be created by admins, but now can be created by
+  # publisher which has sufficient privileges
   CHANNEL = "channel".freeze
   OWNER = "owner".freeze
   UNATTACHED = "unattached".freeze
