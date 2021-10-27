@@ -1,0 +1,10 @@
+.row.channel-row id=("promo_registrion_row_#{promo_registration.id}")
+  .col.mb-4
+    div class="channel-panel"
+      .channel-panel--intro.mb-1
+        .channel-panel--intro-body
+          = promo_registration.description
+      .d-flex.justify-content-between.align-items-center.flex-wrap
+        div.my-1
+          .channel-summary
+            h3.text-truncate= "Promo Code: #{promo_registration.referral_code.upcase}"
