@@ -639,6 +639,8 @@ en:
       refresh_account_button: Check again.
       still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
       view_account_summary: "Check Balance"
+    promo_registration:
+      remove: 'Remove promo code'
     channel:
       added: added %{date}
       remove_verified: Remove channel

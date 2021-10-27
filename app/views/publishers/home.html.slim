@@ -75,6 +75,9 @@ noscript
         )
 
     - if @publisher.may_create_referrals?
+      - @publisher_unattached_promo_registrations.each do |promo_registration|
+        = render partial: 'promo_registration', locals: { promo_registration: promo_registration }
+
       .row id="add_promo_code_placeholder"
         .col.mb-4
           = link_to(\

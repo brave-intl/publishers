@@ -144,6 +144,7 @@ class PublishersController < ApplicationController
 
     @possible_currencies = []
     @channels = @publisher.channels.visible.paginate(page: params[:page], per_page: 10)
+    @publisher_unattached_promo_registrations = @publisher.promo_registrations.unattached_only
 
     if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
