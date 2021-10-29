@@ -1,6 +1,8 @@
 require "concerns/two_factor_registration"
+require "concerns/logout"
 
 class U2fRegistrationsController < ApplicationController
+  include Logout
   include TwoFactorRegistration
 
   before_action :authenticate_publisher!
@@ -41,11 +43,7 @@ class U2fRegistrationsController < ApplicationController
       })
     )
 
-    # Revalidate session and invalidate every other session on 2FA change
-    current_publisher.invalidate_all_sessions!
-    publisher = Publisher.find(current_publisher.id)
-    sign_out(current_publisher)
-    sign_in(:publisher, publisher)
+    logout_everybody_else!
 
     handle_redirect_after_2fa_registration
   end
