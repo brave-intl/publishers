@@ -31,6 +31,10 @@ class GeminiConnection < ApplicationRecord
     "BAT"
   end
 
+  def supported_currencies
+    ["BAT"]
+  end
+
   def japanese_account?
     country&.upcase == JAPAN
   end
