@@ -203,11 +203,11 @@ class UpholdConnection < ApplicationRecord
   end
 
   def refresh_token
-    JSON.parse(uphold_access_parameters || "{}").fetch("refresh_token", nil)
+    JSON.parse(uphold_access_parameters || "{}")&.fetch("refresh_token", nil)
   end
 
   def authorization_expires_at
-    JSON.parse(uphold_access_parameters || "{}").fetch("expiration_time", nil)&.to_datetime
+    JSON.parse(uphold_access_parameters || "{}")&.fetch("expiration_time", nil)&.to_datetime
   end
 
   def authorization_expired?
