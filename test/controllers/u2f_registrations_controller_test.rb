@@ -81,4 +81,33 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_no_match u2f_registration.name, response.body, "page does not show deleted u2f_registration"
   end
+
+  test "logout everybody else on registration" do
+    publisher = publishers(:verified)
+
+    sign_in publisher
+    another_session = open_session
+    another_session.sign_in publisher
+
+    mock_u2f_registration = stub(
+      certificate: "cert",
+      key_handle: "handle",
+      public_key: "sdf",
+      counter: 1
+    )
+    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(register!: mock_u2f_registration))
+
+    assert_difference("U2fRegistration.count") do
+      post u2f_registrations_path, params: {
+        u2f_registration: {name: "Name"},
+        u2f_response: canned_u2f_response
+      }
+    end
+
+    assert_redirected_to controller: "/publishers/security", action: "index"
+    refute @request.flash[:modal_partial]
+
+    another_session.get "/publishers/security"
+    another_session.assert_redirected_to root_path # logout redirects to root
+  end
 end

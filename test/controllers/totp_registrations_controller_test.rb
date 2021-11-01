@@ -91,4 +91,27 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to controller: "/publishers/security"
   end
+
+  test "logout everybody else on registration" do
+    publisher = publishers(:completed)
+
+    sign_in publisher
+    another_session = open_session
+    another_session.sign_in publisher
+
+    ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
+
+    assert_difference("TotpRegistration.count") do
+      post totp_registrations_path, params: {
+        totp_password: "123456",
+        totp_registration: {secret: ROTP::Base32.random_base32}
+      }
+    end
+
+    assert_redirected_to controller: "/publishers/security"
+    refute @request.flash[:modal_partial]
+
+    another_session.get "/publishers/security"
+    another_session.assert_redirected_to root_path # logout redirects to root
+  end
 end

@@ -198,6 +198,14 @@ class Publisher < ApplicationRecord
     }
   end
 
+  def authenticatable_salt
+    "#{super}#{session_salt}"
+  end
+
+  def invalidate_all_sessions!
+    update_attribute(:session_salt, SecureRandom.hex)
+  end
+
   def authentication_token
     user_authentication_token&.authentication_token
   end
