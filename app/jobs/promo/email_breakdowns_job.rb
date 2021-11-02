@@ -22,26 +22,26 @@ class Promo::EmailBreakdownsJob
 
     csv.append("")
 
-    csv.append(["ConfirmationDate", "CountryCode", "ConfirmationsTotal"].join(","))
+    csv.append(["ConfirmationDate", "CountryCode", "ReferralCode", "ConfirmationsTotal"].join(","))
     (start_date..end_date).each do |date|
       referral_codes.each do |referral_code|
         start_of_day = date.beginning_of_day
         end_of_day = date.end_of_day
-        result = ReferralDownload.where(referral_code: referral_code, owner_id: publisher_id)
+        result = ReferralDownload.select('sum(total) AS total_for_day, country_code, ymd').where(referral_code: referral_code, owner_id: publisher_id)
           .where("finalized_ts >= ?", start_of_day)
-          .where("finalized_ts <= ?", end_of_day)
+          .where("finalized_ts <= ?", end_of_day).group('ymd, country_code').order('ymd desc, country_code asc')
         result.each do |referral_download|
           csv.append(
             [
-              referral_download["finalized_ts"].to_date,
+              referral_download["ymd"].to_date,
               referral_download["country_code"],
-              referral_download["total"]
+              referral_code,
+              referral_download["total_for_day"]
             ].join(",")
           )
         end
       end
     end
-
     PublisherMailer.promo_breakdowns(publisher, csv.join("\n")).deliver_now
   end
 end
