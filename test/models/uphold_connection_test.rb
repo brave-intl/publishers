@@ -196,5 +196,17 @@ class UpholdConnectionTest < ActiveSupport::TestCase
         assert_equal :reauthorization_needed, uphold_connection.uphold_status
       end
     end
+
+    describe "when status is OLD_ACCESS_CREDENTIALS" do
+      before do
+        uphold_connection.status = UpholdConnection::UpholdAccountState::OLD_ACCESS_CREDENTIALS
+        uphold_connection.uphold_access_parameters = JSON.dump({a: 1})
+        uphold_connection.uphold_verified = true
+      end
+
+      it "returns reauthorize" do
+        assert_equal :reauthorization_needed, uphold_connection.uphold_status
+      end
+    end
   end
 end
