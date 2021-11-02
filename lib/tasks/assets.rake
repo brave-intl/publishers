@@ -22,7 +22,7 @@ end
 class Manifest
   attr_reader :data, :sha, :file, :directory
 
-  DIGEST_REGEX = /-[A-Fa-f0-9]{8}.*\./.freeze
+  DIGEST_REGEX = /-[A-Fa-f0-9]{8}.*\./
 
   def initialize(file:, sha:)
     @file = file
