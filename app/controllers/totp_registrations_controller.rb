@@ -1,7 +1,9 @@
 require "concerns/two_factor_registration"
+require "concerns/logout"
 
 class TotpRegistrationsController < ApplicationController
   helper QrCodeHelper
+  include Logout
   include TwoFactorRegistration
 
   before_action :authenticate_publisher!
@@ -18,6 +20,8 @@ class TotpRegistrationsController < ApplicationController
       current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
       totp_registration.publisher = current_publisher
       totp_registration.save!
+
+      logout_everybody_else!
 
       handle_redirect_after_2fa_registration
     else

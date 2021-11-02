@@ -1,6 +1,8 @@
 require "concerns/two_factor_registration"
+require "concerns/logout"
 
 class U2fRegistrationsController < ApplicationController
+  include Logout
   include TwoFactorRegistration
 
   before_action :authenticate_publisher!
@@ -40,6 +42,8 @@ class U2fRegistrationsController < ApplicationController
         counter: registration.counter
       })
     )
+
+    logout_everybody_else!
 
     handle_redirect_after_2fa_registration
   end
