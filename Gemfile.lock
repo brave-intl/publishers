@@ -652,6 +652,7 @@ DEPENDENCIES
   recaptcha (~> 3.3)
   redis (~> 4.2.1)
   render_async (~> 2.1.8)
+  rexml
   rotp (~> 6.2.0)
   rqrcode (~> 0.10)
   sass-rails (~> 5.0)

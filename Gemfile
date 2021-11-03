@@ -113,6 +113,9 @@ gem "redis", "~> 4.2.1"
 
 gem "render_async", "~> 2.1.8"
 
+# For ruby 3
+gem "rexml"
+
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
 
