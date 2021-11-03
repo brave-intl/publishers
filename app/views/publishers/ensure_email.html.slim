@@ -1,0 +1,18 @@
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+
+      h3.single-panel--headline= t ".ensure_email"
+
+      .col-small-centered
+        p
+          span= t(".ensure_email_html", login_email: @publisher.email)
+
+        = form_for @publisher, url: ensure_email_confirm_publisher_path, method: "post" do |f|
+          - params.except(:controller, :action).each do |k, v|
+            = hidden_field_tag(k, v)
+          - if @should_throttle
+            .form-group
+              = recaptcha_tags
+          = f.submit(t("shared.continue"), class: "btn btn-block btn-primary")

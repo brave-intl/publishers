@@ -112,6 +112,11 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i[create]
     end
 
+    member do
+      get :ensure_email
+      post :ensure_email_confirm
+    end
+
     resources :site_banners, controller: "publishers/site_banners" do
       collection do
         post :set_default_site_banner_mode

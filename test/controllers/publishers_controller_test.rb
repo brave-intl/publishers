@@ -131,6 +131,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get url
     assert_redirected_to controller: "/publishers", action: "home"
 
+    sign_out(publisher)
+
     get url
     assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id), "re-used URL is rejected, publisher not logged in"
   end
@@ -627,6 +629,23 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert publisher.uphold_connection.default_currency == "BTC"
+  end
+
+  test "protect from users without second factor authentication for session-fixation attacks" do
+    publisher = publishers(:fake1)
+    sign_in publisher
+
+    second_publisher = publishers(:fake2)
+    second_token = PublisherTokenGenerator.new(publisher: second_publisher).perform
+    second_url = publisher_url(second_publisher, token: second_publisher.authentication_token)
+
+    # It should redirect to the email confirmation path
+    get second_url
+    assert_redirected_to ensure_email_publisher_path(second_publisher, token: second_publisher.authentication_token)
+
+    # If confirmation is clicked it should redirect to the normal login path
+    post ensure_email_confirm_publisher_path(second_publisher), params: {token: second_publisher.authentication_token}
+    assert_redirected_to publisher_path(second_publisher, token: second_publisher.authentication_token)
   end
 
   describe "publisher integration with uphold" do
