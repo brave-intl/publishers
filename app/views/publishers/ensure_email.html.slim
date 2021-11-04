@@ -7,7 +7,7 @@
 
       .col-small-centered
         p
-          span= t(".ensure_email_html", login_email: @publisher.email)
+          span= t(".ensure_email_html", login_email: @publisher.email || @publisher.pending_email)
 
         = form_for @publisher, url: ensure_email_confirm_publisher_path, method: "post" do |f|
           - params.except(:controller, :action).each do |k, v|

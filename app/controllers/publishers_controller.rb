@@ -234,6 +234,11 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth
     end
 
+    if not two_factor_enabled?(publisher) and cookies["_publisher_id"] and cookies["_publisher_id"] != publisher_id
+      redirect_to(ensure_email_publisher_path(publisher, params: request.query_parameters))
+      return
+    end
+
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
       if confirm_email.present? && publisher.email == confirm_email && !publisher_created_through_youtube_auth
         flash[:notice] = t(".email_confirmed", email: publisher.email)
@@ -243,11 +248,7 @@ class PublishersController < ApplicationController
         session[:pending_2fa_current_publisher_id] = publisher_id
         redirect_to two_factor_authentications_path
       else
-        if cookies["_publisher_id"] and cookies["_publisher_id"] != publisher_id
-          redirect_to(ensure_email_publisher_path(publisher, params: request.query_parameters))
-        else
-          sign_in(:publisher, publisher)
-        end
+        sign_in(:publisher, publisher)
       end
     else
       flash[:alert] = t(".token_invalid")
