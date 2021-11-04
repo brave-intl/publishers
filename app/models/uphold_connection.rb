@@ -26,7 +26,6 @@ class UpholdConnection < ApplicationRecord
     # aren't valid states: https://uphold.com/en/developer/api/documentation/#user-object
     RESTRICTED = :restricted
     BLOCKED = :blocked
-    OLD_ACCESS_CREDENTIALS = :old_access_credentials
   end
 
   OK = "ok"
@@ -95,7 +94,7 @@ class UpholdConnection < ApplicationRecord
     # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
     # Perhaps through a rescue on 401
     uphold_verified? &&
-      (uphold_access_parameters.blank? || scope.exclude?("cards:write") || uphold_details.nil? || status&.to_sym == UpholdAccountState::OLD_ACCESS_CREDENTIALS)
+      (uphold_access_parameters.blank? || scope.exclude?("cards:write") || uphold_details.nil?)
   end
 
   # Makes a remote HTTP call to Uphold to get more details
@@ -106,7 +105,6 @@ class UpholdConnection < ApplicationRecord
     @user ||= UpholdClient.user.find(self)
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
-      update(status: UpholdAccountState::OLD_ACCESS_CREDENTIALS)
       Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
       nil
     else
