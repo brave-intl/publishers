@@ -62,7 +62,7 @@ module Publishers
         .where(verified: true, "twitch_channel_details.twitch_channel_id": uid).first
 
       if existing_channel&.publisher == current_publisher
-        redirect_to home_publishers_path, notice: t(".channel_already_registered", channel_title: existing_channel.details.display_name)
+        redirect_to home_publishers_path, notice: t(".channel_already_registered", {channel_title: existing_channel.details.display_name})
         return
       end
 
@@ -149,7 +149,7 @@ module Publishers
         .where(verified: true, "twitter_channel_details.twitter_channel_id": twitter_details_attrs[:twitter_channel_id]).first
 
       if existing_channel&.publisher == current_publisher
-        redirect_to home_publishers_path, notice: t(".channel_already_registered", channel_title: existing_channel.details.screen_name)
+        redirect_to home_publishers_path, notice: t(".channel_already_registered", {channel_title: existing_channel.details.screen_name})
         return
       end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "~> 3.0.2"
+ruby "~> 2.7.3"
 
 source "https://rubygems.org"
 
@@ -74,7 +74,7 @@ gem "omniauth-twitch", "~> 1.1.0"
 gem "omniauth-twitter", "~> 1.4.0"
 
 # OAuth client for Vimeo
-gem "omniauth-vimeo", github: "beanieboi/omniauth-vimeo", ref: "0f855fd3437061fa2d343c1b6036bd9472c0edd1"
+gem "omniauth-vimeo", "~> 2.0.1"
 
 # OAuth client for Reddit
 gem "omniauth-reddit", git: "https://github.com/dlipeles/omniauth-reddit.git", branch: "master"
@@ -113,9 +113,6 @@ gem "redis", "~> 4.2.1"
 
 gem "render_async", "~> 2.1.8"
 
-# For ruby 3
-gem "rexml"
-
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
 
@@ -142,7 +139,7 @@ gem "stripe", "~> 5.1", ">= 5.1.1"
 gem "u2f", "~> 1.0"
 
 # One-time passwords for 2fa
-gem "rotp", "~> 6.2.0"
+gem "rotp", "~> 3.3"
 
 gem "webpacker", "~> 4.0.7"
 
