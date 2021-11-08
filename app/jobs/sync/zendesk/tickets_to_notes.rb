@@ -44,10 +44,10 @@ class Sync::Zendesk::TicketsToNotes
     # Pages 100 per query
     # Rate limited to 700 per minute
     # Zendesk's `updated` gets updated if a new comment is added.
-    response = client.search(query:
-                              "type:ticket " + # standard:disable all
-                              "group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}" + # standard:disable all
-                              (start_date.present? ? " updated>#{start_date}" : "")).page(page_number)
+    updated = start_date.present? ? " updated>#{start_date}" : ""
+    response = client
+      .search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}#{updated}")
+      .page(page_number)
     response.each do |result|
       Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)
     end

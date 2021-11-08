@@ -170,7 +170,7 @@ class Channel < ApplicationRecord
     promo_registration&.referral_code&.present?
   end
 
-  def verification_failed!(details = nil) # standard:disable all
+  def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     reload
 
