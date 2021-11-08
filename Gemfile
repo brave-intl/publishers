@@ -4,7 +4,7 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-gem "rack", "~> 2.1.0"
+gem "rack"
 
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
