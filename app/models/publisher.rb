@@ -112,7 +112,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :uphold_selected_provider, -> {
-    joins(:uphold_connection) # standard:disable Airbnb/RiskyActiverecordInvocation
+    joins(:uphold_connection)
       .where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
@@ -120,7 +120,7 @@ class Publisher < ApplicationRecord
   # We could remove the `country is null` if we change all affected creators to an
   # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
-    uphold_selected_provider # standard:disable Airbnb/RiskyActiverecordInvocation
+    uphold_selected_provider
       .where(uphold_connections: {is_member: true})
       .where.not(uphold_connections: {address: nil})
       .where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
@@ -134,7 +134,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :bitflyer_selected_provider, -> {
-    joins(:bitflyer_connection) # standard:disable Airbnb/RiskyActiverecordInvocation
+    joins(:bitflyer_connection)
       .where("bitflyer_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{BitflyerConnection}'")
   }
@@ -150,7 +150,7 @@ class Publisher < ApplicationRecord
   ###############################
 
   scope :gemini_selected_provider, -> {
-    joins(:gemini_connection) # standard:disable Airbnb/RiskyActiverecordInvocation
+    joins(:gemini_connection)
       .where("gemini_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
   }
