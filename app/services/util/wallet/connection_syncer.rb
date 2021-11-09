@@ -2,7 +2,6 @@
 # oauth connection functions out of the model and into
 # service classes
 class Util::Wallet::ConnectionSyncer
-
   def self.build
     new
   end
@@ -25,6 +24,6 @@ class Util::Wallet::ConnectionSyncer
       nil
     end
 
-    syncer.build.call(connection: selected_wallet) if syncer
+    syncer&.build&.call(connection: selected_wallet)
   end
 end

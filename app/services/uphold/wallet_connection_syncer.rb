@@ -2,7 +2,6 @@
 
 module Uphold
   class WalletConnectionSyncer
-
     def self.build
       new
     end

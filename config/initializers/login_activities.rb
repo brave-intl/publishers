@@ -8,7 +8,7 @@ Warden::Manager.after_authentication except: :fetch do |publisher, auth, _opts|
 
   LoginActivity.create!(params)
 
-  if publisher and !Rails.env.test?
+  if publisher && !Rails.env.test?
     Util::Wallet::ConnectionSyncer.build.call(publisher: publisher)
   end
 end
