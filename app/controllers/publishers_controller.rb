@@ -146,7 +146,6 @@ class PublishersController < ApplicationController
     @channels = @publisher.channels.visible.paginate(page: params[:page], per_page: 10)
     @publisher_unattached_promo_registrations = @publisher.promo_registrations.unattached_only
 
-    uphold_connection.sync_connection!
     if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
     end
