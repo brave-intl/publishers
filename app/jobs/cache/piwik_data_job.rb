@@ -1,3 +1,4 @@
+# typed: ignore
 class Cache::PiwikDataJob < ApplicationJob
   queue_as :scheduler
 

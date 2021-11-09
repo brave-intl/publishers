@@ -1,3 +1,4 @@
+# typed: ignore
 class Eyeshade::BaseApiClient < BaseApiClient
   attr_accessor :result
 

@@ -1,3 +1,4 @@
+# typed: ignore
 module Gemini
   class Setting < BaseApiClient
     include Initializable

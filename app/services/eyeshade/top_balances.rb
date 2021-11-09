@@ -1,3 +1,4 @@
+# typed: ignore
 class Eyeshade::TopBalances < Eyeshade::BaseApiClient
   # Valid types
   CHANNEL = "channel".freeze

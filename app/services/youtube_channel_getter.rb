@@ -1,3 +1,4 @@
+# typed: ignore
 require "sentry-raven"
 
 class YoutubeChannelGetter < BaseApiClient

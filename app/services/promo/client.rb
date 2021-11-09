@@ -1,3 +1,4 @@
+# typed: ignore
 module Promo
   class Client < BaseApiClient
     def initialize(connection = nil, options = {})

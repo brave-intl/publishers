@@ -1,3 +1,4 @@
+# typed: ignore
 class Sync::Bitflyer::UpdateMissingDepositsJob < ApplicationJob
   queue_as :low
 

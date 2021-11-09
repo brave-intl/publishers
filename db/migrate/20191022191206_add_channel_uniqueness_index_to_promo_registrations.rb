@@ -1,3 +1,4 @@
+# typed: ignore
 class AddChannelUniquenessIndexToPromoRegistrations < ActiveRecord::Migration[6.0]
   def up
     remove_index :promo_registrations, :channel_id

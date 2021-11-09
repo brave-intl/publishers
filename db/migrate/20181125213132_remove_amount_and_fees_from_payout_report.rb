@@ -1,3 +1,4 @@
+# typed: ignore
 class RemoveAmountAndFeesFromPayoutReport < ActiveRecord::Migration[5.2]
   def change
     remove_column :payout_reports, :fees

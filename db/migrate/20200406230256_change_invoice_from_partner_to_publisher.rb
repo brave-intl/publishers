@@ -1,3 +1,4 @@
+# typed: ignore
 class ChangeInvoiceFromPartnerToPublisher < ActiveRecord::Migration[6.0]
   def change
     remove_index :invoices, :partner_id

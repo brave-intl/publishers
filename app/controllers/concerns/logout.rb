@@ -1,3 +1,4 @@
+# typed: false
 module Logout
   def logout_everybody!
     current_publisher.invalidate_all_sessions!

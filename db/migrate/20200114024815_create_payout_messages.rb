@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePayoutMessages < ActiveRecord::Migration[6.0]
   def change
     create_table :payout_messages, id: :uuid, default: -> {"uuid_generate_v4()"} do |t|

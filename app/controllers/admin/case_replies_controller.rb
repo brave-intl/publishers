@@ -1,3 +1,4 @@
+# typed: ignore
 module Admin
   class CaseRepliesController < AdminController
     def index

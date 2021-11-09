@@ -1,3 +1,4 @@
+# typed: ignore
 class GenerateReferralReportJob < ApplicationJob
   queue_as :scheduler
 

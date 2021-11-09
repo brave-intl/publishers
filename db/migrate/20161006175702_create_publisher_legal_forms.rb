@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePublisherLegalForms < ActiveRecord::Migration[5.0]
   def change
     create_table :publisher_legal_forms, id: :uuid do |t|

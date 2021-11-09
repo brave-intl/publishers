@@ -1,3 +1,4 @@
+# typed: ignore
 class PublisherStatusUpdate < ApplicationRecord
   CREATED = "created".freeze
   ONBOARDING = "onboarding".freeze

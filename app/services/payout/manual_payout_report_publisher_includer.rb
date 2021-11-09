@@ -1,3 +1,4 @@
+# typed: ignore
 module Payout
   class ManualPayoutReportPublisherIncluder < Service
     def perform

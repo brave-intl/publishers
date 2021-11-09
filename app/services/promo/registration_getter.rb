@@ -1,3 +1,4 @@
+# typed: ignore
 # Gets the referral code associated with a channel_id
 class Promo::RegistrationGetter < BaseApiClient
   include PromosHelper

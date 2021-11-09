@@ -1,3 +1,4 @@
+# typed: ignore
 class AddWalletProviderToPotentialPayments < ActiveRecord::Migration[6.0]
   def up
     add_column :potential_payments, :wallet_provider_id, :string

@@ -1,3 +1,4 @@
+# typed: ignore
 class Api::V1::Stats::ReferralCodesController < Api::V1::StatsController
   def index
     data = PromoRegistration.pluck(:referral_code)

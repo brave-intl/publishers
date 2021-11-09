@@ -1,3 +1,4 @@
+# typed: ignore
 class MakeEmailIndexCaseInsensitive < ActiveRecord::Migration[5.0]
   def up
     remove_index :publishers, name: :index_publishers_on_email

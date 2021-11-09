@@ -1,3 +1,4 @@
+# typed: ignore
 module WalletProviderProperties
   extend ActiveSupport::Concern
 

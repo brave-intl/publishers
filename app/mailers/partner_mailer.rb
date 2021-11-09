@@ -1,3 +1,4 @@
+# typed: ignore
 class PartnerMailer < ApplicationMailer
   include PublishersHelper
   helper PublishersHelper

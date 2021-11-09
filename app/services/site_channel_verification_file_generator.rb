@@ -1,3 +1,4 @@
+# typed: true
 # An option for domain verification.
 
 class SiteChannelVerificationFileGenerator < BaseService

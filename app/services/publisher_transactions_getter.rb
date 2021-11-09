@@ -1,3 +1,4 @@
+# typed: ignore
 # Retrieves a list of transactions for an owner account
 class PublisherTransactionsGetter < BaseApiClient
   attr_reader :publisher

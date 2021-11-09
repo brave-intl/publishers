@@ -1,3 +1,4 @@
+# typed: ignore
 class Partner < Publisher
   default_scope { where(role: PARTNER) }
   validates :created_by, presence: true

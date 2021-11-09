@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePotentialPayments < ActiveRecord::Migration[5.2]
   def change
     create_table :potential_payments, id: :uuid, default: -> {"uuid_generate_v4()"} do |t|

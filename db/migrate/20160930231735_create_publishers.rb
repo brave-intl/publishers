@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePublishers < ActiveRecord::Migration[5.0]
   def change
     # http://theworkaround.com/2015/06/12/using-uuids-in-rails.html#postgresql

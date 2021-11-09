@@ -1,3 +1,4 @@
+# typed: false
 module Payout
   class GeminiService < Service
     def perform(payout_report:, publisher:)

@@ -1,3 +1,4 @@
+# typed: ignore
 class AddZendeskIdToPublisherNotes < ActiveRecord::Migration[5.2]
   def change
     add_column :publisher_notes, :zendesk_ticket_id, :bigint

@@ -1,3 +1,4 @@
+# typed: ignore
 module Publishers
   class StatementsController < ApplicationController
     before_action :authenticate_publisher!

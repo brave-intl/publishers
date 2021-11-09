@@ -1,3 +1,4 @@
+# typed: ignore
 class AddCreatedByToPublishers < ActiveRecord::Migration[5.2]
   def change
     change_table :publishers do |t|

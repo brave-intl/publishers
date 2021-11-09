@@ -1,3 +1,4 @@
+# typed: ignore
 # Fees applied to channel balances
 module Eyeshade
   class OverallBalance < BaseBalance

@@ -1,3 +1,4 @@
+# typed: ignore
 class Admin::PromoRegistrationsController < AdminController
   def for_referral_code
     publisher = Publisher.find(params[:publisher_id])

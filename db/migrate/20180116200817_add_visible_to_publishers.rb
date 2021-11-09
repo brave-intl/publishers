@@ -1,3 +1,4 @@
+# typed: ignore
 class AddVisibleToPublishers < ActiveRecord::Migration[5.0]
   def up
     add_column :publishers, :visible, :boolean, default: true

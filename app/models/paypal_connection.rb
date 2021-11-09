@@ -1,3 +1,4 @@
+# typed: ignore
 class PaypalConnection < ApplicationRecord
   attr_encrypted :refresh_token, key: proc { |record| record.class.encryption_key }, marshal: true
 

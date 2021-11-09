@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 describe ImageConversionHelper do
   include ImageConversionHelper

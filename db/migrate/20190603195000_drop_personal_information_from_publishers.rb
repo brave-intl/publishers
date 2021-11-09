@@ -1,3 +1,4 @@
+# typed: ignore
 class DropPersonalInformationFromPublishers < ActiveRecord::Migration[5.2]
   def change
     # Publishers

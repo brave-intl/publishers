@@ -1,3 +1,4 @@
+# typed: ignore
 class AddCampaignToPromoRegistration < ActiveRecord::Migration[5.2]
   def change
     change_table :promo_registrations do |t|

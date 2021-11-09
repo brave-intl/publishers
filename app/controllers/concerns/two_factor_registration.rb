@@ -1,3 +1,4 @@
+# typed: ignore
 module TwoFactorRegistration
   extend ActiveSupport::Concern
 

@@ -1,3 +1,4 @@
+# typed: ignore
 # frozen_string_literal: true
 
 class Eyeshade::Publishers < Eyeshade::BaseApiClient

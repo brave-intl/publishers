@@ -1,3 +1,4 @@
+# typed: ignore
 module PayoutHelper
   PREPARING = I18n.t(".publishers.payout_status.statuses.preparing")
   REVIEWING = I18n.t(".publishers.payout_status.statuses.reviewing")

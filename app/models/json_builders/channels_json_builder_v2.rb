@@ -1,3 +1,4 @@
+# typed: ignore
 # V2 Version of Channels list
 #
 # Each channel is an array:

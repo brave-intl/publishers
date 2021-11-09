@@ -1,3 +1,4 @@
+# typed: ignore
 class PropertyGenerator < Rails::Generators::NamedBase
   include Rails::Generators::Migration
 

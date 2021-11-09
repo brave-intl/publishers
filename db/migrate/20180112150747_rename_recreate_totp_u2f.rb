@@ -1,3 +1,4 @@
+# typed: ignore
 class RenameRecreateTotpU2f < ActiveRecord::Migration[5.0]
   def change
     rename_table :totp_registrations, :legacy_totp_registrations

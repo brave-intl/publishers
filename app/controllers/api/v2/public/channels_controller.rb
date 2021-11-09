@@ -1,3 +1,4 @@
+# typed: ignore
 class Api::V2::Public::ChannelsController < Api::V2::Public::BaseController
   include BrowserChannelsDynoCaching
   @@cached_payload = nil

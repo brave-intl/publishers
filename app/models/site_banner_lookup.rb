@@ -1,3 +1,4 @@
+# typed: ignore
 class SiteBannerLookup < ApplicationRecord
   belongs_to :channel
   belongs_to :publisher

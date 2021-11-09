@@ -1,3 +1,4 @@
+# typed: ignore
 Rails.configuration.to_prepare do
   ActiveRecord::ConnectionAdapters::NullDBAdapter::TableDefinition.class_eval do
     alias_method :serial, :integer

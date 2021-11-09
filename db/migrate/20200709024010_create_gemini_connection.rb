@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateGeminiConnection < ActiveRecord::Migration[6.0]
   def change
     create_table :gemini_connections, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|

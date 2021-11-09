@@ -1,3 +1,4 @@
+# typed: ignore
 class Admin::UnattachedPromoRegistrationsController < AdminController
   include PromosHelper
 

@@ -1,3 +1,4 @@
+# typed: ignore
 # Fetches and saves the referral stats for unattached codes
 class Sync::UnattachedPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper

@@ -1,3 +1,4 @@
+# typed: false
 class BaseChannelDetails < ApplicationRecord
   self.abstract_class = true
 

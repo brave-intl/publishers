@@ -1,3 +1,4 @@
+# typed: ignore
 class VimeoChannelDetails < BaseChannelDetails
   has_paper_trail
 

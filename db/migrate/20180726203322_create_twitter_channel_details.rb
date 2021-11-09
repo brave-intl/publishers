@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateTwitterChannelDetails < ActiveRecord::Migration[5.0]
   def change
     create_table :twitter_channel_details, id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

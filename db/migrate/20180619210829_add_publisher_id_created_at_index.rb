@@ -1,3 +1,4 @@
+# typed: ignore
 class AddPublisherIdCreatedAtIndex < ActiveRecord::Migration[5.0]
   def change
     add_index :publisher_status_updates, [:publisher_id, :created_at]

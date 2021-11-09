@@ -1,3 +1,4 @@
+# typed: ignore
 require "faraday"
 
 class UpholdRequestAccessParameters < BaseService

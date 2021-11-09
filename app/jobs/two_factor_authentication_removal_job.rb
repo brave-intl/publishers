@@ -1,3 +1,4 @@
+# typed: ignore
 class TwoFactorAuthenticationRemovalJob < ApplicationJob
   queue_as :low
 

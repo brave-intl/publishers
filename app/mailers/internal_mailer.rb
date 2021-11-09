@@ -1,3 +1,4 @@
+# typed: ignore
 class InternalMailer < ApplicationMailer
   helper PublishersHelper
   helper AdminHelper

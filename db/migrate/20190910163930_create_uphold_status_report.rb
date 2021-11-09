@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateUpholdStatusReport < ActiveRecord::Migration[5.2]
   def change
     add_column :uphold_connections, :member_at, :datetime

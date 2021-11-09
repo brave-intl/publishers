@@ -1,3 +1,4 @@
+# typed: ignore
 class SiteChannelDomainSetter < BaseService
   attr_reader :channel_details
 

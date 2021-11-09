@@ -1,3 +1,4 @@
+# typed: ignore
 module MockGeminiResponses
   # This will stub requests out for all the different Gemini requests.
   # We create regular expensions to ensure that the request is mocked regardless of any query params

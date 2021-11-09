@@ -1,3 +1,4 @@
+# typed: ignore
 class AddPerformanceImprovements < ActiveRecord::Migration[6.0]
   def change
     # Adding a gin index based off it's performance for text searches.

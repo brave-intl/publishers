@@ -1,3 +1,4 @@
+# typed: ignore
 class AddSessionsTable < ActiveRecord::Migration[5.0]
   def change
     create_table :sessions do |t|

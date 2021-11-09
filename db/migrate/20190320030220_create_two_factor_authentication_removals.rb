@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateTwoFactorAuthenticationRemovals < ActiveRecord::Migration[5.2]
   def change
     create_table :two_factor_authentication_removals, id: :uuid, default: -> {"uuid_generate_v4()"} do |t|

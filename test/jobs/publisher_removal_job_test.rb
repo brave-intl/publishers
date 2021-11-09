@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 
 class PublisherRemovalJobTest < ActiveJob::TestCase

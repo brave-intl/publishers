@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 
 class LocaleTest < Capybara::Rails::TestCase

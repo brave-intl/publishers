@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateVimeoChannelDetails < ActiveRecord::Migration[5.2]
   def change
     create_table :vimeo_channel_details, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|

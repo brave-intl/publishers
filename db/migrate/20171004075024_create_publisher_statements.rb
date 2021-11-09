@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePublisherStatements < ActiveRecord::Migration[5.0]
   def change
     create_table :publisher_statements, id: :uuid do |t|

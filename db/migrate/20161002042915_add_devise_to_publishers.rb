@@ -1,3 +1,4 @@
+# typed: ignore
 class AddDeviseToPublishers < ActiveRecord::Migration[5.0]
   def self.up
     change_table :publishers do |t|

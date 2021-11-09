@@ -1,3 +1,4 @@
+# typed: ignore
 class AddChannelContestFields < ActiveRecord::Migration[5.0]
   def change
     add_column :channels, :verification_pending, :boolean, null: false, default: false

@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateOrganizationPermissions < ActiveRecord::Migration[5.2]
   def change
     create_table :organization_permissions, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|

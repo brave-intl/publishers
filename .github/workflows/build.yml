@@ -76,3 +76,5 @@ jobs:
         run: bundle exec brakeman
       - name: Standard
         run: bundle exec standardrb
+      - name: Sorbet Type Check
+        run: bundle exec srb tc

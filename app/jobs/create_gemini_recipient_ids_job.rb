@@ -1,3 +1,4 @@
+# typed: ignore
 # Creates the Uphold Cards for a publisher
 class CreateGeminiRecipientIdsJob
   include Sidekiq::Worker

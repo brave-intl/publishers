@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 
 class Cache::BrowserChannels::PrefixListTest < ActiveSupport::TestCase

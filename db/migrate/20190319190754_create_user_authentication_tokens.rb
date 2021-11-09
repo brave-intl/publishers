@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateUserAuthenticationTokens < ActiveRecord::Migration[5.2]
   def change
     create_table :user_authentication_tokens, id: :uuid, default: -> { "uuid_generate_v4()" }  do |t|

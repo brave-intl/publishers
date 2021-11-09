@@ -1,3 +1,4 @@
+# typed: ignore
 class Sync::PromoRegistrationStatsJob
   include Sidekiq::Worker
 

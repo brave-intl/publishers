@@ -1,3 +1,4 @@
+# typed: ignore
 require "digest"
 require "base64"
 

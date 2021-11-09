@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateGeminiConnectionForChannel < ActiveRecord::Migration[6.1]
   def change
     create_table :gemini_connection_for_channels, id: :uuid, default: -> { "uuid_generate_v4()"} do |t|
