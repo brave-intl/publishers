@@ -11,10 +11,13 @@ module Uphold
     end
 
     # Makes a request to the Uphold API to refresh the current access_token
-    def call(uphold_connection:)
+    def call(uphold_connection:, ignore_expiration: false)
       # Ensure we have an refresh_token.
 
-      return unless uphold_connection.authorization_expired?
+      if !ignore_expiration
+        return unless uphold_connection.authorization_expired?
+      end
+
       return if uphold_connection.refresh_token.blank?
 
       authorization = @impl_refresher.refresh_authorization(uphold_connection)
