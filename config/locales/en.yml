@@ -422,7 +422,6 @@ en:
       held_funds_description: |
         These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
       next_deposit_date: "Next Deposit Date: "
-      payout_moved_to_thirteenth: Note that the payout date has moved from the 8th of the month to the 13th.
       open_case_description:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
       payout_in_progress: "Payout In Progress"
