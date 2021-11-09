@@ -108,6 +108,22 @@ class UpholdConnection < ApplicationRecord
     if e.response&.dig(:status) == 401
       # Temporarily halted until Uphold fixes issues on their end
       # update(status: UpholdAccountState::OLD_ACCESS_CREDENTIALS)
+      begin
+        # Ignore expiration date and try again
+        Uphold::Refresher.build.call(uphold_connection: self, ignore_expiration: true)
+        @user ||= UpholdClient.user.find(self)
+        LogException.perform(
+          StandardError.new("Uphold credentials fixed after force refresh for user: #{publisher_id} and connection #{id}")
+        )
+        return @user
+      rescue Faraday::ClientError => e
+        if e.response&.dig(:status) == 401
+          LogException.perform(
+            StandardError.new("Uphold credentials still expired after force for publisher: #{publisher_id} and connection #{id}")
+          )
+        end
+      end
+
       Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
       nil
     else
