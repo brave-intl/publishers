@@ -106,7 +106,8 @@ class UpholdConnection < ApplicationRecord
     @user ||= UpholdClient.user.find(self)
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
-      update(status: UpholdAccountState::OLD_ACCESS_CREDENTIALS)
+      # Temporarily halted until Uphold fixes issues on their end
+      # update(status: UpholdAccountState::OLD_ACCESS_CREDENTIALS)
       Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
       nil
     else
