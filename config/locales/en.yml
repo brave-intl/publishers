@@ -168,7 +168,7 @@ en:
         processing: |
           Your Uphold wallet is being connected to your account.
           If this takes more than a few minutes, please reconnect with Uphold.
-        processing_timeout: We are having trouble connecting to your Uphold wallet. Please reconnect to Uphold.
+        processing_timeout: Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your wallet.
         reconnect_to_uphold: |
           Uh oh! Connecting to Uphold has been denied.
           In order to deposit your contributions accrued we need you to reconnect to your Uphold wallet.
@@ -179,7 +179,7 @@ en:
         connection_problems: Connection problems
       uphold_status_description:
         connecting: Brave Rewards is connecting to your Uphold account.
-        reauthorization_needed: We are having trouble communicating with Uphold.
+        reauthorization_needed: Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your wallet.
         unconnected: You need to connect to your Uphold account to receive contributions from Brave Rewards.
         restricted_member: Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.
         non_member: To receive your contribution balance, you'll need to fully verify your identity on Uphold.
