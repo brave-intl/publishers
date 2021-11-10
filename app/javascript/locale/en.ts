@@ -309,7 +309,7 @@ export default {
       status: {
         connecting: "Brave Rewards is connecting to your Uphold account.",
         nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
-        reauthorizationNeeded: "We are having trouble communicating with Uphold. Try reconnecting",
+        reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your wallet.",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
       },
       title: "Uphold Wallet"
