@@ -4,7 +4,7 @@ require "test_helper"
 
 class Util::Wallet::ConnectionSyncerTest < ActiveSupport::TestCase
   test "with no wallet does nothing" do
-    LogException.expects("perform").at_least_once.returns(1)
+    LogException.expects("perform").never.returns(1)
     refute Util::Wallet::ConnectionSyncer.new.call(publisher: publishers(:notes))
   end
 
