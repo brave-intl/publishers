@@ -20,7 +20,7 @@ class Util::Wallet::ConnectionSyncer
       Bitflyer::WalletConnectionSyncer
     else
       # Until we have sorbet typing with exhaustive checks, log any data problems in new relic
-      LogException.perform(StandardError.new("Unknown Wallet Provider type: #{selected_wallet}"))
+      LogException.perform(StandardError.new("Unknown Wallet Provider type: #{selected_wallet}")) if selected_wallet
       nil
     end
 
