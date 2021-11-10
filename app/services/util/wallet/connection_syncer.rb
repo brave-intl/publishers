@@ -24,6 +24,10 @@ class Util::Wallet::ConnectionSyncer
       nil
     end
 
-    syncer&.build&.call(connection: selected_wallet)
+    begin
+      syncer&.build&.call(connection: selected_wallet)
+    rescue => e
+      LogException.perform("Error trying to refresh wallet credentials for publisher #{publisher.id} on login. Error: #{e}")
+    end
   end
 end
