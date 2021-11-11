@@ -535,28 +535,28 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    sorbet (0.5.9309)
-      sorbet-static (= 0.5.9309)
+    sorbet (0.5.9318)
+      sorbet-static (= 0.5.9318)
     sorbet-coerce (0.5.0)
       polyfill (~> 1.8)
       safe_type (~> 1.1, >= 1.1.1)
       sorbet-runtime (>= 0.4.4704)
-    sorbet-rails (0.7.25)
+    sorbet-rails (0.7.5)
       method_source (>= 0.9.2)
       parlour (>= 4.0.1)
       parser (>= 2.7)
       sorbet-coerce (>= 0.2.6)
       sorbet-runtime (>= 0.5)
-    sorbet-runtime (0.5.9309)
-    sorbet-static (0.5.9309-universal-darwin-14)
-    sorbet-static (0.5.9309-universal-darwin-15)
-    sorbet-static (0.5.9309-universal-darwin-16)
-    sorbet-static (0.5.9309-universal-darwin-17)
-    sorbet-static (0.5.9309-universal-darwin-18)
-    sorbet-static (0.5.9309-universal-darwin-19)
-    sorbet-static (0.5.9309-universal-darwin-20)
-    sorbet-static (0.5.9309-universal-darwin-21)
-    sorbet-static (0.5.9309-x86_64-linux)
+    sorbet-runtime (0.5.9318)
+    sorbet-static (0.5.9318-universal-darwin-14)
+    sorbet-static (0.5.9318-universal-darwin-15)
+    sorbet-static (0.5.9318-universal-darwin-16)
+    sorbet-static (0.5.9318-universal-darwin-17)
+    sorbet-static (0.5.9318-universal-darwin-18)
+    sorbet-static (0.5.9318-universal-darwin-19)
+    sorbet-static (0.5.9318-universal-darwin-20)
+    sorbet-static (0.5.9318-universal-darwin-21)
+    sorbet-static (0.5.9318-x86_64-linux)
     spoom (1.1.5)
       sorbet (>= 0.5.9204)
       sorbet-runtime (>= 0.5.9204)
@@ -722,12 +722,12 @@ DEPENDENCIES
   simplecov
   slim-rails (~> 3.1)
   solargraph
-  sorbet
-  sorbet-rails
-  sorbet-runtime
+  sorbet (= 0.5.9318)
+  sorbet-rails (= 0.7.5)
+  sorbet-runtime (= 0.5.9318)
   standard
   stripe (~> 5.1, >= 5.1.1)
-  tapioca
+  tapioca (= 0.5.4)
   temping
   tzinfo-data
   u2f (~> 1.0)

@@ -136,8 +136,8 @@ gem "sidekiq-scheduler", "~> 3.0.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
-gem "sorbet", group: :development
-gem "sorbet-runtime"
+gem 'sorbet', '0.5.9318', :group => :development
+gem 'sorbet-runtime', '0.5.9318'
 
 gem "stripe", "~> 5.1", ">= 5.1.1"
 
@@ -149,7 +149,7 @@ gem "rotp", "~> 6.2.0"
 
 gem "webpacker", "~> 4.0.7"
 
-gem "sorbet-rails"
+gem "sorbet-rails", "0.7.5"
 
 # pagination support for models
 gem "will_paginate"
@@ -184,7 +184,7 @@ group :development do
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
 
-  gem "tapioca", require: false
+  gem "tapioca", "0.5.4", require: false
 end
 
 group :test do
