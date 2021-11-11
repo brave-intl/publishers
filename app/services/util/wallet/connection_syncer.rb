@@ -1,3 +1,6 @@
+# typed: ignore
+# frozen_string_literal: true
+
 # The hope is to make this the start of ripping out the
 # oauth connection functions out of the model and into
 # service classes
