@@ -1,3 +1,4 @@
+# typed: ignore
 class AddDocusignEnvelopeDocumentGottenAtToPublisherLegalForms < ActiveRecord::Migration[5.0]
   def change
     change_table :publisher_legal_forms do |t|

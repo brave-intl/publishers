@@ -1,3 +1,4 @@
+# typed: ignore
 # This migration creates the `versions` table, the only schema PT requires.
 # All other migrations PT provides are optional.
 class CreateNewVersions < ActiveRecord::Migration[5.2]

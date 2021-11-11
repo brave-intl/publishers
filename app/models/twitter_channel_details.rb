@@ -1,3 +1,4 @@
+# typed: false
 class TwitterChannelDetails < BaseChannelDetails
   validate :twitter_channel_not_changed_once_initialized
   validates :twitter_channel_id, presence: true

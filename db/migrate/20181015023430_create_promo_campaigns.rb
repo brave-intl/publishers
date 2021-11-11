@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePromoCampaigns < ActiveRecord::Migration[5.2]
   def change
     create_table :promo_campaigns, id: :uuid,default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

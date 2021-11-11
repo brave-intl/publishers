@@ -1,3 +1,4 @@
+# typed: ignore
 class Sync::Zendesk::TicketCommentsToNotes
   include Sidekiq::Worker
 

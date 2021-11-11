@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePaypalConnection < ActiveRecord::Migration[6.0]
   def change
     create_table :paypal_connections, id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

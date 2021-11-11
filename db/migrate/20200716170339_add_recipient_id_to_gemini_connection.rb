@@ -1,3 +1,4 @@
+# typed: ignore
 class AddRecipientIdToGeminiConnection < ActiveRecord::Migration[6.0]
   def change
     add_column :gemini_connections, :recipient_id, :string, index: true, unique: true

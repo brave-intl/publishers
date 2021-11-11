@@ -1,3 +1,4 @@
+# typed: ignore
 class PromoRegistration < ApplicationRecord
   # A promo registration can belong to a channel,
   # a publisher, or be unattached.  Unattached codes

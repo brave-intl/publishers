@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateFaqCategories < ActiveRecord::Migration[5.0]
   def change
     create_table :faq_categories, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|

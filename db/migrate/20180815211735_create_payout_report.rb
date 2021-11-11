@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePayoutReport < ActiveRecord::Migration[5.2]
   def change
     create_table :payout_reports, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|

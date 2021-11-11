@@ -1,3 +1,4 @@
+# typed: ignore
 class RenameRecreateStatements < ActiveRecord::Migration[5.0]
   def change
     rename_table :publisher_statements, :legacy_publisher_statements

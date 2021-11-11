@@ -1,3 +1,4 @@
+# typed: ignore
 class RemoveContentsFromPayoutReports < ActiveRecord::Migration[6.1]
   def up
     remove_column :payout_reports, :encrypted_contents

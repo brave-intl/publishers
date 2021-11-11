@@ -1,3 +1,4 @@
+# typed: false
 module MailerTestHelper
   def assert_email_body_matches(matcher:, email:)
     if email.multipart?

@@ -1,3 +1,4 @@
+# typed: ignore
 class AddUpholdAccessParametersToPublishers < ActiveRecord::Migration[5.0]
   def change
     change_table :publishers do |t|

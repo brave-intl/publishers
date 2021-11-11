@@ -1,3 +1,4 @@
+# typed: ignore
 # Used for designating batch jobs, usually to all publishers - thus we should queue as low
 class BatchMailer < ApplicationMailer
   def notification_for_kyc(publisher)

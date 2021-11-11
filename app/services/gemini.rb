@@ -1,3 +1,4 @@
+# typed: true
 module Gemini
   @scope = "balances:read,account:read,payments:create"
   @response_type = "code"

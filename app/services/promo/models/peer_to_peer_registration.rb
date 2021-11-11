@@ -1,3 +1,4 @@
+# typed: ignore
 require "addressable/template"
 require "json"
 

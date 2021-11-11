@@ -1,3 +1,4 @@
+# typed: ignore
 require "eyeshade/wallet"
 
 # Query wallet balance from Eyeshade

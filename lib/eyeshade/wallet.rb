@@ -1,3 +1,4 @@
+# typed: ignore
 require "eyeshade/base_balance"
 require "eyeshade/contribution_balance"
 require "eyeshade/overall_balance"

@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateSiteBannerLookups < ActiveRecord::Migration[6.0]
   def change
     create_table :site_banner_lookups, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|

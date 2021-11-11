@@ -1,3 +1,4 @@
+# typed: ignore
 class CleanStaleUpholdDataJob < ApplicationJob
   queue_as :scheduler
 

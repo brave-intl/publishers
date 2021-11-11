@@ -1,3 +1,4 @@
+# typed: ignore
 class ApplicationJob < ActiveJob::Base
   # Send handled exceptions to Sentry (which normally only sends unhandled exceptions).
   require "error_handler_delegator"

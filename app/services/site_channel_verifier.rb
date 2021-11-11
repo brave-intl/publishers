@@ -1,3 +1,4 @@
+# typed: ignore
 require "publishers/fetch"
 
 class SiteChannelVerifier < BaseService

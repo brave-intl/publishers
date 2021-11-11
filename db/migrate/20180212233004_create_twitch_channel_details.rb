@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateTwitchChannelDetails < ActiveRecord::Migration[5.0]
   def change
     create_table :twitch_channel_details, id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

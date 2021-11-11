@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 require "jobs/sidekiq_test_case"
 require "vcr"

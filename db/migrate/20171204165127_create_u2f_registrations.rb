@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateU2fRegistrations < ActiveRecord::Migration[5.0]
   def change
     create_table "u2f_registrations", id: :uuid do |t|

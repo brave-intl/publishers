@@ -1,3 +1,4 @@
+# typed: ignore
 # Static pages
 class StaticController < ApplicationController
   include PublishersHelper

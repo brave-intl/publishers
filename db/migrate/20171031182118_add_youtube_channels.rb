@@ -1,3 +1,4 @@
+# typed: ignore
 class AddYoutubeChannels < ActiveRecord::Migration[5.0]
   def change
     create_table :youtube_channels, id: :string do |t|

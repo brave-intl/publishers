@@ -1,3 +1,4 @@
+# typed: ignore
 class RemoveEncryptedAuthenticationFromPublishers < ActiveRecord::Migration[5.2]
   def change
     remove_column :publishers, :encrypted_authentication_token, :string

@@ -1,3 +1,4 @@
+# typed: false
 module SiteChannelsHelper
   include ChannelsHelper
 

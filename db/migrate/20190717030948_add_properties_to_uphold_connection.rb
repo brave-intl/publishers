@@ -1,3 +1,4 @@
+# typed: ignore
 class AddPropertiesToUpholdConnection < ActiveRecord::Migration[5.2]
   def change
     add_column :uphold_connections, :status, :string

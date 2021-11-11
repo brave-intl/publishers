@@ -1,3 +1,4 @@
+# typed: ignore
 class UserAuthenticationToken < ApplicationRecord
   attr_encrypted :authentication_token, key: proc { |record| record.class.encryption_key }
   belongs_to :user, class_name: "Publisher", foreign_key: :user_id

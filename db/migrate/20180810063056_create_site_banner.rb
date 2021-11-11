@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateSiteBanner < ActiveRecord::Migration[5.2]
   def change
     create_table :site_banners do |t|

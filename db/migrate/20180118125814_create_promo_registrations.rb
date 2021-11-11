@@ -1,3 +1,4 @@
+# typed: ignore
 class CreatePromoRegistrations < ActiveRecord::Migration[5.0]
   def change
     create_table :promo_registrations, id: :uuid do |t|

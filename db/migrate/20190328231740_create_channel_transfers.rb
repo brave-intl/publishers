@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateChannelTransfers < ActiveRecord::Migration[5.2]
   def change
     create_table :channel_transfers, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|

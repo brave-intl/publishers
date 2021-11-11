@@ -1,3 +1,4 @@
+# typed: ignore
 class RemoveBitcoinFromPublishers < ActiveRecord::Migration[5.0]
   def change
     remove_column :publishers, :encrypted_bitcoin_address, :string

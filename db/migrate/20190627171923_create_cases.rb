@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateCases < ActiveRecord::Migration[5.2]
   def change
     create_table :cases, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|

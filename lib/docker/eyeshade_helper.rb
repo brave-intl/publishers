@@ -1,3 +1,4 @@
+# typed: true
 module Docker
   class EyeshadeHelper
     class << self

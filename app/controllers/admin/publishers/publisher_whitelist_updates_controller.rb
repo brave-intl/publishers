@@ -1,3 +1,4 @@
+# typed: ignore
 class Admin::Publishers::PublisherWhitelistUpdatesController < Admin::PublishersController
   def create
     note = @publisher.notes.create!(note: params[:note], created_by_id: current_publisher.id)

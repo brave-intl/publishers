@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 require "webmock/minitest"
 require "shared/mailer_test_helper"

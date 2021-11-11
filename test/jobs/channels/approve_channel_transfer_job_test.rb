@@ -1,3 +1,4 @@
+# typed: ignore
 require "test_helper"
 require "webmock/minitest"
 require "jobs/sidekiq_test_case"

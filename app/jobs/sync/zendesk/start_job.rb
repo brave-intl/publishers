@@ -1,3 +1,4 @@
+# typed: ignore
 class Sync::Zendesk::StartJob < ApplicationJob
   queue_as :low
 

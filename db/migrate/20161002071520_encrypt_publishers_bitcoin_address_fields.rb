@@ -1,3 +1,4 @@
+# typed: ignore
 # WARNING: Nukes data
 class EncryptPublishersBitcoinAddressFields < ActiveRecord::Migration[5.0]
   def up

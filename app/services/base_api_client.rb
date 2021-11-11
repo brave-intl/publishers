@@ -1,3 +1,4 @@
+# typed: ignore
 class BaseApiClient < BaseService
   private
 

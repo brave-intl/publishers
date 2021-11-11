@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateBitflyerConnection < ActiveRecord::Migration[6.0]
   def change
     create_table :bitflyer_connections, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|

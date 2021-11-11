@@ -1,3 +1,4 @@
+# typed: ignore
 require "concerns/two_factor_registration"
 require "concerns/logout"
 

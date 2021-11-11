@@ -1,3 +1,4 @@
+# typed: ignore
 # Temporary Job to migrate access parameters
 class MigrateUpholdAccessParametersJob < ApplicationJob
   queue_as :low

@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateUpholdConnectionForChannel < ActiveRecord::Migration[5.2]
   def change
     create_table :uphold_connection_for_channels, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|

@@ -1,3 +1,4 @@
+# typed: ignore
 class CreateUpholdConnections < ActiveRecord::Migration[5.2]
   def change
     create_table :uphold_connections, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|

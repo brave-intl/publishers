@@ -1,3 +1,4 @@
+# typed: ignore
 require "sendgrid-ruby"
 require "send_grid/api_helper"
 

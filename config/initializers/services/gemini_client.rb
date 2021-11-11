@@ -1,3 +1,4 @@
+# typed: ignore
 # Rails.configuration.to_prepare:
 # Run after the initializers are run for all Railties (including the application itself), but before eager loading and the middleware stack is built.
 # More importantly, will run upon every request in development, but only once (during boot-up) in production and test.

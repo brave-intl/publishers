@@ -1,3 +1,4 @@
+# typed: ignore
 module EyeshadeHelper
   def stub_eyeshade_transactions_response(publisher:, transactions: [])
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")

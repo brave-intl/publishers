@@ -1,3 +1,4 @@
+# typed: ignore
 require "sidekiq/testing"
 
 class SidekiqTestCase < ActiveJob::TestCase

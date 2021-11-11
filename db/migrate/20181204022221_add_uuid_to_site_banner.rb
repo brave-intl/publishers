@@ -1,3 +1,4 @@
+# typed: ignore
 class AddUuidToSiteBanner < ActiveRecord::Migration[5.2]
   def change
    add_column :site_banners, :uuid, :uuid, default: "uuid_generate_v4()", null: false

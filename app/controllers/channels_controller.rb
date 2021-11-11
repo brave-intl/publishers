@@ -1,3 +1,4 @@
+# typed: ignore
 class ChannelsController < ApplicationController
   include ChannelsHelper
 

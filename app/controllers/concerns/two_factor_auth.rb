@@ -1,3 +1,4 @@
+# typed: ignore
 module TwoFactorAuth
   extend ActiveSupport::Concern
 

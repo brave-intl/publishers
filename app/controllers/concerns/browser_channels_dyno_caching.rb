@@ -1,3 +1,4 @@
+# typed: ignore
 module BrowserChannelsDynoCaching
   extend ActiveSupport::Concern
   require "sentry-raven"
