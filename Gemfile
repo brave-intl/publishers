@@ -136,8 +136,8 @@ gem "sidekiq-scheduler", "~> 3.0.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
-gem 'sorbet', '0.5.9318', :group => :development
-gem 'sorbet-runtime', '0.5.9318'
+gem "sorbet", "0.5.9318", group: :development
+gem "sorbet-runtime", "0.5.9318"
 
 gem "stripe", "~> 5.1", ">= 5.1.1"
 
