@@ -20,14 +20,14 @@ class Util::Wallet::ConnectionSyncer
       Bitflyer::WalletConnectionSyncer
     else
       # Until we have sorbet typing with exhaustive checks, log any data problems in new relic
-      LogException.perform(StandardError.new("Unknown Wallet Provider type: #{selected_wallet}")) if selected_wallet
+      Exception.perform(StandardError.new("Unknown Wallet Provider type: #{selected_wallet}")) if selected_wallet
       nil
     end
 
     begin
       syncer&.build&.call(connection: selected_wallet)
     rescue => e
-      LogException.perform("Error trying to refresh wallet credentials for publisher #{publisher.id} on login. Error: #{e}")
+      Exception.perform("Error trying to refresh wallet credentials for publisher #{publisher.id} on login. Error: #{e}")
     end
   end
 end
