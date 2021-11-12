@@ -7,11 +7,11 @@ class PublisherMailer < ApplicationMailer
     only: %i[login_email verify_email verification_done confirm_email_change]
 
   # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
-  def login_email(publisher)
+  def login_email_if_destination_exists(publisher)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     I18n.with_locale(@publisher.last_supported_login_locale) do
-      mail(
+      mail_if_destination_exists(
         to: @publisher.email,
         asm: transaction_asm_group_id,
         subject: default_i18n_subject
@@ -26,7 +26,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject(publication_title: @channel.details.publication_title)
     )
@@ -34,7 +34,7 @@ class PublisherMailer < ApplicationMailer
 
   def promo_breakdowns(publisher, attachment)
     attachments["promos.csv"] = attachment
-    mail(
+    mail_if_destination_exists(
       to: publisher.email
     )
   end
@@ -48,7 +48,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = "{redacted}"
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
       subject: "<Internal> #{t("publisher_mailer.verification_done.subject", publication_title: @channel.details.publication_title)}",
@@ -58,13 +58,13 @@ class PublisherMailer < ApplicationMailer
 
   # Contains registration details and a private verify_email link
   # Best practice is to use the MailerServices::VerifyEmailEmailer service
-  def verify_email(publisher:, locale: :en)
+  def verify_email_if_destination_exists(publisher:, locale: :en)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
 
     if @publisher.pending_email.present?
       I18n.with_locale(locale) do
-        mail(
+        mail_if_destination_exists(
           to: @publisher.pending_email,
           subject: default_i18n_subject
         )
@@ -85,7 +85,7 @@ class PublisherMailer < ApplicationMailer
     raise unless self.class.should_send_internal_emails?
     @publisher = publisher
     @private_reauth_url = "{redacted}"
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
       subject: "<Internal> #{t("publisher_mailer.verify_email.subject")}",
@@ -97,7 +97,7 @@ class PublisherMailer < ApplicationMailer
   def confirm_email_change(publisher)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher, confirm_email: @publisher.pending_email)
-    mail(
+    mail_if_destination_exists(
       to: @publisher.pending_email,
       subject: default_i18n_subject
     )
@@ -106,7 +106,7 @@ class PublisherMailer < ApplicationMailer
   def confirm_email_change_internal(publisher)
     @publisher = publisher
     @private_reauth_url = "{redacted}"
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
       subject: "<Internal> #{t("publisher_mailer.confirm_email_change.subject")}",
@@ -116,7 +116,7 @@ class PublisherMailer < ApplicationMailer
 
   def notify_email_change(publisher)
     @publisher = publisher
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       asm: transaction_asm_group_id,
       subject: default_i18n_subject
@@ -125,7 +125,7 @@ class PublisherMailer < ApplicationMailer
 
   def paypal_missing_bank_account(publisher)
     @publisher = publisher
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject
     )
@@ -134,7 +134,7 @@ class PublisherMailer < ApplicationMailer
   def uphold_kyc_incomplete(publisher, total_amount)
     @publisher = publisher
     @total_amount = total_amount
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject(total_amount: total_amount)
     )
@@ -142,7 +142,7 @@ class PublisherMailer < ApplicationMailer
 
   def uphold_member_restricted(publisher)
     @publisher = publisher
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject
     )
@@ -150,7 +150,7 @@ class PublisherMailer < ApplicationMailer
 
   def suspend_publisher(publisher)
     @publisher = publisher
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject
     )
@@ -158,7 +158,7 @@ class PublisherMailer < ApplicationMailer
 
   def suspend_publisher_for_brand_bidding(publisher)
     @publisher = publisher
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       from: ApplicationMailer::BRAND_BIDDING_EMAIL,
       subject: default_i18n_subject
@@ -167,7 +167,7 @@ class PublisherMailer < ApplicationMailer
 
   def suspend_publisher_for_brand_bidding_and_impersonation(publisher)
     @publisher = publisher
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       from: ApplicationMailer::BRAND_BIDDING_EMAIL,
       subject: default_i18n_subject
@@ -177,7 +177,7 @@ class PublisherMailer < ApplicationMailer
   def two_factor_authentication_removal_cancellation(publisher)
     @publisher = publisher
     @publisher_private_two_factor_cancellation_url = publisher_private_two_factor_cancellation_url(publisher: @publisher)
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject,
       template_name: "two_factor_authentication_removal_cancellation"
@@ -187,7 +187,7 @@ class PublisherMailer < ApplicationMailer
   def two_factor_authentication_removal_reminder(publisher, remainder)
     @publisher = publisher
     @remainder = remainder
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       subject: default_i18n_subject,
       template_name: "two_factor_authentication_removal_reminder"
@@ -202,7 +202,7 @@ class PublisherMailer < ApplicationMailer
 
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
-    mail(
+    mail_if_destination_exists(
       to: @email,
       subject: default_i18n_subject(channel_name: @channel.publication_title)
     )
@@ -215,7 +215,7 @@ class PublisherMailer < ApplicationMailer
 
     @transfer_url = "{redacted}"
 
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @email,
       subject: "<Internal> #{t("publisher_mailer.channel_contested.subject")}",
@@ -228,7 +228,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = publisher_name
     @email = email
 
-    mail(
+    mail_if_destination_exists(
       to: @email,
       subject: default_i18n_subject(channel_name: @channel_name)
     )
@@ -239,7 +239,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = publisher_name
     @email = email
 
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @email,
       subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_primary.subject")}",
@@ -252,7 +252,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
-    mail(
+    mail_if_destination_exists(
       to: @email,
       subject: default_i18n_subject(channel_name: @channel_name)
     )
@@ -263,7 +263,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @email,
       subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_secondary.subject")}",
@@ -276,7 +276,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
-    mail(
+    mail_if_destination_exists(
       to: @email,
       subject: default_i18n_subject(channel_name: @channel_name)
     )
@@ -287,7 +287,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: @email,
       subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
@@ -299,14 +299,14 @@ class PublisherMailer < ApplicationMailer
     @channel_name = channel_name
     @publisher_name = publisher_name
 
-    mail(
+    mail_if_destination_exists(
       to: email,
       subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
   def channel_transfer_rejected_secondary_internal(channel_name, publisher_name, email)
-    mail(
+    mail_if_destination_exists(
       to: INTERNAL_EMAIL,
       reply_to: email,
       subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
@@ -328,7 +328,7 @@ class PublisherMailer < ApplicationMailer
         Raven.capture_exception(e)
       end
     else
-      mail(
+      mail_if_destination_exists(
         to: @publisher.email,
         subject: default_i18n_subject(total_amount: total_amount)
       )
@@ -338,7 +338,7 @@ class PublisherMailer < ApplicationMailer
   def email_user_on_hold(publisher)
     @publisher = publisher
 
-    mail(
+    mail_if_destination_exists(
       to: @publisher.email,
       from: ApplicationMailer::PAYOUT_CONTACT_EMAIL,
       subject: default_i18n_subject
@@ -349,7 +349,7 @@ class PublisherMailer < ApplicationMailer
     @name = publisher.name
     @body = I18n.t(".publisher_mailer.submit_appeal.body")
 
-    mail(to: publisher.email,
+    mail_if_destination_exists(to: publisher.email,
       subject: I18n.t(".publisher_mailer.submit_appeal.subject"),
       template_name: "shared")
   end
@@ -358,7 +358,7 @@ class PublisherMailer < ApplicationMailer
     @name = publisher.name
     @body = I18n.t(".publisher_mailer.accept_appeal.body")
 
-    mail(to: publisher.email,
+    mail_if_destination_exists(to: publisher.email,
       subject: I18n.t(".publisher_mailer.accept_appeal.subject"),
       template_name: "shared")
   end
@@ -367,12 +367,23 @@ class PublisherMailer < ApplicationMailer
     @name = publisher.name
     @body = I18n.t(".publisher_mailer.reject_appeal.body")
 
-    mail(to: publisher.email,
+    mail_if_destination_exists(to: publisher.email,
       subject: I18n.t(".publisher_mailer.reject_appeal.subject"),
       template_name: "shared")
   end
 
   private
+
+  def mail_if_destination_exists(*args, **keyword_args)
+    # Sometimes a job gets queued for a deleted user
+    if keyword_args[:to].present?
+      mail(*args, **kwargs)
+      else
+        LogException.perform(
+          StandardError.new("Tried to mail a deleted user.")
+        )
+    end
+  end
 
   # (Albert Wang): These are critical emails pertaining to login.
   # You can view the IDs here: https://mc.sendgrid.com/unsubscribe-groups
