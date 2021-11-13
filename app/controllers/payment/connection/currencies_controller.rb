@@ -13,7 +13,9 @@ module Payment
       end
 
       def update
-        if current_publisher.selected_wallet_provider.update(currency_params)
+        # Until we soon get rid of the option to select a default at all
+        wallet_connection = current_publisher.selected_wallet_provider
+        if wallet_connection.has_attribute?(:default_currency) && wallet_connection.update(currency_params)
           render json: {}
         else
           render json: {errors: current_publisher.selected_wallet_provider.errors.full_messages}, status: 400
