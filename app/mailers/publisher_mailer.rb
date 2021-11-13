@@ -7,7 +7,7 @@ class PublisherMailer < ApplicationMailer
     only: %i[login_email verify_email verification_done confirm_email_change]
 
   # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
-  def login_email_if_destination_exists(publisher)
+  def login_email(publisher)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     I18n.with_locale(@publisher.last_supported_login_locale) do
@@ -58,7 +58,7 @@ class PublisherMailer < ApplicationMailer
 
   # Contains registration details and a private verify_email link
   # Best practice is to use the MailerServices::VerifyEmailEmailer service
-  def verify_email_if_destination_exists(publisher:, locale: :en)
+  def verify_email(publisher:, locale: :en)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
 
@@ -377,7 +377,7 @@ class PublisherMailer < ApplicationMailer
   def mail_if_destination_exists(*args, **keyword_args)
     # Sometimes a job gets queued for a deleted user
     if keyword_args[:to].present?
-      mail(*args, **kwargs)
+      mail(*args, **keyword_args)
     else
       LogException.perform(
         StandardError.new("Tried to mail a deleted user.")
