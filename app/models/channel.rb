@@ -351,7 +351,7 @@ class Channel < ApplicationRecord
   def create_deposit_id
     if publisher.selected_wallet_provider
       if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
-        Sync::Bitflyer::UpdateMissingDepositJob.new.perform(id)
+        Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id)
       end
 
       # We don't have a deposit ID on this channel, need one!
