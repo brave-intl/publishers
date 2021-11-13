@@ -32,7 +32,7 @@ class CreateUpholdCardsJob < ApplicationJob
     cards = UpholdClient.card.where(uphold_connection: uphold_connection)
 
     # This is the default label that we apply to a card. If we find it then it's safe to assume that this was one we've created prior.
-    card = cards.detect { |c| c.label.eql?("Brave Rewards") }
+    card = cards&.detect { |c| c.label.eql?("Brave Rewards") }
 
     # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
     # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
