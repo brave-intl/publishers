@@ -378,10 +378,10 @@ class PublisherMailer < ApplicationMailer
     # Sometimes a job gets queued for a deleted user
     if keyword_args[:to].present?
       mail(*args, **kwargs)
-      else
-        LogException.perform(
-          StandardError.new("Tried to mail a deleted user.")
-        )
+    else
+      LogException.perform(
+        StandardError.new("Tried to mail a deleted user.")
+      )
     end
   end
 
