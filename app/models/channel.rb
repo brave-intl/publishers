@@ -349,13 +349,15 @@ class Channel < ApplicationRecord
 
   # Needed for bitFlyer, but can likely be used for Uphold too.
   def create_deposit_id
-    if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
-      Sync::Bitflyer::UpdateMissingDepositJob.new.perform(id)
-    end
+    if publisher.selected_wallet_provider
+      if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
+        Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id)
+      end
 
-    # We don't have a deposit ID on this channel, need one!
-    if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_connection_for_channel.blank?
-      publisher.selected_wallet_provider.sync_connection!
+      # We don't have a deposit ID on this channel, need one!
+      if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_connection_for_channel.blank?
+        publisher.selected_wallet_provider.sync_connection!
+      end
     end
   end
 
