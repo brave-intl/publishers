@@ -7,6 +7,8 @@ Warden::Manager.after_authentication except: :fetch do |publisher, auth, _opts|
     accept_language: auth.request.headers["Accept-Language"]
   }
 
+  auth.cookies[:_publisher_id] = {value: publisher.id, same_site: :lax, secure: true, httponly: true, expires: 20.year.from_now}
+
   LoginActivity.create!(params)
 
   if publisher && !Rails.env.test?

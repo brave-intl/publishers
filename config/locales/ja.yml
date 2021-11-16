@@ -34,7 +34,7 @@ ja:
     channel_contested_by: チャンネルは別のサイト運営者によって検証されており、却下しない限り、%{time_until_transfer}でそのアカウントに移行されます。
     channel_not_found: チャンネルが見つかりませんでした
     channel_removed: チャンネルが削除されました
-    continue: 次へ
+    continue: 続ける
     dashboard: ダッシュボード
     referrals: リファラル
     payments: 支払い
@@ -483,6 +483,11 @@ ja:
         no_payment: You will not be able to receive payment for this cycle.
         locked: At the time we generated the payout report your account was in locked status from removing your 2FA.
         generating: The payout report is currently generating. Please check back later.
+
+    ensure_email:
+      ensure_email: 認証を試みます
+      ensure_email_html: |
+        <strong>'%{login_email}'</strong> としてログインするには<strong>「続ける」</strong>を押してください
 
     change_email:
       login_email: ログインメールアドレス

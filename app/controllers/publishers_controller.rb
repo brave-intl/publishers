@@ -15,7 +15,7 @@ class PublishersController < ApplicationController
   ].freeze
 
   before_action :authenticate_via_token, only: %i[show]
-  before_action :authenticate_publisher!
+  before_action :authenticate_publisher!, except: %i[ensure_email ensure_email_confirm]
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
     except: %i[update_email change_email]
@@ -105,6 +105,16 @@ class PublishersController < ApplicationController
     elsif current_publisher.admin?
       redirect_to admin_publishers_path and return
     end
+  end
+
+  def ensure_email
+    @publisher = Publisher.find(params[:id])
+  end
+
+  def ensure_email_confirm
+    publisher = Publisher.find(params[:id])
+    cookies[:_publisher_id] = {value: publisher.id, same_site: :lax, secure: true, httponly: true, expires: 20.year.from_now}
+    redirect_to(publisher_path(publisher, params: request.request_parameters.except(:authenticity_token, :commit, :id)))
   end
 
   def change_email
@@ -222,6 +232,11 @@ class PublishersController < ApplicationController
     publisher_created_through_youtube_auth = publisher_created_through_youtube_auth?(publisher)
     if publisher_created_through_youtube_auth
       session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth
+    end
+
+    if !two_factor_enabled?(publisher) && cookies["_publisher_id"] && (cookies["_publisher_id"] != publisher_id)
+      redirect_to(ensure_email_publisher_path(publisher, params: request.query_parameters))
+      return
     end
 
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
