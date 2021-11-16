@@ -234,7 +234,7 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth
     end
 
-    if not two_factor_enabled?(publisher) and cookies["_publisher_id"] and cookies["_publisher_id"] != publisher_id
+    if !two_factor_enabled?(publisher) && cookies["_publisher_id"] && (cookies["_publisher_id"] != publisher_id)
       redirect_to(ensure_email_publisher_path(publisher, params: request.query_parameters))
       return
     end

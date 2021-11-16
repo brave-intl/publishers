@@ -636,7 +636,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     second_publisher = publishers(:fake2)
-    second_token = PublisherTokenGenerator.new(publisher: second_publisher).perform
+    _second_token = PublisherTokenGenerator.new(publisher: second_publisher).perform
     second_url = publisher_url(second_publisher, token: second_publisher.authentication_token)
 
     # It should redirect to the email confirmation path
