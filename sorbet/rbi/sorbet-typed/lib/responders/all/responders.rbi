@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/responders/all/responders.rbi
 #
-# typed: ignore
+# typed: strong
 
 module ActionController
   extend(::ActiveSupport::Autoload)

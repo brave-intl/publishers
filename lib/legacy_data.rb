@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 module LegacyData
   class LegacyU2fRegistration < ApplicationRecord
     belongs_to :legacy_publisher, foreign_key: :publisher_id

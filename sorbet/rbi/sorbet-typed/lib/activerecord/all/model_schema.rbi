@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/activerecord/all/model_schema.rbi
 #
-# typed: ignore
+# typed: strong
 
 # https://github.com/rails/rails/blob/5-2-stable/activerecord/lib/active_record/model_schema.rb
 module ActiveRecord::ModelSchema::ClassMethods

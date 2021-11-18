@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 class LoginActivity < ApplicationRecord
   belongs_to :publisher
 

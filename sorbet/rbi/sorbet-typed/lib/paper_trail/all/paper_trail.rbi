@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/paper_trail/all/paper_trail.rbi
 #
-# typed: ignore
+# typed: false
 
 module PaperTrail
   extend(::PaperTrail::Cleaner)

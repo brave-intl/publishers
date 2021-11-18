@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/sidekiq/all/sidekiq.rbi
 #
-# typed: ignore
+# typed: false
 
 module Sidekiq
   class << self

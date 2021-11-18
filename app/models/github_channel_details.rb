@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 class GithubChannelDetails < BaseChannelDetails
   has_paper_trail
 
