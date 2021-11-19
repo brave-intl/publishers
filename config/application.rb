@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 require_relative "boot"
 
 require "rails/all"

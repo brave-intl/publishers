@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class CleanAbandonedSiteChannelsJob < ApplicationJob
   queue_as :scheduler
 

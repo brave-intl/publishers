@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class EnqueueEmailsForPromoPublishersJob < ApplicationJob
   queue_as :scheduler
 

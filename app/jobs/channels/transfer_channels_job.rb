@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 # Complete transfer for channels that have not rejected the transfer before the timeout
 module Channels
   class TransferChannelsJob < ApplicationJob

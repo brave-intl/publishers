@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 require "sentry-raven"
 
 Rails.application.configure do

@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 # For Site Channels created recently, enqueue jobs to verify each channel
 class EnqueueSiteChannelVerifications < ApplicationJob
   MAX_AGE = Rails.application.secrets[:max_site_age].weeks

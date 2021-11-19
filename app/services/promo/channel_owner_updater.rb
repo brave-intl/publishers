@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # Updates the promo server when a channel has been deleted or moved owners
 class Promo::ChannelOwnerUpdater < BaseApiClient
   include PromosHelper

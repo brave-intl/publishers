@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # Tells the promo server to pause or unpause tracking for a list of referral codes
 class Promo::UnattachedRegistrationStatusUpdater < BaseApiClient
   include PromosHelper

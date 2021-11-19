@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 # "Magic sign in link" / One time sign-in token via email
 module MailerServices
   class PublisherLoginLinkEmailer < BaseService

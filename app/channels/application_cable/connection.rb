@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
   end

@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module Admin
   class CasesController < AdminController
     include ActiveRecord::Sanitization::ClassMethods

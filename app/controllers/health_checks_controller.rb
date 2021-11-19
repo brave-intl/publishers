@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class HealthChecksController < ActionController::Base
   def show
     @services = system_status

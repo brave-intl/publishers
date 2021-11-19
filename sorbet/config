@@ -2,3 +2,4 @@
 .
 --ignore=/vendor/bundle
 --ignore=.history
+--ignore=test

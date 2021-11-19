@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class Admin::DashboardController < AdminController
   def index
   end

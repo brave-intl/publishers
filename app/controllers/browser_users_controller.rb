@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class BrowserUsersController < ApplicationController
   before_action :authenticate_publisher!
   before_action :protect

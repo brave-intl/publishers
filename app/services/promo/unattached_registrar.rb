@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # Registers infinity codes for a Brave admin
 class Promo::UnattachedRegistrar < BaseApiClient
   include PromosHelper

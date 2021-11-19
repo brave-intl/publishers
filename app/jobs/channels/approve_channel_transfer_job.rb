@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module Channels
   class ApproveChannelTransferJob < ApplicationJob
     queue_as :low

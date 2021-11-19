@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module Publishers
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     include PublishersHelper

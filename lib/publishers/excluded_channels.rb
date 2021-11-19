@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 # (Albert Wang): ExcludedChannels library is a service which tells the browser through
 # api/public/channels/identity about channels excluded from payouts. It does not
 # enforce a server-side check against payouts.

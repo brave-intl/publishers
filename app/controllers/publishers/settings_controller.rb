@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module Publishers
   class SettingsController < ApplicationController
     before_action :authenticate_publisher!

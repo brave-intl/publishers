@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 # A list of Site Channels which require manual admin approval in addition to the
 # standard verification flow.
 

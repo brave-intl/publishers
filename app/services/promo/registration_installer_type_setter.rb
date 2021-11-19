@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # Associates an installer type with a referral code
 class Promo::RegistrationInstallerTypeSetter < BaseApiClient
   include PromosHelper

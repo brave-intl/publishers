@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class YoutubeVideoGetter < BaseApiClient
   attr_reader :token, :channel_id
 

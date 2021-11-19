@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # Registers a single channel for a promo immediately after verification
 module Promo
   class UpdateStatus < ApplicationJob

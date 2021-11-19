@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class Api::V1::Stats::PublishersController < Api::V1::StatsController
   def signups_per_day
     sql =

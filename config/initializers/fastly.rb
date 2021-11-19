@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 CLOUDFRONT_API = Rails.application.config.services.cloudfront
 proxy_list = []
 

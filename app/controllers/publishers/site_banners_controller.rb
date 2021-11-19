@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
   include ActiveStorage::SetCurrent

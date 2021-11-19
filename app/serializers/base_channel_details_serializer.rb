@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class BaseChannelDetailsSerializer < ActiveModel::Serializer
   attributes :id, :method, :name, :email, :preferred_currency
   def id

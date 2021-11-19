@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 class RedditChannelDetails < BaseChannelDetails
   has_paper_trail
 

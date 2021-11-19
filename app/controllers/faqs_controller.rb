@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class FaqsController < ApplicationController
   layout "faqs"
 

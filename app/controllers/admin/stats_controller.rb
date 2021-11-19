@@ -1,3 +1,3 @@
-# typed: false
+# typed: ignore
 class Admin::StatsController < AdminController
 end

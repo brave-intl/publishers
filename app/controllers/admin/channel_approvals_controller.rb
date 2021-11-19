@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module Admin
   class ChannelApprovalsController < AdminController
     def index

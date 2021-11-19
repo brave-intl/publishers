@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 # Be sure to restart your server when you modify this file.
 
 # Underlying setup found in https://github.com/rails/activerecord-session_store/blob/master/lib/tasks/database.rake

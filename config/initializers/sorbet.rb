@@ -1,2 +1,2 @@
-# typed: false
-T::Configuration.default_checked_level = :tests
+# typed: strict
+# T::Configuration.default_checked_level = :tests

@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 class Cache::EyeshadeStatsJob < ApplicationJob
   queue_as :transactional
 

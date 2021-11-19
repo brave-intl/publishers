@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module MailerServices
   class TwoFactorAuthenticationRemovalReminderEmailer < BaseService
     attr_accessor :error

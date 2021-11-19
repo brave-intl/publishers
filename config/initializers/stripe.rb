@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 if Rails.application.config.services.stripe[:client_secret].present?
   Rails.configuration.stripe = {
     stripe_publishable_key: Rails.application.config.services.stripe[:publishable_key],

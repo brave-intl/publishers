@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 require "sentry-raven"
 require "active_support/core_ext/integer/time"
 

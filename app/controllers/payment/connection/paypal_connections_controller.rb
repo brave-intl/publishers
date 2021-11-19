@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 module Payment
   module Connection
     class PaypalConnectionsController < ApplicationController
