@@ -14,7 +14,7 @@ class SidekiqConfigurationTest < ActiveJob::TestCase
       # Rails can convert a string to a class with constantize
       # https://api.rubyonrails.org/classes/ActiveSupport/Inflector.html#method-i-constantize
       # This raises a NameError if the configuration isn't valid
-      job.constantize
+      job.constantize # rubocop:disable Sorbet/ConstantsFromStrings
     end
   end
 end
