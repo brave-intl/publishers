@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Publishers
   class TwoFactorAuthenticationsRemovalsController < ApplicationController
     include TwoFactorAuth

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Verify a Site Channel, by id
 class VerifySiteChannel < ApplicationJob
   queue_as :default

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Search
   extend ActiveSupport::Concern
 

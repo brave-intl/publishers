@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Admin::PayoutReportsController < AdminController
   MANUAL = "manual"
 

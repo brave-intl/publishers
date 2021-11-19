@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Rack::Attack
   # Monkey-patch the request class
   # https://github.com/kickstarter/rack-attack/blob/master/lib/rack/attack/request.rb

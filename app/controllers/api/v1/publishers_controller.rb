@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Api::V1::PublishersController < Api::BaseController
   class InvalidNote < StandardError; end
 

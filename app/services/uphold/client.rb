@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Uphold
   class Client < BaseApiClient
     attr_accessor :api_base_uri

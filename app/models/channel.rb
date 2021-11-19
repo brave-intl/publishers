@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "publishers/restricted_channels"
 
 class Channel < ApplicationRecord

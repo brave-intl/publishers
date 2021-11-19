@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class UpholdConnectionsController < ApplicationController
   UUID_LENGTH = 36
 

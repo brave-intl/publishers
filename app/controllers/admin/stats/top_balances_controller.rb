@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Admin::Stats::TopBalancesController < AdminController
   def index
     @limit = params[:limit].present? ? params[:limit].to_i : 25

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module ChannelsHelper
   include ActionView::Helpers::DateHelper
 

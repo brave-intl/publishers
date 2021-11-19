@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Admin::FaqsController < AdminController
   include Admin::FaqHelper
 

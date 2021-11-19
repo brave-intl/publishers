@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # https://github.com/mperham/sidekiq/wiki/Using-Redis#using-an-initializer
 if Rails.application.secrets[:redis_url].present?
   Sidekiq.configure_server do |config|

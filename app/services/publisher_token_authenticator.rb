@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Authenticate a Publisher by #authentication_token, which are consumed on use
 # and expires after 3 hours. New ones can be sent to your email.
 class PublisherTokenAuthenticator < BaseService

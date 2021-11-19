@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Api::V1::StatsController < Api::BaseController
   def fill_in_blank_dates(result)
     new_result = [] # [['2018-06-01', count], ['2018-06-02, count]]

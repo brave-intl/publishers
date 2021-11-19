@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Admin::PublishersController < AdminController
   before_action :get_publisher
   include Search

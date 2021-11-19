@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "test_helper"
 class Api::V1::Stats::ReferralCodesControllerTest < ActionDispatch::IntegrationTest
   test "/api/v1/stats/referral_codes/ returns all referral codes" do

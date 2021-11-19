@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module PublishersHelper
   include ChannelsHelper
 

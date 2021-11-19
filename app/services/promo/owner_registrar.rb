@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # !! important, We are using UNATTACHED type for now until we move to polymorphic codes.
 class Promo::OwnerRegistrar < BaseApiClient
   include PromosHelper

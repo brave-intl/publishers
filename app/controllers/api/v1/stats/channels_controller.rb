@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Api::V1::Stats::ChannelsController < Api::V1::StatsController
   # (yachtcaptain23): This needs to be refactored to support the data listed in #show
   def index

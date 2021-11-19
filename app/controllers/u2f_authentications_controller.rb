@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "concerns/two_factor_auth"
 
 class U2fAuthenticationsController < ApplicationController

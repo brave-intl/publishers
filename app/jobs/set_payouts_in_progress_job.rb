@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class SetPayoutsInProgressJob < ApplicationJob
   queue_as :scheduler
 

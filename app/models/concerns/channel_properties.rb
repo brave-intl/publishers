@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module ChannelProperties
   extend ActiveSupport::Concern
   include ActiveSupport::Inflector

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class CreateUpholdChannelCardJob < ApplicationJob
   queue_as :default
 

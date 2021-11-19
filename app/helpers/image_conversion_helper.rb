@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "wasmer"
 module ImageConversionHelper
   IMAGE_QUALITY = 50

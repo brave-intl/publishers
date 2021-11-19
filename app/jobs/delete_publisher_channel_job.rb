@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class DeletePublisherChannelJob < ApplicationJob
   queue_as :default
 

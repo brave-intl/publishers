@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Admin
   module Publishers
     class InvoicesController < AdminController

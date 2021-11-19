@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "publishers/fetch"
 
 # Inspect a url's host for web_host and HTTPS support

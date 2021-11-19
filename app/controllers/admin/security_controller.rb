@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Admin
   class SecurityController < AdminController
     def show

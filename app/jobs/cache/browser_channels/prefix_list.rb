@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Cache::BrowserChannels::PrefixList
   include Sidekiq::Worker
   sidekiq_options queue: :low, retry: true

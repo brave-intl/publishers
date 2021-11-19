@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # This is the UpholdController for all publishers to connect their uphold account.
 module Payment
   module Connection

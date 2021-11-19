@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class ChannelTransferController < ApplicationController
   include ChannelsHelper
 

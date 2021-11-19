@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class ApplicationMailer < ActionMailer::Base
   INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
   BIZDEV_EMAIL = Rails.application.secrets[:bizdev_email].freeze

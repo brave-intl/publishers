@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module CasesHelper
   def case_badge(status)
     label = case status

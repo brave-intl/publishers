@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Eyeshade
   class LastSettlementBalance < BaseBalance
     attr_reader :date, :amount_bat, :amount_settlement_currency, :timestamp, :settlement_currency

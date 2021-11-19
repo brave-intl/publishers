@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class CachedUpholdTip < ApplicationRecord
   belongs_to :uphold_connection_for_channel
 

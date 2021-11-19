@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Cache::BrowserChannels::Main
   include Sidekiq::Worker
   sidekiq_options queue: :scheduler, retry: false

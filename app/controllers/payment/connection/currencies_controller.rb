@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Payment
   module Connection
     class CurrenciesController < ApplicationController

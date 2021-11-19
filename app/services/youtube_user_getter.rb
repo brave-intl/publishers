@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class YoutubeUserGetter < BaseApiClient
   def initialize(user: nil)
     @user = user

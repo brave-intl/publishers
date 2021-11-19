@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class ApplicationController < ActionController::Base
   require "error_handler"
   include ErrorHandler

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class PartnerMailer < ApplicationMailer
   include PublishersHelper
   helper PublishersHelper

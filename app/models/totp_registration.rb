@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class TotpRegistration < ApplicationRecord
   belongs_to :publisher
   attr_encrypted :secret, key: proc { |record| record.class.encryption_key }

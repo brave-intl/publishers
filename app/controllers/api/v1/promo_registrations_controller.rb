@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Api::V1::PromoRegistrationsController < Api::BaseController
   class InvalidNote < StandardError; end
 

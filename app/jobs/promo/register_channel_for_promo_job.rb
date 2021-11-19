@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Registers a single channel for a promo immediately after verification
 class Promo::RegisterChannelForPromoJob < ApplicationJob
   include PromosHelper

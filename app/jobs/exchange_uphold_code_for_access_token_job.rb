@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
   queue_as :default
 

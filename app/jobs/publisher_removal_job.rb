@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class PublisherRemovalJob < ApplicationJob
   queue_as :default
 

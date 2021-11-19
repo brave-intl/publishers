@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module ReferralPromo
   extend ActiveSupport::Concern
   include UserFeatureFlags

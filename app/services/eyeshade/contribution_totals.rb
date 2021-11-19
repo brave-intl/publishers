@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Eyeshade::ContributionTotals < Eyeshade::BaseApiClient
   def perform
     if Rails.application.secrets[:api_eyeshade_offline]

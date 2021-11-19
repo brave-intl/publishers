@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Takes a SiteChannelDetaisl
 
 class TokenSerializer < ActiveModel::Serializer

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "digest/md5"
 
 class Publisher < ApplicationRecord

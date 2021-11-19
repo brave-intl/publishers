@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Promo::EmailBreakdownsJob
   include Sidekiq::Worker
   sidekiq_options queue: :default, retry: true

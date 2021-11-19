@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Preview all emails at https://localhost:3000/rails/mailers
 
 class PublisherMailerInternalPreview < ActionMailer::Preview

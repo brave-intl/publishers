@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module UserFeatureFlags
   extend ActiveSupport::Concern
   DAILY_EMAILS_FOR_PROMO_STATS = :daily_emails_for_promo_stats

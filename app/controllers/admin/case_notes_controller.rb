@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Admin
   class CaseNotesController < AdminController
     def create

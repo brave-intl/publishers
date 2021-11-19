@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class PayoutReport < ApplicationRecord
   has_paper_trail
   self.per_page = 8

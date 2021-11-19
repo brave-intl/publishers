@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class PublishersController < ApplicationController
   include PublishersHelper
   include PromosHelper

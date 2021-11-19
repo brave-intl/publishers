@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Sync::Bitflyer::UpdateMissingDepositJob
   include Sidekiq::Worker
   sidekiq_options queue: :default, retry: true

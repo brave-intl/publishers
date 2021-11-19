@@ -1,0 +1,10 @@
+require: rubocop-sorbet
+
+AllCops:
+  DisabledByDefault: true
+  Exclude:
+    - 'db/**/*'
+    - 'lib/tasks/**/*'
+
+Sorbet:
+  Enabled: true

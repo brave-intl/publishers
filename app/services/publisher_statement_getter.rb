@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class PublisherStatementGetter < BaseApiClient
   attr_reader :publisher
 

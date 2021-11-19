@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Publishers
   class RegistrationsController < ApplicationController
     include PublishersHelper

@@ -211,6 +211,10 @@ group :development, :test do
   # Code formatting
   gem "standard"
 
+  # sorbet
+  gem 'rubocop-sorbet', require: false
+  gem "unparser", require: false
+
   # Static security vulnerability scanner
   gem "brakeman"
   # Vulnerabilities

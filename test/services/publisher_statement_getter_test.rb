@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "test_helper"
 
 class PublisherStatementGetterTest < ActiveJob::TestCase

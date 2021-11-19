@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersController
   def index
     get_publisher
