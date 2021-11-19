@@ -61,13 +61,13 @@ class Publisher < ApplicationRecord
                            foreign_key: "created_by_id"
 
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
-  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
-  validates :pending_email, email: {strict_mode: true}, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
-  validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
-  validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
+  validates :email, email: true, presence: true, unless: -> { T.bind(self, Publisher); pending_email.present? || deleted? || browser_user? }
+  validates :pending_email, email: {strict_mode: true}, presence: true, allow_nil: true, if: -> { T.bind(self, Publisher); !(deleted? || browser_user?) }
+  validate :pending_email_must_be_a_change, unless: -> { T.bind(self, Publisher); deleted? || browser_user? }
+  validate :pending_email_can_not_be_in_use, unless: -> { T.bind(self, Publisher); deleted? || browser_user? }
 
   validates :name, presence: true, allow_blank: true, length: {maximum: 64}
-  before_save :cleanup_name, if: -> { name_changed? }
+  before_save :cleanup_name, if: -> { T.bind(self, Publisher).name_changed? }
 
   validates_inclusion_of :role, in: ROLES
 
@@ -78,8 +78,8 @@ class Publisher < ApplicationRecord
   scope :by_pending_email_case_insensitive, ->(email_to_find) { where("lower(publishers.pending_email) = :email_to_find", email_to_find: email_to_find&.downcase) }
 
   after_create :set_created_status
-  after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
-  after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
+  after_update :set_onboarding_status, if: -> { T.bind(self, Publisher); email.present? && email_before_last_save.nil? }
+  after_update :set_active_status, if: -> { T.bind(self, Publisher); saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 

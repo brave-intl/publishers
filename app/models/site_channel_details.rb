@@ -5,7 +5,7 @@ class SiteChannelDetails < BaseChannelDetails
   # formats to support more publishers.
   # - normalized and unnormalized domains
   # - normalized domains and domain-related errors
-  validates :brave_publisher_id, absence: true, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
+  validates :brave_publisher_id, absence: true, if: -> { T.bind(self, SiteChannelDetails); !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
   validate :brave_publisher_id_not_changed_once_initialized
 
   VERIFICATION_METHODS = %w[dns_record public_file github wordpress].freeze
@@ -22,10 +22,10 @@ class SiteChannelDetails < BaseChannelDetails
   end
   validates :verification_token, allow_blank: true, verification_token: true
 
-  before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_error_code.present? }
+  before_validation :register_brave_publisher_id_error, if: -> { T.bind(self, SiteChannelDetails); brave_publisher_id_error_code.present? }
 
   # clear/register domain errors as appropriate
-  before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
+  before_validation :clear_brave_publisher_id_error, if: -> { T.bind(self, SiteChannelDetails); brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
   scope :recent_unverified_site_channels, ->(max_age: 1.weeks) {
     SiteChannelDetails.unscoped.joins(:channel)

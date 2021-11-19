@@ -43,7 +43,7 @@ class UpholdConnection < ApplicationRecord
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
-  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
+  validates :uphold_code, absence: true, if: -> { T.bind(self, UpholdConnection); uphold_access_parameters.present? || uphold_verified? }
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
@@ -53,9 +53,9 @@ class UpholdConnection < ApplicationRecord
   }
 
   # If the user became KYC'd let's create the uphold card for them
-  after_save :create_uphold_cards, if: -> { saved_change_to_is_member? || saved_change_to_default_currency? }
-  after_save :update_site_banner_lookup!, if: -> { saved_change_to_is_member? }
-  after_save :update_promo_status, if: -> { saved_change_to_is_member? }
+  after_save :create_uphold_cards, if: -> { T.bind(self, UpholdConnection); saved_change_to_is_member? || saved_change_to_default_currency? }
+  after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_is_member? }
+  after_save :update_promo_status, if: -> { T.bind(self, UpholdConnection).saved_change_to_is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
