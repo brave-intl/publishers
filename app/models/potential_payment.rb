@@ -11,9 +11,18 @@ class PotentialPayment < ApplicationRecord
   belongs_to :publisher
   belongs_to :channel
 
-  validates :channel_id, presence: true, if: -> { T.bind(self, PotentialPayment); kind == CONTRIBUTION }
-  validates :channel_id, uniqueness: {scope: :payout_report_id}, unless: -> { T.bind(self, PotentialPayment); channel_id.nil? }
-  validate :channel_id_not_present_for_referral_payment, if: -> { T.bind(self, PotentialPayment); kind == REFERRAL }
+  validates :channel_id, presence: true, if: -> {
+                                               T.bind(self, PotentialPayment)
+                                               kind == CONTRIBUTION
+                                             }
+  validates :channel_id, uniqueness: {scope: :payout_report_id}, unless: -> {
+                                                                           T.bind(self, PotentialPayment)
+                                                                           channel_id.nil?
+                                                                         }
+  validate :channel_id_not_present_for_referral_payment, if: -> {
+                                                               T.bind(self, PotentialPayment)
+                                                               kind == REFERRAL
+                                                             }
   validate :publisher_id_unique_for_referral_payments
 
   validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, in: [true, false], unless: -> { wallet_provider == "paypal" || wallet_provider == "gemini" || wallet_provider == "bitflyer" }

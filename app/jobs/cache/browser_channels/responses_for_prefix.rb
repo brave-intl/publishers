@@ -9,7 +9,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   attr_accessor :site_banner_lookups, :temp_file
 
-
   def perform(prefix)
     return if Rails.env.development?
     ActiveRecord::Base.connected_to(role: :reading) do

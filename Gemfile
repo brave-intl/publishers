@@ -212,7 +212,7 @@ group :development, :test do
   gem "standard"
 
   # sorbet
-  gem 'rubocop-sorbet', require: false
+  gem "rubocop-sorbet", require: false
   gem "unparser", require: false
 
   # Static security vulnerability scanner
