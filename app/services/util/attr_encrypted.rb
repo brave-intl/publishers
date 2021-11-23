@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: true
 class Util::AttrEncrypted
   # taken from https://github.com/attr-encrypted/attr_encrypted/issues/314
   # Rekey (change the key of) a given field for an object, given the old key.

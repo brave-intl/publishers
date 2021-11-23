@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 class Membership < ApplicationRecord
   belongs_to :organization, class_name: "Organization"
 

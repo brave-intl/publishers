@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: strict
 # Record the publisher's successful login
 Warden::Manager.after_authentication except: :fetch do |publisher, auth, _opts|
   params = {

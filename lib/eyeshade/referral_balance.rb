@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: true
 # No fees applied
 module Eyeshade
   class ReferralBalance < BaseBalance

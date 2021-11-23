@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module Admin
   module PublishersHelper
     def publisher_status(publisher)

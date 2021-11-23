@@ -1,0 +1,17 @@
+require: rubocop-sorbet
+
+AllCops:
+  DisabledByDefault: true
+  Exclude:
+    - 'db/**/*'
+    - 'lib/tasks/**/*'
+    - 'vendor/**/*'
+
+Sorbet:
+  Enabled: true
+
+Sorbet/ValidSigil:
+  Enabled: false
+
+Sorbet/FalseSigil:
+  Enabled: false

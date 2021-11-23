@@ -134,6 +134,9 @@ module PayoutMessage::QueryMethodsReturningRelation
   def unscoped(&block); end
 
   sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_Relation) }
+  def select(*args); end
+
+  sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_Relation) }
   def reselect(*args); end
 
   sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_Relation) }
@@ -219,12 +222,6 @@ module PayoutMessage::QueryMethodsReturningRelation
 
   sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_Relation) }
   def only(*args); end
-
-  sig { params(block: T.proc.params(e: PayoutMessage).returns(T::Boolean)).returns(T::Array[PayoutMessage]) }
-  def select(&block); end
-
-  sig { params(args: T.any(String, Symbol, T::Array[T.any(String, Symbol)])).returns(PayoutMessage::ActiveRecord_Relation) }
-  def select_columns(*args); end
 
   sig { params(args: T.untyped, block: T.nilable(T.proc.void)).returns(PayoutMessage::ActiveRecord_Relation) }
   def extending(*args, &block); end
@@ -250,6 +247,9 @@ module PayoutMessage::QueryMethodsReturningAssociationRelation
   def unscoped(&block); end
 
   sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_AssociationRelation) }
+  def select(*args); end
+
+  sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_AssociationRelation) }
   def reselect(*args); end
 
   sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_AssociationRelation) }
@@ -335,12 +335,6 @@ module PayoutMessage::QueryMethodsReturningAssociationRelation
 
   sig { params(args: T.untyped).returns(PayoutMessage::ActiveRecord_AssociationRelation) }
   def only(*args); end
-
-  sig { params(block: T.proc.params(e: PayoutMessage).returns(T::Boolean)).returns(T::Array[PayoutMessage]) }
-  def select(&block); end
-
-  sig { params(args: T.any(String, Symbol, T::Array[T.any(String, Symbol)])).returns(PayoutMessage::ActiveRecord_AssociationRelation) }
-  def select_columns(*args); end
 
   sig { params(args: T.untyped, block: T.nilable(T.proc.void)).returns(PayoutMessage::ActiveRecord_AssociationRelation) }
   def extending(*args, &block); end

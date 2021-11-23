@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: true
 class Sync::PromoRegistrationStatsJob
   include Sidekiq::Worker
 

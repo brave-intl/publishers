@@ -1,2 +1,2 @@
-# typed: ignore
+# typed: true
 PromoClient = Promo::Client.new

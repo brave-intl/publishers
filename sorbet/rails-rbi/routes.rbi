@@ -621,6 +621,20 @@ module GeneratedUrlHelpers
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def totp_authentications_url(*args, **kwargs); end
 
+  # Sigs for route /publishers/:id/ensure_email(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ensure_email_publisher_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ensure_email_publisher_url(*args, **kwargs); end
+
+  # Sigs for route /publishers/:id/ensure_email_confirm(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ensure_email_confirm_publisher_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def ensure_email_confirm_publisher_url(*args, **kwargs); end
+
   # Sigs for route /publishers/:publisher_id/site_banners/set_default_site_banner_mode(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def set_default_site_banner_mode_publisher_site_banners_path(*args, **kwargs); end

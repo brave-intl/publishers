@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "test_helper"
 require "send_grid/api_helper"
 require "vcr"

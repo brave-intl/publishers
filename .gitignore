@@ -51,3 +51,6 @@ package-lock.json
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# sorbet
+sorbet/rbi/hidden-definitions/errors.txt

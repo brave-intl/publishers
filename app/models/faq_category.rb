@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 class FaqCategory < ApplicationRecord
   has_many :faqs
 

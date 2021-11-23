@@ -1,4 +1,5 @@
-# typed: ignore
+# typed: false
+# rubocop:disable all
 require "test_helper"
 
 class SidekiqConfigurationTest < ActiveJob::TestCase
@@ -18,3 +19,4 @@ class SidekiqConfigurationTest < ActiveJob::TestCase
     end
   end
 end
+# rubocop:enable all

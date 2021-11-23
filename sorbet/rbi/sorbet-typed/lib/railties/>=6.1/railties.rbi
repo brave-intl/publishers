@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/railties/>=6.1/railties.rbi
 #
-# typed: ignore
+# typed: strict
 
 module Rails
   class << self

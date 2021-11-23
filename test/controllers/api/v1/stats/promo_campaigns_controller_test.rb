@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 require "test_helper"
 
 class Api::V1::Stats::PromoCampaignsControllerTest < ActionDispatch::IntegrationTest

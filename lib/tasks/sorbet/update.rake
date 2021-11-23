@@ -16,7 +16,7 @@ namespace :sorbet do
           FileUtils.remove_dir(Rails.root.join("sorbet/rbi/sorbet-typed/lib/#{gem}"))
         end
         # Use Tapioca to generate RBIs for gems
-        system("bundle exec tapioca sync")
+        system("bundle exec tapioca gem")
         # Generate Sorbet Rails RBIs.
         system("bundle exec rake rails_rbi:all")
         # Generate a TODO RBI for constants Tapioca doesn't understand.

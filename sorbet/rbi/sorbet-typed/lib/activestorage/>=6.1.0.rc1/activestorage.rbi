@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/activestorage/>=6.1.0.rc1/activestorage.rbi
 #
-# typed: ignore
+# typed: false
 
 module ActiveStorage::Attached::Model::ClassMethods
   # Specifies the relation between a single attachment and the model.

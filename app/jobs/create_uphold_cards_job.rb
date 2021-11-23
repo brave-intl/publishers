@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Creates the Uphold Cards for a publisher
 class CreateUpholdCardsJob < ApplicationJob
   queue_as :default

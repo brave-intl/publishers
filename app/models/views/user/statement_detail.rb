@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: true
 module Views
   module User
     class StatementDetail

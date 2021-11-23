@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Fetches and updates the stats for all types of referral codes
 class Promo::RegistrationsStatsFetcher < BaseApiClient
   include PromosHelper

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 SimpleCov.start "rails"

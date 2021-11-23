@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class CacheUpholdTips < ApplicationJob
   queue_as :scheduler
 

@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 class PromoRegistration < ApplicationRecord
   # A promo registration can belong to a channel,
   # a publisher, or be unattached.  Unattached codes
@@ -40,8 +40,14 @@ class PromoRegistration < ApplicationRecord
   belongs_to :promo_campaign
   belongs_to :publisher
 
-  validates :channel_id, presence: true, if: -> { kind == CHANNEL }
-  validates :publisher_id, presence: true, unless: -> { kind == UNATTACHED }
+  validates :channel_id, presence: true, if: -> {
+                                               T.bind(self, PromoRegistration)
+                                               kind == CHANNEL
+                                             }
+  validates :publisher_id, presence: true, unless: -> {
+                                                     T.bind(self, PromoRegistration)
+                                                     kind == UNATTACHED
+                                                   }
 
   validates :promo_id, presence: true
   validates :kind, presence: true

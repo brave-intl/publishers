@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: true
 module QrCodeHelper
   require "rqrcode"
 

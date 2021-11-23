@@ -464,6 +464,8 @@ GEM
     rubocop-performance (1.11.5)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
+    rubocop-sorbet (0.6.2)
+      rubocop
     ruby-progressbar (1.11.0)
     ruby_http_client (3.5.2)
     rubyzip (2.3.2)
@@ -713,6 +715,7 @@ DEPENDENCIES
   rexml
   rotp (~> 6.2.0)
   rqrcode (~> 0.10)
+  rubocop-sorbet
   sass-rails (~> 5.0)
   selenium-webdriver (~> 3.142.0)
   sendgrid-ruby (~> 6.2.1)
@@ -731,6 +734,7 @@ DEPENDENCIES
   temping
   tzinfo-data
   u2f (~> 1.0)
+  unparser
   vcr
   wasm-thumbnail-rb!
   wasmer!

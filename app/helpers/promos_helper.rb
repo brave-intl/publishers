@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 module PromosHelper
   include ActionView::Helpers::DateHelper
 

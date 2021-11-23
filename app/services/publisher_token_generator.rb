@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 # Generate a Publisher #authentication_token, which is a one time use token
 # for creating a login session. They expire after 3 hours.
 # @returns new authentication_token
