@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'lib/tasks/**/*'
+    - 'vendor/**/*'
 
 Sorbet:
   Enabled: true
