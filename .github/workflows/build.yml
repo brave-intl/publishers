@@ -77,6 +77,6 @@ jobs:
       - name: Standard
         run: bundle exec standardrb
       - name: Sorbet Linter
-        run: rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
+        run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
       - name: Sorbet Type Check
         run: bundle exec srb tc
