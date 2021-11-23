@@ -209,7 +209,6 @@ group :development, :test do
   gem "pry-byebug"
 
   # Code formatting
-  gem "rubocop"
   gem "standard"
 
   # sorbet

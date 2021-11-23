@@ -715,7 +715,6 @@ DEPENDENCIES
   rexml
   rotp (~> 6.2.0)
   rqrcode (~> 0.10)
-  rubocop
   rubocop-sorbet
   sass-rails (~> 5.0)
   selenium-webdriver (~> 3.142.0)
