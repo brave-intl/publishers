@@ -2,6 +2,16 @@ GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 BUILD_TIME := $(shell date +%s)
 
+ci:
+	bundle install
+	yarn
+	bundle exec bundle-audit update
+	RAILS_ENV=test bundle exec rails test
+	bundle exec brakeman
+	bundle exec standardrb
+	bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
+	bundle exec srb tc
+
 docker:
 	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \
 		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .

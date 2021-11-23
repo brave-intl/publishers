@@ -8,3 +8,9 @@ AllCops:
 
 Sorbet:
   Enabled: true
+
+Sorbet/ValidSigil:
+  Enabled: false
+
+Sorbet/FalseSigil:
+  Enabled: false
