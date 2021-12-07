@@ -11,6 +11,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get "/publishers/" + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000", headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"}
     site_banner = JSON.parse(response.body)
     assert_equal("Hello World", site_banner["title"])
+    assert_equal("https://TESTDOMAIN.com/", site_banner["logoUrl"])
     assert_equal("Lorem Ipsum", site_banner["description"])
   end
 
