@@ -99,11 +99,15 @@ class SiteBanner < ApplicationRecord
     {
       title: title,
       description: description,
-      backgroundUrl: background_image.url,
-      logoUrl: logo.url,
+      backgroundUrl: pcdn_public_image_url(background_image),
+      logoUrl: pcdn_public_image_url(logo),
       donationAmounts: donation_amounts,
       socialLinks: social_links
     }
+  end
+
+  def pcdn_public_image_url(image)
+    "Rails.application.secrets[:s3_rewards_public_domain]/#{image.blob.key}"
   end
 
   def non_default_properties
