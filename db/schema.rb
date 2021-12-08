@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_28_205253) do
+ActiveRecord::Schema.define(version: 2021_12_08_230135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -574,6 +575,7 @@ ActiveRecord::Schema.define(version: 2021_10_28_205253) do
     t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
     t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
     t.index ["sha2_base16"], name: "index_gin_site_banner_lookups_on_sha2_base16", using: :gin
+    t.index ["sha2_base16"], name: "index_site_banner_lookups_collation_c_on_sha_base16", opclass: :text_pattern_ops
     t.index ["sha2_base16"], name: "index_site_banner_lookups_on_sha2_base16"
   end
 
