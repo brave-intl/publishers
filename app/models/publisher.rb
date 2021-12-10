@@ -276,7 +276,7 @@ class Publisher < ApplicationRecord
 
   # Silly method for showing a color for people's avatar
   def avatar_color
-    for_colorization = email || pending_email | "deleted_user@somewhere.com"
+    for_colorization = email || pending_email || "deleted_user@somewhere.com"
     Digest::MD5.hexdigest(for_colorization)[0...6]
   end
 
