@@ -33,7 +33,7 @@ class BitflyerServiceTest < ActiveSupport::TestCase
   end
 
   describe "when a creator in good standing" do
-    let(:publisher) { publishers(:bitflyer_enabled) }
+    let(:publisher) { publishers(:bitflyer_pub) }
 
     before do
       subject

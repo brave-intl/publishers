@@ -11,7 +11,6 @@ module UserFeatureFlags
   REFERRAL_KYC_REQUIRED = :referral_kyc_required
   STRIPE_ENABLED = :stripe_enabled
   GEMINI_ENABLED = :gemini_enabled
-  BITFLYER_ENABLED = :bitflyer_enabled
   REFERRAL_ENABLED_OVERRIDE = :referral_enabled_override
 
   VALID_FEATURE_FLAGS = [
@@ -40,7 +39,6 @@ module UserFeatureFlags
     scope :merchant, -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
     scope :stripe_enabled, -> { where("feature_flags->'#{STRIPE_ENABLED}' = 'true'") }
     scope :gemini_enabled, -> { where("feature_flags->'#{GEMINI_ENABLED}' = 'true'") }
-    scope :bitflyer_enabled, -> { where("feature_flags->'#{BITFLYER_ENABLED}' = 'true'") }
     scope :in_top_referrer_program, -> { where("feature_flags->'#{REFERRAL_ENABLED_OVERRIDE}' = 'true'") }
     scope :not_in_top_referrer_program, -> { where.not(id: in_top_referrer_program) }
   end
@@ -96,10 +94,6 @@ module UserFeatureFlags
 
   def gemini_enabled?
     feature_flags.symbolize_keys[GEMINI_ENABLED].present?
-  end
-
-  def bitflyer_enabled?
-    feature_flags.symbolize_keys[BITFLYER_ENABLED].present?
   end
 
   def has_daily_emails_for_promo_stats?
