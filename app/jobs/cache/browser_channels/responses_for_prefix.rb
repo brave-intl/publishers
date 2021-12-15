@@ -125,15 +125,14 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def save_to_s3!(prefix:)
     path = @temp_file.path
-    # Aws.config[:credentials] = Aws::Credentials.new(
-    #   Rails.application.secrets[:s3_rewards2_access_key_id],
-    #   Rails.application.secrets[:s3_rewards2_secret_access_key]
-    # )
+    Aws.config[:credentials] = Aws::Credentials.new(
+      Rails.application.secrets[:s3_rewards2_access_key_id],
+      Rails.application.secrets[:s3_rewards2_secret_access_key]
+    )
 
     s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards2_bucket_region])
     obj = s3.bucket(Rails.application.secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
-    obj.upload_file(path, grant_full_control: Rails.application.secrets[:s3_rewards2_s3_canonical_id],
-                    grant_read: Rails.application.secrets[:s3_rewards2_cdn_canonical_id])
+    obj.upload_file(path)
   end
 
   def get_site_banner_details(site_banner_lookup)
