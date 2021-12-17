@@ -21,9 +21,14 @@ class Promo::EmailBreakdownsJob
       end
     end
 
+    # This is the data as the dashboard displays it, i.e., we mark a download fiinalized today, but the download_ts
+    # is what we go off of when generating this report. This means the confirmation is backported 30+ days.
+    # The next section will include the report where we group by the finalized_ts, but that's only included
+    # _additionally_ in the nightly CSV since the dashboard still groups data by the download_ts. That is, we still need
+    # a section in the nightly CSV that matches the data you see on the dashboard.
     csv.append("")
 
-    csv.append(["ConfirmationDate", "CountryCode", "ReferralCode", "ConfirmationsTotal"].join(","))
+    csv.append(["DownloadDate", "CountryCode", "ReferralCode", "ConfirmationsTotal"].join(","))
     (start_date..end_date).each do |date|
       referral_codes.each do |referral_code|
         result = ReferralDownload.select("sum(total) AS total_for_day, country_code, ymd").where(referral_code: referral_code, owner_id: publisher_id)
@@ -35,6 +40,29 @@ class Promo::EmailBreakdownsJob
           csv.append(
             [
               referral_download["ymd"].to_date,
+              referral_download["country_code"],
+              referral_code,
+              referral_download["total_for_day"]
+            ].join(",")
+          )
+        end
+      end
+    end
+
+    csv.append("")
+
+    csv.append(["ConfirmationDate", "CountryCode", "ReferralCode", "ConfirmationsTotal"].join(","))
+    (start_date..end_date).each do |date|
+      referral_codes.each do |referral_code|
+        result = ReferralDownload.select("sum(total) AS total_for_day, country_code, DATE(finalized_ts) AS finalized_ts").where(referral_code: referral_code, owner_id: publisher_id)
+          .where(finalized: true)
+          .where("DATE(finalized_ts) = ?", date)
+          .group("DATE(finalized_ts), country_code").order("DATE(finalized_ts) asc, country_code asc")
+
+        result.each do |referral_download|
+          csv.append(
+            [
+              referral_download["finalized_ts"].to_date,
               referral_download["country_code"],
               referral_code,
               referral_download["total_for_day"]
