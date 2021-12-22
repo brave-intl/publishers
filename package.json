@@ -119,5 +119,11 @@
     "tslint-config-standard": "^8.0.1",
     "tslint-react": "^3.6.0",
     "webpack-dev-server": "^4.2.0"
+  },
+  "resolutions": {
+    "node-fetch": "2.6.1",
+    "glob-parent": "5.1.2",
+    "nth-check": "2.0.1",
+    "ansi-regex": "5.0.1"
   }
 }
