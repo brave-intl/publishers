@@ -86,7 +86,7 @@ Rails.application.routes.draw do
         end
       end
 
-      get :log_out
+      post :log_out
       get :home
       get :home_balances
       get :uphold_wallet_panel
