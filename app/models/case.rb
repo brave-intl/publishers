@@ -3,6 +3,7 @@
 
 class Case < ApplicationRecord
   has_paper_trail ignore: [:solicit_question, :accident_question]
+  validates_with HtmlValidator, attributes: [:solicit_question, :accident_question]
 
   self.per_page = 50
 
