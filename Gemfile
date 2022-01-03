@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 def x86_64?
-  `uname -p`.strip == 'x86_64'
+  `uname -p`.strip == "x86_64"
 end
 
 ruby "~> 3.0.2"
