@@ -5,16 +5,12 @@ require "publishers/fetch"
 class SiteChannelHostInspector < BaseService
   include Publishers::Fetch
 
-  attr_reader :url, :follow_local_redirects, :follow_all_redirects, :require_https
+  attr_reader :url, :require_https
 
   def initialize(url:,
-    follow_local_redirects: true,
-    follow_all_redirects: false,
     require_https: false,
     response_body: false)
     @url = url
-    @follow_local_redirects = follow_local_redirects
-    @follow_all_redirects = follow_all_redirects
     @require_https = require_https
     @response_body = response_body
   end
@@ -22,9 +18,7 @@ class SiteChannelHostInspector < BaseService
   # TODO: github pages can be hosted at custom domains. We should detect them, if possible.
   # TODO: perform better https test than just raising when the connection is refused?
   def inspect_uri(uri)
-    response = fetch(uri: uri,
-      follow_all_redirects: follow_all_redirects,
-      follow_local_redirects: follow_local_redirects)
+    response = fetch(uri: uri)
 
     {response: response}
   rescue => e

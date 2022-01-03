@@ -18,7 +18,8 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     headers = {
       "Accept" => "*/*",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => "Ruby"
+      "User-Agent" => "Ruby",
+      "Host" => channel.details.brave_publisher_id,
     }
     body ||= SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
     stub_request(:get, url)
@@ -56,7 +57,7 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
   test "When bad ssl happens" do
     Rails.application.secrets[:host_inspector_offline] = false
-    stub_request(:get, "https://self-signed.badssl.com")
+    stub_request(:get, %r{\Ahttps://.*\z}).with(headers: {Host: "self-signed.badssl.com"})
       .to_raise(OpenSSL::SSL::SSLError.new("SSL_connect returned=1 errno=0 state=error: certificate verify failed"))
 
     publisher = publishers(:default)
