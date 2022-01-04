@@ -102,7 +102,7 @@ gem "public_suffix", "~> 4.0.3"
 gem "puma", "~> 5.5.1"
 
 # Make cracking a little bit harder
-gem "rack-attack", "~> 5.0"
+gem "rack-attack", "~> 6.5.0"
 
 gem "railties", "~> 6.1.4"
 
