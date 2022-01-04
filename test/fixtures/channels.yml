@@ -27,7 +27,7 @@ top_referrer_bitflyer_channel:
   publisher: top_referrer_bitflyer
   details: top_referrer_bitflyer_verified_details (SiteChannelDetails)
   verified: true
-  deposit_id: 'bitflyer_enabled_channel123'
+  deposit_id: 'bitflyer_pub_channel123'
 
 verified_exclude:
   publisher: medium_media_group
@@ -331,20 +331,20 @@ gemini_in_japan_completed_website:
   verified: true
   details: gemini_in_japan_website_details (SiteChannelDetails)
 
-bitflyer_enabled_channel:
-  publisher: bitflyer_enabled
-  details: bitflyer_enabled_details (SiteChannelDetails)
+bitflyer_pub_channel:
+  publisher: bitflyer_pub
+  details: bitflyer_pub_details (SiteChannelDetails)
   verified: true
-  deposit_id: 'bitflyer_enabled_channel123'
+  deposit_id: 'bitflyer_pub_channel123'
 
 bitflyer_suspended_channel:
   publisher: bitflyer_suspended
   details: bitflyer_suspended_details (SiteChannelDetails)
   verified: true
-  deposit_id: 'bitflyer_enabled_channel321'
+  deposit_id: 'bitflyer_pub_channel321'
 
-bitflyer_enabled_website:
-  publisher: bitflyer_enabled
+bitflyer_pub_website:
+  publisher: bitflyer_pub
   verified: true
   details: bitflyer_completed_website_details(SiteChannelDetails)
-  deposit_id: 'bitflyer_enabled_website1'
+  deposit_id: 'bitflyer_pub_website1'

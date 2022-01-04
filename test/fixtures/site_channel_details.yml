@@ -155,7 +155,7 @@ suspended_details:
 bitflyer_suspended_details:
   brave_publisher_id: "suspendedbitflyer.org"
 
-bitflyer_enabled_details:
+bitflyer_pub_details:
   brave_publisher_id: "enabledbitflyer.org"
 
 fraudulently_verified_site_details:

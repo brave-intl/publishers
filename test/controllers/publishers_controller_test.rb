@@ -190,7 +190,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "login link of new japanese users which should use locale=ja" do
     publisher = publishers(:completed)
-    publisher.feature_flags["bitflyer_enabled"] = true
     publisher.save
 
     headers = {"Accept-Language" => "ja_JP"}
