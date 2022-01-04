@@ -63,7 +63,7 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Yarn audit
-        run: yarn audit
+        run: yarn audit && yarn --cwd public/creators-landing audit
       - name: Prepare database
         run: RAILS_ENV=test bundle exec rake db:prepare
         env:

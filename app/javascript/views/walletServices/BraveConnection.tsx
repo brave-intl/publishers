@@ -66,7 +66,6 @@ class BraveConnection extends React.Component<any, any> {
       // If there's a bitflyer connection let's show the BitflyerConnection component
     }
     else if (
-      this.props.featureFlags.bitflyer_enabled &&
       this.state.bitflyerConnection
     ) {
       return (

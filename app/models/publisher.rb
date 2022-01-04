@@ -449,10 +449,6 @@ class Publisher < ApplicationRecord
     provider_country.to_s.upcase
   end
 
-  def bitflyer_enabled?
-    feature_flags["bitflyer_enabled"] == true
-  end
-
   private
 
   def cleanup_name
@@ -467,7 +463,6 @@ class Publisher < ApplicationRecord
   def set_default_features
     feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
     feature_flags[UserFeatureFlags::GEMINI_ENABLED] = true
-    feature_flags[UserFeatureFlags::BITFLYER_ENABLED] = true
   end
 
   def set_created_status

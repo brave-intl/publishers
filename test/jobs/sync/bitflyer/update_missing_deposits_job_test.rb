@@ -10,7 +10,7 @@ class Sync::Bitflyer::UpdateMissingDepositsJobTest < SidekiqTestCase
   end
 
   test "enqueue a job when no deposit_id exists" do
-    publisher = publishers(:bitflyer_enabled)
+    publisher = publishers(:bitflyer_pub)
     publisher.channels.first.update_column(:deposit_id, nil)
     Sync::Bitflyer::UpdateMissingDepositsJob.perform_now
     assert_equal 1, Sync::Bitflyer::UpdateMissingDepositJob.jobs.size
