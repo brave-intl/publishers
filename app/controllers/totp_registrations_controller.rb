@@ -17,7 +17,7 @@ class TotpRegistrationsController < ApplicationController
   def create
     totp_registration = TotpRegistration.new totp_registration_params
 
-    if totp_registration.totp.verify_with_drift(params[:totp_password], 60, Time.now - 30)
+    if totp_registration.totp.verify(params[:totp_password], drift: 60, at: Time.now - 30)
       current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
       totp_registration.publisher = current_publisher
       totp_registration.save!
