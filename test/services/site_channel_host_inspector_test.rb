@@ -164,4 +164,61 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     assert result[:https]
     assert_equal "wordpress", result[:web_host]
   end
+
+  test "does not follow all redirects if follow_all_redirects is not enabled" do
+    stub_request(:get, %r{\Ahttps://.*\z})
+      .with("headers" => {"Host" => "mywordpress.com"})
+      .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
+    stub_request(:get, %r{\Ahttps://.*\z})
+      .with("headers" => {"Host" => "www.mywordpress.com"})
+      .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
+
+
+    stub_request(:get, %r{\Ahttps://.*/index\.html\z})
+      .with("headers" => {"Host" => "mywordpress2.com"})
+      .to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
+
+    result = SiteChannelHostInspector.new(url: "mywordpress.com", require_https: true).perform
+    refute result[:host_connection_verified]
+    refute result[:https]
+    assert_nil result[:web_host]
+    assert result[:response].is_a?(Publishers::Fetch::RedirectError)
+    assert_equal "non local redirects prohibited", result[:response].to_s
+  end
+
+  test "follows all redirects if follow_all_redirects is enabled" do
+    stub_request(:get, %r{\Ahttps://.*\z})
+      .with("headers" => {"Host" => "mywordpress.com"})
+      .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
+
+    stub_request(:get, %r{\Ahttps://.*/index\.html\z})
+      .with("headers" => {"Host" => "mywordpress2.com"})
+      .to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
+
+    result = SiteChannelHostInspector.new(url: "mywordpress.com", follow_all_redirects: true).perform
+    assert result[:host_connection_verified]
+    assert result[:https]
+    assert_equal "wordpress", result[:web_host]
+  end
+
+  test "does not follow any redirects if follow_all_redirects and follow_local_redirects are not enabled" do
+    stub_request(:get, %r{\Ahttps://.*\z})
+      .with("headers" => {"Host" => "mywordpress.com"})
+      .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
+    stub_request(:get, %r{\Ahttps://.*\z})
+      .with("headers" => {"Host" => "www.mywordpress.com"})
+      .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
+
+
+    stub_request(:get, %r{\Ahttps://.*/index\.html\z})
+      .with("headers" => {"Host" => "mywordpress2.com"})
+      .to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
+
+    result = SiteChannelHostInspector.new(url: "mywordpress.com", require_https: true, follow_local_redirects: false, follow_all_redirects: false).perform
+    refute result[:host_connection_verified]
+    refute result[:https]
+    assert_nil result[:web_host]
+    assert result[:response].is_a?(Publishers::Fetch::RedirectError)
+    assert_equal "redirects prohibited", result[:response].to_s
+  end
 end
