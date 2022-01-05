@@ -126,7 +126,7 @@ class Admin::PublishersController < AdminController
     if @publisher.admin?
       render status: 401, json: {
         error: "You cannot sign in as another admin"
-      }
+      } && return
     end
 
     authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform

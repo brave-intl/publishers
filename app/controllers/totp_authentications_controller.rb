@@ -8,11 +8,11 @@ class TotpAuthenticationsController < ApplicationController
     publisher = pending_2fa_current_publisher
     totp_registration = pending_2fa_current_publisher.totp_registration
 
-    verified_at_timestamp = totp_registration.totp.verify_with_drift_and_prior(
+    verified_at_timestamp = totp_registration.totp.verify(
       params[:totp_password],
-      60,
-      totp_registration.last_logged_in_at,
-      Time.now - 30
+      drift: 60,
+      after: totp_registration.last_logged_in_at,
+      at: Time.now - 30
     )
     if verified_at_timestamp
       totp_registration.update!(last_logged_in_at: Time.at(verified_at_timestamp))
