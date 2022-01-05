@@ -10,7 +10,8 @@ class TotpAuthenticationsController < ApplicationController
 
     verified_at_timestamp = totp_registration.totp.verify(
       params[:totp_password],
-      drift: 60,
+      drift_ahead: 60,
+      drift_behind: 60,
       after: totp_registration.last_logged_in_at,
       at: Time.now - 30
     )
