@@ -15,7 +15,9 @@ class ChannelTransferController < ApplicationController
 
   def verify_token
     @current_channel = Channel.find(params[:id])
-    if @current_channel.nil? || @current_channel.contest_token.blank? || @current_channel.contest_token != params[:token_id]
+    if @current_channel.nil? || @current_channel.contest_token.blank? || !ActiveSupport::SecurityUtils.secure_compare(
+                                                                                       ::Digest::SHA256.hexdigest(@current_channel.contest_token),
+                                                                                       ::Digest::SHA256.hexdigest(params[:token_id]))
       respond_to do |format|
         format.json {
           head 404
