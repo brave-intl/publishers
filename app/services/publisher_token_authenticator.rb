@@ -11,7 +11,7 @@ class PublisherTokenAuthenticator < BaseService
   end
 
   # Note: If the token was valid, this consumes it.
-  def perform
+  def perform(consume: true)
     if publisher.authentication_token.blank?
       return false
     end
@@ -33,7 +33,7 @@ class PublisherTokenAuthenticator < BaseService
         publisher.pending_email = nil
         publisher.save!
       end
-      publisher.user_authentication_token.update(authentication_token: nil)
+      publisher.user_authentication_token.update(authentication_token: nil) if consume
     end
     result
   end
