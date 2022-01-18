@@ -3,10 +3,13 @@ require "concerns/two_factor_auth"
 
 class TotpAuthenticationsController < ApplicationController
   include TwoFactorAuth
+  include Logout
+  include TwoFactorRegistration
+  include PendingActions
 
   def create
-    publisher = pending_2fa_current_publisher
-    totp_registration = pending_2fa_current_publisher.totp_registration
+    pending_action = saved_pending_action
+    totp_registration = pending_action.publisher.totp_registration
 
     verified_at_timestamp = totp_registration.totp.verify(
       params[:totp_password],
@@ -17,10 +20,8 @@ class TotpAuthenticationsController < ApplicationController
     )
     if verified_at_timestamp
       totp_registration.update!(last_logged_in_at: Time.at(verified_at_timestamp))
-      session.delete(:pending_2fa_current_publisher_id)
-      sign_in(:publisher, publisher)
 
-      redirect_to publisher_next_step_path(publisher)
+      pending_action.execute! self
     else
       flash[:alert] = t("shared.invalid_totp")
       redirect_to two_factor_authentications_path(request_totp: true)

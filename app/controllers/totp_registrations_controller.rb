@@ -6,6 +6,7 @@ class TotpRegistrationsController < ApplicationController
   helper QrCodeHelper
   include Logout
   include TwoFactorRegistration
+  include PendingActions
 
   before_action :authenticate_publisher!
 
@@ -14,27 +15,41 @@ class TotpRegistrationsController < ApplicationController
     @provisioning_url = @totp_registration.totp.provisioning_uri(current_publisher.email)
   end
 
+  class AddTOTP < StepUpAction
+    call do |publisher_id, password, totp_registration_params|
+      current_publisher = Publisher.find(publisher_id)
+      totp_registration = TotpRegistration.new totp_registration_params
+
+      if totp_registration.totp.verify(password, drift_ahead: 60, drift_behind: 60, at: Time.now - 30)
+        current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
+        totp_registration.publisher = current_publisher
+        totp_registration.save!
+
+        logout_everybody_else!(current_publisher)
+
+        handle_redirect_after_2fa_registration
+      else
+        Rails.logger.info "ROTP::TOTP! Failed to verify unsaved #{totp_registration} for publisher #{current_publisher.owner_identifier} with password '#{params[:totp_password]}'"
+        flash[:alert] = t("shared.invalid_totp")
+        redirect_to new_totp_registration_path
+      end
+    end
+  end
+
   def create
-    totp_registration = TotpRegistration.new totp_registration_params
+    AddTOTP.new(current_publisher.id, params[:totp_password], totp_registration_params.to_h).step_up! self
+  end
 
-    if totp_registration.totp.verify(params[:totp_password], drift_ahead: 60, drift_behind: 60, at: Time.now - 30)
+  class RemoveTOTP < StepUpAction
+    call do |publisher_id|
+      current_publisher = Publisher.find(publisher_id)
       current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
-      totp_registration.publisher = current_publisher
-      totp_registration.save!
-
-      logout_everybody_else!
-
-      handle_redirect_after_2fa_registration
-    else
-      Rails.logger.info "ROTP::TOTP! Failed to verify unsaved #{totp_registration} for publisher #{current_publisher.owner_identifier} with password '#{params[:totp_password]}'"
-      flash[:alert] = t("shared.invalid_totp")
-      redirect_to new_totp_registration_path
+      redirect_to security_publishers_path
     end
   end
 
   def destroy
-    current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
-    redirect_to security_publishers_path
+    RemoveTOTP.new(current_publisher.id).step_up! self
   end
 
   private

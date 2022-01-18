@@ -4,18 +4,15 @@ module TwoFactorAuth
 
   included do
     include PublishersHelper
+    include PendingActions
 
-    before_action :require_pending_2fa_current_publisher
+    before_action :require_pending_action
   end
 
   private
 
-  def pending_2fa_current_publisher
-    Publisher.find(session[:pending_2fa_current_publisher_id])
-  end
-
-  def require_pending_2fa_current_publisher
-    if !session[:pending_2fa_current_publisher_id]
+  def require_pending_action
+    if !session[:pending_action]
       redirect_to root_path
     end
   end
