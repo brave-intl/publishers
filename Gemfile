@@ -4,6 +4,8 @@ def x86_64?
   `uname -p`.strip == "x86_64"
 end
 
+gem "ssrf_filter"
+
 ruby "~> 3.0.2"
 
 source "https://rubygems.org"

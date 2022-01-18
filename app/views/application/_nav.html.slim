@@ -29,12 +29,13 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                     li= link_to t(".faqs"), faqs_path
                   li= link_to t(".settings"), settings_publishers_path
                   li= link_to t(".help"), "https://support.brave.com/hc/en-us/"
-                  li= link_to t(".log_out"), log_out_publishers_path
+                  li= link_to t(".log_out"), log_out_publishers_path, method: :post
           - else
             / btn-secondary and btn-highlight are legacy, can be dropped once
             / bootstrap v3 is removed.
             = link_to( \
                 t(".log_out"), \
                 log_out_publishers_path, \
-                class: 'btn btn-secondary btn-highlight btn-outline-primary user-solo-button' \
+                class: 'btn btn-secondary btn-highlight btn-outline-primary user-solo-button', \
+                method: :post \
             )

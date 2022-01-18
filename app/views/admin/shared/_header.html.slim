@@ -8,4 +8,4 @@ nav.navbar.navbar-inverse.navbar-fixed-top id='header'
       = image_tag 'brave_logo_horz.svg', height: 24
     ul.nav.navbar-nav.navbar-right
       li
-        = link_to("Logout", log_out_publishers_path)
+        = link_to("Logout", log_out_publishers_path, method: :post)

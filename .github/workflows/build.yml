@@ -62,23 +62,24 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn --frozen-lockfile
-      - name: Yarn audit
-        run: yarn audit && yarn --cwd public/creators-landing audit
       - name: Prepare database
         run: RAILS_ENV=test bundle exec rake db:prepare
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
-      - name: Bundler Audit
-        run: bundle exec bundle-audit check --update
       - name: Run tests
         run: RAILS_ENV=test bundle exec rails test
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
       - name: Brakeman
         run: bundle exec brakeman
-      - name: Standard
-        run: bundle exec standardrb
+      - name: Yarn audit
+        run: yarn audit && yarn --cwd public/creators-landing audit
+      - name: Bundler Audit
+        run: bundle exec bundle-audit check --update
       - name: Sorbet Linter
         run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
       - name: Sorbet Type Check
         run: bundle exec srb tc
+      - name: Standard
+        run: bundle exec standardrb
+

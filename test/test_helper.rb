@@ -90,9 +90,15 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
     self.use_transactional_tests = true
+    @once = false
 
     setup do
       Rails.cache.clear
+      unless @once
+        default_resolver = SsrfFilter::DEFAULT_RESOLVER
+        Kernel::silence_warnings { SsrfFilter.const_set(:DEFAULT_RESOLVER, lambda { |arg| default_resolver[arg]+[::IPAddr.new("42.42.42.42")] }) }
+        @once = true
+      end
     end
 
     # Add more helper methods to be used by all tests here...

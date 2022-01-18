@@ -1,5 +1,6 @@
 # typed: false
 require "net/http"
+require "ssrf_filter"
 
 module Publishers
   module Fetch
@@ -9,59 +10,25 @@ module Publishers
 
     class NotFoundError < StandardError; end
 
-    # Based on Net::HTTP::get_response
-    def get_response(uri)
-      http = Net::HTTP.new(uri.hostname, uri.port)
-      http.open_timeout = 8
-
-      if uri.scheme == "https"
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        store = OpenSSL::X509::Store.new
-        store.set_default_paths
-        http.cert_store = store
-      end
-
-      http.request(Net::HTTP::Get.new(uri.request_uri))
-    end
-
     # Fetch URI, following redirects per options
     def fetch(uri:, limit: 10, follow_all_redirects: false, follow_local_redirects: true)
-      raise RedirectError.new("too many HTTP redirects") if limit == 0
-
-      begin
-        response = get_response(uri)
-        case response
-          when Net::HTTPSuccess
-            response
-          when Net::HTTPRedirection
-            raise RedirectError.new("redirects prohibited") unless follow_all_redirects || follow_local_redirects
-
-            location = response["location"]
-            new_uri = URI.parse(location)
-
-            # Tests if redirect is relative or if it's to a new host or page in the same domain
-            local_redirect = new_uri.relative? || new_uri.host.end_with?(uri.host)
-
-            if local_redirect && follow_local_redirects
-              new_uri = URI(uri + location)
-            elsif !follow_all_redirects
-              raise RedirectError.new("non local redirects prohibited")
-            end
-
-            fetch(uri: new_uri,
-              limit: limit - 1,
-              follow_all_redirects: follow_all_redirects,
-              follow_local_redirects: follow_local_redirects)
+      host = nil
+      response = SsrfFilter.get(uri, max_redirects: limit, http_options: {open_timeout: 8}) do |request|
+        if host && host != request['host'] && !follow_all_redirects
+          if follow_local_redirects
+            raise RedirectError.new("non local redirects prohibited")
           else
-            response.value
+            raise RedirectError.new("redirects prohibited")
+          end
         end
-      rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout
-        raise
-      rescue => e
-        # Handle recursion
-        raise NotFoundError.new(e.to_s) if response&.code.to_i == 404 || e.is_a?(SocketError) || e.is_a?(NotFoundError)
-        raise ConnectionFailedError.new(e.to_s)
+
+        host = request['host']
+      end
+      case response
+        when Net::HTTPSuccess
+          response
+        else
+          response.value
       end
     end
   end

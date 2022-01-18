@@ -15,7 +15,7 @@
     decription: "For Site Channels created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
     queue: scheduler
   EnqueueEmailsForPromoPublishersJob:
-    cron: "0 23 * * *"
+    cron: "0 4 * * *"
     decription: "For emails for promo publishers job"
     queue: scheduler
   CleanStaleUpholdDataJob:

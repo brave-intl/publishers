@@ -20,7 +20,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
     stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example\.com/)
       .to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"example.com\"}", headers: {})
 
-    stub_request(:get, "https://example.com")
+    stub_request(:get, %r{\Ahttps://.*\z}).with(headers: {Host: 'example.com'})
       .to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
     channel_details = SiteChannelDetails.new
@@ -69,7 +69,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
   end
 
   test "skips normalization if it's unnecessary and just inspects the domain" do
-    stub_request(:get, "https://example.com")
+    stub_request(:get, %r{\Ahttps://.*\z}).with(headers: {Host: 'example.com'})
       .to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
     channel_details = SiteChannelDetails.new

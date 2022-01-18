@@ -69,7 +69,7 @@ class SiteChannelsController < ApplicationController
   end
 
   def update
-    @current_channel = Channel.find(params[:id])
+    @current_channel = current_publisher.channels.find(params[:id])
     @current_channel.details.update(ads_enabled_at: ActiveModel::Type::Boolean.new.cast(channel_update_unverified_params[:ads_enabled]) ? Time.now : nil)
   end
 
