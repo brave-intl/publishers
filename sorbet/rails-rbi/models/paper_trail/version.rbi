@@ -134,9 +134,6 @@ module PaperTrail::Version::QueryMethodsReturningRelation
   def unscoped(&block); end
 
   sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_Relation) }
-  def select(*args); end
-
-  sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_Relation) }
   def reselect(*args); end
 
   sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_Relation) }
@@ -222,6 +219,12 @@ module PaperTrail::Version::QueryMethodsReturningRelation
 
   sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_Relation) }
   def only(*args); end
+
+  sig { params(block: T.proc.params(e: PaperTrail::Version).returns(T::Boolean)).returns(T::Array[PaperTrail::Version]) }
+  def select(&block); end
+
+  sig { params(args: T.any(String, Symbol, T::Array[T.any(String, Symbol)])).returns(PaperTrail::Version::ActiveRecord_Relation) }
+  def select_columns(*args); end
 
   sig { params(args: T.untyped, block: T.nilable(T.proc.void)).returns(PaperTrail::Version::ActiveRecord_Relation) }
   def extending(*args, &block); end
@@ -247,9 +250,6 @@ module PaperTrail::Version::QueryMethodsReturningAssociationRelation
   def unscoped(&block); end
 
   sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_AssociationRelation) }
-  def select(*args); end
-
-  sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_AssociationRelation) }
   def reselect(*args); end
 
   sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_AssociationRelation) }
@@ -335,6 +335,12 @@ module PaperTrail::Version::QueryMethodsReturningAssociationRelation
 
   sig { params(args: T.untyped).returns(PaperTrail::Version::ActiveRecord_AssociationRelation) }
   def only(*args); end
+
+  sig { params(block: T.proc.params(e: PaperTrail::Version).returns(T::Boolean)).returns(T::Array[PaperTrail::Version]) }
+  def select(&block); end
+
+  sig { params(args: T.any(String, Symbol, T::Array[T.any(String, Symbol)])).returns(PaperTrail::Version::ActiveRecord_AssociationRelation) }
+  def select_columns(*args); end
 
   sig { params(args: T.untyped, block: T.nilable(T.proc.void)).returns(PaperTrail::Version::ActiveRecord_AssociationRelation) }
   def extending(*args, &block); end
