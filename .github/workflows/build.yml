@@ -73,7 +73,7 @@ jobs:
       - name: Brakeman
         run: bundle exec brakeman
       - name: Yarn audit
-        run: yarn audit && yarn --cwd public/creators-landing audit
+        run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
       - name: Bundler Audit
         run: bundle exec bundle-audit check --update
       - name: Sorbet Linter
