@@ -12,7 +12,7 @@ class GenerateReferralReportJob < ApplicationJob
     ).perform
 
     filename = "tmp/#{Time.now}_referral_report_#{start_date}-#{end_date}.csv"
-    File.open(filename, "w") { |f| f.write(report_csv) }
+    File.write(filename, report_csv)
 
     email = Publisher.find(publisher_id).email
 

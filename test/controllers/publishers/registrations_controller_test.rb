@@ -30,7 +30,7 @@ module Publishers
         end
 
         it "assigns @publisher" do
-          assert controller.instance_variable_get("@publisher")
+          assert controller.instance_variable_get(:@publisher)
         end
       end
 
@@ -40,7 +40,7 @@ module Publishers
         end
 
         it "assigns @publisher" do
-          assert controller.instance_variable_get("@publisher")
+          assert controller.instance_variable_get(:@publisher)
         end
       end
     end
@@ -55,7 +55,7 @@ module Publishers
       end
 
       it "assigns @publishers" do
-        assert controller.instance_variable_get("@publisher")
+        assert controller.instance_variable_get(:@publisher)
       end
     end
 
