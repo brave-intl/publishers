@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-def not_m1?
-  `uname -p`.strip != "arm64"
+def not_arm?
+  arch = `uname -m`.strip
+  !(arch.include?("arm") || arch.include?("aarch64"))
 end
 
 gem "ssrf_filter"
@@ -142,7 +143,7 @@ gem "sidekiq-scheduler", "~> 3.0.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
-gem "sorbet", "0.5.9538", group: :development if not_m1?
+gem "sorbet", "0.5.9538", group: :development if not_arm?
 gem "sorbet-runtime", "0.5.9538"
 
 gem "stripe", "~> 5.1", ">= 5.1.1"
@@ -190,7 +191,7 @@ group :development do
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
 
-  gem "tapioca", "0.6.1", require: false if not_m1?
+  gem "tapioca", "0.6.1", require: false if not_arm?
 end
 
 group :test do
