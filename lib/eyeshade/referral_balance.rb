@@ -9,16 +9,16 @@ module Eyeshade
       owner_account = accounts.find { |account| account["account_type"] == OWNER } || {}
 
       @amount_bat = if owner_account["balance"].nil?
-        0.to_d
+        BigDecimal("0")
       else
         owner_account["balance"].to_d
       end
 
-      @fees_bat = 0.to_d
+      @fees_bat = BigDecimal("0")
       @amount_probi = bat_to_probi(@amount_bat)
       @fees_probi = 0
       @amount_default_currency = convert(@amount_bat, @default_currency)
-      @fees_default_currency = 0.00.to_d
+      @fees_default_currency = BigDecimal("0.00")
       @amount_usd = convert(@amount_bat, "USD")
     end
   end

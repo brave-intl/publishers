@@ -12,7 +12,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     visit_authentication_url publisher
     assert_redirected_to controller: "/two_factor_authentications", action: "index"
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
 
     post totp_authentications_path, params: {
       totp_password: "123456"
@@ -29,7 +29,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     visit_authentication_url publisher
     assert_redirected_to controller: "/two_factor_authentications", action: "index"
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(false)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(false)
 
     post totp_authentications_path, params: {
       totp_password: "123456"

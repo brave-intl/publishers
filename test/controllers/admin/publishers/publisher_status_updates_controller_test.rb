@@ -15,8 +15,8 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
     it "assigns @publisher and @publisher_status_updates" do
       get admin_publisher_publisher_status_updates_path(publishers(:notes))
 
-      assert controller.instance_variable_get("@publisher")
-      assert controller.instance_variable_get("@publisher_status_updates")
+      assert controller.instance_variable_get(:@publisher)
+      assert controller.instance_variable_get(:@publisher_status_updates)
     end
   end
 

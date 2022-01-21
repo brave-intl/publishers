@@ -96,7 +96,7 @@ module ActiveSupport
       Rails.cache.clear
       unless @once
         default_resolver = SsrfFilter::DEFAULT_RESOLVER
-        Kernel::silence_warnings { SsrfFilter.const_set(:DEFAULT_RESOLVER, lambda { |arg| default_resolver[arg]+[::IPAddr.new("42.42.42.42")] }) }
+        Kernel.silence_warnings { SsrfFilter.const_set(:DEFAULT_RESOLVER, lambda { |arg| default_resolver[arg] + [::IPAddr.new("42.42.42.42")] }) }
         @once = true
       end
     end

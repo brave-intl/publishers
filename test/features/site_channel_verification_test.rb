@@ -19,7 +19,7 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
       "Accept" => "*/*",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "User-Agent" => "Ruby",
-      "Host" => channel.details.brave_publisher_id,
+      "Host" => channel.details.brave_publisher_id
     }
     body ||= SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
     stub_request(:get, url)

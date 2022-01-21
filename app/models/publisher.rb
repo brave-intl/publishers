@@ -58,7 +58,7 @@ class Publisher < ApplicationRecord
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",
-                           foreign_key: "created_by_id"
+    foreign_key: "created_by_id"
 
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> {

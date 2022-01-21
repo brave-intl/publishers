@@ -17,19 +17,19 @@ class Admin::PublisherStatsControllerTest < ActionDispatch::IntegrationTest
     end
 
     it "assigns @all_publishers" do
-      assert controller.instance_variable_get("@all_publishers")
+      assert controller.instance_variable_get(:@all_publishers)
     end
 
     it "assigns @email_verified" do
-      assert controller.instance_variable_get("@email_verified")
+      assert controller.instance_variable_get(:@email_verified)
     end
 
     it "assigns @email_verified_with_a_channel" do
-      assert controller.instance_variable_get("@email_verified_with_a_channel")
+      assert controller.instance_variable_get(:@email_verified_with_a_channel)
     end
 
     it "assigns @email_verified_with_a_verified_channel" do
-      assert controller.instance_variable_get("@email_verified_with_a_channel")
+      assert controller.instance_variable_get(:@email_verified_with_a_channel)
     end
 
     describe "when user requests CSV" do

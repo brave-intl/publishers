@@ -13,7 +13,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
 
   test "inspects the domain for github" do
     stub_request(:get, %r{\Ahttps://.*\z})
-      .with("headers" => {"Host" => 'mysite.github.io'})
+      .with("headers" => {"Host" => "mysite.github.io"})
       .to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
     result = SiteChannelHostInspector.new(url: "mysite.github.io").perform
@@ -173,7 +173,6 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
       .with("headers" => {"Host" => "www.mywordpress.com"})
       .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
 
-
     stub_request(:get, %r{\Ahttps://.*/index\.html\z})
       .with("headers" => {"Host" => "mywordpress2.com"})
       .to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
@@ -208,7 +207,6 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, %r{\Ahttps://.*\z})
       .with("headers" => {"Host" => "www.mywordpress.com"})
       .to_return(status: 301, headers: {location: "https://mywordpress2.com/index.html"})
-
 
     stub_request(:get, %r{\Ahttps://.*/index\.html\z})
       .with("headers" => {"Host" => "mywordpress2.com"})
