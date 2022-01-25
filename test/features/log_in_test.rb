@@ -82,7 +82,7 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Two-factor Authentication"
     assert_content page, "Enter the authentication code from your mobile app to verify your identity."
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
 
     fill_in "totp_password", with: "123456"
     click_button "Verify"
@@ -100,12 +100,12 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Two-factor Authentication"
     assert_content page, "Enter the authentication code from your mobile app to verify your identity."
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(false)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(false)
     fill_in "totp_password", with: "wrong"
     click_button "Verify"
     assert_content page, "Invalid 6-digit code. Please try again."
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
     fill_in "totp_password", with: "123456"
     click_button "Verify"
     assert_content page, "BALANCE"
@@ -150,7 +150,7 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Two-factor Authentication"
     assert_content page, "Enter the authentication code from your mobile app to verify your identity."
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
 
     fill_in "totp_password", with: "123456"
     click_button "Verify"

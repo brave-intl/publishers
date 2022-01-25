@@ -8,7 +8,7 @@ class CaseNote < ApplicationRecord
   validates :created_by, presence: true
   validates :note, presence: true, allow_blank: false
   validates_with HtmlValidator, attributes: [:note]
-  
+
   has_many_attached :files
 
   validate :file_attachment_validation

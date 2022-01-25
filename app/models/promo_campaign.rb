@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 class PromoCampaign < ApplicationRecord
   has_many :promo_registrations
   validates :name, uniqueness: {case_sensitive: false}, presence: true

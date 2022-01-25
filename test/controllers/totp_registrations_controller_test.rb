@@ -39,7 +39,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
   test "TOTP registration creation" do
     sign_in publishers(:completed)
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(true)
 
     assert_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
@@ -55,7 +55,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
   test "TOTP registration creation after prompt" do
     sign_in publishers(:completed)
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(true)
 
     get prompt_security_publishers_path
 
@@ -81,7 +81,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publisher
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(true)
 
     assert_no_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
@@ -100,7 +100,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     another_session = open_session
     another_session.sign_in publisher
 
-    ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(true)
 
     assert_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {

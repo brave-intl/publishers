@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 class Api::V2::Public::BaseController < ActionController::API
   # This BaseController does not IP whitelist, whereas API::BaseController does
   before_action :set_public_cache_control

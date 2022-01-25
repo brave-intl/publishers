@@ -12,7 +12,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       "Accept" => "*/*",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
       "User-Agent" => "Ruby",
-      "Host" => channel.details.brave_publisher_id,
+      "Host" => channel.details.brave_publisher_id
     }
     body ||= SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
     stub_request(:get, url)
@@ -79,7 +79,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     it "searches referral codes" do
       get admin_publishers_path, params: {q: "PRO123"}
 
-      publishers = controller.instance_variable_get("@publishers")
+      publishers = controller.instance_variable_get(:@publishers)
       assert_equal publishers.length, 1
       assert_equal publishers.first, publishers(:promo_enabled)
     end
@@ -87,7 +87,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     it "only shows suspended when suspended filter is on" do
       get admin_publishers_path, params: {status: "suspended"}
 
-      publishers = controller.instance_variable_get("@publishers")
+      publishers = controller.instance_variable_get(:@publishers)
 
       publishers.each do |p|
         assert_equal p.last_status_update.status, "suspended"
@@ -97,7 +97,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     it "filters correctly on name" do
       get admin_publishers_path, params: {q: publishers(:completed).name.to_s}
 
-      publishers = controller.instance_variable_get("@publishers")
+      publishers = controller.instance_variable_get(:@publishers)
       assert_equal publishers.length, 1
       assert_equal publishers.first, publishers(:completed)
     end
@@ -105,7 +105,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     it "returns no results when not found" do
       get admin_publishers_path, params: {q: "404 not found"}
 
-      publishers = controller.instance_variable_get("@publishers")
+      publishers = controller.instance_variable_get(:@publishers)
       assert_equal publishers.length, 0
     end
   end
