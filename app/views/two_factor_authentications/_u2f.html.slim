@@ -1,10 +1,9 @@
 div.js-feature-u2f-available
-
   = form_tag u2f_authentications_path, class: "js-authenticate-u2f" do
-    input type="hidden" name="u2f_app_id" value=(app_id)
-    input type="hidden" name="u2f_challenge" value=(challenge.as_json.to_json)
-    input type="hidden" name="u2f_sign_requests" value=(sign_requests.as_json.to_json)
-    input type="hidden" name="u2f_response"
+    input type="hidden" name="webauthn_u2f_app_id" value=(webauthn_get_options.extensions[:appid])
+    input type="hidden" name="webauthn_u2f_challenge" value=(webauthn_get_options.challenge)
+    input type="hidden" name="webauthn_u2f_sign_requests" value=(webauthn_get_options.allow.to_json)
+    input type="hidden" name="webauthn_u2f_response"
     h3.single-panel--headline = t ".heading"
 
     .col-small-centered

@@ -33,10 +33,13 @@ module Sidekiq
     def redis_pool; end
     def server?; end
     def server_middleware; end
+    def strict_args!(mode = T.unsafe(nil)); end
   end
 end
 
 class Sidekiq::Client
+  include ::Sidekiq::JobUtil
+
   def initialize(redis_pool = T.unsafe(nil)); end
 
   def middleware(&block); end
@@ -48,11 +51,8 @@ class Sidekiq::Client
   private
 
   def atomic_push(conn, payloads); end
-  def normalize_item(item); end
-  def normalized_hash(item_class); end
   def process_single(worker_class, item); end
   def raw_push(payloads); end
-  def validate(item); end
 
   class << self
     def enqueue(klass, *args); end
@@ -94,6 +94,18 @@ module Sidekiq::Extensions::PsychAutoload
 end
 
 Sidekiq::FAKE_INFO = T.let(T.unsafe(nil), Hash)
+Sidekiq::Job = Sidekiq::Worker
+
+module Sidekiq::JobUtil
+  def normalize_item(item); end
+  def normalized_hash(item_class); end
+  def validate(item); end
+
+  private
+
+  def json_safe?(item); end
+end
+
 Sidekiq::LICENSE = T.let(T.unsafe(nil), String)
 
 class Sidekiq::Logger < ::Logger
@@ -220,9 +232,11 @@ module Sidekiq::Util
   def redis(&block); end
   def safe_thread(name, &block); end
   def tid; end
+  def wait_for(deadline, &condblock); end
   def watchdog(last_words); end
 end
 
+Sidekiq::Util::PAUSE_TIME = T.let(T.unsafe(nil), Float)
 Sidekiq::VERSION = T.let(T.unsafe(nil), String)
 
 module Sidekiq::Worker
@@ -247,7 +261,10 @@ module Sidekiq::Worker::ClassMethods
   def delay_until(*args); end
   def perform_async(*args); end
   def perform_at(interval, *args); end
+  def perform_bulk(items, batch_size: T.unsafe(nil)); end
   def perform_in(interval, *args); end
+  def perform_inline(*args); end
+  def queue_as(q); end
   def set(options); end
   def sidekiq_options(opts = T.unsafe(nil)); end
 end
@@ -271,10 +288,19 @@ end
 Sidekiq::Worker::Options::ClassMethods::ACCESSOR_MUTEX = T.let(T.unsafe(nil), Thread::Mutex)
 
 class Sidekiq::Worker::Setter
+  include ::Sidekiq::JobUtil
+
   def initialize(klass, opts); end
 
   def perform_async(*args); end
   def perform_at(interval, *args); end
+  def perform_bulk(args, batch_size: T.unsafe(nil)); end
   def perform_in(interval, *args); end
+  def perform_inline(*args); end
+  def perform_sync(*args); end
   def set(options); end
+
+  private
+
+  def at(interval); end
 end
