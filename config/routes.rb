@@ -1,4 +1,4 @@
-# typed: false
+# typed: ignore
 # These are the routes for the application
 #
 # As a general rule; resources should never be nested more than 1 level deep.
