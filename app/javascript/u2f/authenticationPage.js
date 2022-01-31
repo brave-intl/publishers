@@ -1,52 +1,49 @@
 import './u2f-api';
 import { ErrorManager } from './shared';
+import { get } from "@github/webauthn-json";
 
 /*
  * Register a u2f device
  */
-function authenticate(formElement, responseInput, errorManager) {
+async function authenticate(formElement, responseInput, errorManager) {
   formElement.classList.add('js-u2f-working');
 
-  let appId = formElement.querySelector('[name=u2f_app_id]').value;
-  let challenge = JSON.parse(formElement.querySelector('[name=u2f_challenge]').value);
-  let signRequests = JSON.parse(formElement.querySelector('[name=u2f_sign_requests]').value);
-  window.u2f.sign(appId, challenge, signRequests, function(signingResponse) {
-    switch(signingResponse.errorCode) {
+  let appId = formElement.querySelector('[name=webauthn_u2f_app_id]').value;
+  let challenge = formElement.querySelector('[name=webauthn_u2f_challenge]').value;
+  let signRequests = JSON.parse(formElement.querySelector('[name=webauthn_u2f_sign_requests]').value);
 
-      case undefined: // OK
-      case 0: // OK
-        responseInput.value = JSON.stringify(signingResponse);
-        formElement.submit();
-        return;
+  async function authenticate({appId, challenge, signRequests}) {
+    return await get({
+      publicKey: {
+        challenge: challenge,
+        allowCredentials: signRequests.map(x => ({id: x, type: 'public-key'})),
+        extensions: {
+          "appid": appId
+        },
+        userVerification: "discouraged",
+      },
+    });
+  }
 
-      case 1: // OTHER_ERROR:
-        errorManager.show('u2f-error-other-error');
-        break;
-      case 2: // BAD_REQUEST:
-        errorManager.show('u2f-error-bad-request');
-        break;
-      case 3: // CONFIGURATION_UNSUPPORTED:
-        errorManager.show('u2f-error-configuration-unsupported');
-        break;
-      case 4: // DEVICE_INELIGIBLE:
-        errorManager.show('u2f-error-device-ineligible');
-        break;
-      case 5: // TIMEOUT
-        errorManager.show('u2f-error-timeout');
-        break;
-      case 99900: // IMPLEMENTATION_INCOMPLETE
-        errorManager.show('u2f-error-implementation-incomplete');
-        break;
-    }
+  // {
+  //   "type": "public-key",
+  //     "id": "WGy....",
+  //     "rawId": "PLe...",
+  //     "response": {
+  //   "clientDataJSON": "re...",
+  //       "authenticatorData": "i-vH...",
+  //       "signature": "VCV-....",
+  //       "userHandle": null
+  // },
+  //   "clientExtensionResults": {
+  //   "appid": true
+  // }
+  // }
+  const result = await authenticate({appId, challenge, signRequests});
 
-    formElement.classList.remove('js-u2f-working');
-    // Reset the form after an error to permit a second attempt
-    let submit = formElement.querySelector('input[type=submit][disabled]');
-    if (submit) {
-      submit.removeAttribute('disabled');
-      submit.blur();
-    }
-  });
+  // Errors handled by browser built-in
+  responseInput.value = JSON.stringify(result);
+  formElement.submit();
 }
 
 /*
@@ -57,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let formElement = document.querySelector('.js-authenticate-u2f');
 
   if (formElement && window.u2f) {
-    let responseInput = formElement.querySelector('[name=u2f_response]');
+    let responseInput = formElement.querySelector('[name=webauthn_u2f_response]');
     let errorManager = new ErrorManager('authenticate-u2f-error');
     formElement.addEventListener('submit', function(event) {
       errorManager.clear();
