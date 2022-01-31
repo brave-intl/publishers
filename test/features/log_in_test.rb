@@ -124,11 +124,11 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Two-factor Authentication"
     assert_content page, "Insert your security key and press the button on the key when blinking."
 
-    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(authenticate!: nil))
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(success_struct_empty)
     u2f_response = canned_u2f_response(u2f_registration)
 
     # Simulate U2F device usage, which submits the form on success
-    page.execute_script("document.querySelector('input[name=\"u2f_response\"]').value = '#{u2f_response}';")
+    page.execute_script("document.querySelector('input[name=\"webauthn_u2f_response\"]').value = '#{u2f_response}';")
     page.execute_script("document.querySelector('form.js-authenticate-u2f').submit();")
     assert_content page, "View statements"
   end

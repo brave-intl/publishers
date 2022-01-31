@@ -20,7 +20,7 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     visit_authentication_url publisher
     assert_redirected_to controller: "two_factor_authentications"
 
-    U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(authenticate!: nil))
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(success_struct_empty)
 
     post u2f_authentications_path, params: {
       u2f_response: canned_u2f_response(registration)
@@ -37,7 +37,7 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     visit_authentication_url publisher
     assert_redirected_to controller: "two_factor_authentications"
 
-    U2fAuthenticationsController.any_instance.stubs(:u2f).raises(U2F::Error.new)
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(error_struct)
 
     post u2f_authentications_path, params: {
       u2f_response: canned_u2f_response(registration)
