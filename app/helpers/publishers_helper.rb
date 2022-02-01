@@ -216,8 +216,6 @@ module PublishersHelper
       verification_public_file_publishers_path
     when "github"
       verification_github_publishers_path
-    when "wordpress"
-      verification_wordpress_publishers_path
     else
       verification_choose_method_publishers_path
     end
@@ -236,8 +234,6 @@ module PublishersHelper
     #   email_verified_publishers_path
     # else
     #   case publisher.detected_web_host
-    #     when "wordpress"
-    #       verification_wordpress_publishers_path
     #     when "github"
     #       verification_github_publishers_path
     #     else

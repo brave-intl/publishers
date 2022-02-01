@@ -147,7 +147,6 @@ Rails.application.routes.draw do
       get :verification_dns_record
       get :verification_public_file
       get :verification_github
-      get :verification_wordpress
     end
   end
 

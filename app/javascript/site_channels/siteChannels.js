@@ -6,10 +6,9 @@ function openFailedVerificationModal() {
 function isAVerificationPage(){
   let isDNSVerificationPage = document.querySelectorAll('body[data-action="verification_dns_record"]').length === 1
   let isPublicFileVerificationPage = document.querySelectorAll('body[data-action="verification_public_file"]').length === 1
-  let isWordPressVerificationPage = document.querySelectorAll('body[data-action="verification_wordpress"]').length === 1
   let isGithubVerificationPage = document.querySelectorAll('body[data-action="verification_github"]').length === 1
 
-  return isDNSVerificationPage || isPublicFileVerificationPage || isWordPressVerificationPage || isGithubVerificationPage
+  return isDNSVerificationPage || isPublicFileVerificationPage || isGithubVerificationPage
 }
 
 window.addEventListener('DOMContentLoaded', function() {

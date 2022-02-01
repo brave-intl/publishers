@@ -10,7 +10,6 @@ class SiteChannelsController < ApplicationController
     only: %i[
       verification_choose_method
       verification_dns_record
-      verification_wordpress
       verification_github
       verification_public_file
       verification_background
@@ -24,7 +23,6 @@ class SiteChannelsController < ApplicationController
       verification_dns_record
       verification_public_file
       verification_github
-      verification_wordpress
       download_verification_file
     ]
   before_action :update_site_verification_method,
@@ -33,7 +31,6 @@ class SiteChannelsController < ApplicationController
       verification_public_file
       verification_support_queue
       verification_github
-      verification_wordpress
     ]
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
@@ -153,8 +150,6 @@ class SiteChannelsController < ApplicationController
       current_channel.details.verification_method = "public_file"
     when "verification_github"
       current_channel.details.verification_method = "github"
-    when "verification_wordpress"
-      current_channel.details.verification_method = "wordpress"
     else
       raise "unknown action"
     end

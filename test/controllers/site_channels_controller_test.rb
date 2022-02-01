@@ -69,29 +69,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to controller: "/publishers", action: "home"
   end
 
-  test "verify can fail verification" do
-    channel = channels(:global_inprocess)
-
-    sign_in publishers(:global_media_group)
-
-    url = %r{\Ahttps://.*/\.well-known/brave-rewards-verification\.txt\z}
-    headers = {
-      "Accept" => "*/*",
-      "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => "Ruby",
-      "Host" => channel.details.brave_publisher_id
-    }
-    SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
-    stub_request(:get, url)
-      .with(headers: headers)
-      .to_return(status: 404, body: nil, headers: {})
-
-    patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
-    channel.reload
-    refute channel.verified?
-    assert_redirected_to controller: "/site_channels", action: "verification_wordpress", id: channel.id
-  end
-
   test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
     prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
