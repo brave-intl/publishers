@@ -20,8 +20,6 @@ services:
       - redis
     volumes:
       - .:/var/www
-      - /var/www/node_modules/
-      - /var/www/tmp/cache/webpacker/
     ports:
       - "3000:3000"
     env_file: .env.example
