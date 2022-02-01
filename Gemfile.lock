@@ -122,6 +122,7 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    android_key_attestation (0.3.0)
     archive-zip (0.12.0)
       io-like (~> 0.3.0)
     ast (2.4.2)
@@ -129,6 +130,7 @@ GEM
       encryptor (~> 3.0.0)
     autoprefixer-rails (10.4.2.0)
       execjs (~> 2)
+    awrence (1.2.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.549.0)
     aws-sdk-core (3.125.5)
@@ -152,6 +154,7 @@ GEM
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
+    bindata (2.4.10)
     bindex (0.8.1)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
@@ -181,6 +184,7 @@ GEM
       xpath (~> 3.2)
     case_transform (0.2)
       activesupport
+    cbor (0.5.9.6)
     childprocess (3.0.0)
     chromedriver-helper (2.1.1)
       archive-zip (~> 0.10)
@@ -191,6 +195,9 @@ GEM
       highline (~> 2.0.0)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
+    cose (1.2.0)
+      cbor (~> 0.5.9)
+      openssl-signature_algorithm (~> 1.0)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -236,6 +243,7 @@ GEM
     globalid (1.0.0)
       activesupport (>= 5.0)
     google-protobuf (3.19.3-x86_64-darwin)
+    google-protobuf (3.19.3-x86_64-linux)
     hashdiff (1.0.1)
     hashie (4.1.0)
     highline (2.0.3)
@@ -257,6 +265,7 @@ GEM
       terminal-table (>= 1.5.1)
     inflection (1.0.0)
     io-like (0.3.1)
+    ipaddr (1.2.3)
     jaro_winkler (1.5.4)
     jmespath (1.5.0)
     json (2.6.1)
@@ -303,6 +312,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
     oauth (0.5.8)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -335,6 +346,10 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    openssl (2.2.1)
+      ipaddr
+    openssl-signature_algorithm (1.1.1)
+      openssl (~> 2.0)
     orm_adapter (0.5.0)
     paper_trail (11.1.0)
       activerecord (>= 5.2)
@@ -464,6 +479,8 @@ GEM
     rufus-scheduler (3.8.1)
       fugit (~> 1.1, >= 1.1.6)
     safe_type (1.1.1)
+    safety_net_attestation (0.4.0)
+      jwt (~> 2.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -483,6 +500,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    securecompare (1.0.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -490,7 +508,7 @@ GEM
       ruby_http_client (~> 3.4)
     sentry-raven (2.11.3)
       faraday (>= 0.7.6, < 1.0)
-    sidekiq (6.2.2)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -543,6 +561,7 @@ GEM
       sorbet-runtime (>= 0.5)
     sorbet-runtime (0.5.9538)
     sorbet-static (0.5.9538-universal-darwin-20)
+    sorbet-static (0.5.9538-x86_64-linux)
     spoom (1.1.8)
       sorbet (>= 0.5.9204)
       sorbet-runtime (>= 0.5.9204)
@@ -578,6 +597,9 @@ GEM
     thwait (0.2.0)
       e2mmap
     tilt (2.0.10)
+    tpm-key_attestation (0.10.0)
+      bindata (~> 2.4)
+      openssl-signature_algorithm (~> 1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     u2f (1.0.0)
@@ -597,6 +619,16 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webauthn (2.5.0)
+      android_key_attestation (~> 0.3.0)
+      awrence (~> 1.1)
+      bindata (~> 2.4)
+      cbor (~> 0.5.9)
+      cose (~> 1.1)
+      openssl (~> 2.1)
+      safety_net_attestation (~> 0.4.0)
+      securecompare (~> 1.0)
+      tpm-key_attestation (~> 0.10.0)
     webmock (3.14.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -631,6 +663,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
@@ -705,7 +738,7 @@ DEPENDENCIES
   selenium-webdriver (~> 3.142.0)
   sendgrid-ruby (~> 6.2.1)
   sentry-raven (~> 2.11.2)
-  sidekiq (~> 6.2.1)
+  sidekiq (~> 6.4.0)
   sidekiq-scheduler (~> 3.0.1)
   simplecov
   slim-rails (~> 3.1)
@@ -725,6 +758,7 @@ DEPENDENCIES
   wasm-thumbnail-rb!
   wasmer!
   web-console
+  webauthn
   webmock (~> 3.0)
   webpacker (~> 4.0.7)
   will_paginate

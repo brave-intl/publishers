@@ -17,12 +17,12 @@ class TwoFactorAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to controller: "two_factor_authentications"
 
     follow_redirect!
-    assert_select("input[name=u2f_app_id][value=?]", @controller.u2f.app_id)
-    assert_select("input[name=u2f_challenge][value]")
+    assert_select("input[name=webauthn_u2f_app_id][value=?]", @controller.u2f.app_id)
+    assert_select("input[name=webauthn_u2f_challenge][value]")
     # This field has a JSON array values
-    assert_select("input[name=u2f_sign_requests][value^='[']")
+    assert_select("input[name=webauthn_u2f_sign_requests][value^='[']")
     # Check that response field is provided but not assigned a value
-    assert_select("input[name=u2f_response]:not([value])")
+    assert_select("input[name=webauthn_u2f_response]:not([value])")
   end
 
   test "TOTP page renders when pending_2fa_current_publisher_id and TOTP registration" do

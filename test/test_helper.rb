@@ -11,6 +11,7 @@ require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
+require "test_helpers/service_class_helpers"
 require "test_helpers/mock_uphold_responses"
 require "test_helpers/mock_gemini_responses"
 require "capybara/rails"
@@ -87,6 +88,8 @@ end
 
 module ActiveSupport
   class TestCase
+    include ServiceClassHelpers
+
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
     self.use_transactional_tests = true
@@ -108,6 +111,8 @@ end
 module Capybara
   module Rails
     class TestCase < ::ActiveSupport::TestCase
+      include ServiceClassHelpers
+
       self.use_transactional_tests = false
       # Make the Capybara DSL available in all integration tests
       include Capybara::DSL
@@ -136,6 +141,8 @@ end
 
 module ActionDispatch
   class IntegrationTest
+    include ServiceClassHelpers
+
     self.use_transactional_tests = true
 
     setup do

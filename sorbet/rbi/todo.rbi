@@ -7,8 +7,6 @@
 module ::Partner; end
 module ::Publisher; end
 module ::Publisher::ActiveRecord_Associations_CollectionProxy; end
-module ::YARDSorbet::Handlers::StructClassHandler; end
 module Devise::RouteSet; end
 module Rake::TaskLib; end
-module ReverseMarkdown::Converters::Base; end
 module T::Private::Methods::Signature; end

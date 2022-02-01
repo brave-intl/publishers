@@ -74,7 +74,8 @@
     "react-select": "^3.0.8",
     "react-tooltip": "^4.2.3",
     "styled-components": "5.1.0",
-    "tributejs": "^3.7.1"
+    "tributejs": "^3.7.1",
+    "@github/webauthn-json": "^0.6.6"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
