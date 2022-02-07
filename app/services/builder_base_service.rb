@@ -22,4 +22,22 @@ class BuilderBaseService
 
     OpenStruct.new(success?: errors.empty?, errors: errors, result: result)
   end
+
+  def call(*args, **kwargs)
+    result = nil
+    errors = []
+
+    unless respond_to?(:run)
+      raise NotImplementedError.new("Contract violation, Builder Service Children must implement run")
+    end
+
+    # Error handling by default
+    begin
+      result = run(*args, **kwargs)
+    rescue => e
+      errors.append(e)
+    end
+
+    OpenStruct.new(success?: errors.empty?, errors: errors, result: result)
+  end
 end
