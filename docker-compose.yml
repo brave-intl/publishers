@@ -11,17 +11,15 @@ services:
       REDIS_URL: redis://redis:6379/0
       DATABASE_URL: postgres://postgres@postgres:5432/brave_publishers_dev
       DATABASE_URL_TEST: postgres://postgres@postgres:5432/brave_publishers_test
-      SSL: "off"
+      ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
-    command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
     depends_on:
       - postgres
       - redis
     volumes:
       - .:/var/www
-      - /var/www/node_modules/
-      - /var/www/tmp/cache/webpacker/
     ports:
       - "3000:3000"
     env_file: .env.example
