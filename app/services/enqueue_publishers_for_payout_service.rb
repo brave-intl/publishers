@@ -2,37 +2,40 @@ class EnqueuePublishersForPayoutService
   def call(final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
     Rails.logger.info("Enqueuing publishers for payment.")
 
-    payout_report = if payout_report_id.present?
+    @manual = manual
+    @final = final
+    @publisher_ids = publisher_ids
+
+    # I'm using instance variables here because it's a lot
+    # easier to read than attempting to follow passing this record
+    # through the method chain.
+    @payout_report = if payout_report_id.present?
       PayoutReport.find(payout_report_id)
     else
-      PayoutReport.create(final: final,
+      PayoutReport.create(final: @final,
         manual: manual,
         fee_rate: fee_rate,
         expected_num_payments: 0)
     end
 
-    enqueue_payout(
-      manual: manual,
-      payout_report: payout_report,
-      publisher_ids: publisher_ids
-    )
+    enqueue_payout
 
-    payout_report
+    @payout_report
   end
 
   private
 
-  def enqueue_payout(payout_report:, manual:, publisher_ids:)
+  def enqueue_payout
     base_publishers = Publisher
 
-    filtered_publishers = if publisher_ids.present?
-      base_publishers.where(id: publisher_ids)
+    filtered_publishers = if @publisher_ids.present?
+      base_publishers.where(id: @publisher_ids)
     else
       base_publishers.with_verified_channel.not_in_top_referrer_program
     end
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
-    wallet_providers_to_insert = if manual
+    wallet_providers_to_insert = if @manual
       [{service: Payout::ManualPayoutReportPublisherIncluder.new, initial_publishers: filtered_publishers.invoice}]
     else
       [
@@ -62,7 +65,7 @@ class EnqueuePublishersForPayoutService
         service = wallet_provider_info[:service]
         publishers = wallet_provider_info[:initial_publishers]
 
-        pids = publishers.pluck(:id)
+        # Single query using select rather than 2 queries using pluck
         eager_loaded_publishers = Publisher.strict_loading.includes(
           :status_updates,
           :uphold_connection,
@@ -70,36 +73,43 @@ class EnqueuePublishersForPayoutService
           :bitflyer_connection
         ).preload(
           channels: :details
-        ).where(id: pids)
+        ).where(id: publishers.select(:id))
 
         generate_payments_and_save(
           publishers: eager_loaded_publishers,
-          payout_report: payout_report,
           service: service
         )
       end
     end
   end
 
-  def generate_payments_and_save(publishers:, payout_report:, service:)
+  def generate_payments_and_save(publishers:, service:)
     # EXPECTED NUMBER OF PAYMENTS
     number_of_payments = PayoutReport.expected_num_payments(publishers)
-    payout_report.with_lock do
-      payout_report.reload
-      payout_report.expected_num_payments = number_of_payments + payout_report.expected_num_payments
-      payout_report.save!
+
+    @payout_report.with_lock do
+      @payout_report.reload
+      @payout_report.expected_num_payments = number_of_payments + @payout_report.expected_num_payments
+      @payout_report.save!
     end
 
     # CALL POTENTIAL PAYMENT OBJECT CREATION
-    publishers.find_in_batches(batch_size: 10000) do |group|
+    total = publishers.count
+    batch_size = 10000
+
+    publishers.find_in_batches(batch_size: batch_size) do |group|
       potential_payments = []
 
       group.each do |publisher|
-        potential_payments.concat(service.perform(publisher: publisher, payout_report: payout_report))
+        potential_payments.concat(service.perform(publisher: publisher, payout_report: @payout_report))
       end
 
       # DB Insert
       PotentialPayment.import(potential_payments, validate: false)
+
+      completed = batch_size / total
+
+      @payout_report.update!(percent_complete:  completed > 1 ? 1 : completed)
     end
   end
 
@@ -108,3 +118,4 @@ class EnqueuePublishersForPayoutService
     Rails.application.secrets[:fee_rate].to_d
   end
 end
+
