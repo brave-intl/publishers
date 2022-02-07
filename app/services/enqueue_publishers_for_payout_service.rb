@@ -1,24 +1,20 @@
 class EnqueuePublishersForPayoutService
-  def call(final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
-    Rails.logger.info("Enqueuing publishers for payment.")
+  def call(payout_report, final: true, manual: false, publisher_ids: [], args: [])
+    unless payout_report.is_a?(PayoutReport)
+      # Wondering if sorbet can just do stuff like this?
+      raise ArgumentError.new("Invalid argument type. Must be PayoutReport")
+    end
 
+    @payout_report = payout_report
     @manual = manual
     @final = final
     @publisher_ids = publisher_ids
 
-    # I'm using instance variables here because it's a lot
-    # easier to read than attempting to follow passing this record
-    # through the method chain.
-    @payout_report = if payout_report_id.present?
-      PayoutReport.find(payout_report_id)
-    else
-      PayoutReport.create(final: @final,
-        manual: manual,
-        fee_rate: fee_rate,
-        expected_num_payments: 0)
+    begin
+      enqueue_payout
+    rescue => error
+      @payout_report.update!(status: "Error - #{error.message}")
     end
-
-    enqueue_payout
 
     @payout_report
   end
@@ -97,6 +93,8 @@ class EnqueuePublishersForPayoutService
     total = publishers.count
     batch_size = 10000
 
+    @payout_report.update!(status: "Enqueued")
+
     publishers.find_in_batches(batch_size: batch_size) do |group|
       potential_payments = []
 
@@ -108,14 +106,11 @@ class EnqueuePublishersForPayoutService
       PotentialPayment.import(potential_payments, validate: false)
 
       completed = batch_size / total
+      percent_complete = completed > 1 ? 1 : completed
 
-      @payout_report.update!(percent_complete:  completed > 1 ? 1 : completed)
+      @payout_report.update!(percent_complete: percent_complete)
     end
-  end
 
-  def fee_rate
-    raise if Rails.application.secrets[:fee_rate].blank?
-    Rails.application.secrets[:fee_rate].to_d
+    @payout_report.update!(status: "Complete")
   end
 end
-

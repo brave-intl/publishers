@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_07_165332) do
+ActiveRecord::Schema.define(version: 2022_02_07_192120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -385,6 +385,7 @@ ActiveRecord::Schema.define(version: 2022_02_07_165332) do
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
     t.float "percent_complete", default: 0.0
+    t.string "status"
   end
 
   create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
