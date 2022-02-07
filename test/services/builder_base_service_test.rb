@@ -10,9 +10,31 @@ class BuilderBaseServiceTest < ActiveSupport::TestCase
     end
   end
 
+  test "UseBuildBaseService" do
+    class UseBuildBaseService < BuilderBaseService
+      def self.build
+        new("default_value")
+      end
+
+      def initialize(service)
+        @service = service
+      end
+
+      def call
+        @service
+      end
+    end
+
+    output = UseBuildBaseService.call
+    assert_instance_of(OpenStruct, output)
+    assert output.result == "default_value"
+    assert output.success?
+    assert output.errors.empty?
+  end
+
   class ValidChildOfBuilderBaseService < BuilderBaseService
-    def call
-      true
+    def call(kwarg: true)
+      kwarg
     end
   end
 
@@ -20,6 +42,14 @@ class BuilderBaseServiceTest < ActiveSupport::TestCase
     output = ValidChildOfBuilderBaseService.call
     assert_instance_of(OpenStruct, output)
     assert output.result
+    assert output.success?
+    assert output.errors.empty?
+  end
+
+  test "#{ValidChildOfBuilderBaseService.name} kwargs" do
+    output = ValidChildOfBuilderBaseService.call(kwarg: nil)
+    assert_instance_of(OpenStruct, output)
+    assert !output.result
     assert output.success?
     assert output.errors.empty?
   end
