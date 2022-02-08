@@ -1,43 +1,29 @@
+# typed: true
+
 class BuilderBaseService
-  def self.build
-    new
+  extend T::Helpers
+  extend T::Sig
+
+  class SuccessStruct < T::Struct
+    prop :success, TrueClass
+    prop :result, T.any(Hash, String, Array, NilClass)
   end
 
-  def self.call(*args, **kwargs)
-    inst = build
-    result = nil
-    errors = []
-
-    # Establish basic interface
-    unless inst.respond_to?(:call)
-      raise NotImplementedError.new("Contract violation, Builder Service Children must implement call")
-    end
-
-    # Error handling by default
-    begin
-      result = inst.call(*args, **kwargs)
-    rescue => e
-      errors.append(e)
-    end
-
-    OpenStruct.new(success?: errors.empty?, errors: errors, result: result)
+  class FailureStruct < T::Struct
+    prop :success, FalseClass
+    prop :errors, T::Array[String]
   end
 
-  def call(*args, **kwargs)
-    result = nil
-    errors = []
-
-    unless respond_to?(:run)
-      raise NotImplementedError.new("Contract violation, Builder Service Children must implement run")
-    end
-
-    # Error handling by default
-    begin
-      result = run(*args, **kwargs)
-    rescue => e
-      errors.append(e)
-    end
-
-    OpenStruct.new(success?: errors.empty?, errors: errors, result: result)
+  class ResultStruct < T::Struct
+    prop :success, T::Boolean
+    prop :result, T.any(Hash, String, Array, NilClass)
   end
+    
+  abstract!
+
+  sig {abstract.returns(BuilderBaseService)}
+  def self.build; end
+
+  sig {abstract.returns(T.any(SuccessStruct, FailureStruct, ResultStruct))}
+  def call; end
 end
