@@ -30,14 +30,14 @@ class BuilderBaseServiceTest < ActiveSupport::TestCase
     end
 
     def call(service: "service")
-      BuilderBaseService::SuccessStruct.new(result: service, success: true)
+      pass
     end
   end
 
   test ValidChildOfBuilderBaseService.name do
     output = ValidChildOfBuilderBaseService.build.call
-    assert_instance_of(BuilderBaseService::SuccessStruct, output)
-    assert output.result == "service"
+    assert_instance_of(BSuccess, output)
+    assert output.result == true
   end
 
   class FailedChildOfBuilderBaseService < BuilderBaseService
@@ -46,13 +46,13 @@ class BuilderBaseServiceTest < ActiveSupport::TestCase
     end
 
     def call(service: "service")
-      BuilderBaseService::FailureStruct.new(errors: ["We could not succeed"], success: false)
+      BFailure.new(errors: ["We could not succeed"])
     end
   end
 
   test FailedChildOfBuilderBaseService.name do
     output = FailedChildOfBuilderBaseService.build.call
-    assert_instance_of(BuilderBaseService::FailureStruct, output)
+    assert_instance_of(BFailure, output)
     assert !output.errors.empty?
   end
 end
