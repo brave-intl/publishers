@@ -5,6 +5,8 @@ class PayoutReport < ApplicationRecord
 
   LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800".freeze
 
+  STATUS = ["Enqueued", "Complete"].freeze
+
   MINIMUM_BALANCE_AMOUNT = 0.01
   BAT = "bat".freeze
 
@@ -12,6 +14,7 @@ class PayoutReport < ApplicationRecord
   has_many :payout_messages
 
   validates_presence_of :expected_num_payments
+  validate :acceptable_status
 
   scope :final, -> {
     where(final: true)
@@ -47,6 +50,14 @@ class PayoutReport < ApplicationRecord
 
   def contribution_count
     potential_payments.pluck(:channel_id).compact.count
+  end
+
+  def acceptable_status
+    return true unless status.present?
+
+    unless STATUS.include?(status) || status.start_with?("Error")
+      errors.add(:status, "#{status} is invalid")
+    end
   end
 
   def referral_count
