@@ -14,8 +14,9 @@ module TwoFactorAuth
 
       registration = publisher.u2f_registrations.find_by(key_handle: response_id)
 
-      # For future: To determine if this is a U2F request:
+      # For future: To determine if this is a U2F request, you can use passed values from the client like:
       # client_json_wrapper[:clientExtensionResults][:appid] is set if is
+      # Or you can check the DB, which we do below
 
       assertion_response = WebAuthn::AuthenticatorAssertionResponse.new(
         user_handle: registration.key_handle,
@@ -25,13 +26,22 @@ module TwoFactorAuth
       )
 
       begin
-        assertion_response.verify(
-          Base64.urlsafe_decode64(session[:current_authentication][:challenge]),
-          domain,
-          public_key: Base64.urlsafe_decode64(registration.public_key),
-          sign_count: registration.counter,
-          rp_id: domain
-        )
+        if registration.u2f? # old registration format
+          assertion_response.verify(
+            Base64.urlsafe_decode64(session[:current_authentication][:challenge]),
+            domain,
+            public_key: Base64.urlsafe_decode64(registration.public_key),
+            sign_count: registration.counter,
+            rp_id: domain
+          )
+        else
+          assertion_response.verify(
+            Base64.urlsafe_decode64(session[:current_authentication][:challenge]),
+            domain,
+            public_key: Base64.urlsafe_decode64(registration.public_key),
+            sign_count: registration.counter
+          )
+        end
       rescue WebAuthn::VerificationError => e
         Rails.logger.debug("WebAuthn::Error! #{e}")
         return OpenStruct.new(success?: false, result: nil, errors: [e])

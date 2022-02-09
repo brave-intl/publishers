@@ -10,42 +10,43 @@ class U2fRegistrationsController < ApplicationController
 
   def new
     @u2f_registration = U2fRegistration.new
-    @registration_requests = u2f.registration_requests
-    session[:challenges] = @registration_requests.map(&:challenge)
-    @app_id = u2f.app_id
+    publisher = current_publisher
 
-    @u2f_registrations = current_publisher.u2f_registrations
+    @webauthn_options = WebAuthn::Credential.options_for_create(
+      user: {id: publisher.id, name: publisher.email},
+      exclude: publisher.u2f_registrations.map { |c| c.key_handle }.compact
+    )
 
-    key_handles = @u2f_registrations.map(&:key_handle)
-    @sign_requests = u2f.authentication_requests(key_handles)
+    session[:creation_challenge] = @webauthn_options.challenge
   end
 
   def create
-    u2f_response = U2F::RegisterResponse.load_from_json(params[:u2f_response])
+    response = JSON.parse(params[:webauthn_response])
 
-    registration = begin
-      u2f.register!(session[:challenges], u2f_response)
-    rescue U2F::Error => e
-      Rails.logger.debug("U2F::Error! #{e}")
+    challenge = session.delete(:creation_challenge)
+    credential = WebAuthn::Credential.from_create(response)
+
+    begin
+      credential.verify(challenge)
+    rescue WebAuthn::Error => e
+      Rails.logger.debug("Webauthn::Error! #{e}")
       redirect_to new_u2f_registration_path
       return
-    ensure
-      session.delete(:challenges)
     end
 
     permitted = params.require(:u2f_registration).permit(:name)
 
     current_publisher.u2f_registrations.create!(
       permitted.merge({
-        certificate: registration.certificate,
-        key_handle: registration.key_handle,
-        public_key: registration.public_key,
-        counter: registration.counter
+        key_handle: credential.id,
+        public_key: credential.public_key,
+        counter: credential.sign_count,
+        name: permitted[:name],
+        format: U2fRegistration.formats[:webauthn]
       })
     )
 
     logout_everybody_else!
-
     handle_redirect_after_2fa_registration
   end
 

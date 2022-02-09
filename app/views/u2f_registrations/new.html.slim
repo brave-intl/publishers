@@ -53,11 +53,12 @@
 
       .col-small-centered.text-left
 
-        = form_for @u2f_registration, html: { class: "js-register-u2f js-feature-u2f-available" } do |f|
-          input type="hidden" name="u2f_app_id" value=(@app_id)
-          input type="hidden" name="u2f_registration_requests" value=(@registration_requests.as_json.to_json)
-          input type="hidden" name="u2f_sign_requests" value=(@sign_requests.as_json.to_json)
-          input type="hidden" name="u2f_response"
+        = form_for @u2f_registration, html: { class: "js-register-webauthn js-feature-u2f-available" } do |f|
+          input type="hidden" name="webauthn_challenge" value=(@webauthn_options.challenge)
+          input type="hidden" name="webauthn_user_display_name" value=(@webauthn_options.user.display_name)
+          input type="hidden" name="webauthn_user_id" value=(@webauthn_options.user.id)
+          input type="hidden" name="webauthn_exclusions" value=(@webauthn_options.exclude.to_json)
+          input type="hidden" name="webauthn_response"
 
           .form-group
             = f.label :name
