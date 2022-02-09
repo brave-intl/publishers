@@ -23,5 +23,7 @@ class CspViolationsReportController < ApplicationController
     rescue
       nil
     end
+
+    head :no_content
   end
 end

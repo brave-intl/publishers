@@ -14,8 +14,6 @@ module ChannelsHelper
         verification_public_file_site_channel_path(channel)
       when "github"
         verification_github_site_channel_path(channel)
-      when "wordpress"
-        verification_wordpress_site_channel_path(channel)
       else
         verification_choose_method_site_channel_path(channel)
     end
@@ -28,8 +26,6 @@ module ChannelsHelper
       site_last_verification_method_path(channel)
     else
       case channel.details.detected_web_host
-        when "wordpress"
-          verification_wordpress_site_channel_path(channel)
         when "github"
           verification_github_site_channel_path(channel)
         else
