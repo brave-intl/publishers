@@ -5,7 +5,7 @@ class BuilderBaseService
   extend T::Sig
 
   class ::BSuccess < T::Struct
-    prop :result, T.untyped
+    prop :result, T.untyped # rubocop:disable Sorbet/ForbidUntypedStructProps
   end
 
   class ::BFailure < T::Struct
