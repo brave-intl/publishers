@@ -66,6 +66,12 @@ jobs:
         run: RAILS_ENV=test bundle exec rake db:prepare
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
+      - name: Sorbet Linter
+        run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
+      - name: Sorbet Type Check
+        run: bundle exec srb tc
+      - name: Standard
+        run: bundle exec standardrb
       - name: Run tests
         run: RAILS_ENV=test bundle exec rails test
         env:
@@ -76,10 +82,4 @@ jobs:
         run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
       - name: Bundler Audit
         run: bundle exec bundle-audit check --update
-      - name: Sorbet Linter
-        run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-      - name: Sorbet Type Check
-        run: bundle exec srb tc
-      - name: Standard
-        run: bundle exec standardrb
 
