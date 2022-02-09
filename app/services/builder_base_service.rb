@@ -4,28 +4,32 @@ class BuilderBaseService
   extend T::Helpers
   extend T::Sig
 
-  class SuccessStruct < T::Struct
-    prop :success, TrueClass
-    prop :result, T.any(Hash, String, Array, NilClass)
+  class ::BSuccess < T::Struct
+    prop :result, T.untyped
   end
 
-  class FailureStruct < T::Struct
-    prop :success, FalseClass
+  class ::BFailure < T::Struct
     prop :errors, T::Array[String]
   end
 
-  class ResultStruct < T::Struct
-    prop :success, T::Boolean
-    prop :result, T.any(Hash, String, Array, NilClass)
-  end
+  ServiceResult = T.type_alias { T.any(BSuccess, BFailure) }
 
   abstract!
 
-  sig { abstract.returns(BuilderBaseService) }
+  sig { abstract.returns(T.self_type) }
   def self.build
   end
 
-  sig { abstract.returns(T.any(SuccessStruct, FailureStruct, ResultStruct)) }
+  sig { abstract.returns(ServiceResult) }
   def call
+  end
+
+  def pass(val = true)
+    T.must(val)
+    BSuccess.new(result: val)
+  end
+
+  def problem(e)
+    BFailure.new(errors: [e])
   end
 end
