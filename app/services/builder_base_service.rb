@@ -18,12 +18,14 @@ class BuilderBaseService
     prop :success, T::Boolean
     prop :result, T.any(Hash, String, Array, NilClass)
   end
-    
+
   abstract!
 
-  sig {abstract.returns(BuilderBaseService)}
-  def self.build; end
+  sig { abstract.returns(BuilderBaseService) }
+  def self.build
+  end
 
-  sig {abstract.returns(T.any(SuccessStruct, FailureStruct, ResultStruct))}
-  def call; end
+  sig { abstract.returns(T.any(SuccessStruct, FailureStruct, ResultStruct)) }
+  def call
+  end
 end

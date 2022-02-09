@@ -55,5 +55,4 @@ class BuilderBaseServiceTest < ActiveSupport::TestCase
     assert_instance_of(BuilderBaseService::FailureStruct, output)
     assert !output.errors.empty?
   end
-
 end
