@@ -5,6 +5,7 @@ require "concerns/logout"
 class U2fRegistrationsController < ApplicationController
   include Logout
   include TwoFactorRegistration
+  extend T::Helpers
 
   before_action :authenticate_publisher!
 
@@ -21,33 +22,23 @@ class U2fRegistrationsController < ApplicationController
   end
 
   def create
-    response = JSON.parse(params[:webauthn_response])
-
     challenge = session.delete(:creation_challenge)
-    credential = WebAuthn::Credential.from_create(response)
+    name = params.require(:u2f_registration).permit(:name)[:name]
 
-    begin
-      credential.verify(challenge)
-    rescue WebAuthn::Error => e
-      Rails.logger.debug("Webauthn::Error! #{e}")
-      redirect_to new_u2f_registration_path
-      return
+    result = TwoFactorAuth::WebauthnRegistrationService.build.call(publisher: current_publisher,
+      webauthn_response: params[:webauthn_response],
+      name: name,
+      challenge: challenge)
+
+    case result
+    when BFailure
+      redirect_to new_u2f_registration_path && return
+    when BSuccess
+      logout_everybody_else!
+      handle_redirect_after_2fa_registration
+    else
+      T.absurd(result)
     end
-
-    permitted = params.require(:u2f_registration).permit(:name)
-
-    current_publisher.u2f_registrations.create!(
-      permitted.merge({
-        key_handle: credential.id,
-        public_key: credential.public_key,
-        counter: credential.sign_count,
-        name: permitted[:name],
-        format: U2fRegistration.formats[:webauthn]
-      })
-    )
-
-    logout_everybody_else!
-    handle_redirect_after_2fa_registration
   end
 
   def destroy

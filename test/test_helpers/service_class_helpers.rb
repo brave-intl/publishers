@@ -1,10 +1,10 @@
 # typed: false
 module ServiceClassHelpers
   def success_struct_empty
-    OpenStruct.new(success?: true, result: nil, errors: nil)
+    BSuccess.new(result: true)
   end
 
   def error_struct
-    OpenStruct.new(success?: false, result: nil, errors: [StandardError.new("error")])
+    BFailure.new(errors: [StandardError.new("error")])
   end
 end

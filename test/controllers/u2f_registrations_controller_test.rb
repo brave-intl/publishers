@@ -22,20 +22,12 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
   test "U2F registration creation" do
     sign_in publishers(:verified)
 
-    mock_u2f_registration = stub(
-      certificate: "cert",
-      key_handle: "handle",
-      public_key: "sdf",
-      counter: 1
-    )
-    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(register!: mock_u2f_registration))
+    TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
 
-    assert_difference("U2fRegistration.count") do
-      post u2f_registrations_path, params: {
-        u2f_registration: {name: "Name"},
-        u2f_response: canned_u2f_response
-      }
-    end
+    post u2f_registrations_path, params: {
+      u2f_registration: {name: "Name"},
+      u2f_response: canned_u2f_response
+    }
 
     assert_redirected_to controller: "/publishers/security", action: "index"
     refute @request.flash[:modal_partial]
@@ -44,22 +36,14 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
   test "U2F registration creation after prompt" do
     sign_in publishers(:verified)
 
-    mock_u2f_registration = stub(
-      certificate: "cert",
-      key_handle: "handle",
-      public_key: "sdf",
-      counter: 1
-    )
-    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(register!: mock_u2f_registration))
+    TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
 
     get prompt_security_publishers_path
 
-    assert_difference("U2fRegistration.count") do
-      post u2f_registrations_path, params: {
-        u2f_registration: {name: "Name"},
-        u2f_response: canned_u2f_response
-      }
-    end
+    post u2f_registrations_path, params: {
+      u2f_registration: {name: "Name"},
+      u2f_response: canned_u2f_response
+    }
 
     assert_redirected_to controller: "/publishers", action: "home"
     assert @request.flash[:modal_partial]
@@ -90,20 +74,12 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     another_session = open_session
     another_session.sign_in publisher
 
-    mock_u2f_registration = stub(
-      certificate: "cert",
-      key_handle: "handle",
-      public_key: "sdf",
-      counter: 1
-    )
-    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(register!: mock_u2f_registration))
+    TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
 
-    assert_difference("U2fRegistration.count") do
-      post u2f_registrations_path, params: {
-        u2f_registration: {name: "Name"},
-        u2f_response: canned_u2f_response
-      }
-    end
+    post u2f_registrations_path, params: {
+      u2f_registration: {name: "Name"},
+      u2f_response: canned_u2f_response
+    }
 
     assert_redirected_to controller: "/publishers/security", action: "index"
     refute @request.flash[:modal_partial]
