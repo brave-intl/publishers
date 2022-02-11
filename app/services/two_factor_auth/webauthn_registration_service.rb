@@ -19,7 +19,7 @@ module TwoFactorAuth
         credential.verify(challenge)
       rescue WebAuthn::Error => e
         Rails.logger.debug("Webauthn::Error! #{e}")
-        return problem(e)
+        return problem(e.message)
       end
 
       publisher.u2f_registrations.create!(
