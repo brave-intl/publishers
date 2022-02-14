@@ -90,12 +90,9 @@ class EnqueuePublishersForPayoutService
     end
 
     # CALL POTENTIAL PAYMENT OBJECT CREATION
-    total = publishers.count
-    batch_size = 10000
-
     @payout_report.update!(status: "Enqueued")
 
-    publishers.find_in_batches(batch_size: batch_size) do |group|
+    publishers.find_in_batches(batch_size: 10000) do |group|
       potential_payments = []
 
       group.each do |publisher|
@@ -104,11 +101,6 @@ class EnqueuePublishersForPayoutService
 
       # DB Insert
       PotentialPayment.import(potential_payments, validate: false)
-
-      completed = batch_size / total
-      percent_complete = completed > 1 ? 1 : completed
-
-      @payout_report.update!(percent_complete: percent_complete)
     end
 
     @payout_report.update!(status: "Complete")

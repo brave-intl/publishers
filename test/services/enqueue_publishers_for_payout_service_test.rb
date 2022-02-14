@@ -13,18 +13,8 @@ class EnqueuePublishersForPayoutServiceTest < NoTransactDBBleanupTest
     }
   end
 
-  test "percent completion is set" do
-    payout_report = payout_reports(:one)
-    assert payout_report.percent_complete == 0
-    assert EnqueuePublishersForPayoutService.new.call(
-      payout_report,
-      final: false
-    ).percent_complete == 1
-  end
-
   test "status is set" do
     payout_report = payout_reports(:one)
-    assert payout_report.percent_complete == 0
     assert EnqueuePublishersForPayoutService.new.call(
       payout_report,
       final: false

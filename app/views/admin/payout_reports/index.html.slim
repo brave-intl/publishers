@@ -19,7 +19,6 @@ table.display.table.table-bordered.table-striped
     th ID
     th Type
     th Manual
-    th Percent Complete
     th Status
     /TODO: (Albert Wang): Re-enable these columns once we query follower or figure out a smart optimization th Expected - actual # of payments
     / th # Payments to be paid
@@ -32,7 +31,6 @@ table.display.table.table-bordered.table-striped
         td = link_to report.id[0..6], admin_payout_report_path(report.id)
         td = "#{report.final ? "Final" : "Temp"}"
         td = report.manual ? "Yes" : "No"
-        td = "#{Integer(report.percent_complete * 100)}%"
         td = "#{report.status}"
         / TODO: Re-enable this once we can query follower or we figure out something longer term td = "#{report.expected_num_payments} - #{report.num_payments}"
         / td = report.num_payments_to_be_paid
