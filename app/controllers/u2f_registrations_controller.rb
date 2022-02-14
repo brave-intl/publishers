@@ -31,11 +31,11 @@ class U2fRegistrationsController < ApplicationController
       challenge: challenge)
 
     case result
-    when BFailure
-      redirect_to new_u2f_registration_path && return
     when BSuccess
       logout_everybody_else!
       handle_redirect_after_2fa_registration
+    when BFailure
+      redirect_to new_u2f_registration_path && return
     else
       T.absurd(result)
     end

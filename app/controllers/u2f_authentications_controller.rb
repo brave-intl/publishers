@@ -10,11 +10,15 @@ class U2fAuthenticationsController < ApplicationController
       webauthn_u2f_response: params[:webauthn_u2f_response],
       domain: request.base_url,
       session: session)
-    if result.success?
+
+    case result
+    when BSuccess
       sign_in(:publisher, publisher)
       redirect_to publisher_next_step_path(publisher)
-    else
+    when BFailure
       redirect_to two_factor_authentications_path
+    else
+      T.absurd(result)
     end
   end
 end

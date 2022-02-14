@@ -1,4 +1,4 @@
-# typed: true
+# typed: ignore
 # frozen_string_literal: true
 
 module TwoFactorAuth
@@ -11,6 +11,15 @@ module TwoFactorAuth
       @webauthn_credentialer = webauthn_credentialer
     end
 
+    sig do
+      override.params(
+        publisher: Publisher,
+        webauthn_response: String,
+        challenge: String,
+        name: String
+      )
+        .returns(BServiceResult)
+    end
     def call(publisher:, webauthn_response:, challenge:, name:)
       response = JSON.parse(webauthn_response)
       credential = @webauthn_credentialer.from_create(response)
@@ -28,7 +37,7 @@ module TwoFactorAuth
           public_key: credential.public_key,
           counter: credential.sign_count,
           name: name,
-          format: U2fRegistration.formats[:webauthn]
+          format: U2fRegistration.format[:webauthn]
         }
       )
 

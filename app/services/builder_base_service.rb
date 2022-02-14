@@ -3,6 +3,7 @@
 class BuilderBaseService
   extend T::Helpers
   extend T::Sig
+  abstract!
 
   class ::BSuccess < T::Struct
     prop :result, T.any(T::Hash[T.untyped, T.untyped], T::Array[T.untyped], Integer, Float, T::Boolean)
@@ -12,15 +13,13 @@ class BuilderBaseService
     prop :errors, T::Array[String]
   end
 
-  ServiceResult = T.type_alias { T.any(BSuccess, BFailure) }
-
-  abstract!
+  ::BServiceResult = T.type_alias { T.any(BSuccess, BFailure) }
 
   sig { abstract.returns(T.self_type) }
   def self.build
   end
 
-  sig { abstract.returns(ServiceResult) }
+  sig { abstract.returns(BServiceResult) }
   def call
   end
 
