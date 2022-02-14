@@ -187,9 +187,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     ]
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
-
     result = PublisherWalletGetter.new(publisher: publisher).perform
-
     assert result.is_a?(Eyeshade::Wallet)
     assert_equal "23.75", result.channel_balances["completed.org"].amount_bat.to_s
   end

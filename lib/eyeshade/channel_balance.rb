@@ -4,6 +4,9 @@
 # Fees applied
 module Eyeshade
   class ChannelBalance < BaseBalance
+    extend T::Sig
+
+    sig { params(rates: Ratio::Ratio::RESULT_TYPE, default_currency: T.nilable(String), account: T::Hash[T.any(String, Symbol), T.untyped]).void }
     def initialize(rates, default_currency, account)
       super(rates, default_currency)
       total_probi = bat_to_probi(account["balance"].to_d)

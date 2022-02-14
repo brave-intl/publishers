@@ -3,7 +3,10 @@
 
 module Eyeshade
   class BaseBalance
+    extend T::Sig
+
     attr_reader :rates,
+      :display_bat, # display only value, should not be used for calculations
       :default_currency,
       :amount_probi,
       :amount_bat,
@@ -16,13 +19,20 @@ module Eyeshade
     CHANNEL = "channel"
     OWNER = "owner"
 
+    # TODO/FIXME: Determine if default currency should be nilable
+    # POC: I can share result types by casting them as constants within a class/module...
+    sig { params(rates: Ratio::Ratio::RESULT_TYPE, default_currency: T.nilable(String)).void }
     def initialize(rates, default_currency)
       @rates = rates
       @default_currency = default_currency
       @amount_probi = 0
       @fees_probi = 0
+      @zero = BigDecimal("0")
+      @amount_bat = @zero
+      @display_bat = @amount_bat
     end
 
+    sig { params(bat: BigDecimal).returns(BigDecimal) }
     def add_bat(bat)
       @amount_bat += bat
       @amount_probi += bat_to_probi(bat)
@@ -31,35 +41,34 @@ module Eyeshade
 
     private
 
-    # Expects an Integer and returns a BigDecimal
+    sig { params(probi: Integer).returns(BigDecimal) }
     def probi_to_bat(probi)
-      probi.to_d / 1E18
+      bat = probi.to_d / 1E18
+      @display_bat = bat < 0 ? @zero : bat
+      bat
     end
 
-    # Expects a BigDecimal returns an Integer
+    sig { params(bat: BigDecimal).returns(Integer) }
     def bat_to_probi(bat)
       (bat * BigDecimal("1.0e18")).to_i
     end
 
-    # Expects and returns values with probi unit
+    # FIXME: (Jon Staples) - Not sure what expected types are here, typing causes errors
+    sig { params(total_probi: Integer).returns(T::Hash[String, T.untyped]) }
     def calculate_fees(total_probi)
       fees_probi = (total_probi * fee_rate).to_i
       amount_probi = total_probi - fees_probi
       {"amount" => amount_probi, "fees" => fees_probi}
     end
 
-    # Expects and returns BigDecimals
+    sig { params(amount_bat: BigDecimal, currency: T.nilable(String)).returns(BigDecimal) }
     def convert(amount_bat, currency)
       return amount_bat if currency == "BAT"
-      return if @rates[currency].nil?
-      # (Albert Wang): It's possible that the resulting parameter is actually a String,
-      # so we'll cast it
-      if @rates[currency].is_a? String
-        require "bigdecimal"
-        amount_bat * BigDecimal(@rates[currency])
-      else
-        amount_bat * @rates[currency]
-      end
+      return @zero if currency.nil?
+      rate = @rates[currency]
+      return @zero if rate.nil?
+
+      amount_bat * BigDecimal(T.must(rate))
     end
 
     def fee_rate

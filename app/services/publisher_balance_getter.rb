@@ -1,33 +1,36 @@
 # typed: false
 # Used by the PublisherWalletGetter to retrieve balances
 class PublisherBalanceGetter < BaseApiClient
+  extend T::Sig
+
   attr_reader :publisher
 
+  RESULT_TYPE = T.type_alias { T::Array[T::Hash[String, T.untyped]] }
+
+  sig { params(publisher: Publisher).void }
   def initialize(publisher:)
     @publisher = publisher
   end
 
+  sig { returns(RESULT_TYPE) }
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    accounts_response = connection.send(:post) do |req|
-      req.options.open_timeout = 5
-      req.options.timeout = 20
-      req.url [api_base_uri, "/v1/accounts/balances"].join("")
-      req.headers["Authorization"] = api_authorization_header
-      req.headers["Content-Type"] = "application/json"
-      req.body = JSON.dump({account: [publisher.owner_identifier] + channels_accounts, pending: true})
-    end
+    if @publisher.channels.verified.present? || @publisher.browser_user?
+      accounts_response = connection.send(:post) do |req|
+        req.options.open_timeout = 5
+        req.options.timeout = 20
+        req.url [api_base_uri, "/v1/accounts/balances"].join("")
+        req.headers["Authorization"] = api_authorization_header
+        req.headers["Content-Type"] = "application/json"
+        req.body = JSON.dump({account: [publisher.owner_identifier] + channels_accounts, pending: true})
+      end
 
-    accounts = JSON.parse(accounts_response.body)
-    fill_in_missing_accounts(accounts)
-  rescue Faraday::ClientError => e
-    Rails.logger.info("Error receiving eyeshade balance #{e.message}")
-    :unavailable
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    :unavailable
+      accounts = JSON.parse(accounts_response.body)
+      fill_in_missing_accounts(accounts)
+    else
+      []
+    end
   end
 
   def perform_offline

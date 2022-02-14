@@ -3,23 +3,20 @@ require "eyeshade/wallet"
 
 # Query wallet balance from Eyeshade
 class PublisherWalletGetter < BaseApiClient
+  extend T::Sig
+
   attr_reader :publisher
 
   RATES_CACHE_KEY = "rates_cache".freeze
 
+  sig { params(publisher: Publisher, include_transactions: T::Boolean).void }
   def initialize(publisher:, include_transactions: true)
     @publisher = publisher
     @include_transactions = include_transactions
   end
 
+  sig { returns(T.nilable(Eyeshade::Wallet)) }
   def perform
-    if publisher.channels.verified.present? || publisher.browser_user?
-      accounts = PublisherBalanceGetter.new(publisher: publisher).perform
-      return if accounts == :unavailable
-    else
-      accounts = []
-    end
-
     Eyeshade::Wallet.new(
       rates: rates,
       accounts: accounts,
@@ -33,10 +30,21 @@ class PublisherWalletGetter < BaseApiClient
 
   private
 
+  sig { returns(PublisherBalanceGetter::RESULT_TYPE) }
+  def accounts
+    PublisherBalanceGetter.new(publisher: @publisher).perform
+  end
+
+  sig { returns(Ratio::Ratio::RESULT_TYPE) }
   def rates
     # Cache the ratios every minute. Rates are used for display purposes only.
     Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.minute) do
-      Ratio::Ratio.new.relative(currency: "BAT")
+      rates = Ratio::Ratio.new.relative(currency: "BAT")
+      # (Jon Staples) There is some ambiguity was to what the expected output of Ratio.relative is.
+      # Here I fetch payload if it exists, otherwise I return rates.
+      # Eyeshade::Wallet.initialize prior to adding in Sorbet type checking expected an object
+      # with key payload that corresponded to T::Hash[String, BigDecimal] (or a Rates) type.
+      rates.fetch("payload", rates)
     end
   end
 

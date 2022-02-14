@@ -69,13 +69,14 @@ module PublishersHelper
     amount = 0.0
     sentry_catcher do
       amount = if publisher.only_user_funds?
-        publisher.wallet&.contribution_balance&.amount_bat
+        publisher.wallet&.contribution_balance&.display_bat
       elsif publisher.no_grants?
-        (publisher.wallet&.overall_balance&.amount_bat || 0) - (publisher.wallet&.contribution_balance&.amount_bat || 0)
+        (publisher.wallet&.overall_balance&.display_bat || 0) - (publisher.wallet&.contribution_balance&.display_bat || 0)
       else
-        publisher.wallet&.overall_balance&.amount_bat
+        publisher.wallet&.overall_balance&.display_bat
       end
     end
+
     amount
   end
 
@@ -116,7 +117,7 @@ module PublishersHelper
   def publisher_referral_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      amount = publisher.wallet&.referral_balance&.amount_bat
+      amount = publisher.wallet&.referral_balance&.display_bat
       balance = "%.2f" % amount if amount.present?
     end
 
@@ -126,7 +127,7 @@ module PublishersHelper
   def publisher_contribution_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      amount = publisher.wallet&.contribution_balance&.amount_bat
+      amount = publisher.wallet&.contribution_balance&.display_bat
       balance = "%.2f" % amount if amount.present?
     end
 
@@ -137,15 +138,15 @@ module PublishersHelper
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
       channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
-      balance = "%.2f" % channel_balance.amount_bat if channel_balance&.amount_bat.present?
+      balance = "%.2f" % channel_balance.display_bat if channel_balance&.display_bat.present?
     end
 
     balance
   end
 
   def publisher_bat_percent(publisher)
-    contribution = publisher.wallet&.contribution_balance&.amount_bat
-    referrals = publisher.wallet&.referral_balance&.amount_bat
+    contribution = publisher.wallet&.contribution_balance&.display_bat
+    referrals = publisher.wallet&.referral_balance&.display_bat
     total = contribution + referrals
     {
       contribution: number_to_percentage(contribution / total * 100, precision: 1),

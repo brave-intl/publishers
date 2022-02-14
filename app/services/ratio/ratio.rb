@@ -3,31 +3,51 @@
 
 module Ratio
   class Ratio < BaseApiClient
+    extend T::Sig
+    extend T::Helpers
+
     PATH = "/v1/"
     RATES_CACHE_KEY = "rates_cache"
 
+    # FIXME: One day this should return BigDecimal
+    RESULT_TYPE = T.type_alias { T::Hash[String, String] }
+
+    sig { returns(RESULT_TYPE) }
     def all
       return JSON.parse(all_mock_response) if Rails.application.secrets[:bat_ratios_token].blank?
-
-      response = get(PATH)
-
-      JSON.parse(response.body)
+      response_to_return_value(get(PATH))
     end
 
+    sig { params(currency: String).returns(RESULT_TYPE) }
     def relative(currency:)
       return JSON.parse(relative_mock_response) if Rails.application.secrets[:bat_ratios_token].blank?
 
       path = Addressable::Template.new("/v1/relative/{currency}")
-      response = get(path.expand(currency: currency))
-
-      JSON.parse(response.body)
+      response_to_return_value(get(path.expand(currency: currency)))
     end
 
+    # FIXME: This exact method is present in PublisherWalletGetter
+    sig { params(currency: String).returns(RESULT_TYPE) }
     def self.relative_cached(currency:)
       # Cache the ratios every minute. Rates are used for display purposes only.
       Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 10.minutes) do
         Ratio.new.relative(currency: "BAT")
       end
+    end
+
+    # FIXME: There is no error handling here for failed responses that I can tell
+    # see app/services/base_api_client.rb
+    sig { params(response: ActionDispatch::Response).returns(RESULT_TYPE) }
+    def response_to_return_value(response)
+      JSON.parse(response.body)
+
+      #      out = {}
+      #
+      #      parsed.each do |key|
+      #        out[key] = BigDecimal(parsed[key])
+      #      end
+      #
+      #      out
     end
 
     def api_base_uri
@@ -38,6 +58,7 @@ module Ratio
       "Bearer #{Rails.application.secrets[:bat_ratios_token]}"
     end
 
+    # FIXME: This really shouldn't be here.
     def relative_mock_response
       <<-JSON
       {
