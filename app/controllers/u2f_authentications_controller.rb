@@ -12,10 +12,10 @@ class U2fAuthenticationsController < ApplicationController
       session: session)
 
     case result
-    when BSuccess
+    when ::BSuccess
       sign_in(:publisher, publisher)
       redirect_to publisher_next_step_path(publisher)
-    when BFailure
+    when ::BFailure
       redirect_to two_factor_authentications_path
     else
       T.absurd(result)

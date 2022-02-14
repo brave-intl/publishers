@@ -1,8 +1,8 @@
-# typed: true
+# typed: ignore
 # frozen_string_literal: true
 
 module TwoFactorAuth
-  class WebauthnVerifyService
+  class WebauthnVerifyService < BuilderBaseService
     def self.build
       new
     end
@@ -44,7 +44,7 @@ module TwoFactorAuth
         end
       rescue WebAuthn::VerificationError => e
         Rails.logger.debug("WebAuthn::Error! #{e}")
-        return OpenStruct.new(success?: false, result: nil, errors: [e])
+        return problem(e.message)
       ensure
         session.delete(:current_authentication)
       end
@@ -52,12 +52,12 @@ module TwoFactorAuth
       counter = assertion_response.authenticator_data.sign_count
       if registration.counter >= counter
         Rails.logger.debug("Credential replay detected!")
-        return OpenStruct.new(success?: false, result: nil, errors: [StandardError.new("Cannot authenticate.")])
+        return problem("Cannot authenticate.")
       end
       registration.update!(counter: counter)
       session.delete(:pending_2fa_current_publisher_id)
 
-      OpenStruct.new(success?: true, result: nil, errors: nil)
+      pass
     end
   end
 end
