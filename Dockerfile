@@ -51,5 +51,5 @@ COPY . .
 RUN RAILS_ENV=production CREATORS_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
 
 EXPOSE 3000
-ENTRYPOINT [ 'CREATORS_HOST="1" ./scripts/entrypoint.sh' ]
+ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]
