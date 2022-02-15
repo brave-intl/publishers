@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_07_192120) do
+ActiveRecord::Schema.define(version: 2022_02_14_170847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 2022_02_07_192120) do
     t.string "deposit_id"
     t.text "derived_brave_publisher_id"
     t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
-    t.index ["details_type", "details_id"], name: "index_channels_on_details", unique: true
+    t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
   end
 
@@ -384,7 +384,6 @@ ActiveRecord::Schema.define(version: 2022_02_07_192120) do
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
-    t.float "percent_complete", default: 0.0
     t.string "status"
   end
 
@@ -533,6 +532,7 @@ ActiveRecord::Schema.define(version: 2022_02_07_192120) do
     t.jsonb "feature_flags", default: {}
     t.string "selected_wallet_provider_type"
     t.uuid "selected_wallet_provider_id"
+    t.string "bitflyer_deposit_id"
     t.string "session_salt"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
@@ -687,6 +687,7 @@ ActiveRecord::Schema.define(version: 2022_02_07_192120) do
     t.uuid "publisher_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "format", default: "webauthn"
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
   end
