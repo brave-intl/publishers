@@ -1,7 +1,7 @@
 WebAuthn.configure do |config|
   # This value needs to match `window.location.origin` evaluated by
   # the User Agent during registration and authentication ceremonies.
-  config.origin = Rails.env.production? ? ENV.fetch("CREATORS_HOST") : ENV.fetch("CREATORS_HOST", "https://localhost:3000")
+  config.origin = Rails.env.production? ? ENV.fetch("CREATORS_FULL_HOST") : ENV.fetch("CREATORS_FULL_HOST", "https://localhost:3000")
 
   # Relying Party name for display purposes
   config.rp_name = "Brave"
