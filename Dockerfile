@@ -48,7 +48,7 @@ RUN yarn install --frozen-lockfile
 # The second dot will copy it to the WORKDIR!
 COPY . .
 
-RUN RAILS_ENV=production CREATORS_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
+RUN RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
 
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
