@@ -9,12 +9,12 @@ require "eyeshade/last_settlement_balance"
 
 class WalletTest < ActiveSupport::TestCase
   rates = EyeshadeHelper::Ratio.rates
-  accounts = EyeshadeHelper::Balances.accounts 
-  transactions = EyeshadeHelper::Transactions.transactions 
+  accounts = EyeshadeHelper::Balances.accounts
+  transactions = EyeshadeHelper::Transactions.transactions
   test_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "USD")
 
   test "channel_balances have correct BAT and probi amounts" do
-    assert_equal test_wallet.channel_balances.count, 2 
+    assert_equal test_wallet.channel_balances.count, 2
 
     test_wallet.channel_balances.each do |channel_identifier, channel_balance|
       assert_equal (channel_balance.amount_probi + channel_balance.fees_probi).to_s, "58217204799751874334"
