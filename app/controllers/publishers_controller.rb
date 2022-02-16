@@ -2,6 +2,7 @@
 class PublishersController < ApplicationController
   include PublishersHelper
   include PromosHelper
+  include PendingActions
 
   VERIFIED_PUBLISHER_ROUTES = [
     :balance,
@@ -142,10 +143,17 @@ class PublishersController < ApplicationController
     end
   end
 
+  class DestroyPublisher < StepUpAction
+    call do |publisher_id|
+      current_publisher = Publisher.find(publisher_id)
+      PublisherRemovalJob.perform_later(publisher_id: publisher_id)
+      sign_out(current_publisher)
+      redirect_to(root_path)
+    end
+  end
+
   def destroy
-    PublisherRemovalJob.perform_later(publisher_id: current_publisher.id)
-    sign_out(current_publisher)
-    redirect_to(root_path)
+    DestroyPublisher.new(current_publisher.id).step_up! self
   end
 
   # Domain verified. See balance and submit payment info.
@@ -226,6 +234,14 @@ class PublishersController < ApplicationController
 
   private
 
+  class SignIn < StepUpAction
+    call do |publisher_id|
+      current_publisher = Publisher.find(publisher_id)
+      sign_in(:publisher, current_publisher)
+      redirect_to publisher_next_step_path(current_publisher) if two_factor_enabled?(current_publisher)
+    end
+  end
+
   def authenticate_via_token
     # For some odd reason, devise flash alerts get displayed during auth.
     # Deeper details can be chased in:
@@ -254,12 +270,7 @@ class PublishersController < ApplicationController
         flash[:notice] = t(".email_confirmed", email: publisher.email)
       end
 
-      if two_factor_enabled?(publisher)
-        session[:pending_2fa_current_publisher_id] = publisher_id
-        redirect_to two_factor_authentications_path
-      else
-        sign_in(:publisher, publisher)
-      end
+      SignIn.new(publisher_id).step_up! self
     else
       flash[:alert] = t(".token_invalid")
       redirect_to expired_authentication_token_publishers_path(id: publisher.id)

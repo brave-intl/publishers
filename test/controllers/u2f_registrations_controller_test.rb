@@ -13,6 +13,14 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     })
   end
 
+  def canned_u2f_response2(registration)
+    ActiveSupport::JSON.encode({
+      keyHandle: registration.key_handle,
+      clientData: "eyJ0eXAiOiJuYXZpZ2F0b3IuaWQuZ2V0QXNzZXJ0aW9uIiwiY2hhbGxlbmdlIjoiMEVxTHk3TExoYWQyVVN1Wk9ScWRqZThsdG9VWHZQVUU5aHQyRU5sZ2N5VSIsIm9yaWdpbiI6Imh0dHBzOi8vbG9jYWxob3N0OjMwMDAiLCJjaWRfcHVia2V5IjoidW51c2VkIn0",
+      signatureData: "AQAAAAowRQIgfFLvGl1joGFlmZKPgIkimfJGt5glVEdiUYDtF8olMJgCIQCHIMR9ofM7VE7U6xURkDce8boCHwLq-vyVB9rWcKcscQ"
+    })
+  end
+
   test "new requires authentication" do
     get new_u2f_registration_path
 
@@ -20,29 +28,53 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "U2F registration creation" do
-    sign_in publishers(:verified)
+    publisher = publishers(:verified)
+    u2f_registration = u2f_registrations(:default)
+
+    publisher.u2f_registrations << u2f_registration
+
+    sign_in publisher
 
     TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(success_struct_empty)
 
     post u2f_registrations_path, params: {
       u2f_registration: {name: "Name"},
       u2f_response: canned_u2f_response
     }
 
+    assert_redirected_to controller: "two_factor_authentications"
+
+    post u2f_authentications_path, params: {
+      u2f_response: canned_u2f_response2(u2f_registration)
+    }
+
     assert_redirected_to controller: "/publishers/security", action: "index"
+
     refute @request.flash[:modal_partial]
   end
 
   test "U2F registration creation after prompt" do
-    sign_in publishers(:verified)
+    publisher = publishers(:verified)
+    u2f_registration = u2f_registrations(:default)
+    publisher.u2f_registrations << u2f_registration
+
+    sign_in publisher
 
     TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(success_struct_empty)
 
     get prompt_security_publishers_path
 
     post u2f_registrations_path, params: {
       u2f_registration: {name: "Name"},
       u2f_response: canned_u2f_response
+    }
+
+    assert_redirected_to controller: "two_factor_authentications"
+
+    post u2f_authentications_path, params: {
+      u2f_response: canned_u2f_response2(u2f_registration)
     }
 
     assert_redirected_to controller: "/publishers", action: "home"
@@ -61,7 +93,18 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     delete u2f_registration_path(u2f_registration)
 
+    assert_redirected_to controller: "two_factor_authentications"
+    follow_redirect!
+
+    TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(success_struct_empty)
+
+    post u2f_authentications_path, params: {
+      u2f_response: canned_u2f_response2(u2f_registration)
+    }
+
     assert_redirected_to controller: "/publishers/security", action: "index"
+
     follow_redirect!
     assert_response :success
     assert_no_match u2f_registration.name, response.body, "page does not show deleted u2f_registration"
@@ -69,16 +112,25 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   test "logout everybody else on registration" do
     publisher = publishers(:verified)
+    u2f_registration = u2f_registrations(:default)
+    publisher.u2f_registrations << u2f_registration
 
     sign_in publisher
     another_session = open_session
     another_session.sign_in publisher
 
     TwoFactorAuth::WebauthnRegistrationService.any_instance.stubs(:call).returns(success_struct_empty)
+    TwoFactorAuth::WebauthnVerifyService.any_instance.stubs(:call).returns(success_struct_empty)
 
     post u2f_registrations_path, params: {
       u2f_registration: {name: "Name"},
       u2f_response: canned_u2f_response
+    }
+
+    assert_redirected_to controller: "two_factor_authentications"
+
+    post u2f_authentications_path, params: {
+      u2f_response: canned_u2f_response2(u2f_registration)
     }
 
     assert_redirected_to controller: "/publishers/security", action: "index"

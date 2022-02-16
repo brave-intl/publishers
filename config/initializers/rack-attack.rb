@@ -94,7 +94,7 @@ class Rack::Attack
 
   throttle("2fa_sign_in_on_publisher", limit: 10, period: 15.minutes) do |req|
     if req.path.start_with?("/publishers/totp_authentications")
-      req.env["rack.session"]["pending_2fa_current_publisher_id"]
+      req.env["rack.session"]["pending_action"]
     end
   end
 
