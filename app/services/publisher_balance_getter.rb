@@ -5,8 +5,7 @@ class PublisherBalanceGetter < BaseApiClient
 
   attr_reader :publisher
 
-  RESULT_TYPE = T.type_alias { T::Array[T::Hash[String, T.untyped]] }
-
+  RESULT_TYPE = T.type_alias { T::Array[T::Hash[String, String]] }
   sig { params(publisher: Publisher).void }
   def initialize(publisher:)
     @publisher = publisher
