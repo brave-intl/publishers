@@ -2,9 +2,10 @@
 require "test_helper"
 
 class EyeshadeBalancesTest < ActiveSupport::TestCase
+  include Eyeshade::Types
   # I'm leaving wallet nomenclature here, balances is basically a v2 of eyeshade wallet that
   # is intended to be backwards compatible
-  let(:wallet) { EyeshadeHelper.balances }
+  let(:wallet) { EyeshadeHelper::Mocks.balances }
   let(:existing_methods) { [:rates, :default_currency, :channel_balances, :referral_balance, :overall_balance, :contribution_balance, :last_settlement_balance, :accounts] }
 
   test "#init" do
@@ -15,7 +16,7 @@ class EyeshadeBalancesTest < ActiveSupport::TestCase
   end
 
   test "#overall_balance" do
-    assert_kind_of(Eyeshade::Types::Balance, wallet.overall_balance)
+    assert_kind_of(ConvertedBalance, wallet.overall_balance)
     assert wallet.overall_balance.amount_bat > 0
     assert wallet.overall_balance.fees_bat > 0
   end
@@ -28,7 +29,7 @@ class EyeshadeBalancesTest < ActiveSupport::TestCase
   end
 
   test "#referral_balance" do
-    assert_kind_of(Eyeshade::Types::Balance, wallet.referral_balance)
+    assert_kind_of(ConvertedBalance, wallet.referral_balance)
     assert wallet.referral_balance.amount_bat > 0
     assert wallet.referral_balance.fees_bat == 0
   end

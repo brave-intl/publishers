@@ -12,60 +12,54 @@ module Eyeshade
       :default_currency,
       :accounts
 
-    sig { params(rates: EyeshadeObject, accounts: EyeshadeArray, transactions: EyeshadeArray, default_currency: T.nilable(String)).void }
-    def initialize(rates: {}, accounts: [], transactions: [], default_currency: nil)
+    sig { params(rates: EyeshadeObject, account_balances: AccountBalances, transactions: Transactions, default_currency: T.nilable(String)).void }
+    def initialize(rates: {}, account_balances: [], transactions: [], default_currency: nil)
       @rates = rates
-      @accounts = []
+      @accounts = account_balances
       @account_type_hash = {}
       @default_currency = default_currency
       @amount_probi = 0
       @fees_probi = 0
       @zero = BigDecimal("0")
 
-      accounts.each do |account|
-        type = account.fetch("account_type", nil)
-        next if !type
-
-        account_struct = Account.new(account_type: type, account_id: T.must(account["account_id"]), balance: T.must(account["balance"]))
-
-        @accounts.append(account_struct)
-
+      @accounts.each do |account|
+        type = account.account_type
         if @account_type_hash.fetch(type, nil)
-          @account_type_hash[type].append(account_struct)
+          @account_type_hash[type].append(account)
         else
-          @account_type_hash[type] = [account_struct]
+          @account_type_hash[type] = [account]
         end
       end
     end
 
-    sig { returns(Balance) }
+    sig { returns(ConvertedBalance) }
     def overall_balance
       balance(source: nil)
     end
 
-    sig { returns(T::Array[Balance]) }
+    sig { returns(T::Array[ConvertedBalance]) }
     def channel_balances
       @account_type_hash.fetch(CHANNEL, []).map { |account| account_balance(account) }
     end
 
-    sig { returns(Balance) }
+    sig { returns(ConvertedBalance) }
     def referral_balance
       balance(source: REFERRAL)
     end
 
-    sig { returns(Balance) }
+    sig { returns(ConvertedBalance) }
     def contribution_balance
       balance(source: "contribution")
     end
 
-    sig { returns(Balance) }
+    sig { returns(ConvertedBalance) }
     def last_settlement_balance
       balance(source: "settlement")
     end
 
     private
 
-    sig { params(source: T.nilable(String)).returns(Balance) }
+    sig { params(source: T.nilable(String)).returns(ConvertedBalance) }
     def balance(source: nil)
       iterable = if source
         @account_type_hash.fetch(source, [])
@@ -86,10 +80,10 @@ module Eyeshade
         amount_usd += balance.amount_usd
       end
 
-      Balance.new(amount_usd: amount_usd, amount_bat: amount_bat, fees_bat: fees_bat, amount_default_currency: amount_default_currency)
+      ConvertedBalance.new(amount_usd: amount_usd, amount_bat: amount_bat, fees_bat: fees_bat, amount_default_currency: amount_default_currency)
     end
 
-    sig { params(account: Account).returns(Balance) }
+    sig { params(account: AccountBalance).returns(ConvertedBalance) }
     def account_balance(account)
       total_probi = bat_to_probi(BigDecimal(T.must(account.balance)))
 
@@ -110,7 +104,7 @@ module Eyeshade
       # fees_default_currency = convert(fees_bat, @default_currency)
       amount_usd = convert(amount_bat, "USD")
 
-      Balance.new(amount_usd: amount_usd, amount_bat: amount_bat, fees_bat: fees_bat, amount_default_currency: amount_default_currency)
+      ConvertedBalance.new(amount_usd: amount_usd, amount_bat: amount_bat, fees_bat: fees_bat, amount_default_currency: amount_default_currency)
     end
 
     sig { params(amount_bat: BigDecimal, currency: T.nilable(String)).returns(BigDecimal) }
