@@ -63,7 +63,7 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Prepare database
-        run: RAILS_ENV=test bundle exec rake db:prepare
+        run: USE_MINITEST_RETRY=1 RAILS_ENV=test bundle exec rake db:prepare
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
       - name: Run tests
