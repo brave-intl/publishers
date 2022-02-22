@@ -2,12 +2,14 @@
 module Publishers
   class TwoFactorAuthenticationsRemovalsController < ApplicationController
     include TwoFactorAuth
+    include Logout
+    include TwoFactorRegistration
 
     def new
     end
 
     def create
-      publisher = pending_2fa_current_publisher
+      publisher = saved_pending_action.publisher
 
       publisher.register_for_2fa_removal if publisher.two_factor_authentication_removal.blank?
       publisher.reload
@@ -17,7 +19,7 @@ module Publishers
     end
 
     def destroy
-      publisher = pending_2fa_current_publisher
+      publisher = saved_pending_action.publisher
 
       publisher.two_factor_authentication_removal.destroy if publisher.two_factor_authentication_removal.present?
 

@@ -4,8 +4,11 @@ require "concerns/two_factor_auth"
 class TwoFactorAuthenticationsController < ApplicationController
   include PublishersHelper
   include TwoFactorAuth
+  include Logout
+  include TwoFactorRegistration
 
   def index
+    pending_2fa_current_publisher = saved_pending_action.publisher
     @u2f_enabled = u2f_enabled?(pending_2fa_current_publisher)
     @removal = pending_2fa_current_publisher.two_factor_authentication_removal
 

@@ -5,7 +5,7 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
 
-  test "Disabling TOTP prompts for confirmation" do
+  test "Disabling TOTP prompts for confirmation, it asks for 2fa" do
     publisher = publishers(:verified)
     sign_in publisher
 
@@ -29,10 +29,10 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     assert_content page, "Disable Authenticator App?"
 
     click_link("Disable it for now")
-    assert_content page, "Set up" # TOTP setup is available
+    assert_content page, "Two-factor Authentication\nInsert your security key and press the button on the key when blinking.\nDon't have your security key?\nUse authentication code instead.\nLost your 2-factor-authentication?We can help.\n\nFor information related to account settings, visit our Help Center." # TOTP setup is available
   end
 
-  test "Disabling U2F prompts for confirmation" do
+  test "Disabling U2F prompts for confirmation, it asks for 2fa" do
     publisher = publishers(:verified)
     sign_in publisher
 
@@ -66,6 +66,6 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
 
     # FIXME: U2F is dark launched, and only appears when you have it enabled
     # or provide params[:u2f]. See issue #442
-    assert_content page, "No keys have been added" # "No key" warning is visible
+    assert_content page, "Two-factor Authentication\nInsert your security key and press the button on the key when blinking.\nDon't have your security key?\nUse authentication code instead.\nLost your 2-factor-authentication?We can help.\n\nFor information related to account settings, visit our Help Center." # "No key" warning is visible
   end
 end

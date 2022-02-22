@@ -81,7 +81,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publisher
 
-    ROTP::TOTP.any_instance.stubs(:verify).returns(true)
+    ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
 
     assert_no_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
@@ -89,6 +89,12 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
         totp_registration: {secret: ROTP::Base32.random_base32}
       }
     end
+
+    assert_redirected_to controller: "two_factor_authentications"
+
+    post totp_authentications_path, params: {
+      totp_password: "123456"
+    }
 
     assert_redirected_to controller: "/publishers/security"
   end

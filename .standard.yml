@@ -12,4 +12,5 @@ ignore:                 # default: []
   - 'protos/**/*'
   - 'config/puma.rb'
   - 'config/environments/**'
-  
+  - 'app/services/pending_actions.rb':
+    - Lint/RedundantCopDisableDirective

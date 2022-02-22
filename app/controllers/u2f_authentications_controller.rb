@@ -3,9 +3,12 @@ require "concerns/two_factor_auth"
 
 class U2fAuthenticationsController < ApplicationController
   include TwoFactorAuth
+  include Logout
+  include TwoFactorRegistration
 
   def create
-    publisher = pending_2fa_current_publisher
+    pending_action = saved_pending_action
+    publisher = pending_action.publisher
     result = TwoFactorAuth::WebauthnVerifyService.build.call(publisher: publisher,
       webauthn_u2f_response: params[:webauthn_u2f_response],
       domain: request.base_url,
@@ -13,8 +16,7 @@ class U2fAuthenticationsController < ApplicationController
 
     case result
     when ::BSuccess
-      sign_in(:publisher, publisher)
-      redirect_to publisher_next_step_path(publisher)
+      pending_action.execute! self
     when ::BFailure
       redirect_to two_factor_authentications_path
     else

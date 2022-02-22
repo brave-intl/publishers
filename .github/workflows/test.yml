@@ -5,7 +5,7 @@
 # This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
 # For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
 
-name: Ruby
+name: Test
 
 on:
   push:
@@ -63,23 +63,11 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Prepare database
-        run: RAILS_ENV=test bundle exec rake db:prepare
+        run: USE_MINITEST_RETRY=1 RAILS_ENV=test bundle exec rake db:prepare
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
-      - name: Sorbet Linter
-        run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-      - name: Sorbet Type Check
-        run: bundle exec srb tc
-      - name: Standard
-        run: bundle exec standardrb
       - name: Run tests
         run: RAILS_ENV=test bundle exec rails test
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
-      - name: Brakeman
-        run: bundle exec brakeman
-      - name: Yarn audit
-        run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
-      - name: Bundler Audit
-        run: bundle exec bundle-audit check --update
 
