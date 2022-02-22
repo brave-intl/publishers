@@ -15,6 +15,46 @@ class PublishersHelperTest < ActionView::TestCase
     }
   end
 
+  test "publisher_channel_bat_balance should return 0 when tiny balance" do
+    channel_identifier = "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b"
+    balance = "0.0000000009"
+    accounts = [
+      {
+        "account_id" => channel_identifier,
+        "account_type" => "channel",
+        "balance" => balance
+      }
+    ]
+    transactions = []
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
+    publisher = mock
+    publisher.expects(:wallet).returns(fake_wallet).at_least_once
+
+    output = publisher_channel_bat_balance(publisher, channel_identifier)
+    # TODO: Not familiar with the %{} syntax.
+    assert_dom_equal("0.00", output)
+  end
+
+  test "publisher_channel_bat_balance should return 0 when negative balance" do
+    channel_identifier = "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b"
+    balance = "-0.111"
+    accounts = [
+      {
+        "account_id" => channel_identifier,
+        "account_type" => "channel",
+        "balance" => balance
+      }
+    ]
+    transactions = []
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
+    publisher = mock
+    publisher.expects(:wallet).returns(fake_wallet).at_least_once
+
+    output = publisher_channel_bat_balance(publisher, channel_identifier)
+    # TODO: Not familiar with the %{} syntax.
+    assert_dom_equal("0.00", output)
+  end
+
   test "publisher_converted_overall_balance should return nothing for unset publisher currency" do
     publisher = publishers(:default)
     publisher.default_currency = nil
