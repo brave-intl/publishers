@@ -9,11 +9,18 @@ export const VerifyButton = (props) => (
 
       <div className="row align-items-center">
         <small className="col-sm-8 text-dark">{props.children}</small>
-        <small className="col-sm-4">
-          <a className="font-weight-bold" target="_blank" rel="noopener noreferrer" href={props.verifyUrl}>
-            <FormattedMessage id={"walletServices.verify"} />
-          </a>
-        </small>
+        {props.verifyUrl && (
+          <small className="col-sm-4">
+            <a
+              className="font-weight-bold"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={props.verifyUrl}
+            >
+              <FormattedMessage id={"walletServices.verify"} />
+            </a>
+          </small>
+        )}
       </div>
     </div>
   </div>
