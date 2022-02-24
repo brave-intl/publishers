@@ -1,5 +1,9 @@
 # typed: true
 # No fees applied
+#
+# MARKED FOR DEPRECATION:
+# lib/eyeshade/balances.rb consolidates this functionality but is yet to be fully vetted and implemented
+
 module Eyeshade
   class ReferralBalance < BaseBalance
     attr_reader :amount_usd

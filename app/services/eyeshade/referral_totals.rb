@@ -1,6 +1,6 @@
 # typed: true
 #
-# MARKED FOR DEPRECATION: 
+# MARKED FOR DEPRECATION:
 # See for initial typed definitions:  lib/eyeshade/client.rb and lib/eyeshade/types.rb
 class Eyeshade::ReferralTotals < Eyeshade::BaseApiClient
   def perform

@@ -1,6 +1,6 @@
 # typed: true
 
-# MARKED FOR DEPRECATION: 
+# MARKED FOR DEPRECATION:
 # Any functionality in use here should be replaced by lib/eyeshade/client.rb
 class Eyeshade::BaseApiClient < BaseApiClient
   attr_accessor :result

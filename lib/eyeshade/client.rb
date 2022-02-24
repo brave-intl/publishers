@@ -12,18 +12,18 @@ module Eyeshade
 
     sig { params(payload: T::Hash[String, T.untyped]).returns(AccountBalances) }
     def accounts_balances(payload)
-      request_and_return(:post, "/v1/accounts/balances", AccountBalance, payload: payload) 
+      request_and_return(:post, "/v1/accounts/balances", AccountBalance, payload: payload)
     end
 
     # TODO: Add spec
     sig { returns(ReferralEarningTotals) }
     def accounts_earnings_referrals_total
-      request_and_return(:get, "/v1/accounts/earnings/referrals/total", ReferralEarningTotal) 
+      request_and_return(:get, "/v1/accounts/earnings/referrals/total", ReferralEarningTotal)
     end
 
     sig { params(id: String).returns(Transactions) }
     def account_transactions(id)
-      request_and_return(:get, "/v1/accounts/#{id}/transactions", Transaction) 
+      request_and_return(:get, "/v1/accounts/#{id}/transactions", Transaction)
     end
 
     private
@@ -31,8 +31,8 @@ module Eyeshade
     # Note:
     #
     # I encountered an error when attempting to use T.type_alias { T.any(Type1, Typ2) }  annotations on these private methods
-    # The sorbet type checker considered the allowed responses to be invalid when the annotations for each public method were run.  
-    # Having the annotations on the public endpoints is more important IMO and I don't want to get bogged down in what may be an actual limitation/feature of sorbet.  
+    # The sorbet type checker considered the allowed responses to be invalid when the annotations for each public method were run.
+    # Having the annotations on the public endpoints is more important IMO and I don't want to get bogged down in what may be an actual limitation/feature of sorbet.
     # I may raise an issue look around on the sorbet github repo.
     def request_and_return(method, path, response_struct, payload: nil)
       resp = connection.send(method) do |request|

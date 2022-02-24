@@ -1,6 +1,6 @@
 # typed: true
 
-# MARKED FOR DEPRECATION: 
+# MARKED FOR DEPRECATION:
 # TODO: Migrate method to lib/eyeshade/client, add annotations and struct types
 class Eyeshade::ContributionTotals < Eyeshade::BaseApiClient
   def perform

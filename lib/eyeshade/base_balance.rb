@@ -1,6 +1,9 @@
 # typed: true
 # frozen_string_literal: true
 
+#
+# MARKED FOR DEPRECATION:
+# lib/eyeshade/balances.rb consolidates this functionality but is yet to be fully vetted and implemented
 module Eyeshade
   class BaseBalance
     attr_reader :rates,

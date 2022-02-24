@@ -10,7 +10,7 @@ module Youtube
 
     sig { params(token: String).void }
     def initialize(token: Rails.application.secrets[:youtube_api_key])
-      @token = token  
+      @token = token
     end
 
     sig { params(query: T.nilable(T::Hash[String, T.untyped])).returns(T::Hash[String, T.untyped]) }

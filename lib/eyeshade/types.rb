@@ -52,12 +52,12 @@ module Eyeshade
     #
     #
     # Please use the format for any subsequent total response objects
-#    class <Type>EarningTotal
-#      prop :channel, String
-#      prop :earnings, String
-#      prop :account_id, String
-#    end
-#
+    #    class <Type>EarningTotal
+    #      prop :channel, String
+    #      prop :earnings, String
+    #      prop :account_id, String
+    #    end
+    #
     class ReferralEarningTotal < T::Struct
       prop :channel, String
       prop :earnings, String
