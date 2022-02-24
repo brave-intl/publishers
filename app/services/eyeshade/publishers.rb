@@ -1,6 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
+# MARKED FOR DEPRECATION: 
+# TODO: Migrate method to lib/eyeshade/client, add annotations and struct types
 class Eyeshade::Publishers < Eyeshade::BaseApiClient
   RESOURCE = "/v2/publishers"
 
