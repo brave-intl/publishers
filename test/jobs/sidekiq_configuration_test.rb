@@ -10,12 +10,12 @@ class SidekiqConfigurationTest < ActiveJob::TestCase
 
     assert configuration.present?
 
-    jobs = configuration.dig(:schedule).keys
-    jobs.each do |job|
+    jobs = configuration.dig(:schedule).each do |job_key, job|
       # Rails can convert a string to a class with constantize
       # https://api.rubyonrails.org/classes/ActiveSupport/Inflector.html#method-i-constantize
       # This raises a NameError if the configuration isn't valid
-      job.constantize
+      to_constantize = job["class"] || job_key
+      to_constantize.constantize
     end
   end
 end
