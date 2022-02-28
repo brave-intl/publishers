@@ -9,7 +9,7 @@ class BuilderBaseService
   def self.build
   end
 
-  sig { abstract.returns(BServiceResult) }
+  sig { abstract.returns(T::Struct) }
   def call
   end
 

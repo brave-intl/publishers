@@ -242,7 +242,7 @@ module Publishers
       result = Channel::MediumAuthorizationService.build.call(auth_hash: auth_hash)
 
       case result
-      when BSuccess
+      when Channel::MediumAuthorizationService::Success
         redirect_to home_publishers_path, notice: t("shared.channel_created")
       when BFailure
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
