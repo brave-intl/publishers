@@ -254,7 +254,13 @@ module Publishers
     private
 
     def auth_hash
-      request.env["omniauth.auth"]
+      @_auth_hash = request.env["omniauth.auth"]
+      case @_auth_hash
+      when Hash
+        Channels::Types::OmniAuthHashSchema.new(@_auth_hash)
+      else
+        T.absurd(@_auth_hash)
+      end
     end
 
     def contest_channel(existing_channel)

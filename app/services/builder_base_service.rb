@@ -9,7 +9,7 @@ class BuilderBaseService
   def self.build
   end
 
-  sig { abstract.params(args: T.nilable(T.untyped)).returns(T::Struct) }
+  sig { abstract.params(args: T.untyped).returns(T::Struct) }
   def call(args)
   end
 
