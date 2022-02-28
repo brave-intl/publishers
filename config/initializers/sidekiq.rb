@@ -13,5 +13,6 @@ if Rails.application.secrets[:redis_url].present?
   # Prevent user's sessions from being overwritten so you can be logged in and also have the Sidekiq UI open.
   # https://github.com/mperham/sidekiq/wiki/Monitoring#sessions-being-lost
   require "sidekiq/web"
+  require "sidekiq-scheduler/web"
   Sidekiq::Web.set :sessions, false
 end

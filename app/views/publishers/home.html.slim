@@ -34,8 +34,6 @@ noscript
               .dashboard-panel--content
                 .statements-available
                   = link_to(t(".statements.view_statements"), statements_path)
-                .statements-unavailable
-                  = t ".statements.unavailable"
 
     - if @payout_report.present?
       .row
