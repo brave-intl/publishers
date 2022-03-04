@@ -512,7 +512,7 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
-    sidekiq-scheduler (3.0.1)
+    sidekiq-scheduler (3.1.1)
       e2mmap
       redis (>= 3, < 5)
       rufus-scheduler (~> 3.2)
@@ -739,7 +739,7 @@ DEPENDENCIES
   sendgrid-ruby (~> 6.2.1)
   sentry-raven (~> 2.11.2)
   sidekiq (~> 6.4.0)
-  sidekiq-scheduler (~> 3.0.1)
+  sidekiq-scheduler (~> 3.1.1)
   simplecov
   slim-rails (~> 3.1)
   solargraph

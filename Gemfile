@@ -138,7 +138,7 @@ gem "sentry-raven", "~> 2.11.2", require: false
 # Async job processing
 gem "sidekiq", "~> 6.4.0"
 
-gem "sidekiq-scheduler", "~> 3.0.1"
+gem "sidekiq-scheduler", "~> 3.1.1"
 
 # slim for view templates
 gem "slim-rails", "~> 3.1"
