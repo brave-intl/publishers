@@ -84,7 +84,7 @@ gem "omniauth-twitter", "~> 1.4.0"
 gem "omniauth-vimeo", github: "beanieboi/omniauth-vimeo", ref: "0f855fd3437061fa2d343c1b6036bd9472c0edd1"
 
 # OAuth client for Reddit
-gem "omniauth-reddit", git: "https://github.com/dlipeles/omniauth-reddit.git", branch: "master"
+gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git", branch: "master"
 
 # OAuth client for GitHub
 gem "omniauth-github", "~> 1.4.0"
