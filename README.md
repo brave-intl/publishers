@@ -59,6 +59,10 @@ If you don't, you will need to generate certificates for this domain:
 bundle exec rake ssl:generate
 ```
 
+Note: If you are running in the docker context you can just manually execute the lines found in `lib/tasks/ssl.rake`. The task is just
+a convenience wrapper for openssl cert generation.
+
+
 When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
 "advanced" or "proceed" link.
