@@ -388,6 +388,18 @@ docker-compose run app yarn install; docker-compose run app rake db:setup; docke
 
 By default when you create a channel it will not have a balance on Eyeshade, the accounting server. To test wallet code with non nil balances, you must add them first.
 
+** bat-ledgers must be up and running locally in docker for either option to work **
+
+#### Running publishers with Docker Compose - (Recommended)
+
+1. To add random balances to all channel details (Note: as of 3/9/22 only SiteChannelDetails types have been added, but can be extended)
+
+```
+make docker-load-balances
+```
+
+#### Running publishers installed on your development machine directly
+
 To add a contribution to a channel account:
 
 ```
@@ -400,7 +412,9 @@ To add add a referral balance to an owner account:
 rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7, 400]" # Adds 400 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
 
-The new balance should be reflected on the dashboard.
+Balances should be reflected in the dashboard.  When using docker-compose the fixture data should be loaded for all available fixture users.
+
+For details on how these are generated see: `lib/docker/eyeshade_helper.rb` for core class and methods, `lib/tasks/docker.rb` for loading data if running `publishers` installed locally,  and `lib/tasks/eyeshade.rb` for loading data if you are using docker-compose to develop publishers.
 
 ### Adding a new type of channel
 

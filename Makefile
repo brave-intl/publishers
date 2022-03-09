@@ -23,6 +23,9 @@ docker-dev-build:
 docker-dev:
 	docker-compose up
 
+docker-load-balances:
+	docker-compose run web sh -c 'rails "eyeshade:create_channel_balances"'
+
 docker-test:
 	docker-compose up --detach postgres web
 	docker-compose run -e "RAILS_ENV=test" web sh -c "./scripts/entrypoint.sh && rails test && yarn test"
