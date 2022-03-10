@@ -57,20 +57,19 @@ module Docker
     end
 
     def create_site_channel_balances
-      if SiteChannelDetails.count == 0
-        raise StandardError.new("No publishers channels detected, please ensure fixtures have been loaded for the publisher's application")
-      end
+      insert_channel(SiteChannelDetails)
+    end
 
-      SiteChannelDetails.select("*").each do |site_channel|
-        transaction_id = SecureRandom.uuid
-        sql = Docker::EyeshadeHelper.insert_contribution_transaction_sql(site_channel.channel_identifier, Random.rand, transaction_id)
-        # TODO: Determine the function of this.  Throws an error locally.  Seems like there may be other required DB migrations
-        # to handle materialized views.
-        #
-        # sql += Docker::EyeshadeHelper.refresh_account_balances_sql
-        puts "running #{sql}"
-        @pg_conn.exec(sql)
-      end
+    def create_twitter_channel_balances
+      insert_channel(TwitterChannelDetails)
+    end
+
+    def create_youtube_channel_balances
+      insert_channel(YoutubeChannelDetails)
+    end
+
+    def create_twitch_channel_balances
+      insert_channel(TwitchChannelDetails)
     end
 
     def create_referral_balances
@@ -79,8 +78,30 @@ module Docker
 
     def create_channel_balances
       create_site_channel_balances
+      create_twitter_channel_balances
+      create_youtube_channel_balances
+      create_twitch_channel_balances
       # create_<type>_balances
       # ...
+    end
+
+    private
+
+    def insert_channel(model)
+      if model.count == 0
+        raise StandardError.new("No publishers channels detected, please ensure fixtures have been loaded for the publisher's application")
+      end
+
+      model.select("*").each do |channel_details|
+        transaction_id = SecureRandom.uuid
+        sql = Docker::EyeshadeHelper.insert_contribution_transaction_sql(channel_details.channel_identifier, Random.rand, transaction_id)
+        # TODO: Determine the function of this.  Throws an error locally.  Seems like there may be other required DB migrations
+        # to handle materialized views.
+        #
+        # sql += Docker::EyeshadeHelper.refresh_account_balances_sql
+        puts "running #{sql}"
+        @pg_conn.exec(sql)
+      end
     end
   end
 end
