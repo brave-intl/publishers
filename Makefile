@@ -20,6 +20,9 @@ docker:
 docker-dev-build:
 	docker-compose build
 
+docker-reload-db:
+	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load'
+
 docker-dev:
 	docker-compose up
 
