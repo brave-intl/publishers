@@ -170,10 +170,10 @@ In order to test the rate limiting and captcha components you will need to setup
 ### Local Eyeshade Setup
 
 1. Follow the [setup instructions](https://github.com/brave-intl/bat-ledger) for bat-ledger
-2. Add `export API_EYESHADE_BASE_URI="http://127.0.0.1:3002"` to your secrets script
-3. Add `export API_EYESHADE_KEY="00000000-0000-4000-0000-000000000000"` to your secrets script
+2. `make eyeshade-integration` To run publishers docker containers with the proper environment variables and network configuration to interact with bat-ledgers
+3. `make eyeshade-balances` To Populate eyeshade with balances matching the fixture channels founds in the local database
 
-To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
+To stop using Eyeshade just execute `docker-compose stop` and `make docker-dev` to use the isolated network configuration.
 
 ### Local Vault-Promo-Services Setup
 
@@ -311,17 +311,13 @@ You can add any environment variables that need to be set by creating a `.env`
 file at the top of the repo. Docker compose will automatically load from this
 file when launching services.
 
-Build the docker images
+First time creation will build the core images and bring up the container stack
 
-```sh
-make docker-dev-build
+```
+make
 ```
 
-and bring up the full stack
-
-```sh
-make docker-dev
-```
+See `Makefile` for various options
 
 If you wish to make modifications to the compose files you can place a file named `docker-compose.override.yml` at the
 top of the repo. For example you can expose ports on your system for the databases with this
@@ -395,7 +391,7 @@ By default when you create a channel it will not have a balance on Eyeshade, the
 1. To add random balances to all channel details (Note: as of 3/9/22 only SiteChannelDetails types have been added, but can be extended)
 
 ```
-make docker-balances
+make eyeshade-balances
 ```
 
 #### Running publishers installed on your development machine directly

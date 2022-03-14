@@ -1,0 +1,14 @@
+services:
+  web:
+    networks:
+      - default
+      - ledger
+    environment:
+      API_EYESHADE_BASE_URI: "http://eyeshade-web:3002"
+      API_EYESHADE_KEY: "00000000-0000-4000-0000-000000000000"
+
+networks:
+  ledger:
+    external: true
+
+

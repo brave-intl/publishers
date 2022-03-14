@@ -2,6 +2,10 @@ GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 BUILD_TIME := $(shell date +%s)
 CONTAINER_ID := $(shell docker ps | grep publishers-web | awk '{print $$1}')
+EYESHADE_CONTAINER_ID := $(shell docker ps | grep eyeshade-web | awk '{print $$1}')
+
+docker-dev:
+	docker-compose up
 
 ci:
 	bundle install
@@ -27,10 +31,17 @@ docker-dev-build:
 docker-reload-db:
 	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load'
 
-docker-dev:
-	docker-compose up
+eyeshade-integration:
+	@if [ -z $(EYESHADE_CONTAINER_ID) ]; then\
+		echo "ERROR: Eyeshade container not detected running in docker context. Please clone 'bat-ledgers' and run 'make'";\
+	else\
+		echo "INFO Running eyeshade migrations";\
+		docker exec -it $(EYESHADE_CONTAINER_ID) ./bin/migrate-up.sh\
+		echo "INFO Loading eyeshade balances";\
+		docker-compose -f docker-compose.yml -f docker-compose.eyeshade.yml up;\
+	fi
 
-docker-balances:
+eyeshade-balances:
 	# This attaches to a running container rather than creating an intermediate one
 	docker exec -it $(CONTAINER_ID) rails eyeshade:create_channel_balances
 
