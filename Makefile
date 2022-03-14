@@ -1,6 +1,7 @@
 GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 BUILD_TIME := $(shell date +%s)
+CONTAINER_ID := $(shell docker ps | grep publishers-web | awk '{print $$1}')
 
 ci:
 	bundle install
@@ -17,6 +18,9 @@ docker:
 		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .
 	docker tag publishers:latest publishers:$(GIT_VERSION)
 
+docker-shell:
+	docker exec -it $(CONTAINER_ID) bash
+
 docker-dev-build:
 	docker-compose build
 
@@ -26,8 +30,9 @@ docker-reload-db:
 docker-dev:
 	docker-compose up
 
-docker-load-balances:
-	docker-compose run web sh -c 'rails "eyeshade:create_channel_balances"'
+docker-balances:
+	# This attaches to a running container rather than creating an intermediate one
+	docker exec -it $(CONTAINER_ID) rails eyeshade:create_channel_balances
 
 docker-test:
 	docker-compose up --detach postgres web

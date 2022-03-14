@@ -395,7 +395,7 @@ By default when you create a channel it will not have a balance on Eyeshade, the
 1. To add random balances to all channel details (Note: as of 3/9/22 only SiteChannelDetails types have been added, but can be extended)
 
 ```
-make docker-load-balances
+make docker-balances
 ```
 
 #### Running publishers installed on your development machine directly

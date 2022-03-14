@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.dev
     image: publishers:latest
     environment:
+      API_EYESHADE_BASE_URI: "http://eyeshade-web:3002"
+      API_EYESHADE_KEY: "00000000-0000-4000-0000-000000000000"
       RAILS_ENV: development
       REDIS_URL: redis://redis:6379/0
       DATABASE_URL: postgres://postgres@postgres:5432/brave_publishers_dev
