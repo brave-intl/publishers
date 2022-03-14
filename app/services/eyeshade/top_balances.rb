@@ -1,4 +1,7 @@
 # typed: ignore
+#
+# MARKED FOR DEPRECATION:
+# TODO: Migrate method to lib/eyeshade/client, add annotations and struct types
 class Eyeshade::TopBalances < Eyeshade::BaseApiClient
   # Valid types
   CHANNEL = "channel".freeze
