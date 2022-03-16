@@ -59,6 +59,10 @@ If you don't, you will need to generate certificates for this domain:
 bundle exec rake ssl:generate
 ```
 
+Note: If you are running in the docker context you can just manually execute the lines found in `lib/tasks/ssl.rake`. The task is just
+a convenience wrapper for openssl cert generation.
+
+
 When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
 "advanced" or "proceed" link.
@@ -166,10 +170,10 @@ In order to test the rate limiting and captcha components you will need to setup
 ### Local Eyeshade Setup
 
 1. Follow the [setup instructions](https://github.com/brave-intl/bat-ledger) for bat-ledger
-2. Add `export API_EYESHADE_BASE_URI="http://127.0.0.1:3002"` to your secrets script
-3. Add `export API_EYESHADE_KEY="00000000-0000-4000-0000-000000000000"` to your secrets script
+2. `make eyeshade-integration` To run publishers docker containers with the proper environment variables and network configuration to interact with bat-ledgers
+3. `make eyeshade-balances` To Populate eyeshade with balances matching the fixture channels founds in the local database
 
-To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
+To stop using Eyeshade just execute `docker-compose stop` and `make docker-dev` to use the isolated network configuration.
 
 ### Local Vault-Promo-Services Setup
 
@@ -307,17 +311,13 @@ You can add any environment variables that need to be set by creating a `.env`
 file at the top of the repo. Docker compose will automatically load from this
 file when launching services.
 
-Build the docker images
+First time creation will build the core images and bring up the container stack
 
-```sh
-make docker-dev-build
+```
+make
 ```
 
-and bring up the full stack
-
-```sh
-make docker-dev
-```
+See `Makefile` for various options
 
 If you wish to make modifications to the compose files you can place a file named `docker-compose.override.yml` at the
 top of the repo. For example you can expose ports on your system for the databases with this
@@ -344,6 +344,36 @@ to start with docker build the app and eyeshade images
 docker-compose build
 ```
 
+### Docker Compose Network Configuration
+
+Publishers is configured to access the local docker network of `bat-ledgers` (Eyeshade) for cases where you need direct network communication from within the docker container context itself.
+
+To access the `bat-ledgers` via direct network interface. You will need to be running both the `publishers` and `bat-ledgers` docker compose contexts locally (i.e. execute `docker-compose up` in the root of both applicatoins)
+
+To test that the publishers containers have direct network access to `bat-ledgers`:
+
+
+1. Retrieve the container id
+
+Run `docker ps | grep publishers-web` and retrieve the publishers container id (first value in the output) and use it to attach to the container below
+
+1. Attach to the container
+
+```
+docker exec -it <container_id of publishers web> bash
+```
+
+1. Confirm HTTP network access
+
+Execute simple GET against the name of the networked container (defined in the docker-compose file of the relevant application. In this case bat-legers).
+
+```
+curl eyeshade-web:3002
+```
+
+If the network is properly configured you will recieve the default healthcheck response from eyeshade "ack". You are now able to access any container in the `ledger` network, i.e. `eyeshade-web`, `eyeshade-consumer`, or `eyeshade-postgres` ([See bat-legders' docker compose file](https://github.com/brave-intl/bat-ledger/blob/master/docker-compose.yml))
+
+
 ### Create the databases
 
 ```sh
@@ -353,6 +383,18 @@ docker-compose run app yarn install; docker-compose run app rake db:setup; docke
 ### Adding balances to Eyeshade
 
 By default when you create a channel it will not have a balance on Eyeshade, the accounting server. To test wallet code with non nil balances, you must add them first.
+
+** bat-ledgers must be up and running locally in docker for either option to work **
+
+#### Running publishers with Docker Compose - (Recommended)
+
+1. To add random balances to all channel details (Note: as of 3/9/22 only SiteChannelDetails types have been added, but can be extended)
+
+```
+make eyeshade-balances
+```
+
+#### Running publishers installed on your development machine directly
 
 To add a contribution to a channel account:
 
@@ -366,7 +408,9 @@ To add add a referral balance to an owner account:
 rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7, 400]" # Adds 400 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
 
-The new balance should be reflected on the dashboard.
+Balances should be reflected in the dashboard.  When using docker-compose the fixture data should be loaded for all available fixture users.
+
+For details on how these are generated see: `lib/docker/eyeshade_helper.rb` for core class and methods, `lib/tasks/docker.rb` for loading data if running `publishers` installed locally,  and `lib/tasks/eyeshade.rb` for loading data if you are using docker-compose to develop publishers.
 
 ### Adding a new type of channel
 
