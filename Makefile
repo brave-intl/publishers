@@ -4,7 +4,15 @@ BUILD_TIME := $(shell date +%s)
 CONTAINER_ID := $(shell docker ps | grep publishers-web | awk '{print $$1}')
 EYESHADE_CONTAINER_ID := $(shell docker ps | grep eyeshade-web | awk '{print $$1}')
 
-docker-dev:
+default: certs build reload-db all
+
+certs:
+	bin/ssl-gen
+
+build:
+	docker-compose build
+
+all:
 	docker-compose up
 
 ci:
@@ -25,10 +33,7 @@ docker:
 docker-shell:
 	docker exec -it $(CONTAINER_ID) bash
 
-docker-dev-build:
-	docker-compose build
-
-docker-reload-db:
+reload-db:
 	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load'
 
 eyeshade-integration:
