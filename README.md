@@ -1,46 +1,28 @@
 ![Build Status](https://github.com/brave-intl/publishers/workflows/Build/badge.svg)
 
-# :wrench: Setup
+# Getting Started :wrench: Setup
 
-For easy setup read the [running locally with docker-compose](#running-locally-with-docker-compose) section.
 
-Follow these steps to setup the App for [creators.brave.com](https://creators.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
+Development with Docker and `docker-compose` is recommended for anyone just getting started.  If for any reason you wish to run the stack locally see [Local Installation Instructions](LOCAL.md). Creators has a complex set of interactions however and has another application ([Eyeshade](https://github.com/brave-intl/bat-ledger)) as a core integration/service dependency that is most readily accessed via `docker-compose`.
 
-1. Install **Ruby**. For a Ruby version manager try
-   [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions and ensure your version is at least 1.1.2. Once installed run `rbenv install`. Be sure to restart your terminal before continuing.
-2. Install **Node 6.12.3** or greater: `brew install node`
-3. Install **Postgresql 9.5+**: `brew install postgresql`
+## Running locally with docker-compose
 
-   If you get the error `psql: FATAL: role “postgres” does not exist`. You'll need to create the `/usr/local/opt/postgres/bin/createuser -s postgres`
+First, [install docker and docker compose](https://docs.docker.com/compose/install/).
 
-4. Install **Redis**: `brew install redis`
-5. Install **Ruby** gems: `gem install bundler foreman mailcatcher`.
-   - [bundler](http://bundler.io/)
-   - [foreman](https://github.com/ddollar/foreman)
-   - [mailcatcher](https://github.com/sj26/mailcatcher)
-6. Install **[Yarn](https://yarnpkg.com/en/)** for Node dependency management: `brew install yarn`
-7. Install project dependencies
+Check out [publishers](https://github.com/brave-intl/publishers).
 
-   **Ruby** dependencies: `bundle install`
+You can add any environment variables that need to be set by creating a `.env`
+file at the top of the repo. Docker compose will automatically load from this
+file when launching services.
 
-   **Possible errors:**
+First time creation will build the core images and bring up the container stack
 
-   - Nokogiri, with libxml2. Try installing a system libxml2
-     with `brew install libxml2` and then
-     `bundle config build.nokogiri --use-system-libraries` then again `bundle install`
-   - Run `gem install nokogiri -v '1.10.3'` and then `bundle install`
+```
+make
+```
 
-   **Node** dependencies: `yarn --frozen-lockfile`
+See `Makefile` for various options
 
-   Your version of Node must be v11.15.0 or earlier. For a node version manager, try [NVM](https://github.com/nvm-sh/nvm).
-
-8. Install [git-secrets](https://github.com/awslabs/git-secrets) with `brew install git-secrets` This prevents AWS keys from being committed.
-9. (Optional) Get a `.env` file from another developer which contains development-mode env vars. You can start developing without this, but some functionality may be limited.
-10. Install **Rails**: `gem install rails`
-
-    **Be sure to restart your terminal before continuing.**
-
-11. Setup SSL as described below.
 
 ## HTTPS Setup
 
@@ -103,69 +85,9 @@ exception to trust this self-signed certificate. Sometimes this is under an
 
 ---
 
-## API Setups
+## Configuring 3rd Party APIs
 
-### Google API Setup
-
-Setup a google API project:
-
-- Login to your google account (dev), or the Brave google account (staging, production)
-- Go to [https://console.developers.google.com](https://console.developers.google.com)
-- Select "Create Project" then "Create" to setup a new API project
-- Give the project a name such as "creators-dev"
-- Select "+ Enable APIs and Services"
-- Enable "Google+ API" and "YouTube Data API v3"
-- Back at the console select Credentials, then select the "OAuth consent screen" sub tab
-- Fill in the details. For development you need the Product name, try "Creators Dev (localhost)"
-- Then Select "Create credentials", then "OAuth client ID"
-  - Application type is "Web application"
-  - Name is "Creators"
-  - Authorized redirect URIs is `http://localhost:3000/publishers/auth/google_oauth2/callback`
-  - select "Create"
-- Record the Client ID and Client secret and enter them in your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` variables
-- Back at the console select "Create credentials" and select API key. This will be used for youtube channel stats via the data api.
-- Record the API and enter it in your `YOUTUBE_API_KEY` variable
-
-You may need to wait up to 10 minutes for the changes to propagate.
-
-These steps based on [directions at the omniauth-google-oauth2 gem](https://github.com/zquestz/omniauth-google-oauth2#google-api-setup).
-
-### Twitch API Setup
-
-Setup a twitch API project:
-
-- Login to your Twitch account (dev), or the Brave Twitch account (staging, production)
-- Go to [https://dev.twitch.tv/dashboard](https://dev.twitch.tv/dashboard)
-- Make sure you first set up 2 factor auth for your twitch account
-- Select "Register Your Application" under "Applications"
-- Give the project a name such as "creators-dev"
-- Give the app a name and application category.
-- Use the redirect URI `https://localhost:3000/publishers/auth/register_twitch_channel/callback` in development.
-- Use the 'Website Integration' category
-- Save the app
-- Once the application is created, click on "Manage" where you can view the Client ID and create the Client Secret
-- Create a Client ID and secret, saving each of them.
-  - Update your env to include `TWITCH_CLIENT_ID="your-app-id"`
-  - Update your env to include `TWITCH_CLIENT_SECRET="your-app-secret"`
-
-### Twitter API Setup
-
-- Apply for a developer account at [developer.twitter.com](https://developer.twitter.com/)
-- Select "Create an App"
-- Give the app a name like "Brave Payments Dev"
-- Make sure "Enable Sign in with Twitter" is checked
-- Set the callback url to `https://localhost:3000/publishers/auth/register_twitter_channel/callback`. If it does not allow you to set `localhost`, use a place holder for now, and later add the correct callback url through apps.twitter.com instead.
-- Fill in the remaining information and hit "Create"
-- Navigate to your app settings -> permissions and ensure it is readonly and requests the user email
-- Regenerate your Consumer API keys
-- Update your env to include `TWITCH_CLIENT_ID="your-api-key"` and `TWITTER_CLIENT_SECRET="your-api-secret-key"`
-- Save
-
-### reCAPTCHA Setup
-
-In order to test the rate limiting and captcha components you will need to setup an account with Google's
-[reCAPTCHA](https://www.google.com/recaptcha/intro/android.html). Instructions can be found at the
-[reCAPTCHA gem repo](https://github.com/ambethia/recaptcha#rails-installation). Add the api keys to your Env variables.
+See [API Setups](API.md)
 
 ### Local Eyeshade Setup
 
@@ -300,24 +222,6 @@ We use jest for our javascript testing framework. You can run the tests through 
 ```sh
 yarn test
 ```
-
-## Running locally with docker-compose
-
-First, [install docker and docker compose](https://docs.docker.com/compose/install/).
-
-Check out [publishers](https://github.com/brave-intl/publishers).
-
-You can add any environment variables that need to be set by creating a `.env`
-file at the top of the repo. Docker compose will automatically load from this
-file when launching services.
-
-First time creation will build the core images and bring up the container stack
-
-```
-make
-```
-
-See `Makefile` for various options
 
 If you wish to make modifications to the compose files you can place a file named `docker-compose.override.yml` at the
 top of the repo. For example you can expose ports on your system for the databases with this
