@@ -1,4 +1,3 @@
-
 desc "Create admin user"
 task :create_admin_user, [:email] => [:environment] do |task, args|
   email = args.email

@@ -1,4 +1,4 @@
-# Running Locally
+# Running Locally (Not Recommended, Accuracy of documentation suspect)
 
 Follow these steps to setup the App for [creators.brave.com](https://creators.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
 
@@ -36,6 +36,42 @@ Follow these steps to setup the App for [creators.brave.com](https://creators.br
 
     **Be sure to restart your terminal before continuing.**
 
-11. Setup SSL as described below.
+11. Configure SSL certs `make certs`
+
+## Run
+
+1. Start **Postgres** and **Redis**: `brew services start redis postgresql`
+2. Create and initialize the database:
+
+   ```
+   rails db:create RAILS_ENV=development
+   rails db:migrate RAILS_ENV=development
+   ```
+
+   **Note**: If you receive a `fatal-role` error, try running `/usr/local/opt/postgres/bin/createuser -s postgres` due to being installed from `homebrew`. Further documentation is [here.](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist)
+
+   If you receive an error about Readline, try running:
+
+   ```
+   ln -s /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib
+   ```
+
+   Issue for [further documentation](https://github.com/deivid-rodriguez/byebug/issues/289).
+
+3. Run Rails server and async worker:
+   `bundle exec puma -C config/puma.rb -e ${RACK_ENV:-development}`
+   `bundle exec sidekiq -C config/sidekiq.yml -e ${RACK_ENV:-development}`
+
+4. Visit https://localhost:3000
+
+5. To test email, run a local mail server with: `mailcatcher`
+
+6. To view the emails sent to your inbox visit: http://localhost:1080
+
+7. Run webpack separately: `./bin/webpack-dev-server`
+
+8. Compile landing page assets: `cd public/landing-page; rake assets:clobber; rake assets:precompile; yarn install; yarn build`
+
+
 
 

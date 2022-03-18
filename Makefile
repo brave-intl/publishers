@@ -23,21 +23,6 @@ admin:
 		docker exec -it $(CONTAINER_ID) rake create_admin_user["$(EMAIL)"];\
 	fi\
 
-ci:
-	bundle install
-	yarn
-	bundle exec bundle-audit update
-	RAILS_ENV=test bundle exec rails test
-	bundle exec brakeman
-	bundle exec standardrb
-	bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-	bundle exec srb tc
-
-docker:
-	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \
-		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .
-	docker tag publishers:latest publishers:$(GIT_VERSION)
-
 docker-shell:
 	docker exec -it $(CONTAINER_ID) bash
 
@@ -57,6 +42,22 @@ eyeshade-integration:
 eyeshade-balances:
 	# This attaches to a running container rather than creating an intermediate one
 	docker exec -it $(CONTAINER_ID) rails eyeshade:create_channel_balances
+
+#### Everything from here needs review.  These commands may be in use or may simply be convenience methods.
+ci:
+	bundle install
+	yarn
+	bundle exec bundle-audit update
+	RAILS_ENV=test bundle exec rails test
+	bundle exec brakeman
+	bundle exec standardrb
+	bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
+	bundle exec srb tc
+
+docker:
+	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \
+		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .
+	docker tag publishers:latest publishers:$(GIT_VERSION)
 
 docker-test:
 	docker-compose up --detach postgres web

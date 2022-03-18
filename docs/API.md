@@ -1,5 +1,7 @@
 # API Setups
 
+*Note: This documentation has not been reviewed and may be inaccurate/incomplete*
+
 ### Google API Setup
 
 Setup a google API project:
