@@ -70,8 +70,10 @@ jobs:
         run: bundle exec standardrb
       - name: Brakeman
         run: bundle exec brakeman
-      - name: Yarn audit
-        run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
+      - name: Yarn audit js assets
+        run: yarn audit --groups dependencies
+      - name: Yarn audit landing-page
+        run: cd public/creators-landing && yarn audit --groups dependencies
       - name: Bundler Audit
         run: bundle exec bundle-audit check --update
 
