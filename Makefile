@@ -27,7 +27,7 @@ docker-shell:
 	docker exec -it $(CONTAINER_ID) bash
 
 reload-db:
-	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load'
+	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load; RAILS_ENV=test rake db:reset'
 
 eyeshade-integration:
 	@if [ -z $(EYESHADE_CONTAINER_ID) ]; then\
