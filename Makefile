@@ -1,8 +1,8 @@
 GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 BUILD_TIME := $(shell date +%s)
-CONTAINER_ID := $(shell docker ps | grep publishers-web | awk '{print $$1}')
-EYESHADE_CONTAINER_ID := $(shell docker ps | grep eyeshade-web | awk '{print $$1}')
+CONTAINER_ID := $(shell docker ps | grep publishers | grep web | awk '{print $$1}')
+EYESHADE_CONTAINER_ID := $(shell docker ps | grep eyeshade | grep web | awk '{print $$1}')
 EMAIL=
 
 default: certs build reload-db all
