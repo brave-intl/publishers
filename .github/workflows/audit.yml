@@ -5,16 +5,14 @@
 # This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
 # For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
 
-name: Lint
+name: Audit
 
 on:
-  push:
-    branches: [ master, staging, dev ]
   pull_request:
-    branches: [ master, staging ]
+    branches: [ master ]
 
 jobs:
-  lint:
+  audit:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -29,7 +27,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
@@ -62,11 +59,8 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn --frozen-lockfile
-      - name: Sorbet Linter
-        run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-      - name: Sorbet Type Check
-        run: bundle exec srb tc
-      - name: Standard
-        run: bundle exec standardrb
-      - name: Brakeman
-        run: bundle exec brakeman
+      - name: Yarn audit
+        run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
+      - name: Bundler Audit
+        run: bundle exec bundle-audit check --update
+
