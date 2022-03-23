@@ -17,6 +17,10 @@
 
     #show_contact
 
+- if @publisher.location_enabled?
+  .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short.mb-4
+    .single-panel--padded-content--short-padding#publishers_location
+
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short.mb-4
   .single-panel--padded-content--short-padding#publishers_contact
     h5 Email Settings
