@@ -8,7 +8,9 @@
 name: Audit
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - staging
 jobs:
   audit:
     runs-on: ubuntu-latest
