@@ -2,6 +2,8 @@
 
 # :wrench: Setup
 
+# A change
+
 For easy setup read the [running locally with docker-compose](#running-locally-with-docker-compose) section.
 
 Follow these steps to setup the App for [creators.brave.com](https://creators.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
