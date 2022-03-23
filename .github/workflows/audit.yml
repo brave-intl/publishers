@@ -6,7 +6,11 @@
 # For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
 
 name: Audit
-on: [push]
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -59,4 +63,3 @@ jobs:
         run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
       - name: Bundler Audit
         run: bundle exec bundle-audit check --update
-
