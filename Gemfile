@@ -231,7 +231,7 @@ group :development, :test do
   gem "minitest"
   gem "minitest-rails"
   gem "mocha"
-  gem "chromedriver-helper"
+  gem "chromedriver-helper", require: false if not_arm?
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 3.142.0"
   gem "solargraph"

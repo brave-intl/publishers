@@ -3,12 +3,17 @@ ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 SimpleCov.start "rails"
 
+def not_arm?
+  arch = `uname -m`.strip
+  !(arch.include?("arm") || arch.include?("aarch64"))
+end
+
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
 require "selenium/webdriver"
 require "webmock/minitest"
-require "chromedriver/helper"
+
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/service_class_helpers"
@@ -39,40 +44,42 @@ WebMock.allow_net_connect!
 # Capybara.enable_aria_label = true
 # Capybara.default_driver = :selenium_chrome_headless
 
-Chromedriver.set_version "2.38"
+if not_arm?
+  require "chromedriver/helper"
+  Chromedriver.set_version "2.38"
+  Capybara.register_driver "chrome" do |app|
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: {
+        binary: ENV["CHROME_BINARY"],
+        args: %w[headless no-sandbox disable-gpu window-size=1680,1050]
+      }.compact,
+      loggingPrefs: {browser: "ALL"}
+    )
+    Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+    )
+  end
 
-Capybara.register_driver "chrome" do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
-      binary: ENV["CHROME_BINARY"],
-      args: %w[headless no-sandbox disable-gpu window-size=1680,1050]
-    }.compact,
-    loggingPrefs: {browser: "ALL"}
-  )
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :chrome,
-    desired_capabilities: capabilities
-  )
+  # Have to use FF due to Chrome bug in linux
+  # See https://bugs.chromium.org/p/chromium/issues/detail?id=1010288
+  Capybara.register_driver "firefoxja" do |app|
+    profile = Selenium::WebDriver::Firefox::Profile.new
+    profile["intl.accept_languages"] = "ja-JP"
+
+    opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
+    opts.args << "--headless"
+
+    Capybara::Selenium::Driver.new(
+      app,
+      browser: :firefox,
+      options: opts
+    )
+  end
+
+  Capybara.default_driver = "chrome"
 end
-
-# Have to use FF due to Chrome bug in linux
-# See https://bugs.chromium.org/p/chromium/issues/detail?id=1010288
-Capybara.register_driver "firefoxja" do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile["intl.accept_languages"] = "ja-JP"
-
-  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
-  opts.args << "--headless"
-
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :firefox,
-    options: opts
-  )
-end
-
-Capybara.default_driver = "chrome"
 
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
