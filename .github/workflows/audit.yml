@@ -7,7 +7,6 @@
 
 name: Audit
 on:
-  push: [master, staging]
   pull_request:
     branches:
       - master
