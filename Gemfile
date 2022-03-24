@@ -13,6 +13,9 @@ source "https://rubygems.org"
 
 gem "rack"
 
+# All things countries
+gem "countries"
+
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
