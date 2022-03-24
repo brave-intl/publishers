@@ -1,35 +1,33 @@
 GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags)
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 BUILD_TIME := $(shell date +%s)
-CONTAINER_ID := $(shell docker ps | grep publishers-web | awk '{print $$1}')
-EYESHADE_CONTAINER_ID := $(shell docker ps | grep eyeshade-web | awk '{print $$1}')
+CONTAINER_ID := $(shell docker ps | grep publishers | grep web | awk '{print $$1}')
+EYESHADE_CONTAINER_ID := $(shell docker ps | grep eyeshade | grep web | awk '{print $$1}')
+EMAIL=
 
-docker-dev:
+default: certs build reload-db all
+
+certs:
+	bin/ssl-gen
+
+build:
+	docker-compose build
+
+all:
 	docker-compose up
 
-ci:
-	bundle install
-	yarn
-	bundle exec bundle-audit update
-	RAILS_ENV=test bundle exec rails test
-	bundle exec brakeman
-	bundle exec standardrb
-	bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-	bundle exec srb tc
-
-docker:
-	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \
-		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .
-	docker tag publishers:latest publishers:$(GIT_VERSION)
+admin:
+	if [ -z $(EMAIL) ]; then\
+		echo "No email passed to command";\
+	else\
+		docker exec -it $(CONTAINER_ID) rake create_admin_user["$(EMAIL)"];\
+	fi\
 
 docker-shell:
 	docker exec -it $(CONTAINER_ID) bash
 
-docker-dev-build:
-	docker-compose build
-
-docker-reload-db:
-	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load'
+reload-db:
+	docker-compose run web sh -c 'rake db:reset; rake db:fixtures:load; RAILS_ENV=test rake db:reset'
 
 eyeshade-integration:
 	@if [ -z $(EYESHADE_CONTAINER_ID) ]; then\
@@ -44,6 +42,22 @@ eyeshade-integration:
 eyeshade-balances:
 	# This attaches to a running container rather than creating an intermediate one
 	docker exec -it $(CONTAINER_ID) rails eyeshade:create_channel_balances
+
+#### Everything from here needs review.  These commands may be in use or may simply be convenience methods.
+ci:
+	bundle install
+	yarn
+	bundle exec bundle-audit update
+	RAILS_ENV=test bundle exec rails test
+	bundle exec brakeman
+	bundle exec standardrb
+	bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
+	bundle exec srb tc
+
+docker:
+	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \
+		--build-arg BUILD_TIME=$(BUILD_TIME) -t publishers:latest .
+	docker tag publishers:latest publishers:$(GIT_VERSION)
 
 docker-test:
 	docker-compose up --detach postgres web
