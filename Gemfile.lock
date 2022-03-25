@@ -198,6 +198,9 @@ GEM
     cose (1.2.0)
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
+    countries (4.2.3)
+      i18n_data (~> 0.16.0)
+      sixarm_ruby_unaccent (~> 1.1)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -264,6 +267,8 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
+    i18n_data (0.16.0)
+      simple_po_parser (~> 1.1)
     inflection (1.0.0)
     io-like (0.3.1)
     ipaddr (1.2.4)
@@ -522,12 +527,14 @@ GEM
       sidekiq (>= 3)
       thwait
       tilt (>= 1.4.0)
+    simple_po_parser (1.1.6)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    sixarm_ruby_unaccent (1.2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -563,6 +570,7 @@ GEM
       sorbet-coerce (>= 0.2.6)
       sorbet-runtime (>= 0.5)
     sorbet-runtime (0.5.9538)
+    sorbet-static (0.5.9538-universal-darwin-20)
     sorbet-static (0.5.9538-x86_64-linux)
     spoom (1.1.8)
       sorbet (>= 0.5.9204)
@@ -690,6 +698,7 @@ DEPENDENCIES
   capybara
   chromedriver-helper
   connection_pool (~> 2.2.5)
+  countries
   database_cleaner
   devise (~> 4.7.1)
   dnsruby (~> 1.60.0)
