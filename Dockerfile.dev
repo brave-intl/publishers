@@ -29,7 +29,7 @@ RUN RAILS_ENV=development
 
 # Install the gems.
 RUN gem install nokogiri
-RUN bundle check || bundle install --jobs 20 --retry 5
+RUN bundle install --jobs 20
 
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 14.16.1
