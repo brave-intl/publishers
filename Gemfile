@@ -13,6 +13,9 @@ source "https://rubygems.org"
 
 gem "rack"
 
+# All things countries
+gem "countries"
+
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
@@ -109,7 +112,7 @@ gem "rack-attack", "~> 6.5.0"
 
 gem "railties", "~> 6.1.4"
 
-gem "rails", "~> 6.1.4"
+gem "rails", "~> 6.1.4.7"
 gem "rails-i18n", "~> 6.0.0"
 
 # I love captchas

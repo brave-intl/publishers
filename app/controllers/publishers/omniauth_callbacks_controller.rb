@@ -238,7 +238,30 @@ module Publishers
       redirect_to home_publishers_path, notice: t("shared.channel_created")
     end
 
+    def register_medium_channel
+      result = Channel::MediumAuthorizationService.build.call(auth_hash: auth_hash)
+
+      case result
+      when Channel::MediumAuthorizationService::Success
+        redirect_to home_publishers_path, notice: t("shared.channel_created")
+      when BFailure
+        redirect_to home_publishers_path, notice: t(".channel_already_registered")
+      else
+        T.absurd(result)
+      end
+    end
+
     private
+
+    def auth_hash
+      @_auth_hash = request.env["omniauth.auth"]
+      case @_auth_hash
+      when Hash
+        Channels::Types::OmniAuthHashSchema.new(@_auth_hash)
+      else
+        T.absurd(@_auth_hash)
+      end
+    end
 
     def contest_channel(existing_channel)
       Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform

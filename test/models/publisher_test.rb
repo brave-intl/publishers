@@ -355,6 +355,14 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
+  describe "#feature_flags" do
+    describe "#location_enabled?" do
+      it "should return falsey" do
+        assert !publishers(:default).location_enabled?
+      end
+    end
+  end
+
   describe "#history" do
     describe "when the publisher has notes" do
       it "shows just the notes" do

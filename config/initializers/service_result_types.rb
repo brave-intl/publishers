@@ -6,4 +6,4 @@ class BFailure < T::Struct
   prop :errors, T::Array[String]
 end
 
-BServiceResult = T.type_alias { T.any(BSuccess, BFailure) }
+BServiceResult = T.type_alias { T.any(BSuccess, BFailure, T::Struct) }

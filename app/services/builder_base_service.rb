@@ -9,8 +9,8 @@ class BuilderBaseService
   def self.build
   end
 
-  sig { abstract.returns(BServiceResult) }
-  def call
+  sig { abstract.params(args: T.untyped).returns(T::Struct) }
+  def call(args)
   end
 
   def pass(val = true)

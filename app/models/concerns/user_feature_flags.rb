@@ -12,6 +12,7 @@ module UserFeatureFlags
   STRIPE_ENABLED = :stripe_enabled
   GEMINI_ENABLED = :gemini_enabled
   REFERRAL_ENABLED_OVERRIDE = :referral_enabled_override
+  LOCATION_ENABLED = :location_enabled
 
   VALID_FEATURE_FLAGS = [
     DAILY_EMAILS_FOR_PROMO_STATS,
@@ -22,7 +23,8 @@ module UserFeatureFlags
     PROMO_LOCKOUT_TIME,
     STRIPE_ENABLED,
     GEMINI_ENABLED,
-    REFERRAL_ENABLED_OVERRIDE
+    REFERRAL_ENABLED_OVERRIDE,
+    LOCATION_ENABLED
   ].freeze
 
   # Values stored in DAILY_EMAILS_FOR_PROMO_STATS
@@ -82,6 +84,10 @@ module UserFeatureFlags
 
   def referral_kyc_required?
     feature_flags.symbolize_keys[REFERRAL_KYC_REQUIRED].present?
+  end
+
+  def location_enabled?
+    feature_flags.symbolize_keys[LOCATION_ENABLED].present?
   end
 
   def referral_kyc_not_required?

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+which openssl
+
+if [ $? -eq 0 ]; then
+  openssl genrsa -out ssl/rootCA.key 4096
+  echo "openssl req -x509 -new -nodes -key ssl/rootCA.key -sha256 -days 3650 -out ssl/rootCA.pem -config <( cat lib/tasks/ssl/rootCA.cnf )" | bash
+  openssl x509 -req -in ssl/server.csr -CA ssl/rootCA.pem -CAkey ssl/rootCA.key -CAcreateserial -out ssl/server.crt -days 3650 -sha256 -extfile lib/tasks/ssl/v3.ext
+  echo "openssl req -new -sha256 -nodes -out ssl/server.csr -newkey rsa:4096 -keyout ssl/server.key -config <( cat lib/tasks/ssl/server.csr.cnf )" | bash
+  openssl x509 -req -in ssl/server.csr -CA ssl/rootCA.pem -CAkey ssl/rootCA.key -CAcreateserial -out ssl/server.crt -days 3650 -sha256 -extfile lib/tasks/ssl/v3.ext
+else
+  echo "openssl not installed, please install and rereun this script"
+fi

@@ -1,5 +1,8 @@
 # typed: true
 # Fees applied to channel balances
+#
+# MARKED FOR DEPRECATION:
+# lib/eyeshade/balances.rb consolidates this functionality but is yet to be fully vetted and implemented
 module Eyeshade
   class OverallBalance < BaseBalance
     attr_reader :amount_usd
