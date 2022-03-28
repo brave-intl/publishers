@@ -20,6 +20,10 @@
 - if @publisher.location_enabled?
   .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short.mb-4
     .single-panel--padded-content--short-padding#publishers_location
+      h5 Location (Needs Locales)
+      = form_with(model: @publisher, url: "/", html: { id: "update_location_selection", class: 'mt-4' }) do |f|
+        = select_tag :update_location, options_for_select(@publisher.class.available_countries)
+
 
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short.mb-4
   .single-panel--padded-content--short-padding#publishers_contact

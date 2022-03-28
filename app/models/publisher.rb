@@ -1,5 +1,6 @@
 # typed: ignore
 require "digest/md5"
+require "countries"
 
 class Publisher < ApplicationRecord
   include UserFeatureFlags
@@ -510,6 +511,10 @@ class Publisher < ApplicationRecord
   end
 
   class << self
+    def available_countries
+      ISO3166::Country.all_names_with_codes
+    end
+
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
       # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
