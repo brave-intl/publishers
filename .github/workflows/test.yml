@@ -7,12 +7,7 @@
 
 name: Test
 
-on:
-  push:
-    branches: [ master, staging, dev ]
-  pull_request:
-    branches: [ master, staging ]
-
+on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
