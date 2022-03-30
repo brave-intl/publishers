@@ -14,6 +14,7 @@ services:
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+      CHROME_BINARY: /usr/bin/chromium
     command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
     networks:
       - default

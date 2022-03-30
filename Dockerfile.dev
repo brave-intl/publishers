@@ -48,6 +48,7 @@ RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose
 RUN apt-get install chromium --fix-missing -y 
+RUN apt-get install chromium-driver -y
 
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]
