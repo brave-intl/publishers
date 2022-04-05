@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_14_170847) do
+ActiveRecord::Schema.define(version: 2022_03_14_225313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(version: 2022_02_14_170847) do
     t.string "default_currency"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.boolean "oauth_refresh_failed", default: false, null: false
+    t.boolean "oauth_failure_email_sent", default: false, null: false
     t.index ["encrypted_access_token_iv"], name: "index_bitflyer_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_bitflyer_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_bitflyer_connections_on_is_verified"
@@ -221,6 +223,8 @@ ActiveRecord::Schema.define(version: 2022_02_14_170847) do
     t.string "recipient_id"
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.boolean "oauth_refresh_failed", default: false, null: false
+    t.boolean "oauth_failure_email_sent", default: false, null: false
     t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
@@ -728,6 +732,8 @@ ActiveRecord::Schema.define(version: 2022_02_14_170847) do
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
     t.text "card_id"
+    t.boolean "oauth_refresh_failed", default: false, null: false
+    t.boolean "oauth_failure_email_sent", default: false, null: false
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
