@@ -3,6 +3,7 @@
 
 class UpholdConnection < ApplicationRecord
   include WalletProviderProperties
+  include Oauth2ProviderProperties
 
   has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
 
@@ -228,19 +229,6 @@ class UpholdConnection < ApplicationRecord
     false
   end
 
-  def refresh_token
-    JSON.parse(uphold_access_parameters || "{}")&.fetch("refresh_token", nil)
-  end
-
-  def authorization_expires_at
-    JSON.parse(uphold_access_parameters || "{}")&.fetch("expiration_time", nil)&.to_datetime
-  end
-
-  def authorization_expired?
-    return true if authorization_expires_at.blank?
-    authorization_expires_at.present? && authorization_expires_at < Time.zone.now
-  end
-
   # Makes an HTTP Request to Uphold and sychronizes
   def sync_connection!
     # Set uphold_details to a variable, if uphold_access_parameters is nil
@@ -277,6 +265,53 @@ class UpholdConnection < ApplicationRecord
     return if uphold_details.blank?
     uphold_details&.currencies
   end
+
+  def authorization_expires_at
+    JSON.parse(uphold_access_parameters || "{}")&.fetch("expiration_time", nil)&.to_datetime
+  end
+
+  def authorization_expired?
+    return true if authorization_expires_at.blank?
+    authorization_expires_at.present? && authorization_expires_at < Time.zone.now
+  end
+
+  # Oauth2ProviderProperties.
+  # These are interface gaurantees required for OAuth2 token/refresh flows
+  def client_id
+    Rails.application.secrets[:uphold_client_id]
+  end
+
+  def client_secret
+    Rails.application.secrets[:uphold_client_secret]
+  end
+
+  def token_url
+    "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token"
+  end
+
+  def refresh_token
+    JSON.parse(uphold_access_parameters || "{}")&.fetch("refresh_token", nil)
+  end
+
+  def update_access_tokens!(refresh_token_response)
+    # https://sorbet.org/docs/tstruct#converting-structs-to-other-types
+    authorization_hash = refresh_token_response.serialize
+
+    authorization_hash["expiration_time"] = authorization_hash["expires_in"].to_i.seconds.from_now
+
+    # Update with the latest Authorization
+    self.uphold_access_parameters = JSON.dump(authorization_hash)
+    save!
+
+    self
+  end
+
+  def record_refresh_failure!
+    # TODO: Update connection when refresh has failed
+    self
+  end
+
+  # End Oauth2ProviderProperties
 
   class << self
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
