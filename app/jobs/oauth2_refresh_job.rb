@@ -1,11 +1,20 @@
+# typed: true
+
 class Oauth2RefreshJob < ApplicationJob
-  extend T::Sig
   queue_as :default
 
-  # Serialization of the model is awkward here. Will need to look into it
-  sig { params(connection_id: String, model: Class).returns(Oauth2RefresherService::TYPES) }
-  def perform(connection_id, model)
-    connection = model.find_by_id!(connection_id)
-    Oauth2RefresherService.build.call(connection)
+  def perform(connection_id, klass_name)
+    case klass_name
+    when "UpholdConnection"
+      klass = UpholdConnection
+    when "GeminiConnection"
+      klass = GeminiConnection
+    when "BitflyerConnection"
+      klass = BitflyerConnection
+    else
+      raise StandardError.new("Invalid klass_name: #{klass_name}")
+    end
+
+    Oauth2RefresherService.build.call(klass.find_by_id!(connection_id))
   end
 end

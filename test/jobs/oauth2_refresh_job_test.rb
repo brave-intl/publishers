@@ -1,12 +1,13 @@
-require 'test_helper'
+require "test_helper"
 
 class Oauth2RefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
   let(:connection) { uphold_connections(:google_connection) }
+  let(:klass) { UpholdConnection.name }
 
   describe "when record !found" do
     test "it should raise an exception" do
-      assert_instance_of(ActiveRecord::RecordNotFound, Oauth2RefreshJob.perform_now("fake identifier", UpholdConnection))
+      assert_instance_of(ActiveRecord::RecordNotFound, Oauth2RefreshJob.perform_now("fake identifier", klass))
     end
   end
 
@@ -17,7 +18,7 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
       end
 
       test "deletes a publisher and his or her channels" do
-        assert_instance_of(UpholdConnection, Oauth2RefreshJob.perform_now(connection.id, UpholdConnection).connection)
+        assert_instance_of(UpholdConnection, Oauth2RefreshJob.perform_now(connection.id, klass).connection)
       end
     end
 
@@ -27,7 +28,7 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
       end
 
       test "deletes a publisher and his or her channels" do
-        assert_instance_of(BFailure, Oauth2RefreshJob.perform_now(connection.id, UpholdConnection))
+        assert_instance_of(BFailure, Oauth2RefreshJob.perform_now(connection.id, klass))
       end
     end
   end
