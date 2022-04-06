@@ -3,6 +3,11 @@ ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 SimpleCov.start "rails"
 
+def not_arm?
+  arch = `uname -m`.strip
+  !(arch.include?("arm") || arch.include?("aarch64"))
+end
+
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
@@ -14,6 +19,7 @@ require "test_helpers/eyeshade_helper"
 require "test_helpers/service_class_helpers"
 require "test_helpers/mock_uphold_responses"
 require "test_helpers/mock_gemini_responses"
+require "test_helpers/mock_oauth2_responses"
 require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
@@ -39,7 +45,19 @@ WebMock.allow_net_connect!
 # Capybara.enable_aria_label = true
 # Capybara.default_driver = :selenium_chrome_headless
 
-Chromedriver.set_version "2.38"
+# NOTE:
+# This is a workaround to allow basic test running on an M1
+# This version of the chromedriver does not exist
+# for the aarch64 architecture and the latest version (99)
+# does not work.
+#
+# Attempting run tests at all on an M1 in docker context with this line active
+# causes the entire test run to rail with an exception
+#
+# It does however mean that selenium tests do not work locally in the M1/Docker context
+if not_arm?
+  Chromedriver.set_version "2.38"
+end
 
 Capybara.register_driver "chrome" do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
