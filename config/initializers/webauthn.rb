@@ -32,5 +32,5 @@ WebAuthn.configure do |config|
   # Default: ["ES256", "PS256", "RS256"]
   #
   # sets the algorithms we support for verification with webauthn
-  config.algorithms = ["ES256", "ES384", "ES512", "PS256","PS384", "PS512"]
+  config.algorithms = ["ES256", "ES384", "ES512", "PS256", "PS384", "PS512"]
 end
