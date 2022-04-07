@@ -2,7 +2,6 @@
 require "test_helper"
 
 class WebauthnConfigurationTest < ActiveSupport::TestCase
-
   test "Webauthn supported verification algorithms are correctly configured" do
     assert WebAuthn.configuration.algorithms.include?("ES256")
     assert WebAuthn.configuration.algorithms.include?("ES384")
