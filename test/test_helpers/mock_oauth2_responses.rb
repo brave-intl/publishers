@@ -1,6 +1,11 @@
 module MockOauth2Responses
   include Oauth2::Structs
 
+  def mock_unknown_failure(token_url)
+    stub_request(:post, token_url)
+      .to_return(status: 500, body: "any possible value")
+  end
+
   def mock_token_failure(token_url)
     stub_request(:post, token_url)
       .to_return(status: 400, body: {error: "invalid_grant", error_description: "Ann error occurred"}.to_json)

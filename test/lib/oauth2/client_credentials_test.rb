@@ -3,6 +3,8 @@ require "test_helper"
 class OAuth2ClientCredentialsTest < ActiveSupport::TestCase
   include Oauth2::Structs
   include MockOauth2Responses
+  extend T::Sig
+
   let(:klass) { Oauth2::ClientCredentials }
   let(:client_id) { "any value" }
   let(:client_secret) { "any secret value" }
@@ -17,7 +19,19 @@ class OAuth2ClientCredentialsTest < ActiveSupport::TestCase
   end
 
   describe "#refresh_token" do
-    describe "when unsuccessful" do
+    describe "when unknown unsuccessful" do
+      let(:response) { Net::HTTPInternalServerError }
+
+      before do
+        mock_unknown_failure(token_url)
+      end
+
+      test "it should raise exception" do
+        assert_raises(Oauth2::ClientCredentials::UnknownError) { klass.new(**payload).refresh_token(refresh_token) }
+      end
+    end
+
+    describe "when known unsuccessful" do
       let(:response) { ErrorResponse }
 
       before do
