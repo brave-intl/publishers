@@ -307,7 +307,7 @@ class UpholdConnection < ApplicationRecord
   end
 
   def record_refresh_failure!
-    # TODO: Update connection when refresh has failed
+    update!(oauth_refresh_failed: true)
     self
   end
 
