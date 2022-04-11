@@ -162,6 +162,20 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       end
     end
 
+    describe "record_refresh_failure!" do
+      let(:verified_connection) { uphold_connections(:verified_connection) }
+
+      before do
+        assert !verified_connection.oauth_refresh_failed
+        verified_connection.record_refresh_failure!
+        verified_connection.reload
+      end
+
+      it "should update" do
+        assert verified_connection.oauth_refresh_failed
+      end
+    end
+
     describe "when uphold_code is set but the other parameters are nil" do
       before do
         uphold_connection.uphold_code = "foo"
