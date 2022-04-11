@@ -22,6 +22,7 @@ module Oauth2
       const :access_token, String
       const :expires_in, Integer
       const :refresh_token, String
+      prop :scope, T.nilable(String)
     end
   end
 end
