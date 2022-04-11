@@ -5,6 +5,8 @@ class Oauth2RefresherService < BuilderBaseService
   include Oauth2
   include Oauth2::Structs
 
+  TYPES = T.type_alias { T.any(Success, BFailure) }
+
   class Success < T::Struct
     const :connection, UpholdConnection
   end
@@ -13,8 +15,13 @@ class Oauth2RefresherService < BuilderBaseService
     new
   end
 
-  sig { override.params(connection: UpholdConnection).returns(T.any(Oauth2RefresherService::Success, BFailure)) }
+  sig { override.params(connection: UpholdConnection).returns(Oauth2RefresherService::TYPES) }
   def call(connection)
+    if connection.refresh_token.nil?
+      connection.record_refresh_failure!
+      return BFailure.new(errors: ["Cannot refresh without refresh token"])
+    end
+
     result = Oauth2::ClientCredentials.new(
       client_id: connection.client_id,
       client_secret: connection.client_secret,

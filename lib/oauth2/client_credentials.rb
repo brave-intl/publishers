@@ -9,6 +9,16 @@ require "uri"
 class Oauth2::ClientCredentials
   extend T::Sig
   include Oauth2::Structs
+  class UnknownError < StandardError
+    def initialize(response)
+      super
+      @response = response
+    end
+
+    def message
+      "OAuth2 request failed with status code #{@response.code}: #{@response} - #{@response.body}"
+    end
+  end
 
   sig { params(client_id: String, client_secret: String, token_url: String).void }
   def initialize(client_id:, client_secret:, token_url:)
@@ -42,14 +52,21 @@ class Oauth2::ClientCredentials
 
     Net::HTTP.start(uri.hostname, uri.port, @options) do |http|
       response = http.request(request)
+      is_success = response.is_a? Net::HTTPSuccess
 
-      struct = if response.is_a? Net::HTTPSuccess
-        success_struct
+      # To spec Oauth2 must return a 400 or success
+      # Other response types should be returned directly for debugging
+      # I.e. any response object is a failure by definition.
+      if response.code == "400" || is_success
+        struct = if is_success
+          success_struct
+        else
+          ErrorResponse
+        end
+        struct.new(JSON.parse(response.body, symbolize_names: true))
       else
-        ErrorResponse
+        raise UnknownError.new(response)
       end
-
-      struct.new(JSON.parse(response.body, symbolize_names: true))
     end
   end
 end
