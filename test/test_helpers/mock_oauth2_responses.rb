@@ -13,6 +13,6 @@ module MockOauth2Responses
 
   def mock_refresh_token_success(token_url)
     stub_request(:post, token_url)
-      .to_return(status: 200, body: {access_token: "access_token", expires_in: 10.minutes.to_i, refresh_token: "refresh_token", token_type: "example"}.to_json)
+      .to_return(status: 200, body: {access_token: "access_token", expires_in: 10.minutes.to_i, refresh_token: "refresh_token", token_type: "example", scope: "create"}.to_json)
   end
 end
