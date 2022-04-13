@@ -1,7 +1,7 @@
 # typed: false
 # frozen_string_literal: true
 
-class GeminiConnection < ApplicationRecord
+class GeminiConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
 
   JAPAN = "JP"
@@ -48,22 +48,19 @@ class GeminiConnection < ApplicationRecord
     access_expiration_time.present? && Time.now > access_expiration_time
   end
 
-  # Makes a request to the Gemini API to refresh the current access_token
-  def refresh_authorization!
-    # Ensure we have an refresh_token.
-    return if refresh_token.blank?
-
-    authorization = Gemini::Auth.refresh(token: refresh_token)
-
-    # Update with the latest Authorization
+  def update_access_tokens!(refresh_token_response)
     update!(
-      access_token: authorization.access_token,
-      refresh_token: authorization.refresh_token,
-      expires_in: authorization.expires_in,
-      access_expiration_time: authorization.expires_in.seconds.from_now
+      access_token: refresh_token_response.access_token,
+      refresh_token: refresh_token_response.refresh_token,
+      expires_in: refresh_token_response.expires_in,
+      access_expiration_time: refresh_token_response.expires_in.seconds.from_now
     )
-    # Reload the model so consumers will have the most up to date information.
-    reload
+
+    self
+  end
+
+  def fetch_refresh_token
+    refresh_token
   end
 
   def sync_connection!
@@ -91,6 +88,15 @@ class GeminiConnection < ApplicationRecord
   end
 
   class << self
+    def oauth2_client
+      @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
+        client_id: Rails.application.config.services.gemini[:client_id],
+        client_secret: Rails.application.config.services.gemini[:client_secret],
+        authorization_url: URI("#{Rails.application.config.services.gemini[:api_uri]}/auth"),
+        token_url: URI("#{Rails.application.config.services.gemini[:api_uri]}/auth/token")
+      )
+    end
+
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       [key].pack("H*")
     end

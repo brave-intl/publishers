@@ -5,6 +5,30 @@ require "jobs/sidekiq_test_case"
 
 class GeminiConnectionTest < SidekiqTestCase
   include MockGeminiResponses
+  include MockOauth2Responses
+
+  describe "Oauth2::AuthorizationCodeBase" do
+    let(:klass) { GeminiConnection }
+    let(:conn) { gemini_connections(:connection_with_token) }
+
+    describe "conn.class.oauth2_client" do
+      it "should be truthy" do
+        assert conn.class.oauth2_client
+      end
+    end
+
+    describe "#refresh_authorization!" do
+      describe "when successful" do
+        before do
+          mock_refresh_token_success(klass.oauth2_client.token_url)
+        end
+
+        test "it should return expected outout" do
+          assert_instance_of(klass, conn.refresh_authorization!)
+        end
+      end
+    end
+  end
 
   describe "validations" do
     let(:gemini_connection) { gemini_connections(:default_connection) }

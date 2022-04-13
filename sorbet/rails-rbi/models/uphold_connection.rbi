@@ -125,6 +125,24 @@ module UpholdConnection::GeneratedAttributeMethods
   sig { returns(T::Boolean) }
   def member_at?; end
 
+  sig { returns(T::Boolean) }
+  def oauth_failure_email_sent; end
+
+  sig { params(value: T::Boolean).void }
+  def oauth_failure_email_sent=(value); end
+
+  sig { returns(T::Boolean) }
+  def oauth_failure_email_sent?; end
+
+  sig { returns(T::Boolean) }
+  def oauth_refresh_failed; end
+
+  sig { params(value: T::Boolean).void }
+  def oauth_refresh_failed=(value); end
+
+  sig { returns(T::Boolean) }
+  def oauth_refresh_failed?; end
+
   sig { returns(T.nilable(String)) }
   def publisher_id; end
 
@@ -244,7 +262,7 @@ module UpholdConnection::CustomFinderMethods
   def find_by_id!(id); end
 end
 
-class UpholdConnection < ApplicationRecord
+class UpholdConnection < Oauth2::AuthorizationCodeBase
   include UpholdConnection::GeneratedAttributeMethods
   include UpholdConnection::GeneratedAssociationMethods
   extend UpholdConnection::CustomFinderMethods
