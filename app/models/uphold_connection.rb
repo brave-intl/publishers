@@ -1,9 +1,8 @@
 # typed: false
 # frozen_string_literal: true
 
-class UpholdConnection < ApplicationRecord
+class UpholdConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
-  include Oauth2ProviderProperties
 
   has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
 
@@ -108,7 +107,9 @@ class UpholdConnection < ApplicationRecord
 
   # Makes a remote HTTP call to Uphold to get more details
   # TODO should we actually call uphold_user?
-
+  # FIXME: Remove the secondary refresher calls and the error handling
+  # Simplifying this method causes tests to break across the suite because
+  # of what mostly appear to be bad mocking.  Will need to revisit later.
   def uphold_details
     Uphold::Refresher.build.call(uphold_connection: self)
     @user ||= UpholdClient.user.find(self)
@@ -275,22 +276,12 @@ class UpholdConnection < ApplicationRecord
     authorization_expires_at.present? && authorization_expires_at < Time.zone.now
   end
 
-  # Oauth2ProviderProperties.
-  # These are interface gaurantees required for OAuth2 token/refresh flows
-  def client_id
-    Rails.application.secrets[:uphold_client_id]
-  end
-
-  def client_secret
-    Rails.application.secrets[:uphold_client_secret]
-  end
-
-  def token_url
-    "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token"
-  end
-
   def refresh_token
     JSON.parse(uphold_access_parameters || "{}")&.fetch("refresh_token", nil)
+  end
+
+  def fetch_refresh_token
+    refresh_token
   end
 
   def update_access_tokens!(refresh_token_response)
@@ -306,14 +297,16 @@ class UpholdConnection < ApplicationRecord
     self
   end
 
-  def record_refresh_failure!
-    update!(oauth_refresh_failed: true)
-    self
-  end
-
-  # End Oauth2ProviderProperties
-
   class << self
+    def oauth2_client
+      @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
+        client_id: Rails.application.secrets[:uphold_client_id],
+        client_secret: Rails.application.secrets[:uphold_client_secret],
+        token_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token"),
+        authorization_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/auth")
+      )
+    end
+
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
       # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")

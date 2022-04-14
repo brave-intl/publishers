@@ -14,21 +14,21 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
   describe "when record found" do
     describe "when successful" do
       before do
-        mock_refresh_token_success(connection.token_url)
+        mock_refresh_token_success(UpholdConnection.oauth2_client.token_url)
       end
 
-      test "deletes a publisher and his or her channels" do
-        assert_instance_of(UpholdConnection, Oauth2RefreshJob.perform_now(connection.id, klass).connection)
+      test "refreshes the token" do
+        assert_instance_of(UpholdConnection, Oauth2RefreshJob.perform_now(connection.id, klass))
       end
     end
 
     describe "when unsuccessful" do
       before do
-        mock_token_failure(connection.token_url)
+        mock_token_failure(UpholdConnection.oauth2_client.token_url)
       end
 
-      test "deletes a publisher and his or her channels" do
-        assert_instance_of(BFailure, Oauth2RefreshJob.perform_now(connection.id, klass))
+      test "returns an erro" do
+        assert_instance_of(Oauth2::Responses::ErrorResponse, Oauth2RefreshJob.perform_now(connection.id, klass))
       end
     end
   end
