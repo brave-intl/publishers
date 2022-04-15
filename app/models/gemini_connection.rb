@@ -92,8 +92,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
         client_id: Rails.application.config.services.gemini[:client_id],
         client_secret: Rails.application.config.services.gemini[:client_secret],
-        authorization_url: URI("#{Rails.application.config.services.gemini[:api_uri]}/auth"),
-        token_url: URI("#{Rails.application.config.services.gemini[:api_uri]}/auth/token")
+        authorization_url: URI("#{Rails.application.config.services.gemini[:oauth_uri]}/auth"),
+        token_url: URI("#{Rails.application.config.services.gemini[:oauth_uri]}/auth/token")
       )
     end
 
