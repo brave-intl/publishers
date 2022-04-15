@@ -33,13 +33,23 @@ class Oauth2::AuthorizationCodeClient
     raise NotImplementedError
   end
 
-  sig { params(refresh_token: String).returns(T.any(RefreshTokenResponse, ErrorResponse)) }
-  def refresh_token(refresh_token)
+  sig { params(refresh_token: String, content_type: String).returns(T.any(RefreshTokenResponse, UnknownError, ErrorResponse)) }
+  def refresh_token(refresh_token, content_type: "application/x-www-form-urlencoded")
     request = Net::HTTP::Post.new(@token_url)
-    request.set_form_data(
-      "grant_type" => "refresh_token",
-      "refresh_token" => refresh_token
-    )
+    request.content_type = content_type
+
+    case content_type
+    when "application/x-www-form-urlencoded"
+      request.set_form_data(
+        "grant_type" => "refresh_token",
+        "refresh_token" => refresh_token
+      )
+      request.basic_auth(@client_id, @client_secret)
+    when "application/json" # This is not valid for Oauth2 but Gemini does it anyway
+      request.body = {client_id: @client_id, client_secret: @client_secret, refresh_token: refresh_token, grant_type: "refresh_token"}.to_json
+    else
+      raise "Invalid content_type #{content_type}"
+    end
 
     handle_request(request, @token_url, RefreshTokenResponse)
   end
@@ -47,25 +57,20 @@ class Oauth2::AuthorizationCodeClient
   private
 
   def handle_request(request, uri, success_struct)
-    request.basic_auth(@client_id, @client_secret)
-    request.content_type = "application/x-www-form-urlencoded"
-
     Net::HTTP.start(uri.hostname, uri.port, @options) do |http|
       response = http.request(request)
-      is_success = response.is_a? Net::HTTPSuccess
 
       # To spec Oauth2 must return a 400 or success
       # Other response types should be returned directly for debugging
-      # I.e. any response object is a failure by definition.
-      if response.code == "400" || is_success
-        struct = if is_success
-          success_struct
-        else
-          ErrorResponse
-        end
-        struct.new(JSON.parse(response.body, symbolize_names: true))
-      else
-        raise UnknownError.new(response)
+      return success_struct.new(JSON.parse(response.body, symbolize_names: true)) if response.is_a? Net::HTTPSuccess
+      return UnknownError.new(response: response, request: request) if response.code != "400"
+
+      begin
+        # Serialize a to spec oauth2 400 response if it is returned
+        ErrorResponse.new(JSON.parse(response.body, symbolize_names: true))
+      rescue
+        # If serialization fails, return an unknown error with debugging data
+        UnknownError.new(response: response, request: request)
       end
     end
   end
