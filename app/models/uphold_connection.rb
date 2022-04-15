@@ -298,12 +298,17 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   class << self
+    def oauth2_scope
+      Rails.application.secrets[:uphold_scope]
+    end
+
     def oauth2_client
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
         client_id: Rails.application.secrets[:uphold_client_id],
         client_secret: Rails.application.secrets[:uphold_client_secret],
         token_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token"),
-        authorization_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/auth")
+        authorization_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/auth"),
+        redirect_uri: URI("https://localhost:3000/oauth2/uphold/callback")
       )
     end
 

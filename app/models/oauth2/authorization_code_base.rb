@@ -1,8 +1,8 @@
 # typed: true
 class Oauth2::AuthorizationCodeBase < ApplicationRecord
   self.abstract_class = true
-
   include Oauth2::Responses
+  include Oauth2::Errors
   extend T::Sig
   extend T::Helpers
 
@@ -20,6 +20,14 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
     # (which we do for this particular case), you have to implement your interface as a base class
     sig { abstract.returns(Oauth2::AuthorizationCodeClient) }
     def oauth2_client
+    end
+
+    sig { abstract.returns(String) }
+    def oauth2_scope
+    end
+
+    def state_value!
+      SecureRandom.hex(64).to_s
     end
   end
 
@@ -52,6 +60,8 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
     when ErrorResponse
       record_refresh_failure!
       result
+    when UnknownError
+      raise UnknownError
     else
       T.absurd(result)
     end

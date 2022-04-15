@@ -31,6 +31,16 @@ Rails.application.routes.draw do
     put :accept_tos
   end
 
+  # This implements basic callback urls for initiating oauth flows.
+  # It could endup being a base/abstract controller for any authorization code flow
+  # For right now I needed it to test/debug flows locally
+  if Rails.env.development?
+    namespace :oauth2 do
+      get ":provider/code", action: :code
+      get ":provider/callback", action: :callback
+    end
+  end
+
   # These routes are for connecting to 3rd-party payment providers.
   namespace :connection, module: "payment/connection" do
     resource :currency, only: [:show, :update]

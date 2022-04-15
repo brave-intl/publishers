@@ -85,11 +85,16 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   end
 
   class << self
+    def oauth2_scope
+      Rails.application.secrets[:bitflyer_scope]
+    end
+
     def oauth2_client
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
         client_id: Rails.application.secrets[:bitflyer_client_id],
         client_secret: Rails.application.secrets[:bitflyer_client_secret],
         authorization_url: URI("#{Rails.application.secrets[:bitflyer_host]}/ex/OAuth/authorize"),
+        redirect_uri: URI("https://localhost:3000/oauth2/bitflyer/callback"),
         token_url: URI("#{Rails.application.secrets[:bitflyer_host]}/api/link/v1/token")
       )
     end
