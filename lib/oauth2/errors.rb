@@ -1,8 +1,12 @@
 module Oauth2::Errors
   class UnknownError < StandardError
-    def initialize(response)
+    attr_reader :response
+    attr_reader :request
+
+    def initialize(response:, request:)
       super
       @response = response
+      @request = request
     end
 
     def message

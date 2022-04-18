@@ -88,12 +88,18 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   class << self
+    def oauth2_scope
+      "account:read"
+    end
+
     def oauth2_client
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
         client_id: Rails.application.config.services.gemini[:client_id],
         client_secret: Rails.application.config.services.gemini[:client_secret],
         authorization_url: URI("#{Rails.application.config.services.gemini[:oauth_uri]}/auth"),
-        token_url: URI("#{Rails.application.config.services.gemini[:oauth_uri]}/auth/token")
+        token_url: URI("#{Rails.application.config.services.gemini[:oauth_uri]}/auth/token"),
+        redirect_uri: URI("https://localhost:3000/oauth2/gemini/callback"),
+        content_type: "application/json" # See Oauth2::AuthorizationCode.new
       )
     end
 
