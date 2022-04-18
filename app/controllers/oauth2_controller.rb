@@ -14,7 +14,6 @@ class Oauth2Controller < ApplicationController
 
   before_action :set_controller_state
   before_action :set_request_state, only: [:code]
-  before_action :verify_state, only: [:callback]
 
   def code
     redirect_to(client.authorization_code_url(state: @state, scope: @klass.oauth2_scope))
@@ -48,11 +47,13 @@ class Oauth2Controller < ApplicationController
     @state = @klass.state_value!
     cookies[:_state] = {
       value: @state,
-      expires: 5.minutes.from_now,
+      expires: 90.seconds.from_now,
       httponly: true
     }
   end
 
+  # TODO: Need to review this for best practices.  May need to actually encrypt the cookie with an IV
+  # Also uphold does not seem to honor the cookie so it always fails.  *sigh*
   def verify_state
     raise ActionController::BadRequest if permitted_params.fetch(:state) != cookies["_state"]
   end
