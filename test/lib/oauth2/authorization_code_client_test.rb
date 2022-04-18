@@ -20,6 +20,26 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
   end
 
   describe "#refresh_token" do
+    describe "when success not-to-spec partially known" do
+      before do
+        mock_refresh_token_success(token_url, to_spec: false)
+      end
+
+      test "it should return error responsep" do
+        assert_instance_of(Oauth2::Responses::RefreshTokenResponse, klass.new(**config).refresh_token(refresh_token))
+      end
+    end
+
+    describe "when failure not-to-spec partially known" do
+      before do
+        mock_token_failure(token_url, to_spec: false)
+      end
+
+      test "it should return error responsep" do
+        assert_instance_of(Oauth2::Responses::ErrorResponse, klass.new(**config).refresh_token(refresh_token))
+      end
+    end
+
     describe "when not-to-spec unknown with 400 status" do
       before do
         stub_request(:post, token_url)
