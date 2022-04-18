@@ -10,7 +10,7 @@ module Oauth2::Responses
   class AccessTokenResponse < T::Struct
     const :token_type, String
     const :access_token, String
-    const :expires_in, Integer
+    const :expires_in, T.nilable(Integer)
     prop :refresh_token, T.nilable(String)
     prop :scope, T.nilable(String)
   end

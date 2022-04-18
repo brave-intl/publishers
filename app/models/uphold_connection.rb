@@ -302,12 +302,17 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       Rails.application.secrets[:uphold_scope]
     end
 
+    # FIXME: The authorization url is hard coded to development/staging contexts for the moment
+    # because the env var configuration has been entangled with the fully configured authorzation url itself.
+    # Currently the access_token method of Oauth2::AuthorizationCodeClient is only being used
+    # for test/debugging purposes by Oauth2Controller.  The auth code initiation flows for
+    # the front-end are still using the various last generation implementations.
     def oauth2_client
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
         client_id: Rails.application.secrets[:uphold_client_id],
         client_secret: Rails.application.secrets[:uphold_client_secret],
         token_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token"),
-        authorization_url: URI("#{Rails.application.secrets[:uphold_api_uri]}/auth"),
+        authorization_url: URI("https://sandbox.uphold.com/authorize/#{Rails.application.secrets[:uphold_client_id]}"),
         redirect_uri: URI("https://localhost:3000/oauth2/uphold/callback")
       )
     end

@@ -57,7 +57,13 @@ class Oauth2::AuthorizationCodeClient
         redirect_uri: @redirect_uri
       }.to_json
     else
-      raise NotImplementedError
+      request.set_form_data(
+        code: authorization_code,
+        client_id: @client_id,
+        client_secret: @client_secret,
+        grant_type: "authorization_code",
+        redirect_uri: @redirect_uri
+      )
     end
 
     handle_request(request, @token_url, AccessTokenResponse)
@@ -71,10 +77,11 @@ class Oauth2::AuthorizationCodeClient
     case @content_type
     when @valid_content_type
       request.set_form_data(
-        "grant_type" => "refresh_token",
-        "refresh_token" => refresh_token
+        client_id: @client_id,
+        client_secret: @client_secret,
+        grant_type: "refresh_token",
+        refresh_token: refresh_token
       )
-      request.basic_auth(@client_id, @client_secret)
     when @invalid_content_type
       request.body = {
         client_id: @client_id,
