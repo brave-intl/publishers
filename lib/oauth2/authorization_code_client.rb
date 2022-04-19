@@ -12,6 +12,8 @@ class Oauth2::AuthorizationCodeClient
   include Oauth2::Errors
   attr_reader :authorization_url
   attr_reader :token_url
+  attr_reader :request
+  attr_reader :response
 
   sig { params(client_id: String, client_secret: String, authorization_url: URI, token_url: URI, redirect_uri: URI, content_type: String).void }
   # In reality content type should not be a parameter, but we already have at least one case (Gemini) of an oauth flow that is not actually to spec.
@@ -101,19 +103,34 @@ class Oauth2::AuthorizationCodeClient
   def handle_request(request, uri, success_struct)
     Net::HTTP.start(uri.hostname, uri.port, @options) do |http|
       response = http.request(request)
+      @response = response
+      @request = request
 
       # To spec Oauth2 must return a 400 or success
       # Other response types should be returned directly for debugging
-      return success_struct.new(JSON.parse(response.body, symbolize_names: true)) if response.is_a? Net::HTTPSuccess
+      return adapt_to_response(struct: success_struct, body: response.body) if response.is_a? Net::HTTPSuccess
       return UnknownError.new(response: response, request: request) if response.code != "400"
 
       begin
         # Serialize a to spec oauth2 400 response if it is returned
-        ErrorResponse.new(JSON.parse(response.body, symbolize_names: true))
+        adapt_to_response(struct: ErrorResponse, body: response.body)
       rescue
         # If serialization fails, return an unknown error with debugging data
         UnknownError.new(response: response, request: request)
       end
     end
+  end
+
+  #  Adapter pattern.  Filter to expected values in any response to ensure data is always appropriate for statically typed response objects
+  #  or is true failure.
+  def adapt_to_response(struct:, body:)
+    out = {}
+
+    parsed_body = JSON.parse(body, symbolize_names: true)
+    struct.props.keys.each do |key|
+      out[key] = parsed_body.fetch(key, nil)
+    end
+
+    struct.new(out)
   end
 end
