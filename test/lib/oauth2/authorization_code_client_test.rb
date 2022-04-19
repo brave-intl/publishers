@@ -9,14 +9,14 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
   let(:client_id) { "any value" }
   let(:client_secret) { "any secret value" }
   let(:authorization_url) { "https://example.com/oauth2/authorize" }
-  let(:token_url) { "https://example.com/oauth2/token" }
-  let(:config) { {client_id: client_id, client_secret: client_secret, token_url: URI(token_url), authorization_url: URI(authorization_url), redirect_uri: URI("https://localhost:3000")} }
+  let(:config) { Oauth2::Config::Uphold }
+  let(:token_url) { config.token_url }
   let(:refresh_token) { "any stubbed token value" }
   let(:refresh_token_response) { {access_token: "access_token", expires_in: 10.minutes.to_i, refresh_token: "refresh_token", token_type: "example"} }
   let(:error_response) { {error: "invalid_grant", error_description: "Ann error occurred"} }
 
   test "#new" do
-    assert_instance_of(klass, klass.new(**config))
+    assert_instance_of(klass, klass.new(config))
   end
 
   describe "#refresh_token" do
@@ -26,7 +26,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should return error responsep" do
-        assert_instance_of(Oauth2::Responses::RefreshTokenResponse, klass.new(**config).refresh_token(refresh_token))
+        assert_instance_of(Oauth2::Responses::RefreshTokenResponse, klass.new(config).refresh_token(refresh_token))
       end
     end
 
@@ -36,7 +36,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should return error responsep" do
-        assert_instance_of(Oauth2::Responses::ErrorResponse, klass.new(**config).refresh_token(refresh_token))
+        assert_instance_of(Oauth2::Responses::ErrorResponse, klass.new(config).refresh_token(refresh_token))
       end
     end
 
@@ -47,14 +47,12 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should raise exception" do
-        assert_instance_of(Oauth2::Errors::UnknownError, klass.new(**config).refresh_token(refresh_token))
+        assert_instance_of(Oauth2::Errors::UnknownError, klass.new(config).refresh_token(refresh_token))
       end
     end
 
     describe "when application/json" do
-      before do
-        config.merge!(content_type: "application/json")
-      end
+      let(:config) { Oauth2::Config::Gemini }
 
       describe "when unknown unsuccessful" do
         let(:response) { Net::HTTPInternalServerError }
@@ -64,7 +62,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
         end
 
         test "it should raise exception" do
-          assert_instance_of(Oauth2::Errors::UnknownError, klass.new(**config).refresh_token(refresh_token))
+          assert_instance_of(Oauth2::Errors::UnknownError, klass.new(config).refresh_token(refresh_token))
         end
       end
 
@@ -76,7 +74,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
         end
 
         test "it should return an ErrorResponse" do
-          assert_instance_of(response, klass.new(**config).refresh_token(refresh_token))
+          assert_instance_of(response, klass.new(config).refresh_token(refresh_token))
         end
       end
 
@@ -88,7 +86,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
         end
 
         test "it should return a RefreshTokenResponse" do
-          assert_instance_of(response, klass.new(**config).refresh_token(refresh_token))
+          assert_instance_of(response, klass.new(config).refresh_token(refresh_token))
         end
       end
     end
@@ -103,7 +101,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should raise exception" do
-        assert_instance_of(Oauth2::Errors::UnknownError, klass.new(**config).refresh_token(refresh_token))
+        assert_instance_of(Oauth2::Errors::UnknownError, klass.new(config).refresh_token(refresh_token))
       end
     end
 
@@ -115,7 +113,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should return an ErrorResponse" do
-        assert_instance_of(response, klass.new(**config).refresh_token(refresh_token))
+        assert_instance_of(response, klass.new(config).refresh_token(refresh_token))
       end
     end
 
@@ -127,7 +125,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should return a RefreshTokenResponse" do
-        assert_instance_of(response, klass.new(**config).refresh_token(refresh_token))
+        assert_instance_of(response, klass.new(config).refresh_token(refresh_token))
       end
     end
   end
