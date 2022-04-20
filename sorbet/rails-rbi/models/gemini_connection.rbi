@@ -107,6 +107,24 @@ module GeminiConnection::GeneratedAttributeMethods
   sig { returns(T::Boolean) }
   def is_verified?; end
 
+  sig { returns(T::Boolean) }
+  def oauth_failure_email_sent; end
+
+  sig { params(value: T::Boolean).void }
+  def oauth_failure_email_sent=(value); end
+
+  sig { returns(T::Boolean) }
+  def oauth_failure_email_sent?; end
+
+  sig { returns(T::Boolean) }
+  def oauth_refresh_failed; end
+
+  sig { params(value: T::Boolean).void }
+  def oauth_refresh_failed=(value); end
+
+  sig { returns(T::Boolean) }
+  def oauth_refresh_failed?; end
+
   sig { returns(String) }
   def publisher_id; end
 
@@ -217,7 +235,7 @@ module GeminiConnection::CustomFinderMethods
   def find_by_id!(id); end
 end
 
-class GeminiConnection < ApplicationRecord
+class GeminiConnection < Oauth2::AuthorizationCodeBase
   include GeminiConnection::GeneratedAttributeMethods
   include GeminiConnection::GeneratedAssociationMethods
   extend GeminiConnection::CustomFinderMethods

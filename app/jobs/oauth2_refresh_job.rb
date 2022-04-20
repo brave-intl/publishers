@@ -9,12 +9,10 @@ class Oauth2RefreshJob < ApplicationJob
       klass = UpholdConnection
     when "GeminiConnection"
       klass = GeminiConnection
-    when "BitflyerConnection"
-      klass = BitflyerConnection
     else
       raise StandardError.new("Invalid klass_name: #{klass_name}")
     end
 
-    Oauth2RefresherService.build.call(klass.find_by_id!(connection_id))
+    klass.find_by_id!(connection_id).refresh_authorization!
   end
 end

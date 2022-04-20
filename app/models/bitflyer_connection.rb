@@ -1,8 +1,9 @@
 # typed: ignore
 # frozen_string_literal: true
 
-class BitflyerConnection < ApplicationRecord
+class BitflyerConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
+
   SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
   JAPAN = "JP"
 
@@ -41,6 +42,21 @@ class BitflyerConnection < ApplicationRecord
     access_expiration_time.present? && Time.now > access_expiration_time
   end
 
+  def fetch_refresh_token
+    refresh_token
+  end
+
+  def update_access_tokens!(refresh_token_response)
+    update!(
+      access_token: refresh_token_response.access_token,
+      refresh_token: refresh_token_response.refresh_token,
+      expires_in: refresh_token_response.expires_in,
+      access_expiration_time: refresh_token_response.expires_in.seconds.from_now
+    )
+
+    self
+  end
+
   def sync_connection!
     return if access_token.blank?
 
@@ -69,6 +85,20 @@ class BitflyerConnection < ApplicationRecord
   end
 
   class << self
+    def oauth2_scope
+      Rails.application.secrets[:bitflyer_scope]
+    end
+
+    def oauth2_client
+      @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(
+        client_id: Rails.application.secrets[:bitflyer_client_id],
+        client_secret: Rails.application.secrets[:bitflyer_client_secret],
+        authorization_url: URI("#{Rails.application.secrets[:bitflyer_host]}/ex/OAuth/authorize"),
+        redirect_uri: URI("https://localhost:3000/oauth2/bitflyer/callback"),
+        token_url: URI("#{Rails.application.secrets[:bitflyer_host]}/api/link/v1/token")
+      )
+    end
+
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       [key].pack("H*")
     end
