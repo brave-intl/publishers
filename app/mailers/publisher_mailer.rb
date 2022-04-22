@@ -32,6 +32,20 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def wallet_refresh_failure(publisher)
+    @publisher = publisher
+    @publisher_log_in_url = log_in_publishers_url
+    @wallet_provider = "Uphold"
+    I18n.with_locale(@publisher.last_supported_login_locale) do
+      mail_if_destination_exists(
+        to: @publisher.email,
+        asm: transaction_asm_group_id,
+        subject: default_i18n_subject
+      )
+    end
+  end
+
+
   def promo_breakdowns(publisher, attachment)
     attachments["promos.csv"] = attachment
     mail_if_destination_exists(
