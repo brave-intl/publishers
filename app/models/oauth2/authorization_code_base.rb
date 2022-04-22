@@ -73,4 +73,10 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
     update!(oauth_refresh_failed: true)
     self
   end
+
+  sig { returns(T.self_type) }
+  def record_refresh_failure_notification!
+    update!(oauth_failure_email_sent: true)
+    self
+  end
 end

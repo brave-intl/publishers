@@ -45,7 +45,6 @@ class PublisherMailer < ApplicationMailer
     end
   end
 
-
   def promo_breakdowns(publisher, attachment)
     attachments["promos.csv"] = attachment
     mail_if_destination_exists(
