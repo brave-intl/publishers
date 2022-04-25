@@ -32,15 +32,16 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def wallet_refresh_failure(publisher)
+  def wallet_refresh_failure(publisher, wallet_provider)
     @publisher = publisher
     @publisher_log_in_url = log_in_publishers_url
-    @wallet_provider = "Uphold"
+    @wallet_provider = wallet_provider
+
     I18n.with_locale(@publisher.last_supported_login_locale) do
       mail_if_destination_exists(
         to: @publisher.email,
         asm: transaction_asm_group_id,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(wallet_provider: @wallet_provider)
       )
     end
   end

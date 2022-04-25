@@ -228,8 +228,8 @@ en:
       updated_email: New email
       channel_name: "%{channel} Referral Link"
     wallet_refresh_failure:
-      subject: Unable to connect to your Creator's Wallet
-      body_html: We were unable to connect to your wallet provider and therefore cannot process any pending rewards payouts you may have. If you wish to continue receiving Creator's rewards please login and reconnect your wallet provider.
+      subject: "Unable to connect to your %{wallet_provider} wallet"
+      body_html: "We were unable to connect to your %{wallet_provider} wallet and cannot process any pending rewards payouts you may have. If you wish to continue receiving Creator's rewards please login and reconnect your %{wallet_provider} wallet."
       button: Login in to Reconnect
     channel_contested:
       subject: "A channel transfer for %{channel_name} has been requested"
