@@ -14,16 +14,19 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
     extend T::Sig
 
     abstract!
-    # See: https://sorbet.org/docs/error-reference#5057
-    # See: https://sorbet.org/docs/abstract#interfaces-and-the-included-hook
-    # You cannot define an abstract class method in a module, if you need a class method
-    # (which we do for this particular case), you have to implement your interface as a base class
-    sig { abstract.returns(Oauth2::AuthorizationCodeClient) }
-    def oauth2_client
+
+    # Along with the instance methods, the primary interface
+    # for using the Oauth2 client logic is the implementation
+    # of a class that inherits from Oauth2::Config::AuthorizationCode
+    #
+    # and the definition of this method in the inheriting class.
+    sig { abstract.returns(T.class_of(Oauth2::Config::AuthorizationCode)) }
+    def oauth2_config
     end
 
-    sig { abstract.returns(String) }
-    def oauth2_scope
+    sig { returns(Oauth2::AuthorizationCodeClient) }
+    def oauth2_client
+      @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(oauth2_config)
     end
 
     def state_value!

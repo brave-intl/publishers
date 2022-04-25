@@ -15,15 +15,14 @@ class Oauth2::AuthorizationCodeClient
   attr_reader :request
   attr_reader :response
 
-  sig { params(client_id: String, client_secret: String, authorization_url: URI, token_url: URI, redirect_uri: URI, content_type: String).void }
-  # In reality content type should not be a parameter, but we already have at least one case (Gemini) of an oauth flow that is not actually to spec.
-  def initialize(client_id:, client_secret:, authorization_url:, token_url:, redirect_uri:, content_type: "application/x-www-form-urlencoded")
-    @client_id = client_id
-    @client_secret = client_secret
-    @authorization_url = authorization_url
-    @token_url = token_url
-    @redirect_uri = redirect_uri
-    @content_type = content_type
+  sig { params(config: T.class_of(Oauth2::Config::AuthorizationCode)).void }
+  def initialize(config)
+    @client_id = config.client_id
+    @client_secret = config.client_secret
+    @authorization_url = config.authorization_url
+    @token_url = config.token_url
+    @redirect_uri = config.redirect_uri
+    @content_type = config.content_type
     @valid_content_type = "application/x-www-form-urlencoded"
     @invalid_content_type = "application/json"
     @options = {use_ssl: true}

@@ -16,7 +16,7 @@ class Oauth2Controller < ApplicationController
   before_action :set_request_state, only: [:code]
 
   def code
-    redirect_to(client.authorization_code_url(state: @state, scope: @klass.oauth2_scope))
+    redirect_to(client.authorization_code_url(state: @state, scope: @klass.oauth2_config.scope))
   end
 
   def callback
