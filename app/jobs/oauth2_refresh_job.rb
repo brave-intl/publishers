@@ -27,6 +27,9 @@ class Oauth2RefreshJob < ApplicationJob
     when Oauth2::Responses::ErrorResponse
       PublisherMailer.wallet_refresh_failure(conn.publisher, provider).deliver_now
       conn.record_refresh_failure_notification!
+    when BFailure
+      PublisherMailer.wallet_refresh_failure(conn.publisher, provider).deliver_now
+      conn.record_refresh_failure_notification!
     end
 
     result
