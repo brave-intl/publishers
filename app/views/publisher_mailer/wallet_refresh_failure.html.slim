@@ -1,0 +1,10 @@
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name
+
+== t(".body_html", wallet_provider: @wallet_provider)
+
+div.btn-container= link_to t(".button"), @publisher_log_in_url, class: "btn-primary btn-login"
+
+p== t "publisher_mailer.uphold_kyc_incomplete.unsubscribe"
+
+.notice= t "shared.warning_note_html"
+

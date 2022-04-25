@@ -1,9 +1,9 @@
 class Oauth2BatchRefreshJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(wait: 0, limit: nil)
+  def perform(wait: 0, limit: nil, notify: false)
     count = 0
-    [UpholdConnection].each do |klass|
+    [UpholdConnection, GeminiConnection, BitflyerConnection].each do |klass|
       base_query = limit.present? ? klass.limit(limit) : klass
 
       # The idea here is I'm filling a queue to refresh tokens from each connection type
@@ -13,8 +13,8 @@ class Oauth2BatchRefreshJob < ApplicationJob
           count += 1
           # I'm using this job to call individual jobs so I can take advantage of retries/failover due to thinks like rate limits
           # I've used exactly this pattern before to handle mass email jobs, though I don't always wait between enqueing tasks.
-          Oauth2RefreshJob.perform_later(connection.id, klass.name)
-          sleep(wait)
+          Oauth2RefreshJob.perform_later(connection.id, klass.name, notify: notify)
+          sleep(wait) if wait
         end
       end
     end

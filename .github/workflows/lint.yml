@@ -65,3 +65,5 @@ jobs:
         run: bundle exec standardrb
       - name: Brakeman
         run: bundle exec brakeman
+      - name: Compile Assets Check
+        run: DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost' CREATORS_FULL_HOST="HOST" SECRET_KEY_BASE='KEY' RAILS_ENV=production bundle exec rake assets:precompile

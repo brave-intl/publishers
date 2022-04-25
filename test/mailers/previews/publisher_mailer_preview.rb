@@ -26,6 +26,10 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.verification_done(publisher.channels.first)
   end
 
+  def wallet_refresh_failure
+    PublisherMailer.wallet_refresh_failure(Publisher.first)
+  end
+
   def wallet_not_connected
     PublisherMailer.wallet_not_connected(Publisher.first, 232.4)
   end

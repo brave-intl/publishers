@@ -2,6 +2,8 @@ require "test_helper"
 
 class Oauth2RefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
+  include ActionMailer::TestHelper
+
   let(:connection) { uphold_connections(:google_connection) }
   let(:klass) { UpholdConnection.name }
 
@@ -25,10 +27,21 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
     describe "when unsuccessful" do
       before do
         mock_token_failure(UpholdConnection.oauth2_client.token_url)
+        assert ActionMailer::Base.deliveries.count == 0
+        assert !connection.oauth_failure_email_sent
       end
 
-      test "returns an erro" do
+      test "returns an error when !notify" do
         assert_instance_of(Oauth2::Responses::ErrorResponse, Oauth2RefreshJob.perform_now(connection.id, klass))
+        assert ActionMailer::Base.deliveries.count == 0
+      end
+
+      test "returns an error when notify" do
+        result = Oauth2RefreshJob.perform_now(connection.id, klass, notify: true)
+        assert_instance_of(Oauth2::Responses::ErrorResponse, result)
+        assert ActionMailer::Base.deliveries.count == 1
+        connection.reload
+        assert connection.oauth_failure_email_sent
       end
     end
   end
