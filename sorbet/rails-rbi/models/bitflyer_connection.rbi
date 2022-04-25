@@ -116,6 +116,24 @@ module BitflyerConnection::GeneratedAttributeMethods
   sig { returns(T::Boolean) }
   def is_verified?; end
 
+  sig { returns(T::Boolean) }
+  def oauth_failure_email_sent; end
+
+  sig { params(value: T::Boolean).void }
+  def oauth_failure_email_sent=(value); end
+
+  sig { returns(T::Boolean) }
+  def oauth_failure_email_sent?; end
+
+  sig { returns(T::Boolean) }
+  def oauth_refresh_failed; end
+
+  sig { params(value: T::Boolean).void }
+  def oauth_refresh_failed=(value); end
+
+  sig { returns(T::Boolean) }
+  def oauth_refresh_failed?; end
+
   sig { returns(String) }
   def publisher_id; end
 
@@ -217,7 +235,7 @@ module BitflyerConnection::CustomFinderMethods
   def find_by_id!(id); end
 end
 
-class BitflyerConnection < ApplicationRecord
+class BitflyerConnection < Oauth2::AuthorizationCodeBase
   include BitflyerConnection::GeneratedAttributeMethods
   include BitflyerConnection::GeneratedAssociationMethods
   extend BitflyerConnection::CustomFinderMethods
