@@ -14,6 +14,10 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
   end
 
   describe "when record found" do
+    before do
+      ActionMailer::Base.deliveries.clear
+    end
+
     describe "when successful" do
       before do
         mock_refresh_token_success(UpholdConnection.oauth2_client.token_url)
