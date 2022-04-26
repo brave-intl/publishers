@@ -27,6 +27,16 @@ class GeminiConnectionTest < SidekiqTestCase
           assert_instance_of(klass, conn.refresh_authorization!)
         end
       end
+
+      describe "when unsuccessful" do
+        before do
+          mock_unknown_failure(klass.oauth2_client.token_url)
+        end
+
+        test "it should raise an error" do
+          assert_raises(Oauth2::Errors::UnknownError) { conn.refresh_authorization! }
+        end
+      end
     end
   end
 

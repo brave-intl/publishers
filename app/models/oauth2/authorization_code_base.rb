@@ -64,7 +64,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       record_refresh_failure!
       result
     when UnknownError
-      raise UnknownError
+      raise result
     else
       T.absurd(result)
     end
