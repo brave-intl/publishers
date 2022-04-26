@@ -27,7 +27,7 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def wallet_refresh_failure
-    PublisherMailer.wallet_refresh_failure(Publisher.first)
+    PublisherMailer.wallet_refresh_failure(Publisher.first, "Uphold")
   end
 
   def wallet_not_connected

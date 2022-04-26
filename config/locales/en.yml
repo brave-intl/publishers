@@ -229,8 +229,15 @@ en:
       channel_name: "%{channel} Referral Link"
     wallet_refresh_failure:
       subject: "Unable to connect to your %{wallet_provider} wallet"
-      body_html: "We were unable to connect to your %{wallet_provider} wallet and cannot process any pending rewards payouts you may have. If you wish to continue receiving Creator's rewards please login and reconnect your %{wallet_provider} wallet."
+      body_html: |
+        We’re reaching out to inform you that we have been unable to connect to your %{wallet_provider} wallet, and are unable to process any of your rewards payments that may be pending. <p>If you would like to continue receiving Creators rewards, please log in and reconnect to your wallet provider.</p>
+
       button: Login in to Reconnect
+      signature: |
+        <p>
+        Thank you,
+        <br>The Brave Rewards | Creators team</br>
+        </p>
     channel_contested:
       subject: "A channel transfer for %{channel_name} has been requested"
       title: A request to transfer one of your channels has been made
