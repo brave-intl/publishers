@@ -9,7 +9,7 @@ class Oauth2ConfigTest < ActiveSupport::TestCase
         let(:token_url_values) do
           case klass.name
           when "Oauth2::Config::Gemini"
-            "api.sandbox"
+            "exchange.sandbox"
           when "Oauth2::Config::Bitflyer"
             "azurewebsites"
           when "Oauth2::Config::Uphold"
