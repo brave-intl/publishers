@@ -86,6 +86,8 @@ module Oauth2::Config
         Rails.application.secrets[:gemini_client_secret]
       end
 
+      # Gemini auth grant flow uses a different host than api requests
+      # See: https://docs.gemini.com/oauth/#authorization-code-grant-flow
       def authorization_url
         url = is_production? ? "https://exchange.gemini.com"
        : "https://exchange.sandbox.gemini.com"
@@ -93,9 +95,10 @@ module Oauth2::Config
         URI("#{url}/auth")
       end
 
+      # See: https://docs.gemini.com/oauth/#authorization-code-grant-flow
       def token_url
-        url = is_production? ? "https://api.gemini.com"
-         : "https://api.sandbox.gemini.com"
+        url = is_production? ? "https://exchange.gemini.com"
+       : "https://exchange.sandbox.gemini.com"
 
         URI("#{url}/auth/token")
       end
