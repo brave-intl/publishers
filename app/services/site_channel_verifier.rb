@@ -62,16 +62,16 @@ class SiteChannelVerifier < BaseService
     Rails.logger.info("PublisherVerifier by #{channel.details.verification_method}")
 
     case channel.details.verification_method
-      when "dns_record"
-        verify_site_channel_dns
-      when "public_file"
-        verify_site_channel_public_file
-      when "github"
-        verify_site_channel_public_file
-      when "wordpress"
-        verify_site_channel_public_file
-      else
-        raise UnsupportedVerificationMethod.new("PublisherVerifier unknown verification_method:  #{channel.details.verification_method}")
+    when "dns_record"
+      verify_site_channel_dns
+    when "public_file"
+      verify_site_channel_public_file
+    when "github"
+      verify_site_channel_public_file
+    when "wordpress"
+      verify_site_channel_public_file
+    else
+      raise UnsupportedVerificationMethod.new("PublisherVerifier unknown verification_method:  #{channel.details.verification_method}")
     end
   end
 

@@ -8,7 +8,7 @@ class BundlerAuditTest < ActiveSupport::TestCase
     Bundler::Audit::Database.update!(quiet: true)
     vulnerabilities = []
     scanner = Bundler::Audit::Scanner.new
-    scanner.scan(ignore: ["CVE-2022-27777", "CVE-2022-22577", "CVE-2015-9284"]) do |result|
+    scanner.scan(ignore: ["CVE-2015-9284"]) do |result|
       vulnerabilities << "#{result.gem.name} #{result.gem.version} CVE #{result.advisory.cve}"
     end
 
