@@ -3,6 +3,7 @@
 
 class GeminiConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
+  include Oauth2::Responses
 
   JAPAN = "JP"
 
@@ -61,6 +62,28 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   def fetch_refresh_token
     refresh_token
+  end
+
+  # Gemini returns a 401 with a valid oauth2 error message
+  # This is a clear case of refresh failure so we want to handle it
+  # I'm handling this in the GeminiConnection model specifically
+  # as this is not a valid Oauth2 spec response and thus
+  # I do not want to contaminate the Oauth2::AuthenticationCodeClient
+  def refresh_authorization!
+    super do |result|
+      raise result if result.response.code != "401"
+
+      record_refresh_failure!
+
+      # Catch the valid response body with invalid code
+      begin
+        body = JSON.parse(result.response.body, symbolize_names: true)
+        ErrorResponse.new(error: body[:error], error_description: body[:error_description])
+      rescue
+        # If it's not a valid response body, it's still an UnknownError, raise
+        raise result
+      end
+    end
   end
 
   def sync_connection!
