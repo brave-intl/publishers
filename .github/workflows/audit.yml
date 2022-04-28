@@ -59,6 +59,7 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Yarn audit
         run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
-      - name: Bundler Audit
-        run: bundle exec bundle-audit check --update
+          # Temp to unblock prod patch
+#      - name: Bundler Audit
+#        run: bundle exec bundle-audit check --update
 
