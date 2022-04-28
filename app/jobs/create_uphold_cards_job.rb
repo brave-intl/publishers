@@ -31,6 +31,8 @@ class CreateUpholdCardsJob < ApplicationJob
   def find_existing_card(uphold_connection)
     cards = UpholdClient.card.where(uphold_connection: uphold_connection)
 
+    return if cards.nil?
+
     # This is the default label that we apply to a card. If we find it then it's safe to assume that this was one we've created prior.
     card = cards&.detect { |c| c.label.eql?("Brave Rewards") }
 

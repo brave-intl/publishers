@@ -37,6 +37,9 @@ class CreateUpholdChannelCardJob < ApplicationJob
     # If a user transfers their channel then we should try not to create duplicate uphold cards
     card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Rewards"
     cards = UpholdClient.card.where(uphold_connection: uphold_connection)
+
+    return if cards.nil?
+
     card_id = cards.detect { |c| c.label.eql?(card_label) }&.id
 
     if card_id.blank?
