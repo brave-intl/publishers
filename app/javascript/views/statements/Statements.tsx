@@ -188,9 +188,6 @@ class Statements extends React.Component<any, IStatementsState> {
               <TableHeader className="text-right" style={{ minWidth: "150px" }}>
                 <FormattedMessage id="statements.overview.totalBraveSettled" />
               </TableHeader>
-              <TableHeader className="text-right" style={{ minWidth: "150px" }}>
-                <FormattedMessage id="statements.overview.directUserTips" />
-              </TableHeader>
               <TableHeader className="text-right" style={{ minWidth: "175px" }}>
                 <FormattedMessage id="statements.overview.amountDeposited" />
               </TableHeader>
@@ -215,15 +212,6 @@ class Statements extends React.Component<any, IStatementsState> {
                   <td className="text-right">
                     <CurrencyNumber
                       value={statement.totals.totalBraveSettled}
-                    />
-                    <small>
-                      {" "}
-                      <FormattedMessage id="bat" />
-                    </small>
-                  </td>
-                  <td className="text-right">
-                    <CurrencyNumber
-                      value={statement.totals.upholdContributionSettlement}
                     />
                     <small>
                       {" "}
