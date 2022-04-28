@@ -46,8 +46,8 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
 
   # Primary refresher implementation.  Shareable across all connections, simply requires the abstract methods
   # above in order to function.
-  sig { returns(TYPES) }
-  def refresh_authorization!
+  sig { params(err_blk: T.nilable(T.proc).returns(T.untyped)).returns(TYPES) }
+  def refresh_authorization!(&err_blk)
     refresh_token = fetch_refresh_token
 
     if refresh_token.nil?
@@ -64,7 +64,12 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       record_refresh_failure!
       result
     when UnknownError
-      raise result
+      if block_given?
+        T.reveal_type(err_blk)
+        yield result
+      else
+        raise result
+      end
     else
       T.absurd(result)
     end
