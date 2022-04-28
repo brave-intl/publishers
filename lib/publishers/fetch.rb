@@ -25,10 +25,10 @@ module Publishers
         host = request["host"]
       end
       case response
-        when Net::HTTPSuccess
-          response
-        else
-          response.value
+      when Net::HTTPSuccess
+        response
+      else
+        response.value
       end
     end
   end

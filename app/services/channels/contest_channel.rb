@@ -48,10 +48,10 @@ module Channels
 
       # TODO Abstract
       channel_ids_match = case @channel.details_type
-        when "SiteChannelDetails"
-          @channel.details.brave_publisher_id == @contested_by.details.brave_publisher_id
-        else
-          @channel.details.channel_identifier == @contested_by.details.channel_identifier
+      when "SiteChannelDetails"
+        @channel.details.brave_publisher_id == @contested_by.details.brave_publisher_id
+      else
+        @channel.details.channel_identifier == @contested_by.details.channel_identifier
       end
 
       raise ChannelIdMismatchError unless channel_ids_match

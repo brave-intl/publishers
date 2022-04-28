@@ -5,9 +5,6 @@
 class Eyeshade::BaseApiClient < BaseApiClient
   attr_accessor :result
 
-  def initialize
-  end
-
   def publishers
     @publishers ||= Eyeshade::Publishers.new
   end

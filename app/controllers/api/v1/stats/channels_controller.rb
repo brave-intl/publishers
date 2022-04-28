@@ -9,13 +9,13 @@ class Api::V1::Stats::ChannelsController < Api::V1::StatsController
     channel_details = channel.details
 
     case channel.details_type
-      when "SiteChannelDetails"
-        channel_details = SiteChannelDetails.find_by_id(channel.details_id)
-        channel_type = "website"
-        channel_name = channel_details.url
-      else
-        channel_type = channel.type_display.downcase
-        channel_name = channel_details.name
+    when "SiteChannelDetails"
+      channel_details = SiteChannelDetails.find_by_id(channel.details_id)
+      channel_type = "website"
+      channel_name = channel_details.url
+    else
+      channel_type = channel.type_display.downcase
+      channel_name = channel_details.name
     end
 
     data = {

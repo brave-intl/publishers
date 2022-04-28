@@ -112,7 +112,7 @@ gem "rack-attack", "~> 6.5.0"
 
 gem "railties", "~> 6.1.4"
 
-gem "rails", "~> 6.1.4.7"
+gem "rails", "~> 6.1.5.1"
 gem "rails-i18n", "~> 6.0.0"
 
 # I love captchas
