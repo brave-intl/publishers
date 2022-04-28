@@ -11,8 +11,6 @@ Development with Docker and `docker-compose` is recommended for anyone just gett
 1. Ensure `openssl` is installed. `brew install openssl`
 1. In your browser, navigate to `brave://flags`.  Make sure `Allow invalid certificates for resources loaded from localhost.
 ` is enabled. 
-1. Ensure `yarn` is installed. `npm install --global yarn`
-1. Run `yarn`
 1. Run `make`
 1. Create an admin user. `make admin EMAIL="email@example.com"`
 
