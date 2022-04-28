@@ -226,7 +226,6 @@ export default {
         total: "Total",
         type: "Type"
       },
-      directUserTips: "Direct User Tips",
       download: "Download",
       earningPeriod: "Earning Period",
       fees: "Fees",

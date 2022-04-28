@@ -259,21 +259,6 @@ const TotalSubTable = (props) => (
         </Total>
       </TotalCell>
     </tr>
-
-    <tr>
-      <TotalCell />
-      <TotalCell>
-        <Total isDark>
-          <FormattedMessage id="statements.overview.directUserTips" />
-        </Total>
-      </TotalCell>
-      <TotalCell textRight>
-        <Total isDark>
-          <CurrencyNumber value={props.upholdContributionSettlement} />{" "}
-          <FormattedMessage id="bat" />
-        </Total>
-      </TotalCell>
-    </tr>
   </React.Fragment>
 );
 
