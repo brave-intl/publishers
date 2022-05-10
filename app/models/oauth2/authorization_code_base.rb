@@ -91,4 +91,9 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   sig { abstract.returns(T.untyped) }
   def sync_connection!
   end
+
+  # TODO: Abstract this to proper context
+  sig { abstract.returns(String) }
+  def self.provider_name
+  end
 end
