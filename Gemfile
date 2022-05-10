@@ -5,11 +5,13 @@ def not_arm?
   !(arch.include?("arm") || arch.include?("aarch64"))
 end
 
-gem "ssrf_filter"
-
 ruby "~> 3.0.2"
 
 source "https://rubygems.org"
+
+rails_version = "6.1.6"
+gem "rails", rails_version
+gem "railties", rails_version
 
 gem "rack"
 
@@ -110,9 +112,6 @@ gem "puma", "~> 5.6.4"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 6.5.0"
 
-gem "railties", "~> 6.1.4"
-
-gem "rails", "~> 6.1.5.1"
 gem "rails-i18n", "~> 6.0.0"
 
 # I love captchas
@@ -149,6 +148,7 @@ gem "slim-rails", "~> 3.1"
 gem "sorbet", "0.5.9538", group: :development if not_arm?
 gem "sorbet-runtime", "0.5.9538"
 
+gem "ssrf_filter"
 gem "stripe", "~> 5.1", ">= 5.1.1"
 
 # U2F for 2-factor auth
