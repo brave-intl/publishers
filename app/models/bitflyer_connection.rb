@@ -85,6 +85,10 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   end
 
   class << self
+    def provider_name
+      "Uphold"
+    end
+
     def oauth2_config
       Oauth2::Config::Bitflyer
     end

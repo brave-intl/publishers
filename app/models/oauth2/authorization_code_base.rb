@@ -82,4 +82,18 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
     update!(oauth_failure_email_sent: true)
     self
   end
+
+  # I don't think this is really appropriate for this model so it should be moved out later
+  # but I'm running into issues with sorbet and concerns/relations with the wallet_provider_properties
+  # so I'm just going to ensure the interface exists for now and move on
+  #
+  # TODO: Abstract this to proper context
+  sig { abstract.returns(T.untyped) }
+  def sync_connection!
+  end
+
+  # TODO: Abstract this to proper context
+  sig { abstract.returns(String) }
+  def self.provider_name
+  end
 end

@@ -88,6 +88,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   class << self
+    def provider_name
+      "Gemini"
+    end
+
     def oauth2_config
       Oauth2::Config::Gemini
     end
