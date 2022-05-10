@@ -11,7 +11,8 @@ Warden::Manager.after_authentication except: :fetch do |publisher, auth, _opts|
 
   LoginActivity.create!(params)
 
-  if publisher && !Rails.env.test?
-    Util::Wallet::ConnectionSyncer.build.call(publisher: publisher)
+  # All those services were wrapper around a single method.
+  if publisher && publisher.selected_wallet_provider && !Rails.env.test?
+    publisher.selected_wallet_provider.sync_connection!
   end
 end
