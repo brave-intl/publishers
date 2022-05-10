@@ -1,2 +1,28 @@
+# Ignore git items
+.gitignore
+.git/
+:include .gitignore
+
+# Common large paths
+node_modules/
+build/
+dist/
+vendor/
+.env/
+.venv/
+.tox/
+*.min.js
+
+# Common test paths
+test/
+tests/
+*_test.go
+
+# Semgrep rules folder
+.semgrep
+
+# Semgrep-action log folder
+.semgrep_logs/
+
 # Ignore pre-generated homepage
-public/static/js
+public/static/js/
