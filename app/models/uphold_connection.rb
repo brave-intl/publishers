@@ -238,6 +238,9 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     uphold_information = uphold_details
     return if uphold_information.blank?
 
+    # FIXME: This will fail silently and return nil
+    #
+    # Avoiding for now to prevent scope creep
     update(
       is_member: uphold_information.memberAt.present?,
       member_at: uphold_information.memberAt,
