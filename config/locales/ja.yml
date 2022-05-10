@@ -286,6 +286,22 @@ ja:
       salutation: こんにちは %{name}さん,
       updated_email: 新しいメール
       channel_name: "%{channel} リファラルリンク"
+    wallet_refresh_failure:
+      subject: "あなたの %{wallet_provider} ウォレットに接続できませんでした"
+      body_html: |
+        "あなたの %{wallet_provider}ウォレットに接続することができず、保留されている可能性がある報酬支払いを処理できなかったことをお知らせします
+        。
+        <p>
+          引き続きクリエイター報酬を受け取りたい場合、ログインしてウォレット提供事業者に再接続してください。
+        </p>
+        "
+
+      button: ログインして再接続する
+      signature: |
+        <p>
+        よろしくお願いいたします。
+        <br>The Brave Rewards | Creators team</br>
+        </p>
     channel_contested:
       subject: "%{channel_name}のチャンネル移管が要求されました"
       title: チャンネルを移管するリクエストが行われました
