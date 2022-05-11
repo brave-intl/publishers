@@ -326,8 +326,8 @@ class PublisherMailer
   sig { params(publisher: T.untyped, total_amount: T.untyped).returns(ActionMailer::MessageDelivery) }
   def self.wallet_not_connected(publisher, total_amount); end
 
-  sig { params(publisher: T.untyped).returns(ActionMailer::MessageDelivery) }
-  def self.wallet_refresh_failure(publisher); end
+  sig { params(publisher: T.untyped, wallet_provider: T.untyped).returns(ActionMailer::MessageDelivery) }
+  def self.wallet_refresh_failure(publisher, wallet_provider); end
 
   sig { params(channel: T.untyped).returns(ActionMailer::MessageDelivery) }
   def self.youtube_channel_next_step_path(channel); end

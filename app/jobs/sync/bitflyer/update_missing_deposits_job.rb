@@ -2,7 +2,7 @@
 class Sync::Bitflyer::UpdateMissingDepositsJob < ApplicationJob
   queue_as :low
 
-  def perform
+  def perform(notify: false)
     Publisher
       .joins(:bitflyer_connection)
       .joins(:channels)
@@ -13,7 +13,7 @@ class Sync::Bitflyer::UpdateMissingDepositsJob < ApplicationJob
       .select("channels.id")
       .each do |result|
       channel_id = result["id"]
-      Sync::Bitflyer::UpdateMissingDepositJob.perform_async(channel_id)
+      Sync::Bitflyer::UpdateMissingDepositJob.perform_async(channel_id, notify: notify)
     end
   end
 end
