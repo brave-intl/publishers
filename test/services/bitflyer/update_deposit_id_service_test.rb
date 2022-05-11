@@ -24,6 +24,16 @@ class BitflyerUpdateDepositIdService < ActiveSupport::TestCase
         channel.deposit_id = nil
       end
 
+      describe "when connection is failure" do
+        before do
+          connection.oauth_refresh_failed = true
+        end
+
+        test "it should BIndeterminate" do
+          assert_instance_of(BIndeterminate, inst.call(channel, notify: notify))
+        end
+      end
+
       describe "when notify" do
         describe "when refresh" do
           let(:deposit_id) { "a value" }

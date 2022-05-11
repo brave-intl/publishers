@@ -13,6 +13,7 @@ class Bitflyer::UpdateDepositIdService < BuilderBaseService
     conn = channel.publisher.bitflyer_connection
 
     return shrug("NOOP: No bitflyer connection detected somehow") if conn.nil?
+    return shrug("NOOP: Bitflyer connection invalid") if conn.oauth_refresh_failed
 
     result = Wallet::RefreshFailureNotificationService.build.call(conn, notify: notify)
 
