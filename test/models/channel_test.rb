@@ -448,5 +448,42 @@ class ChannelTest < ActionDispatch::IntegrationTest
         end
       end
     end
+
+    describe "scopes" do
+      let(:publisher) { publishers(:bitflyer_pub) }
+      let(:channel) { publisher.channels.first }
+      let(:connection) { publisher.bitflyer_connection }
+
+      describe "#using_active_bitflyer_connection" do
+        before do
+          # I don't know why we create 75 channels on the fixture
+          assert Channel.count == 75
+        end
+
+        test "count should eq 4" do
+          assert Channel.using_active_bitflyer_connection.count == 4
+        end
+
+        describe "when oauth2 failure" do
+          before do
+            BitflyerConnection.update_all(oauth_refresh_failed: true, oauth_failure_email_sent: true)
+          end
+
+          test "it should return none" do
+            assert Channel.using_active_bitflyer_connection.count == 0
+          end
+        end
+      end
+
+      describe "#missing_deposit_id" do
+        before do
+          assert Channel.count == 75
+        end
+
+        test "count should eq 71" do
+          assert Channel.missing_deposit_id.count == 71
+        end
+      end
+    end
   end
 end

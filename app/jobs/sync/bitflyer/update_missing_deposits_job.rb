@@ -3,17 +3,10 @@ class Sync::Bitflyer::UpdateMissingDepositsJob < ApplicationJob
   queue_as :low
 
   def perform(notify: false)
-    Publisher
-      .joins(:bitflyer_connection)
-      .joins(:channels)
-      .where(selected_wallet_provider_type: BitflyerConnection.name)
-      .where.not(selected_wallet_provider_id: nil)
-      .where(channels: {deposit_id: nil})
-      .where(bitflyer_connection: {oauth_refresh_failed: false, oauth_failure_email_sent: false}) # There is no point in attempting this on failed connections
-      .select("channels.id")
-      .each do |result|
-      channel_id = result["id"]
-      Sync::Bitflyer::UpdateMissingDepositJob.perform_async(channel_id, notify: notify)
+    Channel.missing_deposit_id.using_active_bitflyer_connection.select(:id).find_in_batches do |batch|
+      batch.each do |id|
+        Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id, notify: notify)
+      end
     end
   end
 end
