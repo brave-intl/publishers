@@ -16,6 +16,8 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
     result = connection.refresh_authorization!
 
     case result
+    when BFailure
+      return result
     when Oauth2::Responses::ErrorResponse
       connection.record_refresh_failure_notification!
 

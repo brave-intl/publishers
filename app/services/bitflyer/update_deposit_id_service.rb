@@ -1,24 +1,26 @@
 # typed: true
 
 class Bitflyer::UpdateDepositIdService < BuilderBaseService
-  include Wallet::Structs
+  include Oauth2::Responses
 
   def self.build
     new
   end
 
-  def call(channel, notify: false)
-    return shrug("NOOP: Deposit id was present on the channel somehow") if channel.deposit_id.present?
+  def call(channel)
+    return shrug("NOOP: Deposit id was present on the channel.") if channel.deposit_id.present?
 
     conn = channel.publisher.bitflyer_connection
 
-    return shrug("NOOP: No bitflyer connection detected somehow") if conn.nil?
+    return shrug("NOOP: No bitflyer connection detected.") if conn.nil?
 
-    result = Wallet::RefreshFailureNotificationService.build.call(conn, notify: notify)
+    result = conn.refresh_authorization!
 
     case result
-    when FailedWithoutNotification, FailedWithNotification
+    when BFailure
       return result
+    when ErrorResponse
+      return BFailure.new(errors: [result])
     end
 
     # FIXME: Ideally this would be part of it's own client
