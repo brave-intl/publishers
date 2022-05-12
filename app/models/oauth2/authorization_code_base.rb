@@ -6,6 +6,9 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   extend T::Sig
   extend T::Helpers
 
+  #  # Required for Sorbet
+  attr_accessor :oauth_refresh_failed
+
   TYPES = T.type_alias { T.any(T.self_type, ErrorResponse, BFailure) }
   abstract!
 
@@ -48,6 +51,8 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   # above in order to function.
   sig { returns(TYPES) }
   def refresh_authorization!
+    return BFailure.new(errors: ["Connection refresh has already failed"]) if oauth_refresh_failed
+
     refresh_token = fetch_refresh_token
 
     if refresh_token.nil?

@@ -23,7 +23,22 @@ class BitflyerConnectionTest < SidekiqTestCase
         end
 
         test "it should return expected outout" do
-          assert_instance_of(klass, conn.refresh_authorization!)
+          inst = conn.refresh_authorization!
+          assert_instance_of(klass, inst)
+          inst.reload
+          assert !conn.oauth_refresh_failed
+        end
+      end
+
+      describe "when unsuccessful" do
+        before do
+          mock_token_failure(klass.oauth2_client.token_url)
+        end
+
+        test "it should return expected outout" do
+          conn.refresh_authorization!
+          conn.reload
+          assert conn.oauth_refresh_failed
         end
       end
     end
