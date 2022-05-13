@@ -87,6 +87,7 @@ class GeminiConnectionTest < SidekiqTestCase
     let(:connection) { gemini_connections(:connection_with_token) }
 
     before do
+      mock_refresh_token_success(connection.class.oauth2_client.token_url)
       mock_gemini_unverified_account_request!
     end
 
