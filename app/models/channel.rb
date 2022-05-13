@@ -36,6 +36,7 @@ class Channel < ApplicationRecord
 
   has_one :site_banner, dependent: :destroy
   has_one :site_banner_lookup, dependent: :destroy
+  has_one :bitflyer_connection, through: :publisher
 
   has_many :potential_payments
 
@@ -110,6 +111,17 @@ class Channel < ApplicationRecord
 
   scope :contested_channels_ready_to_transfer, -> {
     where.not(contested_by_channel_id: nil).where("contest_timesout_at < ?", Time.now)
+  }
+
+  scope :missing_deposit_id, -> { where(deposit_id: nil) }
+  scope :using_active_bitflyer_connection, -> {
+    joins(:publisher)
+      .joins(:bitflyer_connection)
+      .where.not(publisher: {selected_wallet_provider_id: nil})
+      .where(
+        publisher: {selected_wallet_provider_type: BitflyerConnection.name},
+        bitflyer_connection: {oauth_refresh_failed: false, oauth_failure_email_sent: false}
+      )
   }
 
   scope :verified, -> { where(verified: true) }
@@ -364,15 +376,16 @@ class Channel < ApplicationRecord
 
   # Needed for bitFlyer, but can likely be used for Uphold too.
   def create_deposit_id
-    if publisher.selected_wallet_provider
-      if publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && deposit_id.nil?
-        Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id)
-      end
+    wallet = publisher.selected_wallet_provider
 
-      # We don't have a deposit ID on this channel, need one!
-      if publisher.selected_wallet_provider_type == GEMINI_CONNECTION && gemini_connection_for_channel.blank?
-        publisher.selected_wallet_provider.sync_connection!
-      end
+    # No need to run if it won't work
+    return if !wallet || wallet.oauth_refresh_failed
+
+    case wallet
+    when BitflyerConnection
+      Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id) if deposit_id.nil?
+    when GeminiConnection
+      wallet.sync_connection! if gemini_connection_for_channel.blank?
     end
   end
 

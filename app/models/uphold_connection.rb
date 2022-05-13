@@ -298,6 +298,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   class << self
+    def provider_name
+      "Uphold"
+    end
+
     def oauth2_config
       Oauth2::Config::Uphold
     end

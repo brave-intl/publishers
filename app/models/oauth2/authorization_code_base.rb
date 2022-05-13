@@ -48,6 +48,10 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   # above in order to function.
   sig { returns(TYPES) }
   def refresh_authorization!
+    if respond_to?(:oauth_refresh_failed) && send(:oauth_refresh_failed)
+      return BFailure.new(errors: ["Connection refresh has already failed"])
+    end
+
     refresh_token = fetch_refresh_token
 
     if refresh_token.nil?
@@ -81,5 +85,19 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   def record_refresh_failure_notification!
     update!(oauth_failure_email_sent: true)
     self
+  end
+
+  # I don't think this is really appropriate for this model so it should be moved out later
+  # but I'm running into issues with sorbet and concerns/relations with the wallet_provider_properties
+  # so I'm just going to ensure the interface exists for now and move on
+  #
+  # TODO: Abstract this to proper context
+  sig { abstract.returns(T.untyped) }
+  def sync_connection!
+  end
+
+  # TODO: Abstract this to proper context
+  sig { abstract.returns(String) }
+  def self.provider_name
   end
 end

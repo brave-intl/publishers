@@ -3,6 +3,7 @@ require "test_helper"
 class Oauth2RefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
   include ActionMailer::TestHelper
+  include Wallet::Structs
 
   let(:connection) { uphold_connections(:google_connection) }
   let(:klass) { UpholdConnection.name }
@@ -23,8 +24,16 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
         mock_refresh_token_success(UpholdConnection.oauth2_client.token_url)
       end
 
-      test "refreshes the token" do
-        assert_instance_of(UpholdConnection, Oauth2RefreshJob.perform_now(connection.id, klass))
+      describe "when !notify" do
+        test "refreshes the token BSuccess" do
+          assert_instance_of(BSuccess, Oauth2RefreshJob.perform_now(connection.id, klass))
+        end
+      end
+
+      describe "when notify" do
+        test "refreshes the token and is success" do
+          assert_instance_of(BSuccess, Oauth2RefreshJob.perform_now(connection.id, klass, notify: true))
+        end
       end
     end
 
@@ -35,14 +44,14 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
         assert !connection.oauth_failure_email_sent
       end
 
-      test "returns an error when !notify" do
-        assert_instance_of(Oauth2::Responses::ErrorResponse, Oauth2RefreshJob.perform_now(connection.id, klass))
+      test "returns explicit type when !notify" do
+        assert_instance_of(FailedWithoutNotification, Oauth2RefreshJob.perform_now(connection.id, klass))
         assert ActionMailer::Base.deliveries.count == 0
       end
 
-      test "returns an error when notify" do
+      test "returns an explicit type notify" do
         result = Oauth2RefreshJob.perform_now(connection.id, klass, notify: true)
-        assert_instance_of(Oauth2::Responses::ErrorResponse, result)
+        assert_instance_of(FailedWithNotification, result)
         assert ActionMailer::Base.deliveries.count == 1
         connection.reload
         assert connection.oauth_failure_email_sent
