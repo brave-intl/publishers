@@ -1,43 +1,49 @@
 # typed: true
 
 class Bitflyer::UpdateDepositIdService < BuilderBaseService
+  extend T::Helpers
+  extend T::Sig
   include Oauth2::Responses
 
   def self.build
     new
   end
 
+  sig { override.params(channel: Channel).returns(BServiceResult) }
   def call(channel)
     return shrug("NOOP: Deposit id was present on the channel.") if channel.deposit_id.present?
 
-    conn = channel.publisher.bitflyer_connection
+    conn = channel.bitflyer_connection
 
     return shrug("NOOP: No bitflyer connection detected.") if conn.nil?
 
     result = conn.refresh_authorization!
 
+    # Man exhaustiveness checking is awesome.
     case result
+    when BitflyerConnection
+      # FIXME: Ideally this would be part of it's own client
+      url = URI.parse(Rails.application.secrets[:bitflyer_host] + "/api/link/v1/account/create-deposit-id?request_id=" + SecureRandom.uuid)
+      request = Net::HTTP::Get.new(url.to_s)
+
+      request["Authorization"] = "Bearer " + T.must(conn.access_token)
+      response = Net::HTTP.start(url.host, url.port, use_ssl: url.scheme == "https") do |http|
+        http.request(request)
+      end
+
+      deposit_id = JSON.parse(response.body)["deposit_id"]
+      channel.update!(deposit_id: deposit_id)
+
+      # Passing the channel along mostly for debugging purposes
+      # If I really care about/want the channel I will create an explicit
+      # result type and pass it with a static type of Channel
+      pass([channel])
     when BFailure
-      return result
+      result
     when ErrorResponse
-      return BFailure.new(errors: [result])
+      BFailure.new(errors: [result])
+    else
+      T.absurd(result)
     end
-
-    # FIXME: Ideally this would be part of it's own client
-    url = URI.parse(Rails.application.secrets[:bitflyer_host] + "/api/link/v1/account/create-deposit-id?request_id=" + SecureRandom.uuid)
-    request = Net::HTTP::Get.new(url.to_s)
-
-    request["Authorization"] = "Bearer " + conn.access_token
-    response = Net::HTTP.start(url.host, url.port, use_ssl: url.scheme == "https") do |http|
-      http.request(request)
-    end
-
-    deposit_id = JSON.parse(response.body)["deposit_id"]
-    channel.update!(deposit_id: deposit_id)
-
-    # Passing the channel along mostly for debugging purposes
-    # If I really care about/want the channel I will create an explicit
-    # result type and pass it with a static type of Channel
-    pass([channel])
   end
 end

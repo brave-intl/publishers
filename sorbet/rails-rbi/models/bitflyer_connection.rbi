@@ -11,6 +11,9 @@ module BitflyerConnection::GeneratedAttributeMethods
   sig { returns(T.nilable(ActiveSupport::TimeWithZone)) }
   def access_expiration_time; end
 
+  sig { returns(T.nilable(String)) }
+  def access_token; end
+
   sig { params(value: T.nilable(T.any(Date, Time, ActiveSupport::TimeWithZone))).void }
   def access_expiration_time=(value); end
 

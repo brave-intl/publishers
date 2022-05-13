@@ -163,6 +163,24 @@ module Channel::GeneratedAttributeMethods
 end
 
 module Channel::GeneratedAssociationMethods
+  sig { returns(T.nilable(::BitflyerConnection)) }
+  def bitflyer_connection; end
+
+  sig { params(args: T.untyped, block: T.nilable(T.proc.params(object: ::BitflyerConnection).void)).returns(::BitflyerConnection) }
+  def build_bitflyer_connection(*args, &block); end
+
+  sig { params(args: T.untyped, block: T.nilable(T.proc.params(object: ::BitflyerConnection).void)).returns(::BitflyerConnection) }
+  def create_bitflyer_connection(*args, &block); end
+
+  sig { params(args: T.untyped, block: T.nilable(T.proc.params(object: ::BitflyerConnection).void)).returns(::BitflyerConnection) }
+  def create_bitflyer_connection!(*args, &block); end
+
+  sig { params(value: T.nilable(::BitflyerConnection)).void }
+  def bitflyer_connection=(value); end
+
+  sig { returns(T.nilable(::BitflyerConnection)) }
+  def reload_bitflyer_connection; end
+
   sig { returns(T.nilable(::Channel)) }
   def contested_by_channel; end
 
@@ -483,6 +501,9 @@ class Channel < ApplicationRecord
   def self.github_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
+  def self.missing_deposit_id(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
   def self.not_visible_site_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
@@ -517,6 +538,9 @@ class Channel < ApplicationRecord
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
   def self.twitter_channels(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
+  def self.using_active_bitflyer_connection(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
   def self.verified(*args); end
@@ -565,6 +589,9 @@ class Channel::ActiveRecord_Relation < ActiveRecord::Relation
   def github_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
+  def missing_deposit_id(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
   def not_visible_site_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
@@ -599,6 +626,9 @@ class Channel::ActiveRecord_Relation < ActiveRecord::Relation
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
   def twitter_channels(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
+  def using_active_bitflyer_connection(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_Relation) }
   def verified(*args); end
@@ -647,6 +677,9 @@ class Channel::ActiveRecord_AssociationRelation < ActiveRecord::AssociationRelat
   def github_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
+  def missing_deposit_id(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
   def not_visible_site_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
@@ -681,6 +714,9 @@ class Channel::ActiveRecord_AssociationRelation < ActiveRecord::AssociationRelat
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
   def twitter_channels(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
+  def using_active_bitflyer_connection(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
   def verified(*args); end
@@ -728,6 +764,9 @@ class Channel::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associa
   def github_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
+  def missing_deposit_id(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
   def not_visible_site_channels(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
@@ -762,6 +801,9 @@ class Channel::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associa
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
   def twitter_channels(*args); end
+
+  sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
+  def using_active_bitflyer_connection(*args); end
 
   sig { params(args: T.untyped).returns(Channel::ActiveRecord_AssociationRelation) }
   def verified(*args); end
