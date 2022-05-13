@@ -338,6 +338,39 @@ class PublisherTest < ActiveSupport::TestCase
     )
   end
 
+  describe "#sync_wallet_connections" do
+    describe "when the publisher has a selected_wallet_provider" do
+      let(:publisher) { publishers(:gemini_completed) }
+
+      it "is true" do
+        assert publisher.selected_wallet_provider
+        assert publisher.sync_wallet_connections
+      end
+    end
+
+    describe "when the publisher doesn't have a selected_wallet_provider" do
+      let(:publisher) { publishers(:default) }
+
+      it "is false" do
+        assert !publisher.selected_wallet_provider
+        assert !publisher.sync_wallet_connections
+      end
+    end
+
+    describe "when the connection recently updated" do
+      let(:publisher) { publishers(:gemini_completed) }
+
+      before do
+        publisher.selected_wallet_provider.updated_at = 2.days.ago
+      end
+
+      it "is false" do
+        assert publisher.selected_wallet_provider
+        assert !publisher.sync_wallet_connections
+      end
+    end
+  end
+
   describe "#selected_wallet_provider" do
     describe "when the publisher has a selected_wallet_provider" do
       let(:publisher) { publishers(:publisher_selected_wallet_provider) }
