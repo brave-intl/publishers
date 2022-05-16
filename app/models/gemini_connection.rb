@@ -19,14 +19,21 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   scope :payable, -> {
     where(is_verified: true)
       .where(status: "Active")
+      .where.not(recipient_id: nil)
   }
+
+  enum recipient_id_status: {
+    pending: 0,
+    duplicate: 1,
+    present: 2
+  }, _prefix: :recipient_id
 
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
   end
 
   def payable?
-    is_verified? && status == "Active"
+    is_verified? && status == "Active" && recipient_id
   end
 
   def default_currency

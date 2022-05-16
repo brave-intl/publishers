@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_14_225313) do
+ActiveRecord::Schema.define(version: 2022_05_12_064026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -225,6 +225,7 @@ ActiveRecord::Schema.define(version: 2022_03_14_225313) do
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
+    t.integer "recipient_id_status", default: 0, null: false
     t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
