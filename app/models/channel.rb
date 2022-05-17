@@ -115,8 +115,7 @@ class Channel < ApplicationRecord
 
   scope :missing_deposit_id, -> { where(deposit_id: nil) }
   scope :using_active_bitflyer_connection, -> {
-    joins(:publisher)
-      .joins(:bitflyer_connection)
+    joins(:bitflyer_connection)
       .where.not(publisher: {selected_wallet_provider_id: nil})
       .where(
         publisher: {selected_wallet_provider_type: BitflyerConnection.name},
