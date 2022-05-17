@@ -238,13 +238,21 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     uphold_information = uphold_details
     return if uphold_information.blank?
 
-    update(
+    result = update(
       is_member: uphold_information.memberAt.present?,
       member_at: uphold_information.memberAt,
       status: uphold_information.status,
       uphold_id: uphold_information.id,
       country: uphold_information.country
     )
+
+    # I pulled this out of the async job because sync_connection! should
+    # handle anything related to the connection state.
+    # Handles legacy case where user is missing an Uphold card
+    create_uphold_cards if missing_card? && result
+
+    # This is awkward but a job is dependent on the truthyness of the update value
+    result
   end
 
   def update_site_banner_lookup!

@@ -16,6 +16,34 @@ class BitflyerConnectionTest < SidekiqTestCase
       end
     end
 
+    # Today bitflyer only refreshes token on sync (so far as I can tell)
+    describe "#sync_connection!!" do
+      describe "when successful" do
+        before do
+          mock_refresh_token_success(klass.oauth2_client.token_url)
+        end
+
+        test "it should return expected outout" do
+          inst = conn.refresh_authorization!
+          assert_instance_of(klass, inst)
+          inst.reload
+          assert !conn.oauth_refresh_failed
+        end
+      end
+
+      describe "when unsuccessful" do
+        before do
+          mock_token_failure(klass.oauth2_client.token_url)
+        end
+
+        test "it should return expected outout" do
+          conn.refresh_authorization!
+          conn.reload
+          assert conn.oauth_refresh_failed
+        end
+      end
+    end
+
     describe "#refresh_authorization!" do
       describe "when successful" do
         before do

@@ -58,35 +58,12 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   end
 
   def sync_connection!
-    return if access_token.blank?
-
-    # If our access token has expired then we should refresh.
-    if access_token_expired?
-      refresh_authorization!
-    end
-
-    users = Bitflyer::Account.find(token: access_token).users
-    user = users.find { |u| u.is_verified && u.status == "Active" }
-
-    # If we couldn't find a verified account we'll take the first user.
-    user ||= users.first
-
-    update(
-      display_name: user.name,
-      status: user.status,
-      country: user.country_code,
-      is_verified: user.is_verified
-    )
-
-    # Users aren't able to create a recipient id if they are not fully verified
-    if payable?
-      true
-    end
+    refresh_authorization!
   end
 
   class << self
     def provider_name
-      "Uphold"
+      "Bitflyer"
     end
 
     def oauth2_config
