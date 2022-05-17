@@ -62,10 +62,10 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: scheduler
-#  Sync::Bitflyer::UpdateMissingDepositsJob:
-#    cron: "0 4 * * *"
-#    description: "For bitflyer channels missing their deposit IDs"
-#    queue: low
+  Sync::Bitflyer::UpdateMissingDepositsJob:
+    cron: "0 4 * * *"
+    description: "For bitflyer channels missing their deposit IDs"
+    queue: low
   EnqueuePublishersForPayoutJob:
     cron: "0 0 23 * *"
     args: ['send_notifications']
