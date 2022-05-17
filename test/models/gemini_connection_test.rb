@@ -37,6 +37,34 @@ class GeminiConnectionTest < SidekiqTestCase
           assert_raises(Oauth2::Errors::UnknownError) { conn.refresh_authorization! }
         end
       end
+
+      describe "when 401" do
+        describe "when valid oauth2 response" do
+          let(:payload) { {error: "invalid_token", error_description: "Refresh token can only be used once"} }
+
+          before do
+            stub_request(:post, klass.oauth2_client.token_url)
+              .to_return(status: 401, body: payload.to_json)
+          end
+
+          test "it return an error response" do
+            assert_instance_of(Oauth2::Responses::ErrorResponse, conn.refresh_authorization!)
+          end
+        end
+
+        describe "when invalid oauth2 response" do
+          let(:payload) { {derp: "invalid_token", error_description: "Refresh token can only be used once"} }
+
+          before do
+            stub_request(:post, klass.oauth2_client.token_url)
+              .to_return(status: 401, body: payload.to_json)
+          end
+
+          test "it raises an error" do
+            assert_raises(Oauth2::Errors::UnknownError) { conn.refresh_authorization! }
+          end
+        end
+      end
     end
   end
 

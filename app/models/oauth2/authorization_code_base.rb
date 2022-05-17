@@ -46,8 +46,13 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
 
   # Primary refresher implementation.  Shareable across all connections, simply requires the abstract methods
   # above in order to function.
-  sig { returns(TYPES) }
-  def refresh_authorization!
+  #
+  # Note: optional block syntax in sorbet is obviously a bit painful, but this is how to do it.
+  #
+  # In human form this reads: "refresh_authorization! can take an optional block param that accepts an UnknownError as the first argument
+  # and returns an ErrorResponse, while refresh_authorization! only returns TYPES.
+  sig { params(blk: T.nilable(T.proc.bind(self).params(arg0: Oauth2::Errors::UnknownError).returns(Oauth2::Responses::ErrorResponse))).returns(TYPES) }
+  def refresh_authorization!(&blk)
     if respond_to?(:oauth_refresh_failed) && send(:oauth_refresh_failed)
       return BFailure.new(errors: ["Connection refresh has already failed"])
     end
@@ -68,7 +73,11 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       record_refresh_failure!
       result
     when UnknownError
-      raise result
+      if blk
+        yield result
+      else
+        raise result
+      end
     else
       T.absurd(result)
     end
