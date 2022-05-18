@@ -45,6 +45,7 @@ class BraveConnection extends React.Component<any, any> {
           status={this.state.upholdConnection.uphold_status}
           verifyUrl={this.state.upholdConnection.verify_url}
           canCreateCards={this.state.upholdConnection['can_create_uphold_cards?']}
+          oauth_refresh_failed={this.state.upholdConnection.oauth_refresh_failed}
           loadData={this.loadData}
         />
       );
@@ -52,7 +53,7 @@ class BraveConnection extends React.Component<any, any> {
     } else if (
       this.props.featureFlags.gemini_enabled &&
       this.state.geminiConnection &&
-      this.state.geminiConnection.display_name
+      (this.state.geminiConnection.display_name || this.state.geminiConnection.oauth_refresh_failed)
     ) {
       return (
         <GeminiConnection
@@ -61,6 +62,7 @@ class BraveConnection extends React.Component<any, any> {
           isPayable={this.state.geminiConnection["payable?"]}
           recipientIdStatus={this.state.geminiConnection['recipient_id_status']}
           verifyUrl={this.state.geminiConnection.verify_url}
+          oauth_refresh_failed={this.state.geminiConnection.oauth_refresh_failed}
           loadData={this.loadData}
         />
       );
@@ -75,6 +77,7 @@ class BraveConnection extends React.Component<any, any> {
           displayName={this.state.bitflyerConnection.display_name}
           isPayable={this.state.bitflyerConnection["payable?"]}
           verifyUrl={this.state.bitflyerConnection.verify_url}
+          oauth_refresh_failed={this.state.bitflyerConnection.oauth_refresh_failed}
           loadData={this.loadData}
         />
       );
@@ -107,7 +110,8 @@ class BraveConnection extends React.Component<any, any> {
       if (uphold_connection && uphold_connection.uphold_id) {
         newState.upholdConnection = response.data.uphold_connection;
       }
-      if (gemini_connection && gemini_connection.display_name) {
+      // We must notify users if their connection has failed regardless of whether the display name is present
+      if (gemini_connection && (gemini_connection.display_name || gemini_connection.oauth_refresh_failed)) {
         newState.geminiConnection = response.data.gemini_connection;
       }
 
