@@ -59,6 +59,7 @@ class BraveConnection extends React.Component<any, any> {
           defaultCurrency={this.state.geminiConnection.default_currency}
           displayName={this.state.geminiConnection.display_name}
           isPayable={this.state.geminiConnection["payable?"]}
+          recipientIdStatus={this.state.geminiConnection['recipient_id_status']}
           verifyUrl={this.state.geminiConnection.verify_url}
           loadData={this.loadData}
         />
