@@ -87,30 +87,37 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   def sync_connection!
-    result = refresh_authorization!
+    if access_token_expired?
+      result = refresh_authorization!
 
-    case result
-    when GeminiConnection
-      users = Gemini::Account.find(token: access_token).users
-      user = users.find { |u| u.is_verified && u.status == "Active" }
-
-      # If we couldn't find a verified account we'll take the first user.
-      user ||= users.first
-
-      update(
-        display_name: user.name,
-        status: user.status,
-        country: user.country_code,
-        is_verified: user.is_verified
-      )
-
-      CreateGeminiRecipientIdsJob.perform_async(id)
-
-      self
-    # FIXME: Use exhaustiveness.  But the model needs a bunch of fixes and I am trying to get this out.
+      case result
+      when GeminiConnection
+        verify_through_gemini
+        self
+      else
+        result
+      end
     else
-      result
+      verify_through_gemini
+      self
     end
+  end
+
+  def verify_through_gemini
+    users = Gemini::Account.find(token: access_token).users
+    user = users.find { |u| u.is_verified && u.status == "Active" }
+
+    # If we couldn't find a verified account we'll take the first user.
+    user ||= users.first
+
+    update(
+      display_name: user.name,
+      status: user.status,
+      country: user.country_code,
+      is_verified: user.is_verified
+    )
+
+    CreateGeminiRecipientIdsJob.perform_async(id)
   end
 
   class << self
