@@ -105,9 +105,14 @@ class GeminiConnection extends React.Component<any, any> {
             </Modal>
           </div>
         </div>
-        {!this.props.isPayable && (
+        {!this.props.isPayable && this.props.recipientIdStatus !== 'duplicate' && (
           <VerifyButton verifyUrl={this.props.verifyUrl}>
             <FormattedMessage id="walletServices.gemini.notPayable" />
+          </VerifyButton>
+        )}
+        {this.props.recipientIdStatus === 'duplicate' && (
+          <VerifyButton>
+            <FormattedMessage id="walletServices.gemini.duplicateRecipient" />
           </VerifyButton>
         )}
       </div>

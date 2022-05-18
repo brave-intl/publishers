@@ -68,5 +68,21 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
         recipient_id: recipient_id_channel
       )
     end
+
+    it "removes the updates the recipient ID status if there's a duplicate recipient_id" do
+      subject
+
+      second_connection = gemini_connections(:default_connection)
+      second_connection.update(recipient_id: nil, is_verified: true,
+        status: "Active")
+
+      CreateGeminiRecipientIdsJob.new.perform(second_connection.id)
+
+      assert second_connection.reload.recipient_id_duplicate?
+      refute second_connection.reload.payable?
+      assert gemini_connection.reload.recipient_id == recipient_id
+      assert gemini_connection.reload.payable?
+      refute gemini_connection.reload.recipient_id_duplicate?
+    end
   end
 end

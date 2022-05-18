@@ -34,6 +34,17 @@ If for any reason some step in the command chain breaks, simply review the [Make
 
 ## Gotchas
 
+### Feature Flags
+
+When logging in as a creator, you may need to enable feature flags on that creator's account to be able to access the full set of UI options on the site.  Feature flags are stored as a json object on the Publisher model.  To update the flags for a user, run something like:
+```
+$ make docker-shell
+$ rails c
+$ p = Publisher.where(email: 'gemini@completed.org').first
+$ p.update!({ feature_flags: {"gemini_enabled"=>true, "bitflyer_enabled"=>true, "promo_lockout_time"=>"2020-11-23", "referral_kyc_required"=>true}})
+```
+
+
 ### Macbook M1, Docker-compose, and Sorbet
 
 We recommend both the usage of Sorbet for static analysis/linting as well as `docker-compose` for local development, however at the time of writing (3/21/22) the Sorbet binary is not available for Linux running on ARM processes (i.e. within docker-compose).
