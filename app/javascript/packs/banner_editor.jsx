@@ -211,9 +211,10 @@ export default class BannerEditor extends React.Component {
         var ctx = coverCanvas.getContext("2d");
         ctx.drawImage(img, 0, 0, 2700, 528);
         cover.url = coverCanvas.toDataURL("image/jpeg", 1);
-
+        console.log(coverCanvas)
         //Generate data to save
         coverCanvas.toBlob(function(blob) {
+          console.log("blob: ", blob)
           let file = {};
           file["files"] = [blob];
           cover.data = file;
@@ -233,6 +234,8 @@ export default class BannerEditor extends React.Component {
 
   addCover(event) {
     let temp = URL.createObjectURL(event.target.files[0]);
+    console.log("files: ", event.target.files[0])
+    console.log("temp: ", temp)
     this.setState({
       tempCover: temp,
       state: "cover"

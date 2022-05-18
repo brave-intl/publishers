@@ -54,18 +54,21 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def image_properties(attachment_type:)
+    p "* " * 1000
     if attachment_type === SiteBanner::LOGO
       data_url = params[:logo].split(",")[0]
     elsif attachment_type === SiteBanner::BACKGROUND
       data_url = params[:cover].split(",")[0]
     end
+    p data_url
     if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
       extension = ".jpg"
     elsif data_url.starts_with?("data:image/png")
       extension = ".png"
-    elsif data_url.starts_with?("data:image/bmp")
-      extension = ".bmp"
+    elsif data_url.starts_with?("data:image/gif")
+      extension = ".gif"
     else
+      p "That's all folks! " * 20
       LogException.perform(StandardError.new("Unknown image format:" + data_url), params: {})
       return nil
     end
