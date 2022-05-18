@@ -10,8 +10,8 @@ class CreateGeminiRecipientIdsJob
     # Users aren't able to create a recipient id if they are not fully verified
     if gemini_connection.is_verified? && gemini_connection.status == "Active"
       recipient = Gemini::RecipientId.find_or_create(token: gemini_connection.access_token)
-      
-      if gemini_connection.update(recipient_id: recipient.recipient_id, recipient_id_status: 'present')
+
+      if gemini_connection.update(recipient_id: recipient.recipient_id, recipient_id_status: "present")
         gemini_connection.publisher.channels.each do |channel|
           gemini_connection_for_channel = GeminiConnectionForChannel.where(
             gemini_connection: gemini_connection,
@@ -28,7 +28,7 @@ class CreateGeminiRecipientIdsJob
           )
         end
       else
-        gemini_connection.update(recipient_id_status: 'duplicate', recipient_id: nil)
+        gemini_connection.update(recipient_id_status: "duplicate", recipient_id: nil)
       end
     end
   end
