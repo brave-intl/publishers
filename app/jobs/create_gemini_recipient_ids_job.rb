@@ -2,7 +2,8 @@
 # Creates the Gemini Recipient IDs for a publisher
 class CreateGeminiRecipientIdsJob
   include Sidekiq::Worker
-  sidekiq_options queue: :scheduler
+  # Retry on this creates the possibility of race conditions that accidentally break refreshs.
+  sidekiq_options queue: :scheduler, retry: false
 
   def perform(gemini_connection_id)
     gemini_connection = GeminiConnection.find(gemini_connection_id)
