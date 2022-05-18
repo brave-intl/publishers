@@ -276,6 +276,7 @@ export default {
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
       title: "Gemini Wallet",
+      duplicateRecipient: "Gemini is reporting to us that this wallet is already in use with another Brave Creators account. Please try disconnecting the original wallet, and then disconnect and reconnect the wallet on this account."
     },
     lastDeposit: "Last Deposit: <span>{value}</span>",
     lastDepositDate: "Last Deposit Date: <span>{value}</span>",
