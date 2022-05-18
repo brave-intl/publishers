@@ -82,7 +82,7 @@ class CreateGeminiRecipientIdsJobTest < ActiveJob::TestCase
       refute second_connection.reload.payable?
       assert gemini_connection.reload.recipient_id == recipient_id
       assert gemini_connection.reload.payable?
-      refute second_connection.reload.recipient_id_duplicate?
+      refute gemini_connection.reload.recipient_id_duplicate?
     end
   end
 end
