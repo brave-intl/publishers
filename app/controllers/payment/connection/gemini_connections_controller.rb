@@ -38,7 +38,7 @@ module Payment
 
         if gemini_connection.update(update_params) &&
             current_publisher.update(selected_wallet_provider: gemini_connection) &&
-            gemini_connection.sync_connection!
+            gemini_connection.verify
           redirect_to(home_publishers_path)
         else
           redirect_to(home_publishers_path, alert: t(".gemini_error", message: gemini_connection.errors.full_messages.join(", ")))

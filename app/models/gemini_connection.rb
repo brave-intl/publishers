@@ -94,23 +94,17 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   def sync_connection!
-    if access_token_expired?
-      result = refresh_authorization!
-
-      case result
-      when GeminiConnection
-        verify_through_gemini
-        self
-      else
-        result
-      end
-    else
-      verify_through_gemini
+    result = refresh_authorization!
+    case result
+    when GeminiConnection
+      verify
       self
+    else
+      result
     end
   end
 
-  def verify_through_gemini
+  def verify
     users = Gemini::Account.find(token: access_token).users
     user = users.find { |u| u.is_verified && u.status == "Active" }
 

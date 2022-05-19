@@ -284,6 +284,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     authorization_expires_at.present? && authorization_expires_at < Time.zone.now
   end
 
+  # Satisfying interface and backwards compatibility
+  def access_token_expired?
+    authorization_expired?
+  end
+
   def refresh_token
     JSON.parse(uphold_access_parameters || "{}")&.fetch("refresh_token", nil)
   end

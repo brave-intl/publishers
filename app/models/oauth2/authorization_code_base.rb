@@ -39,6 +39,12 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   def fetch_refresh_token
   end
 
+  # We need to gaurd against unnecessary refreshes.  This can create race conditions that break connections
+  # It has happened with gemini, we should do this for all providers.
+  sig { abstract.returns(T::Boolean) }
+  def access_token_expired?
+  end
+
   # Unique name to prevent collisions with existing methods
   sig { abstract.params(refresh_token_response: Oauth2::Responses::RefreshTokenResponse).returns(T.self_type) }
   def update_access_tokens!(refresh_token_response)
@@ -53,6 +59,8 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   # and returns an ErrorResponse, while refresh_authorization! only returns TYPES.
   sig { params(blk: T.nilable(T.proc.bind(self).params(arg0: Oauth2::Errors::UnknownError).returns(Oauth2::Responses::ErrorResponse))).returns(TYPES) }
   def refresh_authorization!(&blk)
+    return self unless access_token_expired?
+
     if respond_to?(:oauth_refresh_failed) && send(:oauth_refresh_failed)
       return BFailure.new(errors: ["Connection refresh has already failed"])
     end
