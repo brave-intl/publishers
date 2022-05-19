@@ -7,6 +7,7 @@ import GeminiIcon from "./geminiConnection/GeminiIcon";
 import { VerifyButton } from "./VerifyButton";
 import Modal, { ModalSize } from "../../../components/modal/Modal";
 import CurrencySelection from "./CurrencySelection";
+import DisconnectPrompt from "./upholdConnection/UpholdDisconnectPrompt";
 
 class GeminiConnection extends React.Component<any, any> {
   constructor(props) {
@@ -22,6 +23,25 @@ class GeminiConnection extends React.Component<any, any> {
   }
 
   public render() {
+    const { oauth_refresh_failed, isPayable, recipientIdStatus } = this.props
+
+    const verifyUrl = oauth_refresh_failed ? null : this.props.verifyUrl
+    const isDuplicate = recipientIdStatus === 'duplicate' 
+    const statusId = oauth_refresh_failed || isDuplicate ? "walletServices.trouble" : "walletServices.connected"
+
+    let messageId = null
+
+    if (oauth_refresh_failed) {
+      messageId = "walletServices.gemini.reauthorizationNeeded" 
+    } else if (isDuplicate) {
+      messageId = "walletServices.gemini.duplicateRecipient" 
+    } else if (!isPayable) {
+      // isPayable is based on GeminiConnection.payable? which requires a truthy recipient_id
+      messageId = "walletServices.gemini.notPayable" 
+    }
+
+    const hasProblem =  (!isPayable || oauth_refresh_failed || isDuplicate) && messageId
+
     return (
       <div>
         <h6>
@@ -32,7 +52,7 @@ class GeminiConnection extends React.Component<any, any> {
         <div className="row mb-2">
           <div className="col-6 text-dark text-truncate">
             <FormattedMessage
-              id="walletServices.connected"
+              id={statusId}
               values={{
                 displayName: this.props.displayName,
                 span: (chunks) => (
@@ -105,14 +125,10 @@ class GeminiConnection extends React.Component<any, any> {
             </Modal>
           </div>
         </div>
-        {!this.props.isPayable && this.props.recipientIdStatus !== 'duplicate' && (
-          <VerifyButton verifyUrl={this.props.verifyUrl}>
-            <FormattedMessage id="walletServices.gemini.notPayable" />
-          </VerifyButton>
-        )}
-        {this.props.recipientIdStatus === 'duplicate' && (
-          <VerifyButton>
-            <FormattedMessage id="walletServices.gemini.duplicateRecipient" />
+           
+        {hasProblem &&  (
+          <VerifyButton verifyUrl={verifyUrl}>
+            <FormattedMessage id={messageId} />
           </VerifyButton>
         )}
       </div>
