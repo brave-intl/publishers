@@ -125,7 +125,6 @@ class GeminiConnection extends React.Component<any, any> {
             </Modal>
           </div>
         </div>
-           
         {hasProblem &&  (
           <VerifyButton verifyUrl={verifyUrl}>
             <FormattedMessage id={messageId} />
