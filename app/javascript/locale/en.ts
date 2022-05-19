@@ -259,6 +259,7 @@ export default {
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on bitFlyer.",
       title: "bitFlyer Wallet",
+
     },
     brave: {
       description: "Connect a crypto wallet to receive contributions and other payments.",
@@ -275,6 +276,8 @@ export default {
       connect: "Connect to Gemini",
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
+      reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your wallet.",
+
       title: "Gemini Wallet",
       duplicateRecipient: "Gemini is reporting to us that this wallet is already in use with another Brave Creators account. Please try disconnecting the original wallet, and then disconnect and reconnect the wallet on this account."
     },
@@ -288,6 +291,7 @@ export default {
       title: "Wallet for Credit Card Payment",
     },
     title: "Wallet Services",
+    trouble: "Connection Failure",
     uphold: {
       change: "Change",
       connect: "Connect to Uphold",

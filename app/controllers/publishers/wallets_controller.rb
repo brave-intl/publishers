@@ -37,7 +37,7 @@ module Publishers
     # Returns a hash
     def uphold_wallet
       current_publisher.uphold_connection.as_json(
-        only: [:default_currency, :uphold_id, :is_member],
+        only: [:default_currency, :uphold_id, :is_member, :oauth_refresh_failed],
         methods: [:can_create_uphold_cards?, :username, :uphold_status, :verify_url]
       )
     end
@@ -47,7 +47,7 @@ module Publishers
     # Returns a hash
     def gemini_wallet
       current_publisher.gemini_connection.as_json(
-        only: [:default_currency, :display_name, :recipient_id, :recipient_id_status],
+        only: [:default_currency, :display_name, :recipient_id, :oauth_refresh_failed, :recipient_id_status],
         methods: [:payable?, :verify_url]
       )
     end
@@ -57,7 +57,7 @@ module Publishers
     # Returns a hash
     def bitflyer_wallet
       current_publisher.bitflyer_connection.as_json(
-        only: [:default_currency, :display_name, :recipient_id],
+        only: [:default_currency, :display_name, :recipient_id, :oauth_refresh_failed],
         methods: [:payable?, :verify_url]
       )
     end

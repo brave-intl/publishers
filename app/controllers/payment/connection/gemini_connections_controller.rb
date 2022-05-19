@@ -32,7 +32,8 @@ module Payment
           access_token: authorization.access_token,
           refresh_token: authorization.refresh_token,
           expires_in: authorization.expires_in,
-          access_expiration_time: authorization.expires_in.seconds.from_now
+          access_expiration_time: authorization.expires_in.seconds.from_now,
+          state_token: nil # You cannot persist a state token after.  Even this isn't good but it's better.
         }
 
         if gemini_connection.update(update_params) &&
