@@ -25,8 +25,8 @@ class GeminiConnection extends React.Component<any, any> {
   public render() {
     const { oauth_refresh_failed, isPayable, recipientIdStatus } = this.props
 
-    const verifyUrl = oauth_refresh_failed ? null : this.props.verifyUrl
     const isDuplicate = recipientIdStatus === 'duplicate' 
+    const verifyUrl = oauth_refresh_failed || isDuplicate ? null : this.props.verifyUrl
     const statusId = oauth_refresh_failed || isDuplicate ? "walletServices.trouble" : "walletServices.connected"
 
     let messageId = null

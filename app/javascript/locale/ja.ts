@@ -76,6 +76,7 @@ export default {
       disconnect: "接続を切る",
       notPayable: "リファラルプログラムを用いた新規登録は現在一時停止中です。再開時はお知らせいたします。",
       title: "bitFlyerウォレット",
+      reauthorizationNeeded: "BitFlyerから、アカウント接続の期限切れとの報告がありました。これは、あなたのBitFlyerアカウントにおいてパスワード等が変更されたことによると思われます。一度ウォレットの接続を解除いただき、再接続を試していただけますようお願いいたします。",
     },
     connected: "接続先",
     brave: {
@@ -85,6 +86,7 @@ export default {
     lastDeposit: "   ",
     lastDepositDate: "   ",
     title: "ウォレット・サービス",
+    trouble: "接続に失敗しました",
     uphold: {
       depositCurrency: "支払い通貨：BAT"
     }
