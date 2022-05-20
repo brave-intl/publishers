@@ -15,6 +15,7 @@ enabled_bitflyer_connection:
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
   display_name: 123
+  access_expiration_time: "<%= 2.days.ago %>"
 
 suspended_bitflyer_connection:
   publisher: bitflyer_suspended
