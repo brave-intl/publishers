@@ -41,7 +41,7 @@ module Payment
 
         # Destroy our database records
         if bitflyer_connection.destroy
-          redirect_to(home_publishers_path, notice: I18n.t("publishers.bitflyer_connections.destroy.removed"))
+          redirect_to(home_publishers_path)
         else
           redirect_to(
             home_publishers_path,
