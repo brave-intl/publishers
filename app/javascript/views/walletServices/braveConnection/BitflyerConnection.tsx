@@ -22,6 +22,21 @@ class BitflyerConnection extends React.Component<any, any> {
     }
 
     public render() {
+      const { oauth_refresh_failed, isPayable } = this.props
+
+      const verifyUrl = oauth_refresh_failed ? null : this.props.verifyUrl
+      const statusId = oauth_refresh_failed ? "walletServices.trouble" : "walletServices.connected"
+
+      let messageId = null
+
+      if (oauth_refresh_failed) {
+        messageId = "walletServices.bitflyer.reauthorizationNeeded" 
+      } else if (!isPayable) {
+        messageId = "walletServices.bitflyer.notPayable"
+      }
+
+      const hasProblem =  (!isPayable || oauth_refresh_failed) && messageId
+
         return (
             <div>
                 <h6>
@@ -32,7 +47,7 @@ class BitflyerConnection extends React.Component<any, any> {
                 <div className="row mb-2">
                     <div className="col-6 text-dark text-truncate">
                         <FormattedMessage
-                            id="walletServices.connected"
+                            id={statusId}
                             values={{
                                 displayName: this.props.displayName,
                                 span: (chunks) => (
@@ -85,9 +100,9 @@ class BitflyerConnection extends React.Component<any, any> {
                         />
                     </div>
                 </div>
-                {!this.props.isPayable && (
-                    <VerifyButton verifyUrl={this.props.verifyUrl}>
-                        <FormattedMessage id="walletServices.bitflyer.notPayable" />
+                {hasProblem && (
+                    <VerifyButton verifyUrl={verifyUrl}>
+                        <FormattedMessage id={messageId} />
                     </VerifyButton>
                 )}
             </div>
