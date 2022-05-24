@@ -185,7 +185,17 @@ export default class BannerEditor extends React.Component {
     let that = this;
     let logo = this.state.logo;
     let cover = this.state.cover;
-    let img = this.editor.getImage();
+    try {
+      let img = this.editor.getImage();
+    } catch (error) {
+      // errors would happen here if the user uploads a file that's not an image
+      // clear out the 'errored' data
+      this.state[this.state.state] = { url: null, data: null };
+      // get rid of dialog: same as clicking the 'cancel' button
+      this.setState({ state: "Editor" });
+      // don't try to save or set anything
+      return;
+    }
 
     switch (this.state.state) {
       case "logo":
@@ -202,7 +212,7 @@ export default class BannerEditor extends React.Component {
           file["files"] = [blob];
           logo.data = file;
           that.setState({ logo: logo, scale: 1, state: "editor" });
-        });
+        }, "image/jpeg", 1);
         break;
       case "cover":
         let coverCanvas = document.createElement("canvas");
@@ -211,15 +221,14 @@ export default class BannerEditor extends React.Component {
         var ctx = coverCanvas.getContext("2d");
         ctx.drawImage(img, 0, 0, 2700, 528);
         cover.url = coverCanvas.toDataURL("image/jpeg", 1);
-        console.log(coverCanvas)
+
         //Generate data to save
         coverCanvas.toBlob(function(blob) {
-          console.log("blob: ", blob)
           let file = {};
           file["files"] = [blob];
           cover.data = file;
           that.setState({ cover: cover, scale: 1, state: "editor" });
-        });
+        }, "image/jpeg", 1);
         break;
     }
   }
@@ -234,8 +243,6 @@ export default class BannerEditor extends React.Component {
 
   addCover(event) {
     let temp = URL.createObjectURL(event.target.files[0]);
-    console.log("files: ", event.target.files[0])
-    console.log("temp: ", temp)
     this.setState({
       tempCover: temp,
       state: "cover"
@@ -994,7 +1001,12 @@ export default class BannerEditor extends React.Component {
 
         <Template>
           <Logo url={this.state.logo.url}>
-            <Input type="file" id="logoInput" onChange={e => this.addLogo(e)} />
+            <Input
+              type="file"
+              id="logoInput"
+              accept="image/png, image/jpeg, image/webp"
+              onChange={e => this.addLogo(e)}
+            />
             <Label logo htmlFor="logoInput" />
           </Logo>
 
@@ -1002,6 +1014,7 @@ export default class BannerEditor extends React.Component {
             <Input
               type="file"
               id="backgroundInput"
+              accept="image/png, image/jpeg, image/webp"
               onChange={e => this.addCover(e)}
             />
             <Label htmlFor="backgroundInput" />
