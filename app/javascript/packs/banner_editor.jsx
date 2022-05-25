@@ -185,8 +185,9 @@ export default class BannerEditor extends React.Component {
     let that = this;
     let logo = this.state.logo;
     let cover = this.state.cover;
+    let img;
     try {
-      let img = this.editor.getImage();
+      img = this.editor.getImage();
     } catch (error) {
       // errors would happen here if the user uploads a file that's not an image
       // clear out the 'errored' data
