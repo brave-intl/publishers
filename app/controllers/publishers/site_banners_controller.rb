@@ -59,12 +59,13 @@ class Publishers::SiteBannersController < ApplicationController
     elsif attachment_type === SiteBanner::BACKGROUND
       data_url = params[:cover].split(",")[0]
     end
+
     if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
       extension = ".jpg"
     elsif data_url.starts_with?("data:image/png")
       extension = ".png"
-    elsif data_url.starts_with?("data:image/bmp")
-      extension = ".bmp"
+    elsif data_url.starts_with?("data:image/webp")
+      extension = ".webp"
     else
       LogException.perform(StandardError.new("Unknown image format:" + data_url), params: {})
       return nil
