@@ -1,0 +1,2 @@
+class RequestGraph < ApplicationRecord
+end

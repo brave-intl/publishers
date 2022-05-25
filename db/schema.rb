@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_12_064026) do
+ActiveRecord::Schema.define(version: 2022_05_25_192745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -557,6 +558,14 @@ ActiveRecord::Schema.define(version: 2022_05_12_064026) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reddit_channel_id"], name: "index_reddit_channel_details_on_reddit_channel_id"
+  end
+
+  create_table "request_graphs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "ip_address", null: false
+    t.integer "count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ip_address"], name: "index_request_graphs_on_ip_address", unique: true
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
