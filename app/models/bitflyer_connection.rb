@@ -64,7 +64,17 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   # broke too many specs to deal with right now so for the sake of forward progress
   # this is my resolution.
   def refresh_authorization!
-    access_token_expired? || !access_token ? super : self
+    return self if !access_token_expired? && access_token
+
+    # Bitflyer is returning 403 for bad tokens with HTML content
+    # Every record that is throwing this has an expired access token or is very old.
+
+    # Clearly a broken case.
+    super do |result|
+      raise result if result.response.code != "403"
+      record_refresh_failure!
+      ErrorResponse.new(error: "invalid_grant", error_description: "bitflyer has returned a forbidden 403")
+    end
   end
 
   def sync_connection!
