@@ -38,6 +38,10 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
     SUPPORTED_CURRENCIES
   end
 
+  def is_valid_connection?
+    access_expiration_time.present? && encrypted_access_token.present? && encrypted_refresh_token.present?
+  end
+
   def access_token_expired?
     access_expiration_time.present? && Time.now > access_expiration_time
   end
@@ -57,21 +61,21 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
-  # This is a temporary work around to gaurd against potential
-  # race conditions that have caused broken conditions in other connections such as Gemini
-  # Bitflyer is the first connection that is going to run a scheduled job running refresh
-  # so I am trying to be very cautious.  Updating this in the base class method
-  # broke too many specs to deal with right now so for the sake of forward progress
-  # this is my resolution.
+  # is_valid_connection? is handling the fact that many otherwise functional
+  # bitflyer connections were created without an access_expiration_time
+  # and because of this the access_token_expired? check always returns false (because the nil value for the timestamp)
+
+  # I'm moving all the wallet models to requiring this field and using it to ensure we only refresh connections
+  # when we actually need to.  This cuts down on requests and also deals with possible race conditions
+  # that I've encountered else where (Gemini).
   def refresh_authorization!
-    return self if !access_token_expired? && access_token
+    return self if is_valid_connection? && !access_token_expired?
 
     # Bitflyer is returning 403 for bad tokens with HTML content
     # Every record that is throwing this has an expired access token or is very old.
-
     # Clearly a broken case.
-    super do |result|
-      raise result if result.response.code != "403"
+    super do |failure_result|
+      raise failure_result if failure_result.response.code != "403"
       record_refresh_failure!
       ErrorResponse.new(error: "invalid_grant", error_description: "bitflyer has returned a forbidden 403")
     end
@@ -88,6 +92,36 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
     def oauth2_config
       Oauth2::Config::Bitflyer
+    end
+
+    # Note: The logic implemented here is what I would usually go to a service for due to it's multi-model complexity
+    # I.e. Service::Bitflyer::Create
+    def create_new_connection!(publisher, access_token_response)
+      # Oauth2::Responses::AccessTokenResponse: T.nilable(expires_in)
+      access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
+
+      # Do everything in a transaction so hopefully we begin tamping down data artifacts
+      ActiveRecord::Base.transaction do
+        # Cleanup artifacts in absence of any actual uniqueness verifications
+        # We have so many empty connections
+        BitflyerConnection.where(publisher_id: publisher.id).delete_all
+
+        conn = BitflyerConnection.create!(
+          publisher_id: publisher.id,
+          access_token: access_token_response.access_token,
+          refresh_token: access_token_response.refresh_token,
+          expires_in: access_token_response.expires_in,
+          access_expiration_time: access_expiration_time,
+          display_name: BitflyerConnection.provider_name
+        )
+
+        publisher.update!(selected_wallet_provider: conn)
+
+        # Let's do more synchronously
+        publisher.channels do |channel|
+          Bitflyer::UpdateDepositIdService.build.call(channel)
+        end
+      end
     end
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])

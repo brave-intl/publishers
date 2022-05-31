@@ -144,6 +144,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       "Gemini"
     end
 
+    def create_new_connection!(publisher, access_token_response)
+      raise NotImplementedError
+    end
+
     def oauth2_config
       Oauth2::Config::Gemini
     end

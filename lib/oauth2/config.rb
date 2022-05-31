@@ -166,7 +166,7 @@ module Oauth2::Config
       end
 
       def authorization_url
-        base_authorization_url = is_production? ? "TBD" : "https://demo24kiuw4dcyncsy3qlud8u8.azurewebsites.net"
+        base_authorization_url = is_production? ? "https://bitflyer.com" : "https://demo24kiuw4dcyncsy3qlud8u8.azurewebsites.net"
         URI("#{base_authorization_url}/ex/OAuth/authorize")
       end
 
@@ -176,11 +176,11 @@ module Oauth2::Config
       end
 
       def content_type
-        "application/x-www-form-urlencoded"
+        "application/json"
       end
 
       def redirect_uri
-        URI("#{base_redirect_url}/oauth2/bitflyer/callback")
+        URI("#{base_redirect_url}/publishers/bitflyer_connection/new")
       end
     end
   end

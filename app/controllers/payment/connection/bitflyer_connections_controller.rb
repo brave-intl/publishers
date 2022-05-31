@@ -9,32 +9,7 @@ require "base64"
 
 module Payment
   module Connection
-    class BitflyerConnectionsController < ApplicationController
-      class BitflyerError < StandardError; end
-      before_action :authenticate_publisher!
-      before_action :validate_connection!, only: :new
-
-      def create
-        BitflyerConnection.find_or_create_by(publisher: current_publisher)
-
-        # Always send PKCE code verifier and challenge
-        code_verifier = current_publisher.id
-        code_challenge = Digest::SHA256.base64digest(code_verifier).chomp("=").tr("+", "-").tr("/", "_")
-        pkce_string = "&code_challenge=" + code_challenge + "&code_challenge_method=S256"
-
-        redirect_to Rails.application.secrets[:bitflyer_host] + "/ex/OAuth/authorize?client_id=" + Rails.application.secrets[:bitflyer_client_id] + "&scope=" + CGI.escape(Rails.application.secrets[:bitflyer_scope]) + "&redirect_uri=" + CGI.escape("https://" + Rails.application.secrets[:creators_host] + "/publishers/bitflyer_connection/new") + "&state=100&response_type=code" + pkce_string
-      end
-
-      # This action is after the OAuth connection is redirected.
-      def edit
-        if Bitflyer::AuthCompleter.build.call(publisher: current_publisher, code: params[:code])
-          redirect_to(home_publishers_path)
-          return
-        end
-
-        redirect_to(home_publishers_path, alert: t("publishers.bitflyer_connections.new.bitflyer_error"))
-      end
-
+    class BitflyerConnectionsController < Oauth2Controller
       def destroy
         I18n.locale = :ja
         bitflyer_connection = current_publisher.bitflyer_connection
@@ -55,12 +30,36 @@ module Payment
 
       private
 
-      def validate_connection!
-        connection = current_publisher.bitflyer_connection
+      # 1.) Set required state for Oauth2 Implementation
+      # @debug is an optional flag that will return a json response from the callback
+      # Helpful for explicit debugging and introspection of access token request response values.
+      def set_controller_state
+        @klass = BitflyerConnection
+      end
 
-        raise BitflyerError.new, I18n.t("publishers.stripe_connections.new.missing_state") if connection&.state_token.blank?
-        raise BitflyerError.new, I18n.t("publishers.stripe_connections.new.state_mismatch") if connection.state_token != params[:state]
-        raise BitflyerError.new, params[:error] if params[:error].present?
+      # 2.) Bitflyer uses code exchange verification: https://datatracker.ietf.org/doc/html/rfc7636#section-4.1
+      def code_challenge
+        Digest::SHA256.base64digest(code_verifier).chomp("=").tr("+", "-").tr("/", "_")
+      end
+
+      # One way encoded(Varies through time + unique to provider + random/varies through sesion)
+      def code_verifier
+        Digest::SHA256.base64digest(current_publisher.current_sign_in_at.to_s + current_publisher.id + current_publisher.session_salt.to_s)
+      end
+
+      # 3.) Generate auth_url using code_challange verification
+      def authorization_url
+        @_authorization_url ||= client.authorization_code_url(
+          state: @state,
+          scope: @klass.oauth2_config.scope,
+          code_challenge: code_challenge,
+          code_challenge_method: "S256"
+        )
+      end
+
+      # 4.) Make request using code_verifier
+      def access_token_request
+        client.access_token(params.require(:code), code_verifier: code_verifier)
       end
     end
   end
