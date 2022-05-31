@@ -279,7 +279,7 @@ export default {
       reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your wallet.",
 
       title: "Gemini Wallet",
-      duplicateRecipient: "Gemini is reporting to us that this wallet is already in use with another Brave Creators account. Please try disconnecting the original wallet, and then disconnect and reconnect the wallet on this account."
+      duplicateRecipient: "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
     },
     lastDeposit: "Last Deposit: <span>{value}</span>",
     lastDepositDate: "Last Deposit Date: <span>{value}</span>",
