@@ -1,9 +1,9 @@
 module MockOauth2Responses
   include Oauth2::Structs
 
-  def mock_unknown_failure(token_url)
+  def mock_unknown_failure(token_url, status: 500)
     stub_request(:post, token_url)
-      .to_return(status: 500, body: "any possible value")
+      .to_return(status: status, body: "any possible value")
   end
 
   def mock_token_failure(token_url, to_spec: true)
