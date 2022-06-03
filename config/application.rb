@@ -52,5 +52,11 @@ module Publishers
     config.generators do |generator|
       generator.orm :active_record, primary_key_type: :uuid
     end
+
+    config.after_initialize do
+      commit = `git rev-parse HEAD`.chomp
+      message = "Successfully Initialized commit '#{commit}' in #{Rails.env}"
+      SlackMessenger.new(message: message).perform
+    end
   end
 end
