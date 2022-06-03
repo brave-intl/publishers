@@ -25,10 +25,10 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
     when BFailure
       result
     when Oauth2::Responses::ErrorResponse
-      connection.record_refresh_failure_notification!
-
       if notify
         PublisherMailer.wallet_refresh_failure(connection.publisher, connection.class.provider_name).deliver_now
+        connection.record_refresh_failure_notification!
+
         FailedWithNotification.new(result: result)
       else
         FailedWithoutNotification.new(result: result)
