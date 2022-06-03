@@ -34,7 +34,7 @@ class GeminiConnection extends React.Component<any, any> {
     if (oauth_refresh_failed) {
       messageId = "walletServices.gemini.reauthorizationNeeded" 
     } else if (isDuplicate) {
-      messageId = "walletServices.gemini.duplicateRecipient" 
+      messageId = "walletServices.gemini.duplicateAccount" 
     } else if (!isPayable) {
       // isPayable is based on GeminiConnection.payable? which requires a truthy recipient_id
       messageId = "walletServices.gemini.notPayable" 
