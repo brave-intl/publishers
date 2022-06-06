@@ -13,7 +13,7 @@ rails_version = "6.1.6"
 gem "rails", rails_version
 gem "railties", rails_version
 
-gem "rack"
+gem "rack", "2.2.3.1"
 
 # All things countries
 gem "countries"

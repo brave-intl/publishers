@@ -29,6 +29,10 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(oauth2_config)
     end
 
+    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(T.self_type) }
+    def create_new_connection!(publisher, access_token_response)
+    end
+
     def state_value!
       SecureRandom.hex(64).to_s
     end
