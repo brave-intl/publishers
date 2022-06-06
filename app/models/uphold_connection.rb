@@ -314,6 +314,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       Oauth2::Config::Uphold
     end
 
+    def create_new_connection!(publisher, access_token_response)
+      raise NotImplementedError
+    end
+
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
       # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
