@@ -22,6 +22,18 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       .where.not(recipient_id: nil)
   }
 
+  scope :with_expired_tokens, -> {
+    where("access_expiration_time <= ?", Date.today)
+  }
+
+  scope :with_active_connection, -> {
+    where(oauth_refresh_failed: false)
+  }
+
+  scope :refreshable, -> {
+    with_active_connection.with_expired_tokens
+  }
+
   enum recipient_id_status: {
     pending: 0,
     duplicate: 1,

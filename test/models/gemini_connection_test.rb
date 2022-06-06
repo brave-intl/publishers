@@ -68,6 +68,60 @@ class GeminiConnectionTest < SidekiqTestCase
     end
   end
 
+  describe "scopes" do
+    describe "refreshable" do
+      before do
+        assert GeminiConnection.refreshable.count == 0
+      end
+
+      describe "when true" do
+        it "should not return connection" do
+          GeminiConnection.first.update!(access_expiration_time: 2.days.ago, oauth_refresh_failed: false)
+          assert GeminiConnection.refreshable.count == 1
+        end
+      end
+    end
+
+    describe "with_active_connection" do
+      before do
+        assert GeminiConnection.with_active_connection.count == 6
+      end
+
+      describe "when true" do
+        it "should not return connection" do
+          GeminiConnection.update_all(oauth_refresh_failed: true)
+          assert GeminiConnection.with_active_connection.count == 0
+        end
+      end
+    end
+
+    describe "with_expired_tokens" do
+      before do
+        assert GeminiConnection.with_expired_tokens.count == 0
+      end
+
+      describe "when true" do
+        it "should not return connection" do
+          GeminiConnection.update_all(access_expiration_time: 2.days.ago)
+          assert GeminiConnection.with_active_connection.count == 6
+        end
+      end
+    end
+
+    describe "with_active_connection" do
+      before do
+        assert GeminiConnection.with_active_connection.count == 6
+      end
+
+      describe "when true" do
+        it "should not return connection" do
+          GeminiConnection.update_all(oauth_refresh_failed: true)
+          assert GeminiConnection.with_active_connection.count == 0
+        end
+      end
+    end
+  end
+
   describe "validations" do
     let(:gemini_connection) { gemini_connections(:default_connection) }
 
