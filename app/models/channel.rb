@@ -383,8 +383,6 @@ class Channel < ApplicationRecord
     case wallet
     when BitflyerConnection
       Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id) if deposit_id.nil?
-    when GeminiConnection
-      wallet.sync_connection! if gemini_connection_for_channel.blank?
     end
   end
 
