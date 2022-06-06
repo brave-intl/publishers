@@ -112,7 +112,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
           refresh_token: access_token_response.refresh_token,
           expires_in: access_token_response.expires_in,
           access_expiration_time: access_expiration_time,
-          display_name: BitflyerConnection.provider_name
+          display_name: access_token_response.account_hash
         )
 
         publisher.update!(selected_wallet_provider: conn)

@@ -35,6 +35,7 @@ module Payment
       # Helpful for explicit debugging and introspection of access token request response values.
       def set_controller_state
         @klass = BitflyerConnection
+        @access_token_response = Oauth2::Responses::BitflyerAccessTokenResponse
       end
 
       # 2.) Bitflyer uses code exchange verification: https://datatracker.ietf.org/doc/html/rfc7636#section-4.1

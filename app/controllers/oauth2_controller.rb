@@ -28,10 +28,12 @@ class Oauth2Controller < ApplicationController
   end
 
   def callback
+    raise RuntimeError if !@access_token_response
+
     resp = access_token_request
 
     case resp
-    when AccessTokenResponse
+    when @access_token_response
       data = resp.serialize
       @klass.create_new_connection!(current_publisher, resp)
     when ErrorResponse
@@ -84,6 +86,12 @@ class Oauth2Controller < ApplicationController
   # Note: To use this as a subclass you'll want to override this method entirely
   # and just set whatever the relevant @klass is.
   def set_controller_state
+    # Generally speaking, this should be a static value.  However there are cases (I.e. Bitflyer) where information
+    # that we must have is returned in the access token response, i.e. the account_hash that is the unique identifier
+    # for the bitflyer account in question. There will undoubtedly be other cases where we need to handle one offs
+    # so it's a compromise I have to make to maintain the (mostly) generic interface.
+    @access_token_response = AccessTokenResponse
+
     provider = permitted_params.fetch(:provider)
 
     case provider

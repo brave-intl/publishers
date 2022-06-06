@@ -10,6 +10,7 @@
 module Oauth2::Config
   class AuthorizationCode
     class << self
+      include Oauth2::Responses
       extend T::Sig
       extend T::Helpers
 
@@ -44,6 +45,14 @@ module Oauth2::Config
 
       sig { abstract.returns(String) }
       def content_type
+      end
+
+      # This gives us a bit of flexibility to deal with atypical/not-to-spec access token  responses
+      # where we must save a specific value that is returned in the response.
+      #
+      # I don't love it, but it is still explicitly typed.
+      sig { abstract.returns(T.any(AccessTokenResponse, BitflyerAccessTokenResponse)) }
+      def access_token_struct
       end
 
       sig { returns(URI) }
@@ -110,6 +119,10 @@ module Oauth2::Config
       def content_type
         "application/json" # See Oauth2::AuthorizationCode.new
       end
+
+      def access_token_struct
+        Oauth2::Responses::AccessTokenResponse
+      end
     end
   end
 
@@ -148,6 +161,10 @@ module Oauth2::Config
       def redirect_uri
         URI("#{base_redirect_url}/oauth2/uphold/callback")
       end
+
+      def access_token_struct
+        Oauth2::Responses::AccessTokenResponse
+      end
     end
   end
 
@@ -181,6 +198,10 @@ module Oauth2::Config
 
       def redirect_uri
         URI("#{base_redirect_url}/publishers/bitflyer_connection/new")
+      end
+
+      def access_token_struct
+        Oauth2::Responses::BitflyerAccessTokenResponse
       end
     end
   end

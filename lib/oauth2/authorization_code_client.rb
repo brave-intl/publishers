@@ -25,6 +25,7 @@ class Oauth2::AuthorizationCodeClient
     @content_type = config.content_type
     @valid_content_type = "application/x-www-form-urlencoded"
     @invalid_content_type = "application/json"
+    @access_token_struct = config.access_token_struct
     @options = {use_ssl: true}
     @response = {}
   end
@@ -54,7 +55,7 @@ class Oauth2::AuthorizationCodeClient
     "#{@authorization_url}?#{query.to_query}"
   end
 
-  sig { params(authorization_code: String, code_verifier: T.nilable(String)).returns(T.any(AccessTokenResponse, ErrorResponse, UnknownError)) }
+  sig { params(authorization_code: String, code_verifier: T.nilable(String)).returns(T.any(AccessTokenResponse, BitflyerAccessTokenResponse, ErrorResponse, UnknownError)) }
   def access_token(authorization_code, code_verifier: nil)
     request = Net::HTTP::Post.new(@token_url)
     request.content_type = @content_type
@@ -79,7 +80,7 @@ class Oauth2::AuthorizationCodeClient
       request.set_form_data(@params)
     end
 
-    handle_request(request, @token_url, AccessTokenResponse)
+    handle_request(request, @token_url, @access_token_struct)
   end
 
   sig { params(refresh_token: String).returns(T.any(RefreshTokenResponse, UnknownError, ErrorResponse)) }
