@@ -45,7 +45,7 @@ class Channels::TransferChannelsJobTest < ActiveJob::TestCase
 
       # There are 5 jobs enqueued (4 emails and a slack message) when a channel completes transfer
       # and another for Publishers' List
-      assert_performed_jobs 6
+      assert_performed_jobs 5 # lol, again with the commentary
 
       contested_by_channel.reload
       assert contested_by_channel.verified

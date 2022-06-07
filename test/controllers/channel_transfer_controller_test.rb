@@ -14,7 +14,7 @@ class ChannelTransferControllerTest < ActionDispatch::IntegrationTest
     # contest channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
 
-    assert_enqueued_jobs(5) do
+    assert_enqueued_jobs(4) do
       get token_reject_transfer_path(channel, channel.contest_token)
     end
 
