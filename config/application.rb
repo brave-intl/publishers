@@ -56,7 +56,7 @@ module Publishers
     config.after_initialize do
       commit = `git rev-parse HEAD`.chomp
       message = "Successfully Initialized commit '#{commit}' in #{Rails.env}"
-      SlackMessenger.new(message: message).perform
+      SlackMessenger.new(message: message, channel: SlackMessenger::ALERTS).perform
     end
   end
 end
