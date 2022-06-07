@@ -31,23 +31,34 @@ class Oauth2Controller < ApplicationController
     raise RuntimeError if !@access_token_response
 
     resp = access_token_request
+    errors = []
 
     case resp
     when @access_token_response
-      data = resp.serialize
-      @klass.create_new_connection!(current_publisher, resp)
+      begin
+        data = resp.serialize
+        @klass.create_new_connection!(current_publisher, resp)
+      rescue => e
+        errors.push(e)
+        LogException.perform(e, publisher: current_publisher)
+      end
     when ErrorResponse
       data = resp.serialize
+      errors.push(data)
     when UnknownError
       data = resp.response.body
+      LogException.perform(resp, publisher: current_publisher)
+      errors.push(data)
     else
       T.absurd(resp)
     end
 
     if @debug
-      render json: {data: data} and return
+      render json: {data: data, errors: errors} and return
     else
-      redirect_to(home_publishers_path)
+      # TODO: More explicit/helpful error handling would be great, but for now we need anything
+      kwargs = errors.any? ? {flash: {alert: I18n.t("shared.error")}} : {}
+      redirect_to(home_publishers_path, **kwargs)
     end
   end
 
