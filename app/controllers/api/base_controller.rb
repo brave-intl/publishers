@@ -33,7 +33,9 @@ class Api::BaseController < ActionController::API
     if token_authenticated && !ip_authenticated
       # Message slack per security team's recommendation https://github.com/brave/security/issues/201#issuecomment-666501816
       SlackMessenger.new(
-        message: "#🚨 Publishers API auth token used from a non whitelisted IP address - #{request.remote_ip} 🚨",
+        username: "coconut the all seeing",
+        icon_emoji: ":eye",
+        message: "🚨 Publishers API auth token used from a non whitelisted IP address - #{request.remote_ip} 🚨",
         channel: SlackMessenger::ALERTS
       ).perform
     end
