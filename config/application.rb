@@ -55,8 +55,9 @@ module Publishers
 
     config.after_initialize do
       commit = `git rev-parse HEAD`.chomp
-      message = "Successfully Initialized commit '#{commit}' in #{Rails.env}"
-      SlackMessenger.new(message: message, channel: SlackMessenger::ALERTS).perform
+      url = "https://github.com/brave-intl/publishers/commits/#{commit}"
+      message = "✅ Successfully Initialized #{url} in Creators' #{Rails.env}"
+      SlackMessenger.new(message: message).perform
     end
   end
 end
