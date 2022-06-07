@@ -7,7 +7,8 @@ class ContestChannelTest < ActiveJob::TestCase
     channel = channels(:fraudulently_verified_site)
     contested_by_channel = channels(:locked_out_site)
 
-    assert_enqueued_jobs(3) do
+    # lol, the name of this spec is pretty funny
+    assert_enqueued_jobs(2) do
       Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
     end
   end
