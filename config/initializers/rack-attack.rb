@@ -100,28 +100,30 @@ class Rack::Attack
 
   # Throttle resend auth emails for a publisher
   throttle("resend_authentication_email/publisher_id", limit: 20, period: 20.minutes) do |req|
-    if req.path == "/publishers/resend_authentication_email" && req.post? || req.path == "/publishers" && req.patch?
+    if req.path.start_with?("/publishers/resend_authentication_email") && req.post?
       req["publisher_id"]
+    elsif req.path.start_with?("/publishers") && req.patch?
+      req.remote_ip
     end
   end
 
   # Throttle send 2fa disable emails for an IP address
   throttle("request_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
-    if req.path == "/publishers/request_two_factor_authentication_removal" && req.post?
+    if req.path.start_with?("/publishers/request_two_factor_authentication_removal") && req.post?
       req.remote_ip
     end
   end
 
   # Throttle confirm 2fa disable emails for an IP address
   throttle("confirm_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
-    if req.path == "/publishers/confirm_two_factor_authentication_removal" && req.get?
+    if req.path.start_with?("/publishers/confirm_two_factor_authentication_removal") && req.get?
       req.remote_ip
     end
   end
 
   # Throttle cancel 2fa disable emails for an IP address
   throttle("cancel_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
-    if req.path == "/publishers/cancel_two_factor_authentication_removal" && req.get?
+    if req.path.start_with?("/publishers/cancel_two_factor_authentication_removal") && req.get?
       req.remote_ip
     end
   end
