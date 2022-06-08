@@ -371,6 +371,7 @@ class Channel < ApplicationRecord
       end
 
     SlackMessenger.new(
+      channel: "publishers-bot",
       message: "#{emoji} *#{details.publication_title}* verified by owner #{publisher.owner_identifier}; id=#{details.channel_identifier}; url=#{details.url}"
     ).perform
   end
