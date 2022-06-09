@@ -5,7 +5,9 @@ class Sync::Bitflyer::UpdateMissingDepositsJob
 
   # THere is definitely a rate limit here despite being told there wasn't.  I manually
   # executed the service because the wrong id value was being passed to the job and it succeeded and eventually hit a 429.
-  def perform(async: true, wait: 0.1)
+
+  # I manually execute this job and everyone of the pending tasks resolves so I'm setting this to be very very slow.
+  def perform(async: true, wait: 0.5)
     Channel.missing_deposit_id.using_active_bitflyer_connection.select(:id).find_in_batches do |batch|
       batch.each do |channel|
         # FML
