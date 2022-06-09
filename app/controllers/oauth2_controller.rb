@@ -28,7 +28,12 @@ class Oauth2Controller < ApplicationController
   end
 
   def callback
-    raise RuntimeError if !@access_token_response
+    # This will be correct in most oauth2 cases, but
+    # I'm keeping open the opportunity to easily override this
+    # when needed.
+    if @access_token_response.nil?
+      @access_token_response = AccessTokenResponse
+    end
 
     resp = access_token_request
     errors = []
@@ -39,6 +44,7 @@ class Oauth2Controller < ApplicationController
         data = resp.serialize
         @klass.create_new_connection!(current_publisher, resp)
       rescue => e
+        raise e if @debug
         errors.push(e)
         LogException.perform(e, publisher: current_publisher)
       end
@@ -89,7 +95,13 @@ class Oauth2Controller < ApplicationController
     }
   end
 
-  # TODO: Uphold doesn't allow this.
+  # TODO: For this to work you have to access local dev from 127.0.0.1: Uphold does not allow localhost has a valid domain
+  # and when you redirect back to 127.0.0.1 all your relevant cookies are lost.
+  #
+  # When you login through the email url, you need to copy the url and replace localhost with 127.0.0.1
+  # and create your session with that domain.
+  #
+  # :mind-blown: I'm sure.
   def verify_state
     raise ActionController::BadRequest if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
   end
@@ -97,12 +109,6 @@ class Oauth2Controller < ApplicationController
   # Note: To use this as a subclass you'll want to override this method entirely
   # and just set whatever the relevant @klass is.
   def set_controller_state
-    # Generally speaking, this should be a static value.  However there are cases (I.e. Bitflyer) where information
-    # that we must have is returned in the access token response, i.e. the account_hash that is the unique identifier
-    # for the bitflyer account in question. There will undoubtedly be other cases where we need to handle one offs
-    # so it's a compromise I have to make to maintain the (mostly) generic interface.
-    @access_token_response = AccessTokenResponse
-
     provider = permitted_params.fetch(:provider)
 
     case provider

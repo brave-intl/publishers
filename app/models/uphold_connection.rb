@@ -56,6 +56,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   }
 
   # If the user became KYC'd let's create the uphold card for them
+  #
+  # TODO: Remove this entirely.
+  # My goal is to disallow the creation of an uphold connection without KYC.
+  # and move the channel creation process to a scheduled job run daily.
   after_save :create_uphold_cards, if: -> {
                                          T.bind(self, UpholdConnection)
                                          saved_change_to_is_member? || saved_change_to_default_currency?
@@ -102,7 +106,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
     # Perhaps through a rescue on 401
     uphold_verified? &&
-      (uphold_access_parameters.blank? || scope.exclude?("cards:write") || uphold_details.nil? || status&.to_sym == UpholdAccountState::OLD_ACCESS_CREDENTIALS)
+      (uphold_access_parameters.blank? || scope.exclude?("cards:write") || status&.to_sym == UpholdAccountState::OLD_ACCESS_CREDENTIALS)
   end
 
   # Makes a remote HTTP call to Uphold to get more details
@@ -111,33 +115,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # Simplifying this method causes tests to break across the suite because
   # of what mostly appear to be bad mocking.  Will need to revisit later.
   def uphold_details
-    Uphold::Refresher.build.call(uphold_connection: self)
-    @user ||= UpholdClient.user.find(self)
-  rescue Faraday::ClientError => e
-    if e.response&.dig(:status) == 401
-      # Temporarily halted until Uphold fixes issues on their end
-      # update(status: UpholdAccountState::OLD_ACCESS_CREDENTIALS)
-      begin
-        # Ignore expiration date and try again
-        Uphold::Refresher.build.call(uphold_connection: self, ignore_expiration: true)
-        @user ||= UpholdClient.user.find(self)
-        LogException.perform(
-          StandardError.new("Uphold credentials fixed after force refresh for user: #{publisher_id} and connection #{id}")
-        )
-        return @user
-      rescue Faraday::ClientError => e
-        if e.response&.dig(:status) == 401
-          LogException.perform(
-            StandardError.new("Uphold credentials still expired after force for publisher: #{publisher_id} and connection #{id}")
-          )
-        end
-      end
-
-      Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
-      nil
-    else
-      raise
-    end
+    # This isn't necessary, it was a convoluted wrapper around UpholdClient.user
+    # which is now explicitly called when it is needed.
+    #
+    # However for the sake of backwards compatibility I'm leaving... for the moment
+    nil
   end
 
   def uphold_status
@@ -189,9 +171,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
-
-    CreateUpholdCardsJob.perform_later(uphold_connection_id: id)
-
     publisher.channels.each do |channel|
       CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
     end
@@ -205,7 +184,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   #
   # Returns an array of currencies
   def supported_currencies
-    uphold_details&.currencies
+    ["BAT"]
   end
 
   # Calls the Uphold API and checks
@@ -235,15 +214,16 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     # Set uphold_details to a variable, if uphold_access_parameters is nil
     # we will end up makes N service calls everytime we call uphold_details
     # this is a side effect of the memoization
-    uphold_information = uphold_details
-    return if uphold_information.blank?
+
+    user = UpholdClient.user.find(conn)
+    return if user.blank?
 
     result = update(
-      is_member: uphold_information.memberAt.present?,
-      member_at: uphold_information.memberAt,
-      status: uphold_information.status,
-      uphold_id: uphold_information.id,
-      country: uphold_information.country
+      is_member: user.memberAt.present?,
+      member_at: user.memberAt,
+      status: user.status,
+      uphold_id: user.id,
+      country: user.country
     )
 
     # I pulled this out of the async job because sync_connection! should
@@ -271,8 +251,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def currencies
-    return if uphold_details.blank?
-    uphold_details&.currencies
+    []
   end
 
   def authorization_expires_at
@@ -310,6 +289,57 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
+  # WRT to these methods my general take is that code that governs the lifecycle
+  # of a model is most appropriate to the model itself rather than a service.
+  #
+  # In this case, all of the values returned from these API requests are now
+  # required for the uphold connection to be created.  If they are not available
+  # the connection does not get created, full stop.
+  def find_uphold_user!
+    user = UpholdClient.user.find(self)
+    raise StandardError.new("Could not find uphold user") unless user.present?
+
+    user
+  end
+
+  def find_or_create_card
+    cards = UpholdClient.card.where(uphold_connection: self)
+
+    if cards.nil?
+      card = UpholdClient.card.create(uphold_connection: self)
+    else
+      # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
+      # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
+      cards.each do |c|
+        if cards.label.eql("Brave Rewards")
+          card = c
+          break
+        else
+          next if has_private_address?(c.id)
+          card = c
+        end
+      end
+    end
+
+    card
+  end
+
+  def find_or_create_card!
+    raise "Insufficient Permissions to create uphold wallet" if !can_create_uphold_cards?
+    card = find_or_create_card
+    raise StandardError.new("Could not configure #{self.default_currency} for deposit") if !card || !card&.id
+
+    card
+  end
+
+  def has_private_address?(card_id)
+    existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: self, uphold_id: uphold_id).to_a
+    return true if existing_private_cards.include?(card_id)
+
+    addresses = UpholdClient.address.all(uphold_connection: self, id: card_id)
+    addresses.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
+  end
+
   class << self
     def provider_name
       "Uphold"
@@ -320,7 +350,50 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     end
 
     def create_new_connection!(publisher, access_token_response)
-      raise NotImplementedError
+      # Oauth2::Responses::AccessTokenResponse: T.nilable(expires_in)
+      access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
+
+      # Do everything in a transaction so hopefully we begin tamping down data artifacts
+      ActiveRecord::Base.transaction do
+        # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
+        # We have so many empty connections
+        UpholdConnection.where(publisher_id: publisher.id).delete_all
+
+        # 2.) Set core params/token values
+        conn = UpholdConnection.new(
+          publisher_id: publisher.id,
+          uphold_access_parameters: access_token_response.serialize.to_json,
+          access_expiration_time: access_expiration_time,
+          uphold_verified: true,
+          default_currency: "BAT",
+          default_currency_confirmed_at: Time.now
+        )
+
+        # 3.) Pull data on existing user from uphold and set on model
+        # Fail whole transaction if cannot be found
+        user = conn.find_uphold_user!
+
+        conn.is_member = user.memberAt.present?,
+          conn.member_at = user.memberAt,
+          conn.status = user.status,
+          conn.uphold_id = user.id, # TODO: Uniqueness constraint
+          conn.country = user.country
+
+        # 4.) Create the uphold "card" or wallet for the default currency in question.
+        # Fail if we cannot
+
+        card = conn.find_or_create_card!
+        conn.address = card.id
+
+        # 5.) Write record to disk, fail if anything is wrong
+        conn.save!
+
+        # 6.) Update publisher, fail if anything goes wrong
+        #
+        # If all succeeds we have everything we need for a valid UpholdConnection
+        # on create.
+        publisher.update!(selected_wallet_provider: conn)
+      end
     end
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])

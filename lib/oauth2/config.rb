@@ -144,7 +144,7 @@ module Oauth2::Config
         base_authorization_url = is_production? ? "https://uphold.com"
      : "https://sandbox.uphold.com"
 
-        URI("#{base_authorization_url}/#{client_id}")
+        URI("#{base_authorization_url}/authorize/#{client_id}")
       end
 
       def token_url
@@ -159,7 +159,7 @@ module Oauth2::Config
       end
 
       def redirect_uri
-        URI("#{base_redirect_url}/oauth2/uphold/callback")
+        URI("#{base_redirect_url}/publishers/uphold_verified")
       end
 
       def access_token_struct
