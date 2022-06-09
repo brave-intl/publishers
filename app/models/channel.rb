@@ -67,7 +67,6 @@ class Channel < ApplicationRecord
                                   T.bind(self, Channel)
                                   :saved_change_to_verified? && verified?
                                 }
-  after_save :create_deposit_id
   before_save :set_derived_brave_publisher_id, if: -> {
                                                      T.bind(self, Channel)
                                                      derived_brave_publisher_id.nil?
@@ -374,19 +373,6 @@ class Channel < ApplicationRecord
       channel: "publishers-bot",
       message: "#{emoji} *#{details.publication_title}* verified by owner #{publisher.owner_identifier}; id=#{details.channel_identifier}; url=#{details.url}"
     ).perform
-  end
-
-  # Needed for bitFlyer, but can likely be used for Uphold too.
-  def create_deposit_id
-    wallet = publisher.selected_wallet_provider
-
-    # No need to run if it won't work
-    return if !wallet || wallet.oauth_refresh_failed
-
-    case wallet
-    when BitflyerConnection
-      Sync::Bitflyer::UpdateMissingDepositJob.perform_async(id) if deposit_id.nil?
-    end
   end
 
   def set_derived_brave_publisher_id

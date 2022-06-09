@@ -116,11 +116,6 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
         )
 
         publisher.update!(selected_wallet_provider: conn)
-
-        # Let's do more synchronously
-        publisher.channels do |channel|
-          Bitflyer::UpdateDepositIdService.build.call(channel)
-        end
       end
     end
 

@@ -351,13 +351,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal channel, found_channel
   end
 
-  test "if a bitflyer address is missing, it creates a deposit_id" do
-    channel = channels(:top_referrer_bitflyer_channel)
-    Sync::Bitflyer::UpdateMissingDepositJob.expects(:perform_async)
-    # The after_save create_deposit_id creates a deposit_id
-    channel.update(deposit_id: nil)
-  end
-
   describe "#advanced_sort" do
     describe "youtube view count" do
       it "sorts by ascending" do

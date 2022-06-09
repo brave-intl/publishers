@@ -9,14 +9,9 @@ module Channels
       ActiveRecord::Base.transaction do
         contested_by = channel.contested_by_channel
 
-        ## There is a helper function in channel.rb that can help minimize this code
-        ## Need to generate new bF deposit ID on channel transfer:
+        # New deposit ids will be created async via scheduled job if
+        # the wallet provider is valid
         channel.deposit_id = nil
-        if contested_by.publisher.selected_wallet_provider_type == Channel::BITFLYER_CONNECTION
-          Sync::Bitflyer::UpdateMissingDepositJob.new.perform(contested_by.id)
-        end
-        ###################################################################
-
         channel.contested_by_channel_id = nil
         channel.contest_token = nil
         channel.contest_timesout_at = nil
