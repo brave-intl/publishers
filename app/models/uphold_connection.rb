@@ -295,8 +295,13 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   def update_access_tokens!(refresh_token_response)
     # https://sorbet.org/docs/tstruct#converting-structs-to-other-types
     authorization_hash = refresh_token_response.serialize
+    expires_at = authorization_hash["expires_in"].to_i.seconds.from_now
 
-    authorization_hash["expiration_time"] = authorization_hash["expires_in"].to_i.seconds.from_now
+    # Add to model so queries can be made.
+    self.access_expiration_time = expires_at
+
+    # Preserve for backwards compatibility
+    authorization_hash["expiration_time"] = expires_at
 
     # Update with the latest Authorization
     self.uphold_access_parameters = JSON.dump(authorization_hash)
