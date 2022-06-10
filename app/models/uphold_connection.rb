@@ -8,6 +8,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
+  UPHOLD_CARD_LABEL = "Brave Rewards"
 
   # Snooze for the next ~ 80 years, this is what I consider forever from now :)
   FOREVER_DATE = DateTime.new(2100, 1, 1)
@@ -263,6 +264,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     authorization_expires_at.present? && authorization_expires_at < Time.zone.now
   end
 
+  def access_token
+    JSON.parse(uphold_access_parameters || "{}")&.fetch("access_token", nil)
+  end
+
   def refresh_token
     JSON.parse(uphold_access_parameters || "{}")&.fetch("refresh_token", nil)
   end
@@ -303,10 +308,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def find_or_create_card
-    cards = UpholdClient.card.where(uphold_connection: self)
+    cards = uphold_client.cards.list
 
     if cards.nil?
-      card = UpholdClient.card.create(uphold_connection: self)
+      card = uphold_client.cards.create(label: UPHOLD_CARDS_LABEL, currency: default_currency, settings: { starred: true })
     else
       # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
       # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
@@ -338,6 +343,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
     addresses = UpholdClient.address.all(uphold_connection: self, id: card_id)
     addresses.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
+  end
+
+  def uphold_client
+    @_uphold_client ||= Uphold::V2Client.new(conn: self)
   end
 
   class << self
