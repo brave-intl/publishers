@@ -9,6 +9,19 @@ class UpholdConnectionTest < ActiveSupport::TestCase
   include PromosHelper
   include EyeshadeHelper
   include MockOauth2Responses
+  include MockUpholdResponses
+
+  describe "#uphold_client" do
+    let(:conn) { uphold_connections(:google_connection) }
+
+    it "should initialize" do
+      assert_instance_of(Uphold::V2Client, conn.uphold_client)
+    end
+
+    it "should have cards" do
+      assert_instance_of(Uphold::Cards, conn.uphold_client.cards)
+    end
+  end
 
   describe "Oauth2::AuthorizationCodeBase" do
     let(:klass) { UpholdConnection }

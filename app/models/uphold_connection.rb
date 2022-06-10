@@ -1,8 +1,9 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 class UpholdConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
+  include Uphold::Types
 
   has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
 
@@ -294,12 +295,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
-  # WRT to these methods my general take is that code that governs the lifecycle
-  # of a model is most appropriate to the model itself rather than a service.
-  #
-  # In this case, all of the values returned from these API requests are now
-  # required for the uphold connection to be created.  If they are not available
-  # the connection does not get created, full stop.
   def find_uphold_user!
     user = UpholdClient.user.find(self)
     raise StandardError.new("Could not find uphold user") unless user.present?
@@ -307,42 +302,18 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     user
   end
 
-  def find_or_create_card
-    cards = uphold_client.cards.list
-
-    if cards.nil?
-      card = uphold_client.cards.create(label: UPHOLD_CARDS_LABEL, currency: default_currency, settings: { starred: true })
-    else
-      # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
-      # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
-      cards.each do |c|
-        if cards.label.eql("Brave Rewards")
-          card = c
-          break
-        else
-          next if has_private_address?(c.id)
-          card = c
-        end
-      end
-    end
-
-    card
-  end
-
   def find_or_create_card!
     raise "Insufficient Permissions to create uphold wallet" if !can_create_uphold_cards?
-    card = find_or_create_card
-    raise StandardError.new("Could not configure #{self.default_currency} for deposit") if !card || !card&.id
+    result = Uphold::FindOrCreateCardService.new.build(conn: self)
 
-    card
-  end
-
-  def has_private_address?(card_id)
-    existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: self, uphold_id: uphold_id).to_a
-    return true if existing_private_cards.include?(card_id)
-
-    addresses = UpholdClient.address.all(uphold_connection: self, id: card_id)
-    addresses.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
+    case result
+    when UpholdCard
+      result
+    when BFailure, ErrorResponse
+      raise StandardError.new("Could not configure #{self.default_currency} for Uphold")
+    else
+      T.absurd(result)
+    end
   end
 
   def uphold_client

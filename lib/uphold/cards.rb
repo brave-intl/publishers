@@ -1,3 +1,5 @@
+#typed: true
+
 module Uphold
   class Cards < Uphold::BaseClient
     include Uphold::Types

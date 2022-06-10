@@ -1,5 +1,7 @@
 # typed: false
 class BaseApiClient < BaseService
+  include Oauth2::Errors
+
   private
 
   # Make a GET request.
@@ -106,7 +108,7 @@ class BaseApiClient < BaseService
   end
 
   def parse_response_to_struct(response, struct)
-    return response if !response.success?
+    return ClientError.new(response: response) if !response.success?
 
     if response.headers["Content-Encoding"].eql?("gzip")
       sio = StringIO.new(response.body)
