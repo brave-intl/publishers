@@ -2,6 +2,12 @@
 # frozen_string_literal: true
 
 class UpholdConnection < Oauth2::AuthorizationCodeBase
+  class WalletCreationError < StandardError; end
+  class UnverifiedConnectionError < WalletCreationError; end
+  class DuplicateConnectionError < WalletCreationError; end
+  class FlaggedConnectionError < WalletCreationError; end
+  class InsufficientScopeError < WalletCreationError; end
+
   include WalletProviderProperties
   include Uphold::Types
 
@@ -295,32 +301,15 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
-  def find_uphold_user!
-    user = UpholdClient.user.find(self)
-    raise StandardError.new("Could not find uphold user") unless user.present?
-
-    user
-  end
-
-  def find_or_create_card!
-    raise "Insufficient Permissions to create uphold wallet" if !can_create_uphold_cards?
-    result = Uphold::FindOrCreateCardService.new.build(conn: self)
-
-    case result
-    when UpholdCard
-      result
-    when BFailure, ErrorResponse
-      raise StandardError.new("Could not configure #{self.default_currency} for Uphold")
-    else
-      T.absurd(result)
-    end
-  end
-
   def uphold_client
-    @_uphold_client ||= Uphold::V2Client.new(conn: self)
+    @_uphold_client ||= Uphold::ConnectionClient.new(conn: self)
   end
 
   class << self
+    include Uphold::Types
+    include Oauth2::Responses
+    include Oauth2::Errors
+
     def provider_name
       "Uphold"
     end
@@ -329,8 +318,13 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       Oauth2::Config::Uphold
     end
 
+    # Note: I tried to put this in a service as it is appropriate there, but 
+    # I've been struggling to figure out the annotation for an abstract method that takes arbitrary args/kwargs
+    # 
+    # The current BuilderBaseService.call method only allows 1 positional required param.
+    # There's too much to deal with here to get bogged down on that right now.
+    sig { override.params(publisher: Publisher, access_token_response: AccessTokenResponse).returns(UpholdConnection) }
     def create_new_connection!(publisher, access_token_response)
-      # Oauth2::Responses::AccessTokenResponse: T.nilable(expires_in)
       access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
 
       # Do everything in a transaction so hopefully we begin tamping down data artifacts
@@ -351,28 +345,53 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
         # 3.) Pull data on existing user from uphold and set on model
         # Fail whole transaction if cannot be found
-        user = conn.find_uphold_user!
+        user = conn.uphold_client.users.get
 
-        conn.is_member = user.memberAt.present?,
-          conn.member_at = user.memberAt,
-          conn.status = user.status,
-          conn.uphold_id = user.id, # TODO: Uniqueness constraint
-          conn.country = user.country
+        case user
+        when UpholdUser
+          # Deny unverified wallets
+          if !user.memberAt.present?
+            raise UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification and try again.")
+          elsif user.status != "ok"
+            raise FlaggedConnectionError.new("Cannot create Uphold connection.  Please contact Uphold to review your account's status.")
+         # Deny duplicates
+          elsif UpholdConnection.where(uphold_id: user.id).count > 0
+            raise DuplicateConnectionError.new("Cannot create Uphold connection. This uphold account is already association with another Creator.")
+           else
+             conn.is_member = user.memberAt.present?,
+             conn.member_at = user.memberAt,
+             conn.status = user.status,
+             conn.uphold_id = user.id,
+             conn.country = user.country
+           end
+        else
+          raise WalletCreationError.new("Unable to connect to Uphold.  Please try again in a few minutes.")
+        end
 
         # 4.) Create the uphold "card" or wallet for the default currency in question.
         # Fail if we cannot
 
-        card = conn.find_or_create_card!
-        conn.address = card.id
+        raise InsufficientScopeError if !conn.can_create_uphold_cards?
+        result = Uphold::FindOrCreateCardService.build.call(conn)
 
-        # 5.) Write record to disk, fail if anything is wrong
-        conn.save!
+        case result
+        when UpholdCard
+          # 5.) Save card id and write to disk
+          conn.address = result.id
+          conn.save!
 
-        # 6.) Update publisher, fail if anything goes wrong
-        #
-        # If all succeeds we have everything we need for a valid UpholdConnection
-        # on create.
-        publisher.update!(selected_wallet_provider: conn)
+          # 6.) Update publisher, fail if anything goes wrong
+          #
+          # If all succeeds we have everything we need for a valid UpholdConnection
+          # on create.
+          publisher.update!(selected_wallet_provider: conn)
+
+          conn
+        when BFailure, ErrorResponse
+          raise WalletCreationError.new("Could not configure #{conn.default_currency} deposits for Uphold")
+        else
+          T.absurd(result)
+        end
       end
     end
 

@@ -7,6 +7,8 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   extend T::Helpers
 
   TYPES = T.type_alias { T.any(T.self_type, ErrorResponse, BFailure) }
+  CONNECTION_TYPES = T.type_alias { T.any(UpholdConnection, BitflyerConnection, GeminiConnection) }
+
   abstract!
 
   class << self
@@ -29,7 +31,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(oauth2_config)
     end
 
-    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(T.self_type) }
+    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(CONNECTION_TYPES) }
     def create_new_connection!(publisher, access_token_response)
     end
 

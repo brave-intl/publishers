@@ -1,7 +1,7 @@
 # typed: true
 
 module Uphold
-  class V2Client
+  class ConnectionClient
     extend T::Sig
 
     sig { params(conn: UpholdConnection).void }

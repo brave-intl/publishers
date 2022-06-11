@@ -3,7 +3,7 @@ require "test_helper"
 
 class UpholdV2ClientTest < ActiveSupport::TestCase
   let(:conn)  { uphold_connections(:basic_connection) }
-  let(:described_class) { Uphold::V2Client }
+  let(:described_class) { Uphold::ConnectionClient }
   let(:inst) { described_class.new(conn: conn) }
 
   describe "#init" do

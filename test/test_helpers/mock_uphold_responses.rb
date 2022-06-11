@@ -104,7 +104,7 @@ module MockUpholdResponses
     stub_request(:post, /v0\/me\/cards/).to_return(body: body.to_json)
   end
 
-  def stub_get_user
+  def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", status: "ok")
     body = {
       "address": {
         "city": "Ryleighfort",
@@ -151,9 +151,9 @@ module MockUpholdResponses
       ],
       "email": "malika.koss@example.com",
       "firstName": "Malika",
-      "id": "21e65c4d-55e4-41be-97a1-ff38d8f3d945",
+      "id": id,
       "lastName": "Koss",
-      "memberAt": "2018-08-01T09:53:44.293Z",
+      "memberAt": member_at,
       "name": "Malika Koss",
       "phones": [{
         "e164Masked": "+XXXXXXXXX66",
@@ -201,7 +201,7 @@ module MockUpholdResponses
         }
       },
       "state": "US-UT",
-      "status": "ok",
+      "status": status,
       "type": "individual",
       "verifications": {}
     }

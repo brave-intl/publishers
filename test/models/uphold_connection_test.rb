@@ -5,11 +5,107 @@ require "webmock/minitest"
 
 class UpholdConnectionTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
+  include Oauth2::Responses
   include MailerTestHelper
   include PromosHelper
   include EyeshadeHelper
   include MockOauth2Responses
   include MockUpholdResponses
+
+  describe "#create_new_connection!" do
+    let(:publisher) { publishers(:default) }
+    let(:scope) { Oauth2::Config::Uphold.scope }
+    let(:access_token_response ) {
+      AccessTokenResponse.new(
+        access_token: "derp",
+        refresh_token: "derp",
+        expires_in: 36000,
+        token_type: "bearer",
+        scope: scope
+      )
+    }
+
+    describe "when not verified" do
+      before do
+        stub_get_user(member_at: nil) 
+      end
+
+      it "should raise an error" do
+        assert_raises(UpholdConnection::UnverifiedConnectionError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+      end
+    end
+
+    describe "when wallet already exists" do
+      before do
+        conn = UpholdConnection.where.not(uphold_id: nil).select(:uphold_id).first
+        stub_get_user(id: conn.uphold_id)
+      end
+
+      it "should raise an error" do
+        assert_raises(UpholdConnection::DuplicateConnectionError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+      end
+    end
+
+    describe "when verified" do
+      before do
+        stub_get_user
+      end
+
+      describe "when wallet is new" do
+        let(:status) { "blocked" }
+
+        before do
+          stub_get_user(id: "any unique value", status: status)
+        end
+
+        describe "if it is not ok" do
+          it "it should raise an exception" do
+            assert_raises(UpholdConnection::FlaggedConnectionError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+          end
+        end
+
+        describe "if it is ok" do
+          let(:status) { "ok" } 
+
+          describe "if has insufficient permissions" do
+            let(:scope) { "" }
+
+            it "it should raise an exception" do
+              assert_raises(UpholdConnection::InsufficientScopeError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+            end
+          end
+
+          describe "if has sufficient permissions" do
+            before do
+              stub_list_cards
+              stub_get_card
+              stub_create_card
+            end
+
+            describe "if api requests are !successful" do
+              before do
+                mock_token_failure(UpholdConnection.oauth2_config.token_url)
+              end
+
+              it "it should create a connection" do
+                assert_raises(UpholdConnection::WalletCreationError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+              end
+            end
+
+            describe "if api requests are successful" do
+              before do
+                mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+              end
+
+              it "it should create a connection" do
+                assert_instance_of(UpholdConnection, UpholdConnection.create_new_connection!(publisher, access_token_response))
+              end
+            end
+          end
+        end
+      end
+    end
+  end
 
   describe "#uphold_client" do
     let(:conn) { uphold_connections(:google_connection) }

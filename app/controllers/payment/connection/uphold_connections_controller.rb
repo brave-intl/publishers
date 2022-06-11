@@ -16,6 +16,7 @@ module Payment
       # Helpful for explicit debugging and introspection of access token request response values.
       def set_controller_state
         @klass = UpholdConnection
+        @debug = true
       end
     end
   end
