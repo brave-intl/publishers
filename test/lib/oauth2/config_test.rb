@@ -36,7 +36,7 @@ class Oauth2ConfigTest < ActiveSupport::TestCase
           let(:redirect_url_values) do
             case environment
             when "production"
-              "creators.brave"
+              "publishers.basicattentiontoken"
             when "staging"
               "publishers"
             else
