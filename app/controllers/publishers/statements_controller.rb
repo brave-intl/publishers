@@ -9,7 +9,7 @@ module Publishers
     def index
       @cannot_read_uphold_transactions = false
       if publisher.is_selected_wallet_provider_uphold?
-        if !publisher.uphold_connection.can_read_transactions?
+        if !publisher.uphold_connection&.can_read_transactions?
           @cannot_read_uphold_transactions = true
         end
       end
