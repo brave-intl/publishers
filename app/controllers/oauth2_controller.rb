@@ -43,6 +43,10 @@ class Oauth2Controller < ApplicationController
       begin
         data = resp.serialize
         @klass.create_new_connection!(current_publisher, resp)
+      rescue UpholdConnection::WalletCreationError => e
+        raise e if @debug
+        errors.push(e)
+        LogException.perform(e, publisher: current_publisher)
       rescue => e
         raise e if @debug
         errors.push(e)
@@ -63,7 +67,7 @@ class Oauth2Controller < ApplicationController
       render json: {data: data, errors: errors} and return
     else
       # TODO: More explicit/helpful error handling would be great, but for now we need anything
-      kwargs = errors.any? ? {flash: {alert: I18n.t("shared.error")}} : {}
+      kwargs = errors.any? ? {flash: {alert: errors.first.message}} : {}
       redirect_to(home_publishers_path, **kwargs)
     end
   end

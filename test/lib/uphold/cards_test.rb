@@ -43,6 +43,20 @@ class UpholdCardsClientTest < ActiveSupport::TestCase
     end
   end
 
+  describe "#list_addresses" do
+    let(:id) { "avalue" }
+
+    before do
+      stub_list_card_addresses(id: id)
+    end
+
+    it "should return UpholdCardAddresses" do
+      inst.list_addresses(id).each do |address|
+        assert_instance_of(UpholdCardAddress, address)
+      end
+    end
+  end
+
   describe "#create" do
     let(:id) { "avalue" }
     let(:currency) { "BAT" }

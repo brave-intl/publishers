@@ -25,7 +25,7 @@ module Oauth2::Errors
     end
 
     def message
-      "Client request failed with status code #{@response.code}: #{@response} - #{@response.body}"
+      "Client request failed with status code #{@response.status}: #{@response} - #{@response.body}"
     end
   end
 end

@@ -1,6 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
+# TODO:  Remove call
+#./app/models/uphold_connection.rb:    user = UpholdClient.user.find(conn)#
 module Uphold
   module Models
     class User < Client

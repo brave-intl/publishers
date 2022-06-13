@@ -7,7 +7,7 @@ module MockUpholdResponses
   end
 
   # https://uphold.com/en/developer/api/documentation/#list-cards
-  def stub_list_cards(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL, empty: false)
+  def stub_list_cards(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL, empty: false, stub: true)
     body = [{
       "address": {
         "bitcoin": "mkZuBgFa4gAjJ2UckDA3Pms68rVBavAneF"
@@ -51,10 +51,14 @@ module MockUpholdResponses
       }
     }] 
 
-    stub_request(:get, /v0\/me\/cards/).to_return(body: empty ? [].to_json : body.to_json)
+    if stub
+      stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/cards").to_return(body: empty ? [].to_json : body.to_json)
+    else
+      body
+    end
   end
 
-  def stub_get_card(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL)
+  def stub_get_card(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL, http_status: 200)
     body = {
       "address": {
         "bitcoin": "ms22VBPSahNTxHZNkYo2d4Rmw1Tgfx6ojr"
@@ -77,7 +81,7 @@ module MockUpholdResponses
       }
     }    
 
-    stub_request(:get, /v0\/me\/cards\/#{id}/).to_return(body: body.to_json)
+    stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/cards/#{id}").to_return(status: http_status, body: body.to_json)
   end
 
   def stub_create_card(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL, settings: {})
@@ -104,7 +108,7 @@ module MockUpholdResponses
     stub_request(:post, /v0\/me\/cards/).to_return(body: body.to_json)
   end
 
-  def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", status: "ok")
+  def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", user_status: "ok")
     body = {
       "address": {
         "city": "Ryleighfort",
@@ -201,11 +205,38 @@ module MockUpholdResponses
         }
       },
       "state": "US-UT",
-      "status": status,
+      "status": user_status,
       "type": "individual",
       "verifications": {}
     }
 
     stub_request(:get, /v0\/me/).to_return(body: body.to_json)
+  end
+
+  def stub_list_card_addresses(id: "024e51fc-5513-4d82-882c-9b22024280cc", type: UpholdConnectionForChannel::NETWORK, empty: false, http_status: 200)
+    body = [{
+      "formats": [{
+        "format": "pubkeyhash",
+        "value": "mkZuBgFa4gAjJ2UckDA3Pms68rVBavAneF"
+      }],
+      "type": type
+    },
+    {
+      "formats": [{
+        "format": "pubkeyhash",
+        "value": "0x807A30A52180c4172ddCE90816bc951D004CF737"
+      }],
+      "type": "ethereum"
+    },
+    {
+      "formats": [{
+        "format": "pubkeyhash",
+        "value": "rPjTZfLP3Qxwwd2xvXSALJzEFmmf7bEYgh"
+      }],
+      "tag": "1921241954",
+      "type": "xrp-ledger"
+    }] 
+
+    stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/cards/#{id}/addresses").to_return(status: http_status, body: empty ? [].to_json : body.to_json)
   end
 end

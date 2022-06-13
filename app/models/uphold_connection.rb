@@ -217,30 +217,23 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     false
   end
 
-  # Makes an HTTP Request to Uphold and sychronizes
   def sync_connection!
-    # Set uphold_details to a variable, if uphold_access_parameters is nil
-    # we will end up makes N service calls everytime we call uphold_details
-    # this is a side effect of the memoization
+    result = find_and_verify_uphold_user
 
-    user = UpholdClient.user.find(conn)
-    return if user.blank?
-
-    result = update(
-      is_member: user.memberAt.present?,
-      member_at: user.memberAt,
-      status: user.status,
-      uphold_id: user.id,
-      country: user.country
-    )
-
-    # I pulled this out of the async job because sync_connection! should
-    # handle anything related to the connection state.
-    # Handles legacy case where user is missing an Uphold card
-    create_uphold_cards if missing_card? && result
-
-    # This is awkward but a job is dependent on the truthyness of the update value
-    result
+    case result
+    when UpholdUser 
+      success = update(
+        is_member: result.memberAt.present?,
+        member_at: result.memberAt,
+        status: result.status,
+        uphold_id: result.id,
+        country: result.country
+      )
+      create_uphold_cards if missing_card? && success
+      success
+    else
+      nil
+    end
   end
 
   def update_site_banner_lookup!
@@ -283,6 +276,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     refresh_token
   end
 
+  sig { override.params(refresh_token_response: RefreshTokenResponse).returns(UpholdConnection) }
   def update_access_tokens!(refresh_token_response)
     # https://sorbet.org/docs/tstruct#converting-structs-to-other-types
     authorization_hash = refresh_token_response.serialize
@@ -301,8 +295,69 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
+  sig { returns(Uphold::ConnectionClient) }
   def uphold_client
     @_uphold_client ||= Uphold::ConnectionClient.new(conn: self)
+  end
+
+  # We will certainly want to reuse this to check
+  # when a user's account has been flagged so
+  # we need to handle not raising exceptions in that case.
+  sig { returns(T.any(UpholdUser, UnverifiedConnectionError, FlaggedConnectionError, DuplicateConnectionError, WalletCreationError
+ )) }
+  def find_and_verify_uphold_user
+    result = uphold_client.users.get
+
+    case result
+    when UpholdUser
+      # Deny unverified wallets
+      if !result.memberAt.present?
+        UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification and try again.")
+      # Deny flagged or pending users
+      elsif result.status != "ok"
+        FlaggedConnectionError.new("Cannot create Uphold connection.  Please contact Uphold to review your account's status.")
+     # Deny duplicates
+      elsif UpholdConnection.where(uphold_id: result.id).count > 0
+        DuplicateConnectionError.new("Cannot create Uphold connection. This uphold account is already association with another Creator.")
+       else
+         result
+       end
+    when ClientError
+      LogException.perform(result)
+      WalletCreationError.new("Unable to connect to Uphold.  Please try again in a few minutes.")
+    else
+      T.absurd(result)
+    end
+  end
+
+  sig { returns(UpholdUser) }
+  def find_and_verify_uphold_user!
+    result = find_and_verify_uphold_user
+
+    case result
+    when UpholdUser
+       result
+    when UnverifiedConnectionError, FlaggedConnectionError, DuplicateConnectionError, WalletCreationError
+      raise result
+    else
+      T.absurd(result)
+    end
+  end
+
+  sig { returns(UpholdCard) }
+  def find_or_create_uphold_card!
+    raise InsufficientScopeError if !can_create_uphold_cards?
+    result = Uphold::FindOrCreateCardService.build.call(self)
+
+    case result
+    when UpholdCard
+      result
+    when BFailure, ErrorResponse
+      LogException.perform(result)
+      raise WalletCreationError.new("Could not configure #{default_currency} deposits for Uphold")
+    else
+      T.absurd(result)
+    end
   end
 
   class << self
@@ -345,34 +400,17 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
         # 3.) Pull data on existing user from uphold and set on model
         # Fail whole transaction if cannot be found
-        user = conn.uphold_client.users.get
+        user = conn.find_and_verify_uphold_user!
 
-        case user
-        when UpholdUser
-          # Deny unverified wallets
-          if !user.memberAt.present?
-            raise UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification and try again.")
-          elsif user.status != "ok"
-            raise FlaggedConnectionError.new("Cannot create Uphold connection.  Please contact Uphold to review your account's status.")
-         # Deny duplicates
-          elsif UpholdConnection.where(uphold_id: user.id).count > 0
-            raise DuplicateConnectionError.new("Cannot create Uphold connection. This uphold account is already association with another Creator.")
-           else
-             conn.is_member = user.memberAt.present?,
-             conn.member_at = user.memberAt,
-             conn.status = user.status,
-             conn.uphold_id = user.id,
-             conn.country = user.country
-           end
-        else
-          raise WalletCreationError.new("Unable to connect to Uphold.  Please try again in a few minutes.")
-        end
+        conn.is_member = user.memberAt.present?,
+        conn.member_at = user.memberAt,
+        conn.status = user.status,
+        conn.uphold_id = user.id,
+        conn.country = user.country
 
         # 4.) Create the uphold "card" or wallet for the default currency in question.
         # Fail if we cannot
-
-        raise InsufficientScopeError if !conn.can_create_uphold_cards?
-        result = Uphold::FindOrCreateCardService.build.call(conn)
+        result = conn.find_or_create_uphold_card!
 
         case result
         when UpholdCard
@@ -387,8 +425,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           publisher.update!(selected_wallet_provider: conn)
 
           conn
-        when BFailure, ErrorResponse
-          raise WalletCreationError.new("Could not configure #{conn.default_currency} deposits for Uphold")
         else
           T.absurd(result)
         end

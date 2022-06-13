@@ -75,7 +75,7 @@ class BaseApiClient < BaseService
     end
   end
 
-  def connection
+  def connection(raise_error: true)
     @connection ||= begin
       require "faraday"
       Faraday.new(url: api_base_uri) do |faraday|
@@ -85,7 +85,11 @@ class BaseApiClient < BaseService
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
         faraday.response(:logger, Rails.logger, bodies: true, headers: true)
-        faraday.use(Faraday::Response::RaiseError)
+
+        if raise_error
+          faraday.use(Faraday::Response::RaiseError)
+        end
+
         faraday.adapter Faraday.default_adapter
       end
     end
@@ -93,7 +97,7 @@ class BaseApiClient < BaseService
 
   ## Some convenience methods used for Sorbet typed responses in various clients
   def request_and_return(method, path, response_struct, payload: nil, query: nil)
-    resp = connection.send(method) do |request|
+    resp = connection(raise_error: false).send(method) do |request|
       request.headers["Authorization"] = api_authorization_header
       url =  query.nil? ? client_url(path) : "#{client_url(path)}?q=#{query}"
 
@@ -102,13 +106,14 @@ class BaseApiClient < BaseService
       if payload
         request.body = JSON.dump(payload)
       end
+
     end
 
     parse_response_to_struct(resp, response_struct)
   end
 
   def parse_response_to_struct(response, struct)
-    return ClientError.new(response: response) if !response.success?
+    return response if !response.success?
 
     if response.headers["Content-Encoding"].eql?("gzip")
       sio = StringIO.new(response.body)

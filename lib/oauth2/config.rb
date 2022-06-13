@@ -128,6 +128,12 @@ module Oauth2::Config
 
   class Uphold < AuthorizationCode
     class << self
+
+      def base_token_url
+        is_production? ? "https://api.uphold.com"
+           : "https://api-sandbox.uphold.com"
+      end
+
       def scope
         "cards:read user:read cards:write transactions:read"
       end
@@ -148,9 +154,6 @@ module Oauth2::Config
       end
 
       def token_url
-        base_token_url = is_production? ? "https://api.uphold.com"
-     : "https://api-sandbox.uphold.com"
-
         URI("#{base_token_url}/oauth2/token")
       end
 

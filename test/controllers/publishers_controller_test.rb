@@ -422,67 +422,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify pending email is removed after confirmation
     assert_nil(publisher.pending_email)
   end
-  test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
-    uphold_state_token = SecureRandom.hex(64)
-    publisher.uphold_connection.uphold_state_token = uphold_state_token
-
-    publisher.save!
-
-    stub_request(:post, /oauth2\/token/)
-      .with(body: "code=#{uphold_code}&grant_type=authorization_code")
-      .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
-
-    stub_request(:any, /.*uphold-api.*/)
-      .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
-
-    url = publishers_uphold_verified_path
-    get(url, params: {code: uphold_code, state: uphold_state_token})
-    assert(200, response.status)
-
-    publisher.reload
-    # verify that the uphold_state_token has been cleared
-    assert_nil(publisher.uphold_connection.uphold_state_token)
-
-    # verify that the uphold_code has been cleared
-    assert_nil(publisher.uphold_connection.uphold_code)
-
-    # verify that the uphold_access_parameters has been set
-    assert_match("FAKEACCESSTOKEN", publisher.uphold_connection.uphold_access_parameters)
-
-    assert_redirected_to controller: "/publishers", action: "home"
-  end
-
-  test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
-    # Turn off promo
-    active_promo_id_original = Rails.application.secrets[:active_promo_id]
-    Rails.application.secrets[:active_promo_id] = ""
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    # give pub uphold state token
-    uphold_state_token = SecureRandom.hex(64)
-    publisher.uphold_connection.uphold_state_token = uphold_state_token
-    expected_uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
-    publisher.save
-
-    # simulate return to homepage after creating wallet on uphold.com
-    # simulate failed response from uphold.com to get access params
-    stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-      .with(body: "code=#{expected_uphold_code}&grant_type=authorization_code")
-      .to_timeout
-    url = publishers_uphold_verified_path
-    get(url, params: {code: expected_uphold_code, state: uphold_state_token})
-    follow_redirect!
-
-    # verify uphold :code_acquired but not :access params
-    assert_equal publisher.uphold_connection.reload.uphold_status, :code_acquired
-
-    Rails.application.secrets[:active_promo_id] = active_promo_id_original
-  end
 
   test "a publisher's statement can be downloaded as html" do
     publisher = publishers(:uphold_connected)
@@ -608,10 +547,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     confirm_default_currency_params = {default_currency: "BAT"}
 
-    assert_enqueued_with(job: CreateUpholdCardsJob) do
-      patch(connection_currency_path, params: confirm_default_currency_params)
-    end
-
     assert_response 200
     assert publisher.uphold_connection.default_currency == "BAT"
   end
@@ -622,10 +557,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     confirm_default_currency_params = {default_currency: "BTC"}
-
-    assert_enqueued_with(job: CreateUpholdCardsJob) do
-      patch(connection_currency_path, params: confirm_default_currency_params)
-    end
 
     assert publisher.uphold_connection.default_currency == "BTC"
   end
@@ -645,47 +576,5 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # If confirmation is clicked it should redirect to the normal login path
     post ensure_email_confirm_publisher_path(second_publisher), params: {token: second_publisher.authentication_token}
     assert_redirected_to publisher_path(second_publisher, token: second_publisher.authentication_token)
-  end
-
-  describe "publisher integration with uphold" do
-    let(:publisher) { publishers(:completed) }
-    before(:example) do
-      sign_in publisher
-
-      # skip 2FA prompt
-      publisher.two_factor_prompted_at = 1.day.ago
-      publisher.save!
-    end
-
-    test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
-      uphold_state_token = SecureRandom.hex(64)
-      publisher.uphold_connection.uphold_state_token = uphold_state_token
-
-      publisher.save!
-
-      uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
-
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-        .with(body: "code=#{uphold_code}&grant_type=authorization_code")
-        .to_timeout
-
-      url = publishers_uphold_verified_path
-      get(url, params: {code: uphold_code, state: uphold_state_token})
-      assert(200, response.status)
-      publisher.reload
-
-      # verify that the uphold_state_token has been cleared
-      assert_nil(publisher.uphold_connection.uphold_state_token)
-
-      # verify that the uphold_code has been set
-      assert_not_nil(publisher.uphold_connection.uphold_code)
-      assert_equal("ebb18043eb2e106fccb9d13d82bec119d8cd016c", publisher.uphold_connection.uphold_code)
-
-      # verify that the uphold_access_parameters has not been set
-      assert_nil(publisher.uphold_connection.uphold_access_parameters)
-
-      # verify that the finished_header was not displayed
-      refute_match(I18n.t("publishers.finished_header"), response.body)
-    end
   end
 end

@@ -3,6 +3,11 @@
 
 require "addressable/template"
 
+# TODO Add lib/uphold/addresses.rb and add to lib/uphold/connection_client.rb
+# TODO Remove these calls and replace with UpholdConnection.uphold_client
+#./app/jobs/create_uphold_channel_card_job.rb:    UpholdClient.address.create(                                                                                                         │
+#./app/jobs/create_uphold_channel_card_job.rb:    UpholdClient.address.all(                                                                                                            │
+#./app/services/uphold/find_or_create_card_service.rb:    addresses = UpholdClient.address.all(uphold_connection: @conn, id: card_id)#
 module Uphold
   module Models
     class Address < Client

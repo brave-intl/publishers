@@ -13,6 +13,11 @@ module Uphold
       const :label, String
     end
 
+    class UpholdCardAddress < T::Struct
+      const :type, String
+    end
+
+    UpholdCardAddresses = T.type_alias { T::Array[UpholdCardAddress] }
     UpholdCards = T.type_alias { T::Array[UpholdCard] }
   end
 end

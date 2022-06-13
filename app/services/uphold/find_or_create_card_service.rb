@@ -20,8 +20,10 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
       @client = conn.uphold_client
       @conn = result
 
-      if card_exists? || has_no_cards?
+      if card_exists?
         @card 
+      elsif has_no_cards?
+        create_card
       else
         find_or_create_card
       end
@@ -37,34 +39,50 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
   private 
 
   def card_exists?
-    return false if !@conn.address.present?
+    return false if @conn.address.nil?
     result = @client.cards.get(@conn.address)
 
     case result
     when UpholdCard
       @card = result
       true
-    when ClientError
-      raise result
+    when Faraday::Response
+      raise_unless_not_found(result)
     else
       T.absurd(result)
     end
   end
 
   def create_card
-    @card = @client.cards.create(
+    result = @client.cards.create(
       label: UpholdConnection::UPHOLD_CARD_LABEL, 
       currency: @conn.default_currency,
       settings: { starred: true }
     )
+
+    case result
+    when UpholdCard
+      result
+    when Faraday::Response
+      raise ClientError.new(response: result)
+    else
+      T.absurb(result)
+    end
   end
 
   def has_no_cards?
-    @cards = @client.cards.list
+    result = @client.cards.list
 
-    if @cards.empty?
-      create_card
-      return true
+    case result 
+    when Faraday::Response
+      raise_unless_not_found(result)
+    when Array
+      if result.empty?
+        true
+      else
+        @cards = result
+        false
+      end
     end
   end
 
@@ -99,7 +117,23 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: @conn, uphold_id: @conn.uphold_id).to_a
     return true if existing_private_cards.include?(card_id)
 
-    addresses = UpholdClient.address.all(uphold_connection: @conn, id: card_id)
-    addresses.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
+    result = @client.cards.list_addresses(card_id)
+
+    case result
+    when Array
+      result.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
+    when Faraday::Response
+      raise ClientError.new(response: result)
+    else
+      T.absurd(result)
+    end
+  end
+
+  def raise_unless_not_found(response)
+    if response.status == 404
+      false
+    else
+      raise ClientError.new(response: response)
+    end
   end
 end

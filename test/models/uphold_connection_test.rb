@@ -111,7 +111,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     let(:conn) { uphold_connections(:google_connection) }
 
     it "should initialize" do
-      assert_instance_of(Uphold::V2Client, conn.uphold_client)
+      assert_instance_of(Uphold::ConnectionClient, conn.uphold_client)
     end
 
     it "should have cards" do

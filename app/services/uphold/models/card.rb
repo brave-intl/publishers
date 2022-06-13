@@ -1,6 +1,11 @@
 # typed: true
 # frozen_string_literal: true
 
+# TODO: Remove these calls and replace with UpholdConnection.uphold_client.cards
+#./app/models/uphold_connection.rb:    card = UpholdClient.card.find(
+#./app/jobs/create_uphold_channel_card_job.rb:    cards = UpholdClient.card.where(uphold_connection: uphold_connection)
+#./app/jobs/create_uphold_channel_card_job.rb:      card_id = UpholdClient.card.create(
+#./app/jobs/create_uphold_channel_card_job.rb:    UpholdClient.card.find(uphold_connection: uphold_connection, id: card_id).present?#
 require "addressable/template"
 
 module Uphold

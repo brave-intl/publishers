@@ -6,8 +6,9 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   extend T::Sig
   extend T::Helpers
 
-  TYPES = T.type_alias { T.any(T.self_type, ErrorResponse, BFailure) }
-  CONNECTION_TYPES = T.type_alias { T.any(UpholdConnection, BitflyerConnection, GeminiConnection) }
+
+  Connections = T.type_alias { T.any(UpholdConnection, BitflyerConnection, GeminiConnection) }
+  TYPES = T.type_alias { T.any(Connections, ErrorResponse, BFailure) }
 
   abstract!
 
@@ -31,7 +32,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(oauth2_config)
     end
 
-    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(CONNECTION_TYPES) }
+    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(Connections) }
     def create_new_connection!(publisher, access_token_response)
     end
 
@@ -46,7 +47,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   end
 
   # Unique name to prevent collisions with existing methods
-  sig { abstract.params(refresh_token_response: Oauth2::Responses::RefreshTokenResponse).returns(T.self_type) }
+  sig { abstract.params(refresh_token_response: Oauth2::Responses::RefreshTokenResponse).returns(Connections) }
   def update_access_tokens!(refresh_token_response)
   end
 
@@ -90,13 +91,13 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   end
 
   # We can reuse this method for all three cases because we added it at the same time.
-  sig { returns(T.self_type) }
+  sig { returns(Connections) }
   def record_refresh_failure!
     update!(oauth_refresh_failed: true)
     self
   end
 
-  sig { returns(T.self_type) }
+  sig { returns(Connections) }
   def record_refresh_failure_notification!
     update!(oauth_failure_email_sent: true)
     self

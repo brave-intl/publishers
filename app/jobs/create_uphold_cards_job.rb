@@ -5,10 +5,11 @@ class CreateUpholdCardsJob < ApplicationJob
 
   def perform(uphold_connection_id:)
     conn = UpholdConnection.find(uphold_connection_id)
-    card = conn.find_or_create_card!
-
-    return if card and card.id == conn.address
+    card = conn.find_or_create_uphold_card!
+    return conn if card&.id == conn.address
 
     conn.update!(address: conn.id)
+    conn.reload
+    conn
   end
 end

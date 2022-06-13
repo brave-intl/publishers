@@ -26,7 +26,7 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
             stub_get_card(id: connection.address)
           end
 
-          test "it should UpholdCard" do
+          it "it should UpholdCard" do
             result = inst.call(connection)
             assert_instance_of(UpholdCard, result)
           end
@@ -41,10 +41,16 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
                   connection.address = nil
                   connection.default_currency = "BAT"
                   connection.save!
+
+                  # Brutal.
                   stub_list_cards(label: "derp", currency: "BAT")
+                  stub_list_cards(label: "derp", currency: "BAT", stub: false).each do |card|
+                    stub_list_card_addresses(id: card[:id])
+                  end
+                  stub_create_card
                 end
 
-                test "it should UpholdCard" do
+                it "it should UpholdCard" do
                   result = inst.call(connection)
                   assert_instance_of(UpholdCard, result)
                 end
@@ -59,7 +65,7 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
                   stub_create_card
                 end
 
-                test "it should UpholdCard" do
+                it "it should UpholdCard" do
                   result = inst.call(connection)
                   assert_instance_of(UpholdCard, result)
                 end
@@ -76,7 +82,7 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
                 stub_list_cards(currency: "BAT")
               end
 
-              test "it should UpholdCard" do
+              it "it should UpholdCard" do
                 result = inst.call(connection)
                 assert_instance_of(UpholdCard, result)
               end
@@ -93,7 +99,7 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
               stub_create_card
             end
 
-            test "it should UpholdCard" do
+            it "it should UpholdCard" do
               result = inst.call(connection)
               assert_instance_of(UpholdCard, result)
             end
@@ -106,7 +112,7 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
           connection.oauth_refresh_failed = true
         end
 
-        test "it should BFailure" do
+        it "it should BFailure" do
           assert_instance_of(BFailure, inst.call(connection))
         end
       end
