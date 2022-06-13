@@ -59,7 +59,7 @@ module Oauth2::Config
       def base_redirect_url
         uri = case env
         when "production"
-          "https://creators.brave.com"
+          "https://publishers.basicattentiontoken.org" # FIXME: THis is what bitflyer uses and we can't see it.  Make sure to review the prod env values.
         when "staging"
           "https://publishers-staging.basicattentiontoken.org"
         else
