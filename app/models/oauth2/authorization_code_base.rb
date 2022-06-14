@@ -7,7 +7,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   extend T::Helpers
 
 
-  Connections = T.type_alias { T.self_type }
+  Connections = T.type_alias { T.any(UpholdConnection, BitflyerConnection, GeminiConnection) }
   TYPES = T.type_alias { T.any(Connections, ErrorResponse, BFailure) }
 
   abstract!
