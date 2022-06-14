@@ -26,10 +26,6 @@
     args: [ 'monthly' ]
     decription: "For monthly breakdown stats sent to top referrers including the last 4 months of data"
     queue: scheduler
-  CleanStaleUpholdDataJob:
-    cron: "0 4 * * *"
-    description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
-    queue: scheduler
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
