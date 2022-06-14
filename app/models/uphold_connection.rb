@@ -135,11 +135,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       scope.include?("cards:write") &&
       status != UpholdConnection::BLOCKED &&
       status != UpholdConnection::PENDING &&
-      T.unsafe(!publisher)&.excluded_from_payout
+      !publisher&.excluded_from_payout
   end
 
   def wallet
-    @wallet ||= T.unsafe(publisher)&.wallet
+    @wallet ||= publisher&.wallet
   end
 
   def create_uphold_cards
