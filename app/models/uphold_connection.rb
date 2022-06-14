@@ -22,7 +22,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   USE_BROWSER = 1
 
-  attr_encrypted :uphold_code, key: proc { |record| record.class.encryption_key }
   attr_encrypted :uphold_access_parameters, key: proc { |record| record.class.encryption_key }
 
   class UpholdAccountState
@@ -49,31 +48,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   has_many :uphold_connection_for_channels
 
-  # uphold_code is an intermediate step to acquiring uphold_access_parameters
-  # and should be cleared once it has been used to get uphold_access_parameters
-  validates :uphold_code, absence: true, if: -> {
-                                               T.bind(self, UpholdConnection)
-                                               uphold_access_parameters.present? || uphold_verified?
-                                             }
-
-  # publishers that have uphold codes that have been sitting for five minutes
-  # can be cleared if publishers do not create wallet within 5 minute window
-  scope :has_stale_uphold_code, -> {
-    where.not(encrypted_uphold_code: nil)
-      .where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
-  }
-
-  # If the user became KYC'd let's create the uphold card for them
-  #
-  # TODO: Remove this entirely.
-  # My goal is to disallow the creation of an uphold connection without KYC.
-  # and move the channel creation process to a scheduled job run daily.
-  after_save :create_uphold_cards, if: -> {
-                                         T.bind(self, UpholdConnection)
-                                         saved_change_to_is_member? || saved_change_to_default_currency?
-                                       }
-  after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_is_member? }
-  after_save :update_promo_status, if: -> { T.bind(self, UpholdConnection).saved_change_to_is_member? }
+  after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
+  after_save :update_promo_status, if: -> { T.unsafe(T.bind(self, UpholdConnection)).saved_change_to_attribute(:is_member) }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -94,15 +70,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def can_read_transactions?
     scope.include?("transactions:read")
-  end
-
-  def receive_uphold_code(code)
-    update(
-      uphold_code: code,
-      uphold_state_token: nil,
-      uphold_access_parameters: nil,
-      uphold_verified: false
-    )
   end
 
   # Public: Determines if a user needs to reconnect their Uphold account.
@@ -141,8 +108,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       UpholdAccountState::RESTRICTED
     elsif uphold_verified? && is_member?
       UpholdAccountState::VERIFIED
-    elsif uphold_code.present?
-      :code_acquired
     else
       UpholdAccountState::UNCONNECTED
     end
@@ -170,16 +135,16 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       scope.include?("cards:write") &&
       status != UpholdConnection::BLOCKED &&
       status != UpholdConnection::PENDING &&
-      !publisher.excluded_from_payout
+      T.unsafe(!publisher)&.excluded_from_payout
   end
 
   def wallet
-    @wallet ||= publisher&.wallet
+    @wallet ||= T.unsafe(publisher)&.wallet
   end
 
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
-    publisher.channels.each do |channel|
+    T.unsafe(publisher).channels.each do |channel|
       CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
     end
   end
@@ -211,7 +176,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     card&.currency.eql?(default_currency)
   rescue Faraday::ResourceNotFound
     false
-  rescue Faraday::ClientError
+  rescue Faraday::Response
     # We'll get an HTTP Status 403 when the User doesn't have access to create cards
     # or the access_token has expired.
     false
@@ -237,14 +202,14 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def update_site_banner_lookup!
-    publisher.update_site_banner_lookup!
+    T.unsafe(publisher).update_site_banner_lookup!
   end
 
   # Internal: If the publisher previously had referral codes and then we will re-activate their referral codes.
   #
   # Returns nil
   def update_promo_status
-    publisher.update_promo_status!
+    T.unsafe(publisher).update_promo_status!
   end
 
   def japanese_account?
@@ -289,7 +254,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     authorization_hash["expiration_time"] = expires_at
 
     # Update with the latest Authorization
-    self.uphold_access_parameters = JSON.dump(authorization_hash)
+    uphold_access_parameters = JSON.dump(authorization_hash)
     save!
 
     self
@@ -322,7 +287,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
        else
          result
        end
-    when ClientError
+    when Faraday::Response
       LogException.perform(result)
       WalletCreationError.new("Unable to connect to Uphold.  Please try again in a few minutes.")
     else
@@ -337,10 +302,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     case result
     when UpholdUser
        result
-    when UnverifiedConnectionError, FlaggedConnectionError, DuplicateConnectionError, WalletCreationError
-      raise result
     else
-      T.absurd(result)
+      raise result
     end
   end
 
@@ -352,11 +315,9 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     case result
     when UpholdCard
       result
-    when BFailure, ErrorResponse
+    else
       LogException.perform(result)
       raise WalletCreationError.new("Could not configure #{default_currency} deposits for Uphold")
-    else
-      T.absurd(result)
     end
   end
 
@@ -380,17 +341,17 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     # There's too much to deal with here to get bogged down on that right now.
     sig { override.params(publisher: Publisher, access_token_response: AccessTokenResponse).returns(UpholdConnection) }
     def create_new_connection!(publisher, access_token_response)
-      access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
+      access_expiration_time = access_token_response.expires_in.present? ? T.must(access_token_response.expires_in).seconds.from_now : nil
 
       # Do everything in a transaction so hopefully we begin tamping down data artifacts
       ActiveRecord::Base.transaction do
         # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
         # We have so many empty connections
-        UpholdConnection.where(publisher_id: publisher.id).delete_all
+        UpholdConnection.where(publisher_id: T.unsafe(publisher).id).delete_all
 
         # 2.) Set core params/token values
         conn = UpholdConnection.new(
-          publisher_id: publisher.id,
+          publisher_id: T.unsafe(publisher).id,
           uphold_access_parameters: access_token_response.serialize.to_json,
           access_expiration_time: access_expiration_time,
           uphold_verified: true,
@@ -402,10 +363,20 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         # Fail whole transaction if cannot be found
         user = conn.find_and_verify_uphold_user!
 
-        conn.is_member = user.memberAt.present?,
-        conn.member_at = user.memberAt,
-        conn.status = user.status,
-        conn.uphold_id = user.id,
+        # Sorbet is strict
+        if user.memberAt.present?
+          conn.member_at = Time.zone.parse(user.memberAt)
+          conn.is_member = true
+        else
+          conn.is_member = false
+        end
+
+        # Wow.  This I haven't encountered before
+        # The type annotations of the UpholdUser struct are different
+        # from that of the model, so you have to cast the values
+        # in order to assign them
+        conn.status = T.must(user.status)
+        conn.uphold_id = T.must(user.id)
         conn.country = user.country
 
         # 4.) Create the uphold "card" or wallet for the default currency in question.
@@ -422,7 +393,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           #
           # If all succeeds we have everything we need for a valid UpholdConnection
           # on create.
-          publisher.update!(selected_wallet_provider: conn)
+          T.unsafe(publisher).update!(selected_wallet_provider: conn)
 
           conn
         else

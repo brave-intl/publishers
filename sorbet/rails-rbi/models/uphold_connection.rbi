@@ -9,6 +9,18 @@ end
 
 module UpholdConnection::GeneratedAttributeMethods
   sig { returns(T.nilable(String)) }
+  def uphold_access_parameters; end
+
+  sig { returns(T.nilable(ActiveSupport::TimeWithZone)) }
+  def access_expiration_time; end
+
+  sig { params(value: T.nilable(T.any(Date, Time, ActiveSupport::TimeWithZone))).void }
+  def access_expiration_time=(value); end
+
+  sig { returns(T::Boolean) }
+  def access_expiration_time?; end
+
+  sig { returns(T.nilable(String)) }
   def address; end
 
   sig { params(value: T.nilable(T.any(String, Symbol))).void }

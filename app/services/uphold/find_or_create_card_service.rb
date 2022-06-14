@@ -49,7 +49,7 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     when Faraday::Response
       raise_unless_not_found(result)
     else
-      T.absurd(result)
+      raise
     end
   end
 
@@ -63,10 +63,8 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     case result
     when UpholdCard
       result
-    when Faraday::Response
-      raise ClientError.new(response: result)
     else
-      T.absurb(result)
+      raise ClientError.new(response: result)
     end
   end
 
@@ -89,7 +87,9 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
   def find_or_create_card
     # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
     # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
-    card = nil
+    #
+    # https://sorbet.org/docs/error-reference#7001 
+    card = T.let(nil, T.nilable(UpholdCard))
 
     @cards.each do |c|
       if c.label.eql?(UpholdConnection::UPHOLD_CARD_LABEL) && c.currency == @conn.default_currency
@@ -114,7 +114,7 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
   end
 
   def has_private_address?(card_id)
-    existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: @conn, uphold_id: @conn.uphold_id).to_a
+    existing_private_cards ||= T.unsafe(UpholdConnectionForChannel).select(:card_id).where(uphold_connection: @conn, uphold_id: @conn.uphold_id).to_a
     return true if existing_private_cards.include?(card_id)
 
     result = @client.cards.list_addresses(card_id)
@@ -122,10 +122,8 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     case result
     when Array
       result.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }.present?
-    when Faraday::Response
-      raise ClientError.new(response: result)
     else
-      T.absurd(result)
+      raise ClientError.new(response: result)
     end
   end
 
