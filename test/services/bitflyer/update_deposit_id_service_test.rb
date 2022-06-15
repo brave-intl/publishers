@@ -25,7 +25,7 @@ class BitflyerUpdateDepositIdService < ActiveSupport::TestCase
 
       describe "when connection is already failure" do
         before do
-          connection.oauth_refresh_failed = true
+          connection.update!(oauth_refresh_failed: true)
         end
 
         test "it should BFailure" do
