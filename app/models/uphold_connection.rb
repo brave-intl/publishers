@@ -112,7 +112,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # of what mostly appear to be bad mocking.  Will need to revisit later.
   def uphold_details
     Uphold::Refresher.build.call(uphold_connection: self)
-    @user ||= UpholdClient.user.find(self)
+    @user ||= access_token.present? ? uphold_client.users.get : nil
   rescue Faraday::ClientError => e
     if e.response&.dig(:status) == 401
       # Temporarily halted until Uphold fixes issues on their end
@@ -120,7 +120,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       begin
         # Ignore expiration date and try again
         Uphold::Refresher.build.call(uphold_connection: self, ignore_expiration: true)
-        @user ||= UpholdClient.user.find(self)
+        return unless access_token.present?
+        @user ||= uphold_client.users.get
         LogException.perform(
           StandardError.new("Uphold credentials fixed after force refresh for user: #{publisher_id} and connection #{id}")
         )
@@ -159,7 +160,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def username
-    uphold_details&.username
+    # This doesn't exist on the uphold user object.
+    # and the previous model did not do anything but parse the response.
+    # It probably has always been nil
+    # https://uphold.com/en/developer/api/documentation/#user-object#
+    nil
   end
 
   def unconnected?
