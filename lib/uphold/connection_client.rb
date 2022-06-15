@@ -5,7 +5,7 @@ module Uphold
     extend T::Sig
 
     sig { params(conn: UpholdConnection).void }
-    def initialize(conn:)
+    def initialize(conn)
       @conn = conn
     end
 
