@@ -103,7 +103,7 @@ VCR.configure do |config|
     i.request.headers.delete("Authorization")
   end
   config.ignore_hosts "127.0.0.1", "localhost"
-  config.allow_http_connections_when_no_cassette = true
+  config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = {match_requests_on: [:method, :uri, :body], decode_compressed_response: true}
 end
 
