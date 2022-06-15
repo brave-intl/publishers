@@ -4,7 +4,7 @@ require "test_helper"
 class UpholdV2ClientTest < ActiveSupport::TestCase
   let(:conn) { uphold_connections(:basic_connection) }
   let(:described_class) { Uphold::ConnectionClient }
-  let(:inst) { described_class.new(conn: conn) }
+  let(:inst) { described_class.new(conn) }
 
   describe "#init" do
     it "should return self" do
