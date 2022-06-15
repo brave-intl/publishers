@@ -2,67 +2,112 @@
 require "test_helper"
 require "webmock/minitest"
 
+# If you think this is difficult to reason about, it is.
 class CreateUpholdCardsJobTest < ActiveJob::TestCase
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
   include EyeshadeHelper
   include MockUpholdResponses
+  include MockOauth2Responses
 
-  before(:example) do
-    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
-    stub_uphold_cards!
-  end
+  describe "#perform_now" do
+    let(:connection) { uphold_connections(:google_connection) }
 
-  after(:example) do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
-  end
+    # Woe to you if you try to use a value other than a valid UUID.
+    # Address is DB value of uuid not string
+    let(:id) { "024e51fc-5513-4d82-882c-9b22024280cc" }
 
-  test "creates default currency card if wallet address missing" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+    describe "card exists" do
+      before do
+        mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+        stub_get_card(id: id)
+      end
 
-    publisher = publishers(:uphold_connected_details)
-    publisher.default_currency = "BAT"
-    publisher.save!
+      it "returns conn" do
+        connection.update!(address: id)
+        refute connection.address.nil?
+        result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+        assert_equal result.address, id
+      end
+    end
 
-    # stub wallet response
-    wallet = {"wallet" => {"defaultCurrency" => "USD",
-                           "authorized" => true,
-                           "isMember" => true,
-                           "status" => "ok",
-                           "possibleCurrencies" => "BAT",
-                           "scope" => "cards:read, cards:write, user:read"},
-              "contributions" => {"currency" => "USD"}}
+    describe "card is not found" do
+      # This is a case where somehow there is an address value on the connection
+      # but no matching card.
+      describe "!!address" do
+        describe "when has cards with no matching currency" do
+          let(:id) { "224e51fc-5513-4d82-882c-9b22024280cc" }
+          before do
+            mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+            stub_list_cards
+            stub_get_card(id: id, http_status: 404)
+            stub_create_card(id: id)
+          end
 
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+          it "returns conn" do
+            connection.update!(address: id)
+            refute connection.address.nil?
+            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            assert_equal result.address, id
+          end
+        end
 
-    CreateUpholdCardsJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
-    publisher.uphold_connection.reload
+        describe "when has matching currency card with different address" do
+          before do
+            mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+            stub_list_cards(currency: connection.default_currency)
+            stub_get_card(http_status: 404)
+          end
 
-    assert_equal publisher.uphold_connection.address, "123e4567-e89b-12d3-a456-426655440000"
-  end
+          it "returns conn" do
+            connection.update!(address: id)
+            refute connection.address.nil?
+            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            assert_equal result.address, id
+          end
+        end
+      end
+      describe "!address" do
+        describe "when has no cards" do
+          let(:id) { "224e51fc-5513-4d82-882c-9b22024280cc" }
+          before do
+            mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+            stub_list_cards(empty: true)
+            stub_get_card(id: id, http_status: 404)
+            stub_create_card(id: id)
+          end
 
-  test "does not create default currency card if wallet address present" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+          it "returns conn" do
+            connection.update!(address: nil)
+            assert connection.address.nil?
+            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            assert_equal result.address, id
+            connection.reload
+            assert_equal connection.id, result.id
+            assert_equal connection.address, result.address
+          end
+        end
 
-    publisher = publishers(:uphold_connected_details)
-    publisher.default_currency = "BAT"
-    publisher.save!
+        describe "when has cards with no matching currency" do
+          let(:id) { "224e51fc-5513-4d82-882c-9b22024280cc" }
+          before do
+            mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+            stub_list_cards
+            stub_get_card(id: id, http_status: 404)
+            stub_create_card(id: id)
+          end
 
-    wallet = {"wallet" => {"defaultCurrency" => "USD",
-                           "authorized" => true,
-                           "isMember" => true,
-                           "status" => "ok",
-                           "possibleCurrencies" => "BAT",
-                           "scope" => "cards:read, cards:write, user:read",
-                           "address" => "cc053a27-cdcd-4fdb-aa90-f0417df26242"},
-              "rates" => {},
-              "contributions" => {"currency" => "USD"}}
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
-
-    CreateUpholdCardsJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
-    publisher.uphold_connection.reload
-
-    assert_equal publisher.uphold_connection.address, "123e4567-e89b-12d3-a456-426655440000"
+          it "returns conn" do
+            connection.update!(address: nil)
+            assert connection.address.nil?
+            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            assert_equal result.address, id
+            connection.reload
+            assert_equal connection.id, result.id
+            assert_equal connection.address, result.address
+          end
+        end
+      end
+    end
   end
 end
