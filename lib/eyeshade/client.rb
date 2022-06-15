@@ -2,63 +2,62 @@
 
 # TODO: Consolidate all of the eyeshade API requests here and define explicit types for each
 # See: app/services/eyeshade/*
-#
-# TODO: Remove the duplication of each request type.  I'm holding my hose on this as it is of secondary importance to the core archiecture.
 
 module Eyeshade
   class Client < BaseApiClient
     include Eyeshade::Types
     extend T::Sig
+    class ResultError < StandardError; end
 
-    sig { params(payload: T::Hash[String, T.untyped]).returns(AccountBalances) }
+    sig { params(payload: T::Hash[String, T.untyped]).returns(T.any(AccountBalances, Faraday::Response)) }
     def accounts_balances(payload)
-      request_and_return(:post, "/v1/accounts/balances", AccountBalance, payload: payload)
+      result = request_and_return(:post, "/v1/accounts/balances", AccountBalance, payload: payload)
+
+      case result
+      when Array
+        T.cast(result, AccountBalances)
+      when Faraday::Response
+        result
+      when T::Struct
+        raise ResultError
+      else
+        T.absurd(result)
+      end
     end
 
-    # TODO: Add spec
-    sig { returns(ReferralEarningTotals) }
+    sig { returns(T.any(ReferralEarningTotals, Faraday::Response)) }
     def accounts_earnings_referrals_total
-      request_and_return(:get, "/v1/accounts/earnings/referrals/total", ReferralEarningTotal)
+      result = request_and_return(:get, "/v1/accounts/earnings/referrals/total", ReferralEarningTotal)
+
+      case result
+      when Array
+        T.cast(result, ReferralEarningTotals)
+      when Faraday::Response
+        result
+      when T::Struct
+        raise ResultError
+      else
+        T.absurd(result)
+      end
     end
 
-    sig { params(id: String).returns(Transactions) }
+    sig { params(id: String).returns(T.any(Transactions, Faraday::Response)) }
     def account_transactions(id)
-      request_and_return(:get, "/v1/accounts/#{id}/transactions", Transaction)
+      result = request_and_return(:get, "/v1/accounts/#{id}/transactions", Transaction)
+
+      case result
+      when Array
+        T.cast(result, Transactions)
+      when Faraday::Response
+        result
+      when T::Struct
+        raise ResultError
+      else
+        T.absurd(result)
+      end
     end
 
     private
-
-    # Note:
-    #
-    # I encountered an error when attempting to use T.type_alias { T.any(Type1, Typ2) }  annotations on these private methods
-    # The sorbet type checker considered the allowed responses to be invalid when the annotations for each public method were run.
-    # Having the annotations on the public endpoints is more important IMO and I don't want to get bogged down in what may be an actual limitation/feature of sorbet.
-    # I may raise an issue look around on the sorbet github repo.
-    def request_and_return(method, path, response_struct, payload: nil)
-      resp = connection.send(method) do |request|
-        request.headers["Authorization"] = api_authorization_header
-        request.url client_url(path)
-
-        if payload
-          request.body = JSON.dump(payload)
-        end
-      end
-
-      parse_array_response_to_struct(resp, response_struct)
-    end
-
-    def parse_array_response_to_struct(response, struct)
-      if response.success?
-        data = JSON.parse(response.body, symbolize_names: true)
-        data.map { |obj| struct.new(**obj) }
-      else
-        []
-      end
-    end
-
-    def client_url(path)
-      [api_base_uri, path].join("")
-    end
 
     def api_base_uri
       Rails.application.secrets[:api_eyeshade_base_uri]

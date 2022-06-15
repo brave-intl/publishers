@@ -1,5 +1,8 @@
 # typed: false
 class BaseApiClient < BaseService
+  extend T::Sig
+  include Oauth2::Errors
+
   private
 
   # Make a GET request.
@@ -73,7 +76,7 @@ class BaseApiClient < BaseService
     end
   end
 
-  def connection
+  def connection(raise_error: true)
     @connection ||= begin
       require "faraday"
       Faraday.new(url: api_base_uri) do |faraday|
@@ -83,10 +86,66 @@ class BaseApiClient < BaseService
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
         faraday.response(:logger, Rails.logger, bodies: true, headers: true)
-        faraday.use(Faraday::Response::RaiseError)
+
+        if raise_error
+          faraday.use(Faraday::Response::RaiseError)
+        end
+
         faraday.adapter Faraday.default_adapter
       end
     end
+  end
+
+  ## Some convenience methods used for Sorbet typed responses in various clients
+  sig { params(method: Symbol, path: String, response_struct: T.class_of(T::Struct), payload: T.nilable(T::Hash[T.any(Symbol, String), T.untyped]), query: T.nilable(String)).returns(T.any(T::Array[T::Struct], T::Struct, Faraday::Response)) }
+  def request_and_return(method, path, response_struct, payload: nil, query: nil)
+    resp = connection(raise_error: false).send(method) do |request|
+      request.headers["Authorization"] = api_authorization_header
+      url = query.nil? ? client_url(path) : "#{client_url(path)}?q=#{query}"
+
+      request.url(url)
+
+      if payload
+        request.body = JSON.dump(payload)
+      end
+    end
+
+    parse_response_to_struct(resp, response_struct)
+  end
+
+  def parse_response_to_struct(response, struct)
+    return response if !response.success?
+
+    if response.headers["Content-Encoding"].eql?("gzip")
+      sio = StringIO.new(response.body)
+      gz = Zlib::GzipReader.new(sio)
+      data = JSON.parse(gz.read, symbolize_names: true)
+    else
+      data = JSON.parse(response.body, symbolize_names: true)
+    end
+
+    case data
+    when Array
+      data.map { |obj| adapt_to_struct(struct, obj) }
+    when Hash
+      adapt_to_struct(struct, data)
+    else
+      raise "Unknown response type #{data.class}"
+    end
+  end
+
+  def adapt_to_struct(struct, obj)
+    out = {}
+
+    struct.props.keys.each do |key|
+      out[key] = obj.fetch(key, nil)
+    end
+
+    struct.new(out)
+  end
+
+  def client_url(path)
+    [api_base_uri, path].join("")
   end
 
   # The default retry count is 2. However, a subclass could introduce their own retry_count.
