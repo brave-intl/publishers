@@ -13,4 +13,17 @@ module Oauth2::Errors
       "OAuth2 request failed with status code #{@response.code}: #{@response} - #{@response.body}"
     end
   end
+
+  class ClientError < StandardError
+    attr_reader :response
+
+    def initialize(response:)
+      super
+      @response = response
+    end
+
+    def message
+      "Client request failed with status code #{@response.status}: #{@response} - #{@response.body}"
+    end
+  end
 end

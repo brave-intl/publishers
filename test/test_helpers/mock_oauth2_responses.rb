@@ -1,5 +1,5 @@
 module MockOauth2Responses
-  include Oauth2::Structs
+  include Oauth2::Responses
 
   def mock_unknown_failure(token_url, status: 500)
     stub_request(:post, token_url)
