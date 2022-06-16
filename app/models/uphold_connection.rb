@@ -309,6 +309,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
+  def uphold_client
+    @_uphold_client ||= Uphold::ConnectionClient.new(self)
+  end
+
   class << self
     def provider_name
       "Uphold"
