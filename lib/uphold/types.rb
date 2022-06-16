@@ -5,6 +5,7 @@ module Uphold
       const :memberAt, T.nilable(String)
       const :id, String
       const :country, T.nilable(String)
+      prop :currencies, T.nilable(T::Array[String]), default: []
     end
 
     class UpholdCard < T::Struct
