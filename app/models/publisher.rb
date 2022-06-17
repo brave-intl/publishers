@@ -383,7 +383,7 @@ class Publisher < ApplicationRecord
   end
 
   def inferred_status
-    return last_status_update.status if last_status_update.present?
+    return last_status_update&.status
     if verified?
       PublisherStatusUpdate::ACTIVE
     else
@@ -391,8 +391,8 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def last_status_update
-    status_updates.first
+    def last_status_update
+      status_updates.first
   end
 
   def last_whitelist_update
