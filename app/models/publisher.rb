@@ -50,7 +50,6 @@ class Publisher < ApplicationRecord
   has_many :potential_payments
   has_many :invoices
 
-  belongs_to :youtube_channel
   belongs_to :selected_wallet_provider, polymorphic: true
 
   has_one :uphold_connection

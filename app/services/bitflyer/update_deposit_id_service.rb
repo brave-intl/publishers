@@ -42,6 +42,8 @@ class Bitflyer::UpdateDepositIdService < BuilderBaseService
       result
     when ErrorResponse
       BFailure.new(errors: [result])
+    when Oauth2::AuthorizationCodeBase
+      raise
     else
       T.absurd(result)
     end

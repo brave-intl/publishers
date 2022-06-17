@@ -17,8 +17,8 @@ module MockOauth2Responses
       .to_return(status: 400, body: payload.to_json)
   end
 
-  def mock_refresh_token_success(token_url, to_spec: true)
-    payload = {access_token: "access_token", expires_in: 10.minutes.to_i, refresh_token: "refresh_token", token_type: "example", scope: "create"}
+  def mock_refresh_token_success(token_url, to_spec: true, scope: "create")
+    payload = {access_token: "access_token", expires_in: 10.minutes.to_i, refresh_token: "refresh_token", token_type: "example", scope: scope}
 
     if !to_spec
       payload[:another] = "value"

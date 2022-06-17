@@ -84,7 +84,7 @@ module MockUpholdResponses
     stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/cards/#{id}").to_return(status: http_status, body: body.to_json)
   end
 
-  def stub_create_card(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL, settings: {})
+  def stub_create_card(id: "024e51fc-5513-4d82-882c-9b22024280cc", currency: "BTC", label: UpholdConnection::UPHOLD_CARD_LABEL, settings: {}, http_status: 200)
     body = {
       address: {
         bitcoin: "ms22VBPSahNTxHZNkYo2d4Rmw1Tgfx6ojr"
@@ -103,7 +103,7 @@ module MockUpholdResponses
       settings: settings
     }
 
-    stub_request(:post, /v0\/me\/cards/).to_return(body: body.to_json)
+    stub_request(:post, /v0\/me\/cards/).to_return(status: http_status, body: body.to_json)
   end
 
   def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", user_status: "ok")

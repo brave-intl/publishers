@@ -26,4 +26,6 @@ module Oauth2::Errors
       "Client request failed with status code #{@response.status}: #{@response} - #{@response.body}"
     end
   end
+
+  class ConnectionError < StandardError; end
 end
