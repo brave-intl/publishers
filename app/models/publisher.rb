@@ -350,7 +350,7 @@ class Publisher < ApplicationRecord
   end
 
   def authorized_to_act?
-    if suspended? || uphold_connection&.blocked? || is_associated_with_suspended_uphold_ids? 
+    if suspended? || uphold_connection&.blocked? || is_associated_with_suspended_uphold_ids?
       false
     else
       true

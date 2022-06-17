@@ -1,5 +1,7 @@
 # typed: ignore
 class ApplicationController < ActionController::Base
+  class NotAuthorizedError < StandardError; end
+
   require "error_handler"
   include ErrorHandler
 
@@ -23,6 +25,21 @@ class ApplicationController < ActionController::Base
   end
 
   around_action :switch_locale
+
+  def authenticate_publisher!
+    # Authenticate the publisher(this is a core method of an underlying auth lib)
+    super
+
+    # Check if they are allowed to use the app
+    return if current_publisher.authorized_to_act?
+
+    # anything else we might want, logging etc
+    # Maybe create a case, use the reason for the authorization failure to create
+    # publishers notes with supporting data etc etc.
+    # Do some slack notifications
+
+    raise NotAuthorizedError
+  end
 
   def switch_locale(&action)
     return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == "admin"
