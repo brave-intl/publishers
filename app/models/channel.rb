@@ -347,7 +347,7 @@ class Channel < ApplicationRecord
 
   # This literally runs for all channels because we create an uphold connection for all users.
   def create_channel_card
-    return if !publisher.uphold_connection&.uphold_id
+    return if !publisher&.uphold_connection&.uphold_id
     CreateUpholdChannelCardJob.perform_later(uphold_connection_id: publisher.uphold_connection&.id, channel_id: id)
   end
 

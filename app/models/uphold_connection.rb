@@ -3,6 +3,7 @@
 
 class UpholdConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
+  include Uphold::Types
 
   has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
 
@@ -105,35 +106,20 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       (uphold_access_parameters.blank? || scope.exclude?("cards:write") || uphold_details.nil? || status&.to_sym == UpholdAccountState::OLD_ACCESS_CREDENTIALS)
   end
 
-  # Makes a remote HTTP call to Uphold to get more details
-  # TODO should we actually call uphold_user?
-  # FIXME: Remove the secondary refresher calls and the error handling
-  # Simplifying this method causes tests to break across the suite because
-  # of what mostly appear to be bad mocking.  Will need to revisit later.
+  # TODO: Deprecate ASAP, only maintaining for iterative development's sake
   def uphold_details
-    Uphold::Refresher.build.call(uphold_connection: self)
-    @user ||= UpholdClient.user.find(self)
-  rescue Faraday::ClientError => e
-    if e.response&.dig(:status) == 401
-      # Temporarily halted until Uphold fixes issues on their end
-      # update(status: UpholdAccountState::OLD_ACCESS_CREDENTIALS)
-      begin
-        # Ignore expiration date and try again
-        Uphold::Refresher.build.call(uphold_connection: self, ignore_expiration: true)
-        @user ||= UpholdClient.user.find(self)
-        LogException.perform(
-          StandardError.new("Uphold credentials fixed after force refresh for user: #{publisher_id} and connection #{id}")
-        )
-        return @user
-      rescue Faraday::ClientError => e
-        if e.response&.dig(:status) == 401
-          LogException.perform(
-            StandardError.new("Uphold credentials still expired after force for publisher: #{publisher_id} and connection #{id}")
-          )
-        end
-      end
+    if access_token.nil? || refresh_token.nil?
+      record_refresh_failure!
+      return
+    end
 
-      Rails.logger.fatal("#{e.response[:body]} for uphold connection #{id}")
+    refresh_authorization!
+    result = uphold_client.users.get
+
+    case result
+    when UpholdUser
+      @user = result
+    when Faraday::Response
       nil
     else
       raise
@@ -159,7 +145,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def username
-    uphold_details&.username
+    # This doesn't exist on the uphold user object.
+    # and the previous model did not do anything but parse the response.
+    # It probably has always been nil
+    # https://uphold.com/en/developer/api/documentation/#user-object#
+    nil
   end
 
   def unconnected?

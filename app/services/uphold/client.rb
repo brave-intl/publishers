@@ -16,10 +16,6 @@ module Uphold
       @card ||= Uphold::Models::Card.new(api_base_uri: api_base_uri)
     end
 
-    def user
-      @user ||= Uphold::Models::User.new(api_base_uri: api_base_uri)
-    end
-
     def transaction
       @transaction ||= Uphold::Models::Transaction.new(api_base_uri: api_base_uri)
     end

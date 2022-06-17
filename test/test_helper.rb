@@ -133,12 +133,18 @@ module Capybara
   module Rails
     class TestCase < ::ActiveSupport::TestCase
       include ServiceClassHelpers
+      include MockUpholdResponses
+      include MockOauth2Responses
 
       self.use_transactional_tests = false
       # Make the Capybara DSL available in all integration tests
       include Capybara::DSL
       # Make `assert_*` methods behave like Minitest assertions
       include Capybara::Minitest::Assertions
+
+      setup do
+        stub_get_user
+      end
 
       teardown do
         Capybara.reset_sessions!
@@ -163,11 +169,17 @@ end
 module ActionDispatch
   class IntegrationTest
     include ServiceClassHelpers
+    include MockUpholdResponses
+    include MockBitflyerResponses
+    include MockGeminiResponses
+    include MockOauth2Responses
 
     self.use_transactional_tests = true
 
     setup do
       WebMock.disable_net_connect!
+      stub_get_user
+      mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
     end
 
     teardown do

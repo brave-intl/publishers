@@ -451,7 +451,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.uphold_connection.uphold_code)
 
     # verify that the uphold_access_parameters has been set
-    assert_match("FAKEACCESSTOKEN", publisher.uphold_connection.uphold_access_parameters)
+    assert_match("refresh_token", publisher.uphold_connection.refresh_token)
 
     assert_redirected_to controller: "/publishers", action: "home"
   end
@@ -495,7 +495,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "a publisher's wallet can be polled via ajax" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
-    stub_request(:get, /me/).to_return(body: {currencies: []}.to_json)
+    stub_get_user
 
     get wallet_path, headers: {"HTTP_ACCEPT" => "application/json"}
 
