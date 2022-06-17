@@ -134,6 +134,7 @@ module Capybara
     class TestCase < ::ActiveSupport::TestCase
       include ServiceClassHelpers
       include MockUpholdResponses
+      include MockOauth2Responses
 
       self.use_transactional_tests = false
       # Make the Capybara DSL available in all integration tests
@@ -178,6 +179,7 @@ module ActionDispatch
     setup do
       WebMock.disable_net_connect!
       stub_get_user
+      mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
     end
 
     teardown do

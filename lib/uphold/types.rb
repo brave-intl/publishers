@@ -6,6 +6,7 @@ module Uphold
       const :id, String
       const :country, T.nilable(String)
       prop :currencies, T.nilable(T::Array[String]), default: []
+      const :username, T.nilable(String) # Doesn't exist so far as I know, but maintaining for backwards compatibility
     end
 
     class UpholdCard < T::Struct

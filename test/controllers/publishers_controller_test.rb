@@ -425,7 +425,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
     publisher = publishers(:completed)
     sign_in publisher
-    stub_get_user
 
     uphold_code = "ebb18043eb2e106fccb9d13d82bec119d8cd016c"
     uphold_state_token = SecureRandom.hex(64)
@@ -452,7 +451,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.uphold_connection.uphold_code)
 
     # verify that the uphold_access_parameters has been set
-    assert_match("FAKEACCESSTOKEN", publisher.uphold_connection.uphold_access_parameters)
+    assert_match("refresh_token", publisher.uphold_connection.refresh_token)
 
     assert_redirected_to controller: "/publishers", action: "home"
   end
