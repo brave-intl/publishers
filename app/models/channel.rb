@@ -298,7 +298,8 @@ class Channel < ApplicationRecord
   end
 
   def uphold_connection
-    @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher.uphold_connection.default_currency }
+    return if !publisher&.uphold_connection
+    @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher&.uphold_connection&.default_currency }
   end
 
   def gemini_connection
