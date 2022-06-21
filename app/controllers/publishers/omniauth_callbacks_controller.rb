@@ -264,12 +264,26 @@ module Publishers
     end
 
     def contest_channel(existing_channel)
-      Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
+      kwargs = {notice: t("shared.channel_could_not_be_contested")}
+      message = nil
 
-      redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
-    rescue RuntimeError
-      SlackMessenger.new(message: "Publisher #{current_publisher.id} could not contest Channel #{@channel.id}")
-      redirect_to home_publishers_path, notice: t("shared.channel_could_not_be_contested")
+      if channel_transfer_authorized?(existing_channel)
+        begin
+          Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
+          kwargs = {notice: t("shared.channel_contested"), time_until_transfer: time_until_transfer(@channel)}
+        rescue RuntimeError
+          message = "Publisher #{current_publisher.id} could not contest Channel #{@channel.id}"
+        end
+      else
+        message = "Channel Transfer of #{@channel.id} to Publisher #{current_publisher.id} was not authorized."
+      end
+
+      SlackMessenger.new(message: message) if message.present?
+      redirect_to(home_publishers_path, **kwargs)
+    end
+
+    def channel_transfer_authorized?(existing_channel)
+      current_user.authorized_to_act? && existing_channel&.publisher&.authorized_to_act?
     end
 
     def require_publisher
