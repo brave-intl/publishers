@@ -3,6 +3,7 @@ require "digest/md5"
 require "countries"
 
 class Publisher < ApplicationRecord
+  extend T::Sig
   include UserFeatureFlags
   include ReferralPromo
 
@@ -340,6 +341,22 @@ class Publisher < ApplicationRecord
     last_status_update&.status == PublisherStatusUpdate::LOCKED
   end
 
+  sig { returns(T::Boolean) }
+  def is_associated_with_suspended_uphold_ids?
+    uphold_id = uphold_connection&.uphold_id
+    return false if !uphold_id
+
+    UpholdConnection.where(uphold_id: uphold_id, publisher_id: Publisher.suspended.select(:id)).count > 0
+  end
+
+  def authorized_to_act?
+    if suspended? || uphold_connection&.blocked? || is_associated_with_suspended_uphold_ids?
+      false
+    else
+      true
+    end
+  end
+
   def verified?
     email_verified? && name.present? && agreed_to_tos.present?
   end
@@ -383,7 +400,9 @@ class Publisher < ApplicationRecord
   end
 
   def inferred_status
-    return last_status_update.status if last_status_update.present?
+    has_status = last_status_update&.status
+    return has_status if has_status.present?
+
     if verified?
       PublisherStatusUpdate::ACTIVE
     else

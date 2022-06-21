@@ -17,6 +17,43 @@ class PublisherTest < ActiveSupport::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
   end
 
+  describe "#authorized_to_act?" do
+    describe "when publisher is a member in good standing" do
+      let(:publisher) { publishers(:verified) }
+      it "should be true" do
+        assert publisher.authorized_to_act?
+      end
+    end
+
+    describe "when publisher is suspended" do
+      let(:publisher) { publishers(:suspended) }
+      it "should be false" do
+        refute publisher.authorized_to_act?
+      end
+    end
+
+    describe "when publisher has a blocked uphold connection" do
+      let(:publisher) { publishers(:uphold_connected_blocked) }
+
+      it "should be false" do
+        refute publisher.authorized_to_act?
+      end
+    end
+
+    describe "when publisher is using an uphold_id associated with suspended accounts" do
+      let(:publisher) { publishers(:verified) }
+      let(:uphold_id) { "024e51fc-5513-4d82-882c-9b22024280cc" }
+
+      before do
+        UpholdConnection.update_all(uphold_id: uphold_id)
+      end
+
+      it "should be false" do
+        refute publisher.authorized_to_act?
+      end
+    end
+  end
+
   test "verified publishers have both a name and email and have agreed to the TOS" do
     publisher = Publisher.new
     refute publisher.email_verified?

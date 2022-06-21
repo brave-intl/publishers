@@ -144,6 +144,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     end
   end
 
+  def blocked?
+    status == UpholdConnection::BLOCKED
+  end
+
   def username
     # This doesn't exist on the uphold user object.
     # and the previous model did not do anything but parse the response.
