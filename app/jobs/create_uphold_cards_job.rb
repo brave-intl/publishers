@@ -1,14 +1,19 @@
 # typed: false
 # Creates the Uphold Cards for a publisher
 class CreateUpholdCardsJob < ApplicationJob
+  include Uphold::Types
+
   queue_as :default
 
   def perform(uphold_connection_id:)
     conn = UpholdConnection.find(uphold_connection_id)
-    card = Uphold::FindOrCreateCardService.build.call(conn)
-    return conn if card&.id == conn.address
+    result = Uphold::FindOrCreateCardService.build.call(conn)
 
-    conn.update!(address: card.id)
-    conn
+    case result
+    when UpholdCard
+      return conn if result&.id == conn.address
+      conn.update!(address: result.id)
+      conn
+    end
   end
 end
