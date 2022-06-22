@@ -91,7 +91,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
                 mock_token_failure(UpholdConnection.oauth2_config.token_url)
               end
 
-              it "it should create a connection" do
+              it "it should raise an error" do
                 assert_raises(UpholdConnection::WalletCreationError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
               end
             end

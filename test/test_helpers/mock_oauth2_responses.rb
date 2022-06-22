@@ -17,8 +17,13 @@ module MockOauth2Responses
       .to_return(status: 400, body: payload.to_json)
   end
 
-  def mock_refresh_token_success(token_url, to_spec: true, scope: "create")
+  def mock_refresh_token_success(token_url, to_spec: true, scope: "create", account_hash: nil)
     payload = {access_token: "access_token", expires_in: 10.minutes.to_i, refresh_token: "refresh_token", token_type: "example", scope: scope}
+
+    # Handle the bitflyer case
+    if account_hash
+      payload[:account_hash] = account_hash
+    end
 
     if !to_spec
       payload[:another] = "value"

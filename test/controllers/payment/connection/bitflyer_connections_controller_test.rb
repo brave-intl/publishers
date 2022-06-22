@@ -2,22 +2,24 @@
 require "test_helper"
 require "webmock/minitest"
 
-class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
+class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   describe "#callback" do
     let(:scope) { "cards:write" }
     let(:publisher) { publishers(:google_verified) }
+    let(:account_hash) { "a unique value" }
     let(:state) { "some value" }
     let(:cookie) { state }
+    let(:path) { "/publishers/bitflyer_connection/new" }
     let(:verified_request) {
       ActionDispatch::Cookies::CookieJar.any_instance.stubs(:encrypted).returns({"_state" => cookie})
-      get "/publishers/uphold_verified", params: {code: "value", state: state}
+      get path, params: {code: "value", state: state}
     }
 
     before do
-      UpholdConnection.delete_all
-      assert_equal(0, UpholdConnection.count)
+      BitflyerConnection.delete_all
+      assert_equal(0, BitflyerConnection.count)
       sign_in(publisher)
     end
 
@@ -25,22 +27,18 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
       let(:cookie) { "another value" }
 
       it "should raise an error" do
-        assert_raises(ActionController::BadRequest) { get "/publishers/uphold_verified", params: {code: "value", state: state} }
+        assert_raises(ActionController::BadRequest) { get path, params: {code: "value", state: state} }
       end
 
       it "should not create a connection" do
-        assert_equal(0, UpholdConnection.count)
+        assert_equal(0, BitflyerConnection.count)
       end
     end
 
     describe "when valid state" do
       describe "when successful" do
         before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user
-          stub_get_card
-          stub_list_cards
-          stub_create_card
+          mock_refresh_token_success(BitflyerConnection.oauth2_client.token_url, scope: scope, account_hash: account_hash)
         end
 
         describe "when allow_debug?" do
@@ -64,7 +62,7 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
           end
 
           it "should create a new uphold_connection" do
-            assert_equal(1, UpholdConnection.count)
+            assert_equal(1, BitflyerConnection.count)
           end
 
           it "should not include a flash alert" do
@@ -75,22 +73,30 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     describe "when unsuccessful" do
-      describe "when allow_debug?" do
+      before do
+        I18n.locale = :ja
+      end
+
+      after do
+        I18n.locale = :en
+      end
+
+      describe "when known error" do
+        let(:scope) { "an invalid scope" }
         before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user
-          stub_get_card
-          Oauth2Controller.any_instance.stubs(:allow_debug?).returns(true)
+          mock_refresh_token_success(BitflyerConnection.oauth2_client.token_url, scope: scope, account_hash: account_hash)
+          verified_request
         end
 
-        it "should return 200" do
-          assert_raises(Oauth2::Errors::ConnectionError) { verified_request }
+        it "should redirect with a specific message" do
+          assert_not_equal(I18n.t("shared.error"), flash.alert)
         end
       end
 
       describe "when unknown error" do
         before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
+          mock_refresh_token_success(BitflyerConnection.oauth2_client.token_url, scope: scope, account_hash: account_hash)
+          BitflyerConnection.stubs(:new).raises(RuntimeError)
           verified_request
         end
 
