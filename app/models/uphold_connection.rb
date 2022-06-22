@@ -69,6 +69,20 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   #################
   # Scopes
   ################
+  #
+  # FIXME: This should be reused, but I don't want to deal with sorbet atm
+  scope :with_expired_tokens, -> {
+    where("access_expiration_time <= ?", Date.today)
+  }
+
+  scope :with_active_connection, -> {
+    where(oauth_refresh_failed: false)
+  }
+
+  scope :refreshable, -> {
+    with_active_connection.with_expired_tokens
+  }
+
   # TODO: Deprecate ASAP
   scope :has_stale_uphold_access_parameters, -> {
     where.not(encrypted_uphold_access_parameters: nil)

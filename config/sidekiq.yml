@@ -80,7 +80,7 @@
     cron: "0 0 12 * *"
     description: "Sets a flag in redis which tells the app to display 'payout in progress' at the beginning of the month."
     queue: scheduler
-  Oauth2BatchRefreshJob:
+  GeminiRefreshJob:
     cron: "0 2 * * *"
     description: "Refresh n expired wallet connections per interval at a rate of r requests/min"
     queue: scheduler
