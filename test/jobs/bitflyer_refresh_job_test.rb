@@ -18,7 +18,7 @@ class BitflyerRefreshJobTest < ActiveJob::TestCase
       end
 
       it "should return count" do
-        assert_equal(3,  result)
+        assert_equal(3, result)
       end
 
       it "should return limit" do

@@ -22,7 +22,7 @@ class UpholdRefreshJobTest < ActiveJob::TestCase
       end
 
       it "should return all" do
-        assert_equal(klass.count,  result)
+        assert_equal(klass.count, result)
       end
 
       it "should fail invalid connections" do
@@ -38,7 +38,7 @@ class UpholdRefreshJobTest < ActiveJob::TestCase
       end
 
       it "should return limit" do
-        assert_equal(limit,  result)
+        assert_equal(limit, result)
       end
 
       it "should fail invalid limit connections" do
