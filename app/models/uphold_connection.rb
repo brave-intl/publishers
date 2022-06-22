@@ -7,14 +7,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   class_attribute :strict_create, default: true
 
   class WalletCreationError < Oauth2::Errors::ConnectionError; end
-
   class UnverifiedConnectionError < WalletCreationError; end
-
   class DuplicateConnectionError < WalletCreationError; end
-
   class FlaggedConnectionError < WalletCreationError; end
-
   class InsufficientScopeError < WalletCreationError; end
+  class SuspendedUpholdIdError < WalletCreationError; end
 
   include WalletProviderProperties
   include Uphold::Types
@@ -362,6 +359,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       elsif UpholdConnection.strict_create && !result.memberAt.present?
         UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification process and try again.")
       # Deny duplicates
+      elsif UpholdConnection.strict_create && UpholdConnection.is_suspended?(result.id)
+        SuspendedUpholdIdError.new("UpholdID is associated with suspended account")
       elsif UpholdConnection.strict_create && UpholdConnection.where(uphold_id: result.id).count > 0
         DuplicateConnectionError.new("Cannot create Uphold connection. This uphold account is already association with another Creator.")
       else
@@ -424,65 +423,83 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       access_expiration_time = access_token_response.expires_in.present? ? T.must(access_token_response.expires_in).seconds.from_now : nil
 
       # Do everything in a transaction so hopefully we begin tamping down data artifacts
-      ActiveRecord::Base.transaction do
-        # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
-        # We have so many empty connections
-        UpholdConnection.where(publisher_id: publisher.id).delete_all
+      begin#
+        ActiveRecord::Base.transaction do
+          # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
+          # We have so many empty connections
+          UpholdConnection.where(publisher_id: publisher.id).delete_all
 
-        # 2.) Set core params/token values
-        conn = UpholdConnection.new(
-          publisher_id: publisher.id,
-          uphold_access_parameters: access_token_response.serialize.to_json,
-          access_expiration_time: access_expiration_time,
-          uphold_verified: true,
-          default_currency: "BAT",
-          default_currency_confirmed_at: Time.now
-        )
+          # 2.) Set core params/token values
+          conn = UpholdConnection.new(
+            publisher_id: publisher.id,
+            uphold_access_parameters: access_token_response.serialize.to_json,
+            access_expiration_time: access_expiration_time,
+            uphold_verified: true,
+            default_currency: "BAT",
+            default_currency_confirmed_at: Time.now
+          )
 
-        # 3.) Pull data on existing user from uphold and set on model
-        # Fail whole transaction if cannot be found
-        user = conn.find_and_verify_uphold_user!
+          # 3.) Pull data on existing user from uphold and set on model
+          # Fail whole transaction if cannot be found
+          user = conn.find_and_verify_uphold_user!
 
-        # Sorbet is strict
-        if user.memberAt.present?
-          conn.member_at = Time.zone.parse(user.memberAt)
-          conn.is_member = true
-        else
-          conn.is_member = false
+          # Sorbet is strict
+          if user.memberAt.present?
+            conn.member_at = Time.zone.parse(user.memberAt)
+            conn.is_member = true
+          else
+            conn.is_member = false
+          end
+
+          # Wow.  This I haven't encountered before
+          # The type annotations of the UpholdUser struct are different
+          # from that of the model, so you have to cast the values
+          # in order to assign them
+          conn.status = T.must(user.status)
+          conn.uphold_id = T.must(user.id)
+          conn.country = user.country
+
+          # 4.) Create the uphold "card" or wallet for the default currency in question.
+          # Fail if we cannot
+          result = conn.find_or_create_uphold_card!
+
+          case result
+          when UpholdCard
+            # 5.) Save card id and write to disk
+            conn.address = result.id
+            conn.save!
+
+            # 6.) Update publisher, fail if anything goes wrong
+            #
+            # If all succeeds we have everything we need for a valid UpholdConnection
+            # on create.
+            publisher.update!(selected_wallet_provider: conn)
+
+            # Create whatever this report is, pulled out of the previous uphold connections controller
+            UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
+
+            conn
+          else
+            T.absurd(result)
+          end
         end
 
-        # Wow.  This I haven't encountered before
-        # The type annotations of the UpholdUser struct are different
-        # from that of the model, so you have to cast the values
-        # in order to assign them
-        conn.status = T.must(user.status)
-        conn.uphold_id = T.must(user.id)
-        conn.country = user.country
-
-        # 4.) Create the uphold "card" or wallet for the default currency in question.
-        # Fail if we cannot
-        result = conn.find_or_create_uphold_card!
-
-        case result
-        when UpholdCard
-          # 5.) Save card id and write to disk
-          conn.address = result.id
-          conn.save!
-
-          # 6.) Update publisher, fail if anything goes wrong
-          #
-          # If all succeeds we have everything we need for a valid UpholdConnection
-          # on create.
-          publisher.update!(selected_wallet_provider: conn)
-
-          # Create whatever this report is, pulled out of the previous uphold connections controller
-          UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
-
-          conn
-        else
-          T.absurd(result)
+      # If you have successfully authorized an uphold id that is suspended you get suspended
+      rescue SuspendedUpholdIdError => error
+        ActiveRecord::Base.transaction do
+          # Clean up all artifacts even on fail.  They shouldn't have a connection at all
+          # TODO: Actually preserve the banned uphold connection for use
+          # in further evaluation.
+          UpholdConnection.where(publisher: publisher).delete_all
+          publisher.autoban!(:suspended_uphold_id)
         end
+
+        raise error
       end
+    end
+
+    def is_suspended?(uphold_id)
+      Publisher.suspended.joins(:uphold_connection).where(uphold_connection: {uphold_id: uphold_id}).count > 0
     end
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])

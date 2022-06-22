@@ -345,7 +345,35 @@ class Publisher < ApplicationRecord
     uphold_id = uphold_connection&.uphold_id
     return false if !uphold_id
 
-    UpholdConnection.where(uphold_id: uphold_id, publisher_id: Publisher.suspended.select(:id)).count > 0
+    UpholdConnection.is_suspended?(uphold_id)
+  end
+
+  def suspend!
+    PublisherStatusUpdate.create!(publisher_id: self.id, status: PublisherStatusUpdate::SUSPENDED)
+    self
+  end
+
+  def autoban!(reason)
+    ActiveRecord::Base.transaction do
+      suspend!
+
+      note = case reason
+             when :suspended_uphold_id
+               "Publisher authorized an Uphold account that is currently suspended."
+             when :uphold_blocked
+               "Publisher was updated to 'blocked' status by Uphold."
+             else
+               raise
+             end
+
+      PublisherNote.create!(
+        created_by: self,
+        publisher: self,
+        note: "Autobanned #{Time.now.to_datetime.to_formatted_s(:long)}: #{note}"
+      )
+    end
+
+    self
   end
 
   def authorized_to_act?

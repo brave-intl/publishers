@@ -53,9 +53,10 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
       describe "when wallet is new" do
         let(:status) { "blocked" }
+        let(:uphold_id) { "any unique value" }
 
         before do
-          stub_get_user(id: "any unique value", user_status: status)
+          stub_get_user(id: uphold_id, user_status: status)
         end
 
         describe "if it is not ok" do
@@ -63,6 +64,25 @@ class UpholdConnectionTest < ActiveSupport::TestCase
             assert_raises(UpholdConnection::FlaggedConnectionError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
           end
         end
+
+        describe "if it is suspended uphold_id" do
+          let(:status) { "ok" }
+          let(:other) { publishers(:google_verified) }
+          let(:uphold_id) { other.id }
+
+          before do
+            other.uphold_connection.update!(uphold_id: other.id)
+            other.suspend!
+          end
+
+          it "it should raise an exception and suspend the publisher" do
+            assert_raises(UpholdConnection::SuspendedUpholdIdError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+            publisher.reload
+            assert publisher.suspended?
+            refute publisher.uphold_connection
+          end
+        end
+
 
         describe "if it is ok" do
           let(:status) { "ok" }
