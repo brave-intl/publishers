@@ -468,6 +468,21 @@ class Publisher < ApplicationRecord
     provider_country.to_s.upcase
   end
 
+  def confirm_pending_email!(confirm_email = nil)
+    if pending_email.present?
+      if email.blank?
+        self.email = pending_email
+      elsif confirm_email.present? && confirm_email == pending_email
+        self.email = pending_email
+      end
+
+      self.pending_email = nil
+      save!
+    end
+
+    self
+  end
+
   private
 
   def cleanup_name

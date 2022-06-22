@@ -53,6 +53,42 @@ class PublisherTest < ActiveSupport::TestCase
       end
     end
   end
+  
+  describe "#confirm_pending_email!" do
+    let(:publisher) { publishers(:default) }
+    let(:confirm_email) { nil }
+
+    describe "confirm_email" do
+      describe "pending_email" do
+        describe "!email" do
+          it "should set email to pending_email" do
+          end
+        end
+
+        describe "confirm_email == pending_email" do
+          it "should set email to pending_email" do
+          end
+
+          it "should set pending_email to nil" do
+          end
+        end
+
+        describe "confirm_email != pending_email" do
+          it "should not change email" do
+          end
+
+          it "should set pending_email to nil" do
+          end
+        end
+      end
+
+      describe "!pending_email" do
+      end
+    end
+
+    describe "!confirm_email" do
+    end
+  end
 
   test "verified publishers have both a name and email and have agreed to the TOS" do
     publisher = Publisher.new
