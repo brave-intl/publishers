@@ -53,40 +53,57 @@ class PublisherTest < ActiveSupport::TestCase
       end
     end
   end
-  
+
   describe "#confirm_pending_email!" do
     let(:publisher) { publishers(:default) }
-    let(:confirm_email) { nil }
 
     describe "confirm_email" do
       describe "pending_email" do
         describe "!email" do
           it "should set email to pending_email" do
+            publisher.email = nil
+            publisher.pending_email = "test@email.com"
+            publisher.confirm_pending_email!(nil)
+            assert_equal publisher.email, "test@email.com"
           end
         end
 
         describe "confirm_email == pending_email" do
           it "should set email to pending_email" do
+            publisher.pending_email = "test@email.com"
+            publisher.confirm_pending_email!("test@email.com")
+            assert_equal publisher.email, "test@email.com"
           end
 
           it "should set pending_email to nil" do
+            publisher.pending_email = "test@email.com"
+            publisher.confirm_pending_email!("test@email.com")
+            assert_nil publisher.pending_email
           end
         end
 
         describe "confirm_email != pending_email" do
           it "should not change email" do
+            publisher_email_old = publisher.email
+            publisher.pending_email = "test@email.com"
+            publisher.confirm_pending_email!("test2@email.com")
+            assert_equal publisher.email, publisher_email_old
           end
 
           it "should set pending_email to nil" do
+            publisher.pending_email = "test@email.com"
+            publisher.confirm_pending_email!("test2@email.com")
+            assert_nil publisher.pending_email
           end
         end
       end
 
       describe "!pending_email" do
+        it "should not change the email" do
+          assert_equal publisher, publisher.confirm_pending_email!("test@email.com")
+          assert_equal publisher, publisher.confirm_pending_email!(nil)
+        end
       end
-    end
-
-    describe "!confirm_email" do
     end
   end
 
