@@ -2,12 +2,11 @@
 # Authenticate a Publisher by #authentication_token, which are consumed on use
 # and expires after 3 hours. New ones can be sent to your email.
 class PublisherTokenAuthenticator < BaseService
-  attr_reader :publisher, :token, :confirm_email
+  attr_reader :publisher, :token
 
-  def initialize(publisher:, token:, confirm_email:)
+  def initialize(publisher:, token:)
     @publisher = publisher
     @token = token
-    @confirm_email = confirm_email
   end
 
   # Note: If the token was valid, this consumes it.
@@ -23,16 +22,6 @@ class PublisherTokenAuthenticator < BaseService
       ::Digest::SHA256.hexdigest(publisher.user_authentication_token.authentication_token)
     )
     if result
-      pending_email = publisher.pending_email
-      if pending_email.present?
-        if publisher.email.blank?
-          publisher.email = pending_email
-        elsif confirm_email.present? && confirm_email == pending_email
-          publisher.email = pending_email
-        end
-        publisher.pending_email = nil
-        publisher.save!
-      end
       publisher.user_authentication_token.update(authentication_token: nil) if consume
     end
     result

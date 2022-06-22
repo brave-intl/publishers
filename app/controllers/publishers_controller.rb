@@ -223,8 +223,13 @@ class PublishersController < ApplicationController
   private
 
   class SignIn < StepUpAction
-    call do |publisher_id|
-      current_publisher = Publisher.find(publisher_id)
+    call do |publisher_id, confirm_email|
+      current_publisher = Publisher.find(publisher_id).confirm_pending_email!(confirm_email)
+
+      if confirm_email.present? && current_publisher.email == confirm_email && !publisher_created_through_youtube_auth?(current_publisher)
+        flash[:notice] = t("publishers.show.email_confirmed", email: current_publisher.email)
+      end
+
       sign_in(:publisher, current_publisher)
       redirect_to publisher_next_step_path(current_publisher) if two_factor_enabled?(current_publisher)
     end
@@ -253,12 +258,8 @@ class PublishersController < ApplicationController
       return
     end
 
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
-      if confirm_email.present? && publisher.email == confirm_email && !publisher_created_through_youtube_auth
-        flash[:notice] = t(".email_confirmed", email: publisher.email)
-      end
-
-      SignIn.new(publisher_id).step_up! self
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: token).perform
+      SignIn.new(publisher_id, confirm_email).step_up! self
     else
       flash[:alert] = t(".token_invalid")
       redirect_to expired_authentication_token_publishers_path(id: publisher.id)
