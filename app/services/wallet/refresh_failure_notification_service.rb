@@ -24,6 +24,7 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
       pass([result])
     when BFailure
       result
+
     when Oauth2::Responses::ErrorResponse
       if notify
         PublisherMailer.wallet_refresh_failure(connection.publisher, connection.class.provider_name).deliver_now
@@ -33,6 +34,8 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
       else
         FailedWithoutNotification.new(result: result)
       end
+    when Oauth2::AuthorizationCodeBase
+      raise
     else
       T.absurd(result)
     end

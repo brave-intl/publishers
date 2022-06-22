@@ -8,6 +8,21 @@ module UpholdConnection::ActiveRelation_WhereNot
 end
 
 module UpholdConnection::GeneratedAttributeMethods
+  sig { returns(T.nilable(ActiveSupport::TimeWithZone)) }
+  def access_expiration_time; end
+
+  sig { params(value: T.nilable(T.any(Date, Time, ActiveSupport::TimeWithZone))).void }
+  def access_expiration_time=(value); end
+
+  sig { returns(T.nilable(String)) }
+  def uphold_access_parameters; end
+
+  sig {params(value: T.nilable(String)).void }
+  def uphold_access_parameters=(value); end
+
+  sig { returns(T::Boolean) }
+  def access_expiration_time?; end
+
   sig { returns(T.nilable(String)) }
   def address; end
 
@@ -271,9 +286,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_Relation) }
   def self.has_stale_uphold_access_parameters(*args); end
-
-  sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_Relation) }
-  def self.has_stale_uphold_code(*args); end
 end
 
 class UpholdConnection::ActiveRecord_Relation < ActiveRecord::Relation
@@ -284,9 +296,6 @@ class UpholdConnection::ActiveRecord_Relation < ActiveRecord::Relation
 
   sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_Relation) }
   def has_stale_uphold_access_parameters(*args); end
-
-  sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_Relation) }
-  def has_stale_uphold_code(*args); end
 end
 
 class UpholdConnection::ActiveRecord_AssociationRelation < ActiveRecord::AssociationRelation
@@ -297,9 +306,6 @@ class UpholdConnection::ActiveRecord_AssociationRelation < ActiveRecord::Associa
 
   sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_AssociationRelation) }
   def has_stale_uphold_access_parameters(*args); end
-
-  sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_AssociationRelation) }
-  def has_stale_uphold_code(*args); end
 end
 
 class UpholdConnection::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associations::CollectionProxy
@@ -309,9 +315,6 @@ class UpholdConnection::ActiveRecord_Associations_CollectionProxy < ActiveRecord
 
   sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_AssociationRelation) }
   def has_stale_uphold_access_parameters(*args); end
-
-  sig { params(args: T.untyped).returns(UpholdConnection::ActiveRecord_AssociationRelation) }
-  def has_stale_uphold_code(*args); end
 
   sig { params(records: T.any(UpholdConnection, T::Array[UpholdConnection])).returns(T.self_type) }
   def <<(*records); end

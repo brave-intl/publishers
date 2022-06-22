@@ -7,13 +7,10 @@ class CreateUpholdCardsJob < ApplicationJob
 
   def perform(uphold_connection_id:)
     conn = UpholdConnection.find(uphold_connection_id)
-    result = Uphold::FindOrCreateCardService.build.call(conn)
+    card = conn.find_or_create_uphold_card!
+    return conn if card&.id == conn.address
 
-    case result
-    when UpholdCard
-      return conn if result&.id == conn.address
-      conn.update!(address: result.id)
-      conn
-    end
+    conn.update!(address: card.id)
+    conn
   end
 end

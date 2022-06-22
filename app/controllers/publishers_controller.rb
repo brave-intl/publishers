@@ -160,19 +160,12 @@ class PublishersController < ApplicationController
   def home
     @publisher = current_publisher
 
-    uphold_connection = current_publisher.uphold_connection
-
     if payout_in_progress?(current_publisher) && Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
       @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
     end
 
-    @possible_currencies = []
     @channels = @publisher.channels.visible.paginate(page: params[:page], per_page: 10)
     @publisher_unattached_promo_registrations = @publisher.promo_registrations.unattached_only
-
-    if uphold_connection&.uphold_details.present?
-      @possible_currencies = uphold_connection.uphold_details&.currencies
-    end
 
     flash[:warning] = I18n.t("publishers.home.referral_program_winddown", blog_link: "https://brave.com/referral-program-update/").html_safe if Time.now < "2020-12-01"
   end

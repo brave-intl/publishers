@@ -2,24 +2,15 @@
 # This is the UpholdController for all publishers to connect their uphold account.
 module Payment
   module Connection
-    class UpholdConnectionsController < ApplicationController
-      # TODO Refactor Uphold Status to not actually need helper
-      # Traditional usage of helpers should really only be for views
-      include PublishersHelper
+    # NOTE: To test this locally you have to  access the app from 127.0.0.1: Uphold does not allow localhost has a valid domain
+    # and when you redirect back to 127.0.0.1 all your relevant cookies are lost.
+    #
+    # When you login through the email url, you need to copy the url and replace localhost with 127.0.0.1
+    # and create your session with that domain.
+    #
+    # Took me a while to figure that out.
 
-      before_action :authenticate_publisher!
-
-      # Generates an Uphold State Token for the user
-      def create
-        uphold_connection = UpholdConnection.find_or_create_by(publisher: current_publisher)
-        uphold_connection.prepare_uphold_state_token!
-
-        redirect_to Rails.application.secrets[:uphold_authorization_endpoint]
-          .gsub("<UPHOLD_CLIENT_ID>", Rails.application.secrets[:uphold_client_id])
-          .gsub("<UPHOLD_SCOPE>", Rails.application.secrets[:uphold_scope])
-          .gsub("<STATE>", uphold_connection.uphold_state_token)
-      end
-
+    class UpholdConnectionsController < Oauth2Controller
       def show
         publisher = current_publisher
         respond_to do |format|
@@ -34,29 +25,6 @@ module Payment
             }, status: 200)
           end
         end
-      end
-
-      # This is the action which is redirected to from the Uphold OAuth flow.
-      def edit
-        uphold_connection = current_publisher.uphold_connection
-
-        validate_uphold!(uphold_connection)
-        validate_state!(uphold_connection)
-
-        uphold_connection.receive_uphold_code(params[:code])
-
-        ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: uphold_connection.id)
-
-        current_publisher.update(selected_wallet_provider: uphold_connection)
-
-        uphold_connection.reload
-        uphold_connection.sync_connection!
-        create_uphold_report!(uphold_connection)
-
-        redirect_to(home_publishers_path)
-      rescue UpholdError, Faraday::Error => e
-        Rails.logger.info("Uphold Error: #{e.message}")
-        redirect_to(home_publishers_path, alert: t("publishers.uphold.create.uphold_error", message: e.message))
       end
 
       def update
@@ -77,39 +45,24 @@ module Payment
 
       # publishers/disconnect_uphold
       def destroy
-        publisher = current_publisher
-        publisher.uphold_connection.destroy
+        # You can't remove your connection if you've been banned/suspended.
+        # This is how we prevent you from reusing the connection.
+        if !current_publisher.authorized_to_act? #
+          head :unauthorized and return
+        end
 
-        render json: {}
+        current_publisher&.uphold_connection&.destroy
+        head :ok
       end
 
       private
 
-      class UpholdError < StandardError; end
-
-      def create_uphold_report!(connection)
-        uphold_id = connection.uphold_details&.id
-        return if uphold_id.blank?
-        # Return if we've already created a report for this id
-        return if UpholdStatusReport.find_by(uphold_id: uphold_id).present?
-
-        UpholdStatusReport.create(
-          publisher: current_publisher,
-          uphold_id: uphold_id
-        )
-      end
-
-      def validate_uphold!(connection)
-        # Ensure the uphold_state_token has been set. If not send back to try again
-        raise UpholdError.new, t(".missing_state") if connection&.uphold_state_token.blank? && !connection.uphold_verified?
-
-        # Alert for any errors from Uphold
-        raise UpholdError.new, params[:error] if params[:error].present?
-      end
-
-      def validate_state!(connection)
-        state_token = params[:state]
-        raise UpholdError.new, t(".state_mismatch") if connection.uphold_state_token != state_token
+      # 1.) Set required state for Oauth2 Implementation
+      # @debug is an optional flag that will return a json response from the callback
+      # Helpful for explicit debugging and introspection of access token request response values.
+      def set_controller_state
+        @klass = UpholdConnection
+        @klass.strict_create = true # toggle various restrictions on creating wallets. Useful for debugging.
       end
     end
   end
