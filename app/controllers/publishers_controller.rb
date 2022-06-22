@@ -231,18 +231,7 @@ class PublishersController < ApplicationController
 
   class SignIn < StepUpAction
     call do |publisher_id, confirm_email|
-      current_publisher = Publisher.find(publisher_id)
-
-      pending_email = current_publisher.pending_email
-      if pending_email.present?
-        if current_publisher.email.blank?
-          current_publisher.email = pending_email
-        elsif confirm_email.present? && confirm_email == pending_email
-          current_publisher.email = pending_email
-        end
-        current_publisher.pending_email = nil
-        current_publisher.save!
-      end
+      current_publisher = Publisher.find(publisher_id).confirm_pending_email!(confirm_email)
 
       if confirm_email.present? && current_publisher.email == confirm_email && !publisher_created_through_youtube_auth?(current_publisher)
         flash[:notice] = t("publishers.show.email_confirmed", email: current_publisher.email)
