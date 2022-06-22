@@ -349,7 +349,7 @@ class Publisher < ApplicationRecord
   end
 
   def suspend!
-    PublisherStatusUpdate.create!(publisher_id: self.id, status: PublisherStatusUpdate::SUSPENDED)
+    PublisherStatusUpdate.create!(publisher_id: id, status: PublisherStatusUpdate::SUSPENDED)
     self
   end
 
@@ -358,13 +358,13 @@ class Publisher < ApplicationRecord
       suspend!
 
       note = case reason
-             when :suspended_uphold_id
-               "Publisher authorized an Uphold account that is currently suspended."
-             when :uphold_blocked
-               "Publisher was updated to 'blocked' status by Uphold."
-             else
-               raise
-             end
+      when :suspended_uphold_id
+        "Publisher authorized an Uphold account that is currently suspended."
+      when :uphold_blocked
+        "Publisher was updated to 'blocked' status by Uphold."
+      else
+        raise
+      end
 
       PublisherNote.create!(
         created_by: self,

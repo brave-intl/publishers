@@ -83,7 +83,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
           end
         end
 
-
         describe "if it is ok" do
           let(:status) { "ok" }
 

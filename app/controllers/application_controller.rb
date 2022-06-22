@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
 
   def redirect_if_suspended
     # Redirect to suspended page if they're logged in
-    redirect_to(suspended_error_publishers_path) and return if current_publisher&.suspended? && !request.fullpath.split("?")[0].in?(valid_suspended_paths)
+    redirect_to(suspended_error_publishers_path) and return if !current_publisher&.authorized_to_act? && !request.fullpath.split("?")[0].in?(valid_suspended_paths)
   end
 
   def valid_suspended_paths

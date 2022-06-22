@@ -7,10 +7,15 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   class_attribute :strict_create, default: true
 
   class WalletCreationError < Oauth2::Errors::ConnectionError; end
+
   class UnverifiedConnectionError < WalletCreationError; end
+
   class DuplicateConnectionError < WalletCreationError; end
+
   class FlaggedConnectionError < WalletCreationError; end
+
   class InsufficientScopeError < WalletCreationError; end
+
   class SuspendedUpholdIdError < WalletCreationError; end
 
   include WalletProviderProperties
@@ -423,7 +428,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       access_expiration_time = access_token_response.expires_in.present? ? T.must(access_token_response.expires_in).seconds.from_now : nil
 
       # Do everything in a transaction so hopefully we begin tamping down data artifacts
-      begin#
+      begin #
         ActiveRecord::Base.transaction do
           # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
           # We have so many empty connections
