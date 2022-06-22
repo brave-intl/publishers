@@ -1,11 +1,14 @@
 require "test_helper"
 
 class GeminiRefreshJobTest < ActiveJob::TestCase
+  include MockOauth2Responses
+
   let(:limit) { 5 }
 
   describe "#perform" do
     before do
-      GeminiConnection.update(oauth_refresh_failed: false, access_expiration_time: 2.days.ago)
+      mock_refresh_token_success(GeminiConnection.oauth2_config.token_url)
+      GeminiConnection.update_all(oauth_refresh_failed: false, access_expiration_time: 2.days.ago)
     end
 
     describe "without args" do
