@@ -48,7 +48,7 @@ module Payment
         # You can't remove your connection if you've been banned/suspended.
         # This is how we prevent you from reusing the connection.
         if !current_publisher.authorized_to_act? #
-          head :unauthorized
+          head :unauthorized and return
         end
 
         current_publisher&.uphold_connection&.destroy
