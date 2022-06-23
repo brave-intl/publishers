@@ -103,7 +103,7 @@ module MockUpholdResponses
       settings: settings
     }
 
-    stub_request(:post, /v0\/me\/cards/).to_return(status: http_status, body: body.to_json)
+    stub_request(:post, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/cards").to_return(status: http_status, body: body.to_json)
   end
 
   def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", user_status: "ok")
@@ -208,7 +208,7 @@ module MockUpholdResponses
       verifications: {}
     }
 
-    stub_request(:get, /v0\/me/).to_return(body: body.to_json)
+    stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me").to_return(body: body.to_json)
   end
 
   def stub_get_user_capability(capability: "deposits", http_status: 200)
@@ -222,6 +222,10 @@ module MockUpholdResponses
     }
 
     stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/capabilities/#{capability}").to_return(status: http_status, body: body.to_json)
+  end
+
+  def stub_get_user_deposits_capability(http_status: 200)
+    stub_get_user_capability(capability: "deposits", http_status: http_status)
   end
 
   def stub_list_card_addresses(id: "024e51fc-5513-4d82-882c-9b22024280cc", type: UpholdConnectionForChannel::NETWORK, empty: false, http_status: 200)
