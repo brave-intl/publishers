@@ -121,7 +121,7 @@ class Oauth2Controller < ApplicationController
   end
 
   def record_error(result)
-    LogException.perform(result, publisher: current_publisher)
+    LogException.perform(result)
   end
 
   def allow_debug?
