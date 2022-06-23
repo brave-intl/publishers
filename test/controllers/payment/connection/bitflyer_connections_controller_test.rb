@@ -26,8 +26,21 @@ class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
     describe "when invalid state" do
       let(:cookie) { "another value" }
 
-      it "should raise an error" do
-        assert_raises(ActionController::BadRequest) { get path, params: {code: "value", state: state} }
+      before do
+        I18n.locale = :ja
+        get path, params: {code: "value", state: state}
+      end
+
+      after do
+        I18n.locale = :en
+      end
+
+      it "should redirect" do
+        assert_equal(response.status, 302)
+      end
+
+      it "should redirect with a generic message" do
+        assert_equal(I18n.t("shared.error"), flash.alert)
       end
 
       it "should not create a connection" do
