@@ -21,5 +21,19 @@ module Uphold
         T.absurd(result)
       end
     end
+
+    sig { params(capability: String).returns(T.any(UpholdUserCapability, Faraday::Response)) }
+    def get_capability(capability)
+      result = request_and_return(:get, "/v0/me/capabilities/#{capability}", UpholdUserCapability)
+
+      case result
+      when UpholdUserCapability, Faraday::Response
+        result
+      when Array, T::Struct
+        raise ResultError
+      else
+        T.absurd(result)
+      end
+    end
   end
 end
