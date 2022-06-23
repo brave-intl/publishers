@@ -14,7 +14,6 @@ class Oauth2Controller < ApplicationController
   before_action :authenticate_publisher!
   before_action :set_controller_state
   before_action :set_request_state, only: [:code, :create]
-  before_action :verify_state, only: [:callback]
   before_action :set_access_token_response, only: [:callback]
 
   # This is just a convenience wrapper, create is not particularly explicit.
@@ -46,29 +45,34 @@ class Oauth2Controller < ApplicationController
   end
 
   def callback
-    resp = access_token_request
-
-    if allow_debug?
-      debug(resp) and return
-    end
-
     error = nil
 
-    case resp
-    when @access_token_response
-      begin
-        @klass.create_new_connection!(current_publisher, resp)
-      rescue => e
-        record_error(e)
-        error = case e
-        when Oauth2::Errors::ConnectionError # Use known messages for error flashes
-          e
-        else
-          generic_error
+    if state_verified?
+      resp = access_token_request
+
+      if allow_debug?
+        debug(resp) and return
+      end
+
+      case resp
+      when @access_token_response
+        begin
+          @klass.create_new_connection!(current_publisher, resp)
+        rescue => e
+          record_error(e)
+          error = case e
+          when Oauth2::Errors::ConnectionError # Use known messages for error flashes
+            e
+          else
+            generic_error
+          end
         end
+      else
+        record_error(resp)
+        error = generic_error
       end
     else
-      record_error(resp)
+      record_error("Oauth2 State token invalid for publisher #{current_publisher.id} - #{@klass}")
       error = generic_error
     end
 
@@ -103,8 +107,12 @@ class Oauth2Controller < ApplicationController
     }
   end
 
-  def verify_state
-    raise ActionController::BadRequest if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
+  def state_verified?
+    if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
+      false
+    else
+      true
+    end
   end
 
   def set_access_token_response
