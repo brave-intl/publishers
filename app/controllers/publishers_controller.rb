@@ -110,14 +110,12 @@ class PublishersController < ApplicationController
 
   def ensure_email
     token = params[:token]
-    confirm_email = params[:confirm_email]
-
     publisher = Publisher.find(params[:id])
 
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform(consume: false)
+    if token && PublisherTokenAuthenticator.new(publisher: publisher, token: token).perform(consume: false)
       @publisher = publisher
     else
-      flash[:alert] = t(".token_invalid")
+      flash[:alert] = t("shared.error")
       redirect_to expired_authentication_token_publishers_path(id: publisher.id)
     end
   end
