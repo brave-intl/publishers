@@ -67,6 +67,10 @@ class Oauth2Controller < ApplicationController
             generic_error
           end
         end
+      when Oauth2::Responses::ErrorResponse
+        # Evidently log_exception needs an actual exception
+        record_error(Oauth2::Errors::ConnectionError.new("Oauth2 Grant Failed with #{resp}"))
+        error = generic_error
       else
         record_error(resp)
         error = generic_error
