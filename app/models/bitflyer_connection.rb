@@ -14,6 +14,19 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true
 
+  # FIXME: This should be reused, but I don't want to deal with sorbet atm
+  scope :with_expired_tokens, -> {
+    where("access_expiration_time <= ?", Date.today)
+  }
+
+  scope :with_active_connection, -> {
+    where(oauth_refresh_failed: false)
+  }
+
+  scope :refreshable, -> {
+    with_active_connection.with_expired_tokens
+  }
+
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
   end
