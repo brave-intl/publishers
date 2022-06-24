@@ -18,8 +18,10 @@ const DisconnectPrompt = (props) => {
         props.setShowModal(false);
         props.loadData();
       })
-      .catch((response) => {
-        props.setError(response.data);
+      .catch((err) => {
+        setLoading(false);
+        props.setShowModal(false);
+        props.setError("We are unable to disconnect your wallet at this time.");
       });
   };
 

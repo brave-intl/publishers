@@ -6,7 +6,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   extend T::Sig
   extend T::Helpers
 
-  TYPES = T.type_alias { T.any(T.self_type, ErrorResponse, BFailure) }
+  TYPES = T.type_alias { T.any(Oauth2::AuthorizationCodeBase, ErrorResponse, BFailure) }
   abstract!
 
   class << self
@@ -29,7 +29,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       @_oauth_client ||= Oauth2::AuthorizationCodeClient.new(oauth2_config)
     end
 
-    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(T.self_type) }
+    sig { abstract.params(publisher: Publisher, access_token_response: Oauth2::Responses::AccessTokenResponse).returns(Oauth2::AuthorizationCodeBase) }
     def create_new_connection!(publisher, access_token_response)
     end
 
@@ -44,7 +44,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   end
 
   # Unique name to prevent collisions with existing methods
-  sig { abstract.params(refresh_token_response: Oauth2::Responses::RefreshTokenResponse).returns(T.self_type) }
+  sig { abstract.params(refresh_token_response: Oauth2::Responses::RefreshTokenResponse).returns(Oauth2::AuthorizationCodeBase) }
   def update_access_tokens!(refresh_token_response)
   end
 

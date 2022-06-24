@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_12_064026) do
+ActiveRecord::Schema.define(version: 2022_06_09_182529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -735,6 +735,7 @@ ActiveRecord::Schema.define(version: 2022_05_12_064026) do
     t.text "card_id"
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
+    t.datetime "access_expiration_time"
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end

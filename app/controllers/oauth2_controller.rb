@@ -14,7 +14,7 @@ class Oauth2Controller < ApplicationController
   before_action :authenticate_publisher!
   before_action :set_controller_state
   before_action :set_request_state, only: [:code, :create]
-  before_action :verify_state, only: [:callback]
+  before_action :set_access_token_response, only: [:callback]
 
   # This is just a convenience wrapper, create is not particularly explicit.
   # All a code auth request does is perform a redirect but for the sake
@@ -27,39 +27,57 @@ class Oauth2Controller < ApplicationController
     redirect_to(authorization_url)
   end
 
-  def callback
-    raise RuntimeError if !@access_token_response
-
-    resp = access_token_request
+  def debug(resp)
+    data = {}
     errors = []
 
     case resp
     when @access_token_response
-      begin
-        data = resp.serialize
-        @klass.create_new_connection!(current_publisher, resp)
-      rescue => e
-        errors.push(e)
-        LogException.perform(e, publisher: current_publisher)
-      end
-    when ErrorResponse
       data = resp.serialize
-      errors.push(data)
+      @klass.create_new_connection!(current_publisher, resp)
+    when ErrorResponse
+      errors.push(resp.serialize)
     when UnknownError
-      data = resp.response.body
-      LogException.perform(resp, publisher: current_publisher)
-      errors.push(data)
-    else
-      T.absurd(resp)
+      errors.push(resp.response.body)
     end
 
-    if @debug
-      render json: {data: data, errors: errors} and return
+    render json: {data: data, errors: errors}
+  end
+
+  def callback
+    error = nil
+
+    if state_verified?
+      resp = access_token_request
+
+      if allow_debug?
+        debug(resp) and return
+      end
+
+      case resp
+      when @access_token_response
+        begin
+          @klass.create_new_connection!(current_publisher, resp)
+        rescue => e
+          record_error(e)
+          error = case e
+          when Oauth2::Errors::ConnectionError # Use known messages for error flashes
+            e
+          else
+            generic_error
+          end
+        end
+      else
+        record_error(resp)
+        error = generic_error
+      end
     else
-      # TODO: More explicit/helpful error handling would be great, but for now we need anything
-      kwargs = errors.any? ? {flash: {alert: I18n.t("shared.error")}} : {}
-      redirect_to(home_publishers_path, **kwargs)
+      record_error("Oauth2 State token invalid for publisher #{current_publisher.id} - #{@klass}")
+      error = generic_error
     end
+
+    kwargs = error.present? ? {flash: {alert: error.message}} : {}
+    redirect_to(home_publishers_path, **kwargs)
   end
 
   private
@@ -89,20 +107,38 @@ class Oauth2Controller < ApplicationController
     }
   end
 
-  # TODO: Uphold doesn't allow this.
-  def verify_state
-    raise ActionController::BadRequest if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
+  def state_verified?
+    if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
+      false
+    else
+      true
+    end
+  end
+
+  def set_access_token_response
+    # This will be correct in most oauth2 cases, but
+    # I'm keeping open the opportunity to easily override this
+    # when needed.
+    if @access_token_response.nil?
+      @access_token_response = AccessTokenResponse
+    end
+  end
+
+  def generic_error
+    Oauth2::Errors::ConnectionError.new(I18n.t("shared.error"))
+  end
+
+  def record_error(result)
+    LogException.perform(result)
+  end
+
+  def allow_debug?
+    Rails.env.development? && @debug
   end
 
   # Note: To use this as a subclass you'll want to override this method entirely
   # and just set whatever the relevant @klass is.
   def set_controller_state
-    # Generally speaking, this should be a static value.  However there are cases (I.e. Bitflyer) where information
-    # that we must have is returned in the access token response, i.e. the account_hash that is the unique identifier
-    # for the bitflyer account in question. There will undoubtedly be other cases where we need to handle one offs
-    # so it's a compromise I have to make to maintain the (mostly) generic interface.
-    @access_token_response = AccessTokenResponse
-
     provider = permitted_params.fetch(:provider)
 
     case provider

@@ -127,6 +127,11 @@ module ActiveSupport
 
     # Add more helper methods to be used by all tests here...
   end
+
+  # I'm creating an independent class because
+  # all of the other cases I've handled are just out of preserving
+  # existing specs. I don't think it is actually a good idea
+  # to blanketly stub requests in a test setup.
 end
 
 module Capybara
@@ -176,10 +181,11 @@ module ActionDispatch
 
     self.use_transactional_tests = true
 
+    # We should not stub methods here,
+    # I did that only for the sake of moving things along previously.
+    # I'm migrating previous tests that needed those stubs to the legacy class
     setup do
       WebMock.disable_net_connect!
-      stub_get_user
-      mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
     end
 
     teardown do
@@ -189,6 +195,22 @@ module ActionDispatch
     def visit_authentication_url(publisher)
       PublisherTokenGenerator.new(publisher: publisher).perform
       get publisher_url(publisher, token: publisher.authentication_token)
+    end
+  end
+
+  class LegacyIntegrationTest < IntegrationTest
+    include ServiceClassHelpers
+    include MockUpholdResponses
+    include MockBitflyerResponses
+    include MockGeminiResponses
+    include MockOauth2Responses
+
+    self.use_transactional_tests = true
+
+    setup do
+      stub_get_user
+      mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+      WebMock.disable_net_connect!
     end
   end
 end

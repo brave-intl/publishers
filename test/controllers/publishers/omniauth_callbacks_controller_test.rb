@@ -4,7 +4,7 @@ require "shared/mailer_test_helper"
 require "webmock/minitest"
 
 module Publishers
-  class AbstractOmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
+  class AbstractOmniauthCallbacksControllerTest < ActionDispatch::LegacyIntegrationTest
     include Devise::Test::IntegrationHelpers
     include ActionMailer::TestHelper
     include MailerTestHelper
