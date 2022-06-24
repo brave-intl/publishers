@@ -32,6 +32,37 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     }
   }.freeze
 
+  describe "whatever the publishers/:id/ensure_email route does" do
+    let(:token) { nil }
+
+    describe "when !token" do
+      it "should redirect" do
+        publisher = publishers(:completed)
+        sign_in publisher
+        get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
+
+        assert_response 302
+      end
+    end
+
+    describe "when token" do
+      let(:token) { "token" }
+
+      before do
+      end
+
+      it "should redirect" do
+        PublisherTokenAuthenticator.any_instance.stubs(:perform).returns(true)
+        publisher = publishers(:completed)
+        sign_in publisher
+
+        get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
+
+        assert_response 200
+      end
+    end
+  end
+
   test "publisher can access a publisher's dashboard" do
     publisher = publishers(:completed)
     sign_in publisher
