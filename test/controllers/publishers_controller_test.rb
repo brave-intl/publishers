@@ -33,24 +33,22 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   }.freeze
 
   describe "whatever the publishers/:id/ensure_email route does" do
-    let(:token) { nil }
+    let(:token) { "token" }
 
-    describe "when !token" do
-      it "should redirect" do
-        publisher = publishers(:completed)
-        sign_in publisher
-        get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
+    it "should invoke confirm_pending_email!" do
+      PublisherTokenAuthenticator.any_instance.stubs(:perform).returns(true)
+      publisher = publishers(:completed)
 
-        assert_response 302
-      end
+      expect(publisher).to receive(:confirm_pending_email!)
+
+      sign_in publisher
+
+      get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
+
+      assert_response 200
     end
 
     describe "when token" do
-      let(:token) { "token" }
-
-      before do
-      end
-
       it "should redirect" do
         PublisherTokenAuthenticator.any_instance.stubs(:perform).returns(true)
         publisher = publishers(:completed)
@@ -59,6 +57,18 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
 
         assert_response 200
+      end
+    end
+
+    describe "when !token" do
+      let(:token) { nil }
+
+      it "should redirect" do
+        publisher = publishers(:completed)
+        sign_in publisher
+        get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
+
+        assert_response 302
       end
     end
   end
