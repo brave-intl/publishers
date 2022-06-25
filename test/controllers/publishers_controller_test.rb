@@ -1,6 +1,7 @@
 # typed: false
 require "test_helper"
 require "shared/mailer_test_helper"
+require 'webmock/rspec'
 require "webmock/minitest"
 
 class PublishersControllerTest < ActionDispatch::IntegrationTest
