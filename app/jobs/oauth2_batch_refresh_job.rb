@@ -3,7 +3,7 @@ class Oauth2BatchRefreshJob < ApplicationJob
 
   # https://docs.gemini.com/rest-api/#rate-limits
   # 0.1 requests/second
-  def perform(wait: 0.1, limit: 5000, notify: false, async: false)
+  def perform(wait: 0.1, limit: 5000, notify: false, async: true)
     klass = set_klass
 
     count = 0

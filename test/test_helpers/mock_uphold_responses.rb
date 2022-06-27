@@ -211,6 +211,19 @@ module MockUpholdResponses
     stub_request(:get, /v0\/me/).to_return(body: body.to_json)
   end
 
+  def stub_get_user_capability(capability: "deposits", http_status: 200)
+    body = {
+      category: "permissions",
+      enabled: false,
+      key: capability,
+      name: capability.capitalize,
+      requirements: ["user-must-submit-due-dilligence"],
+      restrictions: []
+    }
+
+    stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/capabilities/#{capability}").to_return(status: http_status, body: body.to_json)
+  end
+
   def stub_list_card_addresses(id: "024e51fc-5513-4d82-882c-9b22024280cc", type: UpholdConnectionForChannel::NETWORK, empty: false, http_status: 200)
     body = [{
       formats: [{

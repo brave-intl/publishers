@@ -1,5 +1,14 @@
 module Uphold
   module Types
+    class UpholdUserCapability < T::Struct
+      const :category, String
+      const :enabled, T::Boolean
+      const :key, String
+      const :name, String
+      const :requirements, T::Array[T.nilable(String)]
+      const :restrictions, T::Array[T.nilable(String)]
+    end
+
     class UpholdUser < T::Struct
       const :status, String
       const :memberAt, T.nilable(String)
