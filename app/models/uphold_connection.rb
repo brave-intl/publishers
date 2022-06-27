@@ -401,7 +401,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     when UpholdCard
       result
     else
-      LogException.perform("Uphold wallet creation failed with #{result}")
+      LogException.perform("Uphold wallet creation failed for publisher #{publisher_id} with #{result}")
       raise WalletCreationError.new("Could not configure #{default_currency} deposits for Uphold")
     end
   end
