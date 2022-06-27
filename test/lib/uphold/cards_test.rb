@@ -67,8 +67,17 @@ class UpholdCardsClientTest < ActiveSupport::TestCase
       stub_create_card(currency: currency, label: label, settings: settings)
     end
 
-    it "should return an UpholdCard" do
-      assert_instance_of(UpholdCard, inst.create(currency: currency, label: label, settings: settings))
+    describe "when valid params" do
+      it "should return an UpholdCard" do
+        assert_instance_of(UpholdCard, inst.create(currency: currency, label: label, settings: settings))
+      end
+    end
+
+    describe "when invalid params" do
+      let(:currency) { nil }
+      it "should raise an exception" do
+        assert_raises(TypeError) { inst.create(currency: currency, label: label, settings: settings) }
+      end
     end
   end
 end
