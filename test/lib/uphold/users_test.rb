@@ -26,4 +26,16 @@ class UpholdUsersClientTest < ActiveSupport::TestCase
       assert_instance_of(UpholdUser, inst.get)
     end
   end
+
+  describe "#get_capabilities" do
+    let(:capability) { "deposits" }
+
+    before do
+      stub_get_user_capability(capability: capability)
+    end
+
+    it "should return an UpholdUserCapability" do
+      assert_instance_of(UpholdUserCapability, inst.get_capability(capability))
+    end
+  end
 end
