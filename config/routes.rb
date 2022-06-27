@@ -21,18 +21,6 @@ Rails.application.routes.draw do
   # CSP
   post "csp-violation-report", to: "csp_violations_report#create"
 
-  # Routes for Browser Users to login via Uphold
-  namespace :uphold_connections do
-    get :login
-    get :confirm
-  end
-
-  # Homepage for Browser Users
-  namespace :browser_users do
-    get :home
-    put :accept_tos
-  end
-
   # This implements basic callback urls for initiating oauth flows.
   # It could endup being a base/abstract controller for any authorization code flow
   # For right now I needed it to test/debug flows locally
