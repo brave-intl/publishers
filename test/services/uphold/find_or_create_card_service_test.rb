@@ -35,6 +35,26 @@ class UpholdFindOrCreateCardService < ActiveSupport::TestCase
         describe "when !card exists" do
           describe "when some cards exist" do
             describe "when !matches label" do
+              describe "when default_currency nil" do
+                before do
+                  mock_refresh_token_success(connection.class.oauth2_config.token_url)
+                  connection.address = nil
+                  connection.default_currency = nil
+                  connection.save!
+
+                  # Brutal.
+                  stub_list_cards(label: "derp", currency: "BAT")
+                  stub_list_cards(label: "derp", currency: "BAT", stub: false).each do |card|
+                    stub_list_card_addresses(id: card[:id])
+                  end
+                  stub_create_card
+                end
+
+                it "it should raise a TypeError" do
+                  assert_raises(TypeError) { inst.call(connection) }
+                end
+              end
+
               describe "when default_currency matches" do
                 before do
                   mock_refresh_token_success(connection.class.oauth2_config.token_url)
