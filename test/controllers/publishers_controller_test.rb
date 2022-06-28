@@ -41,8 +41,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       publisher.pending_email = "test@email.com"
       assert_not_equal publisher.email, "test@email.com"
 
-      sign_in publisher
-
       get "/publishers/#{publisher.id}/ensure_email", params: {token: token, confirm_email: "test@email.com"}
 
       assert_equal publisher.email, "test@email.com"
