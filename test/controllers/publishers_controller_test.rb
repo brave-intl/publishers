@@ -1,7 +1,6 @@
 # typed: false
 require "test_helper"
 require "shared/mailer_test_helper"
-require 'webmock/rspec'
 require "webmock/minitest"
 
 class PublishersControllerTest < ActionDispatch::IntegrationTest
@@ -39,13 +38,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     it "should invoke confirm_pending_email!" do
       PublisherTokenAuthenticator.any_instance.stubs(:perform).returns(true)
       publisher = publishers(:completed)
-
-      expect(publisher).to receive(:confirm_pending_email!)
+      publisher.pending_email = "test@email.com"
+      assert_not_equal publisher.email, "test@email.com"
 
       sign_in publisher
 
-      get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
+      get "/publishers/#{publisher.id}/ensure_email", params: {token: token, confirm_email: "test@email.com"}
 
+      assert_equal publisher.email, "test@email.com"
       assert_response 200
     end
 
