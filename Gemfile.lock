@@ -288,7 +288,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.17.0)
+    loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -420,7 +420,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
@@ -727,7 +727,7 @@ DEPENDENCIES
   pry-stack_explorer (~> 0.4.9.3)
   public_suffix (~> 4.0.3)
   puma (~> 5.6.4)
-  rack
+  rack (= 2.2.3.1)
   rack-attack (~> 6.5.0)
   rails (= 6.1.6)
   rails-controller-testing
@@ -776,4 +776,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.2.30
+   2.3.15

@@ -333,7 +333,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
     # Update with the latest Authorization
     # This is very much required but encrypted attr seems to throw rubocop for a loop
-    uphold_access_parameters = JSON.dump(authorization_hash) # rubocop:disable Lint/UselessAssignment
+    self.uphold_access_parameters = JSON.dump(authorization_hash)
     save!
 
     self
