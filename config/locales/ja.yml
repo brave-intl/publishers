@@ -822,6 +822,7 @@ ja:
       new_auth_token_wrong_email_publisher_verified: メールがパブリッシャーの認証と一致しません。 最新のメールを使用するには、メールを空白のままにしてください。
   site_channels:
     shared:
+      limit: 問題が発生しました。サポートにお問い合わせください。  # FIXME: This is the generic error message, but we shouldn't block
       trusted_file: 認証用ファイルをドメインに配置します
       verification_file:
         download_html: |
