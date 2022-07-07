@@ -876,6 +876,7 @@ en:
       new_auth_token_wrong_email_publisher_verified: Email doesn't match the publisher verification. Try leaving email blank to use the most recent email.
   site_channels:
     shared:
+      limit: "You have reached the limit of the number of site channels you can have associated with your account.  Please contact customer support if you need to have this increased" 
       trusted_file: Place a Trusted File into your Domain
       verification_file:
         download_html: |

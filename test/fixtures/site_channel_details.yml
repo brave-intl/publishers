@@ -4,6 +4,9 @@ default_details:
 new_site_details:
   brave_publisher_id_unnormalized: "new_site.org"
 
+new_site_details2:
+  brave_publisher_id: "newsite.org"
+
 top_referrer_verified_details:
   brave_publisher_id: "top-referrer.com"
 
