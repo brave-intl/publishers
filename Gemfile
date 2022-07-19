@@ -9,12 +9,12 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "6.1.6"
+rails_version = "6.1.6.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.4.3"
 gem "railties", rails_version
 
-gem "rack", "2.2.3.1"
+gem "rack", "2.2.4"
 
 # All things countries
 gem "countries"
@@ -111,7 +111,7 @@ gem "public_suffix", "~> 4.0.3"
 gem "puma", "~> 5.6.4"
 
 # Make cracking a little bit harder
-gem "rack-attack", "~> 6.5.0"
+gem "rack-attack", "~> 6.6.1"
 
 gem "rails-i18n", "~> 6.0.0"
 
