@@ -46,6 +46,7 @@
     "eventsource": "2.0.2",
     "glob-parent": "5.1.2",
     "ansi-regex": "5.0.1",
+    "shell-quote": "1.7.3",
     "ansi-html": "https://registry.npmjs.org/ansi-html-community/-/ansi-html-community-0.0.8.tgz",
     "immer": "9.0.6"
   }
