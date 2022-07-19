@@ -20,6 +20,10 @@ jobs:
         aws-access-key-id: ${{ secrets.GDBP_AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.GDBP_AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
+    - name: Override GITHUB_REF and thus ECR destination for master
+      run: echo "GITHUB_REF_OVERRIDE=refs/heads/dev" >> $GITHUB_ENV
+      if: ${{ github.ref == 'refs/heads/master' }}
+    - name: Set REPRODUCIBLE to reproducible build
+      run: echo "REPRODUCIBLE=false" >> $GITHUB_ENV
     - name: Generalized Deployments
-      uses: brave-intl/general-docker-build-pipeline-action@v1.0.4
-
+      uses: brave-intl/general-docker-build-pipeline-action@v1.0.9
