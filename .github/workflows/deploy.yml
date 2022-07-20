@@ -24,6 +24,6 @@ jobs:
       run: echo "GITHUB_REF_OVERRIDE=refs/heads/dev" >> $GITHUB_ENV
       if: ${{ github.ref == 'refs/heads/master' }}
     - name: Set REPRODUCIBLE to reproducible build
-      run: echo "REPRODUCIBLE=true" >> $GITHUB_ENV
+      run: echo "REPRODUCIBLE=false" >> $GITHUB_ENV
     - name: Generalized Deployments
       uses: brave-intl/general-docker-build-pipeline-action@v1.0.9
