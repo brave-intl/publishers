@@ -56,6 +56,11 @@
           = f.check_box UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE, {}, checked: @publisher.allowed_to_create_referrals?
           = " Allow publisher to create referrals"
         p.text-dark Allow publisher to create referrals
+        label
+          = " Number of Site Channels allowed  "
+          = f.number_field :site_channel_limit
+          br
+        p.text-dark How many site channels this user can have (default 2)
 
       .form-group
         = f.submit class: "btn btn-primary m-0"

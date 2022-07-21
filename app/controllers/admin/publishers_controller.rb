@@ -166,7 +166,7 @@ class Admin::PublishersController < AdminController
 
   def update_params
     params.require(:publisher).permit(
-      :excluded_from_payout
+      :excluded_from_payout, :site_channel_limit
     )
   end
 
