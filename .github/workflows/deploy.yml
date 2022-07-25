@@ -21,7 +21,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.GDBP_AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
     - name: Override GITHUB_REF and thus ECR destination for master
-      run: echo "GITHUB_REF_OVERRIDE=refs/heads/dev" >> $GITHUB_ENV
+      run: echo "GITHUB_REF_OVERRIDE=refs/heads/prod" >> $GITHUB_ENV
       if: ${{ github.ref == 'refs/heads/master' }}
     - name: Set REPRODUCIBLE to reproducible build
       run: echo "REPRODUCIBLE=false" >> $GITHUB_ENV
