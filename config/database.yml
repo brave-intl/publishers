@@ -10,7 +10,7 @@ default: &default
 stats_redshift_default: &stats_redshift_default
   adapter: redshift
   encoding: utf8
-  pool: 9
+  pool: 20 # same as concurrency in sidekiq.yml
   port: <%= ENV["STATS_REDSHIFT_PORT"] %>
   host: <%= ENV["STATS_REDSHIFT_HOST"] %>
   database: <%= ENV["STATS_REDSHIFT_DBNAME"] %>
