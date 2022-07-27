@@ -211,14 +211,14 @@ module MockUpholdResponses
     stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me").to_return(body: body.to_json)
   end
 
-  def stub_get_user_capability(capability: "deposits", http_status: 200)
+  def stub_get_user_capability(capability: "deposits", http_status: 200, requirements: [], restrictions: [])
     body = {
       category: "permissions",
       enabled: false,
       key: capability,
       name: capability.capitalize,
-      requirements: ["user-must-submit-due-dilligence"],
-      restrictions: []
+      requirements: requirements,
+      restrictions: restrictions
     }
 
     stub_request(:get, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/capabilities/#{capability}").to_return(status: http_status, body: body.to_json)
