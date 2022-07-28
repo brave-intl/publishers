@@ -47,6 +47,7 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
           mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
           stub_get_user
           stub_get_card
+          stub_get_user_deposits_capability
           stub_list_cards
           stub_create_card
         end
@@ -87,6 +88,7 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
         before do
           mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
           stub_get_user
+          stub_get_user_deposits_capability
           stub_get_card
           Oauth2Controller.any_instance.stubs(:allow_debug?).returns(true)
         end

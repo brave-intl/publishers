@@ -25,8 +25,19 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       )
     }
 
+    describe "when not deposits capbility" do
+      before do
+        stub_get_user_deposits_capability(http_status: 404)
+      end
+
+      it "should raise an error" do
+        assert_raises(UpholdConnection::CapabilityError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+      end
+    end
+
     describe "when not verified" do
       before do
+        stub_get_user_deposits_capability
         stub_get_user(member_at: nil)
       end
 
@@ -38,6 +49,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     describe "when wallet already exists" do
       before do
         conn = UpholdConnection.where.not(uphold_id: nil).select(:uphold_id).first
+        stub_get_user_deposits_capability
         stub_get_user(id: conn.uphold_id)
       end
 
@@ -55,6 +67,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
         let(:status) { "blocked" }
 
         before do
+          stub_get_user_deposits_capability
           stub_get_user(id: "any unique value", user_status: status)
         end
 
