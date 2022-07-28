@@ -35,16 +35,18 @@ class PublisherTest < ActiveSupport::TestCase
     describe "when publisher has a blocked uphold connection" do
       let(:publisher) { publishers(:uphold_connected_blocked) }
 
-      it "should be false" do
-        refute publisher.authorized_to_act?
+      it "should be true" do
+        assert publisher.authorized_to_act?
       end
     end
 
-    describe "when publisher is using an uphold_id associated with suspended accounts" do
+    describe "when publisher is using an uphold_id associated with >1 suspended accounts" do
       let(:publisher) { publishers(:verified) }
       let(:uphold_id) { "024e51fc-5513-4d82-882c-9b22024280cc" }
 
       before do
+        publishers(:verified).suspend!
+        publishers(:verified).suspend!
         UpholdConnection.update_all(uphold_id: uphold_id)
       end
 

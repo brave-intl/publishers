@@ -345,15 +345,16 @@ class Publisher < ApplicationRecord
     uphold_id = uphold_connection&.uphold_id
     return false if !uphold_id
 
-    UpholdConnection.where(uphold_id: uphold_id, publisher_id: Publisher.suspended.select(:id)).count > 0
+    UpholdConnection.where(uphold_id: uphold_id, publisher_id: Publisher.suspended.select(:id)).count > 1
+  end
+
+  def suspend!
+    PublisherStatusUpdate.create!(publisher_id: id, status: PublisherStatusUpdate::SUSPENDED)
+    self
   end
 
   def authorized_to_act?
-    if suspended? || uphold_connection&.blocked? || is_associated_with_suspended_uphold_ids?
-      false
-    else
-      true
-    end
+    !suspended? && !is_associated_with_suspended_uphold_ids?
   end
 
   def verified?
