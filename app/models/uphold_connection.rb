@@ -16,6 +16,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   class InsufficientScopeError < WalletCreationError; end
 
+  class CapabilityError < WalletCreationError; end
+
   include WalletProviderProperties
   include Uphold::Types
 
@@ -406,6 +408,17 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     end
   end
 
+  def has_deposit_capability?
+    result = connection_client.users.get_capability("deposits")
+
+    case result
+    when UpholdUserCapability
+      result.requirements.empty? && result.restrictions.empty?
+    else
+      false
+    end
+  end
+
   class << self
     include Uphold::Types
     include Oauth2::Responses
@@ -438,6 +451,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           default_currency: "BAT",
           default_currency_confirmed_at: Time.now
         )
+
+        if !conn.has_deposit_capability?
+          raise CapabilityError.new("Uphold has placed additional requirements or restrictions on your account and we cannot create your connection at this time.  Please contact Uphold directly.")
+        end
 
         # 3.) Pull data on existing user from uphold and set on model
         # Fail whole transaction if cannot be found
