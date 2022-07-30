@@ -23,6 +23,10 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     when UpholdConnection
       @conn = result
 
+      if @conn.default_currency.nil?
+        return BFailure.new(errors: ["Currency is nil"])
+      end
+
       if card_exists?
         @card
       elsif has_no_cards?
