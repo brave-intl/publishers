@@ -59,7 +59,9 @@ module Uphold
     # https://uphold.com/en/developer/api/documentation/#create-card
     sig { params(label: String, currency: String, settings: T::Hash[T.any(String, Symbol), T.untyped]).returns(T.any(UpholdCard, Faraday::Response)) }
     def create(label:, currency:, settings:)
-      result = request_and_return(:post, "/v0/me/cards", UpholdCard, payload: {label: label, currency: currency, settings: settings})
+      headers = {"Content-Type" => "application/json"}
+      result = request_and_return(:post, "/v0/me/cards", UpholdCard, payload: {label: label, currency: currency, settings: settings}, headers: headers)
+
       case result
       when UpholdCard, Faraday::Response
         result
