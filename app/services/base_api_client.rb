@@ -97,17 +97,18 @@ class BaseApiClient < BaseService
   end
 
   ## Some convenience methods used for Sorbet typed responses in various clients
-  sig { params(method: Symbol, path: String, response_struct: T.class_of(T::Struct), payload: T.nilable(T::Hash[T.any(Symbol, String), T.untyped]), query: T.nilable(String)).returns(T.any(T::Array[T::Struct], T::Struct, Faraday::Response)) }
-  def request_and_return(method, path, response_struct, payload: nil, query: nil)
+  sig { params(method: Symbol, path: String, response_struct: T.class_of(T::Struct), payload: T.nilable(T::Hash[T.any(Symbol, String), T.untyped]), query: T.nilable(String), headers: T::Hash[T.any(String, Symbol), T.untyped]).returns(T.any(T::Array[T::Struct], T::Struct, Faraday::Response)) }
+  def request_and_return(method, path, response_struct, payload: nil, query: nil, headers: {})
     resp = connection(raise_error: false).send(method) do |request|
+      request.headers.merge!(headers)
       request.headers["Authorization"] = api_authorization_header
       url = query.nil? ? client_url(path) : "#{client_url(path)}?q=#{query}"
-
-      request.url(url)
 
       if payload
         request.body = JSON.dump(payload)
       end
+
+      request.url(url)
     end
 
     parse_response_to_struct(resp, response_struct)
