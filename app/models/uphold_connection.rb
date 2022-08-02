@@ -365,7 +365,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification process and try again.")
       # Deny duplicates
       elsif UpholdConnection.strict_create && UpholdConnection.where(uphold_id: result.id).count > 0
-        DuplicateConnectionError.new("Cannot create Uphold connection. This uphold account is already association with another Creator.")
+        DuplicateConnectionError.new("Could not establish Uphold connection. It looks like your Uphold account is already connected to another Brave Creators account. Your Uphold account can only be connected to one Brave Creators account at a time.")
       else
         result
       end
