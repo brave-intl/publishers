@@ -80,17 +80,6 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
             </div>
           </div>
 
-          {/*
-            If a user can't create cards then we will show a status message,
-            unless they are in "blocked" status.
-          */}
-          {this.props.canCreateCards && (
-            <DepositCurrency
-              loadData={this.props.loadData}
-              defaultCurrency={this.props.defaultCurrency}
-            />
-          )}
-
           <UpholdStatusMessage
             verifyUrl={this.props.verifyUrl}
             status={this.props.status}

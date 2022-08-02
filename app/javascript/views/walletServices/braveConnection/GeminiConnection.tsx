@@ -87,44 +87,6 @@ class GeminiConnection extends React.Component<any, any> {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-6 font-weight-bold">
-            <FormattedMessage
-              id="walletServices.uphold.depositCurrency"
-              values={{
-                currency: this.props.defaultCurrency,
-                span: (...chunks) => (
-                  <span
-                    id="default_currency_code"
-                    className="text-dark font-weight-normal"
-                  >
-                    {chunks}
-                  </span>
-                ),
-              }}
-            />
-          </div>
-          <div className="col-1 d-none d-sm-block d-md-block">
-            <span className="text-muted">|</span>
-          </div>
-          <div className="col-5">
-            <a href="#" onClick={() => this.showCurrencyModal(true)}>
-              <FormattedMessage id="walletServices.uphold.change" />
-            </a>
-
-            <Modal
-              show={this.state.showCurrencyModal}
-              size={ModalSize.Small}
-              handleClose={() => this.showCurrencyModal(false)}
-            >
-              <CurrencySelection
-                setShowModal={this.showCurrencyModal}
-                loadData={this.props.loadData}
-                link={"https://gemini.com/fees/api-fee-schedule#api-fee"}
-              />
-            </Modal>
-          </div>
-        </div>
         {hasProblem &&  (
           <VerifyButton verifyUrl={verifyUrl}>
             <FormattedMessage id={messageId} />

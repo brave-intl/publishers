@@ -81,25 +81,6 @@ class BitflyerConnection extends React.Component<any, any> {
                         </FlexWrapper>
                     </div>
                 </div>
-
-                <div className="row">
-                    <div className="col-6 font-weight-bold">
-                        <FormattedMessage
-                            id="walletServices.uphold.depositCurrency"
-                            values={{
-                                currency: this.props.defaultCurrency,
-                                span: (...chunks) => (
-                                    <span
-                                        id="default_currency_code"
-                                        className="text-dark font-weight-normal"
-                                    >
-                                        {chunks}
-                                    </span>
-                                ),
-                            }}
-                        />
-                    </div>
-                </div>
                 {hasProblem && (
                     <VerifyButton verifyUrl={verifyUrl}>
                         <FormattedMessage id={messageId} />
