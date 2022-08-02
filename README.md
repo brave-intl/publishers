@@ -2,7 +2,7 @@
 
 Creators powers the https://creators.brave.com platform and enables content creators to be tipped from Brave users using the [Brave Rewards](https://brave.com/brave-rewards/) system.
 
-It allows a creator to connect his channels where he hosts content as well as a wallet through which we deposit auto-contribute suggestions.
+It allows a creator to connect channels where they are hosted content as well as a wallet through which we deposit auto-contribute suggestions.
 
 The ledger for current creator balance is stored in [bat-ledger](https://github.com/brave-intl/bat-ledger), also known as eyeshade.
 
