@@ -276,7 +276,7 @@ export default {
       connect: "Connect to Gemini",
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
-      reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your wallet.",
+      reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your Gemini account.",
 
       title: "Gemini Wallet",
       duplicateAccount: "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
@@ -313,7 +313,7 @@ export default {
       status: {
         connecting: "Brave Rewards is connecting to your Uphold account.",
         nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
-        reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your wallet.",
+        reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
       },
       title: "Uphold Wallet"
