@@ -20,6 +20,7 @@ class Publisher < ApplicationRecord
   UPHOLD_CONNECTION = UpholdConnection.to_s
   GEMINI_CONNECTION = GeminiConnection.to_s
   BITFLYER_CONNECTION = BitflyerConnection.to_s
+  MAX_SUSPENSIONS = 2
 
   ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
 
@@ -345,11 +346,34 @@ class Publisher < ApplicationRecord
     uphold_id = uphold_connection&.uphold_id
     return false if !uphold_id
 
-    UpholdConnection.where(uphold_id: uphold_id, publisher_id: Publisher.suspended.select(:id)).count > 1
+    UpholdConnection.is_suspended?(uphold_id)
   end
 
   def suspend!
     PublisherStatusUpdate.create!(publisher_id: id, status: PublisherStatusUpdate::SUSPENDED)
+    self
+  end
+
+  def enforce_suspension!(reason: :reuse)
+    ActiveRecord::Base.transaction do
+      suspend!
+
+      note = case reason
+      when :reuse
+        "User attempted to connect an Uphold account that has been previously suspended at least #{MAX_SUSPENSIONS} times."
+      when :existing
+        "User has an active uphold connection that has been  previously suspended at least #{MAX_SUSPENSIONS} times."
+      else
+        raise
+      end
+
+      PublisherNote.create!(
+        created_by: self,
+        publisher: self,
+        note: "Automated suspension: #{Time.now.to_datetime.to_formatted_s(:long)}: #{note}"
+      )
+    end
+
     self
   end
 

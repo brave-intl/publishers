@@ -18,6 +18,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   class CapabilityError < WalletCreationError; end
 
+  class SuspendedUpholdIdError < WalletCreationError; end
+
   include WalletProviderProperties
   include Uphold::Types
 
@@ -356,9 +358,12 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     result = connection_client.users.get
 
     case result
+
     when UpholdUser
+      if UpholdConnection.strict_create && UpholdConnection.is_suspended?(result.id)
+        SuspendedUpholdIdError.new("Cannot create Uphold Connection. This account has been suspended.")
       # Deny flagged or pending users
-      if result.status != "ok"
+      elsif result.status != "ok"
         FlaggedConnectionError.new("Cannot create Uphold connection.  Please contact Uphold to review your account's status.")
       # Deny unverified wallets
       elsif UpholdConnection.strict_create && !result.memberAt.present?
@@ -499,7 +504,18 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         else
           T.absurd(result)
         end
+      rescue SuspendedUpholdIdError => error
+        ActiveRecord::Base.transaction do
+          publisher.enforce_suspension!
+        end
+
+        conn
       end
+    end
+
+    # The constant is defined on the publisher model because this should be applicable to any connection provider, not just Uphold.
+    def is_suspended?(uphold_id)
+      Publisher.suspended.joins(:uphold_connection).where(uphold_connection: {uphold_id: uphold_id}).count >= ::Publisher::MAX_SUSPENSIONS
     end
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])

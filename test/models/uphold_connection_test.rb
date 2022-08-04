@@ -25,6 +25,29 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       )
     }
 
+    describe "when exceeds max suspensions" do
+      before do
+        conn = publisher.uphold_connection
+        conn.update!(uphold_id: publisher.id)
+
+        UpholdConnection.update_all(uphold_id: publisher.id)
+        Publisher.where.not(id: publisher.id).limit(Publisher::MAX_SUSPENSIONS).each do |p|
+          p.suspend!
+        end
+
+        stub_get_user_deposits_capability
+        stub_get_user(id: conn.uphold_id)
+
+        refute publisher.suspended?
+      end
+
+      it "should raise an error and suspend publisher" do
+        UpholdConnection.create_new_connection!(publisher, access_token_response)
+        publisher.reload
+        assert publisher.suspended?
+      end
+    end
+
     describe "when not deposits capbility" do
       before do
         stub_get_user_deposits_capability(http_status: 404)
