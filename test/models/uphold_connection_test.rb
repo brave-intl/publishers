@@ -12,6 +12,38 @@ class UpholdConnectionTest < ActiveSupport::TestCase
   include MockOauth2Responses
   include MockUpholdResponses
 
+  describe "class_methods" do
+    describe "in_use?" do
+      let(:publisher) { publishers(:default) }
+      let(:other) { publishers(:default) }
+
+      before do
+        publisher.uphold_connection.update!(uphold_id: publisher.id)
+      end
+
+      describe "when deleted" do
+        before do
+          PublisherRemovalJob.perform_now(publisher_id: other.id)
+          other.reload
+        end
+
+        it "should be false" do
+          refute UpholdConnection.in_use?(publisher.id)
+        end
+      end
+
+      describe "when !deleted" do
+        before do
+          other.uphold_connection.update!(uphold_id: publisher.id)
+        end
+
+        it "should be true" do
+          assert UpholdConnection.in_use?(publisher.id)
+        end
+      end
+    end
+  end
+
   describe "#create_new_connection!" do
     let(:publisher) { publishers(:default) }
     let(:scope) { Oauth2::Config::Uphold.scope }
