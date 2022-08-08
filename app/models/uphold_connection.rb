@@ -509,7 +509,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           publisher.enforce_suspension!
         end
 
-        conn
+        # This is a little awkard I admit but the constraint is enforced by the abstract method.
+        UpholdConnection.new
       end
     end
 
