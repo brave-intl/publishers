@@ -364,7 +364,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       elsif UpholdConnection.strict_create && !result.memberAt.present?
         UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification process and try again.")
       # Deny duplicates
-      elsif UpholdConnection.strict_create && UpholdConnection.where(uphold_id: result.id).count > 0
+      elsif UpholdConnection.strict_create && UpholdConnection.in_use?(result.id)
         DuplicateConnectionError.new("Could not establish Uphold connection. It looks like your Uphold account is already connected to another Brave Creators account. Your Uphold account can only be connected to one Brave Creators account at a time.")
       else
         result
@@ -500,6 +500,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           T.absurd(result)
         end
       end
+    end
+
+    def in_use?(uphold_id)
+      UpholdConnection.where(uphold_id: uphold_id).joins(:publisher).where.not(publisher: {name: PublisherStatusUpdate::DELETED, email: nil, pending_email: nil}).count > 0
     end
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])

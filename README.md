@@ -1,6 +1,14 @@
-![Build Status](https://github.com/brave-intl/publishers/workflows/Build/badge.svg)
+# Creators
 
-# Getting Started :wrench: Setup
+Creators powers the https://creators.brave.com platform and enables content creators to be tipped from Brave users using the [Brave Rewards](https://brave.com/brave-rewards/) system.
+
+It allows a creator to connect channels where they are hosted content as well as a wallet through which we deposit auto-contribute suggestions.
+
+The ledger for current creator balance is stored in [bat-ledger](https://github.com/brave-intl/bat-ledger), also known as eyeshade.
+
+Creators is powered by Ruby on Rails and React.
+
+## Getting Started :wrench: Setup
 
 
 Development with Docker and `docker-compose` is recommended for anyone just getting started.  If for any reason you wish to run the stack locally see [Local Installation Instructions](docs/LOCAL.md). Creators has a complex set of interactions however and has another application ([Eyeshade](https://github.com/brave-intl/bat-ledger)) as a core integration/service dependency that is most readily accessed via `docker-compose`.
@@ -23,6 +31,7 @@ If for any reason some step in the command chain breaks, simply review the [Make
 - [Contributing to Brave Creators](docs/CONTRIBUTING.md)
 - [Linting](docs/LINTING.md)
 - [Service Diagram](docs/creators-diagram.png)
+- [Creators Interaction with Promo Services](docs/PROMO.md)
 
 ## The advanced pieces
 - [Environment Variables (Optional, Docker should handle most of this)](docs/ENVIRONMENT.md)
