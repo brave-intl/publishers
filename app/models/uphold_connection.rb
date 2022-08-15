@@ -356,6 +356,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     result = connection_client.users.get
 
     case result
+
     when UpholdUser
       # Deny flagged or pending users
       if result.status != "ok"
@@ -365,7 +366,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification process and try again.")
       # Deny duplicates
       elsif UpholdConnection.strict_create && UpholdConnection.in_use?(result.id)
-        DuplicateConnectionError.new("Could not establish Uphold connection. It looks like your Uphold account is already connected to another Brave Creators account. Your Uphold account can only be connected to one Brave Creators account at a time.")
+        if UpholdConnection.is_suspended?(result.id)
+          result
+        else
+          DuplicateConnectionError.new("Could not establish Uphold connection. It looks like your Uphold account is already connected to another Brave Creators account. Your Uphold account can only be connected to one Brave Creators account at a time.")
+        end
       else
         result
       end
@@ -442,7 +447,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         # We have so many empty connections
         UpholdConnection.where(publisher_id: publisher.id).delete_all
 
-        # 2.) Set core params/token values
+        # 2.) Set core params/token values.
         conn = UpholdConnection.new(
           publisher_id: publisher.id,
           uphold_access_parameters: access_token_response.serialize.to_json,
@@ -504,6 +509,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
     def in_use?(uphold_id)
       UpholdConnection.where(uphold_id: uphold_id).joins(:publisher).where.not(publisher: {name: PublisherStatusUpdate::DELETED, email: nil, pending_email: nil}).count > 0
+    end
+
+    # The constant is defined on the publisher model because this should be applicable to any connection provider, not just Uphold.
+    def is_suspended?(uphold_id)
+      Publisher.suspended.joins(:uphold_connection).where(uphold_connection: {uphold_id: uphold_id}).count >= ::Publisher::MAX_SUSPENSIONS
     end
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
