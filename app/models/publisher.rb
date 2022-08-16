@@ -360,12 +360,11 @@ class Publisher < ApplicationRecord
 
       reason = "User has an active uphold connection that has been  previously suspended at least #{MAX_SUSPENSIONS} times."
       note = "Automated suspension: #{Time.now.to_datetime.to_formatted_s(:long)}: #{reason}"
-      publisher_note = PublisherNote.create(note: note)
 
       PublisherNote.create!(
         created_by: self,
         publisher: self,
-        note: publisher_note
+        note: note
       )
     end
 
