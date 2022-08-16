@@ -252,18 +252,18 @@ export default {
   thirtyDay: "30-Day Use",
   tokens: "tokens",
   totalNumber: "Total Number of Codes",
-  walletBalance: "Wallet balance",
+  walletBalance: "Account balance",
   walletServices: {
     bitflyer: {
       connect: "Connect to bitFlyer",
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on bitFlyer.",
-      title: "bitFlyer Wallet",
+      title: "bitFlyer Account",
 
     },
     brave: {
       description: "Connect a crypto wallet to receive contributions and other payments.",
-      title: "Wallet for BAT Payment"
+      title: "Account for BAT Payment"
     },
     connected: "Connected",
     currencies: {
@@ -278,7 +278,7 @@ export default {
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
       reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your Gemini account.",
 
-      title: "Gemini Wallet",
+      title: "Gemini Account",
       duplicateAccount: "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
     },
     lastDeposit: "Last Deposit: <span>{value}</span>",
@@ -288,9 +288,9 @@ export default {
       description: "Connect to Stripe to be able receive credit card payments.",
       disconnect: "Disconnect",
       enablePayouts: "You're uneligable to receive payouts. Check your Stripe Account for more details.",
-      title: "Wallet for Credit Card Payment",
+      title: "Account for Credit Card Payment",
     },
-    title: "Wallet Services",
+    title: "Account Services",
     trouble: "Connection Failure",
     uphold: {
       change: "Change",
@@ -316,7 +316,7 @@ export default {
         reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
       },
-      title: "Uphold Wallet"
+      title: "Uphold Account"
     },
     verify: "Continue to Verify"
   }
