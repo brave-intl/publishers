@@ -3,8 +3,6 @@ require "test_helper"
 class UpholdRefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
 
-  let(:limit) { 5 }
-
   describe "#perform" do
     let(:klass) { UpholdConnection }
     let(:described_class) { UpholdRefreshJob }
@@ -27,22 +25,6 @@ class UpholdRefreshJobTest < ActiveJob::TestCase
 
       it "should fail invalid connections" do
         assert_equal(21, klass.where(oauth_refresh_failed: true).count)
-      end
-    end
-
-    describe "with args" do
-      let(:result) { described_class.perform_now(wait: 0.01, limit: limit, async: false) }
-
-      before do
-        result
-      end
-
-      it "should return limit" do
-        assert_equal(limit, result)
-      end
-
-      it "should fail invalid limit connections" do
-        assert_equal(limit, klass.where(oauth_refresh_failed: true).count)
       end
     end
   end

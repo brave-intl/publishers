@@ -6,6 +6,8 @@ class Oauth2BatchRefreshJob < ApplicationJob
   def perform(wait: 0.1, limit: 5000, notify: false, async: true)
     klass = set_klass
 
+    limit = set_limit.present? ? set_limit : limit
+
     count = 0
     base_query = limit.present? ? klass.limit(limit) : klass
 
@@ -29,5 +31,9 @@ class Oauth2BatchRefreshJob < ApplicationJob
 
   def set_klass
     raise NotImplementedError
+  end
+
+  def set_limit
+    nil
   end
 end
