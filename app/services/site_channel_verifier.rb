@@ -29,12 +29,12 @@ class SiteChannelVerifier < BaseService
       return false
     elsif site_already_verified?(channel.details.brave_publisher_id)
       # Contest the channel
-      existing_channel = contested_channel(channel.details.brave_publisher_id).channel
-      begin
-        Channels::ContestChannel.new(channel: existing_channel, contested_by: channel).perform
-      rescue RuntimeError
-        SlackMessenger.new(message: "In SiteChannelVerifier, Publisher #{channel.publisher_id} tried contesting channel #{@channel.id}")
-      end
+      # existing_channel = contested_channel(channel.details.brave_publisher_id).channel
+
+      # Channels::ContestChannel.new(channel: existing_channel, contested_by: channel).perform
+      # rescue RuntimeError
+      SlackMessenger.new(message: "In SiteChannelVerifier, Publisher #{channel.publisher_id} tried contesting channel #{@channel.id} at #{@channel.details.url}")
+
       return false
     else
       channel.verification_succeeded!(has_admin_approval)

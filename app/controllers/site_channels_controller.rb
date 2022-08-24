@@ -47,9 +47,9 @@ class SiteChannelsController < ApplicationController
   end
 
   def create
-    if current_publisher.site_channel_details.count >= current_publisher.site_channel_limit
-      redirect_to(home_publishers_path, {flash: {alert: I18n.t("site_channels.shared.limit")}}) && return
-    end
+    # if current_publisher.site_channel_details.count >= current_publisher.site_channel_limit
+    #   redirect_to(home_publishers_path, {flash: {alert: I18n.t("site_channels.shared.limit")}}) && return
+    # end
 
     @current_channel = Channel.new(publisher: current_publisher)
     @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params.except(:ads_enabled))
