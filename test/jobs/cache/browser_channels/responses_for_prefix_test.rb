@@ -4,6 +4,14 @@ require "test_helper"
 require "jobs/sidekiq_test_case"
 
 class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
+  before do
+    VCR.insert_cassette 'rewards-parameters'
+  end
+
+  after do
+    VCR.eject_cassette
+  end
+
   def self.test_order
     # Runs in order
     # https://api.rubyonrails.org/v4.2.5/classes/ActiveSupport/TestCase.html
@@ -26,6 +34,24 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     assert result.channel_responses[0].wallets[0].uphold_wallet.address
     assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, channel.uphold_connection.address
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+  end
+
+  test "Does not send wallet addresses for connections not on the regional allowlist" do 
+    channel = channels(:verified_blocked_country)
+    channel.send(:update_site_banner_lookup!)
+    site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    assert site_banner_lookup.present?
+
+    service = Cache::BrowserChannels::ResponsesForPrefix.new
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
+    assert service.temp_file.present?
+    result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
+    result = PublishersPb::ChannelResponseList.decode(result)
+ 
+    assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+    assert_predicate result.channel_responses[0].wallets[0].uphold_wallet.address, :empty?
   end
 
   test "gemini wallet generation" do
