@@ -5,7 +5,7 @@ require "jobs/sidekiq_test_case"
 
 class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
   before do
-    VCR.insert_cassette 'rewards-parameters'
+    VCR.insert_cassette "rewards-parameters"
   end
 
   after do
@@ -36,7 +36,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end
 
-  test "Does not send wallet addresses for connections not on the regional allowlist" do 
+  test "Does not send wallet addresses for connections not on the regional allowlist" do
     channel = channels(:verified_blocked_country)
     channel.send(:update_site_banner_lookup!)
     site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
@@ -49,7 +49,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     assert service.temp_file.present?
     result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
- 
+
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
     assert_predicate result.channel_responses[0].wallets[0].uphold_wallet.address, :empty?
   end

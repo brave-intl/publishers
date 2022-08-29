@@ -8,7 +8,7 @@ module Rewards
 
     def parameters
       return JSON.parse(mock_response) if Rails.application.secrets[:rewards_url].blank?
-      response = get(PATH + 'parameters')
+      response = get(PATH + "parameters")
 
       JSON.parse(response.body)
     end
