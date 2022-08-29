@@ -24,7 +24,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
 
-    allowed_regions = Rewards::Rewards.parameters_cached['custodianRegions']
+    allowed_regions = Rewards::Rewards.parameters_cached["custodianRegions"]
 
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
@@ -37,10 +37,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.uphold_connection
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
 
-          if connection.country && allowed_regions['uphold']['allow'].include?(connection.country.upcase)
+          if connection.country && allowed_regions["uphold"]["allow"].include?(connection.country.upcase)
             uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
           end
-          
+
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
         end
@@ -49,8 +49,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           connection = site_banner_lookup.publisher.bitflyer_connection
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: connection)
-          
-          if connection.country && allowed_regions['bitflyer']['allow'].include?(connection.country.upcase)
+
+          if connection.country && allowed_regions["bitflyer"]["allow"].include?(connection.country.upcase)
             bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
           end
 
@@ -62,11 +62,11 @@ class Cache::BrowserChannels::ResponsesForPrefix
           gemini_wallet = PublishersPb::GeminiWallet.new
           connection = site_banner_lookup.publisher.gemini_connection
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
-          
-          if connection.country && allowed_regions['gemini']['allow'].include?(connection.country.upcase)
+
+          if connection.country && allowed_regions["gemini"]["allow"].include?(connection.country.upcase)
             gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
           end
-          
+
           wallet.gemini_wallet = gemini_wallet
           channel_response.wallets.push(wallet)
         end
