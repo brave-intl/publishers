@@ -23,6 +23,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
   def generate_brotli_encoded_channel_response(prefix:)
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
+
+    allowed_regions = Rewards::Rewards.parameters_cached['custodianRegions']
+
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
@@ -31,24 +34,39 @@ class Cache::BrowserChannels::ResponsesForPrefix
         if site_banner_lookup.publisher.uphold_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
-          uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
-          uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: site_banner_lookup.publisher.uphold_connection)
+          connection = site_banner_lookup.publisher.uphold_connection
+          uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
+
+          if connection.country && allowed_regions['uphold']['allow'].include?(connection.country.upcase)
+            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
+          end
+          
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
         end
         if site_banner_lookup.publisher.bitflyer_connection.present?
           wallet = PublishersPb::Wallet.new
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
-          bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: site_banner_lookup.publisher.bitflyer_connection)
-          bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
+          connection = site_banner_lookup.publisher.bitflyer_connection
+          bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: connection)
+          
+          if connection.country && allowed_regions['bitflyer']['allow'].include?(connection.country.upcase)
+            bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
+          end
+
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
         end
         if site_banner_lookup.publisher.gemini_connection.present?
           wallet = PublishersPb::Wallet.new
           gemini_wallet = PublishersPb::GeminiWallet.new
-          gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: site_banner_lookup.publisher.gemini_connection)
-          gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || site_banner_lookup.publisher.gemini_connection.recipient_id
+          connection = site_banner_lookup.publisher.gemini_connection
+          gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
+          
+          if connection.country && allowed_regions['gemini']['allow'].include?(connection.country.upcase)
+            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
+          end
+          
           wallet.gemini_wallet = gemini_wallet
           channel_response.wallets.push(wallet)
         end
