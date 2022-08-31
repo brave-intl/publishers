@@ -21,7 +21,7 @@ verified:
 
 verified_blocked_country:
   <<: *default
-  default_site_banner_id: <%= SecureRandom.uuid %>
+  default_site_banner_id: "00000000-0000-0000-0000-000000000009"
   default_site_banner_mode: true
   email: "vn@verified.org"
   name: "Vn the Verified"
