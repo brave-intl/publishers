@@ -1,4 +1,5 @@
 # typed: false
+
 class PromoMailer < ApplicationMailer
   include PromosHelper
   helper PromosHelper

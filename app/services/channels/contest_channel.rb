@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Channels
   class ContestChannel < BaseService
     def initialize(channel:, contested_by:)

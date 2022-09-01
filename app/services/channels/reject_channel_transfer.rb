@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Channels
   class RejectChannelTransfer < BaseService
     def initialize(channel:, should_delete: true)

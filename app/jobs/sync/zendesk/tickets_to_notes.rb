@@ -1,4 +1,5 @@
 # typed: ignore
+
 class Sync::Zendesk::TicketsToNotes
   include Sidekiq::Worker
 

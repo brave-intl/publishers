@@ -1,4 +1,5 @@
 # typed: ignore
+
 class PublishersController < ApplicationController
   include PublishersHelper
   include PromosHelper

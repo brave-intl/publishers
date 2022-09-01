@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 require "webmock/minitest"
 
@@ -157,7 +158,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       before do
         post upload_settlement_report_admin_payout_reports_path,
           params: {file: file},
-          headers: {'content-type': "multipart/form-data"}
+          headers: {"content-type": "multipart/form-data"}
       end
 
       it "alerts failure" do
@@ -171,7 +172,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       before do
         post upload_settlement_report_admin_payout_reports_path,
           params: {file: json_file},
-          headers: {'content-type': "multipart/form-data"}
+          headers: {"content-type": "multipart/form-data"}
       end
 
       it "alerts sucess" do

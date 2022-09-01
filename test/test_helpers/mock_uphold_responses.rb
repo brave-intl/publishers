@@ -1,4 +1,5 @@
 # typed: false
+
 module MockUpholdResponses
   def stub_uphold_cards!
     stub_request(:get, /v0\/me\/cards\?q=currency:USD/).to_return(body: [].to_json)

@@ -1,4 +1,5 @@
 # typed: true
+
 module SettingsHelper
   def snoozed_for_year?(publisher)
     uphold_connection = publisher.uphold_connection

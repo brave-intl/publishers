@@ -1,4 +1,5 @@
 # typed: true
+
 module Payout
   class Service
     class WalletError < StandardError; end

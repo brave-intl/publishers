@@ -1,4 +1,5 @@
 # typed: true
+
 module Payout
   class UpholdService < Service
     def perform(payout_report:, publisher:)

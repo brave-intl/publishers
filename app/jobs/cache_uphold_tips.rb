@@ -1,4 +1,5 @@
 # typed: true
+
 class CacheUpholdTips < ApplicationJob
   queue_as :scheduler
 

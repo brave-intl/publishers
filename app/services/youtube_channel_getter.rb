@@ -1,4 +1,5 @@
 # typed: true
+
 require "sentry-raven"
 
 class YoutubeChannelGetter < BaseApiClient

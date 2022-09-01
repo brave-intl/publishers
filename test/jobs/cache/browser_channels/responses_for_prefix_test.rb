@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 require "jobs/sidekiq_test_case"
 

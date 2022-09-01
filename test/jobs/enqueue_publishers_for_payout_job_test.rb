@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 
 class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest

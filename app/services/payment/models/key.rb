@@ -1,4 +1,5 @@
 # typed: true
+
 require "addressable/template"
 require "json"
 

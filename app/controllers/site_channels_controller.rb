@@ -1,4 +1,5 @@
 # typed: ignore
+
 class SiteChannelsController < ApplicationController
   include ChannelsHelper
   include PublishersHelper

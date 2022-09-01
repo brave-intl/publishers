@@ -1,4 +1,5 @@
 # typed: ignore
+
 class AdminController < ApplicationController
   before_action :protect
   helper_method :sort_column, :sort_direction

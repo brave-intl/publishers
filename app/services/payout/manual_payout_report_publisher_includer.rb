@@ -1,4 +1,5 @@
 # typed: false
+
 module Payout
   class ManualPayoutReportPublisherIncluder < Service
     def perform

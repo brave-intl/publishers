@@ -1,4 +1,5 @@
 # typed: true
+
 # Given a probi integer value, returns the amount to be paid to to the publisher
 # and the amount saved as the fee
 class PublisherBalanceFeeCalculator < BaseApiClient

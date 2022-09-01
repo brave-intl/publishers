@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Admin
   class PaymentsController < AdminController
     include PromosHelper

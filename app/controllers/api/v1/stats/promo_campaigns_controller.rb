@@ -1,4 +1,5 @@
 # typed: ignore
+
 class Api::V1::Stats::PromoCampaignsController < Api::V1::StatsController
   def index
     data = []

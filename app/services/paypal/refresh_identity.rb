@@ -1,4 +1,5 @@
 # typed: ignore
+
 class Paypal::RefreshIdentity < BaseService
   def initialize(publisher_id:)
     @publisher = Publisher.find(publisher_id)

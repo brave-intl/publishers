@@ -1,4 +1,5 @@
 # typed: true
+
 # I am sorry for the atrocities I have commited
 REFERRAL_CODES_1 = [
   {"referral_code" => "", "ymd" => "2018-11-28", "retrievals" => 1, "first_runs" => 0, "finalized" => 0},

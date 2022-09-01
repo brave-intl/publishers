@@ -1,4 +1,5 @@
 # typed: true
+
 # Registers a promo registration for each verified channel for a publisher
 class Promo::AssignPromoToChannelService < BaseApiClient
   include PromosHelper

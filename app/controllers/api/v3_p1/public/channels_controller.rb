@@ -1,4 +1,5 @@
 # typed: true
+
 require "sentry-raven"
 
 class Api::V3P1::Public::ChannelsController < Api::V3::Public::BaseController
