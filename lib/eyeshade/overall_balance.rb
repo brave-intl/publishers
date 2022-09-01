@@ -1,4 +1,5 @@
 # typed: true
+
 # Fees applied to channel balances
 #
 # MARKED FOR DEPRECATION:

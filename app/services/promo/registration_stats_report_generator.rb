@@ -1,4 +1,5 @@
 # typed: false
+
 require "csv"
 
 # Creates a report to be converted into tables and downloaded by admins

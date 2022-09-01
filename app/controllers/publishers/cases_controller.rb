@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Publishers
   class CasesController < ApplicationController
     before_action :authenticate_publisher!

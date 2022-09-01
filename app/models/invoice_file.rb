@@ -1,4 +1,5 @@
 # typed: false
+
 class InvoiceFile < ApplicationRecord
   belongs_to :invoice
   belongs_to :uploaded_by, class_name: "Publisher"

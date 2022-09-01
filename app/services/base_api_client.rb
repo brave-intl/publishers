@@ -1,4 +1,5 @@
 # typed: false
+
 class BaseApiClient < BaseService
   extend T::Sig
   include Oauth2::Errors

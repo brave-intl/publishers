@@ -1,4 +1,5 @@
 # typed: true
+
 module PromosHelper
   include ActionView::Helpers::DateHelper
 

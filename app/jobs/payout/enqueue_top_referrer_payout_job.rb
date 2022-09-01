@@ -1,4 +1,5 @@
 # typed: ignore
+
 class Payout::EnqueueTopReferrerPayoutJob
   include Sidekiq::Worker
   sidekiq_options queue: :scheduler

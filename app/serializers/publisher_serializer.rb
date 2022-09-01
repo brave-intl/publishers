@@ -1,4 +1,5 @@
 # typed: ignore
+
 class PublisherSerializer < ActiveModel::Serializer
   attributes :owner_identifier, :email, :name, :channel_identifiers, :default_currency
 

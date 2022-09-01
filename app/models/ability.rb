@@ -1,4 +1,5 @@
 # typed: ignore
+
 class Ability
   include CanCan::Ability
   include PublishersHelper

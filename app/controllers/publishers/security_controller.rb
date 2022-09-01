@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "concerns/two_factor_registration"
 
 module Publishers

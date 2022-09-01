@@ -1,4 +1,5 @@
 # typed: true
+
 #
 # Note: As of 2/24/22 this is not implemented, it is mostly opportunistic consolidation of http requests
 # that have been split out into individual Getter services.  My goal is to create individual http clients

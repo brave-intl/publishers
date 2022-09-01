@@ -1,4 +1,5 @@
 # typed: true
+
 class HttpHeaderMiddleware
   def initialize(app)
     @app = app

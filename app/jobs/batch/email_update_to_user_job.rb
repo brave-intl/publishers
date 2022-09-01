@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Batch
   class EmailUpdateToUserJob < ApplicationJob
     queue_as :low

@@ -1,4 +1,5 @@
 # typed: false
+
 # Creates the Gemini Recipient IDs for a publisher
 class CreateGeminiRecipientIdsJob
   include Sidekiq::Worker

@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Views
   module User
     class RateCards

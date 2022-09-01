@@ -1,4 +1,5 @@
 # typed: false
+
 class LogException
   def self.perform(error, publisher: {}, params: {}, force: false)
     if Rails.env.production? || Rails.env.staging? || force

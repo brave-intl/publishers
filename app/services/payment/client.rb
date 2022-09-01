@@ -1,4 +1,5 @@
 # typed: true
+
 module Payment
   class Client < BaseApiClient
     attr_accessor :api_base_uri, :api_authorization_header

@@ -1,4 +1,5 @@
 # typed: true
+
 # Fees applied to channel balances
 module Eyeshade
   class ContributionBalance < BaseBalance

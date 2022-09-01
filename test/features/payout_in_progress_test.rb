@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 require "webmock/minitest"
 require "mocha/test_unit"

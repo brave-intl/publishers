@@ -1,4 +1,5 @@
 # typed: true
+
 module QrCodeHelper
   require "rqrcode"
 

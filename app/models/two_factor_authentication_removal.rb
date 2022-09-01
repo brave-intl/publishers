@@ -1,4 +1,5 @@
 # typed: false
+
 class TwoFactorAuthenticationRemoval < ApplicationRecord
   include ActionView::Helpers::DateHelper
   belongs_to :publisher

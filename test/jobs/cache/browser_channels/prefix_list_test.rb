@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 
 class Cache::BrowserChannels::PrefixListTest < ActiveSupport::TestCase

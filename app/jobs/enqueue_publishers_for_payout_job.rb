@@ -1,4 +1,5 @@
 # typed: ignore
+
 # Creates a payout report and enqueues publishers to be included
 class EnqueuePublishersForPayoutJob < ApplicationJob
   queue_as :scheduler

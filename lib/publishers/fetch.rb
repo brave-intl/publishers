@@ -1,4 +1,5 @@
 # typed: false
+
 require "net/http"
 require "ssrf_filter"
 

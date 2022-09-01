@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 require "shared/mailer_test_helper"
 
@@ -77,7 +78,7 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal [
       [6.days.ago.to_date.to_s, Publisher.distinct.joins(:channels).joins(:uphold_connection)
         .where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day,
-          'uphold_connections.uphold_verified': true,
+          "uphold_connections.uphold_verified": true,
           role: Publisher::PUBLISHER)
         .where.not(email: nil)
         .where(channels: {verified: true})
@@ -98,7 +99,7 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal [
       [6.days.ago.to_date.to_s, Publisher.distinct.joins(:channels).joins(:uphold_connection)
         .where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day,
-          'uphold_connections.uphold_verified': true, 'uphold_connections.is_member': true,
+          "uphold_connections.uphold_verified": true, "uphold_connections.is_member": true,
           role: Publisher::PUBLISHER)
         .where.not(email: nil)
         .where(channels: {verified: true})

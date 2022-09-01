@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Docker
   class EyeshadeHelper
     # host is docker-compose container name for eyeshade postgres container defined in `bat-ledgers`

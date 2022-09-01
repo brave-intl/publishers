@@ -1,4 +1,5 @@
 # typed: false
+
 class ErrorsController < ActionController::Base
   before_action :render_page
 

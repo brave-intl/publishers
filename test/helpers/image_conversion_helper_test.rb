@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 describe ImageConversionHelper do
   include ImageConversionHelper
