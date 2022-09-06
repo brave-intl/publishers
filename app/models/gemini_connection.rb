@@ -9,6 +9,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   class DuplicateConnectionError < WalletCreationError; end
 
+  class InvalidUserError < WalletCreationError; end
+
   JAPAN = "JP"
 
   has_paper_trail
@@ -174,7 +176,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
           recipient_id_status: "present"
         )
 
-        conn.verify_through_gemini
+        resp = conn.verify_through_gemini
+
+        raise InvalidUserError.new("Authorization failed, we Could not verify your Gemini user.") if resp.nil?
+
         publisher.update!(selected_wallet_provider: conn)
       end
     end
