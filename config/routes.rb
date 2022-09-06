@@ -12,13 +12,15 @@ Rails.application.routes.draw do
 
   # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
 
-  get "publishers/gemini_connection/new", to: "payment/connection/gemini_connections#edit"
+  # FIXME: Are these event relevant?
   get "publishers/stripe_connection/new", to: "payment/connection/stripe_connections#edit"
   get "publishers/paypal_connections/connect_callback", to: "payment/connection/paypal_connections#connect_callback"
 
   # oauth_controller base children
   get "publishers/bitflyer_connection/new", to: "payment/connection/bitflyer_connections#callback"
   get "publishers/uphold_verified", to: "payment/connection/uphold_connections#callback"
+  get "publishers/gemini_connection/new", to: "payment/connection/gemini_connections#callback"
+
   # CSP
   post "csp-violation-report", to: "csp_violations_report#create"
 

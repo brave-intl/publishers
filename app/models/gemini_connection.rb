@@ -5,15 +5,16 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
   include Oauth2::Responses
 
+  class WalletCreationError < Oauth2::Errors::ConnectionError; end
+
+  class DuplicateConnectionError < WalletCreationError; end
+
   JAPAN = "JP"
 
   has_paper_trail
 
   belongs_to :publisher
   has_many :gemini_connection_for_channels
-
-  validates :recipient_id, uniqueness: true, allow_blank: true
-
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
 
   scope :payable, -> {
@@ -106,6 +107,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   def sync_connection!
+    # FIXME: This was a quick hack, to resolve a bug.
+    # Clean it up later.
     if access_token_expired?
       result = refresh_authorization!
 
@@ -129,14 +132,14 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     # If we couldn't find a verified account we'll take the first user.
     user ||= users.first
 
-    update(
+    return if !user.present?
+
+    update!(
       display_name: user.name,
       status: user.status,
       country: user.country_code,
       is_verified: user.is_verified
     )
-
-    CreateGeminiRecipientIdsJob.perform_async(id)
   end
 
   class << self
@@ -145,7 +148,39 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     end
 
     def create_new_connection!(publisher, access_token_response)
-      raise NotImplementedError
+      # Oauth2::Responses::AccessTokenResponse: T.nilable(expires_in)
+      access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
+      recipient = Gemini::RecipientId.find_or_create(token: access_token_response.access_token)
+
+      raise ValueError unless recipient.recipient_id.present?
+
+      ActiveRecord::Base.transaction do
+        # Cleanup artifacts in absence of any actual uniqueness verifications
+        # We have so many empty connections
+        GeminiConnection.where(publisher_id: publisher.id).delete_all
+
+        if GeminiConnection.in_use?(recipient.recipient_id)
+          raise DuplicateConnectionError.new("Could not establish Gemini connection. It looks like your Gemini account is already connected to another Brave Creators account. Your Gemini account can only be connected to one Brave Creators account at a time.")
+        end
+
+        conn = GeminiConnection.create!(
+          publisher_id: publisher.id,
+          access_token: access_token_response.access_token,
+          refresh_token: access_token_response.refresh_token,
+          expires_in: access_token_response.expires_in,
+          access_expiration_time: access_expiration_time,
+          recipient_id: recipient.recipient_id,
+          display_name: "Pending",
+          recipient_id_status: "present"
+        )
+
+        conn.verify_through_gemini
+        publisher.update!(selected_wallet_provider: conn)
+      end
+    end
+
+    def in_use?(recipient_id)
+      GeminiConnection.where(recipient_id: recipient_id).joins(:publisher).where.not(publisher: {name: PublisherStatusUpdate::DELETED, email: nil, pending_email: nil}).count > 0
     end
 
     def oauth2_config
