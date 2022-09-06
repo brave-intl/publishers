@@ -255,20 +255,6 @@ class Publisher < ApplicationRecord
     @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
   end
 
-  # Public: Checks the different wallet connections and enqueues sync jobs to refresh their data
-  #         If their data wasn't refreshed in the last 2 hours.
-  #
-  # Returns nil
-  def sync_wallet_connections
-    if selected_wallet_provider && selected_wallet_provider.updated_at > 2.hours.ago
-      Sync::WalletConnectionJob.perform_later(selected_wallet_provider.id, selected_wallet_provider.class.name)
-
-      true
-    else
-      false
-    end
-  end
-
   def is_selected_wallet_provider_uphold?
     selected_wallet_provider_type == UPHOLD_CONNECTION
   end

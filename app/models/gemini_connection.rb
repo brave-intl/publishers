@@ -11,7 +11,6 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   class InvalidUserError < WalletCreationError; end
 
-
   JAPAN = "JP"
 
   has_paper_trail
