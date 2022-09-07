@@ -1,4 +1,5 @@
 # typed: ignore
+
 # Sorbet doesn't recognize ApplicationController for some reason
 
 class Oauth2Controller < ApplicationController

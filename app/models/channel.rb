@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "publishers/restricted_channels"
 
 class Channel < ApplicationRecord
@@ -188,7 +189,7 @@ class Channel < ApplicationRecord
     elsif PROPERTIES.include?(name)
       public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
     else
-      visible_site_channels.where('site_channel_details.brave_publisher_id': identifier).first
+      visible_site_channels.where("site_channel_details.brave_publisher_id": identifier).first
     end
   end
 

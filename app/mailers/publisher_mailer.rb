@@ -1,4 +1,5 @@
 # typed: ignore
+
 class PublisherMailer < ApplicationMailer
   include PublishersHelper
   helper PublishersHelper

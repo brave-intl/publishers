@@ -1,4 +1,5 @@
 # typed: false
+
 # Creates the Uphold Cards for a publisher
 class CreateUpholdCardsJob < ApplicationJob
   include Uphold::Types

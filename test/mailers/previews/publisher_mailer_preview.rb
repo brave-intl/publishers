@@ -1,4 +1,5 @@
 # typed: false
+
 # Preview all emails at https://localhost:3000/rails/mailers
 # Consider moving away from mailcatcher to use https://github.com/fgrehm/letter_opener_web
 # Also, is this test just dead?

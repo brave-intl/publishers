@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "addressable"
 
 class SiteBanner < ApplicationRecord

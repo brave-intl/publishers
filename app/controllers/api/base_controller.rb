@@ -1,4 +1,5 @@
 # typed: ignore
+
 # To set authorization for the API, configure ENV["API_AUTH_TOKEN"] and
 # api_auth_token ENV["API_IP_WHITELIST"] (see secrets.yml)
 class Api::BaseController < ActionController::API

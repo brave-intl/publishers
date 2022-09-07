@@ -1,4 +1,5 @@
 # typed: false
+
 class PotentialPayment < ApplicationRecord
   REFERRAL = "referral".freeze
   CONTRIBUTION = "contribution".freeze

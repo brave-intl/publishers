@@ -1,4 +1,5 @@
 # typed: false
+
 module Logout
   def logout_everybody!(p = nil)
     current_publisher = p if p

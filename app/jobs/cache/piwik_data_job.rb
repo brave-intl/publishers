@@ -1,4 +1,5 @@
 # typed: true
+
 class Cache::PiwikDataJob < ApplicationJob
   queue_as :scheduler
 

@@ -1,4 +1,5 @@
 # typed: false
+
 module Admin
   module ChannelTransfersHelper
     def transfer_details(transfer, is_suspended)

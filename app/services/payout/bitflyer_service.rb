@@ -1,4 +1,5 @@
 # typed: true
+
 module Payout
   class BitflyerService < Service
     def self.build

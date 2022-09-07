@@ -1,4 +1,5 @@
 # typed: ignore
+
 require "csv"
 
 module Admin

@@ -1,4 +1,5 @@
 # typed: true
+
 module Admin
   module PublishersHelper
     def publisher_status(publisher)

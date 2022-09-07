@@ -1,4 +1,5 @@
 # typed: true
+
 class BaseService
   def self.instance
     @__instance__ ||= new

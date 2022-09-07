@@ -1,4 +1,5 @@
 # typed: ignore
+
 # Fetches and saves the referral stats for channel owned codes
 class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper

@@ -1,4 +1,5 @@
 # typed: true
+
 class Oauth2::AuthorizationCodeBase < ApplicationRecord
   self.abstract_class = true
   include Oauth2::Responses

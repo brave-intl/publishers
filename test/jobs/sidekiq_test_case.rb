@@ -1,4 +1,5 @@
 # typed: false
+
 require "sidekiq/testing"
 
 class SidekiqTestCase < ActiveJob::TestCase

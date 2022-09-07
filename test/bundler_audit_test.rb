@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 require "bundler/audit/database"
 require "bundler/audit/scanner"

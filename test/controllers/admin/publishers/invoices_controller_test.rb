@@ -1,4 +1,5 @@
 # typed: false
+
 require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
@@ -22,7 +23,7 @@ class Admin::Publishers::OrganizationsControllerTest < ActionDispatch::Integrati
     let(:subject) do
       post admin_publisher_invoice_upload_path(publisher_id: "_", invoice_id: invoice.id),
         params: {file: file},
-        headers: {'content-type': "multipart/form-data"}
+        headers: {"content-type": "multipart/form-data"}
     end
 
     describe "when the file exists" do
@@ -47,7 +48,7 @@ class Admin::Publishers::OrganizationsControllerTest < ActionDispatch::Integrati
       let(:subject) do
         post admin_publisher_invoice_upload_path(publisher_id: "_", invoice_id: invoice.id),
           params: {file: []},
-          headers: {'content-type': "multipart/form-data"}
+          headers: {"content-type": "multipart/form-data"}
       end
 
       it "redirects and sends an error message " do

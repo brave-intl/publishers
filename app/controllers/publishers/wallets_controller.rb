@@ -1,4 +1,5 @@
 # typed: ignore
+
 module Publishers
   class WalletsController < ApplicationController
     before_action :authenticate_publisher!

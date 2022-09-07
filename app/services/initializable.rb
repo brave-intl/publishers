@@ -1,4 +1,5 @@
 # typed: false
+
 module Initializable
   def initialize(params = {})
     # So this is a ruby meta-programming method, basically anytime that you call initialize with a series of params like so

@@ -1,4 +1,5 @@
 # typed: true
+
 #
 # MARKED FOR DEPRECATION:
 # See for initial typed definitions:  lib/eyeshade/client.rb and lib/eyeshade/types.rb

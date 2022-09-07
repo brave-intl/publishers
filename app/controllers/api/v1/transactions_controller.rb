@@ -1,4 +1,5 @@
 # typed: ignore
+
 class Api::V1::TransactionsController < Api::BaseController
   class GetTransactionError < StandardError; end
 

@@ -1,4 +1,5 @@
 # typed: true
+
 module Admin::OrganizationHelper
   def boolean_to_image(value)
     if value

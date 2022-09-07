@@ -1,4 +1,5 @@
 # typed: true
+
 #
 # Implemements a strictly typed interface for Oauth2::AuthenticationCodeClient to:
 #

@@ -1,4 +1,5 @@
 # typed: ignore
+
 module AdminHelper
   def sort_link(column, title = nil)
     title ||= column.titleize

@@ -1,4 +1,5 @@
 # typed: false
+
 module Views
   module Admin
     class NavigationView

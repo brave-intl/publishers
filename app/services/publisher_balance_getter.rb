@@ -1,4 +1,5 @@
 # typed: false
+
 # Used by the PublisherWalletGetter to retrieve balances
 class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
