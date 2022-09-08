@@ -4,8 +4,8 @@ class PublisherMailer < ApplicationMailer
   include PublishersHelper
   helper PublishersHelper
 
-  # after_action :ensure_fresh_token,
-  #   only: %i[login_email verify_email verification_done confirm_email_change]
+  after_action :ensure_fresh_token,
+    only: %i[login_email verify_email verification_done confirm_email_change]
 
   # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
   def login_email(publisher)
