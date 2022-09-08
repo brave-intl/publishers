@@ -164,20 +164,4 @@ class GeminiConnectionTest < SidekiqTestCase
       assert_equal gemini_connection.access_token, "km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm"
     end
   end
-
-  describe "#sync_connection" do
-    let(:subject) { connection.sync_connection! }
-    let(:connection) { gemini_connections(:connection_with_token) }
-
-    before do
-      mock_refresh_token_success(connection.class.oauth2_client.token_url)
-      mock_gemini_unverified_account_request!
-    end
-
-    it "queues a CreateGeminiRecipientIdsJob job" do
-      assert_difference -> { CreateGeminiRecipientIdsJob.jobs.size } do
-        subject
-      end
-    end
-  end
 end

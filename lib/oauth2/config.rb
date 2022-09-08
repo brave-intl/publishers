@@ -114,7 +114,7 @@ module Oauth2::Config
       end
 
       def redirect_uri
-        URI("#{base_redirect_url}/oauth2/gemini/callback")
+        URI("#{base_redirect_url}/publishers/gemini_connection/new")
       end
 
       def content_type
