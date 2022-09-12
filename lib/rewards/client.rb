@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 module Rewards
-  class BaseClient < BaseApiClient
+  class Client < BaseApiClient
     extend T::Sig
 
     PATH = "/v1/"
@@ -12,7 +12,7 @@ module Rewards
 
     sig(:final) { returns(String) }
     def api_base_uri
-      Rails.application.secrets[:rewards_url]
+      "https://api.rewards.bravesoftware.com"
     end
   end
 end

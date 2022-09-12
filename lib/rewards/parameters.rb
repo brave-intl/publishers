@@ -1,17 +1,19 @@
 # typed: true
 
 module Rewards
-  class Parameters < Rewards::BaseClient
+  class Parameters < Rewards::Client
     include Rewards::Types
     extend T::Sig
 
     class ResultError < StandardError; end
 
     sig { returns(T.any(ParametersResponse, Faraday::Response)) }
-    def get
-      response = get(PATH + "parameters")
+    def get_parameters
+      response = Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.day) do
+        get(PATH + "parameters") 
+      end
 
-      result = JSON.parse(response.body)
+      result = parse_response_to_struct(response, ParametersResponse)
 
       case result
       when ParametersResponse, Faraday::Response
@@ -20,12 +22,6 @@ module Rewards
         raise ResultError
       else
         T.absurd(result)
-      end
-    end
-
-    def self.parameters_cached
-      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.day) do
-        Rewards.new.parameters
       end
     end
   end
