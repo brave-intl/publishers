@@ -87,6 +87,11 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
 
   private
 
+  # This should override the method in the base and fix this only for promos
+  def proxy_url
+    nil
+  end
+
   def api_base_uri
     Rails.application.secrets[:api_promo_base_uri]
   end
