@@ -13,7 +13,7 @@ module Rewards
         get(PATH + "parameters") 
       end
 
-      result = parse_response_to_struct(response, ParametersResponse)
+      result = T.let(parse_response_to_struct(response, ParametersResponse), ParametersResponse)
 
       case result
       when ParametersResponse, Faraday::Response

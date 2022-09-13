@@ -24,7 +24,15 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
 
-    allowed_regions = Rewards::Parameters.new.get_parameters.custodianRegions
+    parameters = Rewards::Parameters.new.get_parameters
+
+    case parameters
+    when Rewards::Types::ParameterResponse
+      allowed_regions = parameters.custodianRegions
+    else
+      require "sentry-raven"
+      Raven.capture_exception(failure)
+    end
 
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
