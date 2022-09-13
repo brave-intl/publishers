@@ -59,8 +59,7 @@ class PromoRegistration < ApplicationRecord
   scope :unattached_only, -> { where(kind: UNATTACHED) }
   scope :channels_only, -> { where(kind: CHANNEL) }
   scope :has_stats, -> { where.not(stats: "[]").where.not("stats = '[]'") }
-  scope :with_valid_referrals, -> { channels_only.joins(:publisher).where(publisher: Publisher.not_suspended) }
-  scope :with_stale_valid_referrals, -> { with_valid_referrals.where("promo_registrations.updated_at < ?", 24.hours.ago) }
+  scope :from_referrer_program, -> { channels_only.joins(:publisher).where(publisher: Publisher.in_top_referrer_program) }
 
   before_destroy :delete_from_promo_server
 
