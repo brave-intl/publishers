@@ -4,17 +4,28 @@
 class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper
 
-  def perform
-    active_publisher_ids = Publisher.not_suspended
-    promo_registration_ids = PromoRegistration.channels_only.where(publisher_id: active_publisher_ids).pluck(:id)
-    ids = []
-    promo_registration_ids.each do |promo_registration_id|
-      ids << promo_registration_id
-      if ids.count >= 50
+  def perform(wait: 1, limit: 1000, async: true)
+    count = 0
+
+    # Limit of 1000 with a batch size of 50 puts us at 20 requests total per run with a 1 second delay
+    # between each batch of 50, making the total runtime around 1 minute or so. or ~ 20r/min or 1000 referrals/min
+    #
+    # If we run this on Every 2 minutes we can refresh all existing referrals every 24 hours continuously.
+    #
+    # It also allows me to test this without swamping the entire sidekiq queue
+    PromoRegistration.with_stale_valid_referrals.limit(limit).select(:id).find_in_batches(batch_size: 50) do |batch|
+      ids = batch.map(&:id)
+      count += ids.length
+
+      if async
         Sync::PromoRegistrationStatsJob.perform_async(ids)
-        ids = []
+      else
+        Sync::PromoRegistrationStatsJob.new.perform(ids)
       end
+
+      sleep(wait) if wait
     end
-    Sync::PromoRegistrationStatsJob.perform_async(ids) if ids.count > 0
+
+    count
   end
 end

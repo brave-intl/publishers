@@ -92,6 +92,10 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
     nil
   end
 
+  def retry_count
+    0
+  end
+
   def api_base_uri
     Rails.application.secrets[:api_promo_base_uri]
   end
