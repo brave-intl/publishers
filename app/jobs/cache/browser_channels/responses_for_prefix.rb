@@ -27,7 +27,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     parameters = Rewards::Parameters.new.get_parameters
 
     case parameters
-    when Rewards::Types::ParameterResponse
+    when Rewards::Types::ParametersResponse
       allowed_regions = parameters.custodianRegions
     else
       LogException.perform(failure)
@@ -45,7 +45,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.uphold_connection
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
 
-          if connection.country && allowed_regions.uphold.allow.include?(connection.country.upcase)
+          if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
             uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
           end
 
@@ -58,7 +58,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.bitflyer_connection
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: connection)
 
-          if connection.country && allowed_regions.bitflyer.allow.include?(connection.country.upcase)
+          if connection.country && allowed_regions[:bitflyer][:allow].include?(connection.country.upcase)
             bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
           end
 
@@ -71,7 +71,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.gemini_connection
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
 
-          if connection.country && allowed_regions.gemini.allow.include?(connection.country.upcase)
+          if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
             gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
           end
 
