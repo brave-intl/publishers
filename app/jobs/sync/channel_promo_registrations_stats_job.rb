@@ -13,7 +13,7 @@ class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
     # If we run this on Every 2 minutes we can refresh all existing referrals every 24 hours continuously.
     #
     # It also allows me to test this without swamping the entire sidekiq queue
-    PromoRegistration.with_stale_valid_referrals.limit(limit).select(:id).find_in_batches(batch_size: 50) do |batch|
+    PromoRegistration.from_referrer_program.where("promo_registrations.updated_at < ?", 24.hours.ago).select(:id).find_in_batches(batch_size: 50) do |batch|
       ids = batch.map(&:id)
       count += ids.length
 
