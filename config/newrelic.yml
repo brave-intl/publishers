@@ -25,6 +25,8 @@ common: &default_settings
   log_level: info
 
   attributes.include: job.sidekiq.args.*
+  error_collector:
+    - 'UpholdConnection::WalletCreationError'
 
   # Don't log sensitive things to New Relic
 #  high_security: true
