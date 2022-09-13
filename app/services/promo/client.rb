@@ -31,5 +31,9 @@ module Promo
     def api_authorization_header
       "Bearer #{Rails.application.secrets[:api_promo_key]}"
     end
+
+    def proxy_url
+      nil
+    end
   end
 end
