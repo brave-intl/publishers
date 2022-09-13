@@ -30,8 +30,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
     when Rewards::Types::ParameterResponse
       allowed_regions = parameters.custodianRegions
     else
-      require "sentry-raven"
-      Raven.capture_exception(failure)
+      LogException.perform(failure)
+      raise StandardError.new("Could not load allowed regions")
     end
 
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
@@ -79,8 +79,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           channel_response.wallets.push(wallet)
         end
       rescue => e
-        require "sentry-raven"
-        Raven.capture_exception(e)
+        LogException.perform(e)
       end
       channel_response.site_banner_details = get_site_banner_details(site_banner_lookup)
       channel_responses.channel_responses.push(channel_response)

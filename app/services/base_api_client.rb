@@ -138,15 +138,9 @@ class BaseApiClient < BaseService
 
   def adapt_to_struct(struct, obj)
     out = {}
-    obj[:test] = {stuff: 'lets see'}
+
     struct.props.keys.each do |key|
-              p "*"*100
-        p struct.props[key]
-      if obj.fetch(key, nil).is_a?(Hash) && struct.props[key][:type] != Hash
-        out[key] = adapt_to_struct(struct.props[key][:type], obj.fetch(key, nil))
-      else
-        out[key] = obj.fetch(key, nil)
-      end
+      out[key] = obj.fetch(key, nil)
     end
 
     struct.new(out)

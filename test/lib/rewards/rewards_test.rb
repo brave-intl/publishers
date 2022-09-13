@@ -19,7 +19,7 @@ class RewardsTest < ActiveSupport::TestCase
     before do
       stub_get_parameters
     end
-    
+
     it "should return rewards data" do
       assert_instance_of(ParametersResponse, inst.get_parameters)
     end
