@@ -49,6 +49,10 @@ class Promo::UnattachedRegistrar < BaseApiClient
 
   private
 
+  def proxy_url
+    nil
+  end
+
   def api_base_uri
     Rails.application.secrets[:api_promo_base_uri]
   end

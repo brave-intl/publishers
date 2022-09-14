@@ -6,6 +6,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # a connection.
   class_attribute :strict_create, default: true
 
+  class UnknownWalletCreationError < Oauth2::Errors::ConnectionError; end
+
   class WalletCreationError < Oauth2::Errors::ConnectionError; end
 
   class UnverifiedConnectionError < WalletCreationError; end
@@ -409,7 +411,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       result
     else
       LogException.perform("Uphold wallet creation failed for publisher #{publisher_id} with #{result}")
-      raise WalletCreationError.new("Could not configure #{default_currency} deposits for Uphold")
+      raise UnknownWalletCreationError.new("Could not configure #{default_currency} deposits for Uphold")
     end
   end
 
