@@ -138,7 +138,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
               end
 
               it "it should raise an error" do
-                assert_raises(UpholdConnection::WalletCreationError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+                assert_raises(UpholdConnection::UnknownWalletCreationError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
               end
             end
 
