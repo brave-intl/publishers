@@ -114,7 +114,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
 
     test "generating channel response should fail where country information could not be loaded" do
       stub_request(:get, "https://api.rewards.bravesoftware.com/v1/parameters")
-        .to_return(status: 400, body: '')
+        .to_return(status: 400, body: "")
 
       channel = channels(:verified)
       channel.send(:update_site_banner_lookup!)
