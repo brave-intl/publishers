@@ -30,7 +30,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     when Rewards::Types::ParametersResponse
       allowed_regions = parameters.custodianRegions
     else
-      LogException.perform(failure)
+      LogException.perform(parameters)
       raise StandardError.new("Could not load allowed regions")
     end
 

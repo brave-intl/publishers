@@ -111,5 +111,22 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
       @service.send(:cleanup!)
       assert_not File.file?(original_path)
     end
+
+    test "generating channel response should fail where country information could not be loaded" do
+      stub_request(:get, "https://api.rewards.bravesoftware.com/v1/parameters")
+        .to_return(status: 400, body: '')
+
+      channel = channels(:verified)
+      channel.send(:update_site_banner_lookup!)
+      site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+      assert site_banner_lookup.present?
+
+      service = Cache::BrowserChannels::ResponsesForPrefix.new
+      assert_raises Faraday::ClientError do
+        ActiveRecord::Base.connected_to(role: :reading) do
+          service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+        end
+      end
+    end
   end
 end
