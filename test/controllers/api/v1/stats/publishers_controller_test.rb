@@ -88,7 +88,7 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 0],
-      [0.days.ago.to_date.to_s, 9]
+      [0.days.ago.to_date.to_s, 10]
     ], JSON.parse(response.body)
   end
 
@@ -109,7 +109,7 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 0],
-      [0.days.ago.to_date.to_s, 8]
+      [0.days.ago.to_date.to_s, 9]
     ], JSON.parse(response.body)
   end
 

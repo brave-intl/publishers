@@ -1,0 +1,81 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.rewards.bravesoftware.com/v1/parameters/v1/parameters
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.17.5
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Date:
+      - Fri, 26 Aug 2022 18:35:22 GMT
+      Content-Type:
+      - text/plain; charset=utf-8
+      Content-Length:
+      - '19'
+      Connection:
+      - keep-alive
+      Request-Id:
+      - cc4h4qjupf42j5sijc70
+      X-Content-Type-Options:
+      - nosniff
+      X-Request-Id:
+      - FKDWJQV1u2CwQzgh
+    body:
+      encoding: UTF-8
+      string: '404 page not found
+
+        '
+  recorded_at: Fri, 26 Aug 2022 18:35:22 GMT
+- request:
+    method: get
+    uri: https://api.rewards.bravesoftware.com/v1/parameters
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.17.5
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 26 Aug 2022 18:47:42 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '574'
+      Connection:
+      - keep-alive
+      Request-Id:
+      - cc4hajjupf42j5sijcf0
+      X-Request-Id:
+      - BpuJrMXS264wfE1w
+    body:
+      encoding: UTF-8
+      string: '{"payoutStatus":{"unverified":"complete","uphold":"complete","gemini":"complete","bitflyer":"complete"},"custodianRegions":{"uphold":{"allow":["AU","AT","BE","CA","CO","DK","FI","HK","IE","IT","NL","NO","PT","SG","ES","SE","GB","US"],"block":[]},"gemini":{"allow":["AU","AT","BE","CA","CO","DK","FI","HK","IE","IT","NL","NO","PT","SG","ES","SE","GB","US"],"block":[]},"bitflyer":{"allow":["JP"],"block":[]}},"batRate":0.344362,"autocontribute":{"choices":[1,2,3,5,7,10,20],"defaultChoice":1},"tips":{"defaultTipChoices":[1.25,5,10.5],"defaultMonthlyChoices":[1.25,5,10.5]}}
+
+        '
+  recorded_at: Fri, 26 Aug 2022 18:47:42 GMT
+recorded_with: VCR 6.1.0

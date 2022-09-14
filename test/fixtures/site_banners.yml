@@ -14,6 +14,14 @@ verified_default_banner: &verified_default_banner
   donation_amounts: [1, 10, 100]
   default_donation: 5
 
+verified_blocked_country_default_banner: &verified_default_banner
+  id: "00000000-0000-0000-0000-000000000009"
+  publisher: verified_blocked_country
+  title: "Default Banner"
+  description: "Lorem Ipsum"
+  donation_amounts: [1, 10, 100]
+  default_donation: 5
+
 verified_channel_banner: &verified_channel_banner
   publisher: verified
   channel: verified
