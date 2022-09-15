@@ -7,18 +7,18 @@
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 # Rails.application.config.content_security_policy do |policy|
-  # policy.default_src :self, :https
-  # policy.font_src :self, :https, :data
-  # policy.img_src :self, :https, :data
-  # policy.object_src :none
-  # policy.script_src :self, :https
-  # policy.style_src :self, :https
+# policy.default_src :self, :https
+# policy.font_src :self, :https, :data
+# policy.img_src :self, :https, :data
+# policy.object_src :none
+# policy.script_src :self, :https
+# policy.style_src :self, :https
 
-  # Enable once updated to Rails 7
-  # policy.require_trusted_types_for "'script'"
+# Enable once updated to Rails 7
+# policy.require_trusted_types_for "'script'"
 
-  # Specify URI for violation reports
-  # policy.report_uri "/csp-violation-report"
+# Specify URI for violation reports
+# policy.report_uri "/csp-violation-report"
 # end
 
 # If you are using UJS then enable automatic nonce generation
