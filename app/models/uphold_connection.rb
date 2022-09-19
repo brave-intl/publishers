@@ -250,6 +250,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
     case result
     when UpholdUser
+      check_country(result.country, :uphold)
+
       success = update(
         is_member: result.memberAt.present?,
         member_at: result.memberAt,
@@ -475,13 +477,16 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           conn.is_member = false
         end
 
+        # Make sure country is on the allow list
+        conn.check_country(user.country, :uphold)
+        conn.country = user.country
+
         # Wow.  This I haven't encountered before
         # The type annotations of the UpholdUser struct are different
         # from that of the model, so you have to cast the values
         # in order to assign them
         conn.status = T.must(user.status)
         conn.uphold_id = T.must(user.id)
-        conn.country = user.country
 
         # 4.) Create the uphold "card" or wallet for the default currency in question.
         # Fail if we cannot

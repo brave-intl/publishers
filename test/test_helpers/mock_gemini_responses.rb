@@ -42,6 +42,31 @@ module MockGeminiResponses
     stub_request(:post, regex).to_return(body: response.to_json)
   end
 
+  def mock_gemini_blocked_country_account_request!
+    path = Gemini::Account::PATH.expand(segments: nil).to_s
+    regex = Regexp.new(path)
+
+    response = {
+      account: {
+        accountName: "Primary",
+        shortName: "primary",
+        type: "exchange",
+        created: "1594238561617"
+      },
+      users: [
+        {
+          name: "Alice Publisher",
+          lastSignIn: "2020-07-20T21:16:39.563Z",
+          status: "Active",
+          countryCode: "AQ",
+          isVerified: true
+        }
+      ],
+      memo_reference_code: "GEMMQDMPJ"
+    }
+    stub_request(:post, regex).to_return(body: response.to_json)
+  end
+
   def mock_gemini_unverified_account_request!
     path = Gemini::Account::PATH.expand(segments: nil).to_s
     regex = Regexp.new(path)

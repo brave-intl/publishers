@@ -12,6 +12,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
   include EyeshadeHelper
   include MockOauth2Responses
   include MockUpholdResponses
+  include MockRewardsResponses
 
   describe "class_methods" do
     describe "in_use?" do
@@ -57,6 +58,10 @@ class UpholdConnectionTest < ActiveSupport::TestCase
         scope: scope
       )
     }
+
+    before do
+      stub_rewards_parameters
+    end
 
     describe "when not deposits capbility" do
       before do
@@ -149,6 +154,18 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
               it "it should create a connection" do
                 assert_instance_of(UpholdConnection, UpholdConnection.create_new_connection!(publisher, access_token_response))
+              end
+
+              describe "if connection is from a blocked country" do
+                before do
+                  stub_get_user(country: "AQ")
+                end
+
+                it "raises a blocked country error" do
+                  assert_raises(UpholdConnection::BlockedCountryError) do
+                    UpholdConnection.create_new_connection!(publisher, access_token_response)
+                  end
+                end
               end
             end
           end
@@ -244,6 +261,21 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
       it "does not change" do
         assert_equal existing_value, verified_connection.uphold_state_token
+      end
+    end
+  end
+
+  describe "#sync_connection" do
+    let(:conn) { uphold_connections(:google_connection) }
+
+    before do
+      stub_rewards_parameters
+      stub_get_user(country: "AQ")
+    end
+
+    it "raises error when connection is from blocked country" do
+      assert_raises(UpholdConnection::BlockedCountryError) do
+        conn.sync_connection!
       end
     end
   end

@@ -3,8 +3,13 @@ require "test_helper"
 class Oauth2BatchRefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
   include MockGeminiResponses
+  include MockRewardsResponses
 
   describe "#perform" do
+    before do
+      stub_rewards_parameters
+    end
+
     describe "GeminiConnection" do
       let(:conn) { gemini_connections(:connection_with_token) }
 
