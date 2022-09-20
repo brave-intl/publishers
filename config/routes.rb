@@ -21,9 +21,6 @@ Rails.application.routes.draw do
   get "publishers/uphold_verified", to: "payment/connection/uphold_connections#callback"
   get "publishers/gemini_connection/new", to: "payment/connection/gemini_connections#callback"
 
-  # CSP
-  post "csp-violation-report", to: "csp_violations_report#create"
-
   # This implements basic callback urls for initiating oauth flows.
   # It could endup being a base/abstract controller for any authorization code flow
   # For right now I needed it to test/debug flows locally

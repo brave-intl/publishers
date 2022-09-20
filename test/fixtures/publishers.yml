@@ -19,6 +19,14 @@ verified:
   name: "Alice the Verified"
   selected_wallet_provider: verified_connection (UpholdConnection)
 
+verified_blocked_country:
+  <<: *default
+  default_site_banner_id: "00000000-0000-0000-0000-000000000009"
+  default_site_banner_mode: true
+  email: "vn@verified.org"
+  name: "Vn the Verified"
+  selected_wallet_provider: verified_blocked_country_connection (UpholdConnection)
+
 notes:
   <<: *default
   email: "alice@notes.org"

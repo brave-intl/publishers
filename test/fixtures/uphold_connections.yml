@@ -20,7 +20,7 @@ unconnected:
   publisher: completed
   is_member: false
   send_emails: 2019-01-01
-  country: "usa"
+  country: "US"
 
 top_referrer_connected:
   created_at: 2019-01-01
@@ -29,7 +29,7 @@ top_referrer_connected:
   is_member: true
   uphold_id: <%= SecureRandom.uuid %>
   address: <%= SecureRandom.uuid %>
-  country: "usa"
+  country: "US"
 
 suspended_connection:
   publisher: suspended
@@ -52,6 +52,15 @@ verified_connection:
   is_member: true
   uphold_verified: true
   address: "abcdabcd-0000-0000-0000-abcd00000002"
+  country: 'US'
+
+verified_blocked_country_connection:
+  publisher: verified_blocked_country
+  default_currency: BAT
+  is_member: true
+  uphold_verified: true
+  address: <%= SecureRandom.uuid %>
+  country: 'VN'
 
 default_connection:
   created_at: 2019-01-01
@@ -165,6 +174,10 @@ verified_no_currency:
   publisher: uphold_connected_currency_unconfirmed
   address: "abcdabcd-0000-0000-0000-abcd00000007"
   is_member: true
+
+verified_no_country:
+  <<: *base_verified_connection
+  country: nil
 
 small_media_group_connection:
   publisher: small_media_group

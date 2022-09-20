@@ -24,7 +24,7 @@ class UpholdRefreshJobTest < ActiveJob::TestCase
       end
 
       it "should fail invalid connections" do
-        assert_equal(21, klass.where(oauth_refresh_failed: true).count)
+        assert_equal(23, klass.where(oauth_refresh_failed: true).count)
       end
     end
   end
