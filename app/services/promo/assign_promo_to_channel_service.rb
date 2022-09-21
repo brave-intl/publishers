@@ -40,10 +40,8 @@ class Promo::AssignPromoToChannelService < BaseApiClient
         end
       end
     rescue ActiveRecord::RecordInvalid => e
-      require "sentry-raven"
       Rails.logger.error("#{self.class.name} perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
-      Raven.extra_context referral_code: referral_code
-      Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
+      LogException.perform("Promo::PublisherChannelsRegistrar #perform referral_code: #{referral_code}, error: #{e}")
     end
   rescue Faraday::Error::ClientError
     # When the owner is "no-ugp" the promo server will return 409.
@@ -68,9 +66,8 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       change_ownership(channel)
     end
   rescue Faraday::Error => e
-    require "sentry-raven"
     Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
-    Raven.capture_exception("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
+    LogException.perform("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
     nil
   end
 

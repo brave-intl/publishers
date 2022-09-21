@@ -80,8 +80,8 @@ class Admin::PayoutReportsController < AdminController
   rescue Faraday::ClientError
     redirect_to admin_payout_reports_path, flash: {alert: "Eyeshade responded with a 400 🤷‍️"}
   rescue => e
-    Raven.capture_exception(e)
-    redirect_to admin_payout_reports_path, flash: {alert: "Something bad happened! Please check Sentry for more details"}
+    LogException.perform(e)
+    redirect_to admin_payout_reports_path, flash: {alert: "Something bad happened! Please check New Relic for more details"}
   end
 
   def payouts_in_progress

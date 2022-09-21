@@ -1,6 +1,6 @@
 # typed: false
 
-# Send handled exceptions to Sentry (which normally only sends unhandled exceptions).
+# Send handled exceptions to New Relic (which normally only sends unhandled exceptions).
 # See https://stackoverflow.com/questions/16567243/rescue-all-errors-of-a-specific-type-inside-a-module
 module ErrorHandler
   extend ActiveSupport::Concern
@@ -20,19 +20,17 @@ module ErrorHandler
 
   def handle_standard_error(exception)
     if %w[production staging].include?(Rails.env)
-      require "sentry-raven"
+      publisher_params = {}
       if (publisher = introspect_publisher)
-        Raven.user_context(
-          publisher_id: publisher.id,
-          email: publisher.email
-        )
+        publisher_params.publisher_id = publisher.id
+        publisher_params.email = publisher.email
       end
-      Raven.capture_exception(exception)
+      LogException.perform(exception, publisher_params)
     else
       Rails.logger.warn(exception)
     end
 
-    # re-raise the exception now that it's been captured by sentry-raven or logged
+    # re-raise the exception now that it's been captured by New Relic or logged
     # so that the standard rails error flow can happen
     raise exception
   end

@@ -1,5 +1,5 @@
 # typed: ignore
-require "sentry-raven"
+require "newrelic_rpm"
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -82,7 +82,7 @@ Rails.application.configure do
     write_timeout: 10, # Defaults to 1 second
     error_handler: ->(method:, returning:, exception:) {
                      # Report errors to Sentry as warnings
-                     Raven.capture_exception(exception, level: "warning",
+                     NewRelic::Agent.notice_error(exception, level: "warning",
                                                           tags: {method: method, returning: returning})
                    }
   }

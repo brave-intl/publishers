@@ -36,12 +36,11 @@ class PartnerMailer < ApplicationMailer
   private
 
   def ensure_fresh_token
-    # Check if we are missing the token and capture to sentry if we are. This should not happen.
+    # Check if we are missing the token and capture to New Relic if we are. This should not happen.
     begin
       raise "missing token" if @publisher.authentication_token.nil?
     rescue => e
-      require "sentry-raven"
-      Raven.capture_exception(e)
+      LogException.perform(e)
       raise
     end
 
