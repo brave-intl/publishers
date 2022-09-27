@@ -88,8 +88,7 @@ class PublisherMailer < ApplicationMailer
       begin
         raise "SMTP To address must not be blank for PublisherMailer#verify_email for publisher #{@publisher.id}"
       rescue => e
-        require "sentry-raven"
-        Raven.capture_exception(e)
+        LogException.perform(e)
       end
     end
   end
@@ -339,8 +338,7 @@ class PublisherMailer < ApplicationMailer
       begin
         raise "#{@publisher.id}'s wallet is connected."
       rescue => e
-        require "sentry-raven"
-        Raven.capture_exception(e)
+        LogException.perform(e)
       end
     else
       mail_if_destination_exists(
@@ -407,12 +405,11 @@ class PublisherMailer < ApplicationMailer
   end
 
   def ensure_fresh_token
-    # Check if we are missing the token and capture to sentry if we are. This should not happen.
+    # Check if we are missing the token and capture to New Relic if we are. This should not happen.
     begin
       raise "missing token" if @publisher.authentication_token.nil?
     rescue => e
-      require "sentry-raven"
-      Raven.capture_exception(e)
+      LogException.perform(e)
       raise
     end
 
