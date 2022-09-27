@@ -35,10 +35,6 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
     true
   end
 
-  def japanese_account?
-    country&.upcase == JAPAN
-  end
-
   def verify_url
     ""
   end
