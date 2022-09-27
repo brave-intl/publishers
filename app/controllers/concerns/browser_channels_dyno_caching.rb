@@ -2,7 +2,6 @@
 
 module BrowserChannelsDynoCaching
   extend ActiveSupport::Concern
-  require "sentry-raven"
 
   PAGE_PREFIX = "_page_".freeze
 
@@ -60,7 +59,7 @@ module BrowserChannelsDynoCaching
 
   def update_dyno_cache
     redis_value = Rails.cache.fetch(self.class::REDIS_KEY, race_condition_ttl: 30) do
-      Raven.capture_message("Failed to use redis cache for Dyno cache: #{klass_dyno_cache}, continuing to read from cache instead")
+      LogException.perform("Failed to use redis cache for Dyno cache: #{klass_dyno_cache}, continuing to read from cache instead")
     end
     if redis_value.present?
       self.class.class_variable_set(klass_dyno_cache, redis_value)

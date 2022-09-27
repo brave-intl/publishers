@@ -12,7 +12,7 @@ class Paypal::RefreshIdentity < BaseService
       access_token = fetch_access_token
       raise_token_exception! if access_token.nil?
     rescue => e
-      Raven.capture_exception(e)
+      LogException.perform(e)
     end
 
     user_info_response = Faraday.get("#{Rails.application.secrets[:paypal_api_uri]}/v1/identity/oauth2/userinfo") do |req|
