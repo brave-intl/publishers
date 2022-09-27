@@ -49,10 +49,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if !Rails.env.production?
             if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
-              uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
+              uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address
             end
           else
-            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || ""
+            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address
           end
 
           wallet.uphold_wallet = uphold_wallet
@@ -63,14 +63,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           connection = site_banner_lookup.publisher.bitflyer_connection
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: connection)
-
-          if !Rails.env.production?
-            if connection.country && allowed_regions[:bitflyer][:allow].include?(connection.country.upcase)
-              bitflyer_wallet.address = site_banner_lookup.channel.deposit_id || ""
-            end
-          else
-            bitflyer_wallet.address = site_banner_lookup.channel.deposit_id || ""
-          end
+          bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
 
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
@@ -83,10 +76,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if !Rails.env.production?
             if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
-              gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id || ""
+              gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
             end
           else
-            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id || ""
+            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
           end
 
           wallet.gemini_wallet = gemini_wallet
