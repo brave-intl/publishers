@@ -1,5 +1,5 @@
 # typed: ignore
-require "sentry-raven"
+require "newrelic_rpm"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -71,7 +71,7 @@ Rails.application.configure do
 
     error_handler: ->(method:, returning:, exception:) {
                      # Report errors to Sentry as warnings
-                     Raven.capture_exception exception, level: "warning",
+                     NewRelic::Agent.notice_error exception, level: "warning",
                                                         tags: {method: method, returning: returning}
                    }
   }

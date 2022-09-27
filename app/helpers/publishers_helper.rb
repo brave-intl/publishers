@@ -6,11 +6,10 @@ module PublishersHelper
   PAYPAL_TEMPLATE = Addressable::Template.new("https://{host}/connect{?flowEntry,client_id,scope,redirect_uri}")
   PENNY = 0.01
 
-  def sentry_catcher
+  def error_catcher
     yield
   rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
+    LogException.perform(e)
   end
 
   def paypal_connect_url
@@ -68,7 +67,7 @@ module PublishersHelper
 
   def publisher_overall_bat_balance_amount(publisher)
     amount = 0.0
-    sentry_catcher do
+    error_catcher do
       amount = if publisher.only_user_funds?
         publisher.wallet&.contribution_balance&.amount_bat
       elsif publisher.no_grants?
@@ -92,7 +91,7 @@ module PublishersHelper
     return if default_currency == "BAT" || default_currency.blank?
 
     result = I18n.t("helpers.publisher.conversion_unavailable", code: default_currency)
-    sentry_catcher do
+    error_catcher do
       balance = if publisher.only_user_funds?
         publisher.wallet&.contribution_balance&.amount_default_currency
       elsif publisher.no_grants?
@@ -116,7 +115,7 @@ module PublishersHelper
 
   def publisher_referral_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
-    sentry_catcher do
+    error_catcher do
       amount = publisher.wallet&.referral_balance&.amount_bat
       balance = "%.2f" % amount if amount.present?
     end
@@ -126,7 +125,7 @@ module PublishersHelper
 
   def publisher_contribution_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
-    sentry_catcher do
+    error_catcher do
       amount = publisher.wallet&.contribution_balance&.amount_bat
       balance = "%.2f" % amount if amount.present?
     end
@@ -137,8 +136,8 @@ module PublishersHelper
   def publisher_channel_bat_balance(publisher, channel_identifier)
     balance = I18n.t("helpers.publisher.balance_unavailable")
 
-    # Note: sentry catcher swallows important information
-    sentry_catcher do
+    # Note: error catcher swallows important information
+    error_catcher do
       channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
       value = channel_balance.present? && channel_balance&.amount_bat.present? ? channel_balance&.amount_bat : nil
 

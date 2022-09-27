@@ -1,7 +1,5 @@
 # typed: ignore
 
-require "sentry-raven"
-
 class Api::V3::Public::ChannelsController < Api::V3::Public::BaseController
   include BrowserChannelsDynoCaching
   @@cached_payload = nil

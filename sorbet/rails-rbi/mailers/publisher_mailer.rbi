@@ -224,7 +224,7 @@ class PublisherMailer
   def self.select_year(date, options = {}, html_options = {}); end
 
   sig { returns(ActionMailer::MessageDelivery) }
-  def self.sentry_catcher; end
+  def self.error_catcher; end
 
   sig { params(channel: T.untyped).returns(ActionMailer::MessageDelivery) }
   def self.should_display_verification_token?(channel); end

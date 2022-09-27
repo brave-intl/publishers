@@ -26,8 +26,7 @@ class PublisherBalanceGetter < BaseApiClient
     Rails.logger.info("Error receiving eyeshade balance #{e.message}")
     :unavailable
   rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
+    LogException.perform(e)
     :unavailable
   end
 
