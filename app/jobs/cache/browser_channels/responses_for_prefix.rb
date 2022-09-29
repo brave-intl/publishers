@@ -76,10 +76,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if !Rails.env.production?
             if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
-              gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
+              gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id || ""
             end
           else
-            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
+            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id || ""
           end
 
           wallet.gemini_wallet = gemini_wallet
