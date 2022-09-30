@@ -4,7 +4,7 @@ class GeminiRefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
   include MockRewardsResponses
 
-  let(:limit) { 7 }
+  let(:limit) { 6 }
 
   describe "#perform" do
     before do
