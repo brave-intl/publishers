@@ -64,8 +64,6 @@ class Oauth2Controller < ApplicationController
           error = case e
           when Oauth2::Errors::ConnectionError # Use known messages for error flashes
             e
-          when WalletProviderProperties::BlockedCountryError
-            e
           else
             generic_error
           end

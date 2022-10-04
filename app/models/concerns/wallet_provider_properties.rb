@@ -2,8 +2,9 @@
 
 module WalletProviderProperties
   extend ActiveSupport::Concern
+  include Oauth2::Errors
 
-  class BlockedCountryError < StandardError; end
+  class BlockedCountryError < ConnectionError; end
 
   included do
     after_destroy :clear_selected_wallet_provider
@@ -25,10 +26,10 @@ module WalletProviderProperties
       raise StandardError.new("Could not load allowed regions")
     end
     unless allowed_regions[provider_sym][:allow].include?(country_code.upcase)
-      raise BlockedCountryError.new("Your #{provider_sym.to_s.capitalize} account can't be connected to your Brave Creators" \
-        " profile at this time. Your #{provider_sym.to_s.capitalize} account is registered in a country that's not currently " \
-        "supported for connecting to Brave Creators.</br>See the <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>" \
-        "current list of supported regions and learn more</a> about connecting a custodial account to Brave Rewards.")
+      raise BlockedCountryError.new(I18n.t("publishers.wallet_connection.blocked_country_error",
+        provider: provider_sym.to_s.capitalize,
+        support_post: "https://support.brave.com/hc/en-us/articles/6539887971469")
+                                    .html_safe)
     end
   end
 end
