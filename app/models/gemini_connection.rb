@@ -135,6 +135,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     user ||= users.first
 
     return if !user.present?
+    check_country(user.country_code, :gemini)
 
     update!(
       display_name: user.name,

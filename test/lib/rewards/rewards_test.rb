@@ -17,7 +17,7 @@ class RewardsTest < ActiveSupport::TestCase
 
   describe "#get" do
     before do
-      stub_get_parameters
+      stub_rewards_parameters
     end
 
     it "should return rewards data" do

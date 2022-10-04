@@ -7,9 +7,11 @@ require "jobs/sidekiq_test_case"
 class GeminiConnectionTest < SidekiqTestCase
   include MockGeminiResponses
   include MockOauth2Responses
+  include MockRewardsResponses
+
+  let(:klass) { GeminiConnection }
 
   describe "Oauth2::AuthorizationCodeBase" do
-    let(:klass) { GeminiConnection }
     let(:conn) { gemini_connections(:connection_with_token) }
 
     describe "conn.class.oauth2_client" do
@@ -85,7 +87,7 @@ class GeminiConnectionTest < SidekiqTestCase
 
     describe "with_active_connection" do
       before do
-        assert GeminiConnection.with_active_connection.count == 6
+        assert GeminiConnection.with_active_connection.count == 7
       end
 
       describe "when true" do
@@ -104,14 +106,14 @@ class GeminiConnectionTest < SidekiqTestCase
       describe "when true" do
         it "should not return connection" do
           GeminiConnection.update_all(access_expiration_time: 2.days.ago)
-          assert GeminiConnection.with_active_connection.count == 6
+          assert GeminiConnection.with_active_connection.count == 7
         end
       end
     end
 
     describe "with_active_connection" do
       before do
-        assert GeminiConnection.with_active_connection.count == 6
+        assert GeminiConnection.with_active_connection.count == 7
       end
 
       describe "when true" do
@@ -145,6 +147,81 @@ class GeminiConnectionTest < SidekiqTestCase
       gemini_connection.destroy
       publisher.reload
       assert_nil publisher.selected_wallet_provider
+    end
+  end
+
+  describe "verify through gemini" do
+    before do
+      stub_rewards_parameters
+      mock_refresh_token_success(klass.oauth2_client.token_url)
+    end
+
+    describe "when the account is from a blocked country" do
+      let(:connection) { gemini_connections(:gemini_blocked_country_connection) }
+
+      before do
+        mock_gemini_blocked_country_account_request!
+      end
+
+      it "raises a blocked country error" do
+        assert_raises(GeminiConnection::BlockedCountryError) { connection.verify_through_gemini }
+      end
+    end
+
+    describe "when the account is from an allowed country" do
+      let(:connection) { gemini_connections(:default_connection) }
+
+      before do
+        mock_gemini_account_request!
+      end
+
+      it "updates successfully" do
+        assert(connection.verify_through_gemini)
+      end
+    end
+  end
+
+  describe "create new connection" do
+    let(:access_token_response) {
+      AccessTokenResponse.new(
+        access_token: "km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm",
+        expires_in: 189561,
+        scope: "Auditor",
+        refresh_token: "6ooHciJa8nqwV5pFEyBAbt25Q7kZ16VAnS31p7xdSR9",
+        token_type: "Bearer"
+      )
+    }
+
+    before do
+      stub_rewards_parameters
+      mock_refresh_token_success(klass.oauth2_client.token_url)
+      mock_gemini_recipient_id!
+    end
+
+    describe "when the account is from a blocked country" do
+      let(:publisher) { publishers(:verified_blocked_country_gemini) }
+
+      before do
+        mock_gemini_blocked_country_account_request!
+      end
+
+      it "raises a blocked country error" do
+        assert_raises(GeminiConnection::BlockedCountryError) do
+          GeminiConnection.create_new_connection!(publisher, access_token_response)
+        end
+      end
+    end
+
+    describe "when the account is from an allowed country" do
+      let(:publisher) { publishers(:gemini_completed) }
+
+      before do
+        mock_gemini_account_request!
+      end
+
+      it "updates successfully" do
+        assert(GeminiConnection.create_new_connection!(publisher, access_token_response))
+      end
     end
   end
 

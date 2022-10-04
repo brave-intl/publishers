@@ -56,3 +56,9 @@ top_referrer_gemini_connected:
   recipient_id: <%= SecureRandom.uuid %>
   country: 'US'
   is_verified: true
+
+gemini_blocked_country_connection:
+  publisher: verified_blocked_country_gemini
+  is_verified: true
+  recipient_id: <%= SecureRandom.uuid %>
+  country: 'AQ'

@@ -107,7 +107,7 @@ module MockUpholdResponses
     stub_request(:post, "#{Oauth2::Config::Uphold.base_token_url}/v0/me/cards").to_return(status: http_status, body: body.to_json)
   end
 
-  def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", user_status: "ok")
+  def stub_get_user(id: "21e65c4d-55e4-41be-97a1-ff38d8f3d945", member_at: "2018-08-01T09:53:44.293Z", user_status: "ok", country: "US")
     body = {
       address: {
         city: "Ryleighfort",
@@ -139,7 +139,7 @@ module MockUpholdResponses
         total: "22390.94"
       },
       birthdate: "2000-09-27",
-      country: "US",
+      country: country,
       currencies: [
         "BTC",
         "CNY",

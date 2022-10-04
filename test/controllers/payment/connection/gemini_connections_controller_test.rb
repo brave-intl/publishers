@@ -3,24 +3,24 @@
 require "test_helper"
 require "webmock/minitest"
 
-class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
+class GeminiConnectionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include MockRewardsResponses
+  include MockGeminiResponses
 
   describe "#callback" do
-    let(:scope) { "cards:write" }
-    let(:publisher) { publishers(:google_verified) }
+    let(:publisher) { publishers(:gemini_completed) }
     let(:state) { "some value" }
     let(:cookie) { state }
     let(:verified_request) {
       ActionDispatch::Cookies::CookieJar.any_instance.stubs(:encrypted).returns({"_state" => cookie})
-      get "/publishers/uphold_verified", params: {code: "value", state: state}
+      get "/publishers/gemini_connection/new", params: {code: "value", state: state}
     }
 
     before do
       stub_rewards_parameters
-      UpholdConnection.delete_all
-      assert_equal(0, UpholdConnection.count)
+      GeminiConnection.delete_all
+      assert_equal(0, GeminiConnection.count)
       sign_in(publisher)
     end
 
@@ -28,7 +28,9 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
       let(:cookie) { "another value" }
 
       before do
-        get "/publishers/uphold_verified", params: {code: "value", state: state}
+        mock_gemini_unverified_account_request!
+        # verified_request
+        get "/publishers/gemini_connection/new", params: {code: "value", state: state}
       end
 
       it "should redirect" do
@@ -40,19 +42,16 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
       end
 
       it "should not create a connection" do
-        assert_equal(0, UpholdConnection.count)
+        assert_equal(0, GeminiConnection.count)
       end
     end
 
     describe "when valid state" do
       describe "when successful" do
         before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user
-          stub_get_card
-          stub_get_user_deposits_capability
-          stub_list_cards
-          stub_create_card
+          mock_refresh_token_success(GeminiConnection.oauth2_client.token_url)
+          mock_gemini_recipient_id!
+          mock_gemini_account_request!
         end
 
         describe "when allow_debug?" do
@@ -75,8 +74,8 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
             assert_equal(response.status, 302)
           end
 
-          it "should create a new uphold_connection" do
-            assert_equal(1, UpholdConnection.count)
+          it "should create a new gemini_connection" do
+            assert_equal(1, GeminiConnection.count)
           end
 
           it "should not include a flash alert" do
@@ -87,23 +86,11 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     describe "when unsuccessful" do
-      describe "when allow_debug?" do
-        before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user
-          stub_get_user_deposits_capability
-          stub_get_card
-          Oauth2Controller.any_instance.stubs(:allow_debug?).returns(true)
-        end
-
-        it "should return 200" do
-          assert_raises(Oauth2::Errors::ConnectionError) { verified_request }
-        end
-      end
-
       describe "when unknown error" do
         before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
+          mock_unknown_failure(GeminiConnection.oauth2_client.token_url)
+          mock_gemini_recipient_id!
+          mock_gemini_account_request!
           verified_request
         end
 
@@ -114,10 +101,9 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
 
       describe "when blocked country error" do
         before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user(country: "AQ")
-          stub_get_user_deposits_capability
-          stub_get_card
+          mock_refresh_token_success(GeminiConnection.oauth2_client.token_url)
+          mock_gemini_recipient_id!
+          mock_gemini_blocked_country_account_request!
           verified_request
         end
 
