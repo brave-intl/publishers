@@ -27,6 +27,14 @@ verified_blocked_country:
   name: "Vn the Verified"
   selected_wallet_provider: verified_blocked_country_connection (UpholdConnection)
 
+verified_blocked_country_gemini:
+  <<: *default
+  default_site_banner_id: "00000000-0000-0000-0000-00000000019"
+  default_site_banner_mode: true
+  email: "AQ@verified.org"
+  name: "AQ the Verified"
+  selected_wallet_provider: gemini_blocked_country_connection (GeminiConnection)
+
 notes:
   <<: *default
   email: "alice@notes.org"
