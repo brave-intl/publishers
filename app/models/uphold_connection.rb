@@ -28,6 +28,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   UPHOLD_CARD_LABEL = "Brave Rewards"
+  SUPPORTED_CURRENCIES = ["BAT", "USD"].freeze
 
   # Snooze for the next ~ 80 years, this is what I consider forever from now :)
   FOREVER_DATE = DateTime.new(2100, 1, 1)
@@ -56,6 +57,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   RESTRICTED = "restricted"
 
   JAPAN = "JP"
+
+  validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true, if: :default_currency_changed?
 
   #################
   # Associations
@@ -216,13 +219,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     (default_currency_confirmed_at.present? && address.blank?) || !valid_card?
   end
 
-  # Public: Returns a list of supported currencies for a publisher
-  #
-  # Returns an array of currencies
-  def supported_currencies
-    currencies
-  end
-
   # Calls the Uphold API and checks
   #   - if the address exists
   #   - the card is in the same currency as the publisher's chosen currency
@@ -277,10 +273,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def japanese_account?
     country == JAPAN
-  end
-
-  def currencies
-    ["BAT", default_currency].uniq.compact
   end
 
   # Legacy methods

@@ -4,7 +4,7 @@
 class BitflyerConnection < Oauth2::AuthorizationCodeBase
   include WalletProviderProperties
 
-  SUPPORTED_CURRENCIES = ["BAT", "USD", "BTC", "ETH"].freeze
+  SUPPORTED_CURRENCIES = ["BAT", "USD"].freeze
   JAPAN = "JP"
 
   has_paper_trail
@@ -37,14 +37,6 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
   def verify_url
     ""
-  end
-
-  # Public: All the support currency pairs for BAT on the Bitflyer Exchange
-  # https://bitflyer.com/en-us/api
-  #
-  # Returns an array of currencies.
-  def supported_currencies
-    SUPPORTED_CURRENCIES
   end
 
   def is_valid_connection?

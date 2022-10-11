@@ -13,35 +13,6 @@ describe("Wallet", () => {
     provider: "uphold",
     scope: "cards:read user:read",
     default_currency: "GBP",
-    possible_currencies: [
-      "AED",
-      "ARS",
-      "AUD",
-      "BRL",
-      "CAD",
-      "CHF",
-      "CNY",
-      "DKK",
-      "EUR",
-      "GBP",
-      "HKD",
-      "ILS",
-      "INR",
-      "JPY",
-      "KES",
-      "MXN",
-      "NOK",
-      "NZD",
-      "PHP",
-      "PLN",
-      "SEK",
-      "SGD",
-      "USD",
-      "XAG",
-      "XAU",
-      "XPD",
-      "XPT"
-    ],
     address: "",
     action: null,
     channel_balances: {
@@ -114,7 +85,6 @@ describe("Wallet", () => {
     let wallet = new Wallet(walletData);
     expect(wallet.defaultCurrency).toEqual("GBP");
     expect(wallet.authorized).toEqual(true);
-    expect(wallet.possibleCurrencies.includes("HKD")).toEqual(true);
   });
 
   it("initializes balance info from json", () => {

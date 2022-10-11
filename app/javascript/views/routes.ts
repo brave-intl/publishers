@@ -13,9 +13,6 @@ export default {
       connect: "/connection/bitflyer_connection",
       destroy: "/connection/bitflyer_connection"
     },
-    connections: {
-      currency: "/connection/currency"
-    },
     promo_registrations: {
       show: {
         path: "/publishers/promo_registrations/for_referral_code?referral_code={referral_code}"
