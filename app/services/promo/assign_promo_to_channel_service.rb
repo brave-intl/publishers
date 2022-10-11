@@ -103,6 +103,10 @@ class Promo::AssignPromoToChannelService < BaseApiClient
     "Bearer #{Rails.application.secrets[:api_promo_key]}"
   end
 
+  def proxy_url
+    nil
+  end
+
   def request_body(channel)
     case channel.details_type
     when "SiteChannelDetails"
