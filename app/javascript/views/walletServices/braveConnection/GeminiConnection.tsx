@@ -5,8 +5,6 @@ import routes from "../../routes";
 import { FlexWrapper } from "../../style";
 import GeminiIcon from "./geminiConnection/GeminiIcon";
 import { VerifyButton } from "./VerifyButton";
-import Modal, { ModalSize } from "../../../components/modal/Modal";
-import CurrencySelection from "./CurrencySelection";
 import DisconnectPrompt from "./upholdConnection/UpholdDisconnectPrompt";
 
 class GeminiConnection extends React.Component<any, any> {
@@ -18,7 +16,6 @@ class GeminiConnection extends React.Component<any, any> {
 
     this.state = {
       error: null,
-      showCurrencyModal: false, // (Albert): At the moment, we don't support the currency modal. Please revert once we do
     };
   }
 
@@ -94,10 +91,6 @@ class GeminiConnection extends React.Component<any, any> {
       </div>
     );
   }
-
-  private showCurrencyModal = (show) => {
-    this.setState({ showCurrencyModal: show });
-  };
 }
 
 export default GeminiConnection;
