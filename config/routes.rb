@@ -33,7 +33,6 @@ Rails.application.routes.draw do
 
   # These routes are for connecting to 3rd-party payment providers.
   namespace :connection, module: "payment/connection" do
-    resource :currency, only: [:show, :update]
     resource :stripe_connection
     resource :gemini_connection
     resource :bitflyer_connection

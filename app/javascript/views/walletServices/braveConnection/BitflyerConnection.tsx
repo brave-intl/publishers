@@ -4,8 +4,6 @@ import { FormattedMessage } from "react-intl";
 import routes from "../../routes";
 import { FlexWrapper } from "../../style";
 import { VerifyButton } from "./VerifyButton";
-import Modal, { ModalSize } from "../../../components/modal/Modal";
-import CurrencySelection from "./CurrencySelection";
 import BitflyerIcon from "./bitflyerConnection/BitflyerIcon";
 
 class BitflyerConnection extends React.Component<any, any> {
@@ -17,7 +15,6 @@ class BitflyerConnection extends React.Component<any, any> {
 
         this.state = {
             error: null,
-            showCurrencyModal: !defaultCurrencyPresent,
         };
     }
 
@@ -108,10 +105,6 @@ class BitflyerConnection extends React.Component<any, any> {
             </div>
         );
     }
-
-    private showCurrencyModal = (show) => {
-        this.setState({ showCurrencyModal: show });
-    };
 }
 
 export default BitflyerConnection;

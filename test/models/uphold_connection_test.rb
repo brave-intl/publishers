@@ -209,27 +209,20 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     end
   end
 
-  describe "#currencies" do
+  describe "#default_currency" do
     let(:conn) { uphold_connections(:google_connection) }
 
-    describe "when exists with other default" do
+    describe "should only ever be BAT or USD" do
       before do
-        conn.default_currency = "BTC"
+        assert conn.default_currency == "BAT"
+
+        conn.default_currency = "USD"
         conn.save!
-        conn.reload
-      end
+        conn.reload!
+        assert conn.default_currency == "USD"
 
-      it "should return BAT and default" do
-        assert conn.currencies.count == 2
-        assert conn.currencies.include?("BAT")
-        assert conn.currencies.include?("BTC")
-      end
-    end
-
-    describe "when brand new connection" do
-      it "should return only BAT" do
-        assert conn.currencies.count == 1
-        assert conn.currencies[0] == "BAT"
+        conn.default_currency = "BTC"
+        assert_raises(ActiveRecord::RecordInvalid) { conn.save! }
       end
     end
   end

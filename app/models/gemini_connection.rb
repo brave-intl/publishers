@@ -18,6 +18,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   belongs_to :publisher
   has_many :gemini_connection_for_channels
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
+  # GeminiConnections do not have a default currency field, it is always assumed to be BAT
 
   scope :payable, -> {
     where(is_verified: true)
@@ -53,10 +54,6 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   def default_currency
     "BAT"
-  end
-
-  def supported_currencies
-    ["BAT"]
   end
 
   def japanese_account?
