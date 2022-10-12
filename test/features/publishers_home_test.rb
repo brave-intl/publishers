@@ -53,26 +53,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     assert_current_path(/site_channels\/new/)
   end
 
-  test "confirm default currency modal does not appear for non uphold verified publishers" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    visit home_publishers_path
-    refute_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
-  end
-
-  test "confirm default currency modal does not appear for non uphold authorized publishers" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    wallet = {"wallet" => {"authorized" => false}}
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
-
-    visit home_publishers_path
-    refute_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
-  end
-
   test "dashboard can still load even when publisher's wallet cannot be fetched from eyeshade" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)

@@ -12,8 +12,7 @@ module Publishers
         wallet: wallet,
         uphold_connection: uphold_wallet,
         gemini_connection: gemini_wallet,
-        bitflyer_connection: bitflyer_wallet,
-        possible_currencies: current_publisher.uphold_connection&.uphold_details&.currencies || []
+        bitflyer_connection: bitflyer_wallet
       }
 
       render(json: wallet_data)
