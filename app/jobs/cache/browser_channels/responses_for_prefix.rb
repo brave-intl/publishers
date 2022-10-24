@@ -49,10 +49,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if !Rails.env.production?
             if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
-              uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address
+              uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || connection.address
             end
           else
-            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address
+            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || connection.address
           end
 
           wallet.uphold_wallet = uphold_wallet
