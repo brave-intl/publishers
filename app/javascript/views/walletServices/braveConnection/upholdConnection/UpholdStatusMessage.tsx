@@ -38,7 +38,7 @@ const UpholdStatusMessage = (props) => {
       }
       break;
     case UpholdStatus.BlockedCountry:
-      messageId = "walletServices.uphold.status.blocked_country_error";
+      messageId = "walletServices.uphold.status.blocked_country";
       break;
   }
 

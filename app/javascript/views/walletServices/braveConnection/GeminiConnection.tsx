@@ -33,7 +33,7 @@ class GeminiConnection extends React.Component<any, any> {
     } else if (isDuplicate) {
       messageId = "walletServices.gemini.duplicateAccount" 
     } else if (!valid_country) {
-      messageId = "walletServices.gemini.blocked_country_error"
+      messageId = "walletServices.gemini.blocked_country"
     } else if (!isPayable) {
       // isPayable is based on GeminiConnection.payable? which requires a truthy recipient_id
       messageId = "walletServices.gemini.notPayable" 
