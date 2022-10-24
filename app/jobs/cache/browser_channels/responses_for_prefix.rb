@@ -24,9 +24,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
 
-    if !Rails.env.production?
-      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
-    end
+    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
 
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
@@ -39,11 +37,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.uphold_connection
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
 
-          if !Rails.env.production?
-            if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
-              uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || connection.address
-            end
-          else
+          if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
             uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || connection.address
           end
 
@@ -66,11 +60,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.gemini_connection
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
 
-          if !Rails.env.production?
-            if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
-              gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
-            end
-          else
+          if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
             gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
           end
 
