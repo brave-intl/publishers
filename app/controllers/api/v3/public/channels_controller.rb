@@ -17,15 +17,7 @@ class Api::V3::Public::ChannelsController < Api::V3::Public::BaseController
       {channel: Channel.find_by_channel_identifier(id), channel_identifier: id}
     end
 
-    parameters = Rewards::Parameters.new.get_parameters
-
-    case parameters
-    when Rewards::Types::ParametersResponse
-      allowed_regions = parameters.custodianRegions
-    else
-      LogException.perform(parameters)
-      raise StandardError.new("Could not load allowed regions")
-    end
+    allowed_regions = fetch_allowed_regions
 
     response = {}
     channels.each do |channel_obj|

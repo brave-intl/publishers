@@ -27,6 +27,10 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
     with_active_connection.with_expired_tokens
   }
 
+  def provider_sym
+    :bitflyer
+  end
+
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
   end

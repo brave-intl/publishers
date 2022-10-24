@@ -44,6 +44,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     ACCESS_PARAMETERS_ACQUIRED = :access_parameters_acquired
     CODE_ACQUIRED = :code_acquired
     UNCONNECTED = :unconnected
+    BLOCKED_COUNTRY = :blocked_country
     # (Albert Wang): Consider adding refactoring all of the above states as they
     # aren't valid states: https://uphold.com/en/developer/api/documentation/#user-object
     RESTRICTED = :restricted
@@ -108,6 +109,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # Public Instance Methods
   ################
 
+  def provider_sym
+    :uphold
+  end
+
   # TODO: Deprecate ASAP
   def receive_uphold_code(code)
     update(
@@ -164,6 +169,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
     if status == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
+    elsif !valid_country?
+      UpholdAccountState::BLOCKED_COUNTRY
     elsif uphold_reauthorization_needed?
       UpholdAccountState::REAUTHORIZATION_NEEDED
     elsif uphold_verified? && !is_member?
@@ -246,8 +253,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
     case result
     when UpholdUser
-      check_country(result.country, :uphold)
-
       success = update(
         is_member: result.memberAt.present?,
         member_at: result.memberAt,
@@ -469,16 +474,13 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           conn.is_member = false
         end
 
-        # Make sure country is on the allow list
-        conn.check_country(user.country, :uphold)
-        conn.country = user.country
-
         # Wow.  This I haven't encountered before
         # The type annotations of the UpholdUser struct are different
         # from that of the model, so you have to cast the values
         # in order to assign them
         conn.status = T.must(user.status)
         conn.uphold_id = T.must(user.id)
+        conn.country = user.country
 
         # 4.) Create the uphold "card" or wallet for the default currency in question.
         # Fail if we cannot
