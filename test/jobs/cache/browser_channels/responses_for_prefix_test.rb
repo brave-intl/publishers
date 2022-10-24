@@ -4,12 +4,10 @@ require "test_helper"
 require "jobs/sidekiq_test_case"
 
 class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
-  before do
-    VCR.insert_cassette "rewards-parameters"
-  end
+  include MockRewardsResponses
 
-  after do
-    VCR.eject_cassette
+  before do
+    stub_rewards_parameters
   end
 
   def self.test_order
@@ -113,7 +111,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     end
 
     test "generating channel response should fail where country information could not be loaded" do
-      stub_request(:get, "https://api.rewards.bravesoftware.com/v1/parameters")
+      stub_request(:get, "#{Rails.application.secrets[:api_rewards_base_uri]}/v1/parameters")
         .to_return(status: 400, body: "")
 
       channel = channels(:verified)

@@ -12,7 +12,7 @@ module Rewards
 
     sig(:final) { returns(String) }
     def api_base_uri
-      "https://api.rewards.bravesoftware.com"
+      Rails.application.secrets[:api_rewards_base_uri]
     end
   end
 end
