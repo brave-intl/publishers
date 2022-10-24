@@ -20,7 +20,7 @@ module Rewards
     end
 
     # Returns either an error or the custodianRegions secton of the parameters response
-    sig { params(cached: T::Boolean).returns(T.any(T::Hash[T.any(String, Symbol), T::Hash[T.any(String, Symbol), T::Array[T.nilable(String)]]], StandardError))}
+    sig { params(cached: T::Boolean).returns(T.any(T::Hash[T.any(String, Symbol), T::Hash[T.any(String, Symbol), T::Array[T.nilable(String)]]], StandardError)) }
     def fetch_allowed_regions(cached = false)
       parameters = cached ? get_cached_parameters : get_parameters
 
