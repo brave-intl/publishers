@@ -15,7 +15,7 @@ module WalletProviderProperties
     publisher.update(selected_wallet_provider: nil)
   end
 
-  def check_country(country_code, provider_sym)
+  def valid_country?(country_code, provider_sym)
     parameters = Rewards::Parameters.new.get_parameters
 
     case parameters
@@ -25,7 +25,12 @@ module WalletProviderProperties
       LogException.perform(parameters)
       raise StandardError.new("Could not load allowed regions")
     end
-    unless allowed_regions[provider_sym][:allow].include?(country_code.upcase)
+
+    allowed_regions[provider_sym][:allow].include?(country_code.upcase)
+  end
+
+  def check_country(country_code, provider_sym)
+    unless valid_country?(country_code, provider_sym)
       raise BlockedCountryError.new(I18n.t("publishers.wallet_connection.blocked_country_error",
         provider: provider_sym.to_s.capitalize,
         support_post: "https://support.brave.com/hc/en-us/articles/6539887971469")

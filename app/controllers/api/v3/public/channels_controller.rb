@@ -11,6 +11,39 @@ class Api::V3::Public::ChannelsController < Api::V3::Public::BaseController
     render(json: statistical_totals_json, status: 200)
   end
 
+  # Takes an array of channel identifiers and retuns a dictionary of channel identifiers as keys and true/false as values
+  def allowed_countries
+    channels = params[:channel_ids].map do |id|
+      {channel: Channel.find_by_channel_identifier(id), channel_identifier: id}
+    end
+
+    parameters = Rewards::Parameters.new.get_parameters
+
+    case parameters
+    when Rewards::Types::ParametersResponse
+      allowed_regions = parameters.custodianRegions
+    else
+      LogException.perform(parameters)
+      raise StandardError.new("Could not load allowed regions")
+    end
+
+    response = {}
+    channels.each do |channel_obj|
+      publisher = channel_obj[:channel].publisher
+
+      response[channel_obj[:channel_identifier]] = if publisher.uphold_connection.present?
+        allowed_regions.include?(publisher.uphold_connection.country)
+      elsif publisher.gemini_connection.present?
+        allowed_regions.include?(publisher.gemini_connection.country)
+      else
+        publisher.bitflyer_connection.present?
+      end
+    end
+
+    # is there any metadata we need here?
+    render(json: response.to_json, status: 200)
+  end
+
   private
 
   def dyno_expiration_key
