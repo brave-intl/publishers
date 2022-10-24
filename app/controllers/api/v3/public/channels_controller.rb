@@ -17,16 +17,16 @@ class Api::V3::Public::ChannelsController < Api::V3::Public::BaseController
       {channel: Channel.find_by_channel_identifier(id), channel_identifier: id}
     end
 
-    allowed_regions = fetch_allowed_regions
+    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
 
     response = {}
     channels.each do |channel_obj|
       publisher = channel_obj[:channel].publisher
 
       response[channel_obj[:channel_identifier]] = if publisher.uphold_connection.present?
-        allowed_regions.include?(publisher.uphold_connection.country)
+        allowed_regions[:uphold][:allow].include?(publisher.uphold_connection.country)
       elsif publisher.gemini_connection.present?
-        allowed_regions.include?(publisher.gemini_connection.country)
+        allowed_regions[:gemini][:allow].include?(publisher.gemini_connection.country)
       else
         publisher.bitflyer_connection.present?
       end

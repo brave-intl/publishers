@@ -11,10 +11,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include PublishersHelper
   include EyeshadeHelper
   include MockUpholdResponses
+  include MockRewardsResponses
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     stub_uphold_cards!
+    stub_rewards_parameters
   end
 
   after do

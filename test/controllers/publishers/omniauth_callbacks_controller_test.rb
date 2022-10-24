@@ -10,6 +10,11 @@ module Publishers
     include ActionMailer::TestHelper
     include MailerTestHelper
     include PublishersHelper
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
 
     test "should not accept YouTube GET requests to OmniAuth endpoint" do
       ActionController::Base.allow_forgery_protection = true
@@ -76,6 +81,12 @@ module Publishers
   end
 
   class RegisterYoutubeChannelOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
+
     def token
       "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
     end
@@ -247,6 +258,12 @@ module Publishers
   end
 
   class YoutubeLoginOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
+
     def token
       "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
     end
@@ -348,6 +365,12 @@ module Publishers
   end
 
   class TwitchOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
+
     def token
       "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
     end
@@ -425,6 +448,12 @@ module Publishers
   end
 
   class TwitterOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
+
     def token
       "459609731-kjE9N6xB6DmRDL8okQykgnEa7MeECh3Fp8enmAkj"
     end
@@ -529,6 +558,12 @@ module Publishers
   end
 
   class VimeoOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
+
     def token
       "459609731-kjE9N6xB6DmRDL8okQykgnEa7MeECh3Fp8enmAkj"
     end
@@ -639,6 +674,12 @@ module Publishers
   end
 
   class RedditOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    include MockRewardsResponses
+
+    before do
+      stub_rewards_parameters
+    end
+
     def token
       "459609731-kjE9N6xB6DmRDL8okQykgnEa7MeECh3Fp8enmAkj"
     end

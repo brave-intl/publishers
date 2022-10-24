@@ -4,6 +4,11 @@ require "test_helper"
 
 class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include MockRewardsResponses
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "new requires authentication" do
     get new_totp_registration_path

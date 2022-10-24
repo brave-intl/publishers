@@ -26,7 +26,7 @@ module Rewards
 
       case parameters
       when Rewards::Types::ParametersResponse
-        allowed_regions = parameters.custodianRegions
+        parameters.custodianRegions
       else
         LogException.perform(parameters)
         raise StandardError.new("Could not load allowed regions")
