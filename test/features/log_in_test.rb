@@ -6,6 +6,11 @@ class LogInTest < Capybara::Rails::TestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
+
+  before do
+    stub_rewards_parameters
+  end
 
   def canned_u2f_response(registration)
     ActiveSupport::JSON.encode({

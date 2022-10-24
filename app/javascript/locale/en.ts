@@ -277,7 +277,7 @@ export default {
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
       reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your Gemini account.",
-
+      blocked_country: "It looks like your country is currently not supported for Brave Creators verification. But once your country is supported, you’ll automatically become verified and be eligible to receive contributions from your audiences and monthly payouts to your Gemini account! Learn more <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>here</a>.",
       title: "Gemini Account",
       duplicateAccount: "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
     },
@@ -315,6 +315,7 @@ export default {
         nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
         reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
+        blocked_country: "It looks like your country is currently not supported for Brave Creators verification. But once your country is supported, you’ll automatically become verified and be eligible to receive contributions from your audiences and monthly payouts to your Uphold account! Learn more <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>here</a>.",
       },
       title: "Uphold Account"
     },

@@ -653,9 +653,6 @@ en:
       refresh_account_button: Check again.
       still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
       view_account_summary: "Check Balance"
-    wallet_connection:
-      blocked_country_error: |
-        Your %{provider} account can't be connected to your Brave Creators profile at this time. Your %{provider} account is registered in a country that's not currently supported for connecting to Brave Creators.</br>See the <a target='_blank' href='%{support_post}'>current list of supported regions and learn more</a> about connecting a custodial account to Brave Rewards.
     promo_registration:
       remove: 'Remove promo code'
     channel:

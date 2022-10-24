@@ -4,6 +4,11 @@ require "test_helper"
 
 class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include MockRewardsResponses
+
+  before do
+    stub_rewards_parameters
+  end
 
   def canned_u2f_response
     ActiveSupport::JSON.encode({

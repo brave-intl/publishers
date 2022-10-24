@@ -25,15 +25,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     channel_responses = PublishersPb::ChannelResponseList.new
 
     if !Rails.env.production?
-      parameters = Rewards::Parameters.new.get_parameters
-
-      case parameters
-      when Rewards::Types::ParametersResponse
-        allowed_regions = parameters.custodianRegions
-      else
-        LogException.perform(parameters)
-        raise StandardError.new("Could not load allowed regions")
-      end
+      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
     end
 
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|

@@ -24,6 +24,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     where(is_verified: true)
       .where(status: "Active")
       .where.not(recipient_id: nil)
+      .where(country: allowed_countries)
   }
 
   scope :with_expired_tokens, -> {
@@ -44,12 +45,16 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     present: 2
   }, _prefix: :recipient_id
 
+  def provider_sym
+    :gemini
+  end
+
   def prepare_state_token!
     update(state_token: SecureRandom.hex(64).to_s)
   end
 
   def payable?
-    is_verified? && status == "Active" && recipient_id
+    is_verified? && status == "Active" && recipient_id && valid_country?
   end
 
   def default_currency
@@ -132,8 +137,6 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     user ||= users.first
 
     return if !user.present?
-    check_country(user.country_code, :gemini)
-
     update!(
       display_name: user.name,
       status: user.status,

@@ -5,11 +5,13 @@ require "test_helper"
 class AdminFeatureTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
 
   let(:publisher) { publishers(:admin) }
 
   before do
     sign_in publisher
+    stub_rewards_parameters
   end
 
   test "can view admin home" do

@@ -98,19 +98,6 @@ class GeminiConnectionsControllerTest < ActionDispatch::IntegrationTest
           assert_equal(I18n.t("shared.error"), flash.alert)
         end
       end
-
-      describe "when blocked country error" do
-        before do
-          mock_refresh_token_success(GeminiConnection.oauth2_client.token_url)
-          mock_gemini_recipient_id!
-          mock_gemini_blocked_country_account_request!
-          verified_request
-        end
-
-        it "should redirect with a blocked country error message" do
-          assert flash.alert.include?("account is registered in a country that's not currently supported for connecting to Brave Creators")
-        end
-      end
     end
   end
 end

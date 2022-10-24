@@ -7,8 +7,10 @@ require "mocha/test_unit"
 class PayoutInProgressTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
 
   before do
+    stub_rewards_parameters
     SetPayoutsInProgressJob.perform_now
   end
 

@@ -48,7 +48,7 @@ module Publishers
     def gemini_wallet
       current_publisher.gemini_connection.as_json(
         only: [:default_currency, :display_name, :recipient_id, :oauth_refresh_failed, :recipient_id_status],
-        methods: [:payable?, :verify_url]
+        methods: [:payable?, :verify_url, :valid_country?]
       )
     end
 

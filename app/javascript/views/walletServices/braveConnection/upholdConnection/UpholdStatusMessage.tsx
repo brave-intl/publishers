@@ -10,6 +10,7 @@ enum UpholdStatus {
   CodeAcquired = "code_acquired",
   Unconnected = "unconnected",
   Restricted = "restricted",
+  BlockedCountry = "blocked_country",
 }
 
 const UpholdStatusMessage = (props) => {
@@ -35,6 +36,9 @@ const UpholdStatusMessage = (props) => {
       if (props.uphold_is_member) {
         messageId = "walletServices.uphold.status.restrictedMember";
       }
+      break;
+    case UpholdStatus.BlockedCountry:
+      messageId = "walletServices.uphold.status.blocked_country_error";
       break;
   }
 

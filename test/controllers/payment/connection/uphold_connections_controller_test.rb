@@ -111,20 +111,6 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
           assert_equal(I18n.t("shared.error"), flash.alert)
         end
       end
-
-      describe "when blocked country error" do
-        before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user(country: "AQ")
-          stub_get_user_deposits_capability
-          stub_get_card
-          verified_request
-        end
-
-        it "should redirect with a blocked country error message" do
-          assert flash.alert.include?("account is registered in a country that's not currently supported for connecting to Brave Creators")
-        end
-      end
     end
   end
 end

@@ -6,6 +6,11 @@ class SignUpTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "can navigate to sign up from landing page" do
     visit root_path
