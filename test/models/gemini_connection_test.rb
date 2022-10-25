@@ -163,8 +163,10 @@ class GeminiConnectionTest < SidekiqTestCase
         mock_gemini_blocked_country_account_request!
       end
 
-      it "raises a blocked country error" do
-        assert_raises(GeminiConnection::BlockedCountryError) { connection.verify_through_gemini }
+      it "updates the connection in a non-payable state" do
+        connection.verify_through_gemini
+        connection.reload
+        refute connection.payable?
       end
     end
 
@@ -205,10 +207,10 @@ class GeminiConnectionTest < SidekiqTestCase
         mock_gemini_blocked_country_account_request!
       end
 
-      it "raises a blocked country error" do
-        assert_raises(GeminiConnection::BlockedCountryError) do
-          GeminiConnection.create_new_connection!(publisher, access_token_response)
-        end
+      it "creates the connection in a non-payable state" do
+        GeminiConnection.create_new_connection!(publisher, access_token_response)
+        connection = GeminiConnection.last
+        refute connection.payable?
       end
     end
 

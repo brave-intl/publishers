@@ -6,6 +6,11 @@ class StatementTest < Capybara::Rails::TestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "statements page doesnt show uphold message for gemini user" do
     publisher = publishers(:gemini_completed)

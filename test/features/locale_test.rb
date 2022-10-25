@@ -6,8 +6,10 @@ class LocaleTest < Capybara::Rails::TestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
 
   before do
+    stub_rewards_parameters
     publisher = publishers(:small_media_group)
     sign_in publisher
   end

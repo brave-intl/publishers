@@ -161,10 +161,9 @@ class UpholdConnectionTest < ActiveSupport::TestCase
                   stub_get_user(country: "AQ")
                 end
 
-                it "raises a blocked country error" do
-                  assert_raises(UpholdConnection::BlockedCountryError) do
-                    UpholdConnection.create_new_connection!(publisher, access_token_response)
-                  end
+                it "sets a blocked country status" do
+                  conn = UpholdConnection.create_new_connection!(publisher, access_token_response)
+                  assert_equal :blocked_country, conn.uphold_status
                 end
               end
             end
@@ -264,12 +263,12 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     before do
       stub_rewards_parameters
       stub_get_user(country: "AQ")
+      stub_get_card(id: conn.address)
     end
 
-    it "raises error when connection is from blocked country" do
-      assert_raises(UpholdConnection::BlockedCountryError) do
-        conn.sync_connection!
-      end
+    it "sets a blocked_country status when connection is from blocked country" do
+      conn.sync_connection!
+      assert_equal :blocked_country, conn.uphold_status
     end
   end
 
@@ -278,6 +277,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
     before do
       uphold_connection = uphold_connections(:verified_connection)
+      stub_rewards_parameters
     end
 
     describe "when uphold_code, access_parameters, and uphold_verified are nil" do

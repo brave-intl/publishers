@@ -262,8 +262,9 @@ export default {
 
     },
     brave: {
-      description: "Connect a crypto wallet to receive contributions and other payments.",
-      title: "Account for BAT Payment"
+      description: "Connect a custodial account to receive BAT contributions and payouts.",
+      title: "Account for BAT Payment",
+      nonKycWarning: "Connect a custodial account to become a <em>verified creator</em>, and to begin receiving monthly payouts. You won’t be eligible for payouts until you connect a custodial account. <custodial_support_link>Learn more.</custodial_support_link>"
     },
     connected: "Connected",
     currencies: {
@@ -277,7 +278,7 @@ export default {
       disconnect: "Disconnect",
       notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
       reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your Gemini account.",
-
+      blocked_country: "It looks like you’re in an unsupported country for Brave Creators with Gemini, so your channels won’t appear as verified. However, once your country is supported, you’ll automatically become verified and be eligible to receive payouts to your Gemini account. <blocked_country_link>Learn More</blocked_country_link>.",
       title: "Gemini Account",
       duplicateAccount: "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
     },
@@ -315,6 +316,7 @@ export default {
         nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
         reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
+        blocked_country: "It looks like you’re in an unsupported country for Brave Creators with Uphold, so your channels won’t appear as verified. However, once your country is supported, you’ll automatically become verified and be eligible to receive payouts to your Uphold account. <blocked_country_link>Learn More</blocked_country_link>.",
       },
       title: "Uphold Account"
     },

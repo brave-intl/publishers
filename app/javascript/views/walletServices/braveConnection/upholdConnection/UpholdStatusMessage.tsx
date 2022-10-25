@@ -10,6 +10,7 @@ enum UpholdStatus {
   CodeAcquired = "code_acquired",
   Unconnected = "unconnected",
   Restricted = "restricted",
+  BlockedCountry = "blocked_country",
 }
 
 const UpholdStatusMessage = (props) => {
@@ -36,12 +37,22 @@ const UpholdStatusMessage = (props) => {
         messageId = "walletServices.uphold.status.restrictedMember";
       }
       break;
+    case UpholdStatus.BlockedCountry:
+      url = null;
+      messageId = "walletServices.uphold.status.blocked_country";
+      break;
   }
 
   return (
     <div className="mt-2 text-danger">
       <VerifyButton verifyUrl={url}>
-        <FormattedMessage id={messageId} />
+        <FormattedMessage id={messageId} values={{
+          blocked_country_link: msg => (
+            <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>
+              <strong>{msg}</strong>
+            </a>
+          )
+        }} />
       </VerifyButton>
     </div>
   );

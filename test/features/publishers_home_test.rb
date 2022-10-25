@@ -7,9 +7,11 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include EyeshadeHelper
   include Rails.application.routes.url_helpers
+  include MockRewardsResponses
 
   let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
   before do
+    stub_rewards_parameters
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
 
     stub_request(:get, uphold_url).to_return(body: {status: "restricted", uphold_id: "123e4567-e89b-12d3-a456-426655440000", currencies: []}.to_json)

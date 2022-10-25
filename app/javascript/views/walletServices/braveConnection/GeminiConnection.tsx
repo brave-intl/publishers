@@ -20,10 +20,10 @@ class GeminiConnection extends React.Component<any, any> {
   }
 
   public render() {
-    const { oauth_refresh_failed, isPayable, recipientIdStatus } = this.props
+    const { oauth_refresh_failed, isPayable, recipientIdStatus, valid_country } = this.props
 
-    const isDuplicate = recipientIdStatus === 'duplicate' 
-    const verifyUrl = oauth_refresh_failed || isDuplicate ? null : this.props.verifyUrl
+    const isDuplicate = recipientIdStatus === 'duplicate'
+    const verifyUrl = oauth_refresh_failed || isDuplicate || !valid_country ? null : this.props.verifyUrl
     const statusId = oauth_refresh_failed || isDuplicate ? "walletServices.trouble" : "walletServices.connected"
 
     let messageId = null
@@ -32,12 +32,14 @@ class GeminiConnection extends React.Component<any, any> {
       messageId = "walletServices.gemini.reauthorizationNeeded" 
     } else if (isDuplicate) {
       messageId = "walletServices.gemini.duplicateAccount" 
+    } else if (!valid_country) {
+      messageId = "walletServices.gemini.blocked_country"
     } else if (!isPayable) {
       // isPayable is based on GeminiConnection.payable? which requires a truthy recipient_id
       messageId = "walletServices.gemini.notPayable" 
     }
-
-    const hasProblem =  (!isPayable || oauth_refresh_failed || isDuplicate) && messageId
+     
+    const hasProblem =  (!isPayable || oauth_refresh_failed || isDuplicate || !valid_country) && messageId
 
     return (
       <div>
@@ -85,7 +87,13 @@ class GeminiConnection extends React.Component<any, any> {
         </div>
         {hasProblem &&  (
           <VerifyButton verifyUrl={verifyUrl}>
-            <FormattedMessage id={messageId} />
+            <FormattedMessage id={messageId} values={{
+              blocked_country_link: msg => (
+                <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>
+                  <strong>{msg}</strong>
+                </a>
+              )
+            }} />
           </VerifyButton>
         )}
       </div>

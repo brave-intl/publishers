@@ -9,9 +9,11 @@ module Publishers
   class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     include ActionMailer::TestHelper
     include Devise::Test::IntegrationHelpers
+    include MockRewardsResponses
 
     before do
       ActionMailer::Base.deliveries.clear
+      stub_rewards_parameters
     end
 
     describe "#sign_up" do

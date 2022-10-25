@@ -220,6 +220,11 @@ Rails.application.routes.draw do
           get "totals"
         end
       end
+      namespace :channels, defaults: {format: :json} do
+        # This is effectively a get request, but our channel_identifiers are not in
+        # an HTML-friendly format
+        post "allowed_countries"
+      end
     end
 
     # /api/v3_p1/
