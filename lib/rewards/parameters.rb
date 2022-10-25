@@ -14,14 +14,14 @@ module Rewards
 
     sig { returns(T.any(ParametersResponse, Faraday::Response)) }
     def get_cached_parameters
-      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 12.hours) do
+      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 5.minutes) do
         get_parameters
       end
     end
 
     # Returns either an error or the custodianRegions secton of the parameters response
     sig { params(cached: T::Boolean).returns(T.any(T::Hash[T.any(String, Symbol), T::Hash[T.any(String, Symbol), T::Array[T.nilable(String)]]], StandardError)) }
-    def fetch_allowed_regions(cached = false)
+    def fetch_allowed_regions(cached = true)
       parameters = cached ? get_cached_parameters : get_parameters
 
       case parameters
