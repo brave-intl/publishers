@@ -111,6 +111,8 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     end
 
     test "generating channel response should fail where country information could not be loaded" do
+      Rails.cache.clear
+
       stub_request(:get, "#{Rails.application.secrets[:api_rewards_base_uri]}/v1/parameters")
         .to_return(status: 400, body: "")
 
@@ -125,6 +127,9 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
           service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
         end
       end
+
+      Rails.cache.clear
+      stub_rewards_parameters
     end
   end
 end
