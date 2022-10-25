@@ -20,6 +20,16 @@ const NotConnected = (props) => (
       {props.locale !== 'ja' && <UpholdConnectButton />}
       {props.locale === 'ja' && <BitflyerConnectButton />}
     </div>
+    <div className="col-11 alert alert-warning m-3 justify-content-center">
+      <FormattedMessage id={"walletServices.brave.nonKycWarning"} values={{
+        custodial_support_link: msg => (
+          <a target='_blank' href='https://support.brave.com/hc/en-us/articles/9884338155149'>
+            {msg}
+          </a>
+        ),
+        em: msg => <em>{msg}</em>
+      }} />
+    </div>
   </div>
 );
 

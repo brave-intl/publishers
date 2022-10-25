@@ -263,7 +263,8 @@ export default {
     },
     brave: {
       description: "Connect a crypto wallet to receive contributions and other payments.",
-      title: "Account for BAT Payment"
+      title: "Account for BAT Payment",
+      nonKycWarning: "Connect a custodial account to become a <em>verified creator</em>, and to begin receiving monthly payouts. You won’t be eligible for payouts until you connect a custodial account. <custodial_support_link>Learn more.</custodial_support_link>"
     },
     connected: "Connected",
     currencies: {
