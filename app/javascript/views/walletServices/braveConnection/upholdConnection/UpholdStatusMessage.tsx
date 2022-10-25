@@ -46,7 +46,7 @@ const UpholdStatusMessage = (props) => {
     <div className="mt-2 text-danger">
       <VerifyButton verifyUrl={url}>
         <FormattedMessage id={messageId} values={{
-          blockedCountryLink: msg => (
+          blocked_country_link: msg => (
             <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>
               {msg}
             </a>
