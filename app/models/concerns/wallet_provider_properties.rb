@@ -17,7 +17,7 @@ module WalletProviderProperties
 
   def allowed_countries
     # fetch cached regions
-    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions(true)
+    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
     allowed_regions[provider_sym][:allow]
   end
 
