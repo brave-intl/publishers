@@ -17,6 +17,7 @@ vendor/
 test/
 tests/
 *_test.go
+*_test.rb
 
 # Semgrep rules folder
 .semgrep
