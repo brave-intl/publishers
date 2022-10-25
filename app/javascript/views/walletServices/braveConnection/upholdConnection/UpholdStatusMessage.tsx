@@ -38,6 +38,7 @@ const UpholdStatusMessage = (props) => {
       }
       break;
     case UpholdStatus.BlockedCountry:
+      url = null;
       messageId = "walletServices.uphold.status.blocked_country";
       break;
   }
@@ -48,7 +49,7 @@ const UpholdStatusMessage = (props) => {
         <FormattedMessage id={messageId} values={{
           blocked_country_link: msg => (
             <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>
-              {msg}
+              <strong>{msg}</strong>
             </a>
           )
         }} />

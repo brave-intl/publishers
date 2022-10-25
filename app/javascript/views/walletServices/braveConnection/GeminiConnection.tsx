@@ -23,7 +23,7 @@ class GeminiConnection extends React.Component<any, any> {
     const { oauth_refresh_failed, isPayable, recipientIdStatus, valid_country } = this.props
 
     const isDuplicate = recipientIdStatus === 'duplicate'
-    const verifyUrl = oauth_refresh_failed || isDuplicate ? null : this.props.verifyUrl
+    const verifyUrl = oauth_refresh_failed || isDuplicate || !valid_country ? null : this.props.verifyUrl
     const statusId = oauth_refresh_failed || isDuplicate ? "walletServices.trouble" : "walletServices.connected"
 
     let messageId = null
@@ -90,7 +90,7 @@ class GeminiConnection extends React.Component<any, any> {
             <FormattedMessage id={messageId} values={{
               blocked_country_link: msg => (
                 <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>
-                  {msg}
+                  <strong>{msg}</strong>
                 </a>
               )
             }} />

@@ -8,7 +8,7 @@ export const VerifyButton = (props) => (
       <img className="mr-3" width="28" height="28" src={warning} />
 
       <div className="row align-items-center">
-        <small className="col-sm-8 text-dark">{props.children}</small>
+        <small className="col-sm-8">{props.children}</small>
         {props.verifyUrl && (
           <small className="col-sm-4">
             <a
