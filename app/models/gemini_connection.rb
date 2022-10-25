@@ -196,5 +196,11 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       [key].pack("H*")
     end
+
+    # setting this as a class method so it can be used in the payable? scope
+    def allowed_countries
+      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions(true)
+      allowed_regions[:gemini][:allow]
+    end
   end
 end

@@ -38,7 +38,7 @@ class GeminiConnection extends React.Component<any, any> {
       // isPayable is based on GeminiConnection.payable? which requires a truthy recipient_id
       messageId = "walletServices.gemini.notPayable" 
     }
-
+     
     const hasProblem =  (!isPayable || oauth_refresh_failed || isDuplicate || !valid_country) && messageId
 
     return (
@@ -87,7 +87,13 @@ class GeminiConnection extends React.Component<any, any> {
         </div>
         {hasProblem &&  (
           <VerifyButton verifyUrl={verifyUrl}>
-            <FormattedMessage id={messageId} />
+            <FormattedMessage id={messageId} values={{
+              blockedCountryLink: msg => (
+                <a target='_blank' href='https://support.brave.com/hc/en-us/articles/6539887971469'>
+                  {msg}
+                </a>
+              )
+            }} />
           </VerifyButton>
         )}
       </div>
