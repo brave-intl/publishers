@@ -127,6 +127,9 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
           service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
         end
       end
+
+      Rails.cache.clear
+      stub_rewards_parameters
     end
   end
 end
