@@ -20,10 +20,10 @@ class GeminiConnection extends React.Component<any, any> {
   }
 
   public render() {
-    const { oauth_refresh_failed, isPayable, recipientIdStatus, valid_country } = this.props
+    const { oauth_refresh_failed, isPayable, recipientIdStatus, validCountry } = this.props
 
     const isDuplicate = recipientIdStatus === 'duplicate'
-    const verifyUrl = oauth_refresh_failed || isDuplicate || !valid_country ? null : this.props.verifyUrl
+    const verifyUrl = oauth_refresh_failed || isDuplicate || !validCountry ? null : this.props.verifyUrl
     const statusId = oauth_refresh_failed || isDuplicate ? "walletServices.trouble" : "walletServices.connected"
 
     let messageId = null
@@ -32,14 +32,14 @@ class GeminiConnection extends React.Component<any, any> {
       messageId = "walletServices.gemini.reauthorizationNeeded" 
     } else if (isDuplicate) {
       messageId = "walletServices.gemini.duplicateAccount" 
-    } else if (!valid_country) {
+    } else if (!validCountry) {
       messageId = "walletServices.gemini.blocked_country"
     } else if (!isPayable) {
       // isPayable is based on GeminiConnection.payable? which requires a truthy recipient_id
       messageId = "walletServices.gemini.notPayable" 
     }
      
-    const hasProblem =  (!isPayable || oauth_refresh_failed || isDuplicate || !valid_country) && messageId
+    const hasProblem =  (!isPayable || oauth_refresh_failed || isDuplicate || !validCountry) && messageId
 
     return (
       <div>
