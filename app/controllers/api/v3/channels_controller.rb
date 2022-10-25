@@ -25,4 +25,8 @@ class Api::V3::ChannelsController < Api::BaseController
     # is there any metadata we need here?
     render(json: response.to_json, status: 200)
   end
+
+  def authenticate_ip
+    true
+  end
 end
