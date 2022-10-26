@@ -100,6 +100,11 @@ class Channel < ApplicationRecord
   scope :visible_site_channels, -> {
     site_channels.where("channels.verified = true or NOT site_channel_details.verification_method IS NULL")
   }
+
+  scope :visible_site_channels_fully_verified, -> {
+    site_channels.where("channels.verified = true")
+  }
+
   scope :not_visible_site_channels, -> {
     site_channels.where(verified: [false, nil]).where(site_channel_details: {verification_method: nil})
   }
@@ -190,6 +195,19 @@ class Channel < ApplicationRecord
       public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
     else
       visible_site_channels.where("site_channel_details.brave_publisher_id": identifier).first
+    end
+  end
+
+  def self.find_fully_verified_by_channel_identifier(identifier)
+    name, property = identifier.split("#")
+    _, value = property&.split(":")
+
+    if name == "twitch"
+      Channel.twitch_channels.verified.where("twitch_channel_details.name": value).first
+    elsif PROPERTIES.include?(name)
+      public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
+    else
+      visible_site_channels_fully_verified.where("site_channel_details.brave_publisher_id": identifier).first
     end
   end
 
