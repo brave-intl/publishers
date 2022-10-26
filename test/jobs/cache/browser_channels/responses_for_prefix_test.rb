@@ -124,6 +124,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
       service = Cache::BrowserChannels::ResponsesForPrefix.new
       assert_raises Faraday::ClientError do
         ActiveRecord::Base.connected_to(role: :reading) do
+          Rails.cache.delete(Rewards::Client::RATES_CACHE_KEY)
           service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
         end
       end
