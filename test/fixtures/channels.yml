@@ -18,6 +18,11 @@ verified_blocked_country:
   details: verified_blocked_country_details (SiteChannelDetails)
   verified: true
 
+verified_blocked_country_with_exception:
+  publisher: verified_with_blocked_country_exception
+  details: verified_blocked_country_with_exception_details (SiteChannelDetails)
+  verified: true
+
 top_referrer_channel:
   publisher: top_referrer
   details: top_referrer_verified_details (SiteChannelDetails)

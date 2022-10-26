@@ -280,6 +280,22 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       stub_rewards_parameters
     end
 
+    describe "when from a blocked region" do
+      let(:blocked) { uphold_connections(:verified_blocked_country_connection) }
+      let(:exception) { uphold_connections(:verified_blocked_country_exemption_connection) }
+
+      it "valid_country? returns false" do
+        refute blocked.valid_country?
+        refute blocked.payable?
+
+        assert_equal blocked.uphold_status, :blocked_country
+      end
+
+      it "valid_country? returns true if the publisher has an exception flag" do
+        assert exception.valid_country?
+      end
+    end
+
     describe "when uphold_code, access_parameters, and uphold_verified are nil" do
       before do
         uphold_connection.uphold_access_parameters = nil

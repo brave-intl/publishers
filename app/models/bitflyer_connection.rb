@@ -39,7 +39,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
     true
   end
 
-  def valid_country?(country_code = JAPAN, provider_sym = :bitflyer)
+  def valid_country?
     true
   end
 

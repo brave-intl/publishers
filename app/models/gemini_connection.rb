@@ -20,6 +20,9 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT
 
+  # This scope was used once to backfill recipient ids in a background job, not used anywhere else
+  # this will be all payable connections, minus connections that are payable because the publisher
+  # has the 'blocked_country_exception' flag.
   scope :payable, -> {
     where(is_verified: true)
       .where(status: "Active")
