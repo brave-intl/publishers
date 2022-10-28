@@ -11,6 +11,10 @@
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
           = " Uphold widget disabled"
+        br
+        label
+          = f.check_box :blocked_country_exception, {}, checked: @publisher.blocked_country_exception?
+          = " Exempt from blocked countries"
       .form-group.border-bottom.pb-2
         label
           = f.check_box UserFeatureFlags::WIRE_ONLY, {}, checked: @publisher.wire_only?

@@ -22,6 +22,6 @@ module WalletProviderProperties
   end
 
   def valid_country?
-    allowed_countries.include?(country&.upcase)
+    publisher.blocked_country_exception? || allowed_countries.include?(country&.upcase)
   end
 end
