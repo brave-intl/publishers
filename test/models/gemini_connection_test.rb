@@ -11,6 +11,10 @@ class GeminiConnectionTest < SidekiqTestCase
 
   let(:klass) { GeminiConnection }
 
+  before do
+    stub_rewards_parameters
+  end
+
   describe "Oauth2::AuthorizationCodeBase" do
     let(:conn) { gemini_connections(:connection_with_token) }
 
@@ -241,6 +245,25 @@ class GeminiConnectionTest < SidekiqTestCase
       assert_equal gemini_connection.access_token, "access_token"
       subject
       assert_equal gemini_connection.access_token, "km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm"
+    end
+  end
+
+  describe "payable?" do
+    describe "when from a blocked country" do
+      let(:connection) { gemini_connections(:gemini_blocked_country_connection) }
+
+      it "should not be payable" do
+        refute connection.valid_country?
+        refute connection.payable?
+      end
+
+      it "should be payable when the publisher has an exception flag" do
+        connection.publisher.blocked_country_exception = true
+        connection.publisher.save!
+        connection.publisher.reload
+
+        assert connection.valid_country?
+      end
     end
   end
 end

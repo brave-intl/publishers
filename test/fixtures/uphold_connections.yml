@@ -62,6 +62,14 @@ verified_blocked_country_connection:
   address: <%= SecureRandom.uuid %>
   country: 'VN'
 
+verified_blocked_country_exemption_connection:
+  publisher: verified_with_blocked_country_exception
+  default_currency: BAT
+  is_member: true
+  uphold_verified: true
+  address: <%= SecureRandom.uuid %>
+  country: 'DJ'
+
 default_connection:
   created_at: 2019-01-01
   publisher: default
