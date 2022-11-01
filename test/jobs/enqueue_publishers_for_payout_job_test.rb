@@ -3,7 +3,13 @@
 require "test_helper"
 
 class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest
+  include MockRewardsResponses
+
   self.use_transactional_tests = false
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "launches a job per payout type (strategy: :deletion)" do
     prc = PayoutReport.count
@@ -11,7 +17,7 @@ class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest
     Payout::GeminiService.any_instance.expects(:perform).at_least_once.returns([])
     Payout::BitflyerService.any_instance.expects(:perform).at_least_once.returns([])
     EnqueuePublishersForPayoutJob.new.perform(
-      final: false
+      final: false,
     )
     assert_equal prc + 1, PayoutReport.count
   end

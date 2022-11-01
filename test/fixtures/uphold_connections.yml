@@ -37,6 +37,7 @@ suspended_connection:
 
 youtube_initial_connection:
   publisher: youtube_initial
+  country: 'US'
   uphold_verified: true
   encrypted_uphold_access_parameters: "<%= TotpRegistration.encrypt_secret(
     '{}',

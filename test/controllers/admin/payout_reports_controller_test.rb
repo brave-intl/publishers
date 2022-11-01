@@ -4,6 +4,8 @@ require "test_helper"
 require "webmock/minitest"
 
 class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
+  include MockRewardsResponses
+
   self.use_transactional_tests = false
 
   include Devise::Test::IntegrationHelpers
@@ -20,6 +22,8 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
     stub_request(:post, /cards/).to_return(body: {id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"}.to_json)
     stub_request(:get, /address/).to_return(body: [{formats: [{format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1"}], type: "anonymous"}].to_json)
+
+    stub_rewards_parameters
 
     Rails.cache.clear
   end

@@ -15,7 +15,14 @@ module Payout
     # Internal: Creates entries for any reason for not paying out a publisher.
     #
     # Returns a boolean
-    def skip_publisher?(payout_report:, publisher:)
+    def skip_publisher?(payout_report:, publisher:, allowed_regions: [], connection: nil)
+      if !allowed_regions.blank? && connection.present?
+        if !allowed_regions.include?(connection.country&.upcase)
+          create_message(message: "Publisher's wallet connection is in an unallowed country: #{connection.country&.upcase}. Allowlist: #{allowed_regions}", payout_report: payout_report, publisher: publisher)
+          return true
+        end
+      end
+
       if !publisher.has_verified_channel?
         create_message(message: "Publisher has no verified channels", payout_report: payout_report, publisher: publisher)
         return true

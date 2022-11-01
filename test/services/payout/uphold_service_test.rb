@@ -207,6 +207,24 @@ class UpholdServiceTest < ActiveJob::TestCase
         end
       end
     end
+
+    describe "when in a suspended country" do
+      let(:publisher) { publishers(:youtube_initial) }
+      it "does generate a potential payment" do
+        payout_message_count = PayoutMessage.count
+        result = Payout::UpholdService.new.perform(payout_report: PayoutReport.last, publisher: publisher, allowed_regions: ['US'])
+        assert result[0].publisher_id == publisher.id
+        assert PayoutMessage.count == payout_message_count
+      end
+
+      it "does not generate a potential payment" do
+        payout_message_count = PayoutMessage.count
+        result = Payout::UpholdService.new.perform(payout_report: PayoutReport.last, publisher: publisher, allowed_regions: ['CN'])
+        assert result == []
+        assert PayoutMessage.count == payout_message_count + 1
+        assert PayoutMessage.last.message =~ /unallowed/
+      end
+    end
   end
 
   describe "when uphold verified" do

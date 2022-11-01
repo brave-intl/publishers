@@ -1,5 +1,10 @@
 class EnqueuePublishersForPayoutService
-  def call(payout_report, final: true, manual: false, publisher_ids: [], args: [])
+  def call(payout_report,
+           final: true,
+           manual: false,
+           publisher_ids: [],
+           allowed_regions: Rewards::Parameters.new.fetch_allowed_regions,
+           args: [])
     unless payout_report.is_a?(PayoutReport)
       # Wondering if sorbet can just do stuff like this?
       raise ArgumentError.new("Invalid argument type. Must be PayoutReport")
@@ -11,7 +16,7 @@ class EnqueuePublishersForPayoutService
     @publisher_ids = publisher_ids
 
     begin
-      enqueue_payout
+      enqueue_payout(allowed_regions_passed: allowed_regions)
     rescue => error
       @payout_report.update!(status: "Error - #{error.message}")
     end
@@ -21,14 +26,15 @@ class EnqueuePublishersForPayoutService
 
   private
 
-  def enqueue_payout
+  def enqueue_payout(allowed_regions_passed:)
     base_publishers = Publisher
 
     filtered_publishers = if @publisher_ids.present?
       base_publishers.where(id: @publisher_ids)
     else
       base_publishers.with_verified_channel.not_in_top_referrer_program
-    end
+                          end
+
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
     wallet_providers_to_insert = if @manual
@@ -38,17 +44,20 @@ class EnqueuePublishersForPayoutService
         {
           service: Payout::UpholdService.new,
           initial_publishers: filtered_publishers
-            .valid_payable_uphold_creators
+            .valid_payable_uphold_creators,
+          allowed_regions: allowed_regions_passed[:uphold][:allow]
         },
         {
           service: Payout::GeminiService.new,
           initial_publishers: filtered_publishers
-            .valid_payable_gemini_creators
+            .valid_payable_gemini_creators,
+          allowed_regions: allowed_regions_passed[:gemini][:allow]
+
         },
         {
           service: Payout::BitflyerService.build,
           initial_publishers: filtered_publishers
-            .valid_payable_bitflyer_creators
+            .valid_payable_bitflyer_creators,
         }
       ]
     end
@@ -60,6 +69,7 @@ class EnqueuePublishersForPayoutService
       wallet_providers_to_insert.each do |wallet_provider_info|
         service = wallet_provider_info[:service]
         publishers = wallet_provider_info[:initial_publishers]
+        allowed_regions = wallet_provider_info[:allowed_regions]
 
         # Single query using select rather than 2 queries using pluck
         eager_loaded_publishers = Publisher.strict_loading.includes(
@@ -73,13 +83,14 @@ class EnqueuePublishersForPayoutService
 
         generate_payments_and_save(
           publishers: eager_loaded_publishers,
-          service: service
+          service: service,
+          allowed_regions: allowed_regions
         )
       end
     end
   end
 
-  def generate_payments_and_save(publishers:, service:)
+  def generate_payments_and_save(publishers:, service:, allowed_regions:)
     # EXPECTED NUMBER OF PAYMENTS
     number_of_payments = PayoutReport.expected_num_payments(publishers)
 
@@ -96,7 +107,7 @@ class EnqueuePublishersForPayoutService
       potential_payments = []
 
       group.each do |publisher|
-        potential_payments.concat(service.perform(publisher: publisher, payout_report: @payout_report))
+        potential_payments.concat(service.perform(publisher: publisher, payout_report: @payout_report, allowed_regions: allowed_regions))
       end
 
       # DB Insert
