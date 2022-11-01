@@ -4,7 +4,13 @@ require "test_helper"
 require "jobs/sidekiq_test_case"
 
 class EnqueueTopReferrerPayoutJobTest < NoTransactDBBleanupTest
+  include MockRewardsResponses
+
   self.use_transactional_tests = false
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "it enqueues only top referrers to to call EnqueuePublishersForPayoutJob (strategy: :deletion)" do
     top_publisher_ids = Publisher.with_verified_channel.in_top_referrer_program.pluck(:id)

@@ -3,7 +3,13 @@
 require "test_helper"
 
 class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest
+  include MockRewardsResponses
+
   self.use_transactional_tests = false
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "launches a job per payout type (strategy: :deletion)" do
     prc = PayoutReport.count
