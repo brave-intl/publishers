@@ -17,7 +17,7 @@ class EnqueuePublishersForPayoutJobTest < NoTransactDBBleanupTest
     Payout::GeminiService.any_instance.expects(:perform).at_least_once.returns([])
     Payout::BitflyerService.any_instance.expects(:perform).at_least_once.returns([])
     EnqueuePublishersForPayoutJob.new.perform(
-      final: false,
+      final: false
     )
     assert_equal prc + 1, PayoutReport.count
   end

@@ -1,10 +1,10 @@
 class EnqueuePublishersForPayoutService
   def call(payout_report,
-           final: true,
-           manual: false,
-           publisher_ids: [],
-           allowed_regions: Rewards::Parameters.new.fetch_allowed_regions,
-           args: [])
+    final: true,
+    manual: false,
+    publisher_ids: [],
+    allowed_regions: Rewards::Parameters.new.fetch_allowed_regions,
+    args: [])
     unless payout_report.is_a?(PayoutReport)
       # Wondering if sorbet can just do stuff like this?
       raise ArgumentError.new("Invalid argument type. Must be PayoutReport")
@@ -33,8 +33,7 @@ class EnqueuePublishersForPayoutService
       base_publishers.where(id: @publisher_ids)
     else
       base_publishers.with_verified_channel.not_in_top_referrer_program
-                          end
-
+    end
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
     wallet_providers_to_insert = if @manual
@@ -57,7 +56,7 @@ class EnqueuePublishersForPayoutService
         {
           service: Payout::BitflyerService.build,
           initial_publishers: filtered_publishers
-            .valid_payable_bitflyer_creators,
+            .valid_payable_bitflyer_creators
         }
       ]
     end

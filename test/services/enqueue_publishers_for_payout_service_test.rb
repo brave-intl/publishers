@@ -15,7 +15,7 @@ class EnqueuePublishersForPayoutServiceTest < NoTransactDBBleanupTest
     assert_raises(ArgumentError) {
       EnqueuePublishersForPayoutService.new.call(
         "string",
-        final: false,
+        final: false
       )
     }
   end
@@ -35,7 +35,7 @@ class EnqueuePublishersForPayoutServiceTest < NoTransactDBBleanupTest
 
     assert EnqueuePublishersForPayoutService.new.call(
       payout_report,
-      final: false,
+      final: false
     ).status.start_with?("Error")
   end
 end
