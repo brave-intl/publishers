@@ -53,6 +53,31 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     assert_predicate result.channel_responses[0].wallets[0].uphold_wallet.address, :empty?
   end
 
+  test "Matches the wallet info to the selected wallet provider, even when there are multiple connections" do
+    channel = channels(:top_referrer_gemini_channel)
+    uphold_connection = uphold_connections(:base_verified_connection)
+    uphold_connection.publisher = channel.publisher
+
+    assert_predicate channel.publisher.gemini_connection, :present?
+    assert_predicate channel.publisher.uphold_connection, :present?
+
+    channel.send(:update_site_banner_lookup!)
+    site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    assert site_banner_lookup.present?
+
+    service = Cache::BrowserChannels::ResponsesForPrefix.new
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
+    assert service.temp_file.present?
+    result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
+    result = PublishersPb::ChannelResponseList.decode(result)
+
+    assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+    assert_equal result.channel_responses[0].wallets.length, 1
+    assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.publisher.gemini_connection.recipient_id
+  end
+
   test "gemini wallet generation" do
     channel = channels(:gemini_completed_website)
     channel.send(:update_site_banner_lookup!)

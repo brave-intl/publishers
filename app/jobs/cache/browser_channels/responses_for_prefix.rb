@@ -7,6 +7,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
   PATH = "publishers/prefixes/".freeze
   PADDING_WORD = "P".freeze
   BITFLYER_CONNECTION = "BitflyerConnection".freeze
+  UPHOLD_CONNECTION = "UpholdConnection".freeze
+  GEMINI_CONNECTION = "GeminiConnection".freeze
 
   attr_accessor :site_banner_lookups, :temp_file
 
@@ -31,7 +33,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       # Some malformed data shouldn't prevent the list from being generated.
       begin
-        if site_banner_lookup.publisher.uphold_connection.present? && site_banner_lookup.publisher.selected_wallet_provider_type != BITFLYER_CONNECTION
+        if site_banner_lookup.publisher.selected_wallet_provider_type == UPHOLD_CONNECTION && site_banner_lookup.publisher.uphold_connection.present?
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
           connection = site_banner_lookup.publisher.uphold_connection
@@ -44,7 +46,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.uphold_wallet = uphold_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.bitflyer_connection.present?
+        if site_banner_lookup.publisher.selected_wallet_provider_type == BITFLYER_CONNECTION && site_banner_lookup.publisher.bitflyer_connection.present?
           wallet = PublishersPb::Wallet.new
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           connection = site_banner_lookup.publisher.bitflyer_connection
@@ -54,7 +56,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.gemini_connection.present?
+        if site_banner_lookup.publisher.selected_wallet_provider_type == GEMINI_CONNECTION && site_banner_lookup.publisher.gemini_connection.present?
           wallet = PublishersPb::Wallet.new
           gemini_wallet = PublishersPb::GeminiWallet.new
           connection = site_banner_lookup.publisher.gemini_connection
