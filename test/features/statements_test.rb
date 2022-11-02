@@ -12,8 +12,14 @@ class StatementTest < Capybara::Rails::TestCase
     stub_rewards_parameters
   end
 
+  test "statements only show for referrers" do
+    publisher = publishers(:verified)
+    sign_in publisher
+    refute_content "View statements"
+  end
+
   test "statements page doesnt show uphold message for gemini user" do
-    publisher = publishers(:gemini_completed)
+    publisher = publishers(:top_referrer_gemini)
     sign_in publisher
 
     visit statements_path
@@ -21,7 +27,7 @@ class StatementTest < Capybara::Rails::TestCase
   end
 
   test "statements page shows uphold message for uphold user" do
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:top_referrer)
     sign_in publisher
 
     visit statements_path
