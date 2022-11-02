@@ -9,7 +9,9 @@ class Api::V3::ChannelsController < Api::BaseController
 
     response = {}
     channels.each do |channel_obj|
-      publisher = channel_obj[:channel].publisher
+      publisher = channel_obj[:channel]&.publisher
+
+      next response[channel_obj[:channel_identifier]] = false if !publisher
 
       response[channel_obj[:channel_identifier]] = if publisher.uphold_connection.present?
         publisher.uphold_connection.valid_country?
