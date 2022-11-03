@@ -26,7 +26,7 @@ noscript
         .col.mb-4.payouts class="#{@publisher.no_grants? ? 'col-md-7' : '' }"
           = render_async home_balances_publishers_path, container_class: 'balance-panel align-items-center' do
             .spinner-border.center.text-primary role="status"
-        - if !@publisher.bitflyer_locale?(params[:locale])
+        - if @publisher.may_create_referrals?
           .col-md.mb-4
             .dashboard-panel--wrapper
               .dashboard-panel--header#publishers_statements

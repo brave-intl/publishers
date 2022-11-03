@@ -11,7 +11,7 @@ module Payout
     end
 
     # Change to call as soon as we refactor the other services
-    def perform(publisher:, payout_report:)
+    def perform(publisher:, payout_report:, allowed_regions: [])
       return [] if skip_publisher?(payout_report: payout_report, publisher: publisher)
 
       potential_payments = []

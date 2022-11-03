@@ -2,11 +2,10 @@
 
 module Payout
   class GeminiService < Service
-    def perform(payout_report:, publisher:)
-      return [] if skip_publisher?(payout_report: payout_report, publisher: publisher)
-
+    def perform(payout_report:, publisher:, allowed_regions: [])
       potential_payments = []
       connection = publisher.gemini_connection
+      return [] if skip_publisher?(payout_report: payout_report, publisher: publisher, allowed_regions: allowed_regions, connection: connection)
 
       if publisher.may_create_referrals?
         potential_payments << PotentialPayment.new(

@@ -3,7 +3,13 @@
 require "test_helper"
 
 class EnqueuePublishersForPayoutServiceTest < NoTransactDBBleanupTest
+  include MockRewardsResponses
+
   self.use_transactional_tests = false
+
+  before do
+    stub_rewards_parameters
+  end
 
   test "validates type" do
     assert_raises(ArgumentError) {
@@ -16,10 +22,11 @@ class EnqueuePublishersForPayoutServiceTest < NoTransactDBBleanupTest
 
   test "status is set" do
     payout_report = payout_reports(:one)
-    assert EnqueuePublishersForPayoutService.new.call(
+    report = EnqueuePublishersForPayoutService.new.call(
       payout_report,
       final: false
-    ).status == "Complete"
+    )
+    assert report.status == "Complete"
   end
 
   test "status is set when enqueing fails" do
