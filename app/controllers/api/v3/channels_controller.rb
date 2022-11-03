@@ -13,12 +13,10 @@ class Api::V3::ChannelsController < Api::BaseController
 
       wallet = publisher.selected_wallet_provider
       response[channel_obj[:channel_identifier]] = case wallet.class
-      when UpholdConnection
-        publisher.uphold_connection.valid_country?
-      when GeminiConnection
-        publisher.gemini_connection.valid_country?
+      when GeminiConnection, UpholdConnection
+        wallet.valid_country?
       else
-        publisher.bitflyer_connection.present?
+        wallet.present?
       end
     end
 
