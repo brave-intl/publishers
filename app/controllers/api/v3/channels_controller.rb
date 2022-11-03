@@ -11,12 +11,14 @@ class Api::V3::ChannelsController < Api::BaseController
     channels.each do |channel_obj|
       publisher = channel_obj[:channel].publisher
 
-      response[channel_obj[:channel_identifier]] = if publisher.uphold_connection.present?
-        publisher.uphold_connection.valid_country?
-      elsif publisher.gemini_connection.present?
-        publisher.gemini_connection.valid_country?
+      wallet = publisher.selected_wallet_provider
+      response[channel_obj[:channel_identifier]] = case wallet
+      when GeminiConnection, UpholdConnection
+        wallet.valid_country?
+      when BitflyerConnection
+        wallet.present?
       else
-        publisher.bitflyer_connection.present?
+        raise "Unknown wallet connection"
       end
     end
 
