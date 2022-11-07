@@ -40,7 +40,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
 
           if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
-            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address || connection.address
+            uphold_wallet.address = site_banner_lookup.channel.uphold_connection&.address
           end
 
           wallet.uphold_wallet = uphold_wallet
