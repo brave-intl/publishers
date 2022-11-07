@@ -35,7 +35,7 @@ If your code touches any of the aspects mentioned [here][security], or more spec
 - Email auth flow changes
 - oAuth flow changes
 
-Please open a security review
+Please open a [security review][security-review]
 
 [composition]: https://betterprogramming.pub/prefer-composition-over-inheritance-1602d5149ea1
 [di]: https://solnic.codes/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby/
@@ -45,3 +45,4 @@ Please open a security review
 [codereview]: https://github.com/thoughtbot/guides/tree/main/code-review
 [commit]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [security]: https://github.com/brave/brave-browser/wiki/Security-reviews
+[security-review]: https://github.com/brave/security/issues
