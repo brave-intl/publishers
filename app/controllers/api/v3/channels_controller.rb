@@ -9,7 +9,9 @@ class Api::V3::ChannelsController < Api::BaseController
 
     response = {}
     channels.each do |channel_obj|
-      publisher = channel_obj[:channel].publisher
+      publisher = channel_obj[:channel]&.publisher
+
+      next response[channel_obj[:channel_identifier]] = false if !publisher
 
       wallet = publisher.selected_wallet_provider
       response[channel_obj[:channel_identifier]] = case wallet
