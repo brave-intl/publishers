@@ -25,6 +25,18 @@ We like to make sure that all contributions follow a few guidelines, which will 
   - follow Sandi Metz' [rules][sm]
   - prefer [composition over inheritance][composition]
 
+## Security Reviews
+
+If your code touches any of the aspects mentioned [here][security], or more specific to creators:
+
+- Any changes to data being sent in the pCDN
+- Any changes in data being sent from Eyeshade
+- Any information collection changes for registration
+- Email auth flow changes
+- oAuth flow changes
+
+Please open a [security review][security-review]
+
 [composition]: https://betterprogramming.pub/prefer-composition-over-inheritance-1602d5149ea1
 [di]: https://solnic.codes/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby/
 [di-ex]: https://github.com/brave-intl/publishers/blob/staging/app/services/bitflyer/refresher.rb
@@ -32,3 +44,5 @@ We like to make sure that all contributions follow a few guidelines, which will 
 [sm]: https://thoughtbot.com/blog/sandi-metz-rules-for-developers
 [codereview]: https://github.com/thoughtbot/guides/tree/main/code-review
 [commit]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[security]: https://github.com/brave/brave-browser/wiki/Security-reviews
+[security-review]: https://github.com/brave/security/issues
