@@ -25,7 +25,7 @@ module ErrorHandler
         publisher_params.publisher_id = publisher.id
         publisher_params.email = publisher.email
       end
-      LogException.perform(exception, publisher_params)
+      LogException.perform(exception, publisher: publisher_params)
     else
       Rails.logger.warn(exception)
     end
