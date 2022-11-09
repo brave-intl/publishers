@@ -66,7 +66,7 @@ export default {
   },
   sign: {
     sentAgain:
-      "A new email is on the way. If you still experience problems, please contact publishers@basicattentiontoken.org",
+      "A new email is on the way. If you still experience problems, please visit our support forum at https://community.brave.com",
     sentAgainSupportEmail: "publishers@basicattentiontoken.org",
     sentAgainMailto: "mailto: publishers@basicattentiontoken.org",
     signupSuccess: "Welcome to the party!",
