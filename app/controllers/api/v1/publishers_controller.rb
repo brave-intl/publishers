@@ -1,8 +1,6 @@
 # typed: ignore
 
 class Api::V1::PublishersController < Api::BaseController
-
-
   def show
     publisher = Publisher.find(params[:id])
     current_status_update = publisher.last_status_update
@@ -40,7 +38,8 @@ class Api::V1::PublishersController < Api::BaseController
       user: user,
       admin: admin,
       status: status,
-      note: note)
+      note: note
+    )
 
     render(status: 200, json: {publisher_status_updates_id: status_update.id}) and return
   rescue ActiveRecord::RecordInvalid
@@ -49,24 +48,20 @@ class Api::V1::PublishersController < Api::BaseController
       detail: "Status #{params[:status]} is not valid, please use one of the following: #{PublisherStatusUpdate::ALL_STATUSES.join(", ")}"
     }
     render(status: 404, json: error_response) and return
-
-  rescue CannotSuspendWhitelisted
+  rescue PublisherStatusUpdater::CannotSuspendWhitelisted
     render(status: 403, json: {reason: "Cannot suspend whitelisted publisher"}) and return
-
-  rescue InvalidNote
+  rescue PublisherStatusUpdater::InvalidNote
     error_response = {
       error: "Note Invalid",
       detail: "Note cannot be null, please provide justification for status update"
     }
     render(status: 404, json: error_response) and return
-
-  rescue InvalidAdmin
+  rescue PublisherStatusUpdater::InvalidAdmin
     error_response = {
       error: "Admin Invalid",
       detail: "Admin field cannot be null, please provide e-mail of an admin"
     }
     render(status: 404, json: error_response) and return
-
   rescue ActiveRecord::RecordNotFound
     error_response = {
       error: "Not Found",

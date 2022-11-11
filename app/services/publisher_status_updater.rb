@@ -2,7 +2,9 @@
 
 class PublisherStatusUpdater < BaseService
   class InvalidNote < StandardError; end
+
   class InvalidAdmin < StandardError; end
+
   class CannotSuspendWhitelisted < StandardError; end
 
   def perform(user:, admin:, status:, note:)
@@ -24,6 +26,6 @@ class PublisherStatusUpdater < BaseService
     # Email users who were put on hold via the API
     PublisherMailer.email_user_on_hold(@publisher).deliver_later if status == PublisherStatusUpdate::HOLD
 
-    return status_update
+    status_update
   end
 end
