@@ -1,9 +1,7 @@
 # typed: ignore
 
 class Api::V1::PublishersController < Api::BaseController
-  class InvalidNote < StandardError; end
 
-  class InvalidAdmin < StandardError; end
 
   def show
     publisher = Publisher.find(params[:id])
@@ -38,23 +36,11 @@ class Api::V1::PublishersController < Api::BaseController
     status = params[:status]
     note = params[:note]
 
-    # We should not automatically move publishers out of this status.
-    if user.only_user_funds?
-      render(status: 200, json: {publisher_status_updates_id: user.last_status_update.id}) and return
-    end
-
-    raise InvalidNote if note.blank?
-    raise InvalidAdmin if admin.blank?
-
-    if user.last_whitelist_update&.enabled && [PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::SUSPENDED].include?(status)
-      render(status: 403, json: {reason: "Cannot suspend whitelisted publisher"}) and return
-    end
-
-    status_update = PublisherStatusUpdate.create!(publisher: user, status: status)
-    PublisherNote.create!(note: note, publisher: user, created_by: admin)
-
-    # Email users who were put on hold via the API
-    PublisherMailer.email_user_on_hold(@publisher).deliver_later if status == PublisherStatusUpdate::HOLD
+    status_update = PublisherStatusUpdater.new.perform(
+      user: user,
+      admin: admin,
+      status: status,
+      note: note)
 
     render(status: 200, json: {publisher_status_updates_id: status_update.id}) and return
   rescue ActiveRecord::RecordInvalid
@@ -62,28 +48,30 @@ class Api::V1::PublishersController < Api::BaseController
       error: "Status Invalid",
       detail: "Status #{params[:status]} is not valid, please use one of the following: #{PublisherStatusUpdate::ALL_STATUSES.join(", ")}"
     }
-
     render(status: 404, json: error_response) and return
+
+  rescue CannotSuspendWhitelisted
+    render(status: 403, json: {reason: "Cannot suspend whitelisted publisher"}) and return
+
   rescue InvalidNote
     error_response = {
       error: "Note Invalid",
       detail: "Note cannot be null, please provide justification for status update"
     }
-
     render(status: 404, json: error_response) and return
+
   rescue InvalidAdmin
     error_response = {
       error: "Admin Invalid",
       detail: "Admin field cannot be null, please provide e-mail of an admin"
     }
-
     render(status: 404, json: error_response) and return
+
   rescue ActiveRecord::RecordNotFound
     error_response = {
       error: "Not Found",
       detail: "Publisher with id #{params[:publisher_id]} not found"
     }
-
     render(status: 404, json: error_response) and return
   end
 end
