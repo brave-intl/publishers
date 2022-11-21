@@ -140,6 +140,11 @@ class Publisher < ApplicationRecord
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
   }
 
+  scope :uphold_selected_provider_updated_recently, -> {
+    uphold_selected_provider
+      .where("uphold_connections.updated_at > :start_date", start_date: 1.week.ago)
+  }
+
   # We could remove the `country is null` if we change all affected creators to an
   # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
