@@ -103,6 +103,7 @@ class Publisher < ApplicationRecord
                                        }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
+  scope :logged_in_recently, -> { where("last_sign_in_at > :start_date", start_date: 1.week.ago) }
 
   scope :email_verified, -> { where.not(email: nil) }
   scope :admin, -> { where(role: ADMIN) }
