@@ -224,6 +224,14 @@ class UpholdServiceTest < ActiveJob::TestCase
         assert PayoutMessage.count == payout_message_count + 1
         assert PayoutMessage.last.message =~ /unallowed/
       end
+
+      it "does generate a potential payment if in a suspended country but exempted" do
+        publisher.update_attribute(:blocked_country_exception, true)
+        payout_message_count = PayoutMessage.count
+        result = Payout::UpholdService.new.perform(payout_report: PayoutReport.last, publisher: publisher, allowed_regions: ["CN"])
+        assert_equal result[0].publisher_id, publisher.id
+        assert PayoutMessage.count == payout_message_count
+      end
     end
   end
 
