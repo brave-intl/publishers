@@ -20,9 +20,9 @@ class ChannelTest < ActionDispatch::IntegrationTest
     mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
     stub_rewards_parameters
     stub_get_user_deposits_capability
-    stub_list_cards(currency: 'BAT')
-    stub_get_card(currency: 'BAT')
-    stub_create_card(http_status: "200", currency: 'BAT')
+    stub_list_cards(currency: "BAT")
+    stub_get_card(currency: "BAT")
+    stub_create_card(http_status: "200", currency: "BAT")
     stub_get_user
   end
 
