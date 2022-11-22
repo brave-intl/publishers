@@ -54,7 +54,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
   end
 
   test "Matches the wallet info to the selected wallet provider, even when there are multiple connections" do
-    channel = channels(:top_referrer_gemini_channel)
+    channel = channels(:gemini_completed_website)
     uphold_connection = uphold_connections(:base_verified_connection)
     uphold_connection.publisher = channel.publisher
 
@@ -75,7 +75,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
 
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
     assert_equal result.channel_responses[0].wallets.length, 1
-    assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.publisher.gemini_connection.recipient_id
+    assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.gemini_connection.recipient_id
   end
 
   test "gemini wallet generation" do
