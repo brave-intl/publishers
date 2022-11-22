@@ -17,7 +17,7 @@ module Payout
     # Returns a boolean
     def skip_publisher?(payout_report:, publisher:, allowed_regions: [], connection: nil)
       if !allowed_regions.blank? && connection.present?
-        if !allowed_regions.include?(connection.country&.upcase) && !publisher.may_create_referrals?
+        if !allowed_regions.include?(connection.country&.upcase) && !publisher.blocked_country_exception
           create_message(message: "Publisher's wallet connection is in an unallowed country: #{connection.country&.upcase}. Allowlist: #{allowed_regions}", payout_report: payout_report, publisher: publisher)
           return true
         end

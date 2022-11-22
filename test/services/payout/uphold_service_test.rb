@@ -225,9 +225,8 @@ class UpholdServiceTest < ActiveJob::TestCase
         assert PayoutMessage.last.message =~ /unallowed/
       end
 
-      it "does generate a potential payment if in a suspended country but a referrer" do
-        publisher.feature_flags[UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE] = true
-        publisher.save!
+      it "does generate a potential payment if in a suspended country but exempted" do
+        publisher.update_attribute(:blocked_country_exception, true)
         payout_message_count = PayoutMessage.count
         result = Payout::UpholdService.new.perform(payout_report: PayoutReport.last, publisher: publisher, allowed_regions: ["CN"])
         assert_equal result[0].publisher_id, publisher.id
