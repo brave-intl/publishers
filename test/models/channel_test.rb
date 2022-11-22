@@ -5,12 +5,53 @@ require "test_helper"
 class ChannelTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
+  include Oauth2::Responses
+  include MockUpholdResponses
+  include MockRewardsResponses
+
+  let(:state) { "some value" }
+  let(:cookie) { state }
 
   before do
     # Mock out the creation of cards
     stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
     stub_request(:post, /cards/).to_return(body: {id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"}.to_json)
     stub_request(:get, /address/).to_return(body: [{formats: [{format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1"}], type: "anonymous"}].to_json)
+    mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
+    stub_rewards_parameters
+    stub_get_user_deposits_capability
+    stub_list_cards(currency: "BAT")
+    stub_get_card(currency: "BAT")
+    stub_create_card(http_status: "200", currency: "BAT")
+    stub_get_user
+  end
+
+  test "only pulls uphold connection for channel that matches the publisher's current uphold connection" do
+    channel = channels(:verified)
+    publisher = channel.publisher
+    assert_equal channel.uphold_connection_for_channel.length, 1
+    assert_equal channel.uphold_connection.uphold_connection_id, channel.publisher.uphold_connection.id
+
+    publisher.uphold_connection.destroy
+    channel.reload
+    refute channel.uphold_connection
+
+    scope = Oauth2::Config::Uphold.scope
+    access_token_response = AccessTokenResponse.new(
+      access_token: "derp",
+      refresh_token: "derp",
+      expires_in: 36000,
+      token_type: "bearer",
+      scope: scope
+    )
+    UpholdConnection.create_new_connection!(publisher, access_token_response)
+    new_conn = publisher.reload.uphold_connection
+    channel.reload
+    job = CreateUpholdChannelCardJob.new
+    job.perform(uphold_connection_id: new_conn.id, channel_id: channel.id)
+
+    assert_equal publisher.channels.first.uphold_connection_for_channel.length, 1
+    assert_equal publisher.channels.first.uphold_connection.uphold_connection_id, publisher.uphold_connection.id
   end
 
   test "site channel must have details" do

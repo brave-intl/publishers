@@ -65,7 +65,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # Associations
   ################
   belongs_to :publisher
-  has_many :uphold_connection_for_channels
+  has_many :uphold_connection_for_channels, dependent: :destroy
 
   #################
   # Callbacks

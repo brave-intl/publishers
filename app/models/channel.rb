@@ -30,7 +30,7 @@ class Channel < ApplicationRecord
   has_property :github
 
   has_one :promo_registration, dependent: :destroy
-  has_many :uphold_connection_for_channel
+  has_many :uphold_connection_for_channel, dependent: :destroy
   has_many :gemini_connection_for_channel
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: "contested_by_channel_id"
@@ -318,7 +318,7 @@ class Channel < ApplicationRecord
 
   def uphold_connection
     return if !publisher&.uphold_connection
-    @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher&.uphold_connection&.default_currency }
+    @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher&.uphold_connection&.default_currency && publisher&.uphold_connection&.id == connection.uphold_connection_id }
   end
 
   def gemini_connection
