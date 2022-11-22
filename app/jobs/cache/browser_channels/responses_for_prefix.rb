@@ -63,7 +63,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
 
           if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
-            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id || connection.recipient_id
+            gemini_wallet.address = site_banner_lookup.channel.gemini_connection&.recipient_id
           end
 
           wallet.gemini_wallet = gemini_wallet
