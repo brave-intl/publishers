@@ -33,6 +33,9 @@
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
+  CreateUpholdCardsWhereMissingJob:
+    cron: "0 1 * * *"
+    description: "Ensure anonymous cards are created for those who need them."
   Channels::TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"

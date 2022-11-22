@@ -9,7 +9,7 @@ class UpholdConnectionForChannel < ApplicationRecord
   belongs_to :uphold_connection
   belongs_to :channel
 
-  has_many :cached_uphold_tips
+  has_many :cached_uphold_tips, dependent: :destroy
 
   NETWORK = "anonymous"
 

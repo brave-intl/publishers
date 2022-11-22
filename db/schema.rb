@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_26_014739) do
+ActiveRecord::Schema.define(version: 2022_11_15_172005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -707,6 +707,8 @@ ActiveRecord::Schema.define(version: 2022_10_26_014739) do
     t.string "card_id"
     t.string "address"
     t.uuid "uphold_id"
+    t.datetime "created_at", default: "2022-11-15 17:29:26", null: false
+    t.datetime "updated_at", default: "2022-11-15 17:29:26", null: false
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"

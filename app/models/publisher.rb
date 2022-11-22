@@ -103,6 +103,7 @@ class Publisher < ApplicationRecord
                                        }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
+  scope :logged_in_recently, -> { where("last_sign_in_at > :start_date", start_date: 1.week.ago) }
 
   scope :email_verified, -> { where.not(email: nil) }
   scope :admin, -> { where(role: ADMIN) }
@@ -137,6 +138,11 @@ class Publisher < ApplicationRecord
     joins(:uphold_connection)
       .where("uphold_connections.id = publishers.selected_wallet_provider_id
            AND publishers.selected_wallet_provider_type = '#{UpholdConnection}'")
+  }
+
+  scope :uphold_selected_provider_updated_recently, -> {
+    uphold_selected_provider
+      .where("uphold_connections.updated_at > :start_date", start_date: 1.week.ago)
   }
 
   # We could remove the `country is null` if we change all affected creators to an
