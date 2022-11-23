@@ -35,6 +35,7 @@ module Payout
           wallet_provider_id: connection.display_name || "", # this is a hash of the account_id
           wallet_provider: ::PotentialPayment.wallet_providers["bitflyer"],
           suspended: publisher.suspended?,
+          whitelisted: publisher.whitelisted?,
           status: publisher.last_status_update&.status,
           channel_stats: channel.details.stats,
           channel_type: channel.details_type

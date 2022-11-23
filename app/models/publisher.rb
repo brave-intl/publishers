@@ -443,6 +443,10 @@ class Publisher < ApplicationRecord
     whitelist_updates.first
   end
 
+  def whitelisted?
+    last_whitelist_update&.enabled || blocked_country_exception?
+  end
+
   def last_login_activity
     login_activities.last
   end
