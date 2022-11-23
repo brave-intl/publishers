@@ -24,6 +24,7 @@ module Payout
           wallet_provider_id: uphold_connection.uphold_id,
           wallet_provider: ::PotentialPayment.wallet_providers["uphold"],
           suspended: publisher.suspended?,
+          whitelisted: publisher.whitelisted?,
           status: publisher.last_status_update&.status
         )
       end
@@ -47,6 +48,7 @@ module Payout
           wallet_provider_id: uphold_connection.uphold_id,
           wallet_provider: ::PotentialPayment.wallet_providers["uphold"],
           suspended: publisher.suspended?,
+          whitelisted: publisher.whitelisted?,
           status: publisher.last_status_update&.status,
           channel_stats: channel.details.stats,
           channel_type: channel.details_type
