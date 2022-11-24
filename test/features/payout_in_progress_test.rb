@@ -21,13 +21,25 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
 
   test "Gemini generating in progress" do
     publisher = publishers(:gemini_completed)
-
     sign_in publisher
 
     PublishersController.view_context_class.any_instance.stubs(:has_balance?).returns(true)
     visit home_publishers_path
 
     assert_content page, I18n.t("publishers.home_balances.payout_in_progress")
+  end
+
+  test "Gemini generating in progress, referrer sees referrer message" do
+    publisher = publishers(:gemini_completed)
+    publisher.feature_flags[UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE] = true
+    publisher.save!
+    sign_in publisher
+
+    PublishersController.view_context_class.any_instance.stubs(:has_balance?).returns(true)
+    visit home_publishers_path
+
+    assert_content page, I18n.t("publishers.home_balances.payout_in_progress")
+    assert_content page, I18n.t("publishers.home_balances.referral_payout_date")
   end
 
   test "Gemini generating in progress but no BAT so no payouts in progress" do
