@@ -135,6 +135,25 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
       assert_not File.file?(original_path)
     end
 
+    test "nil addresses should not result in ProtoBuf errors" do
+      channel = channels(:verified)
+      channel.send(:update_site_banner_lookup!)
+      site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+      assert site_banner_lookup.present?
+
+      channel.publisher.uphold_connection.uphold_connection_for_channels.each { |ucc| ucc.update!(address: nil) }
+
+      service = Cache::BrowserChannels::ResponsesForPrefix.new
+      ActiveRecord::Base.connected_to(role: :reading) do
+        service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+      end
+      assert service.temp_file.present?
+      result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
+      result = PublishersPb::ChannelResponseList.decode(result)
+
+      assert result.channel_responses[0].wallets[0].present?
+    end
+
     test "generating channel response should fail where country information could not be loaded" do
       Rails.cache.clear
 
@@ -153,9 +172,6 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
           service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
         end
       end
-
-      Rails.cache.clear
-      stub_rewards_parameters
     end
   end
 end
