@@ -8,7 +8,7 @@ class Api::V3::ChannelsController < Api::BaseController
     end
 
     response = {}
-    channels.each do |channel_obj|
+    channels || [].each do |channel_obj|
       publisher = channel_obj[:channel]&.publisher
 
       next response[channel_obj[:channel_identifier]] = false if !publisher
