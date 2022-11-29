@@ -40,10 +40,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
 
           if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
-            uphold_address = site_banner_lookup.channel.uphold_connection&.address
-            if uphold_address
-              uphold_wallet.address = uphold_address
-            end
+            uphold_address = site_banner_lookup.channel&.uphold_connection&.address || ""
+            uphold_wallet.address = uphold_address
           end
 
           wallet.uphold_wallet = uphold_wallet
@@ -66,10 +64,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
 
           if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
-            gemini_address = site_banner_lookup.channel.gemini_connection&.recipient_id
-            if gemini_address
-              gemini_wallet.address = gemini_address
-            end
+            gemini_address = site_banner_lookup.channel&.gemini_connection&.recipient_id || ""
+            gemini_wallet.address = gemini_address
           end
 
           wallet.gemini_wallet = gemini_wallet
