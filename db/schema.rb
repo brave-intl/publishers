@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_15_172005) do
+ActiveRecord::Schema.define(version: 2022_11_23_220112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -432,6 +432,7 @@ ActiveRecord::Schema.define(version: 2022_11_15_172005) do
     t.integer "wallet_provider", limit: 2, default: 0
     t.boolean "paypal_bank_account_attached", default: false, null: false
     t.boolean "gemini_is_verified", default: false
+    t.boolean "whitelisted", default: false, null: false
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
@@ -707,8 +708,8 @@ ActiveRecord::Schema.define(version: 2022_11_15_172005) do
     t.string "card_id"
     t.string "address"
     t.uuid "uphold_id"
-    t.datetime "created_at", default: "2022-11-15 17:29:26", null: false
-    t.datetime "updated_at", default: "2022-11-15 17:29:26", null: false
+    t.datetime "created_at", default: "2022-11-23 14:02:49", null: false
+    t.datetime "updated_at", default: "2022-11-23 14:02:49", null: false
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"

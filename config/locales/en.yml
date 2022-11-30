@@ -433,6 +433,7 @@ en:
       held_funds_description: |
         These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
       next_deposit_date: "Next Deposit Date: "
+      referral_payout_date: "Referrals are paid out every 2 weeks. If you also have contributions, those will be paid out per the date above."
       open_case_description:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
       payout_in_progress: "Payout In Progress"

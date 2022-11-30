@@ -75,7 +75,8 @@ class EnqueuePublishersForPayoutService
           :status_updates,
           :uphold_connection,
           :gemini_connection,
-          :bitflyer_connection
+          :bitflyer_connection,
+          :whitelist_updates
         ).preload(
           channels: :details
         ).where(id: publishers.select(:id))
