@@ -4,7 +4,7 @@
 class CreateUpholdCardsWhereMissingJob < ApplicationJob
   queue_as :default
 
-  def perform(publishers:)
+  def perform(publishers: [])
     if publishers.blank?
       publishers = Publisher.uphold_selected_provider_updated_recently.with_verified_channel.not_suspended
     end
