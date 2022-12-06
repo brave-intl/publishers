@@ -59,7 +59,7 @@ gem "dnsruby", "~> 1.60.0", require: false
 # HTTP library wrapper
 gem "faraday", "~> 0.17.3"
 
-gem "ffi", "~> 1.15.0"
+gem "ffi", github: "ffi/ffi", submodules: true
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 

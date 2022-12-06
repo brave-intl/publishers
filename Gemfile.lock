@@ -24,6 +24,13 @@ GIT
       wasmer (~> 1.0)
 
 GIT
+  remote: https://github.com/ffi/ffi.git
+  revision: e6311548e4dce7c98a54d6ab0f996e95dc413b07
+  submodules: true
+  specs:
+    ffi (1.15.5)
+
+GIT
   remote: https://github.com/matomo-org/piwik-ruby-api.git
   revision: c6fceddfe58f1c41ba9d10b65fec4cd49eee34ef
   branch: master
@@ -237,7 +244,6 @@ GEM
     faraday (0.17.5)
       multipart-post (>= 1.2, < 3)
     fastimage (2.2.6)
-    ffi (1.15.5)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
     fugit (1.5.3)
@@ -702,7 +708,7 @@ DEPENDENCIES
   dotenv-rails (= 2.7.6)
   faraday (~> 0.17.3)
   fastimage (~> 2.2.5)
-  ffi (~> 1.15.0)
+  ffi!
   font-awesome-rails (~> 4.7.0.4)
   google-protobuf (~> 3.19.6)
   i18n-tasks (~> 0.9.12)
@@ -780,4 +786,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.3.18
+   2.3.26
