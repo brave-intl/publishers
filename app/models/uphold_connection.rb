@@ -218,7 +218,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
     T.unsafe(publisher).channels.each do |channel|
-      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
+      CreateUpholdChannelCardJob.perform(uphold_connection_id: id, channel_id: channel.id)
     end
   end
 
@@ -260,7 +260,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         uphold_id: result.id,
         country: result.country
       )
-      create_uphold_cards if missing_card? && success
+      create_uphold_cards if success
       success
     end
   end
@@ -500,6 +500,9 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
           # Create whatever this report is, pulled out of the previous uphold connections controller
           UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
+
+          # Make sure a new card/ UpholdConnectionForChannel is present for existing verified channels
+          conn.create_uphold_cards
 
           conn
         else
