@@ -25,7 +25,8 @@ GIT
 
 GIT
   remote: https://github.com/ffi/ffi.git
-  revision: e6311548e4dce7c98a54d6ab0f996e95dc413b07
+  revision: c0c7d68dea59c792438aa76e65290a44524a3c1c
+  tag: v1.15.5
   submodules: true
   specs:
     ffi (1.15.5)
