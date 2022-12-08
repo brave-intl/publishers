@@ -26,6 +26,22 @@ class ChannelTest < ActionDispatch::IntegrationTest
     stub_get_user
   end
 
+  test "deletes associated connections for channel on destroy" do
+    uphold_channel = channels(:verified)
+    gemini_channel = channels(:top_referrer_gemini_channel)
+
+    ucfc = uphold_channel.uphold_connection
+    assert ucfc
+    gcfc = gemini_channel.gemini_connection
+    assert gcfc
+
+    uphold_channel.destroy!
+    gemini_channel.destroy!
+
+    assert_raises { gcfc.reload }
+    assert_raises { ucfc.reload }
+  end
+
   test "only pulls uphold connection for channel that matches the publisher's current uphold connection" do
     channel = channels(:verified)
     publisher = channel.publisher
@@ -53,6 +69,37 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal publisher.channels.first.uphold_connection_for_channel.length, 1
     assert_equal publisher.channels.first.uphold_connection.uphold_connection_id, publisher.uphold_connection.id
   end
+
+  # For use when dependent destroy is enabled for destruction of gemini connections
+  # test "only pulls gemini connection for channel that matches the publisher's current gemini connection" do
+  #   mock_refresh_token_success(GeminiConnection.oauth2_client.token_url)
+  #   mock_gemini_recipient_id!
+
+  #   channel = channels(:top_referrer_gemini_channel)
+  #   publisher = channel.publisher
+  #   assert_equal channel.gemini_connection_for_channel.length, 1
+  #   assert_equal channel.gemini_connection.gemini_connection_id, channel.publisher.gemini_connection.id
+
+  #   publisher.gemini_connection.destroy
+  #   channel.reload
+  #   refute channel.gemini_connection
+
+  #   access_token_response = AccessTokenResponse.new(
+  #     access_token: "km2bylijaDkceTOi2LiranELqdQqvsjFuHcSuQ5aU9jm",
+  #     expires_in: 189561,
+  #     scope: "Auditor",
+  #     refresh_token: "6ooHciJa8nqwV5pFEyBAbt25Q7kZ16VAnS31p7xdSR9",
+  #     token_type: "Bearer"
+  #   )
+  #   GeminiConnection.create_new_connection!(publisher, access_token_response)
+  #   new_conn = publisher.reload.gemini_connection
+  #   channel.reload
+  #   job = CreateGeminiRecipientIdsJob.new
+  #   job.perform(new_conn.id)
+
+  #   assert_equal publisher.channels.first.gemini_connection_for_channel.length, 1
+  #   assert_equal publisher.channels.first.gemini_connection.gemini_connection_id, publisher.gemini_connection.id
+  # end
 
   test "site channel must have details" do
     channel = channels(:verified)

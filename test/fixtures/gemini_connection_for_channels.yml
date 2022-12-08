@@ -10,6 +10,6 @@ gemini_connected_for_channels_twitch_details:
 verified_gemini_connection_for_channel:
   <<: *default_gemini_connection_for_channel
   channel_identifier: "verified.org"
-  channel: verified
+  channel: top_referrer_gemini_channel
   gemini_connection: top_referrer_gemini_connected
   recipient_id: <%= SecureRandom.uuid %>
