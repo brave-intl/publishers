@@ -218,12 +218,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
     T.unsafe(publisher).channels.each do |channel|
-      begin
-        # we want the job to keep running for subsequent channels even if it fails for one channel
-        T.unsafe(CreateUpholdChannelCardJob).perform_later(uphold_connection_id: id, channel_id: channel.id)
-      rescue => e
-        LogException.perform(e)
-      end
+      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
     end
   end
 
