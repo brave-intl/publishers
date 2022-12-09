@@ -31,7 +31,7 @@ class Channel < ApplicationRecord
 
   has_one :promo_registration, dependent: :destroy
   has_many :uphold_connection_for_channel, dependent: :destroy
-  has_many :gemini_connection_for_channel
+  has_many :gemini_connection_for_channel, dependent: :destroy
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: "contested_by_channel_id"
 

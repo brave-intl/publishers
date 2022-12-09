@@ -24,6 +24,14 @@ GIT
       wasmer (~> 1.0)
 
 GIT
+  remote: https://github.com/ffi/ffi.git
+  revision: c0c7d68dea59c792438aa76e65290a44524a3c1c
+  tag: v1.15.5
+  submodules: true
+  specs:
+    ffi (1.15.5)
+
+GIT
   remote: https://github.com/matomo-org/piwik-ruby-api.git
   revision: c6fceddfe58f1c41ba9d10b65fec4cd49eee34ef
   branch: master
@@ -237,7 +245,6 @@ GEM
     faraday (0.17.5)
       multipart-post (>= 1.2, < 3)
     fastimage (2.2.6)
-    ffi (1.15.5)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
     fugit (1.5.3)
@@ -315,9 +322,9 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (6.15.0)
     nio4r (2.5.8)
-    nokogiri (1.13.9-x86_64-darwin)
+    nokogiri (1.13.10-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.9-x86_64-linux)
+    nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.10)
     oauth2 (1.4.9)
@@ -390,7 +397,7 @@ GEM
     puma (5.6.4)
       nio4r (~> 2.0)
     raabro (1.4.0)
-    racc (1.6.0)
+    racc (1.6.1)
     rack (2.2.4)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
@@ -702,7 +709,7 @@ DEPENDENCIES
   dotenv-rails (= 2.7.6)
   faraday (~> 0.17.3)
   fastimage (~> 2.2.5)
-  ffi (~> 1.15.0)
+  ffi!
   font-awesome-rails (~> 4.7.0.4)
   google-protobuf (~> 3.19.6)
   i18n-tasks (~> 0.9.12)
@@ -780,4 +787,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.3.18
+   2.3.26
