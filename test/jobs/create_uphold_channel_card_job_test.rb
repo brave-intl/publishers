@@ -5,6 +5,8 @@ require "webmock/minitest"
 require "minitest/spec"
 
 class CreateUpholdChannelCardTest < ActiveJob::TestCase
+  include MockRewardsResponses
+
   describe "when a user creates uphold cards for the first time" do
     let(:uphold_connection) { uphold_connections(:details_connection) }
     let(:channel) { channels(:uphold_connected_details) }
@@ -15,6 +17,7 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
     before do
       stub_request(:get, /cards/).to_return(body: [].to_json)
       stub_request(:post, /cards/).to_return(body: {id: card_id}.to_json)
+      stub_rewards_parameters
     end
 
     it "does not have an existing uphold connection" do
@@ -48,6 +51,10 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
         currency: uphold_connection.default_currency,
         channel_identifier: channel.details.channel_identifier
       )
+    end
+
+    before do
+      stub_rewards_parameters
     end
 
     describe "when the currency stays the same" do

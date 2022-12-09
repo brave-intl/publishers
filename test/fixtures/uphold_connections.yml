@@ -7,6 +7,7 @@ base_verified_connection: &base_verified_connection
   uphold_id: <%= SecureRandom.uuid %>
   address: <%= SecureRandom.uuid %>
   status: "ok"
+  country: "US"
   send_emails: 2019-01-01
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
     { scope: 'cards:write' }.to_json,
