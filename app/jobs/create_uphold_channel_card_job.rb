@@ -6,7 +6,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
   def perform(uphold_connection_id:, channel_id:)
     uphold_connection = UpholdConnection.find(uphold_connection_id)
     channel = Channel.find(channel_id)
-    return unless uphold_connection&.payable? && channel&.verified?
+    return unless uphold_connection&.is_member? && uphold_connection&.uphold_verified? && uphold_connection&.status == "ok" && uphold_connection&.valid_country? && channel&.verified?
 
     unless uphold_connection.can_create_uphold_cards?
       Rails.logger.info("Could not create uphold card for channel #{uphold_connection.publisher_id}. Uphold Verified: #{uphold_connection.uphold_verified}")

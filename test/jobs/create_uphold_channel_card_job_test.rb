@@ -5,6 +5,8 @@ require "webmock/minitest"
 require "minitest/spec"
 
 class CreateUpholdChannelCardTest < ActiveJob::TestCase
+  include MockRewardsResponses
+
   describe "when a user creates uphold cards for the first time" do
     let(:uphold_connection) { uphold_connections(:details_connection) }
     let(:channel) { channels(:uphold_connected_details) }
