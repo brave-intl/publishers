@@ -435,6 +435,10 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def active?
+    inferred_status == PublisherStatusUpdate::ACTIVE
+  end
+
   def last_status_update
     status_updates.first
   end
