@@ -102,6 +102,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   # as this is not a valid Oauth2 spec response and thus
   # I do not want to contaminate the Oauth2::AuthenticationCodeClient
   def refresh_authorization!
+    return self if !access_token_expired?
     super do |result|
       raise result if result.response.code != "401"
 
@@ -205,12 +206,6 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       [key].pack("H*")
-    end
-
-    # setting this as a class method so it can be used in the payable? scope
-    def allowed_countries
-      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions(true)
-      allowed_regions[:gemini][:allow]
     end
   end
 end

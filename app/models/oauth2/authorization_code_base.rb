@@ -62,29 +62,31 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       return BFailure.new(errors: ["Connection refresh has already failed"])
     end
 
-    refresh_token = fetch_refresh_token
+    self.with_lock do
+      refresh_token = fetch_refresh_token
 
-    if refresh_token.nil?
-      record_refresh_failure!
-      return BFailure.new(errors: ["Cannot refresh without refresh token"])
-    end
-
-    result = self.class.oauth2_client.refresh_token(refresh_token)
-
-    case result
-    when RefreshTokenResponse
-      update_access_tokens!(result)
-    when ErrorResponse
-      record_refresh_failure!
-      result
-    when UnknownError
-      if blk
-        yield result
-      else
-        raise result
+      if refresh_token.nil?
+        record_refresh_failure!
+        return BFailure.new(errors: ["Cannot refresh without refresh token"])
       end
-    else
-      T.absurd(result)
+
+      result = self.class.oauth2_client.refresh_token(refresh_token)
+
+      case result
+      when RefreshTokenResponse
+        update_access_tokens!(result)
+      when ErrorResponse
+        record_refresh_failure!
+        result
+      when UnknownError
+        if blk
+          yield result
+        else
+          raise result
+        end
+      else
+        T.absurd(result)
+      end
     end
   end
 

@@ -118,7 +118,6 @@ class Admin::PublishersController < AdminController
     connection = UpholdConnection.find_by(publisher: params[:publisher_id])
     if connection.present?
       connection.sync_connection!
-      connection.create_uphold_cards
     end
     redirect_to admin_publisher_path(@publisher.id)
   end
