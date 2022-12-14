@@ -105,7 +105,6 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     return self if !access_token_expired?
     super do |result|
       raise result if result.response.code != "401"
-
       record_refresh_failure!
 
       # Catch the valid response body with invalid code

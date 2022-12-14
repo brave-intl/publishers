@@ -62,32 +62,34 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       return BFailure.new(errors: ["Connection refresh has already failed"])
     end
 
-    T.must(self.with_lock do
-      refresh_token = fetch_refresh_token
+    refresh_token = fetch_refresh_token
 
-      if refresh_token.nil?
-        record_refresh_failure!
-        return BFailure.new(errors: ["Cannot refresh without refresh token"])
-      end
+    if refresh_token.nil?
+      record_refresh_failure!
+      return BFailure.new(errors: ["Cannot refresh without refresh token"])
+    end
 
+    # When we upgrade to rails 7, transaction blocks will silently roll back when either return or raise is called
+    result = nil
+    T.must(with_lock do
       result = self.class.oauth2_client.refresh_token(refresh_token)
-
-      case result
-      when RefreshTokenResponse
-        update_access_tokens!(result)
-      when ErrorResponse
-        record_refresh_failure!
-        result
-      when UnknownError
-        if blk
-          yield result
-        else
-          raise result
-        end
-      else
-        T.absurd(result)
-      end
+      result.is_a?(RefreshTokenResponse) ? update_access_tokens!(result) : record_refresh_failure!
     end)
+
+    case result
+    when RefreshTokenResponse
+      self
+    when ErrorResponse
+      result
+    when UnknownError
+      if blk
+        yield result
+      else
+        raise result
+      end
+    else
+      T.absurd(result)
+    end
   end
 
   # We can reuse this method for all three cases because we added it at the same time.
