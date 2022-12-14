@@ -24,6 +24,10 @@ class CreateUpholdChannelCardJob < ApplicationJob
       channel_identifier: channel.details.channel_identifier
     ).first_or_create(channel_id: channel_id)
 
+    # Make sure the connection is active before hitting the API
+    # refresh_authorization should not hit the uphold API if it has active credentials and
+    # it should block the uphold connection from making concurrent refresh requests
+    uphold_connection.refresh_authorization!
     card_id = find_or_create_card(uphold_connection, channel, upfc)
 
     # If the channel was deleted and then recreated we should update this to be the new channel id

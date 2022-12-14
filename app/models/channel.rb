@@ -366,6 +366,10 @@ class Channel < ApplicationRecord
     site_banner_lookup.sync!
   end
 
+  def has_valid_uphold_connection?
+    uphold_connection&.address && uphold_connection&.card_id
+  end
+
   private
 
   def should_register_channel_for_promo?

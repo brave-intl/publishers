@@ -62,7 +62,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       return BFailure.new(errors: ["Connection refresh has already failed"])
     end
 
-    self.with_lock do
+    T.must(self.with_lock do
       refresh_token = fetch_refresh_token
 
       if refresh_token.nil?
@@ -87,7 +87,7 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       else
         T.absurd(result)
       end
-    end
+    end)
   end
 
   # We can reuse this method for all three cases because we added it at the same time.
