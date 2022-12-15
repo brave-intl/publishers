@@ -261,6 +261,10 @@ class Channel < ApplicationRecord
       .left_outer_joins(:site_channel_details)
       .left_outer_joins(:youtube_channel_details)
       .left_outer_joins(:twitch_channel_details)
+      .left_outer_joins(:twitter_channel_details)
+      .left_outer_joins(:reddit_channel_details)
+      .left_outer_joins(:vimeo_channel_details)
+      .left_outer_joins(:github_channel_details)
 
     channel = base_channel
     query.split(" ").each do |q|
@@ -274,6 +278,17 @@ class Channel < ApplicationRecord
         .or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q))
         .or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q))
         .or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
+        .or(base_channel.where("lower(twitter_channel_details.twitter_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitter_channel_details.screen_name) LIKE ?", q))
+        .or(base_channel.where("lower(twitter_channel_details.auth_email) LIKE ?", q))
+        .or(base_channel.where("lower(reddit_channel_details.reddit_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(reddit_channel_details.name) LIKE ?", q))
+        .or(base_channel.where("lower(vimeo_channel_details.vimeo_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(vimeo_channel_details.name) LIKE ?", q))
+        .or(base_channel.where("lower(vimeo_channel_details.nickname) LIKE ?", q))
+        .or(base_channel.where("lower(github_channel_details.github_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(github_channel_details.name) LIKE ?", q))
+        .or(base_channel.where("lower(github_channel_details.nickname) LIKE ?", q))
     end
 
     channel
