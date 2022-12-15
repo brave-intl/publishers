@@ -24,10 +24,15 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   # this will be all payable connections, minus connections that are payable because the publisher
   # has the 'blocked_country_exception' flag.
   scope :payable, -> {
-    where(is_verified: true)
+    joins(:publisher)
+      .where(is_verified: true)
       .where(status: "Active")
       .where.not(recipient_id: nil)
-      .where(country: allowed_countries)
+      .merge(in_supported_country)
+  }
+
+  scope :in_supported_country, -> {
+    where(country: allowed_countries).or(Publisher.where(blocked_country_exception: true))
   }
 
   scope :with_expired_tokens, -> {
