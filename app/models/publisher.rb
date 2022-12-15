@@ -185,9 +185,7 @@ class Publisher < ApplicationRecord
 
   scope :valid_payable_gemini_creators, -> {
     gemini_selected_provider
-      .where(gemini_connections: {is_verified: true})
-      .where.not(gemini_connections: {recipient_id: nil})
-      .where(gemini_connections: {country: "US"})
+      .merge(GeminiConnection.payable)
   }
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
