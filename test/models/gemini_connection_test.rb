@@ -228,6 +228,12 @@ class GeminiConnectionTest < SidekiqTestCase
       it "updates successfully" do
         assert(GeminiConnection.create_new_connection!(publisher, access_token_response))
       end
+
+      it "queues a CreateGeminiRecipientIdsJob job" do
+        assert_difference -> { CreateGeminiRecipientIdsJob.jobs.size } do
+          GeminiConnection.create_new_connection!(publisher, access_token_response)
+        end
+      end
     end
   end
 
