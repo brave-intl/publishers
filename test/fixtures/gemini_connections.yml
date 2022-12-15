@@ -31,7 +31,8 @@ connection_with_token:
   ) %>"
   encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
   recipient_id: <%= SecureRandom.uuid %>
-  country: 'US'
+  country: 'BE'
+  status: 'Active'
 
 connection_not_verified:
   publisher: gemini_not_completed
@@ -56,6 +57,7 @@ top_referrer_gemini_connected:
   recipient_id: <%= SecureRandom.uuid %>
   country: 'US'
   is_verified: true
+  status: 'Active'
 
 gemini_blocked_country_connection:
   publisher: verified_blocked_country_gemini
