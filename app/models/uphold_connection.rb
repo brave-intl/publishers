@@ -91,6 +91,15 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     with_active_connection.with_expired_tokens
   }
 
+  scope :payable, -> {
+    joins(:publisher)
+      .with_active_connection
+      .where(is_member: true)
+      .where.not(address: nil)
+      .where("country != '#{UpholdConnection::JAPAN}' or
+            country is null")
+  }
+
   # TODO: Deprecate ASAP
   scope :has_stale_uphold_access_parameters, -> {
     where.not(encrypted_uphold_access_parameters: nil)
@@ -412,6 +421,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       LogException.perform("Uphold wallet creation failed for publisher #{publisher_id} with #{result}")
       raise UnknownWalletCreationError.new("Could not configure #{default_currency} deposits for Uphold")
     end
+  end
+
+  def wallet_provider_id
+    uphold_id
   end
 
   def has_deposit_capability?

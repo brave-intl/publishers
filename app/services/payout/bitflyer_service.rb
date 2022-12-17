@@ -32,7 +32,7 @@ module Payout
           kind: ::PotentialPayment::CONTRIBUTION,
           url: channel.details.url.to_s,
           address: channel.deposit_id || "",
-          wallet_provider_id: connection.display_name || "", # this is a hash of the account_id
+          wallet_provider_id: connection.wallet_provider_id,
           wallet_provider: ::PotentialPayment.wallet_providers["bitflyer"],
           suspended: publisher.suspended?,
           whitelisted: publisher.whitelisted?,

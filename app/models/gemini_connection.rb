@@ -153,6 +153,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     )
   end
 
+  def wallet_provider_id
+    recipient_id
+  end
+
   class << self
     def provider_name
       "Gemini"
