@@ -230,9 +230,11 @@ class GeminiConnectionTest < SidekiqTestCase
       end
 
       it "queues a CreateGeminiRecipientIdsJob job" do
-        assert_difference -> { CreateGeminiRecipientIdsJob.jobs.size } do
+        assert_enqueued_jobs 0
+        assert_enqueued_with(job: CreateGeminiRecipientIdsJob, queue: "default") do
           GeminiConnection.create_new_connection!(publisher, access_token_response)
         end
+        assert_enqueued_jobs 1
       end
     end
   end
