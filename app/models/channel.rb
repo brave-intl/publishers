@@ -367,7 +367,7 @@ class Channel < ApplicationRecord
   end
 
   def has_valid_uphold_connection?
-    (publisher.uphold_connection&.id == uphold_connection&.uphold_connection_id) && uphold_connection&.address && uphold_connection&.card_id
+    uphold_connection && (publisher.uphold_connection&.id == uphold_connection&.uphold_connection_id) && uphold_connection&.address && uphold_connection&.card_id
   end
 
   private
