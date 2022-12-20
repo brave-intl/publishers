@@ -206,5 +206,12 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
       [key].pack("H*")
     end
+
+    # Needs to be a class method and not an instance method to allow use in scope queries
+    def allowed_countries
+      # fetch cached regions
+      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
+      allowed_regions[:gemini][:allow]
+    end
   end
 end
