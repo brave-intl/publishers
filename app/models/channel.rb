@@ -380,8 +380,17 @@ class Channel < ApplicationRecord
     self.verified_at = nil if verified == false && verified_at.present?
   end
 
-  # This literally runs for all channels because we create an uphold connection for all users.
   def create_channel_card
+    create_uphold_channel_card if publisher&.uphold_connection&.uphold_id
+    create_gemini_channel_card if publisher&.gemini_connection&.recipient_id
+  end
+
+  def create_gemini_channel_card
+    return if !publisher&.gemini_connection&.recipient_id
+    CreateGeminiRecipientIdsJob.perform_later(publisher.gemini_connection&.id)
+  end
+
+  def create_uphold_channel_card
     return if !publisher&.uphold_connection&.uphold_id
     CreateUpholdChannelCardJob.perform_later(uphold_connection_id: publisher.uphold_connection&.id, channel_id: id)
   end
