@@ -399,10 +399,6 @@ class Channel < ApplicationRecord
     CreateUpholdChannelCardJob.perform_later(uphold_connection_id: publisher.uphold_connection&.id, channel_id: id)
   end
 
-  def has_valid_uphold_connection?
-    uphold_connection && (publisher.uphold_connection&.id == uphold_connection&.uphold_connection_id) && uphold_connection&.address && uphold_connection&.card_id
-  end
-
   def notify_slack
     return unless verified?
     emoji =
