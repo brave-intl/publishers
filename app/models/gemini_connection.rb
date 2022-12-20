@@ -16,7 +16,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   has_paper_trail
 
   belongs_to :publisher
-  has_many :gemini_connection_for_channels
+  has_many :gemini_connection_for_channels, dependent: :destroy
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT
 
@@ -151,6 +151,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       country: user.country_code,
       is_verified: user.is_verified
     )
+
+    CreateGeminiRecipientIdsJob.perform_later(id)
   end
 
   class << self
