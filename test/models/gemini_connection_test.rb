@@ -18,6 +18,11 @@ class GeminiConnectionTest < SidekiqTestCase
   describe "Oauth2::AuthorizationCodeBase" do
     let(:conn) { gemini_connections(:connection_with_token) }
 
+    before do
+      conn.access_expiration_time = 3600.seconds.ago
+      conn.save!
+    end
+
     describe "conn.class.oauth2_client" do
       it "should be truthy" do
         assert conn.class.oauth2_client
@@ -247,6 +252,8 @@ class GeminiConnectionTest < SidekiqTestCase
       mock_gemini_auth_request!
       mock_gemini_account_request!
       mock_gemini_recipient_id!
+      gemini_connection.access_expiration_time = 3600.seconds.ago
+      gemini_connection.save!
     end
 
     it "refreshes the token" do

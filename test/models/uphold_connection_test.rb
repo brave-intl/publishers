@@ -261,6 +261,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     let(:conn) { uphold_connections(:google_connection) }
 
     before do
+      mock_refresh_token_success(UpholdConnection.oauth2_client.token_url)
       stub_rewards_parameters
       stub_get_user(country: "AQ")
       stub_get_card(id: conn.address)

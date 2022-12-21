@@ -69,13 +69,17 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       return BFailure.new(errors: ["Cannot refresh without refresh token"])
     end
 
-    result = self.class.oauth2_client.refresh_token(refresh_token)
+    # When we upgrade to rails 7, transaction blocks will silently roll back when either return or raise is called
+    result = T.let(nil, T.nilable(T.any(Oauth2::Responses::RefreshTokenResponse, Oauth2::Errors::UnknownError, Oauth2::Responses::ErrorResponse)))
+    T.must(with_lock do
+      result = self.class.oauth2_client.refresh_token(refresh_token)
+      result.is_a?(RefreshTokenResponse) ? update_access_tokens!(result) : record_refresh_failure!
+    end)
 
     case result
     when RefreshTokenResponse
-      update_access_tokens!(result)
+      self
     when ErrorResponse
-      record_refresh_failure!
       result
     when UnknownError
       if blk
@@ -83,6 +87,10 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
       else
         raise result
       end
+    when nil
+      # It technically shouldn't be nil, but Sorbet complained.  If the lock transaction were to be
+      # rolled back without raising an error, just return the connection
+      self
     else
       T.absurd(result)
     end

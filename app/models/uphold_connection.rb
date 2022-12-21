@@ -218,7 +218,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
     T.unsafe(publisher).channels.each do |channel|
-      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
+      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id) if !channel.has_valid_uphold_connection?
     end
   end
 
@@ -248,7 +248,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     false
   end
 
+  # Sync connection is currently only called from the admin panel.  It should reset and refresh
+  # as many things as it can, since it should be a one-button 'fix' for our customer service experts.
   def sync_connection!
+    # refresh the access tokens if they're expired
+    refresh_authorization!
     result = find_and_verify_uphold_user
 
     case result
