@@ -5,7 +5,7 @@ namespace :database_updates do
 
     puts "Queueing up create recipient ID for #{verified_gemini_connections.count} users"
     verified_gemini_connections.each do |connection|
-      connection.sync_connection!
+      CreateGeminiRecipientIdsJob.perform_later(connection.id)
     end
     puts "Done!"
   end

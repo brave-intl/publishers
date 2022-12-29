@@ -1,7 +1,7 @@
 # typed: ignore
 
 class CreateUpholdChannelCardJob < ApplicationJob
-  sidekiq_options queue: :default, retry: false
+  sidekiq_options queue: :default
 
   def perform(uphold_connection_id:, channel_id:)
     uphold_connection = UpholdConnection.find(uphold_connection_id)
