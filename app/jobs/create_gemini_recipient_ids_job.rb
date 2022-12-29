@@ -3,7 +3,7 @@
 # Creates the Gemini Recipient IDs for a publisher
 class CreateGeminiRecipientIdsJob < ApplicationJob
   # Retry on this creates the possibility of race conditions that accidentally break refreshs.
-  sidekiq_options queue: :scheduler, retry: false
+  sidekiq_options queue: :scheduler
 
   def perform(gemini_connection_id)
     gemini_connection = GeminiConnection.find(gemini_connection_id)
