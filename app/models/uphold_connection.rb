@@ -73,6 +73,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
   after_save :update_promo_status, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
+  after_create :create_uphold_cards
 
   #################
   # Scopes
@@ -504,10 +505,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
           # Create whatever this report is, pulled out of the previous uphold connections controller
           UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
-
-          # Make sure a new card/ UpholdConnectionForChannel is present for existing verified channels
-          conn.create_uphold_cards
-
           conn
         else
           T.absurd(result)
