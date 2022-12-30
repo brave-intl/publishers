@@ -18,7 +18,7 @@ module Eyeshade
 
     def initialize(rates: {}, accounts: [], transactions: [], default_currency: nil)
       # Wallet information
-      @rates = rates["payload"] || {}
+      @rates = rates
 
       @default_currency = default_currency
 
