@@ -73,7 +73,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
   after_save :update_promo_status, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
-  after_create :create_uphold_cards
+  after_commit :create_uphold_cards, on: :create
 
   #################
   # Scopes
