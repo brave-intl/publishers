@@ -20,6 +20,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT
 
+  after_commit :create_recipient_ids, on: :create
+
   # This scope was used once to backfill recipient ids in a background job, not used anywhere else
   # this will be all payable connections, minus connections that are payable because the publisher
   # has the 'blocked_country_exception' flag.
@@ -119,20 +121,9 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   def sync_connection!
-    # FIXME: This was a quick hack, to resolve a bug.
-    # Clean it up later.
-    if access_token_expired?
-      result = refresh_authorization!
-
-      case result
-      when GeminiConnection
-        verify_through_gemini
-        self
-      else
-        result
-      end
-    else
+    with_refresh do
       verify_through_gemini
+      CreateGeminiRecipientIdsJob.perform_later(id)
       self
     end
   end
@@ -151,8 +142,28 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       country: user.country_code,
       is_verified: user.is_verified
     )
+  end
 
-    CreateGeminiRecipientIdsJob.perform_later(id)
+  def with_refresh
+    if access_token_expired?
+      result = refresh_authorization!
+
+      case result
+      when GeminiConnection
+        yield
+      else
+        result
+      end
+    else
+      yield
+    end
+  end
+
+  def create_recipient_ids
+    return unless payable?
+    with_refresh do
+      CreateGeminiRecipientIdsJob.perform_later(id)
+    end
   end
 
   class << self
