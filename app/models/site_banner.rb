@@ -24,7 +24,6 @@ class SiteBanner < ApplicationRecord
   DEFAULT_DESCRIPTION = I18n.t("banner.tagline")
 
   validates_presence_of :title, :description, :publisher
-  validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
   after_save :update_site_banner_lookup!
 

@@ -18,7 +18,7 @@ class SiteBannerTest < ActiveSupport::TestCase
     site_banner = SiteBanner.new(
       title: "Hello",
       publisher: publisher,
-      description: "World",
+      description: "World"
     )
     site_banner.social_links = {youku: "abcd"}
     site_banner.save
