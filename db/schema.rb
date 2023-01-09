@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_23_220112) do
+ActiveRecord::Schema.define(version: 2023_01_09_224336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -593,8 +593,6 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "publisher_id", null: false
     t.text "title", null: false
     t.text "description", null: false
-    t.integer "donation_amounts", array: true
-    t.integer "default_donation"
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
