@@ -73,6 +73,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
   after_save :update_promo_status, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
+  after_commit :create_uphold_cards, on: :create
 
   #################
   # Scopes
@@ -227,7 +228,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
     T.unsafe(publisher).channels.each do |channel|
-      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id)
+      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id) if !channel.has_valid_uphold_connection?
     end
   end
 
@@ -257,7 +258,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     false
   end
 
+  # Sync connection is currently only called from the admin panel.  It should reset and refresh
+  # as many things as it can, since it should be a one-button 'fix' for our customer service experts.
   def sync_connection!
+    # refresh the access tokens if they're expired
+    refresh_authorization!
     result = find_and_verify_uphold_user
 
     case result
@@ -513,10 +518,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
           # Create whatever this report is, pulled out of the previous uphold connections controller
           UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
-
-          # Make sure a new card/ UpholdConnectionForChannel is present for existing verified channels
-          conn.create_uphold_cards
-
           conn
         else
           T.absurd(result)

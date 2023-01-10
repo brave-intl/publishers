@@ -16,9 +16,11 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   has_paper_trail
 
   belongs_to :publisher
-  has_many :gemini_connection_for_channels
+  has_many :gemini_connection_for_channels, dependent: :destroy
   attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT
+
+  after_commit :create_recipient_ids, on: :create
 
   # This scope was used once to backfill recipient ids in a background job, not used anywhere else
   # this will be all payable connections, minus connections that are payable because the publisher
@@ -102,9 +104,9 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   # as this is not a valid Oauth2 spec response and thus
   # I do not want to contaminate the Oauth2::AuthenticationCodeClient
   def refresh_authorization!
+    return self if !access_token_expired?
     super do |result|
       raise result if result.response.code != "401"
-
       record_refresh_failure!
 
       # Catch the valid response body with invalid code
@@ -119,20 +121,9 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   def sync_connection!
-    # FIXME: This was a quick hack, to resolve a bug.
-    # Clean it up later.
-    if access_token_expired?
-      result = refresh_authorization!
-
-      case result
-      when GeminiConnection
-        verify_through_gemini
-        self
-      else
-        result
-      end
-    else
+    with_refresh do
       verify_through_gemini
+      CreateGeminiRecipientIdsJob.perform_later(id)
       self
     end
   end
@@ -155,6 +146,28 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   def wallet_provider_id
     recipient_id
+  end
+
+  def with_refresh
+    if access_token_expired?
+      result = refresh_authorization!
+
+      case result
+      when GeminiConnection
+        yield
+      else
+        result
+      end
+    else
+      yield
+    end
+  end
+
+  def create_recipient_ids
+    return unless payable?
+    with_refresh do
+      CreateGeminiRecipientIdsJob.perform_later(id)
+    end
   end
 
   class << self
@@ -209,9 +222,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       [key].pack("H*")
     end
 
-    # setting this as a class method so it can be used in the payable? scope
+    # Needs to be a class method and not an instance method to allow use in scope queries
     def allowed_countries
-      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions(true)
+      # fetch cached regions
+      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
       allowed_regions[:gemini][:allow]
     end
   end

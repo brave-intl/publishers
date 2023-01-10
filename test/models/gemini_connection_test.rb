@@ -18,6 +18,11 @@ class GeminiConnectionTest < SidekiqTestCase
   describe "Oauth2::AuthorizationCodeBase" do
     let(:conn) { gemini_connections(:connection_with_token) }
 
+    before do
+      conn.access_expiration_time = 3600.seconds.ago
+      conn.save!
+    end
+
     describe "conn.class.oauth2_client" do
       it "should be truthy" do
         assert conn.class.oauth2_client
@@ -228,6 +233,14 @@ class GeminiConnectionTest < SidekiqTestCase
       it "updates successfully" do
         assert(GeminiConnection.create_new_connection!(publisher, access_token_response))
       end
+
+      it "queues a CreateGeminiRecipientIdsJob job" do
+        assert_enqueued_jobs 0
+        assert_enqueued_with(job: CreateGeminiRecipientIdsJob, queue: "default") do
+          GeminiConnection.create_new_connection!(publisher, access_token_response)
+        end
+        assert_enqueued_jobs 1
+      end
     end
   end
 
@@ -239,6 +252,8 @@ class GeminiConnectionTest < SidekiqTestCase
       mock_gemini_auth_request!
       mock_gemini_account_request!
       mock_gemini_recipient_id!
+      gemini_connection.access_expiration_time = 3600.seconds.ago
+      gemini_connection.save!
     end
 
     it "refreshes the token" do
