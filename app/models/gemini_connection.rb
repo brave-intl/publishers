@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 class GeminiConnection < Oauth2::AuthorizationCodeBase
+  include JsonSchemaProperties
   include WalletProviderProperties
   include Oauth2::Responses
 

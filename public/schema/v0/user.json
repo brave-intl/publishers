@@ -1,0 +1,187 @@
+{
+  "title": "User",
+  "$id": "https://creators.brave.com/schema/v0/publisher.json",
+  "description": "Dynamically generated schema 'User' from application model 'Publisher'",
+  "properties": {
+    "id": {
+      "type": [
+        "string"
+      ]
+    },
+    "name": {
+      "type": [
+        "string"
+      ]
+    },
+    "email": {
+      "type": [
+        "string"
+      ]
+    },
+    "pending_email": {
+      "type": [
+        "string"
+      ]
+    },
+    "sign_in_count": {
+      "type": [
+        "integer"
+      ]
+    },
+    "current_sign_in_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "last_sign_in_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "current_sign_in_ip": {
+      "type": [
+        "string"
+      ]
+    },
+    "last_sign_in_ip": {
+      "type": [
+        "string"
+      ]
+    },
+    "created_via_api": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "default_currency": {
+      "type": [
+        "string"
+      ]
+    },
+    "created_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "updated_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "two_factor_prompted_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "promo_enabled_2018q1": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "agreed_to_tos": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "promo_token_2018q1": {
+      "type": [
+        "string"
+      ]
+    },
+    "role": {
+      "type": [
+        "string"
+      ]
+    },
+    "default_currency_confirmed_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "excluded_from_payout": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "created_by_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "default_site_banner_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "default_site_banner_mode": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "thirty_day_login": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "subscribed_to_marketing_emails": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "feature_flags": {
+      "type": [
+        "object"
+      ]
+    },
+    "selected_wallet_provider_type": {
+      "type": [
+        "string"
+      ]
+    },
+    "selected_wallet_provider_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "bitflyer_deposit_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "session_salt": {
+      "type": [
+        "string"
+      ]
+    },
+    "site_channel_limit": {
+      "type": [
+        "integer"
+      ]
+    },
+    "blocked_country_exception": {
+      "type": [
+        "boolean"
+      ]
+    }
+  },
+  "required": [
+    "email",
+    "id",
+    "name",
+    "sign_in_count",
+    "created_via_api",
+    "created_at",
+    "updated_at",
+    "excluded_from_payout",
+    "default_site_banner_mode",
+    "thirty_day_login",
+    "subscribed_to_marketing_emails"
+  ]
+}

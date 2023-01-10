@@ -61,6 +61,12 @@ There is an [open issue](https://github.com/sorbet/sorbet/issues/4119) and an in
 
 We recommend continuing to develop using Sorbet type annotations and explicit types.
 
+#### Updating Sorbet RBI files when adding new gems/dependencies.
+
+Some sections of the app will require the addition of RBI file annotations in order the pass the sorbet typecheck linter.  These are sections of the app where sorbet is heavily used.  To add a new dependency, (on an intel chipset machine)
+
+`tapioca gem <gemname>` after adding it to the Gemfile and building the container.
+
 ### Gemfile
 
 If however, you are developing on an M1 using docker-compose and find yourself in the position of needing to update a dependency/Gemfile, you are going to run into a wall.  Several gems (including Sorbet) are installed conditionally based on the chipset of the device.  Thus, your local development Gemfile will be different from what is run in CI/CD and Sorbet is required for builds.  Unfortunately for the moment the only way to properly update the Gemfile is to either install locally or to use an device that is using an x86 chipset.

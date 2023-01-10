@@ -1,0 +1,135 @@
+{
+  "title": "UpholdCustodian",
+  "$id": "https://creators.brave.com/schema/v0/upholdconnection.json",
+  "description": "Dynamically generated schema 'UpholdCustodian' from application model 'UpholdConnection'",
+  "properties": {
+    "id": {
+      "type": [
+        "string"
+      ]
+    },
+    "uphold_state_token": {
+      "type": [
+        "string"
+      ]
+    },
+    "uphold_verified": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "is_member": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "uphold_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "address": {
+      "type": [
+        "string"
+      ]
+    },
+    "publisher_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_uphold_code": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_uphold_code_iv": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_uphold_access_parameters": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_uphold_access_parameters_iv": {
+      "type": [
+        "string"
+      ]
+    },
+    "created_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "updated_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "status": {
+      "type": [
+        "string"
+      ]
+    },
+    "country": {
+      "type": [
+        "string"
+      ]
+    },
+    "default_currency": {
+      "type": [
+        "string"
+      ]
+    },
+    "default_currency_confirmed_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "member_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "send_emails": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "card_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "oauth_refresh_failed": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "oauth_failure_email_sent": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "access_expiration_time": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "updated_at",
+    "oauth_refresh_failed",
+    "oauth_failure_email_sent"
+  ]
+}

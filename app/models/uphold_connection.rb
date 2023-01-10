@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 class UpholdConnection < Oauth2::AuthorizationCodeBase
+  include JsonSchemaProperties
+
   # Here for debugging, let's you toggle the KYC requirement for creating
   # a connection.
   class_attribute :strict_create, default: true

@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 class BitflyerConnection < Oauth2::AuthorizationCodeBase
+  include JsonSchemaProperties
   include WalletProviderProperties
 
   SUPPORTED_CURRENCIES = ["BAT", "USD"].freeze

@@ -7,6 +7,7 @@ class Publisher < ApplicationRecord
   extend T::Sig
   include UserFeatureFlags
   include ReferralPromo
+  include JsonSchemaProperties
 
   validates_with HtmlValidator, attributes: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
 
@@ -576,6 +577,26 @@ class Publisher < ApplicationRecord
   end
 
   class << self
+    # FIXME: I'm consciously accepting slop in exchange for speed here.
+    def whitelist
+      [
+        :promo_enabled_2018q1,
+        :name,
+        :email,
+        :role
+      ]
+    end
+
+    # TODO: Implement, for now I'm just going with whitelist
+    def blacklist
+      []
+    end
+
+    # Note: This is required because many fields do not have valid constraints at the db level despite being... absolutely essential for the app's functionality.
+    def required
+      [:email]
+    end
+
     def available_countries
       ISO3166::Country.all_names_with_codes
     end

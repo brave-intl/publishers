@@ -1,0 +1,118 @@
+{
+  "title": "BitflyerCustodian",
+  "$id": "https://creators.brave.com/schema/v0/bitflyerconnection.json",
+  "description": "Dynamically generated schema 'BitflyerCustodian' from application model 'BitflyerConnection'",
+  "properties": {
+    "id": {
+      "type": [
+        "string"
+      ]
+    },
+    "publisher_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_access_token": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_access_token_iv": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_refresh_token": {
+      "type": [
+        "string"
+      ]
+    },
+    "encrypted_refresh_token_iv": {
+      "type": [
+        "string"
+      ]
+    },
+    "expires_in": {
+      "type": [
+        "string"
+      ]
+    },
+    "access_expiration_time": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "display_name": {
+      "type": [
+        "string"
+      ]
+    },
+    "state_token": {
+      "type": [
+        "string"
+      ]
+    },
+    "scope": {
+      "type": [
+        "string"
+      ]
+    },
+    "status": {
+      "type": [
+        "string"
+      ]
+    },
+    "country": {
+      "type": [
+        "string"
+      ]
+    },
+    "is_verified": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "recipient_id": {
+      "type": [
+        "string"
+      ]
+    },
+    "default_currency": {
+      "type": [
+        "string"
+      ]
+    },
+    "created_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "updated_at": {
+      "type": [
+        "string"
+      ],
+      "format": "date"
+    },
+    "oauth_refresh_failed": {
+      "type": [
+        "boolean"
+      ]
+    },
+    "oauth_failure_email_sent": {
+      "type": [
+        "boolean"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "publisher_id",
+    "created_at",
+    "updated_at",
+    "oauth_refresh_failed",
+    "oauth_failure_email_sent"
+  ]
+}
