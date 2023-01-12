@@ -144,6 +144,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     )
   end
 
+  def wallet_provider_id
+    recipient_id
+  end
+
   def with_refresh
     if access_token_expired?
       result = refresh_authorization!

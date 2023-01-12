@@ -149,10 +149,7 @@ class Publisher < ApplicationRecord
   # unknown country. This applies exclusively to Uphold and not Gemini
   scope :valid_payable_uphold_creators, -> {
     uphold_selected_provider
-      .where(uphold_connections: {is_member: true})
-      .where.not(uphold_connections: {address: nil})
-      .where("uphold_connections.country != '#{UpholdConnection::JAPAN}' or
-            uphold_connections.country is null")
+      .merge(UpholdConnection.payable)
   }
 
   ###############################
@@ -169,6 +166,7 @@ class Publisher < ApplicationRecord
 
   scope :valid_payable_bitflyer_creators, -> {
     bitflyer_selected_provider
+      .merge(BitflyerConnection.payable)
   }
 
   ###############################
