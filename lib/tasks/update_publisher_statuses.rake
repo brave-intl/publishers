@@ -38,4 +38,52 @@ namespace :update do
       end
     end
   end
+
+  # File format
+  # [
+  #   {
+  #     "address": "123",
+  #     "owner": "publishers#uuid:123",
+  #     "walletProvider": "uphold",
+  #     "walletProviderId": "123",
+  #     "publisher": "youtube#channel:dsf",
+  #     "note": "Account not permitted"
+  #   },
+  #   {
+  #     "address": "123",
+  #     "owner": "publishers#uuid:123",
+  #     "walletProvider": "uphold",
+  #     "walletProviderId": "123",
+  #     "github#channel:38326564",
+  #     "note": "Account not permitted"
+  #   },
+  #   {
+  #     "address": "123",
+  #     "owner": "publishers#uuid:abc",
+  #     "walletProvider": "uphold",
+  #     "walletProviderId": "123",
+  #     "publisher": " twitter#channel:1554",
+  #     "note": ""
+  #   },
+  #   {
+  #     "address": "123",
+  #     "owner": "publishers#uuid:abc",
+  #     "walletProvider": "uphold",
+  #     "walletProviderId": "123",
+  #     "publisher": "twitch#author:polistown",
+  #     "note": ""
+  #   }
+  # ]
+  desc "Disable wallet connections of creators who fail payout"
+  task :failed_payout_status_update, [:status_file] => :environment do |t, args|
+    raise "Need status file" unless args[:status_file]
+
+    if args[:status_file].present?
+      status_file = args[:status_file]
+    end
+
+    to_update_list = JSON.parse(File.read(status_file))
+
+    PublisherPayoutFeedbackStatusUpdater.build.call(to_update_list: to_update_list)
+  end
 end

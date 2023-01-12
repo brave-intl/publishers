@@ -27,6 +27,10 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
     with_active_connection.with_expired_tokens
   }
 
+  scope :payable, -> {
+    with_active_connection
+  }
+
   def provider_sym
     :bitflyer
   end
@@ -88,6 +92,11 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
       record_refresh_failure!
       ErrorResponse.new(error: "invalid_grant", error_description: "bitflyer has returned a forbidden 403")
     end
+  end
+
+  # this is a hash of the account_id
+  def wallet_provider_id
+    display_name || ""
   end
 
   def sync_connection!
