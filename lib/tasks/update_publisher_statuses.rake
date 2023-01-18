@@ -86,4 +86,31 @@ namespace :update do
 
     PublisherPayoutFeedbackStatusUpdater.build.call(to_update_list: to_update_list)
   end
+
+  # File format
+  # [
+  #  "pubID",
+  #  "pubID2",
+  #  "pubID3",
+  #  "pubID4",
+  # ]
+  desc "De-whitelist creators who no longer belong on the list"
+  task :dewhitelist, [:publisher_file] => :environment do |t, args|
+    raise "Need publisher file" unless args[:publisher_file]
+
+    if args[:publisher_file].present?
+      publisher_file = args[:publisher_file]
+    end
+
+    to_update_list = JSON.parse(File.read(publisher_file))
+    to_update_list.each do |publisher_id|
+      p = Publisher.where(id: publisher_id).first
+      if p&.whitelisted?
+        puts "Unwhitelisting publisher #{p.id} with email #{p.email}"
+        p.whitelist_updates.destroy_all
+      else
+        puts "Couldn't find #{publisher_id}"
+      end
+    end
+  end
 end
