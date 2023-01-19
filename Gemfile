@@ -14,7 +14,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.4.4"
 gem "railties", rails_version
 
-gem "rack", "2.2.4"
+gem "rack", "2.2.6.2"
 
 # All things countries
 gem "countries"
