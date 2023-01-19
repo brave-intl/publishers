@@ -9,12 +9,12 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "6.1.6.1"
+rails_version = "6.1.7.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.4.4"
 gem "railties", rails_version
 
-gem "rack", "2.2.4"
+gem "rack", "2.2.6.2"
 
 # All things countries
 gem "countries"
