@@ -107,7 +107,7 @@ namespace :update do
       p = Publisher.where(id: publisher_id).first
       if p&.whitelisted?
         puts "Unwhitelisting publisher #{p.id} with email #{p.email}"
-        p.whitelist_updates.destroy_all
+        p.whitelist_updates.create(enabled: false, publisher_note: PublisherNote.new(note: 'Dewhitelisting'))
       else
         puts "Couldn't find #{publisher_id}"
       end
