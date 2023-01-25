@@ -1,17 +1,9 @@
 # typed: true
 
 class RedisCountService < BuilderBaseService
-  class BelowLimit < T::Struct
-    const :limit, Integer
-    const :interval, Integer
-    const :count, Integer
-  end
+  BelowLimit = Struct.new(:limit, :interval, :count, keyword_init: true)
 
-  class AboveLimit < T::Struct
-    const :limit, Integer
-    const :interval, Integer
-    const :count, Integer
-  end
+  AboveLimit = Struct.new(:limit, :interval, :count, keyword_init: true)
 
   def self.build
     new

@@ -3,7 +3,6 @@ require "test_helper"
 class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
   include Oauth2::Responses
   include MockOauth2Responses
-  extend T::Sig
 
   let(:klass) { Oauth2::AuthorizationCodeClient }
   let(:client_id) { "any value" }

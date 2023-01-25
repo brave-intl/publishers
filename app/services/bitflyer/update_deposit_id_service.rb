@@ -1,15 +1,12 @@
 # typed: true
 
 class Bitflyer::UpdateDepositIdService < BuilderBaseService
-  extend T::Helpers
-  extend T::Sig
   include Oauth2::Responses
 
   def self.build
     new
   end
 
-  sig { override.params(channel: Channel).returns(BServiceResult) }
   def call(channel)
     return shrug("NOOP: Deposit id was present on the channel.") if channel.deposit_id.present?
 
@@ -26,7 +23,7 @@ class Bitflyer::UpdateDepositIdService < BuilderBaseService
       url = URI.parse(Rails.application.secrets[:bitflyer_host] + "/api/link/v1/account/create-deposit-id?request_id=" + SecureRandom.uuid)
       request = Net::HTTP::Get.new(url.to_s)
 
-      request["Authorization"] = "Bearer " + T.must(conn.access_token)
+      request["Authorization"] = "Bearer " + conn.access_token
       response = Net::HTTP.start(url.host, url.port, use_ssl: url.scheme == "https") do |http|
         http.request(request)
       end
@@ -45,7 +42,7 @@ class Bitflyer::UpdateDepositIdService < BuilderBaseService
     when Oauth2::AuthorizationCodeBase
       raise
     else
-      T.absurd(result)
+      raise result
     end
   end
 end

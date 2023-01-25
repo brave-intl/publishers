@@ -71,8 +71,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # Callbacks
   ################
 
-  after_save :update_site_banner_lookup!, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
-  after_save :update_promo_status, if: -> { T.bind(self, UpholdConnection).saved_change_to_attribute(:is_member) }
+  after_save :update_site_banner_lookup!, if: -> { saved_change_to_attribute(:is_member) }
+  after_save :update_promo_status, if: -> { saved_change_to_attribute(:is_member) }
   after_commit :create_uphold_cards, on: :create
 
   #################
@@ -280,14 +280,14 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def update_site_banner_lookup!
-    T.unsafe(publisher).update_site_banner_lookup!
+    publisher.update_site_banner_lookup!
   end
 
   # Internal: If the publisher previously had referral codes and then we will re-activate their referral codes.
   #
   # Returns nil
   def update_promo_status
-    T.unsafe(publisher).update_promo_status!
+    publisher.update_promo_status!
   end
 
   def japanese_account?
@@ -312,7 +312,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def access_token_expired?
-    access_expiration_time.present? && Time.now > T.unsafe(access_expiration_time)
+    access_expiration_time.present? && Time.now > access_expiration_time
   end
 
   def access_token
@@ -330,13 +330,11 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # Uphold refresh token flow is also one time use.
   # We've gotta be so careful about all the places this gets called.
   # It's one reason I've had to go in and remove all these legacy methods.
-  sig { params(blk: T.nilable(T.proc.bind(self).params(arg0: Oauth2::Errors::UnknownError).returns(Oauth2::Responses::ErrorResponse))).returns(T.any(UpholdConnection, ErrorResponse, BFailure)) }
   def refresh_authorization!(&blk)
     return self if is_valid_connection? && !access_token_expired?
     super
   end
 
-  sig { override.params(refresh_token_response: RefreshTokenResponse).returns(UpholdConnection) }
   def update_access_tokens!(refresh_token_response)
     # https://sorbet.org/docs/tstruct#converting-structs-to-other-types
     authorization_hash = refresh_token_response.serialize
@@ -356,7 +354,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     self
   end
 
-  sig { returns(Uphold::ConnectionClient) }
   def connection_client
     @_connection_client ||= Uphold::ConnectionClient.new(self)
   end
@@ -364,9 +361,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # We will certainly want to reuse this to check
   # when a user's account has been flagged so
   # we need to handle not raising exceptions in that case.
-  sig {
-    returns(T.any(UpholdUser, UnverifiedConnectionError, FlaggedConnectionError, DuplicateConnectionError, WalletCreationError))
-  }
   def find_and_verify_uphold_user
     result = connection_client.users.get
 
@@ -393,11 +387,10 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       LogException.perform(result)
       WalletCreationError.new("Unable to connect to Uphold.  Please try again in a few minutes.")
     else
-      T.absurd(result)
+      raise result
     end
   end
 
-  sig { returns(UpholdUser) }
   def find_and_verify_uphold_user!
     result = find_and_verify_uphold_user
 
@@ -409,7 +402,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     end
   end
 
-  sig { returns(UpholdCard) }
   def find_or_create_uphold_card!
     raise InsufficientScopeError.new("Cannot configure wallet") if !can_create_uphold_cards?
 
@@ -456,9 +448,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       Oauth2::Config::Uphold
     end
 
-    sig { override.params(publisher: Publisher, access_token_response: AccessTokenResponse).returns(UpholdConnection) }
     def create_new_connection!(publisher, access_token_response)
-      access_expiration_time = access_token_response.expires_in.present? ? T.must(access_token_response.expires_in).seconds.from_now : nil
+      access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
 
       # Do everything in a transaction so hopefully we begin tamping down data artifacts
       ActiveRecord::Base.transaction do
@@ -469,7 +460,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         # 2.) Set core params/token values.
         conn = UpholdConnection.new(
           publisher_id: publisher.id,
-          uphold_access_parameters: access_token_response.serialize.to_json,
+          uphold_access_parameters: access_token_response.to_json,
           access_expiration_time: access_expiration_time,
           uphold_verified: true,
           default_currency: "BAT",
@@ -496,8 +487,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         # The type annotations of the UpholdUser struct are different
         # from that of the model, so you have to cast the values
         # in order to assign them
-        conn.status = T.must(user.status)
-        conn.uphold_id = T.must(user.id)
+        conn.status = user.status
+        conn.uphold_id = user.id
         conn.country = user.country
 
         # 4.) Create the uphold "card" or wallet for the default currency in question.
@@ -520,7 +511,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
           UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
           conn
         else
-          T.absurd(result)
+          raise result
         end
       end
     end

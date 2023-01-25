@@ -9,7 +9,6 @@ class Oauth2Controller < ApplicationController
   #
   # I had to build this just to debug the varying implementations
   # of the Oauth2::AuthorizationCodebase children.
-  extend T::Sig
   include Oauth2::Responses
   include Oauth2::Errors
   before_action :authenticate_publisher!

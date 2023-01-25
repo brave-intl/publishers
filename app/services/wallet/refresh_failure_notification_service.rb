@@ -1,12 +1,7 @@
 # typed: true
 
 class Wallet::RefreshFailureNotificationService < BuilderBaseService
-  extend T::Sig
-  extend T::Helpers
   include Wallet::Structs
-
-  ConnectionTypes = T.type_alias { T.any(UpholdConnection, BitflyerConnection, GeminiConnection) }
-  ResponseTypes = T.type_alias { T.any(BFailure, FailedWithNotification, FailedWithoutNotification, BSuccess) }
 
   # This was abstracted from oauth2_refresh_job and thus
   # the relevant spec is oauth2_refresh_job_test.rb
@@ -15,7 +10,6 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
     new
   end
 
-  sig { override.params(connection: ConnectionTypes, notify: T::Boolean).returns(ResponseTypes) }
   def call(connection, notify: false)
     result = connection.refresh_authorization!
 
@@ -36,8 +30,6 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
       end
     when Oauth2::AuthorizationCodeBase
       raise
-    else
-      T.absurd(result)
     end
   end
 end

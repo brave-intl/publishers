@@ -6,8 +6,6 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
   include Uphold::Types
   include Oauth2::Responses
   include Oauth2::Errors
-  extend T::Helpers
-  extend T::Sig
 
   # This doesn't work. I keep running into all sorts of issues with inheritance and sorbet
   #  sig { override.returns(T.self_type) }
@@ -15,7 +13,6 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     new
   end
 
-  sig { override.params(conn: UpholdConnection).returns(BServiceResult) }
   def call(conn)
     result = conn.refresh_authorization!
 
@@ -34,14 +31,11 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
       result
     when ErrorResponse
       BFailure.new(errors: [result])
-    else
-      T.absurd(result)
     end
   end
 
   private
 
-  sig { returns(T::Boolean) }
   def card_exists?
     return false if @conn.address.nil?
     result = client.cards.get(@conn.address)
@@ -57,7 +51,6 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     end
   end
 
-  sig { returns(UpholdCard) }
   def create_card
     result = client.cards.create(
       label: UpholdConnection::UPHOLD_CARD_LABEL,
@@ -70,12 +63,9 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
       result
     when Faraday::Response
       raise ClientError.new(response: result)
-    else
-      T.absurd(result)
     end
   end
 
-  sig { returns(T::Boolean) }
   def has_no_cards?
     result = client.cards.list
 
@@ -92,13 +82,10 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     end
   end
 
-  sig { returns(UpholdCard) }
   def find_or_create_card
     # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
     # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
     #
-    # https://sorbet.org/docs/error-reference#7001
-    card = T.let(nil, T.nilable(UpholdCard))
 
     @cards.each do |c|
       if c.label.eql?(UpholdConnection::UPHOLD_CARD_LABEL) && c.currency == @conn.default_currency
@@ -122,14 +109,12 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     end
   end
 
-  sig { returns(Uphold::ConnectionClient) }
   def client
     @_client ||= Uphold::ConnectionClient.new(@conn)
   end
 
-  sig { params(card_id: String).returns(T::Boolean) }
   def has_private_address?(card_id)
-    existing_private_cards ||= T.unsafe(UpholdConnectionForChannel).select(:card_id).where(uphold_connection: @conn, uphold_id: @conn.uphold_id).to_a
+    existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: @conn, uphold_id: @conn.uphold_id).to_a
     return true if existing_private_cards.include?(card_id)
 
     result = client.cards.list_addresses(card_id)
@@ -142,7 +127,6 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     end
   end
 
-  sig { params(response: Faraday::Response).returns(FalseClass) }
   def raise_unless_not_found(response)
     if response.status == 404
       false

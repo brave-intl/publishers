@@ -11,40 +11,27 @@
 module Oauth2::Config
   class AuthorizationCode
     class << self
-      include Oauth2::Responses
-      extend T::Sig
-      extend T::Helpers
-
-      abstract!
-
       attr_accessor :base_authorization_url
       attr_accessor :base_token_url
 
-      sig { abstract.returns(String) }
       def scope
       end
 
-      sig { abstract.returns(String) }
       def client_id
       end
 
-      sig { abstract.returns(String) }
       def client_secret
       end
 
-      sig { abstract.returns(URI) }
       def authorization_url
       end
 
-      sig { abstract.returns(URI) }
       def token_url
       end
 
-      sig { abstract.returns(URI) }
       def redirect_uri
       end
 
-      sig { abstract.returns(String) }
       def content_type
       end
 
@@ -52,11 +39,9 @@ module Oauth2::Config
       # where we must save a specific value that is returned in the response.
       #
       # I don't love it, but it is still explicitly typed.
-      sig { abstract.returns(T.any(AccessTokenResponse, BitflyerAccessTokenResponse)) }
       def access_token_struct
       end
 
-      sig { returns(URI) }
       def base_redirect_url
         uri = case env
         when "production"
@@ -70,12 +55,10 @@ module Oauth2::Config
         URI(uri)
       end
 
-      sig { returns(T::Boolean) }
       def is_production?
         env == "production"
       end
 
-      sig { returns(String) }
       def env
         Rails.env
       end

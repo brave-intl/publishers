@@ -1,34 +1,43 @@
 module Uphold
   module Types
-    class UpholdUserCapability < T::Struct
-      const :category, String
-      const :enabled, T::Boolean
-      const :key, String
-      const :name, String
-      const :requirements, T::Array[T.nilable(String)]
-      const :restrictions, T::Array[T.nilable(String)]
-    end
+    UpholdUserCapability = Struct.new(
+       :category,
+       :enabled,
+       :key,
+       :name,
+       :requirements,
+       :restrictions,
+       keyword_init: true
 
-    class UpholdUser < T::Struct
-      const :status, String
-      const :memberAt, T.nilable(String)
-      const :id, String
-      const :country, T.nilable(String)
-      prop :currencies, T.nilable(T::Array[String]), default: []
-      const :username, T.nilable(String) # Doesn't exist so far as I know, but maintaining for backwards compatibility
-    end
+    )
 
-    class UpholdCard < T::Struct
-      const :currency, String
-      const :id, String
-      const :label, String
-    end
+    UpholdUser = Struct.new(
+       :status,
+       :memberAt,
+       :id,
+       :country,
+       :currencies,
+       :username,
+       keyword_init: true
 
-    class UpholdCardAddress < T::Struct
-      const :type, String
-    end
+    )
 
-    UpholdCardAddresses = T.type_alias { T::Array[UpholdCardAddress] }
-    UpholdCards = T.type_alias { T::Array[UpholdCard] }
+    UpholdCard = Struct.new(
+       :currency,
+       :id,
+       :label,
+       keyword_init: true
+
+    )
+
+    UpholdCardAddress = Struct.new(
+       :type,
+       keyword_init: true
+
+    )
+
+    class UpholdCardAddresses; end 
+
+      class UpholdCards; end
   end
 end

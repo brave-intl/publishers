@@ -6,7 +6,7 @@ require "concerns/logout"
 class U2fRegistrationsController < ApplicationController
   include Logout
   include TwoFactorRegistration
-  extend T::Helpers
+
   include PendingActions
 
   before_action :authenticate_publisher!

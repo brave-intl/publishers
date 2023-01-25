@@ -7,14 +7,10 @@
 # to simply mediating the interactions between the external API and the application.
 module Youtube
   class Client < BaseApiClient
-    extend T::Sig
-
-    sig { params(token: String).void }
     def initialize(token: Rails.application.secrets[:youtube_api_key])
       @token = token
     end
 
-    sig { params(query: T.nilable(T::Hash[String, T.untyped])).returns(T::Hash[String, T.untyped]) }
     def channels(query: nil)
       path = "/youtube/v3/channels"
 
@@ -25,12 +21,10 @@ module Youtube
       request(:get, path)
     end
 
-    sig { returns(String) }
     def api_authorization_header
       "Bearer #{@token}"
     end
 
-    sig { returns(String) }
     def api_base_uri
       "https://www.googleapis.com"
     end

@@ -1,11 +1,11 @@
 # typed: true
 
 module Wallet::Structs
-  class FailedWithNotification < T::Struct
-    prop :result, Oauth2::Responses::ErrorResponse
+  class FailedWithNotification
+    attr_reader :result
   end
 
-  class FailedWithoutNotification < T::Struct
-    prop :result, Oauth2::Responses::ErrorResponse
+  class FailedWithoutNotification
+    attr_reader :result
   end
 end
