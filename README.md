@@ -54,13 +54,6 @@ $ p.update!({ feature_flags: {"gemini_enabled"=>true, "bitflyer_enabled"=>true, 
 ```
 
 
-### Macbook M1, Docker-compose, and Sorbet
-
-We recommend both the usage of Sorbet for static analysis/linting as well as `docker-compose` for local development, however at the time of writing (3/21/22) the Sorbet binary is not available for Linux running on ARM processes (i.e. within docker-compose).
-There is an [open issue](https://github.com/sorbet/sorbet/issues/4119) and an incomplete PR that adds support for aarch64 systems.  For now, linting/tests have been configured to run on every push to the remote so that developers can gain some of the benefit of static type analysis using sorbet.
-
-We recommend continuing to develop using Sorbet type annotations and explicit types.
-
 ### Gemfile
 
 If however, you are developing on an M1 using docker-compose and find yourself in the position of needing to update a dependency/Gemfile, you are going to run into a wall.  Several gems (including Sorbet) are installed conditionally based on the chipset of the device.  Thus, your local development Gemfile will be different from what is run in CI/CD and Sorbet is required for builds.  Unfortunately for the moment the only way to properly update the Gemfile is to either install locally or to use an device that is using an x86 chipset.

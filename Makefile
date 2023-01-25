@@ -51,8 +51,6 @@ ci:
 	RAILS_ENV=test bundle exec rails test
 	bundle exec brakeman
 	bundle exec standardrb
-	bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-	bundle exec srb tc
 
 docker:
 	docker build --build-arg COMMIT=$(GIT_COMMIT) --build-arg VERSION=$(GIT_VERSION) \

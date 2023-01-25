@@ -146,9 +146,6 @@ gem "sidekiq-scheduler", "~> 3.1.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
-gem "sorbet", "0.5.9538", group: :development if not_arm?
-gem "sorbet-runtime", "0.5.9538"
-
 gem "ssrf_filter"
 gem "stripe", "~> 5.1", ">= 5.1.1"
 
@@ -160,8 +157,6 @@ gem "webauthn"
 gem "rotp", "~> 6.2.0"
 
 gem "webpacker", "~> 4.0.7"
-
-gem "sorbet-rails", "0.7.27"
 
 # pagination support for models
 gem "will_paginate"
@@ -222,10 +217,6 @@ group :development, :test do
 
   # Code formatting
   gem "standard"
-
-  # sorbet
-  gem "rubocop-sorbet", require: false
-  gem "unparser", require: false
 
   # Static security vulnerability scanner
   gem "brakeman"
