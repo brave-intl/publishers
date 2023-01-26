@@ -23,6 +23,8 @@
         - if @publisher.may_create_referrals?
           .next_deposit_date.small.mt-2
             span = t(".referral_payout_date")
+          .next_deposit_date.small.mt-2
+            span = t(".referral_sunset")
   - if @publisher.no_grants?
     .d-none.d-xl-block
       .line
