@@ -66,7 +66,7 @@ class Channel < ApplicationRecord
   before_save :set_derived_brave_publisher_id, if: -> { derived_brave_publisher_id.nil? }
 
   # *ChannelDetails get autosaved from above.
-  after_save :update_site_banner_lookup!, if: -> { saved_change_to_verified? && verified? }
+  after_save :update_site_banner_lookup!, if: -> { saved_change_to_verified && verified? }
 
   after_commit :register_channel_for_promo, if: :should_register_channel_for_promo?
   after_commit :create_channel_card, if: -> { saved_change_to_verified? && verified? }

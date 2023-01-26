@@ -248,7 +248,7 @@ module Publishers
       when BFailure
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
       else
-        T.absurd(result)
+        raise result
       end
     end
 
@@ -260,7 +260,7 @@ module Publishers
       when Hash
         Channels::Types::OmniAuthHashSchema.new(@_auth_hash)
       else
-        T.absurd(@_auth_hash)
+        raise @_auth_hash
       end
     end
 

@@ -227,7 +227,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
-    T.unsafe(publisher).channels.each do |channel|
+    publisher.channels.each do |channel|
       CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id) if !channel.has_valid_uphold_connection?
     end
   end
@@ -337,7 +337,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def update_access_tokens!(refresh_token_response)
     # https://sorbet.org/docs/tstruct#converting-structs-to-other-types
-    authorization_hash = refresh_token_response.serialize
+    authorization_hash = refresh_token_response.to_h
     expires_at = authorization_hash["expires_in"].to_i.seconds.from_now
 
     # Add to model so queries can be made.

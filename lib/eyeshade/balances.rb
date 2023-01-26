@@ -76,15 +76,15 @@ module Eyeshade
     end
 
     def account_balance(account)
-      total_probi = bat_to_probi(BigDecimal(T.must(account.balance)))
+      total_probi = bat_to_probi(BigDecimal(account.balance))
 
       amount_and_fees = calculate_fees(total_probi)
-      amount_probi = T.must(amount_and_fees["amount"])
+      amount_probi = amount_and_fees["amount"]
 
       fees_probi = if account.account_type == REFERRAL
         0
       else
-        T.must(amount_and_fees["fees"])
+        amount_and_fees["fees"]
       end
 
       amount_bat = probi_to_bat(amount_probi)
@@ -104,7 +104,7 @@ module Eyeshade
       rate = @rates[currency]
       return @zero if rate.nil?
 
-      amount_bat * BigDecimal(T.must(rate))
+      amount_bat * BigDecimal(rate)
     end
 
     def probi_to_bat(probi)

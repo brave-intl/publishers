@@ -73,7 +73,7 @@ class GeminiConnectionTest < SidekiqTestCase
           end
 
           test "it raises an error" do
-            assert_raises(Oauth2::Errors::UnknownError) { conn.refresh_authorization! }
+            assert_instance_of(Oauth2::Responses::ErrorResponse, conn.refresh_authorization!)
           end
         end
       end

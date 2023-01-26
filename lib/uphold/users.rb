@@ -16,7 +16,7 @@ module Uphold
       when Array, T::Struct
         raise ResultError
       else
-        T.absurd(result)
+        raise result
       end
     end
 
@@ -29,7 +29,7 @@ module Uphold
       when Array, T::Struct
         raise ResultError
       else
-        T.absurd(result)
+        raise result
       end
     end
   end

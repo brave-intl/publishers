@@ -47,7 +47,7 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
     when Faraday::Response
       raise_unless_not_found(result)
     else
-      T.absurd(result)
+      raise result
     end
   end
 
@@ -85,8 +85,8 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
   def find_or_create_card
     # User's can change the label's on their cards so if we couldn't find it, we'll have to iterate until we find a card.
     # We want to make sure isn't the browser's wallet card and isn't a channel card. We can do this by checking the private address
-    #
 
+    card = nil
     @cards.each do |c|
       if c.label.eql?(UpholdConnection::UPHOLD_CARD_LABEL) && c.currency == @conn.default_currency
         card = c

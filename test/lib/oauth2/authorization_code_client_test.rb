@@ -46,7 +46,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should raise exception" do
-        assert_instance_of(Oauth2::Errors::UnknownError, klass.new(config).refresh_token(refresh_token))
+        assert_instance_of(Oauth2::Responses::ErrorResponse, klass.new(config).refresh_token(refresh_token))
       end
     end
 

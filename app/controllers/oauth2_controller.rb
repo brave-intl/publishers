@@ -33,10 +33,10 @@ class Oauth2Controller < ApplicationController
 
     case resp
     when @access_token_response
-      data = resp.serialize
+      data = resp.to_h
       @klass.create_new_connection!(current_publisher, resp)
     when ErrorResponse
-      errors.push(resp.serialize)
+      errors.push(resp.to_h)
     when UnknownError
       errors.push(resp.response.body)
     end

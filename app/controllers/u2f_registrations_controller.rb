@@ -39,7 +39,7 @@ class U2fRegistrationsController < ApplicationController
       when BFailure
         redirect_to new_u2f_registration_path && return
       else
-        T.absurd(result)
+        raise result
       end
     end
   end

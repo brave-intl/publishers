@@ -4,7 +4,7 @@
 #
 # If I need an explicit type, I am going to define it as a response from the service in question
 # and pattern match against that type, not dig around in a generic response object.
-BSuccess  = Struct.new(:result, keyword_init: true)
+BSuccess = Struct.new(:result, keyword_init: true)
 
 BFailure = Struct.new(:errors, keyword_init: true)
 
