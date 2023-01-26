@@ -79,7 +79,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # Scopes
   ################
   #
-  # FIXME: This should be reused, but I don't want to deal with sorbet atm
+  # FIXME: This should be reused
   scope :with_expired_tokens, -> {
     where("access_expiration_time <= ?", Date.today)
   }
@@ -336,7 +336,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def update_access_tokens!(refresh_token_response)
-    # https://sorbet.org/docs/tstruct#converting-structs-to-other-types
     authorization_hash = refresh_token_response.to_h
     expires_at = authorization_hash["expires_in"].to_i.seconds.from_now
 

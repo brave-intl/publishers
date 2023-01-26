@@ -37,8 +37,6 @@ class Oauth2::AuthorizationCodeBase < ApplicationRecord
   # Primary refresher implementation.  Shareable across all connections, simply requires the abstract methods
   # above in order to function.
   #
-  # Note: optional block syntax in sorbet is obviously a bit painful, but this is how to do it.
-  #
   # In human form this reads: "refresh_authorization! can take an optional block param that accepts an UnknownError as the first argument
   # and returns an ErrorResponse, while refresh_authorization! only returns TYPES.
   def refresh_authorization!(&blk)

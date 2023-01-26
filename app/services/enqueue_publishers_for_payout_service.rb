@@ -6,7 +6,6 @@ class EnqueuePublishersForPayoutService
     allowed_regions: Rewards::Parameters.new.fetch_allowed_regions,
     args: [])
     unless payout_report.is_a?(PayoutReport)
-      # Wondering if sorbet can just do stuff like this?
       raise ArgumentError.new("Invalid argument type. Must be PayoutReport")
     end
 

@@ -7,8 +7,6 @@ class Uphold::FindOrCreateCardService < BuilderBaseService
   include Oauth2::Responses
   include Oauth2::Errors
 
-  # This doesn't work. I keep running into all sorts of issues with inheritance and sorbet
-  #  sig { override.returns(T.self_type) }
   def self.build
     new
   end
