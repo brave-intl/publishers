@@ -43,7 +43,7 @@ class EnqueuePublishersForPayoutService
         {
           service: Payout::UpholdService.new,
           initial_publishers: filtered_publishers
-            .valid_payable_uphold_creators,
+            .valid_payable_uphold_creators_minus_oauth_failures,
           allowed_regions: allowed_regions_passed[:uphold][:allow]
         },
         {

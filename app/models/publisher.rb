@@ -152,6 +152,11 @@ class Publisher < ApplicationRecord
       .merge(UpholdConnection.payable)
   }
 
+  scope :valid_payable_uphold_creators_minus_oauth_failures, -> {
+    uphold_selected_provider
+      .merge(UpholdConnection.payable_ignoring_oauth_failures)
+  }
+
   ###############################
   #
   # Bitflyer scopes
