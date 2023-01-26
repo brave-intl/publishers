@@ -93,8 +93,13 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   }
 
   scope :payable, -> {
-    joins(:publisher)
+    payable_ignoring_oauth_failures
+      .joins(:publisher)
       .with_active_connection
+  }
+
+  scope :payable_ignoring_oauth_failures, -> {
+    joins(:publisher)
       .where(is_member: true)
       .where.not(address: nil)
       .where("country != '#{UpholdConnection::JAPAN}' or
