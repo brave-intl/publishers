@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.744dbca2.chunk.css",
-    "main.js": "/static/js/main.51f76e6b.chunk.js",
-    "main.js.map": "/static/js/main.51f76e6b.chunk.js.map",
+    "main.js": "/static/js/main.86035999.chunk.js",
+    "main.js.map": "/static/js/main.86035999.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.9cf04f0b.js",
     "runtime-main.js.map": "/static/js/runtime-main.9cf04f0b.js.map",
     "static/js/2.6bc022e4.chunk.js": "/static/js/2.6bc022e4.chunk.js",
@@ -10,8 +10,8 @@
     "index.html": "/index.html",
     "static/css/main.744dbca2.chunk.css.map": "/static/css/main.744dbca2.chunk.css.map",
     "static/js/2.6bc022e4.chunk.js.LICENSE.txt": "/static/js/2.6bc022e4.chunk.js.LICENSE.txt",
-    "static/media/brave-rewards-creators-logo.28c9590f.svg": "/static/media/brave-rewards-creators-logo.28c9590f.svg",
-    "static/media/brave-rewards-creators-mobile-logo.079e06b6.svg": "/static/media/brave-rewards-creators-mobile-logo.079e06b6.svg",
+    "static/media/brave-rewards-creators-logo.085313b2.svg": "/static/media/brave-rewards-creators-logo.085313b2.svg",
+    "static/media/brave-rewards-creators-mobile-logo.efb80a21.svg": "/static/media/brave-rewards-creators-mobile-logo.efb80a21.svg",
     "static/media/built-with-bat-pill.fc515509.svg": "/static/media/built-with-bat-pill.fc515509.svg",
     "static/media/built-with-bat.bd1eb6db.svg": "/static/media/built-with-bat.bd1eb6db.svg",
     "static/media/card-baker.2188893b.webp": "/static/media/card-baker.2188893b.webp",
@@ -29,6 +29,6 @@
     "static/js/runtime-main.9cf04f0b.js",
     "static/js/2.6bc022e4.chunk.js",
     "static/css/main.744dbca2.chunk.css",
-    "static/js/main.51f76e6b.chunk.js"
+    "static/js/main.86035999.chunk.js"
   ]
 }
