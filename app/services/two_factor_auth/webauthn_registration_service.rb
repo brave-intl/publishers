@@ -11,15 +11,6 @@ module TwoFactorAuth
       @webauthn_credentialer = webauthn_credentialer
     end
 
-    # sig do
-    #   override.params(
-    #     publisher: Publisher,
-    #     webauthn_response: String,
-    #     challenge: String,
-    #     name: String
-    #   )
-    #     .returns(BServiceResult)
-    # end
     def call(publisher:, webauthn_response:, challenge:, name:)
       response = JSON.parse(webauthn_response)
       credential = @webauthn_credentialer.from_create(response)

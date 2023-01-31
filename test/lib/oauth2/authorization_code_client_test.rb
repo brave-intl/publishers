@@ -3,7 +3,6 @@ require "test_helper"
 class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
   include Oauth2::Responses
   include MockOauth2Responses
-  extend T::Sig
 
   let(:klass) { Oauth2::AuthorizationCodeClient }
   let(:client_id) { "any value" }
@@ -47,7 +46,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
       end
 
       test "it should raise exception" do
-        assert_instance_of(Oauth2::Errors::UnknownError, klass.new(config).refresh_token(refresh_token))
+        assert_instance_of(Oauth2::Responses::ErrorResponse, klass.new(config).refresh_token(refresh_token))
       end
     end
 

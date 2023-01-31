@@ -9,7 +9,6 @@ class Oauth2Controller < ApplicationController
   #
   # I had to build this just to debug the varying implementations
   # of the Oauth2::AuthorizationCodebase children.
-  extend T::Sig
   include Oauth2::Responses
   include Oauth2::Errors
   before_action :authenticate_publisher!
@@ -34,10 +33,10 @@ class Oauth2Controller < ApplicationController
 
     case resp
     when @access_token_response
-      data = resp.serialize
+      data = resp.to_h
       @klass.create_new_connection!(current_publisher, resp)
     when ErrorResponse
-      errors.push(resp.serialize)
+      errors.push(resp.to_h)
     when UnknownError
       errors.push(resp.response.body)
     end

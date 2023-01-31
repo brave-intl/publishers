@@ -57,10 +57,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn --frozen-lockfile
-      - name: Sorbet Linter
-        run: bundle exec rubocop --require rubocop-sorbet -c .rubocop-sorbet.yml
-      - name: Sorbet Type Check
-        run: bundle exec srb tc
       - name: Standard
         run: bundle exec standardrb
       - name: Brakeman

@@ -7,7 +7,6 @@ require "uri"
 # Client Credentials Grant Type (most common for OAuth2 flows): https://datatracker.ietf.org/doc/html/rfc6749#section-4.4
 # FIXME: Rails is doing some magic to correct to OAuth2 in app/services but not in ./lib
 class Oauth2::AuthorizationCodeClient
-  extend T::Sig
   include Oauth2::Responses
   include Oauth2::Errors
   attr_reader :authorization_url
@@ -15,7 +14,6 @@ class Oauth2::AuthorizationCodeClient
   attr_reader :request
   attr_reader :response
 
-  sig { params(config: T.class_of(Oauth2::Config::AuthorizationCode)).void }
   def initialize(config)
     @client_id = config.client_id
     @client_secret = config.client_secret
@@ -34,7 +32,6 @@ class Oauth2::AuthorizationCodeClient
   # I.e. redirects to uphold/gemini/bitflyer etc.
   #
   # code_challenge is a supported verification protocol: https://datatracker.ietf.org/doc/html/rfc7636#section-4.1
-  sig { params(scope: String, state: String, code_challenge: T.nilable(String), code_challenge_method: T.nilable(String)).returns(String) }
   def authorization_code_url(scope:, state:, code_challenge: nil, code_challenge_method: nil)
     query = {
       response_type: "code",
@@ -55,7 +52,6 @@ class Oauth2::AuthorizationCodeClient
     "#{@authorization_url}?#{query.to_query}"
   end
 
-  sig { params(authorization_code: String, code_verifier: T.nilable(String)).returns(T.any(AccessTokenResponse, BitflyerAccessTokenResponse, ErrorResponse, UnknownError)) }
   def access_token(authorization_code, code_verifier: nil)
     request = Net::HTTP::Post.new(@token_url)
     request.content_type = @content_type
@@ -83,7 +79,6 @@ class Oauth2::AuthorizationCodeClient
     handle_request(request, @token_url, @access_token_struct)
   end
 
-  sig { params(refresh_token: String).returns(T.any(RefreshTokenResponse, UnknownError, ErrorResponse)) }
   def refresh_token(refresh_token)
     request = Net::HTTP::Post.new(@token_url)
     request.content_type = @content_type
@@ -139,7 +134,7 @@ class Oauth2::AuthorizationCodeClient
     out = {}
 
     parsed_body = JSON.parse(body, symbolize_names: true)
-    struct.props.keys.each do |key|
+    struct.members.each do |key|
       out[key] = parsed_body.fetch(key, nil)
     end
 

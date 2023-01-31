@@ -4,17 +4,11 @@
 #
 # If I need an explicit type, I am going to define it as a response from the service in question
 # and pattern match against that type, not dig around in a generic response object.
-class BSuccess < T::Struct
-  prop :result, T.any(T::Hash[T.untyped, T.untyped], T::Array[T.untyped], Integer, Float, T::Boolean)
-end
+BSuccess = Struct.new(:result, keyword_init: true)
 
-class BFailure < T::Struct
-  prop :errors, T::Array[T.untyped]
-end
+BFailure = Struct.new(:errors, keyword_init: true)
 
 # There are definitely cases where "Success" and "Failure" are not exactly correct and we should be explicit about it.
-class BIndeterminate < T::Struct
-  prop :result, T::Array[T.untyped]
-end
+BIndeterminate = Struct.new(:result, keyword_init: true)
 
-BServiceResult = T.type_alias { T.any(BSuccess, BFailure, T::Struct, BIndeterminate) }
+class BServiceResult; end

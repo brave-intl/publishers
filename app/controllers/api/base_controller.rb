@@ -3,10 +3,7 @@
 # To set authorization for the API, configure ENV["API_AUTH_TOKEN"] and
 # api_auth_token ENV["API_IP_WHITELIST"] (see secrets.yml)
 class Api::BaseController < ActionController::API
-  before_action :log_full_request, if: -> {
-                                         T.bind(self, Api::BaseController)
-                                         Rails.application.secrets[:log_api_requests]
-                                       }
+  before_action :log_full_request, if: -> { Rails.application.secrets[:log_api_requests] }
 
   API_AUTH_TOKEN = Rails.application.secrets[:api_auth_token].freeze
 

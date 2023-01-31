@@ -7,7 +7,7 @@ class PaypalConnection < ApplicationRecord
 
   belongs_to :user, class_name: "Publisher", foreign_key: :user_id
 
-  after_save :update_site_banner_lookup!, if: -> { T.bind(self, PaypalConnection).saved_change_to_verified_account? }
+  after_save :update_site_banner_lookup!, if: -> { saved_change_to_verified_account? }
 
   class << self
     def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
