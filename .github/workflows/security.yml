@@ -1,0 +1,26 @@
+name: reviewdog
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, staging]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [master, staging]
+jobs:
+  security:
+    strategy:
+      fail-fast: false
+      # CodeQL analyzed languages
+      matrix:
+        language: [ 'generic', 'javascript', 'ruby' ]
+    name: security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: brave/security-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_token: ${{ secrets.HOTSPOTS_SLACK_TOKEN }}
+          codeql_config: ./.github/codeql/codeql-config.yml
