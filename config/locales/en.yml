@@ -433,7 +433,7 @@ en:
       held_funds_description: |
         These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
       next_deposit_date: "Next Deposit Date: "
-      referral_payout_date: "Referrals are paid out every 2 weeks. If you also have contributions, those will be paid out per the date above. "
+      referral_payout_date: "Referrals are paid out every 2 weeks. If you also have contributions, those will be paid out per the date above."
       referral_sunset: "This is a reminder that the Custom Referral Program is ending on February 1, 2023. Referrers will not be eligible to receive BAT payments for any downloads, installs or confirmations driven after January 31, 2023. Please sunset your referral campaigns accordingly."
       open_case_description:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
