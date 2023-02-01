@@ -1,7 +1,7 @@
 # typed: strict
 
 class U2fRegistration < ApplicationRecord
-  FORMATS = T.let(%w[u2f webauthn], T::Array[String])
+  FORMATS = %w[u2f webauthn]
   enum format: FORMATS.zip(FORMATS).to_h
 
   belongs_to :publisher

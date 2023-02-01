@@ -23,7 +23,7 @@ ja:
   bat_in_locale: BAT
   shared:
     add_channel: チャンネルを追加
-    app_title: Brave Rewards | クリエイター
+    app_title: Brave クリエイター
     app_description: Webサイトや、YoutubeやTwitchにチャンネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。
     cancel: キャンセル
     channel_created: チャンネルを作成しました。24-48時間以内に認証ステータスが表示されます。
@@ -300,7 +300,7 @@ ja:
       signature: |
         <p>
         よろしくお願いいたします。
-        <br>The Brave Rewards | Creators team</br>
+        <br>The Brave Creators team</br>
         </p>
     channel_contested:
       subject: "%{channel_name}のチャンネル移管が要求されました"
@@ -351,7 +351,7 @@ ja:
         <br/><br/>
         何卒よろしくお願いいたします。
         <br/><br/>
-        Brave Rewards | クリエイターチーム
+        Brave クリエイターチーム
 
     login_email:
       subject: Brave Rewardsにログインする
@@ -382,16 +382,16 @@ ja:
     submit_appeal:
       subject: Brave Rewardsへの異議申し立て — レビュー中です
       body: |
-        申し立てを送信していただきありがとうございます。 現在審査を行っております。できるだけ早くご連絡いたします。<br/><br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
+        申し立てを送信していただきありがとうございます。 現在審査を行っております。できるだけ早くご連絡いたします。<br/><br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave クリエイターチーム
     accept_appeal:
       subject: Brave Rewardsへの異議申し立て — 承認されました
       body: |
-        いただいた申立てについて再度審査させていただいた結果承認しました。 保留されていたBAT支払いは、次の支払いサイクルで合わせて支払われます。<br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
+        いただいた申立てについて再度審査させていただいた結果承認しました。 保留されていたBAT支払いは、次の支払いサイクルで合わせて支払われます。<br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave クリエイターチーム
     reject_appeal:
       subject: Brave Rewardsへの異議申し立て — 否認されました
       body: |
         お客様のアカウントでのアクティビティはBrave Rewardsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATを受け取ることはできますが、Braveが所有するBATを受け取ることはできません。
-         <br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
+         <br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave クリエイターチーム
 
     uphold_kyc_incomplete:
       subject: Upholdで本人確認を行ってください

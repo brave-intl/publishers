@@ -167,7 +167,7 @@ class Promo::EmailBreakdownsService < BuilderBaseService
       end_date = 1.days.ago.to_date
       start_date = 4.months.ago.at_beginning_of_month.to_date
     else
-      T.absurd(type)
+      raise type
     end
 
     csv = []

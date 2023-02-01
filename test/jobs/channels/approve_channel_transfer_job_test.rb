@@ -11,12 +11,9 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
 
     # contest the channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
-
-    # Starts at 1 because ContestChannel calls SiteBannerLookup.sync!
-    assert_equal 1, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
     Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
     contested_by_channel.reload
-    assert_equal 2, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
+    assert_equal 1, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
 
     # ensure contested_by channel now is verified
     assert contested_by_channel.verified?

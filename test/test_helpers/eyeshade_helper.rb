@@ -20,9 +20,7 @@ module EyeshadeHelper
 
   module Mocks
     include Eyeshade::Types
-    extend T::Sig
 
-    sig { returns(EyeshadeObject) }
     # Note: I'm defining easily reasonable fixed rates for use in calculations/speccing.
     # It was very difficult to reason about where/how values were being calculated.
     def self.rates
@@ -35,7 +33,6 @@ module EyeshadeHelper
       }
     end
 
-    sig { returns(EyeshadeArray) }
     def self.accounts_balances
       [
         {
@@ -56,7 +53,6 @@ module EyeshadeHelper
       ]
     end
 
-    sig { params(settlement_amount: String, amount: String).returns(EyeshadeArray) }
     def self.referral_payout(settlement_amount: "10", amount: "-10")
       [{"created_at" => "2018-11-07 00:00:00 -0800",
         "description" => "payout for referrals",
@@ -69,7 +65,6 @@ module EyeshadeHelper
 
     # See https://github.com/brave-intl/bat-ledger/blob/dfa58715e1e14278a7dde545c7dd3fe68621deff/eyeshade/controllers/accounts.js#L159-L175
     # for schema
-    sig { returns(EyeshadeArray) }
     def self.account_transactions
       [{"created_at" => "2018-11-07 00:00:00 -0800",
         "description" => "payout for referrals",
@@ -202,7 +197,6 @@ module EyeshadeHelper
     end
 
     module Structs
-      extend T::Sig
       include Eyeshade::Types
 
       def self.account_balances

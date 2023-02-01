@@ -1,9 +1,6 @@
 # typed: false
 
 class BaseApiClient < BaseService
-  extend T::Sig
-  include Oauth2::Errors
-
   private
 
   # Make a GET request.
@@ -98,7 +95,6 @@ class BaseApiClient < BaseService
   end
 
   ## Some convenience methods used for Sorbet typed responses in various clients
-  sig { params(method: Symbol, path: String, response_struct: T.class_of(T::Struct), payload: T.nilable(T::Hash[T.any(Symbol, String), T.untyped]), query: T.nilable(String), headers: T::Hash[T.any(String, Symbol), T.untyped]).returns(T.any(T::Array[T::Struct], T::Struct, Faraday::Response)) }
   def request_and_return(method, path, response_struct, payload: nil, query: nil, headers: {})
     resp = connection(raise_error: false).send(method) do |request|
       request.headers.merge!(headers)
@@ -139,7 +135,7 @@ class BaseApiClient < BaseService
   def adapt_to_struct(struct, obj)
     out = {}
 
-    struct.props.keys.each do |key|
+    struct.members.each do |key|
       out[key] = obj.fetch(key, nil)
     end
 

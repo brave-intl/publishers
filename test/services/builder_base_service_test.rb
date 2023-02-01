@@ -6,24 +6,6 @@ require "test_helper"
 class BuilderBaseServiceTest < ActiveSupport::TestCase
   DEFAULT_VALUE = "default_value"
 
-  test "BuilderBaseService.build" do
-    assert_raises NotImplementedError do
-      BuilderBaseService.build
-    end
-  end
-
-  class NotImplementedChildOfBuilderBaseService < BuilderBaseService
-    def self.build
-      new
-    end
-  end
-
-  test NotImplementedChildOfBuilderBaseService.name do
-    assert_raises NotImplementedError do
-      NotImplementedChildOfBuilderBaseService.build.call
-    end
-  end
-
   class ValidChildOfBuilderBaseService < BuilderBaseService
     def self.build
       new

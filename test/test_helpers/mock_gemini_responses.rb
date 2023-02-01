@@ -96,11 +96,11 @@ module MockGeminiResponses
     path = Gemini::RecipientId::PATH
     regex = Regexp.new(path)
 
-    response = [{recipient_id: recipient_id.to_s, label: "Brave Rewards | Creators"}, {recipient_id: "#{recipient_id}2", label: "Brave Rewards | Creators"}]
+    response = [{recipient_id: recipient_id.to_s, label: "Brave Creators"}, {recipient_id: "#{recipient_id}2", label: "Brave Creators"}]
     stub_request(:get, regex).to_return(body: response.to_json)
   end
 
-  def mock_gemini_channels_recipient_id!(recipient_id: "1234", label: "Brave Rewards | Creators")
+  def mock_gemini_channels_recipient_id!(recipient_id: "1234", label: "Brave Creators")
     path = Gemini::RecipientId::PATH
     regex = Regexp.new(path)
 

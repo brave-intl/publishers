@@ -24,7 +24,7 @@ en:
   shared:
     add_channel: Add Channel
     add_promo_code: Add Promo Code
-    app_title: Brave Rewards | Creators
+    app_title: Brave Creators
     app_description: Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!
     cancel: Cancel
     channel_created: Channel created. Your verified status will be displayed in the Brave browser within the next 24-48 hours.
@@ -236,7 +236,7 @@ en:
       signature: |
         <p>
         Thank you,
-        <br>The Brave Rewards | Creators team</br>
+        <br>The Brave Creators team</br>
         </p>
     channel_contested:
       subject: "A channel transfer for %{channel_name} has been requested"
@@ -290,7 +290,7 @@ en:
         <br/><br/>
         Thank you.
         <br/><br/>
-        The Brave Rewards | Creator team
+        The Brave Creators team
 
     login_email:
       subject: Log in to Brave Rewards
@@ -321,7 +321,7 @@ en:
           Once you verify your bank account with PayPal, please sign back in at creators.brave.com and refresh your PayPal account info.
           Thank you.
           <br/><br/>
-          The Brave Rewards | Creator team
+          The Brave Creators team
     suspend_publisher:
       subject: Your Brave Rewards account has been temporarily frozen
       intro: Thank you for being a Brave publisher.
@@ -364,7 +364,7 @@ en:
         <br/><br/>
         In the meantime, we appreciate your support,
         <br/>
-        The Brave Rewards | Creator team
+        The Brave Creators team
     accept_appeal:
       subject: Brave Rewards Appeal — Accepted
       body: |
@@ -372,7 +372,7 @@ en:
         <br/><br/>
         We appreciate your support,
         <br/>
-        The Brave Rewards | Creator team
+        The Brave Creators team
     reject_appeal:
       subject: Brave Rewards Appeal — Denied
       body: |
@@ -381,7 +381,7 @@ en:
         <br/><br/>
         We appreciate your support,
         <br/>
-        The Brave Rewards | Creator team
+        The Brave Creators team
     uphold_kyc_incomplete:
       subject: Please verify your Uphold identity to claim your %{total_amount} BAT
       body_html: |
@@ -433,7 +433,7 @@ en:
       held_funds_description: |
         These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
       next_deposit_date: "Next Deposit Date: "
-      referral_payout_date: "Referrals are paid out every 2 weeks. If you also have contributions, those will be paid out per the date above. "
+      referral_payout_date: "Referrals are paid out every 2 weeks. If you also have contributions, those will be paid out per the date above."
       referral_sunset: "This is a reminder that the Custom Referral Program is ending on February 1, 2023. Referrers will not be eligible to receive BAT payments for any downloads, installs or confirmations driven after January 31, 2023. Please sunset your referral campaigns accordingly."
       open_case_description:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.

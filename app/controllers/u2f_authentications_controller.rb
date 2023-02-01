@@ -21,7 +21,7 @@ class U2fAuthenticationsController < ApplicationController
     when ::BFailure
       redirect_to two_factor_authentications_path
     else
-      T.absurd(result)
+      raise result
     end
   end
 end

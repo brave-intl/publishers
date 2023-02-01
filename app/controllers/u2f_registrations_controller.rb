@@ -6,7 +6,7 @@ require "concerns/logout"
 class U2fRegistrationsController < ApplicationController
   include Logout
   include TwoFactorRegistration
-  extend T::Helpers
+
   include PendingActions
 
   before_action :authenticate_publisher!
@@ -39,7 +39,7 @@ class U2fRegistrationsController < ApplicationController
       when BFailure
         redirect_to new_u2f_registration_path && return
       else
-        T.absurd(result)
+        raise result
       end
     end
   end
