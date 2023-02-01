@@ -32,7 +32,7 @@ const DefaultNav = () => {
         <Box direction="row" gap="medium" align="center">
           <Link to={locale.nav.logoHref} name="Home">
             <Box as="span">
-              <Image src={logo} height="32px" alt={intl.formatMessage({ id: "nav.logoAlt" })} />
+              <Image src={logo} height="80px" alt={intl.formatMessage({ id: "nav.logoAlt" })} />
             </Box>
           </Link>
           {(window.location.search.split('locale=')[1] !== 'ja') &&

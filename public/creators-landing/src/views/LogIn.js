@@ -5,7 +5,7 @@ import { Grommet } from "grommet";
 import { MainSignIn } from "../sections/main-section";
 
 export const LogIn = () => {
-  document.title = "Log In - Brave Rewards | Creators";
+  document.title = "Log In - Brave Creators";
   return (
     <Grommet style={{height:"100%"}} theme={theme}>
       <Nav />

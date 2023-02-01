@@ -6,7 +6,7 @@ module Gemini
     include Initializable
 
     PATH = "/v1/payments/recipientIds"
-    DEFAULT_LABEL = "Brave Rewards | Creators"
+    DEFAULT_LABEL = "Brave Creators"
 
     # The ID generated for the creator
     attr_accessor :recipient_id

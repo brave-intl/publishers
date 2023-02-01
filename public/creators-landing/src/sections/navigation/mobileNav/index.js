@@ -18,7 +18,7 @@ const MobileNav = props => (
     >
       <Link to={locale.nav.logoHref}>
         <Box as="span">
-          <Image src={mobileLogo} height="36px" alt={locale.nav.logoAlt}/>
+          <Image src={mobileLogo} height="80px" alt={locale.nav.logoAlt}/>
         </Box>
       </Link>
       <Menu
