@@ -17,7 +17,6 @@ import {
   Content,
   Links,
   ExplanatoryText,
-  Donations,
   Logo,
   Cover,
   Input,
@@ -31,7 +30,6 @@ import {
   Delete,
   Link,
   TextArea,
-  DonationWrapper,
   Button,
   Opacity,
   Dialogue
@@ -63,7 +61,6 @@ import "../../assets/stylesheets/components/slider.scss";
 const DEFAULT_TITLE = "Brave Rewards";
 const DEFAULT_DESCRIPTION =
   "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content"
-const DEFAULT_AMOUNTS = [1, 10, 100];
 
 export default class BannerEditor extends React.Component {
   constructor(props) {
@@ -91,7 +88,6 @@ export default class BannerEditor extends React.Component {
       youtube: this.props.values.youtube || "",
       twitter: this.props.values.twitter || "",
       twitch: this.props.values.twitch || "",
-      donationAmounts: this.props.values.donationAmounts || DEFAULT_AMOUNTS,
       conversionRate: this.props.conversionRate,
       preferredCurrency: "USD",
       mode: "Edit",
@@ -155,10 +151,6 @@ export default class BannerEditor extends React.Component {
     document.getElementsByClassName(
       "modal-panel--close js-deny"
     )[0].style.visibility = "hidden";
-    document.getElementById(
-      "bat-select"
-    ).childNodes[0].childNodes[0].style.color = "white";
-    document.getElementById("bat-select").style.cursor = "pointer";
     document.getElementById("banner-toggle").style.cursor = "pointer";
   }
 
@@ -291,7 +283,6 @@ export default class BannerEditor extends React.Component {
             youtube: banner.socialLinks.youtube || "",
             twitter: banner.socialLinks.twitter || "",
             twitch: banner.socialLinks.twitch || "",
-            donationAmounts: banner.donationAmounts || DEFAULT_AMOUNTS,
             logo: { url: banner.logoUrl || null, data: null },
             cover: { url: banner.backgroundUrl || null, data: null },
             loading: false,
@@ -396,14 +387,6 @@ export default class BannerEditor extends React.Component {
 
   updateTwitch(event) {
     this.setState({ twitch: event.target.value });
-  }
-
-  updateDonationAmounts(event, index) {
-    let temp = this.state.donationAmounts;
-    if (/^(\s*|\d+)$/.test(event.target.value)) {
-      temp[index] = event.target.value;
-      this.setState({ donationAmounts: temp });
-    }
   }
 
   setEditMode = () => {
@@ -791,40 +774,6 @@ export default class BannerEditor extends React.Component {
     }
   }
 
-  tipToOption() {
-    switch (this.state.donationAmounts.join(",")) {
-      case "1,5,10":
-      case "1,10,100":
-        return 0;
-      case "5,10,20":
-        return 1;
-        break;
-      case "10,20,50":
-        return 2;
-        break;
-      case "20,50,100":
-        return 3;
-        break;
-    }
-  }
-
-  handleTipSelection(key, child) {
-    switch (key) {
-      case "0":
-        this.setState({ donationAmounts: DEFAULT_AMOUNTS });
-        break;
-      case "1":
-        this.setState({ donationAmounts: [5, 10, 20] });
-        break;
-      case "2":
-        this.setState({ donationAmounts: [10, 20, 50] });
-        break;
-      case "3":
-        this.setState({ donationAmounts: [20, 50, 100] });
-        break;
-    }
-  }
-
   async save() {
     this.setState({ state: "save", saving: "true" }, () =>
       Spinner.show("save-spinner", "save-container")
@@ -841,7 +790,6 @@ export default class BannerEditor extends React.Component {
     let body = new FormData();
     body.append("title", this.state.title);
     body.append("description", this.state.description);
-    body.append("donation_amounts", JSON.stringify(this.state.donationAmounts));
     body.append(
       "social_links",
       JSON.stringify({
@@ -1069,108 +1017,10 @@ export default class BannerEditor extends React.Component {
                 type="text"
               />
             </ExplanatoryText>
-
-            <Donations>
-              <Text donations>
-                <FormattedMessage id="siteBanner.tipOptionsHeader" />
-              </Text>
-              <div
-                style={{ width: "75%", margin: "auto", paddingBottom: "20px" }}
-              >
-                <Select
-                  id="bat-select"
-                  value={this.tipToOption()}
-                  type={"light"}
-                  title={"Limit Sites to"}
-                  disabled={false}
-                  floating={false}
-                  onChange={(key, child) => this.handleTipSelection(key, child)}
-                >
-                  <div data-value="0">
-                    <FormattedMessage id="siteBanner.tipOption1" />
-                  </div>
-                  <div data-value="1">
-                    <FormattedMessage id="siteBanner.tipOption2" />
-                  </div>
-                  <div data-value="2">
-                    <FormattedMessage id="siteBanner.tipOption3" />
-                  </div>
-                  <div data-value="3">
-                    <FormattedMessage id="siteBanner.tipOption4" />
-                  </div>
-                </Select>
-              </div>
-              <DonationWrapper>
-                <Button donation>
-                  <BatColorIcon
-                    style={{
-                      display: (locale === "ja") ? "none" : "inline",
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "10px"
-                    }}
-                  />
-                  <Text donationAmount>{this.state.donationAmounts[0]}</Text>
-                  <Text BAT>
-                    <FormattedMessage id="siteBanner.batLocalized" />
-                  </Text>
-                </Button>
-                <Text convertedAmount>
-                  {(
-                    this.state.donationAmounts[0] * this.props.conversionRate
-                  ).toFixed(2)}{" "}
-                  {this.props.preferredCurrency}
-                </Text>
-              </DonationWrapper>
-              <DonationWrapper>
-                <Button donation>
-                  <BatColorIcon
-                    style={{
-                      display: (locale === "ja") ? "none" : "inline",
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "10px"
-                    }}
-                  />
-                  <Text donationAmount>{this.state.donationAmounts[1]}</Text>
-                  <Text BAT>
-                    <FormattedMessage id="siteBanner.batLocalized" />
-                  </Text>
-                </Button>
-                <Text convertedAmount>
-                  {(
-                    this.state.donationAmounts[1] * this.props.conversionRate
-                  ).toFixed(2)}{" "}
-                  {this.props.preferredCurrency}
-                </Text>
-              </DonationWrapper>
-              <DonationWrapper>
-                <Button donation>
-                  <BatColorIcon
-                    style={{
-                      display: (locale === "ja") ? "none" : "inline",
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "10px"
-                    }}
-                  />
-                  <Text donationAmount>{this.state.donationAmounts[2]}</Text>
-                  <Text BAT>
-                    <FormattedMessage id="siteBanner.batLocalized" />
-                  </Text>
-                </Button>
-                <Text convertedAmount>
-                  {(
-                    this.state.donationAmounts[2] * this.props.conversionRate
-                  ).toFixed(2)}{" "}
-                  {this.props.preferredCurrency}
-                </Text>
-              </DonationWrapper>
-            </Donations>
           </Content>
         </Template>
-          </Editor>
-            </IntlProvider>
+      </Editor>
+    </IntlProvider>
     );
   }
 }

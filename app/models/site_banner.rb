@@ -20,23 +20,12 @@ class SiteBanner < ApplicationRecord
   BACKGROUND_DIMENSIONS = [2700, 528].freeze
   BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
-  NUMBER_OF_DONATION_AMOUNTS = 3
-  DONATION_AMOUNT_PRESETS = ["1,10,100", "5,10,20", "10,20,50", "20,50,100"].freeze
-  MAX_DONATION_AMOUNT = 999
-
   DEFAULT_TITLE = I18n.t("banner.headline")
   DEFAULT_DESCRIPTION = I18n.t("banner.tagline")
-  DEFAULT_AMOUNTS = [1, 10, 100].freeze
 
   validates_presence_of :title, :description, :publisher
-  validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
   after_save :update_site_banner_lookup!
-
-  def donation_amounts_in_scope
-    return if errors.present?
-    errors.add(:base, "Must be an approved tip preset") unless donation_amounts.nil? || DONATION_AMOUNT_PRESETS.include?(donation_amounts.join(","))
-  end
 
   def update_site_banner_lookup!
     if channel.present?
@@ -78,22 +67,12 @@ class SiteBanner < ApplicationRecord
     )
   end
 
-  def update_helper(title, description, donation_amounts, social_links)
+  def update_helper(title, description, social_links)
     update(
       title: sanitize(title),
       description: sanitize(description),
-      donation_amounts: sanitize_donation_amounts(donation_amounts: donation_amounts),
       social_links: social_links.present? ? JSON.parse(sanitize(social_links)) : {}
     )
-  end
-
-  def sanitize_donation_amounts(donation_amounts:)
-    result = JSON.parse(sanitize(donation_amounts))
-    if result == DEFAULT_AMOUNTS
-      nil
-    else
-      result
-    end
   end
 
   def read_only_react_property
@@ -102,7 +81,6 @@ class SiteBanner < ApplicationRecord
       description: description,
       backgroundUrl: pcdn_public_image_url(background_image),
       logoUrl: pcdn_public_image_url(logo),
-      donationAmounts: donation_amounts,
       socialLinks: social_links
     }
   end
@@ -116,7 +94,6 @@ class SiteBanner < ApplicationRecord
     # Remove properties that are considered the "Default". The client will handle parsing for this.
     properties.delete(:description) if properties[:description].eql?(DEFAULT_DESCRIPTION)
     properties.delete(:title) if properties[:title].eql?(DEFAULT_TITLE)
-    properties.delete(:donationAmounts) if properties[:donationAmounts].nil? || properties[:donationAmounts].eql?(DEFAULT_AMOUNTS)
     properties[:socialLinks]&.delete_if { |k, v| v.blank? }
 
     properties.delete_if { |k, v| v.blank? }
