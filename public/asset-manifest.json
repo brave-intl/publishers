@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.744dbca2.chunk.css",
-    "main.js": "/static/js/main.927ba086.chunk.js",
-    "main.js.map": "/static/js/main.927ba086.chunk.js.map",
+    "main.js": "/static/js/main.466a708d.chunk.js",
+    "main.js.map": "/static/js/main.466a708d.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.fae371a0.js",
     "runtime-main.js.map": "/static/js/runtime-main.fae371a0.js.map",
-    "static/js/2.fc2afe23.chunk.js": "/static/js/2.fc2afe23.chunk.js",
-    "static/js/2.fc2afe23.chunk.js.map": "/static/js/2.fc2afe23.chunk.js.map",
+    "static/js/2.1ace70f5.chunk.js": "/static/js/2.1ace70f5.chunk.js",
+    "static/js/2.1ace70f5.chunk.js.map": "/static/js/2.1ace70f5.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.744dbca2.chunk.css.map": "/static/css/main.744dbca2.chunk.css.map",
-    "static/js/2.fc2afe23.chunk.js.LICENSE.txt": "/static/js/2.fc2afe23.chunk.js.LICENSE.txt",
+    "static/js/2.1ace70f5.chunk.js.LICENSE.txt": "/static/js/2.1ace70f5.chunk.js.LICENSE.txt",
     "static/media/brave-rewards-creators-logo.085313b2.svg": "/static/media/brave-rewards-creators-logo.085313b2.svg",
     "static/media/brave-rewards-creators-mobile-logo.efb80a21.svg": "/static/media/brave-rewards-creators-mobile-logo.efb80a21.svg",
     "static/media/built-with-bat-pill.fc515509.svg": "/static/media/built-with-bat-pill.fc515509.svg",
@@ -27,8 +27,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.fae371a0.js",
-    "static/js/2.fc2afe23.chunk.js",
+    "static/js/2.1ace70f5.chunk.js",
     "static/css/main.744dbca2.chunk.css",
-    "static/js/main.927ba086.chunk.js"
+    "static/js/main.466a708d.chunk.js"
   ]
 }
