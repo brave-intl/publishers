@@ -4,11 +4,6 @@ ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 SimpleCov.start "rails"
 
-def not_arm?
-  arch = `uname -m`.strip
-  !(arch.include?("arm") || arch.include?("aarch64"))
-end
-
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
@@ -58,9 +53,6 @@ WebMock.allow_net_connect!
 # causes the entire test run to rail with an exception
 #
 # It does however mean that selenium tests do not work locally in the M1/Docker context
-if not_arm?
-  Chromedriver.set_version "2.38"
-end
 
 Capybara.register_driver "chrome" do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
