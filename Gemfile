@@ -9,7 +9,7 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "6.1.7.1"
+rails_version = "7.0.4.2"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.4.4"
 gem "railties", rails_version
@@ -28,7 +28,7 @@ gem "activerecord-import", "1.2.0"
 # ActiveRecord Session store for server side storage of session data
 gem "activerecord-session_store", "~> 2.0"
 
-gem "activerecord6-redshift-adapter", "= 1.2.1"
+gem 'activerecord7-redshift-adapter', git: 'https://github.com/pennylane-hq/activerecord7-redshift-adapter.git'
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
@@ -37,10 +37,11 @@ gem "addressable", "~> 2.8"
 gem "attr_encrypted", "~> 3.1.0"
 
 # Integration with Matomo Piwik
-gem "autometal-piwik", require: "piwik", git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
+# Remove for rails 7 update
+# gem "autometal-piwik", require: "piwik", git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.89.0"
+gem "aws-sdk-s3", "~> 1.119.0"
 
 gem "bootstrap", "=4.6.0"
 
@@ -72,7 +73,7 @@ gem "lograge", "~> 0.4"
 gem "nokogiri", ">= 1.13.9"
 
 # Open Graph tag
-gem "meta-tags", "~> 2.14.0"
+gem "meta-tags", "~> 2.18.0"
 
 gem "newrelic_rpm", "~> 6.12", ">= 6.12.0.367"
 
@@ -113,7 +114,7 @@ gem "puma", "~> 5.6.4"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 6.6.1"
 
-gem "rails-i18n", "~> 6.0.0"
+gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -164,10 +165,10 @@ gem "will_paginate"
 # YouTube API client
 gem "yt", "~> 0.33.0"
 
-gem "zeitwerk", "~> 2.3.0"
+gem "zeitwerk", "~> 2.6.6"
 gem "zendesk_api", "~> 1.26.0"
 
-gem "activerecord-nulldb-adapter", "0.7.0"
+gem "activerecord-nulldb-adapter", "0.8.0"
 
 gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
 gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
