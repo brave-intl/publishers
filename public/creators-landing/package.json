@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "grommet": "^2.15.0",
+    "ansi-html": "https://registry.npmjs.org/ansi-html-community/-/ansi-html-community-0.0.8.tgz",
+    "grommet": "^2.29.1",
     "kind-of": "^6.0.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.8.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-dom-confetti": "^0.1.0",
     "react-intl": "^5.8.6",
     "react-router-dom": "^4.3.1",
@@ -39,18 +40,5 @@
     ]
   },
   "resolutions": {
-    "ejs": "3.1.7",
-    "lodash": "4.17.21",
-    "nth-check": "2.0.1",
-    "browserslist": "4.16.5",
-    "eventsource": "2.0.2",
-    "glob-parent": "5.1.2",
-    "ansi-regex": "5.0.1",
-    "shell-quote": "1.7.3",
-    "ansi-html": "https://registry.npmjs.org/ansi-html-community/-/ansi-html-community-0.0.8.tgz",
-    "immer": "9.0.6",
-    "loader-utils": "1.4.2",
-    "json5": "2.2.2",
-    "minimatch": "3.0.5"
   }
 }
