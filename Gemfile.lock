@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/PagerTree/attr_encrypted.git
+  revision: df02ab0b9547220b2859317d1af8a4280b0fae44
+  branch: rails-7-0-support
+  specs:
+    attr_encrypted (3.1.0)
+      encryptor (~> 3.0.0)
+
+GIT
   remote: https://github.com/beanieboi/omniauth-vimeo.git
   revision: 0f855fd3437061fa2d343c1b6036bd9472c0edd1
   ref: 0f855fd3437061fa2d343c1b6036bd9472c0edd1
@@ -133,8 +141,6 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     android_key_attestation (0.3.0)
     ast (2.4.2)
-    attr_encrypted (3.1.0)
-      encryptor (~> 3.0.0)
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
     awrence (1.2.1)
@@ -643,7 +649,7 @@ DEPENDENCIES
   activerecord-session_store (~> 2.0)
   activerecord7-redshift-adapter!
   addressable (~> 2.8)
-  attr_encrypted (~> 3.1.0)
+  attr_encrypted!
   aws-sdk-s3 (~> 1.119.0)
   better_errors
   binding_of_caller
