@@ -7,7 +7,7 @@ SimpleCov.start "rails"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
-require "selenium/webdriver"
+require "selenium-webdriver"
 require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"

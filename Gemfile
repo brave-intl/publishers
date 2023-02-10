@@ -54,6 +54,7 @@ gem "dnsruby", "~> 1.61.9", require: false
 
 # HTTP library wrapper
 gem "faraday", "~> 2.7.4"
+gem 'faraday-retry'
 
 gem "ffi", github: "ffi/ffi", tag: "v1.15.5", submodules: true
 
@@ -174,6 +175,8 @@ gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+gem "sprockets-rails"
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
@@ -223,7 +226,7 @@ group :development, :test do
   gem "minitest"
   gem "minitest-rails"
   gem "mocha"
-  gem "chromedriver-helper"
+  gem 'webdrivers', '~> 5.0', require: false
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.8.0"
   gem "solargraph"

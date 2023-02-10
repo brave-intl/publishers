@@ -1,3 +1,4 @@
 # typed: true
-
-PromoClient = Promo::Client.new
+Rails.application.reloader.to_prepare do
+  PromoClient = Promo::Client.new
+end

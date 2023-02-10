@@ -15,5 +15,4 @@ if Rails.application.secrets[:redis_url].present?
   # https://github.com/mperham/sidekiq/wiki/Monitoring#sessions-being-lost
   require "sidekiq/web"
   require "sidekiq-scheduler/web"
-  Sidekiq::Web.set :sessions, false
 end
