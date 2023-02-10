@@ -9,7 +9,8 @@ require "rails/test_help"
 require "webpacker"
 require "selenium-webdriver"
 require "webmock/minitest"
-require "chromedriver/helper"
+require 'webdrivers/chromedriver'
+require 'webdrivers/geckodriver'
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/service_class_helpers"

@@ -17,7 +17,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   belongs_to :publisher
   has_many :gemini_connection_for_channels, dependent: :destroy
-  attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
+
+  attr_encrypted_options.merge!(key: proc { |record| record.class.encryption_key })
+  attr_encrypted :access_token
+  attr_encrypted :refresh_token
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT
 
   after_commit :create_recipient_ids, on: :create

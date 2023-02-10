@@ -53,6 +53,7 @@ gem "connection_pool", "~> 2.3.0"
 gem "devise", "~> 4.8.1"
 
 gem "dnsruby", "~> 1.61.9", require: false
+gem "domain_name"
 
 # HTTP library wrapper
 gem "faraday", "~> 2.7.4"
@@ -227,7 +228,7 @@ group :development, :test do
   gem "capybara"
   gem "minitest"
   gem "minitest-rails"
-  gem "mocha"
+  gem "mocha", require: false
   gem 'webdrivers', '~> 5.0', require: false
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.8.0"
