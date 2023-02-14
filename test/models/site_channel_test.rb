@@ -56,7 +56,7 @@ class SiteChannelTest < ActiveSupport::TestCase
     details.brave_publisher_id_error_code = :invalid_uri
 
     refute details.valid?
-    assert_equal [:brave_publisher_id_unnormalized], details.errors.keys
+    assert_equal [:brave_publisher_id_unnormalized], details.errors.attribute_names
     assert_equal "invalid_uri", details.brave_publisher_id_error_code
     assert_equal I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
   end
@@ -69,7 +69,7 @@ class SiteChannelTest < ActiveSupport::TestCase
     details.brave_publisher_id_error_code = :invalid_uri
 
     refute details.valid?
-    assert_equal [:brave_publisher_id_unnormalized], details.errors.keys
+    assert_equal [:brave_publisher_id_unnormalized], details.errors.attribute_names
     assert_equal "invalid_uri", details.brave_publisher_id_error_code
     assert_equal I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
   end
