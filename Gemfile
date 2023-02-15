@@ -40,7 +40,7 @@ gem "attr_encrypted", github: "PagerTree/attr_encrypted", branch: "rails-7-0-sup
 # Use AWS gem for s3 uploads
 gem "aws-sdk-s3", "~> 1.119.0"
 
-gem "bootstrap", "=5.2.3"
+gem "bootstrap", "4.6.0"
 
 gem "brotli", "~> 0.4.0"
 
@@ -147,7 +147,7 @@ gem "sidekiq-scheduler", "~> 5.0.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
-gem "ssrf_filter"
+gem "ssrf_filter", '1.0.7'
 
 # Don't use
 # gem "stripe", "~> 5.1", ">= 5.1.1"
@@ -178,7 +178,8 @@ gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "sprockets-rails"
+gem "sprockets-rails", '3.4.2'
+gem "sprockets", '3.7.2'
 
 group :development do
   gem "better_errors"
