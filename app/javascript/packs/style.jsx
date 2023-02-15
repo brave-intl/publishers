@@ -287,12 +287,6 @@ export const ExplanatoryText = styled.div`
   padding-left: 30px;
 `;
 
-export const DonationWrapper = styled.div`
-  text-align: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-`;
-
 export const Channel = styled.p`
   display: inline-block;
   padding-left: 5px;
@@ -310,14 +304,6 @@ export const Delete = styled.p`
   cursor: pointer;
   font-size: 0.85rem;
   color: #7d7bdc;
-`;
-
-export const Donations = styled.div`
-  background-color: rgb(105, 111, 220);
-  margin-right: -1px;
-  color: white;
-  padding-top: 35px;
-  border-bottom-right-radius: 8px;
 `;
 
 export const Link = styled.div``;

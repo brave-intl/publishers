@@ -84,7 +84,7 @@ gem "omniauth-google-oauth2", "~> 0.8.2"
 gem "omniauth-twitch", "~> 1.1.0"
 
 # Oauth client for twitter
-gem "omniauth-twitter", "~> 1.4.0"
+gem "omniauth-twitter2"
 
 # OAuth client for Vimeo
 gem "omniauth-vimeo", github: "beanieboi/omniauth-vimeo", ref: "0f855fd3437061fa2d343c1b6036bd9472c0edd1"
@@ -190,8 +190,6 @@ group :development do
 
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
-
-  gem "tapioca", "0.6.1", require: false if not_arm?
 end
 
 group :test do

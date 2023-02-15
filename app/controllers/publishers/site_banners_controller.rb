@@ -24,7 +24,7 @@ class Publishers::SiteBannersController < ApplicationController
         raise t("banner.upload_too_big")
       end
 
-      site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
+      site_banner.update_helper(params[:title], params[:description], params[:social_links])
       if params[:logo]
         site_banner.logo.attach(
           image_properties(attachment_type: SiteBanner::LOGO)

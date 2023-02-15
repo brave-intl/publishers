@@ -460,26 +460,55 @@ module Publishers
 
     def auth_hash(options = {})
       OmniAuth::AuthHash.new(
-        {
-          "provider" => "register_twitter_channel",
-          "uid" => "123545",
-          "info" => {
-            "name" => "Ted the Twitter User",
-            "email" => "ted@example.com",
-            "image" => "https://pbs.twimg.com/profile_images/974726646438744064/ivNCZILF_normal.jpg"
-          },
-          "credentials" => {
-            "token" => token
-          },
-          "extra" => {
-            "raw_info" => {
-              "screen_name" => "tedthetwitteruser",
-              "followers_count" => 456,
-              "statuses_count" => 1000,
-              "verified" => false
-            }
-          }
-        }.deep_merge(options)
+        {"provider" => "register_twitter_channel",
+         "uid" => "123545",
+         "info" => {
+           "name" => "Ted the Twitter User",
+           "email" => "ted@example.com",
+           "nickname" => "yu_suke1994",
+           "description" => "帰って寝たい",
+           "image" => "https://pbs.twimg.com/profile_images/974726646438744064/ivNCZILF_normal.jpg",
+           "urls" => {
+             "Website" => "https://t.co/NCFLB8wDkx",
+             "Twitter" => "https://twitter.com/yu_suke1994"
+           }
+         },
+         "credentials" => {
+           "token" => token,
+           "expires_at" => 1642016242,
+           "expires" => true
+         },
+         "extra" => {
+           "raw_info" => {
+             "data" => {
+               "profile_image_url" => "https://pbs.twimg.com/profile_images/580019517608218624/KzEZSzUy_normal.jpg",
+               "url" => "https://t.co/NCFLB8wDkx",
+               "public_metrics" => {
+                 "followers_count" => 456,
+                 "following_count" => 1478,
+                 "tweet_count" => 1000,
+                 "listed_count" => 110
+               },
+               "verified" => false,
+               "name" => "うなすけ",
+               "entities" => {
+                 "url" => {
+                   "urls" => [{
+                     "start" => 0,
+                     "end" => 23,
+                     "url" => "https://t.co/NCFLB8wDkx",
+                     "expanded_url" => "https://unasuke.com", "display_url" => "unasuke.com"
+                   }]
+                 }
+               },
+               "description" => "帰って寝たい",
+               "created_at" => "2010-01-25T10:10:22.000Z",
+               "username" => "tedthetwitteruser",
+               "protected" => false,
+               "id" => "108252390"
+             }
+           }
+         }}.deep_merge(options)
       )
     end
 
