@@ -190,8 +190,6 @@ group :development do
 
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
-
-  gem "tapioca", "0.6.1", require: false if not_arm?
 end
 
 group :test do
