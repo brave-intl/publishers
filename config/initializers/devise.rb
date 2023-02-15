@@ -265,16 +265,13 @@ Devise.setup do |config|
       name: "register_twitch_channel"
     }
 
-  config.omniauth :twitter,
+  config.omniauth :twitter2,
     Rails.application.secrets[:twitter_client_id],
     Rails.application.secrets[:twitter_client_secret],
     {
-      name: "register_twitter_channel",
-      secure_image_url: true,
-      image_size: "normal",
-      authorize_params: {
-        force_login: true
-      }
+      callback_path: "/publishers/auth/register_twitter_channel/callback",
+      scope: "tweet.read users.read",
+      name: "register_twitter_channel"
     }
 
   config.omniauth :vimeo,

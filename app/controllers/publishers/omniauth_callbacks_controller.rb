@@ -138,12 +138,12 @@ module Publishers
         auth_email: oauth_response.info.email,
         twitter_channel_id: oauth_response.uid,
         name: oauth_response.info.name,
-        screen_name: oauth_response.extra.raw_info.screen_name,
+        screen_name: oauth_response.extra.raw_info.data.username,
         thumbnail_url: oauth_response.info.image,
         stats: {
-          followers_count: oauth_response.extra.raw_info.followers_count,
-          statuses_count: oauth_response.extra.raw_info.statuses_count,
-          verified: oauth_response.extra.raw_info.verified
+          followers_count: oauth_response.extra.raw_info.data.public_metrics.followers_count,
+          statuses_count: oauth_response.extra.raw_info.data.public_metrics.tweet_count,
+          verified: oauth_response.extra.raw_info.data.verified
         }
       }
 
