@@ -180,6 +180,7 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", '3.4.2'
 gem "sprockets", '3.7.2'
+gem 'uglifier'
 
 group :development do
   gem "better_errors"
@@ -236,3 +237,5 @@ group :development, :test do
   gem "solargraph"
   gem "dotenv-rails", "2.8.1"
 end
+
+gem "importmap-rails", "~> 1.1"

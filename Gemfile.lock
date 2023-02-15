@@ -283,6 +283,9 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
+    importmap-rails (1.1.5)
+      actionpack (>= 6.0.0)
+      railties (>= 6.0.0)
     inflection (1.0.0)
     jaro_winkler (1.5.4)
     jmespath (1.6.2)
@@ -583,6 +586,8 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     u2f (1.0.0)
+    uglifier (4.2.0)
+      execjs (>= 0.3.0, < 3)
     unaccent (0.4.0)
     unf (0.1.4)
       unf_ext
@@ -677,6 +682,7 @@ DEPENDENCIES
   font-awesome-rails (~> 4.7.0.4)
   google-protobuf (~> 3.21.12)
   i18n-tasks (~> 1.0.12)
+  importmap-rails (~> 1.1)
   listen (~> 3.5)
   lograge (~> 0.4)
   meta-tags (~> 2.18.0)
@@ -729,6 +735,7 @@ DEPENDENCIES
   temping
   tzinfo-data
   u2f (~> 1.0)
+  uglifier
   vcr
   wasm-thumbnail-rb!
   wasmer!
