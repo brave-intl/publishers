@@ -145,7 +145,7 @@ GEM
       execjs (~> 2)
     awrence (1.2.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.712.0)
+    aws-partitions (1.713.0)
     aws-sdk-core (3.170.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -456,9 +456,8 @@ GEM
       ffi (~> 1.0)
     recaptcha (5.12.3)
       json
-    redis (5.0.6)
-      redis-client (>= 0.9.0)
-    redis-client (0.12.1)
+    redis (4.2.5)
+    redis-client (0.12.2)
       connection_pool
     regexp_parser (2.7.0)
     render_async (2.1.11)
@@ -715,7 +714,7 @@ DEPENDENCIES
   rails-i18n (~> 7.0.6)
   railties (= 7.0.4.2)
   recaptcha (~> 5.12.3)
-  redis (~> 5.0.6)
+  redis (~> 4.2.1)
   render_async (~> 2.1.8)
   rexml
   rotp (~> 6.2.0)
