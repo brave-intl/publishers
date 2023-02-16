@@ -11,7 +11,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
   belongs_to :publisher
 
-  attr_encrypted_options.merge!(key: proc { |record| record.class.encryption_key })
+  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
   attr_encrypted :access_token
   attr_encrypted :refresh_token
 

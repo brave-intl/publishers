@@ -9,8 +9,8 @@ require "rails/test_help"
 require "webpacker"
 require "selenium-webdriver"
 require "webmock/minitest"
-require 'webdrivers/chromedriver'
-require 'webdrivers/geckodriver'
+require "webdrivers/chromedriver"
+require "webdrivers/geckodriver"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/service_class_helpers"
@@ -63,8 +63,8 @@ Capybara.register_driver "chrome" do |app|
   options.add_argument("disable-gpu")
 
   Capybara::Selenium::Driver.new(app,
-                                 capabilities: options,
-                                 browser: :chrome)
+    capabilities: options,
+    browser: :chrome)
 end
 
 # Have to use FF due to Chrome bug in linux
@@ -103,7 +103,7 @@ VCR.configure do |config|
     i.response.headers.delete("Set-Cookie")
     i.request.headers.delete("Authorization")
   end
-  config.ignore_hosts *driver_urls
+  config.ignore_hosts(*driver_urls)
   config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = {match_requests_on: [:method, :uri, :body], decode_compressed_response: true}
 end

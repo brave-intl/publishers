@@ -23,7 +23,7 @@ gem "activerecord-import", "1.4.1"
 # ActiveRecord Session store for server side storage of session data
 gem "activerecord-session_store", "~> 2.0"
 
-gem 'activerecord7-redshift-adapter', git: 'https://github.com/pennylane-hq/activerecord7-redshift-adapter.git'
+gem "activerecord7-redshift-adapter", git: "https://github.com/pennylane-hq/activerecord7-redshift-adapter.git"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
@@ -57,7 +57,7 @@ gem "domain_name"
 
 # HTTP library wrapper
 gem "faraday", "~> 2.7.4"
-gem 'faraday-retry'
+gem "faraday-retry"
 
 gem "ffi", github: "ffi/ffi", tag: "v1.15.5", submodules: true
 
@@ -147,7 +147,7 @@ gem "sidekiq-scheduler", "~> 5.0.1"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
-gem "ssrf_filter", '1.0.7'
+gem "ssrf_filter", "1.0.7"
 
 # Don't use
 # gem "stripe", "~> 5.1", ">= 5.1.1"
@@ -178,9 +178,9 @@ gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "sprockets-rails", '3.4.2'
-gem "sprockets", '3.7.2'
-gem 'uglifier'
+gem "sprockets-rails", "3.4.2"
+gem "sprockets", "3.7.2"
+gem "uglifier"
 
 group :development do
   gem "better_errors"
@@ -231,7 +231,7 @@ group :development, :test do
   gem "minitest"
   gem "minitest-rails"
   gem "mocha", require: false
-  gem 'webdrivers', '~> 5.0', require: false
+  gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.8.0"
   gem "solargraph"

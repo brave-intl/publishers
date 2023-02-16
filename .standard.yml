@@ -5,7 +5,7 @@ parallel: true          # default: false
 default_ignores: true   # default: true
 
 ignore:                 # default: []
-  - Lint/ConstantDefinitionInBlock
+  - 'Lint/ConstantDefinitionInBlock'
   - 'db/**/*'
   - 'vendor/**/*'
   - 'bin/**/*'

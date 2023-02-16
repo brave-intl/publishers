@@ -3,7 +3,7 @@
 class TotpRegistration < ApplicationRecord
   belongs_to :publisher
 
-  attr_encrypted_options.merge!(key: proc { |record| record.class.encryption_key })
+  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
   attr_encrypted :secret
 
   def totp
