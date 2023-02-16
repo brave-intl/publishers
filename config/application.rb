@@ -18,7 +18,7 @@ module Publishers
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.eager_load_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/protos #{config.root}/app/models/stats_redshift #{config.root}/app/jobs/payout/concerns/]
+    config.eager_load_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/app/models/stats_redshift #{config.root}/app/jobs/payout/concerns/]
 
     config.exceptions_app = routes
 
