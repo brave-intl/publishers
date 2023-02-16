@@ -100,7 +100,7 @@ module Publishers
     private
 
     def locale_from_header
-      request.env["HTTP_ACCEPT_LANGUAGE"].scan(/^[a-z]{2}/).first == "ja" ? :ja : :en
+      (request.env["HTTP_ACCEPT_LANGUAGE"].scan(/^[a-z]{2}/).first == "ja") ? :ja : :en
     rescue
       I18n.default_locale
     end

@@ -10,7 +10,11 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   has_paper_trail
 
   belongs_to :publisher
-  attr_encrypted :access_token, :refresh_token, key: proc { |record| record.class.encryption_key }
+
+  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
+  attr_encrypted :access_token
+  attr_encrypted :refresh_token
+
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true
 

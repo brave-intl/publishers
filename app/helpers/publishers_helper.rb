@@ -139,10 +139,10 @@ module PublishersHelper
     # Note: error catcher swallows important information
     error_catcher do
       channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
-      value = channel_balance.present? && channel_balance&.amount_bat.present? ? channel_balance&.amount_bat : nil
+      value = (channel_balance.present? && channel_balance&.amount_bat.present?) ? channel_balance&.amount_bat : nil
 
       if value.present?
-        temp = value < 0 ? 0.0 : value
+        temp = (value < 0) ? 0.0 : value
         balance = "%.2f" % temp
       end
     end
@@ -281,7 +281,7 @@ module PublishersHelper
     return "" if transactions.empty?
     statement_begin_date = transactions.first["created_at"].to_time.strftime("%Y-%m-%d").to_s
     statement_end_date = transactions.last["created_at"].to_time.strftime("%Y-%m-%d").to_s
-    statement_begin_date == statement_end_date ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
+    (statement_begin_date == statement_end_date) ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
   end
 
   def publishers_statement_file_name(publisher_statement_period)
