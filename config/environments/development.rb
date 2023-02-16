@@ -19,6 +19,9 @@ Rails.application.configure do
     error_handler: ->(method:, returning:, exception:) { raise exception }
   }
 
+  require "connection_pool"
+  REDIS = ConnectionPool.new(size: 5) { Redis.new }
+
   config.middleware.use(Rack::Attack)
   config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "https" }
   # Mailcatcher
