@@ -21,7 +21,7 @@ Rails.application.configure do
   }
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
 
   config.cache_store = :redis_cache_store, {
     url: Rails.application.secrets[:redis_url],

@@ -8,7 +8,7 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
   config.action_view.cache_template_loading = true
 
     config.action_controller.perform_caching = true # false?
