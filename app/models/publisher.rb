@@ -64,7 +64,7 @@ class Publisher < ApplicationRecord
 
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
-  validates :pending_email, email: {strict_mode: true}, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
+  validates :pending_email, email: true, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
   validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 

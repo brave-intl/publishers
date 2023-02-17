@@ -26,7 +26,7 @@ class RedisCountService < BuilderBaseService
       count = @client.incr(key)
       @client.expire(key, @interval) if count == 1
 
-      struct = count > @limit ? AboveLimit : BelowLimit
+      struct = (count > @limit) ? AboveLimit : BelowLimit
       struct.new(limit: @limit, interval: @interval, count: count)
     rescue Redis::CannotConnectError
       BFailure.new(errors: ["Could not connect to Redis Client"])

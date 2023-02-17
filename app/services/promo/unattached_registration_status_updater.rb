@@ -25,13 +25,13 @@ class Promo::UnattachedRegistrationStatusUpdater < BaseApiClient
       request.body = {status: @status}.to_json
     end
 
-    @status == "active" ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
+    (@status == "active") ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
 
     response
   end
 
   def perform_offline
-    @status == "active" ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
+    (@status == "active") ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
   end
 
   private

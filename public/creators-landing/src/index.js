@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {IntlProvider } from 'react-intl';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { IntlProvider } from 'react-intl';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, SignUp, LogIn } from "./views";
 import "./style/normalize-style.css";
 import "./style/style.css";
@@ -18,11 +18,11 @@ if (locale != null && (locale === 'ja')) {
 
 const App = () => (
   <Router>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/sign-up" component={SignUp} />
-      <Route path="/log-in" component={LogIn} />
-    </Switch>
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/log-in" element={<LogIn />} />
+    </Routes>
   </Router>
 );
 
@@ -31,7 +31,7 @@ export const flattenMessages = ((nestedMessages, prefix = '') => {
     return {}
   }
   return Object.keys(nestedMessages).reduce((messages, key) => {
-    const value       = nestedMessages[key]
+    const value = nestedMessages[key]
     const prefixedKey = prefix ? `${prefix}.${key}` : key
 
     if (typeof value === 'string') {

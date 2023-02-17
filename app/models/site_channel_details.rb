@@ -17,7 +17,7 @@ class SiteChannelDetails < BaseChannelDetails
   class VerificationTokenValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless /\A[a-z0-9]{64}\z/i.match?(value)
-        record.errors[attribute] << (options[:message] || "is not a valid verification token with 64 hex digits")
+        record.errors.add attribute, (options[:message] || "is not a valid verification token with 64 hex digits")
       end
     end
   end

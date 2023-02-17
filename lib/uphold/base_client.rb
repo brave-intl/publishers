@@ -12,7 +12,7 @@ module Uphold
     private
 
     def api_base_uri
-      env == "production" ? "https://api.uphold.com" : "https://api-sandbox.uphold.com"
+      (env == "production") ? "https://api.uphold.com" : "https://api-sandbox.uphold.com"
     end
 
     def env

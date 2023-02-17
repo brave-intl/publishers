@@ -2,7 +2,7 @@
 
 require "test_helper"
 require "webmock/minitest"
-require "mocha/test_unit"
+# require "mocha/test_unit"
 
 class PayoutInProgressTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
