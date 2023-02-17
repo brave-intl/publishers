@@ -457,8 +457,6 @@ GEM
     recaptcha (5.12.3)
       json
     redis (4.8.1)
-    redis-client (0.12.2)
-      connection_pool
     regexp_parser (2.7.0)
     render_async (2.1.11)
     request_store (1.5.1)
@@ -507,18 +505,17 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.8.0)
+    selenium-webdriver (4.8.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
-    sidekiq (7.0.5)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.11.0)
+    sidekiq (6.4.2)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     sidekiq-scheduler (5.0.1)
       rufus-scheduler (~> 3.2)
       sidekiq (>= 4, < 8)
@@ -722,7 +719,7 @@ DEPENDENCIES
   sass-rails (~> 6.0.0)
   selenium-webdriver (~> 4.8.0)
   sendgrid-ruby (~> 6.6.2)
-  sidekiq (~> 7.0.4)
+  sidekiq (~> 6.4.0)
   sidekiq-scheduler (~> 5.0.1)
   simplecov
   slim-rails (~> 3.1)
