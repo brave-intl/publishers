@@ -119,7 +119,7 @@ gem "rails-i18n", "~> 7.0.6"
 gem "recaptcha", "~> 5.12.3", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis", "~> 4.2.1"
+gem "redis", "~> 4.8.1"
 
 gem "render_async", "~> 2.1.8"
 

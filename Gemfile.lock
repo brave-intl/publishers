@@ -456,7 +456,7 @@ GEM
       ffi (~> 1.0)
     recaptcha (5.12.3)
       json
-    redis (4.2.5)
+    redis (4.8.1)
     redis-client (0.12.2)
       connection_pool
     regexp_parser (2.7.0)
@@ -714,7 +714,7 @@ DEPENDENCIES
   rails-i18n (~> 7.0.6)
   railties (= 7.0.4.2)
   recaptcha (~> 5.12.3)
-  redis (~> 4.2.1)
+  redis (~> 4.8.1)
   render_async (~> 2.1.8)
   rexml
   rotp (~> 6.2.0)
