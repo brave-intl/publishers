@@ -722,7 +722,7 @@ DEPENDENCIES
   sass-rails (~> 6.0.0)
   selenium-webdriver (~> 4.8.0)
   sendgrid-ruby (~> 6.6.2)
-  sidekiq (~> 7.0.3)
+  sidekiq (~> 7.0.4)
   sidekiq-scheduler (~> 5.0.1)
   simplecov
   slim-rails (~> 3.1)
