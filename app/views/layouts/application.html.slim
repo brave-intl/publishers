@@ -11,8 +11,6 @@ html
     - else
       = stylesheet_link_tag('application', media: 'all')
 
-    = javascript_importmap_tags
-
     - if content_for?(:head_js_tags)
       = yield(:head_js_tags)
     - else

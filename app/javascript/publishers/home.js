@@ -54,6 +54,7 @@ function toggleDialog(event, elements) {
     }
   }
 }
+
 document.addEventListener("DOMContentLoaded", function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;

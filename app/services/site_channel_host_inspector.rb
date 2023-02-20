@@ -101,7 +101,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def web_host(response: nil)
-    if URI("https://#{url}").host&.end_with?(".github.io")
+    if url.include?(".github.io")
       "github"
     elsif (response.try(:body) || "").include?("/wp-content/")
       "wordpress"

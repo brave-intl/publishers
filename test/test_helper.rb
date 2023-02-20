@@ -4,13 +4,17 @@ ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 SimpleCov.start "rails"
 
+def not_arm?
+  arch = `uname -m`.strip
+  !(arch.include?("arm") || arch.include?("aarch64"))
+end
+
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
-require "selenium-webdriver"
+require "selenium/webdriver"
 require "webmock/minitest"
-require "webdrivers/chromedriver"
-require "webdrivers/geckodriver"
+require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/service_class_helpers"
@@ -54,17 +58,23 @@ WebMock.allow_net_connect!
 # causes the entire test run to rail with an exception
 #
 # It does however mean that selenium tests do not work locally in the M1/Docker context
+if not_arm?
+  Chromedriver.set_version "2.38"
+end
 
 Capybara.register_driver "chrome" do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument("window-size=1680,1050")
-  options.add_argument("headless")
-  options.add_argument("no-sandbox")
-  options.add_argument("disable-gpu")
-
-  Capybara::Selenium::Driver.new(app,
-    capabilities: options,
-    browser: :chrome)
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: {
+      binary: ENV["CHROME_BINARY"],
+      args: %w[headless no-sandbox disable-gpu window-size=1680,1050]
+    }.compact,
+    loggingPrefs: {browser: "ALL"}
+  )
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+  )
 end
 
 # Have to use FF due to Chrome bug in linux
@@ -85,15 +95,6 @@ end
 
 Capybara.default_driver = "chrome"
 
-driver_urls = Webdrivers::Common.subclasses.map do |driver|
-  Addressable::URI.parse(driver.base_url).host
-end
-
-driver_urls << "127.0.0.1"
-driver_urls << "localhost"
-driver_urls << "chromedriver.storage.googleapis.com"
-driver_urls << "objects.githubusercontent.com" # pulling firefox
-
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
@@ -103,7 +104,7 @@ VCR.configure do |config|
     i.response.headers.delete("Set-Cookie")
     i.request.headers.delete("Authorization")
   end
-  config.ignore_hosts(*driver_urls)
+  config.ignore_hosts "127.0.0.1", "localhost"
   config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = {match_requests_on: [:method, :uri, :body], decode_compressed_response: true}
 end

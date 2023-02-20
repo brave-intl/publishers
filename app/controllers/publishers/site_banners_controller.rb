@@ -92,7 +92,7 @@ class Publishers::SiteBannersController < ApplicationController
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
     {
-      io: File.open(padded_resized_jpg_path),
+      io: open(padded_resized_jpg_path), # standard:disable Security/Open
       filename: new_filename + ".jpg",
       content_type: "image/jpg"
     }

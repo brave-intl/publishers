@@ -22,7 +22,9 @@ class MediumAuthorizationServiceTest < ActiveSupport::TestCase
         "expires_at" => "...",
         "expires" => "true"
       },
-      "extra" => {}
+      "extra" => {
+
+      }
     }
   }
   test "#build" do
