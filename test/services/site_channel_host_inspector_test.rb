@@ -18,7 +18,6 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
       .to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
     result = SiteChannelHostInspector.new(url: "mysite.github.io").perform
-
     assert result[:host_connection_verified]
     assert_equal "github", result[:web_host]
     assert result[:https]

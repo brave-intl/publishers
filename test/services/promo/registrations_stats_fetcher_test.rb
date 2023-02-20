@@ -53,7 +53,6 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
   end
 
   test "makes the request in batches if > 100 codes" do
-    assert_equal PromoRegistration.count, 6
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     number_of_codes_needed = 200 - PromoRegistration.count
 
@@ -65,10 +64,8 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
     sql_values = sql_values.chomp(",")
 
     sql = "INSERT into promo_registrations (referral_code, promo_id, kind, created_at, updated_at) values #{sql_values}"
-    ActiveRecord::Base.connection.exec_query(sql)
+    ActiveRecord::Base.connection.execute(sql)
 
-    # Rails 7 is caching the count and not updating
-    ActiveRecord::Base.connection.query_cache.clear
     assert_equal PromoRegistration.count, 200
 
     promo_stats_service = Promo::RegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.all)

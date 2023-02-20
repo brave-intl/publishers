@@ -86,10 +86,7 @@ module Search
   end
 
   def is_email?(string)
-    # Addresses a codeql complaint about 'Polynomial regular expression used on uncontrolled data'
-    # since this is being used for admins only, I'm not super concerned, plus I can't imagine needing
-    # to search for an email address greater than 200 characters
-    string[0..200] =~ /@.*?\./
+    string =~ /@.*?\./
   end
 
   def is_a_uuid?(uuid)

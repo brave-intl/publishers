@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withRouter } from "../../../withRouter";
+import { withRouter } from "react-router-dom";
 import {
   Container,
   GradientBackground,
@@ -137,13 +137,13 @@ const WrappedSignComponent = props => {
   const intl = useIntl();
 
   const successSignInWords = {
-    headline: intl.formatMessage({ id: 'sign.signinSuccess' }),
-    body: intl.formatMessage({ id: 'sign.signinSuccessBody' })
+    headline: intl.formatMessage({id: 'sign.signinSuccess'}),
+    body: intl.formatMessage({id: 'sign.signinSuccessBody'})
   };
 
   const successSignUpWords = {
-    headline: intl.formatMessage({ id: 'sign.signupSuccess' }),
-    body: intl.formatMessage({ id: 'sign.signupSuccessBody' })
+    headline: intl.formatMessage({id: 'sign.signupSuccess'}),
+    body: intl.formatMessage({id: 'sign.signupSuccessBody'})
   };
 
   const submitForm = event => {
@@ -173,7 +173,7 @@ const WrappedSignComponent = props => {
 
   const tryAgain = event => {
     event.preventDefault();
-    setNotification({ show: true, text: <FormattedMessage id="sign.sentAgain" /> });
+    setNotification({ show: true, text: <FormattedMessage id="sign.sentAgain"/>});
   };
 
   async function sendToServer(body) {
@@ -221,7 +221,7 @@ const WrappedSignComponent = props => {
       duration: 100,
       size: "xsmall"
     });
-    setTimeout(function () {
+    setTimeout(function() {
       setEmailed(true);
       setConfetti(true);
     }, 250);

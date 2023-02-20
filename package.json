@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@github/webauthn-json": "^0.6.6",
-    "@rails/activestorage": "^7.0.4-2",
+    "@rails/activestorage": "^6.0.3-1",
     "@rails/ujs": "^6.0.3-1",
     "axios": "^0.21.2",
     "brave-ui": "^0.38.0",
@@ -126,8 +126,6 @@
     "node-fetch": "2.6.7",
     "glob-parent": "5.1.2",
     "nth-check": "2.0.1",
-    "ansi-regex": "5.0.1",
-    "json5": "2.2.2",
-    "minimatch": "3.0.5"
+    "ansi-regex": "5.0.1"
   }
 }

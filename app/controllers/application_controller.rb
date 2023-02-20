@@ -38,9 +38,7 @@ class ApplicationController < ActionController::Base
         new_url = if URI(request.original_url).query.present?
           request.original_url + "&locale=#{preferred_japanese_locale}"
         else
-          # Addresses a codeql complaint about 'Polynomial regular expression used on uncontrolled data'
-          # 2000 characters is a de facto limit on url sizes
-          request.original_url[0..2000].sub(/\/*$/, "/") + "?locale=#{preferred_japanese_locale}"
+          request.original_url.sub(/\/*$/, "/") + "?locale=#{preferred_japanese_locale}"
         end
         redirect_to(new_url) and return
       else

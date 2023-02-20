@@ -162,7 +162,7 @@ class Promo::EmailBreakdownsService < BuilderBaseService
     when "nightly"
       end_date = 1.days.ago.to_date
       start_date = publisher.receives_mtd_promo_emails? ? Date.today.at_beginning_of_month.to_date : 1.days.ago.to_date
-      start_date = (start_date > end_date) ? end_date : start_date
+      start_date = start_date > end_date ? end_date : start_date
     when "monthly"
       end_date = 1.days.ago.to_date
       start_date = 4.months.ago.at_beginning_of_month.to_date

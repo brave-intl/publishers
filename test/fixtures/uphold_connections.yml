@@ -9,7 +9,11 @@ base_verified_connection: &base_verified_connection
   status: "ok"
   country: "US"
   send_emails: 2019-01-01
-  encrypted_uphold_access_parameters: "<%= TotpRegistration.attr_encrypted_encrypt('secret',  { scope: 'cards:write' }.to_json, key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 unconnected:
@@ -36,7 +40,11 @@ youtube_initial_connection:
   publisher: youtube_initial
   country: 'US'
   uphold_verified: true
-  encrypted_uphold_access_parameters: "<%= TotpRegistration.attr_encrypted_encrypt('secret', '{}', key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters: "<%= TotpRegistration.encrypt_secret(
+    '{}',
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
   send_emails: 2019-01-01
 
@@ -112,7 +120,11 @@ google_connection:
   address: "abcdabcd-0000-0000-0000-abcd00000006"
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
-  encrypted_uphold_access_parameters:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  { scope: 'cards:write', access_token: '222', refresh_token: '123', 'expires_in': 3599, 'expiration_time': 3599.seconds.from_now.to_s }.to_json, key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write', access_token: '222', refresh_token: '123', 'expires_in': 3599, 'expiration_time': 3599.seconds.from_now.to_s }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 basic_connection:
@@ -123,7 +135,11 @@ basic_connection:
   address: "abcdabcd-0000-0000-0000-abcd00000006"
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
-  encrypted_uphold_access_parameters:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  { scope: 'cards:write', access_token: '333' }.to_json, key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write', access_token: '333' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 details_connection:
@@ -134,7 +150,11 @@ details_connection:
 blocked_connection:
   status: blocked
   publisher: uphold_connected_blocked
-  encrypted_uphold_access_parameters:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  { scope: 'cards:write', access_token: '111', refresh_token: '123', 'expires_in': 3599, 'expiration_time': 3599.seconds.from_now.to_s }.to_json, key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write', access_token: '111', refresh_token: '123', 'expires_in': 3599, 'expiration_time': 3599.seconds.from_now.to_s }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 restricted_member:
@@ -145,12 +165,20 @@ restricted_member:
   status: "restricted"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   send_emails: 2019-01-01
-  encrypted_uphold_access_parameters:  "<%= TotpRegistration.attr_encrypted_encrypt('secret', { scope: 'cards:write', access_token: '444' }.to_json, key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write', access_token: '444' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 verified_no_currency:
   uphold_verified: true
-  encrypted_uphold_access_parameters:  "<%= TotpRegistration.attr_encrypted_encrypt('secret', { scope: 'cards:write', access_token: '555' }.to_json, key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32), iv: salt ) %>"
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write', access_token: '555' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
   uphold_state_token:
   publisher: uphold_connected_currency_unconfirmed
