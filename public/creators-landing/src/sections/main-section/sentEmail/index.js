@@ -13,7 +13,7 @@ import {
   Toast
 } from "../../../components";
 
-import batPill from "../../../components/img/built-with-bat-pill.svg";
+import batPill from "../../../components/img/built-with-bat-pill.jsx";
 import locale from "../../../locale/en";
 import { FormattedMessage } from 'react-intl';
 import { Heading, Text, Box, Anchor, Image } from "grommet";

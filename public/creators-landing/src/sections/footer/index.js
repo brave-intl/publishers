@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, Image, ResponsiveContext } from "grommet";
 import { FooterLegal } from "../../components";
-import BuiltWithBat from "../../components/img/built-with-bat.svg";
+import BuiltWithBat from "../../components/img/built-with-bat.jsx";
 import locale from "../../locale/en";
 import { FormattedMessage, useIntl } from 'react-intl';
 

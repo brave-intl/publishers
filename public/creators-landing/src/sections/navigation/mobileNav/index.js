@@ -3,7 +3,7 @@ import { Box, Image, Menu } from "grommet";
 import { Link } from "react-router-dom";
 import { withRouter } from "../../../withRouter";
 import locale from "../../../locale/en";
-import mobileLogo from "../../../components/img/brave-rewards-creators-mobile-logo.svg";
+import mobileLogo from "../../../components/img/brave-rewards-creators-mobile-logo.jsx";
 import { MenuIcon } from "../../../components";
 import { NavWrapper, NavContainer } from "../../../components/styled/container";
 

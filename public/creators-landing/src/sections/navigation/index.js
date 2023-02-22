@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Image, ResponsiveContext, Anchor } from "grommet";
 import { Link } from "react-router-dom";
 import { SecondaryButton } from "../../components";
-import logo from "../../components/img/brave-rewards-creators-logo.svg";
-import batPill from "../../components/img/built-with-bat-pill.svg";
+import logo from "../../components/img/brave-rewards-creators-logo.jsx";
+import batPill from "../../components/img/built-with-bat-pill.jsx";
 
 import locale from "../../locale/en";
 import { NavWrapper, NavContainer } from "../../components/styled/container";

@@ -14,7 +14,7 @@ import {
 
 import { Link } from "react-router-dom";
 import SignComponent from "./signComponent";
-import batPill from "../../components/img/built-with-bat-pill.svg";
+import batPill from "../../components/img/built-with-bat-pill.jsx";
 import { Heading, Box, Image, Anchor, Text, CheckBox, FormField } from "grommet";
 import locale from '../../locale/en';
 import { FormattedMessage, useIntl} from 'react-intl';
