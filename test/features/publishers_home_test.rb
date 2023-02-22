@@ -93,13 +93,10 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     sign_in publisher
     visit home_publishers_path
 
-
     assert_content page, channel.publication_title
     find("#channel_row_#{channel.id}").click_link("Remove channel")
     assert_content page, "Are you sure you want to remove this channel?"
     find("[data-test-modal-container]").click_link("Remove Channel")
     refute_content channel.publication_title
   end
-
-
 end

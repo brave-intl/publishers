@@ -15,7 +15,7 @@ class Oauth2ControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
     Oauth2Controller.any_instance.stubs(:state_verified?).returns(true)
-    get(publishers_uphold_verified_path(code: '123'))
+    get(publishers_uphold_verified_path(code: "123"))
     assert_response :redirect
   end
 
@@ -23,9 +23,7 @@ class Oauth2ControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
     Oauth2Controller.any_instance.stubs(:state_verified?).returns(true)
-    post(connection_uphold_connection_path(code: '123'))
+    post(connection_uphold_connection_path(code: "123"))
     assert_response :redirect
   end
-
-
 end
