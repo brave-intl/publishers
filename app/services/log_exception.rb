@@ -11,6 +11,8 @@ class LogException
       Raven.capture_exception(error, sentry_params(publisher, params))
 
       true
+    else
+      Rails.logger.warn(error)
     end
   end
 
