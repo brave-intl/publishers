@@ -15,18 +15,17 @@ class LogException
       Rails.logger.warn(exception)
     end
   end
-end
 
-def self.new_relic_params(publisher_params, params)
-  {
-    custom_params: params.merge(publisher: publisher_params)
-  }
-end
+  def self.new_relic_params(publisher_params, params)
+    {
+      custom_params: params.merge(publisher: publisher_params)
+    }
+  end
 
-def self.sentry_params(publisher_params, params)
-  {
-    user: publisher_params,
-    extra: params
-  }
-end
+  def self.sentry_params(publisher_params, params)
+    {
+      user: publisher_params,
+      extra: params
+    }
+  end
 end
