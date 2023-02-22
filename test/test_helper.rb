@@ -179,6 +179,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
+    include Devise::Test::IntegrationHelpers
 
     self.use_transactional_tests = true
 
