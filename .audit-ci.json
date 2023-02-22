@@ -1,11 +1,30 @@
 {
   "low": true,
   "allowlist": [
-"GHSA-8fr3-hfg3-gpgp|react-scripts>webpack-dev-server>selfsigned>node-forge",
-"GHSA-5rrq-pxf6-6jx5|react-scripts>webpack-dev-server>selfsigned>node-forge",
-"GHSA-gf8q-jrpm-jvxq|react-scripts>webpack-dev-server>selfsigned>node-forge",
-"GHSA-2r2c-g63r-vccr|react-scripts>webpack-dev-server>selfsigned>node-forge",
-"GHSA-x4jg-mjrx-434g|react-scripts>webpack-dev-server>selfsigned>node-forge",
-"GHSA-cfm4-qjh2-4765|react-scripts>webpack-dev-server>selfsigned>node-forge"
+    "GHSA-8fr3-hfg3-gpgp|react-scripts>webpack-dev-server>selfsigned>node-forge",
+    "GHSA-5rrq-pxf6-6jx5|react-scripts>webpack-dev-server>selfsigned>node-forge",
+    "GHSA-gf8q-jrpm-jvxq|react-scripts>webpack-dev-server>selfsigned>node-forge",
+    "GHSA-2r2c-g63r-vccr|react-scripts>webpack-dev-server>selfsigned>node-forge",
+    "GHSA-x4jg-mjrx-434g|react-scripts>webpack-dev-server>selfsigned>node-forge",
+    "GHSA-cfm4-qjh2-4765|react-scripts>webpack-dev-server>selfsigned>node-forge",
+    "1090519",
+    "1089129",
+    "1088666",
+    "1090135",
+    "1086487",
+    "1089029",
+    "1088828",
+    "1089015",
+    "1089513",
+    "1089394",
+    "1088830",
+    "1088664",
+    "1088730",
+    "1090141",
+    "1088227",
+    "1089554",
+    "1088864",
+    "1088897",
+    "1088697"
   ]
 }
