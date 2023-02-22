@@ -24,7 +24,7 @@ class Oauth2Controller < ApplicationController
   end
 
   def code
-    redirect_to(authorization_url)
+    redirect_to(authorization_url, allow_other_host: true)
   end
 
   def debug(resp)

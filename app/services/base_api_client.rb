@@ -113,12 +113,12 @@ class BaseApiClient < BaseService
 
   def parse_response_to_struct(response, struct)
     return response if !response.success?
-
-    if response.headers["Content-Encoding"].eql?("gzip")
+    data = nil
+    begin
       sio = StringIO.new(response.body)
       gz = Zlib::GzipReader.new(sio)
       data = JSON.parse(gz.read, symbolize_names: true)
-    else
+    rescue Zlib::GzipFile::Error
       data = JSON.parse(response.body, symbolize_names: true)
     end
 
