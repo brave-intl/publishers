@@ -12,7 +12,7 @@ class LogException
 
       true
     else
-      Rails.logger.warn(exception)
+      Rails.logger.warn(error)
     end
   end
 

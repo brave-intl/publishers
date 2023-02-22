@@ -19,12 +19,16 @@ module ErrorHandler
   end
 
   def handle_standard_error(exception)
-    publisher_params = {}
-    if (publisher = introspect_publisher)
-      publisher_params[:publisher_id] = publisher.id
-      publisher_params[:email] = publisher.email
+    if %w[production staging].include?(Rails.env)
+      publisher_params = {}
+      if (publisher = introspect_publisher)
+        publisher_params[:publisher_id] = publisher.id
+        publisher_params[:email] = publisher.email
+      end
+      LogException.perform(exception, publisher: publisher_params)
+    else
+      Rails.logger.warn(exception)
     end
-    LogException.perform(exception, publisher: publisher_params)
 
     # re-raise the exception now that it's been captured by New Relic or logged
     # so that the standard rails error flow can happen
