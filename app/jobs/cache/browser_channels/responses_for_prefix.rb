@@ -163,12 +163,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
       details[key.underscore] = value
     end
 
-    if site_banner_lookup.derived_site_banner_info["donationAmounts"].present? && site_banner_lookup.derived_site_banner_info["donationAmounts"] != SiteBanner::DEFAULT_AMOUNTS
-      # Confusing. This is the suggested implementation (no, normal assignment doesn't work)
-      # https://github.com/protocolbuffers/protobuf/issues/320
-      details.donation_amounts += site_banner_lookup.derived_site_banner_info["donationAmounts"]
-    end
-
     if site_banner_lookup.derived_site_banner_info["socialLinks"].present?
       social_links_pb = nil
       site_banner_lookup.derived_site_banner_info["socialLinks"].each do |domain, handle|
