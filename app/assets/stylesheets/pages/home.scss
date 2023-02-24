@@ -551,7 +551,27 @@
     font-size: 13px;
   }
 
-  #uphold_status {
+  #rewards-banner {
+    .info-card {
+      height: 100%;
+      padding: 35px 20px;
+    }
+
+    .rewards-banner-img {
+      width: 100%;
+      max-width: 125px;
+    }
+
+    .rewards-banner-title {
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    .rewards-background {
+      background: rgb(255,255,255);
+      background: linear-gradient(0deg, rgba(255,255,255,1) 24%, rgba(239,238,252,1) 100%);
+    }
+
     #uphold_status_display {
       vertical-align: top;
       margin-bottom: 5px;

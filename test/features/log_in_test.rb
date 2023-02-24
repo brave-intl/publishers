@@ -79,7 +79,7 @@ class LogInTest < Capybara::Rails::TestCase
     fill_in "email", with: publisher.email
     click_button "Log In"
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
-    assert_content page, "BALANCE"
+    assert_content page, "You’re earning as part of Brave Creators!"
   end
 
   test "a user with TOTP enabled will be asked for an auth code after log in" do
@@ -97,7 +97,7 @@ class LogInTest < Capybara::Rails::TestCase
 
     fill_in "totp_password", with: "123456"
     click_button "Verify"
-    assert_content page, "BALANCE"
+    assert_content page, "You’re earning as part of Brave Creators!"
   end
 
   test "a user with TOTP enabled can retry entry of their auth code" do
@@ -119,7 +119,7 @@ class LogInTest < Capybara::Rails::TestCase
     ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
     fill_in "totp_password", with: "123456"
     click_button "Verify"
-    assert_content page, "BALANCE"
+    assert_content page, "You’re earning as part of Brave Creators!"
   end
 
   test "a user with U2F enabled will be asked to insert their U2F device after log in" do
@@ -165,6 +165,6 @@ class LogInTest < Capybara::Rails::TestCase
 
     fill_in "totp_password", with: "123456"
     click_button "Verify"
-    assert_content page, "BALANCE"
+    assert_content page, "You’re earning as part of Brave Creators!"
   end
 end
