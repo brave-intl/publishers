@@ -63,7 +63,7 @@ Capybara.register_driver "chrome" do |app|
   options.add_argument("disable-gpu")
 
   Capybara::Selenium::Driver.new(app,
-    capabilities: options,
+    options: options,
     browser: :chrome)
 end
 

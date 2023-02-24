@@ -8,7 +8,7 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
   tbody
     - @transfers.each do |transfer|
       tr.gradeX
-        td = transfer.created_at.to_s(:long)
+        td = transfer.created_at.to_fs(:long)
         td
           - if transfer.channel&.details
             = transfer_details(transfer.channel.details, transfer.suspended?)
