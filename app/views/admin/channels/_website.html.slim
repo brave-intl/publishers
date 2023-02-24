@@ -19,4 +19,4 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
             = fa_icon 'times', class: 'text-danger'
           = " #{channel.verified}"
         td = channel.details.verification_method
-        td = channel.created_at.to_s(:long)
+        td = channel.created_at.to_fs(:long)
