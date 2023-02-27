@@ -2,7 +2,9 @@
 
 class TotpRegistration < ApplicationRecord
   belongs_to :publisher
-  attr_encrypted :secret, key: proc { |record| record.class.encryption_key }
+
+  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
+  attr_encrypted :secret
 
   def totp
     ROTP::TOTP.new(secret, issuer: totp_issuer)

@@ -13,7 +13,7 @@ class PendingActionsTest < ActiveJob::TestCase
   end
 
   class APendingAction < PendingAction
-    call { ; }
+    call {}
   end
 
   test "saved pending action is accessible in context" do

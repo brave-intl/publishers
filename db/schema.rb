@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_23_220112) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_02_15_163035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
@@ -23,7 +22,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "record_type", null: false
     t.bigint "legacy_record_id"
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.uuid "record_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
   end
@@ -34,8 +33,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -53,7 +52,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "encrypted_refresh_token"
     t.string "encrypted_refresh_token_iv"
     t.string "expires_in"
-    t.datetime "access_expiration_time"
+    t.datetime "access_expiration_time", precision: nil
     t.string "display_name"
     t.string "state_token"
     t.string "scope"
@@ -62,8 +61,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.boolean "is_verified"
     t.string "recipient_id"
     t.string "default_currency"
-    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
-    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
     t.index ["encrypted_access_token_iv"], name: "index_bitflyer_connections_on_encrypted_access_token_iv", unique: true
@@ -79,9 +78,9 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "amount"
     t.string "settlement_currency"
     t.string "settlement_amount"
-    t.datetime "uphold_created_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "uphold_created_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "uphold_connection_for_channel_id"
     t.index ["uphold_transaction_id"], name: "index_cached_uphold_tips_on_uphold_transaction_id", unique: true
   end
@@ -91,8 +90,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "created_by_id"
     t.boolean "public", default: true, null: false
     t.text "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["case_id"], name: "index_case_notes_on_case_id"
     t.index ["created_by_id"], name: "index_case_notes_on_created_by_id"
   end
@@ -100,8 +99,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "case_replies", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "title"
     t.text "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "cases", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -110,9 +109,9 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "status", default: "new"
     t.uuid "publisher_id"
     t.uuid "assignee_id"
-    t.datetime "open_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "open_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.serial "case_number", null: false
     t.index ["assignee_id"], name: "index_cases_on_assignee_id"
     t.index ["publisher_id"], name: "index_cases_on_publisher_id", unique: true
@@ -124,8 +123,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "transfer_to_id"
     t.uuid "channel_id"
     t.boolean "suspended"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "transfer_to_channel_id"
     t.index ["channel_id"], name: "index_channel_transfers_on_channel_id"
     t.index ["transfer_from_id"], name: "index_channel_transfers_on_transfer_from_id"
@@ -139,15 +138,15 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.boolean "verified", default: false
     t.string "details_type"
     t.uuid "details_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "verification_status"
     t.string "verification_details"
-    t.datetime "verified_at"
+    t.datetime "verified_at", precision: nil
     t.boolean "verification_pending", default: false, null: false
     t.uuid "contested_by_channel_id"
     t.string "contest_token"
-    t.datetime "contest_timesout_at"
+    t.datetime "contest_timesout_at", precision: nil
     t.string "deposit_id"
     t.text "derived_brave_publisher_id"
     t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
@@ -157,8 +156,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
 
   create_table "csp_violation_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.jsonb "report"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["report"], name: "index_csp_violation_reports_on_report", unique: true
   end
 
@@ -166,16 +165,16 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "name"
     t.jsonb "result"
     t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["result"], name: "index_daily_metrics_on_result"
   end
 
   create_table "faq_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.integer "rank"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "index_faq_categories_on_name", unique: true
     t.index ["rank"], name: "index_faq_categories_on_rank"
   end
@@ -185,8 +184,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "answer"
     t.integer "rank"
     t.uuid "faq_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "published", default: false
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id"
     t.index ["question"], name: "index_faqs_on_question", unique: true
@@ -198,8 +197,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "channel_id", null: false
     t.string "channel_identifier"
     t.string "recipient_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["channel_id"], name: "index_gemini_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "gemini_connection_id"], name: "unique_gemini_connection_for_channels", unique: true
     t.index ["gemini_connection_id"], name: "index_gemini_connection_for_channels_on_gemini_connection_id"
@@ -213,7 +212,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "encrypted_refresh_token"
     t.string "encrypted_refresh_token_iv"
     t.string "expires_in"
-    t.datetime "access_expiration_time"
+    t.datetime "access_expiration_time", precision: nil
     t.string "display_name"
     t.string "state_token"
     t.string "scope"
@@ -221,8 +220,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "country"
     t.boolean "is_verified"
     t.string "recipient_id"
-    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
-    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
     t.integer "recipient_id_status", default: 0, null: false
@@ -241,8 +240,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "nickname"
     t.string "thumbnail_url"
     t.jsonb "stats"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["github_channel_id"], name: "index_github_channel_details_on_github_channel_id"
   end
 
@@ -250,8 +249,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "invoice_id"
     t.uuid "uploaded_by_id"
     t.boolean "archived", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["invoice_id"], name: "index_invoice_files_on_invoice_id"
     t.index ["uploaded_by_id"], name: "index_invoice_files_on_uploaded_by_id"
   end
@@ -265,8 +264,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.date "payment_date"
     t.uuid "finalized_by_id"
     t.string "status", default: "pending", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
     t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
     t.index ["publisher_id"], name: "index_invoices_on_publisher_id"
@@ -278,11 +277,11 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "email"
     t.string "verification_token"
     t.boolean "verified", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "phone"
@@ -290,7 +289,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "encrypted_authentication_token"
     t.string "encrypted_authentication_token_iv"
     t.string "verification_method"
-    t.datetime "authentication_token_expires_at"
+    t.datetime "authentication_token_expires_at", precision: nil
     t.boolean "show_verification_status"
     t.boolean "created_via_api", default: false, null: false
     t.string "uphold_state_token"
@@ -311,7 +310,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "youtube_channel_id"
     t.string "brave_publisher_id_unnormalized"
     t.string "brave_publisher_id_error_code"
-    t.datetime "uphold_updated_at"
+    t.datetime "uphold_updated_at", precision: nil
     t.index ["brave_publisher_id"], name: "index_legacy_publishers_on_brave_publisher_id"
     t.index ["created_at"], name: "index_legacy_publishers_on_created_at"
     t.index ["verification_token"], name: "index_legacy_publishers_on_verification_token"
@@ -323,9 +322,9 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "encrypted_secret"
     t.string "encrypted_secret_iv"
     t.uuid "publisher_id"
-    t.datetime "last_logged_in_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "last_logged_in_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["publisher_id"], name: "index_legacy_totp_registrations_on_publisher_id"
   end
 
@@ -334,8 +333,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "description"
     t.string "thumbnail_url"
     t.integer "subscriber_count"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["id"], name: "index_legacy_youtube_channels_on_id", unique: true
   end
 
@@ -343,8 +342,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "publisher_id"
     t.text "user_agent"
     t.text "accept_language"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["created_at"], name: "index_login_activities_on_created_at"
     t.index ["publisher_id"], name: "index_login_activities_on_publisher_id"
   end
@@ -352,8 +351,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "organization_id", null: false
     t.uuid "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
@@ -368,16 +367,16 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
 
   create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "payout_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "payout_report_id", null: false
     t.uuid "publisher_id", null: false
     t.text "message"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["payout_report_id"], name: "index_payout_messages_on_payout_report_id"
     t.index ["publisher_id"], name: "index_payout_messages_on_publisher_id"
   end
@@ -385,8 +384,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
     t.string "status"
@@ -400,15 +399,15 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.boolean "verified_account"
     t.text "paypal_account_id"
     t.boolean "hidden", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "payer_id"
     t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "payout_report_id", null: false
     t.uuid "publisher_id", null: false
     t.uuid "channel_id"
@@ -442,8 +441,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "publisher_id"
     t.index ["name"], name: "index_promo_campaigns_on_name", unique: true
   end
@@ -452,8 +451,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "channel_id"
     t.string "promo_id", null: false
     t.string "referral_code", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "kind"
     t.jsonb "stats", default: "{}"
     t.uuid "promo_campaign_id"
@@ -475,8 +474,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.text "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "created_by_id", null: false
     t.bigint "zendesk_ticket_id"
     t.bigint "zendesk_comment_id"
@@ -492,7 +491,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.string "status", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.uuid "publisher_note_id"
     t.index ["publisher_id", "created_at"], name: "index_publisher_status_updates_on_publisher_id_and_created_at"
     t.index ["publisher_note_id"], name: "index_publisher_status_updates_on_publisher_note_id"
@@ -502,8 +501,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "publisher_id", null: false
     t.uuid "publisher_note_id"
     t.boolean "enabled", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_publisher_whitelist_updates_on_created_at"
     t.index ["publisher_id"], name: "index_publisher_whitelist_updates_on_publisher_id"
     t.index ["publisher_note_id"], name: "index_publisher_whitelist_updates_on_publisher_note_id"
@@ -515,20 +514,20 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "email"
     t.string "pending_email"
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.boolean "created_via_api", default: false, null: false
     t.string "default_currency"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "two_factor_prompted_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "two_factor_prompted_at", precision: nil
     t.boolean "promo_enabled_2018q1", default: false
-    t.datetime "agreed_to_tos"
+    t.datetime "agreed_to_tos", precision: nil
     t.string "promo_token_2018q1"
     t.text "role", default: "publisher"
-    t.datetime "default_currency_confirmed_at"
+    t.datetime "default_currency_confirmed_at", precision: nil
     t.boolean "excluded_from_payout", default: false, null: false
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
@@ -557,16 +556,16 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "nickname"
     t.string "thumbnail_url"
     t.jsonb "stats"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["reddit_channel_id"], name: "index_reddit_channel_details_on_reddit_channel_id"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -578,8 +577,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.uuid "channel_id", null: false
     t.uuid "publisher_id", null: false
     t.uuid "wallet_address"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
     t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
     t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
@@ -596,8 +595,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.integer "donation_amounts", array: true
     t.integer "default_donation"
     t.json "social_links"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.uuid "channel_id"
     t.index ["channel_id"], name: "index_site_banners_on_channel_id"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
@@ -612,11 +611,11 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.boolean "supports_https", default: false
     t.boolean "host_connection_verified"
     t.string "detected_web_host"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
-    t.datetime "ads_enabled_at"
+    t.datetime "ads_enabled_at", precision: nil
   end
 
   create_table "stripe_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -634,8 +633,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.boolean "payouts_enabled"
     t.string "default_currency"
     t.jsonb "capabilities"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["encrypted_access_token_iv"], name: "index_stripe_connections_on_encrypted_access_token_iv", unique: true
     t.index ["encrypted_refresh_token_iv"], name: "index_stripe_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["publisher_id"], name: "index_stripe_connections_on_publisher_id"
@@ -645,9 +644,9 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "encrypted_secret"
     t.string "encrypted_secret_iv"
     t.uuid "publisher_id"
-    t.datetime "last_logged_in_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "last_logged_in_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["publisher_id"], name: "index_totp_registrations_on_publisher_id"
   end
 
@@ -659,8 +658,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "name"
     t.string "display_name"
     t.string "thumbnail_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.jsonb "stats", default: "{}", null: false
     t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id"
   end
@@ -673,16 +672,16 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "screen_name"
     t.string "thumbnail_url"
     t.jsonb "stats"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id"
   end
 
   create_table "two_factor_authentication_removals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.boolean "removal_completed", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["publisher_id"], name: "index_two_factor_authentication_removals_on_publisher_id"
   end
 
@@ -693,8 +692,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.integer "counter", null: false
     t.string "name"
     t.uuid "publisher_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "format", default: "webauthn"
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
@@ -708,8 +707,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "card_id"
     t.string "address"
     t.uuid "uphold_id"
-    t.datetime "created_at", default: "2022-11-23 14:02:49", null: false
-    t.datetime "updated_at", default: "2022-11-23 14:02:49", null: false
+    t.datetime "created_at", precision: nil, default: "2022-11-23 14:02:49", null: false
+    t.datetime "updated_at", precision: nil, default: "2022-11-23 14:02:49", null: false
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"
@@ -729,18 +728,18 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "encrypted_uphold_code_iv"
     t.string "encrypted_uphold_access_parameters"
     t.string "encrypted_uphold_access_parameters_iv"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "status"
     t.string "country"
     t.string "default_currency"
-    t.datetime "default_currency_confirmed_at"
-    t.datetime "member_at"
-    t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "default_currency_confirmed_at", precision: nil
+    t.datetime "member_at", precision: nil
+    t.datetime "send_emails", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
     t.text "card_id"
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
-    t.datetime "access_expiration_time"
+    t.datetime "access_expiration_time", precision: nil
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
@@ -748,8 +747,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "uphold_status_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id"
     t.uuid "uphold_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["created_at"], name: "index_uphold_status_reports_on_created_at"
     t.index ["publisher_id"], name: "index_uphold_status_reports_on_publisher_id"
     t.index ["uphold_id"], name: "index_uphold_status_reports_on_uphold_id"
@@ -758,7 +757,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "encrypted_authentication_token"
     t.string "encrypted_authentication_token_iv"
-    t.datetime "authentication_token_expires_at"
+    t.datetime "authentication_token_expires_at", precision: nil
     t.uuid "user_id", null: false
     t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
@@ -770,7 +769,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "whodunnit"
     t.text "object"
     t.text "object_changes"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
@@ -782,8 +781,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "nickname"
     t.string "thumbnail_url"
     t.jsonb "stats"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "youtube_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -796,8 +795,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_220112) do
     t.string "description"
     t.string "thumbnail_url"
     t.integer "subscriber_count"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.jsonb "stats", default: "{}", null: false
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end

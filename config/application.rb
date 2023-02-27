@@ -1,29 +1,24 @@
-# typed: ignore
-
 require_relative "boot"
 
 require "rails/all"
 
-# Have to require this middleware
-# https://github.com/rails/rails/issues/25525
 require_relative "middlewares/http_header_middleware"
 
 # Require the gems listed in Gemfile, including any gems
-# you"ve limited to :test, :development, or :production.
+# you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module Publishers
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-    config.load_defaults 6.1
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.0
+
     config.middleware.use HttpHeaderMiddleware
     config.middleware.use Rack::Deflater
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.autoload_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/protos #{config.root}/app/models/stats_redshift #{config.root}/app/jobs/payout/concerns/]
+    config.eager_load_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/app/models/stats_redshift #{config.root}/app/jobs/payout/concerns/]
 
     config.exceptions_app = routes
 
@@ -60,5 +55,13 @@ module Publishers
       message = "✅ Successfully Initialized #{url} in Creators' #{Rails.env}"
       SlackMessenger.new(message: message).perform
     end
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
   end
 end

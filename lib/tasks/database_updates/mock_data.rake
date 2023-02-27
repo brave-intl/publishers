@@ -1,4 +1,4 @@
-require_relative "./referral_code_data"
+# require_relative "./referral_code_data"
 
 namespace :database_updates do
   namespace :mock_data do
