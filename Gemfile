@@ -119,7 +119,7 @@ gem "rails-i18n", "~> 7.0.6"
 gem "recaptcha", "~> 5.12.3", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis", "~> 4.8.1"
+gem "redis", "~> 5.0.6"
 
 gem "render_async", "~> 2.1.8"
 
@@ -140,9 +140,9 @@ gem "sendgrid-ruby", "~> 6.6.2"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 6.4.0"
+gem "sidekiq", "~> 7.0.6"
 
-gem "sidekiq-scheduler", "~> 3.1.1"
+gem "sidekiq-scheduler", "~> 5.0.1"
 
 # slim for view templates
 gem "slim-rails", "~> 3.1"

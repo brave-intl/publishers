@@ -63,7 +63,7 @@ Capybara.register_driver "chrome" do |app|
   options.add_argument("disable-gpu")
 
   Capybara::Selenium::Driver.new(app,
-    capabilities: options,
+    options: options,
     browser: :chrome)
 end
 
@@ -179,6 +179,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
+    include Devise::Test::IntegrationHelpers
 
     self.use_transactional_tests = true
 

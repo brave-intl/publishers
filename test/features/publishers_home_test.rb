@@ -85,4 +85,18 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   ensure
     Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
   end
+
+  test "can connect an Uphold account" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:small_media_group_to_delete)
+
+    sign_in publisher
+    visit home_publishers_path
+
+    assert_content page, channel.publication_title
+    find("#channel_row_#{channel.id}").click_link("Remove channel")
+    assert_content page, "Are you sure you want to remove this channel?"
+    find("[data-test-modal-container]").click_link("Remove Channel")
+    refute_content channel.publication_title
+  end
 end

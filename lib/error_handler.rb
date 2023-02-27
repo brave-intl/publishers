@@ -22,8 +22,8 @@ module ErrorHandler
     if %w[production staging].include?(Rails.env)
       publisher_params = {}
       if (publisher = introspect_publisher)
-        publisher_params.publisher_id = publisher.id
-        publisher_params.email = publisher.email
+        publisher_params[:publisher_id] = publisher.id
+        publisher_params[:email] = publisher.email
       end
       LogException.perform(exception, publisher: publisher_params)
     else
