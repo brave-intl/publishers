@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Image, ResponsiveContext, Anchor } from "grommet";
 import { Link } from "react-router-dom";
 import { SecondaryButton } from "../../components";
-import logo from "../../components/img/brave-rewards-creators-logo.jsx";
-import batPill from "../../components/img/built-with-bat-pill.jsx";
+import Logo from "../../components/img/brave-rewards-creators-logo.jsx";
+import BatPill from "../../components/img/built-with-bat-pill.jsx";
 
 import locale from "../../locale/en";
 import { NavWrapper, NavContainer } from "../../components/styled/container";
@@ -32,7 +32,7 @@ const DefaultNav = () => {
         <Box direction="row" gap="medium" align="center">
           <Link to={locale.nav.logoHref} name="Home">
             <Box as="span">
-              <Image src={logo} height="80px" alt={intl.formatMessage({ id: "nav.logoAlt" })} />
+              <Logo height="80px" alt={intl.formatMessage({ id: "nav.logoAlt" })} />
             </Box>
           </Link>
           {(window.location.search.split('locale=')[1] !== 'ja') &&
@@ -42,7 +42,7 @@ const DefaultNav = () => {
               name={intl.formatMessage({ id: "nav.batPillHref" })}
               aria-label={intl.formatMessage({ id: "nav.batPillAlt" })}
             >
-              <Image src={batPill} height="24px" alt={intl.formatMessage({ id: "nav.batPillAlt" })} />
+              <BatPill height="24px" alt={intl.formatMessage({ id: "nav.batPillAlt" })} />
             </Box>
           }
         </Box>

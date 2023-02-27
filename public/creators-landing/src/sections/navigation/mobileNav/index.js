@@ -3,7 +3,7 @@ import { Box, Image, Menu } from "grommet";
 import { Link } from "react-router-dom";
 import { withRouter } from "../../../withRouter";
 import locale from "../../../locale/en";
-import mobileLogo from "../../../components/img/brave-rewards-creators-mobile-logo.jsx";
+import MobileLogo from "../../../components/img/brave-rewards-creators-mobile-logo.jsx";
 import { MenuIcon } from "../../../components";
 import { NavWrapper, NavContainer } from "../../../components/styled/container";
 
@@ -19,7 +19,7 @@ const MobileNav = props => (
     >
       <Link to={locale.nav.logoHref}>
         <Box as="span">
-          <Image src={mobileLogo} height="80px" alt={locale.nav.logoAlt} />
+          <MobileLogo height="80px" alt={locale.nav.logoAlt} />
         </Box>
       </Link>
       <Menu

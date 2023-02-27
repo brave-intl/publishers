@@ -5,7 +5,7 @@ function Icon() {
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="201"
-            height="46"
+            height="{`${props.height || 46}}`"
             fill="none"
             version="1.1"
             viewBox="0 0 201 46"
