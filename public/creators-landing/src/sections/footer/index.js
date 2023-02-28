@@ -36,7 +36,7 @@ const FooterComponent = props => {
           aria-label={intl.formatMessage({ id: "nav.batPillAlt" })}
           pad={props.padded}
         >
-          <Image src={BuiltWithBat} />
+          <BuiltWithBat />
         </Box>
       }
     </Box>
