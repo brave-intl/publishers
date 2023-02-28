@@ -3,8 +3,6 @@ import React from "react";
 function Icon() {
     return (
         <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
             width="130"
             height="24"
             viewBox="0 0 130 24"
