@@ -44,6 +44,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
             uphold_wallet.address = uphold_address
           else
             uphold_wallet.address = ""
+            LogException.perform("Setting an empty address for connection #{connection.id} and publisher #{site_banner_lookup.publisher.id}", expected: true)
           end
 
           wallet.uphold_wallet = uphold_wallet
