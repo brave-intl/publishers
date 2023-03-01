@@ -133,7 +133,7 @@ class Oauth2Controller < ApplicationController
   end
 
   def record_error(result)
-    LogException.perform(result)
+    LogException.perform(result, expected: true)
   end
 
   def allow_debug?
