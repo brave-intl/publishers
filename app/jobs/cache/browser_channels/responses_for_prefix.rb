@@ -43,8 +43,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
             uphold_address = site_banner_lookup.channel&.uphold_connection&.address || ""
             uphold_wallet.address = uphold_address
           else
-            LogException.perform("Wallet outside of allowed. Country: #{connection.country} Id: #{connection.id} Publisher: #{site_banner_lookup.publisher.id}", expected: true)
-            next
+            uphold_wallet.address = ""
+            LogException.perform("Wallet outside of allowed. Country: #{connection.country} Id: #{connection.id} Publisher #{site_banner_lookup.publisher.id}", expected: true)
           end
 
           wallet.uphold_wallet = uphold_wallet
