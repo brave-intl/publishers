@@ -13,7 +13,7 @@ import {
   Toast
 } from "../../../components";
 
-import batPill from "../../../components/img/built-with-bat-pill.svg";
+import BatPill from "../../../components/img/built-with-bat-pill.jsx";
 import locale from "../../../locale/en";
 import { FormattedMessage } from 'react-intl';
 import { Heading, Text, Box, Anchor, Image } from "grommet";
@@ -123,7 +123,7 @@ const SentEmail = props => {
               href={locale.nav.batPillHref}
               aria-label={<FormattedMessage id="nav.batPillAlt"/>}
             >
-              <Image src={batPill} height="28px" />
+              <BatPill height="28px" />
             </Box>
           </Box>
         </Box>

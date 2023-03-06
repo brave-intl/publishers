@@ -11,7 +11,7 @@ import {
 
 import { Loading } from "../../../components/icons/Loading";
 
-import batPill from "../../../components/img/built-with-bat-pill.svg";
+import batPill from "../../../components/img/built-with-bat-pill.jsx";
 import locale from "../../../locale/en";
 import { FormattedMessage } from 'react-intl';
 import { useIntl } from 'react-intl';

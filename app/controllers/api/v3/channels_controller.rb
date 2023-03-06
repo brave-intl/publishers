@@ -20,7 +20,8 @@ class Api::V3::ChannelsController < Api::BaseController
       when BitflyerConnection
         wallet.present?
       else
-        raise "Unknown wallet connection #{wallet}"
+        LogException.perform(e, expected: true)
+        true
       end
     end
 

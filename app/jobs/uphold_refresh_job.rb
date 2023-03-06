@@ -4,8 +4,4 @@ class UpholdRefreshJob < Oauth2BatchRefreshJob
   def set_klass
     UpholdConnection
   end
-
-  def set_limit
-    20000
-  end
 end
