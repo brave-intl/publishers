@@ -12,7 +12,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 
 RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
-ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+# ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 SHELL [ "/bin/bash", "-l", "-c" ]
 

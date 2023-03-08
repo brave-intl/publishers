@@ -1,12 +1,15 @@
 FROM ruby:3.0-slim
 
-RUN apt-get update -qq && apt-get install -y build-essential
-
+RUN apt-get update -qq && apt-get install -y build-essential software-properties-common
+RUN apt-get update -qq
 RUN apt-get install -y nodejs \
   libpq-dev \
   git \
   curl \
-  libjemalloc2
+  libjemalloc2 \
+  wget \
+  firefox-esr
+
 
 RUN gem install bundler
 
@@ -32,7 +35,7 @@ RUN gem install nokogiri
 RUN bundle install --jobs 20
 
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 14.16.1
+ENV NODE_VERSION 18.15.0
 ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 

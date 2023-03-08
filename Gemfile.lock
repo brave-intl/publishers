@@ -407,7 +407,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
     rack-protection (3.0.5)
@@ -707,7 +707,7 @@ DEPENDENCIES
   pry-stack_explorer (~> 0.6.1)
   public_suffix (~> 5.0.1)
   puma (~> 6.0.2)
-  rack (= 2.2.6.2)
+  rack (= 2.2.6.3)
   rack-attack (~> 6.6.1)
   rails (= 7.0.4.2)
   rails-controller-testing
