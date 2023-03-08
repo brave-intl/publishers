@@ -6,7 +6,8 @@ RUN apt-get install -y nodejs \
   libpq-dev \
   git \
   curl \
-  libjemalloc2
+  libjemalloc2 \
+  python3
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
@@ -22,7 +23,8 @@ RUN gem install bundler
 
 RUN NODE_ENV=production
 RUN RAILS_ENV=production
-
+# Note we only use for compiling assets, no services
+RUN NODE_OPTIONS=--openssl-legacy-provider
 
 WORKDIR /var/www/
 
@@ -48,7 +50,7 @@ RUN yarn install --frozen-lockfile
 # The second dot will copy it to the WORKDIR!
 COPY . .
 
-RUN RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
+RUN NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
 
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
