@@ -11,6 +11,8 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: "--openssl-legacy-provider"
     services:
       postgres:
         image: postgres
