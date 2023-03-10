@@ -22,6 +22,7 @@ class BraveConnection extends React.Component<any, any> {
       isLoading: true,
       locale: '',
       upholdConnection: {},
+      allowedRegions: {},
     };
   }
 
@@ -88,7 +89,7 @@ class BraveConnection extends React.Component<any, any> {
       // Finally if there was no wallets connected we should give the user the ability to connect.
     }
     else {
-      return <NotConnected featureFlags={this.props.featureFlags} locale={this.state.locale} />;
+      return <NotConnected featureFlags={this.props.featureFlags} locale={this.state.locale} allowedRegions={this.state.allowedRegions} />;
     }
   }
 
@@ -105,9 +106,10 @@ class BraveConnection extends React.Component<any, any> {
         isLoading: false,
         locale: locale,
         upholdConnection: null,
+        allowedRegions: null,
       };
 
-      const { bitflyer_connection, uphold_connection, gemini_connection } = response.data;
+      const { bitflyer_connection, uphold_connection, gemini_connection, allowed_regions } = response.data;
       if (bitflyer_connection && bitflyer_connection.display_name) {
         newState.bitflyerConnection = response.data.bitflyer_connection;
       }
@@ -117,6 +119,9 @@ class BraveConnection extends React.Component<any, any> {
       // We must notify users if their connection has failed regardless of whether the display name is present
       if (gemini_connection && (gemini_connection.display_name || gemini_connection.oauth_refresh_failed)) {
         newState.geminiConnection = response.data.gemini_connection;
+      }
+      if (allowed_regions) {
+        newState.allowedRegions = response.data.allowed_regions;
       }
 
       this.setState({ ...newState });
