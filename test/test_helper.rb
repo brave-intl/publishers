@@ -3,13 +3,11 @@
 ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 SimpleCov.start "rails"
-
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../config/environment", __dir__)
 require "rails/test_help"
 require "webpacker"
 require "selenium-webdriver"
 require "webmock/minitest"
-require "webdrivers/chromedriver"
 require "webdrivers/geckodriver"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
@@ -23,7 +21,6 @@ require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
 require "minitest/retry"
-
 if ENV["USE_MINITEST_RETRY"]
   Minitest::Retry.use!(
     retry_count: 3, # The number of times to retry. The default is 3.
@@ -33,67 +30,29 @@ if ENV["USE_MINITEST_RETRY"]
     methods_to_retry: [] # List of methods that will trigger a retry (when empty, all methods will).
   )
 end
-
 Webpacker.compile
-
 Sidekiq::Testing.fake!
-
 WebMock.allow_net_connect!
-
-# TODO, we can replace the below config with the following
-# Capybara.enable_aria_label = true
-# Capybara.default_driver = :selenium_chrome_headless
-
-# NOTE:
-# This is a workaround to allow basic test running on an M1
-# This version of the chromedriver does not exist
-# for the aarch64 architecture and the latest version (99)
-# does not work.
-#
-# Attempting run tests at all on an M1 in docker context with this line active
-# causes the entire test run to rail with an exception
-#
-# It does however mean that selenium tests do not work locally in the M1/Docker context
-
-Capybara.register_driver "chrome" do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument("window-size=1680,1050")
-  options.add_argument("headless")
-  options.add_argument("no-sandbox")
-  options.add_argument("disable-gpu")
-
-  Capybara::Selenium::Driver.new(app,
-    options: options,
-    browser: :chrome)
-end
-
-# Have to use FF due to Chrome bug in linux
-# See https://bugs.chromium.org/p/chromium/issues/detail?id=1010288
-Capybara.register_driver "firefoxja" do |app|
+Capybara.register_driver "firefox" do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
-  profile["intl.accept_languages"] = "ja-JP"
-
   opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
   opts.args << "--headless"
-
   Capybara::Selenium::Driver.new(
     app,
     browser: :firefox,
     options: opts
   )
 end
-
-Capybara.default_driver = "chrome"
-
+Capybara.register_driver :rack_test_jp do |app|
+  Capybara::RackTest::Driver.new(app, headers: {"HTTP_ACCEPT_LANGUAGE" => "ja-JP"})
+end
+Capybara.default_driver = "firefox"
 driver_urls = Webdrivers::Common.subclasses.map do |driver|
   Addressable::URI.parse(driver.base_url).host
 end
-
 driver_urls << "127.0.0.1"
 driver_urls << "localhost"
-driver_urls << "chromedriver.storage.googleapis.com"
 driver_urls << "objects.githubusercontent.com" # pulling firefox
-
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
@@ -105,27 +64,27 @@ VCR.configure do |config|
   end
   config.ignore_hosts(*driver_urls)
   config.allow_http_connections_when_no_cassette = false
-  config.default_cassette_options = {match_requests_on: [:method, :uri, :body], decode_compressed_response: true}
+  config.default_cassette_options = {match_requests_on: %i[method uri body], decode_compressed_response: true}
 end
-
 module ActiveSupport
   class TestCase
     include ServiceClassHelpers
-
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
     self.use_transactional_tests = true
     @once = false
-
     setup do
       Rails.cache.clear
       unless @once
         default_resolver = SsrfFilter::DEFAULT_RESOLVER
-        Kernel.silence_warnings { SsrfFilter.const_set(:DEFAULT_RESOLVER, lambda { |arg| default_resolver[arg] + [::IPAddr.new("42.42.42.42")] }) }
+        Kernel.silence_warnings do
+          SsrfFilter.const_set(:DEFAULT_RESOLVER, lambda { |arg|
+            default_resolver[arg] + [::IPAddr.new("42.42.42.42")]
+          })
+        end
         @once = true
       end
     end
-
     # Add more helper methods to be used by all tests here...
   end
 
@@ -141,17 +100,14 @@ module Capybara
       include ServiceClassHelpers
       include MockUpholdResponses
       include MockOauth2Responses
-
       self.use_transactional_tests = false
       # Make the Capybara DSL available in all integration tests
       include Capybara::DSL
       # Make `assert_*` methods behave like Minitest assertions
       include Capybara::Minitest::Assertions
-
       setup do
         stub_get_user
       end
-
       teardown do
         Capybara.reset_sessions!
         Capybara.use_default_driver
@@ -180,16 +136,13 @@ module ActionDispatch
     include MockGeminiResponses
     include MockOauth2Responses
     include Devise::Test::IntegrationHelpers
-
     self.use_transactional_tests = true
-
     # We should not stub methods here,
     # I did that only for the sake of moving things along previously.
     # I'm migrating previous tests that needed those stubs to the legacy class
     setup do
       WebMock.disable_net_connect!
     end
-
     teardown do
       WebMock.allow_net_connect!
     end
@@ -206,9 +159,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
-
     self.use_transactional_tests = true
-
     setup do
       stub_get_user
       mock_refresh_token_success(UpholdConnection.oauth2_config.token_url)
@@ -226,17 +177,15 @@ module Publishers
       def url_expires_in
       end
 
-      def url(a, b)
+      def url(_a, _b)
         "mock"
       end
     end
   end
 end
-
 # Load rake tasks here so it only happens one time. If tasks are loaded again they will run once for each time loaded.
 require "rake"
 Publishers::Application.load_tasks
-
 # One time test suite setup.
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)
@@ -245,7 +194,6 @@ class Minitest::Spec
   before :each do
     DatabaseCleaner.start
   end
-
   after :each do
     DatabaseCleaner.clean
   end

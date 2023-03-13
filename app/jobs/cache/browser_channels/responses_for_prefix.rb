@@ -42,6 +42,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
           if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
             uphold_address = site_banner_lookup.channel&.uphold_connection&.address || ""
             uphold_wallet.address = uphold_address
+          else
+            uphold_wallet.address = ""
+            LogException.perform("Wallet outside of allowed. Country: #{connection.country} Id: #{connection.id} Publisher #{site_banner_lookup.publisher.id}", expected: true)
           end
 
           wallet.uphold_wallet = uphold_wallet

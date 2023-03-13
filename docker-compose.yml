@@ -28,7 +28,7 @@ services:
     env_file: .env.docker.dev
 
   postgres:
-    image: postgres:12-alpine
+    image: postgres:15-alpine
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:

@@ -25,14 +25,14 @@ class LocaleTest < Capybara::Rails::TestCase
   end
 
   test "login with JA accept language and no locale shows Japanese" do
-    Capybara.using_driver("firefoxja") do
+    Capybara.using_driver(:rack_test_jp) do
       visit home_publishers_path
       assert_content page, "チャンネルを追加"
     end
   end
 
   test "login with JA accept language and EN locale shows Japanese" do
-    Capybara.using_driver("firefoxja") do
+    Capybara.using_driver(:rack_test_jp) do
       visit home_publishers_path(locale: "EN")
       assert_content page, "チャンネルを追加"
     end
