@@ -20,7 +20,7 @@ class Api::V3::ChannelsController < Api::BaseController
       when BitflyerConnection
         wallet.present?
       else
-        LogException.perform(e, expected: true)
+        LogException.perform("#{wallet} is not a valid wallet type", expected: true)
         true
       end
     end
