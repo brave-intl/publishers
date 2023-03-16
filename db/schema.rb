@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
@@ -65,6 +65,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
     t.string "encrypted_access_token_2_iv"
     t.string "encrypted_refresh_token_2"
     t.string "encrypted_refresh_token_2_iv"
+    t.text "access_token"
+    t.text "refresh_token"
     t.index ["is_verified"], name: "index_bitflyer_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_bitflyer_connections_on_publisher_id"
     t.index ["recipient_id"], name: "index_bitflyer_connections_on_recipient_id", unique: true
@@ -223,6 +225,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
     t.string "encrypted_access_token_2_iv"
     t.string "encrypted_refresh_token_2"
     t.string "encrypted_refresh_token_2_iv"
+    t.text "access_token"
+    t.text "refresh_token"
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_gemini_connections_on_publisher_id"
     t.index ["status"], name: "index_gemini_connections_on_status"
@@ -631,6 +635,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
     t.string "encrypted_access_token_2_iv"
     t.string "encrypted_refresh_token_2"
     t.string "encrypted_refresh_token_2_iv"
+    t.text "access_token"
+    t.text "refresh_token"
     t.index ["publisher_id"], name: "index_stripe_connections_on_publisher_id"
   end
 
@@ -641,6 +647,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "encrypted_secret_2"
     t.string "encrypted_secret_2_iv"
+    t.text "secret"
     t.index ["publisher_id"], name: "index_totp_registrations_on_publisher_id"
   end
 
@@ -734,6 +741,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
     t.string "encrypted_uphold_code_2_iv"
     t.string "encrypted_uphold_access_parameters_2"
     t.string "encrypted_uphold_access_parameters_2_iv"
+    t.text "uphold_code"
+    t.text "uphold_access_parameters"
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
@@ -753,6 +762,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_184225) do
     t.uuid "user_id", null: false
     t.string "encrypted_authentication_token_2"
     t.string "encrypted_authentication_token_2_iv"
+    t.text "authentication_token"
     t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 
