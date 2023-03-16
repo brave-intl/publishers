@@ -149,8 +149,7 @@ gem "slim-rails", "~> 3.1"
 
 gem "ssrf_filter", "1.0.7"
 
-# Don't use
-# gem "stripe", "~> 5.1", ">= 5.1.1"
+gem "strong_migrations"
 
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"

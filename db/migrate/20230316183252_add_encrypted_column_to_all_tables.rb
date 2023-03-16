@@ -20,9 +20,9 @@ class AddEncryptedColumnToAllTables < ActiveRecord::Migration[7.0]
 
 
     add_column :uphold_connections, :encrypted_uphold_code_2, :string
-    add_column :stripe_connections, :encrypted_uphold_code_2_iv, :string
-    add_column :stripe_connections, :encrypted_uphold_access_parameters_2, :string
-    add_column :stripe_connections, :encrypted_uphold_access_parameters_2_iv, :string
+    add_column :uphold_connections, :encrypted_uphold_code_2_iv, :string
+    add_column :uphold_connections, :encrypted_uphold_access_parameters_2, :string
+    add_column :uphold_connections, :encrypted_uphold_access_parameters_2_iv, :string
 
 
     add_column :user_authentication_tokens, :encrypted_authentication_token_2, :string
