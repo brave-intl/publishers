@@ -35,9 +35,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   USE_BROWSER = 1
 
-  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
-  attr_encrypted :uphold_code
-  attr_encrypted :uphold_access_parameters
+  encrypt_column_transition('uphold_code')
+  encrypt_column_transition('uphold_access_parameters')
 
   class UpholdAccountState
     REAUTHORIZATION_NEEDED = :reauthorization_needed

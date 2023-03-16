@@ -11,9 +11,8 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
   belongs_to :publisher
 
-  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
-  attr_encrypted :access_token
-  attr_encrypted :refresh_token
+  encrypt_column_transition('access_token')
+  encrypt_column_transition('refresh_token')
 
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true
