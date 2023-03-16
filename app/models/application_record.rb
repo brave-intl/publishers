@@ -6,7 +6,7 @@ class ApplicationRecord < ActiveRecord::Base
   connects_to database: {writing: :primary, reading: :secondary}
 
   # From https://pagertree.com/blog/migrate-attr_encrypted-to-rails-7-active-record-encrypts
-  def encrypt_column_transition(name)
+  def self.encrypt_column_transition(name)
     attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
 
     if column_names.include? "encrypted_#{name}"
