@@ -13,7 +13,7 @@ class ApplicationRecord < ActiveRecord::Base
       attr_encrypted name.to_sym
     end
 
-    if column_names.include? "#{name}_otp_secret_2"
+    if column_names.include? "encrypted_#{name}_2"
       attr_encrypted "#{name}_2".to_sym
     end
 
