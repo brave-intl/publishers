@@ -7,7 +7,7 @@ namespace :database_updates do
       StripeConnection: [:access_token, :refresh_token],
       TotpRegistration: [:secret],
       UpholdConnection: [:uphold_code, :uphold_access_parameters],
-      UserAuthenticationToken: [:authentication_token],
+      UserAuthenticationToken: [:authentication_token]
     }
     class_and_columns.each do |klass, columns|
       reload_model(klass)
@@ -30,7 +30,6 @@ namespace :database_updates do
   end
 end
 
-
 def reload_model(klass)
   # We must do this because of how the User model is
   # dynamically defined
@@ -40,7 +39,6 @@ def reload_model(klass)
   load "app/models/#{klass.to_s.underscore}.rb"
   puts "Reloaded #{klass}"
 end
-
 
 # def down
 #   reload_users_model
