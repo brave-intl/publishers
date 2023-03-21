@@ -32,6 +32,7 @@ gem "addressable", "~> 2.8"
 # Rails 7 encrypts functionality. This branch has renamed the conflicting functions
 # you will be able to remove this after the migration
 gem "attr_encrypted", github: "PagerTree/attr_encrypted", branch: "rails-7-0-support"
+gem "activerecord-postgres_enum"
 
 # Integration with Matomo Piwik
 # Remove for rails 7 update

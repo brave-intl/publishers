@@ -94,6 +94,29 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal "can't be changed", channel.errors.messages[:details][0]
   end
 
+  test "public_name must be unique" do
+    channel = channels(:google_verified)
+    channel.public_name = "test_value"
+    channel.save!
+
+    channel_2 = channels(:new_site)
+    channel_2.public_name = channel.public_name
+    refute channel_2.valid?
+
+    assert_equal "has already been taken", channel_2.errors.messages[:public_name][0]
+  end
+
+  # test "public_identifier is added on create and must be unique" do
+  #   details = SiteChannelDetails.new()
+  #   channel = Channel.create(publisher: publishers(:completed), details: details)
+  #   existing_channel = channels(:google_verified)
+
+  #   channel.public_identifier = existing_channel.public_identifier
+  #   assert_raises do
+  #     channel.save!
+  #   end
+  # end
+
   test "publication_title is the site domain for site publishers" do
     channel = channels(:verified)
     assert_equal "verified.org", channel.details.brave_publisher_id
