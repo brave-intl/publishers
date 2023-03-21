@@ -1,14 +1,6 @@
-<% salt = SecureRandom.random_bytes(12) %>
-
 default_user_authentication_token: &default_user_authentication_token
   authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
-  encrypted_authentication_token_iv: "<%= Base64.encode64(salt) %>"
-  encrypted_authentication_token: "<%= UserAuthenticationToken.attr_encrypted_encrypt(
-    "authentication_token",
-    "authentication_token",
-    key: UserAuthenticationToken.encryption_key,
-    iv: salt
-  ) %>"
+  authentication_token: '<%= UserAuthenticationToken.attribute_types["authentication_token"].serialize("authentication_token") %>'
   user: default
 
 completed_user_authentication_token:

@@ -55,7 +55,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   end
 
   def is_valid_connection?
-    access_expiration_time.present? && encrypted_access_token.present? && encrypted_refresh_token.present?
+    access_expiration_time.present? && access_token.present? && refresh_token.present?
   end
 
   def access_token_expired?

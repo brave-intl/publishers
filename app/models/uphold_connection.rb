@@ -108,7 +108,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   # TODO: Deprecate ASAP
   scope :has_stale_uphold_access_parameters, -> {
-    where.not(encrypted_uphold_access_parameters: nil)
+    where.not(uphold_access_parameters: nil)
       .where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
@@ -116,7 +116,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
-    where.not(encrypted_uphold_code: nil)
+    where.not(uphold_code: nil)
       .where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 
