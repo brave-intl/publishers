@@ -10,7 +10,7 @@ default: &default
   agreed_to_tos: "<%= 1.day.ago %>"
   last_sign_in_ip: "192.168.1.1"
   current_sign_in_ip: "192.168.1.1"
-  feature_flags: <%= { UserFeatureFlags::GEMINI_ENABLED => true }.to_json %>
+  feature_flags: <%= { UserFeatureFlags::GEMINI_ENABLED => true, UserFeatureFlags::P2P_ENABLED => true }.to_json %>
 
 verified:
   <<: *default

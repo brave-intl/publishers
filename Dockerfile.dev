@@ -8,8 +8,10 @@ RUN apt-get install -y nodejs \
   curl \
   libjemalloc2 \
   wget \
-  firefox-esr
-
+  firefox-esr \
+  libtool \
+  automake \
+  libsodium23
 
 RUN gem install bundler
 

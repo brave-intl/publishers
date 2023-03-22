@@ -650,6 +650,7 @@ en:
       verification_status: Verification status will be displayed in the Brave browser within the next 24-48 hours
       verification_status_title: Verification Information
       channel_balance_period: CURRENT PERIOD
+      p2p_wallet: P2P WALLETS
       uphold: Uphold
       reject_transfer: Reject transfer
     omniauth_callbacks:

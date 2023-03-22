@@ -172,6 +172,10 @@ gem "sprockets-rails", "3.4.2"
 gem "sprockets", "3.7.2"
 gem "uglifier"
 
+gem "eth", "~> 0.4"
+gem "rbnacl"
+gem "base58"
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"

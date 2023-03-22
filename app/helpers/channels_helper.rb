@@ -123,4 +123,17 @@ module ChannelsHelper
       distance_of_time_in_words(Time.now, channel.contesting_channel.contest_timesout_at)
     end
   end
+
+  def setup_current_channel
+    @current_channel = current_publisher.channels.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      format.json {
+        head 404
+      }
+      format.html {
+        redirect_to home_publishers_path, notice: t("shared.channel_not_found")
+      }
+    end
+  end
 end
