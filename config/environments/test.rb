@@ -21,7 +21,7 @@ Rails.application.configure do
   config.time_zone = "UTC"
   config.active_record.default_timezone = :utc
 
-
+  # config.active_record.encryption.encrypt_fixtures = true
 
   # End Brave customizations
 

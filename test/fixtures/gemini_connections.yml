@@ -17,13 +17,8 @@ connection_with_token:
   publisher: gemini_completed
   is_verified: true
   recipient_id: <%= SecureRandom.uuid %>
-  <% salt = SecureRandom.random_bytes(12) %>
-
-  encrypted_access_token:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  'access_token', key: GeminiConnection.encryption_key, iv: salt ) %>"
-  encrypted_access_token_iv: "<%= Base64.encode64(salt) %>"
-  encrypted_refresh_token:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  'access_token', key: GeminiConnection.encryption_key, iv: salt ) %>"
-  encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
-  recipient_id: <%= SecureRandom.uuid %>
+  access_token:  '<%= GeminiConnection.attribute_types["access_token"].serialize('access_token') %>'
+  refresh_token:  '<%= GeminiConnection.attribute_types["refresh_token"].serialize('refresh_token') %>'
   country: 'BE'
   status: 'Active'
 
@@ -31,11 +26,8 @@ connection_not_verified:
   publisher: gemini_not_completed
   is_verified: false
   status: 'Active'
-  <% salt = SecureRandom.random_bytes(12) %>
-  encrypted_access_token:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  'access_token', key: GeminiConnection.encryption_key, iv: salt ) %>"
-  encrypted_access_token_iv: "<%= Base64.encode64(salt) %>"
-  encrypted_refresh_token:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  'access_token', key: GeminiConnection.encryption_key, iv: salt ) %>"
-  encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+  access_token:  'access_token'
+  refresh_token:  'refresh_token'
 
 top_referrer_gemini_connected:
   publisher: top_referrer_gemini
