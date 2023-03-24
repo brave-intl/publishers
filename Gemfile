@@ -59,7 +59,7 @@ gem "domain_name"
 gem "faraday", "~> 2.7.4"
 gem "faraday-retry"
 
-gem "ffi", github: "ffi/ffi", tag: "v1.15.5", submodules: true
+gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
@@ -190,6 +190,9 @@ group :development do
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
+
+  gem "foreman"
+  gem "mailcatcher"
 
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
