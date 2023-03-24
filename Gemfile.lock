@@ -255,7 +255,6 @@ GEM
     ffi (1.15.5)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
-    foreman (0.87.2)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -720,7 +719,6 @@ DEPENDENCIES
   fastimage (~> 2.2.5)
   ffi
   font-awesome-rails (~> 4.7.0.4)
-  foreman
   google-protobuf (~> 3.21.12)
   i18n-tasks (~> 1.0.12)
   importmap-rails (~> 1.1)
