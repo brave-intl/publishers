@@ -1,4 +1,5 @@
 redis: redis-server
 worker: bundle exec sidekiq -C config/sidekiq.yml
 web: bundle exec rails s
-mailcatcher: bundle exec mailcatcher
+# Can't run mailcatcher with bundle since it's deps are so old. Have to install it separately
+mailcatcher: mailcatcher -f
