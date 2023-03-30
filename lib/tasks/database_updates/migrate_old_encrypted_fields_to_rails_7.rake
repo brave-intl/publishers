@@ -29,12 +29,12 @@ namespace :database_updates do
       end
       puts "Bulk upserting #{records_to_update.size} #{klass} records"
       klass.to_s.constantize.import(records_to_update,
-                on_duplicate_key_update: {
-                  conflict_target: [:id],
-                  columns: columns
-                },
-                validate: false,
-                batch_size: 1000)
+        on_duplicate_key_update: {
+          conflict_target: [:id],
+          columns: columns
+        },
+        validate: false,
+        batch_size: 1000)
       reload_model(klass)
     end
     puts "Done!"
@@ -50,10 +50,3 @@ def reload_model(klass)
   load "app/models/#{klass.to_s.underscore}.rb"
   puts "Reloaded #{klass}"
 end
-
-
-
-
-
-
-
