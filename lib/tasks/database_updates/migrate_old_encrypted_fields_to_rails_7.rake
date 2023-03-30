@@ -74,7 +74,7 @@ namespace :database_updates do
         records_to_update << u
       end
       puts "Bulk upserting #{records_to_update.size} #{klass} records"
-      klass.import(records_to_update,
+      klass.to_s.constantize.import(records_to_update,
                 on_duplicate_key_update: {
                   conflict_target: [:id],
                   columns: columns
