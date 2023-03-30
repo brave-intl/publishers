@@ -1,8 +1,8 @@
 enabled_bitflyer_connection:
   publisher: bitflyer_pub
   recipient_id: 'bitflyer_pub_connectionABC'
-  access_token:  '<%= BitflyerConnection.attribute_types["access_token"].serialize('access_token') %>'
-  refresh_token:  '<%= BitflyerConnection.attribute_types["refresh_token"].serialize('refresh_token') %>'
+  access_token:  "{\"p\":\"e/ENo7bAk4vGIUww\",\"h\":{\"iv\":\"OhYVbo8G5pOiKCeU\",\"at\":\"3XkxH1Pscfb1ZIhRhbFd/A==\"}}"
+  refresh_token:  "{\"p\":\"Ko/s19tu5aFATtNnNw==\",\"h\":{\"iv\":\"g+1aQdVgFvzZ0ZEQ\",\"at\":\"CwSB50ZQmgKTYUMRmmmrmA==\"}}"
   display_name: 123
   access_expiration_time: "<%= 2.days.ago %>"
 
