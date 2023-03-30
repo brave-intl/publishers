@@ -9,8 +9,11 @@ namespace :database_updates do
       UpholdConnection: [:uphold_code, :uphold_access_parameters],
       UserAuthenticationToken: [:authentication_token]
     }
+
     class_and_columns.each do |klass, columns|
       reload_model(klass)
+      records_to_update = []
+
       klass.to_s.constantize.all.each do |u|
         # takes the attr_encrypted properties and puts in the Rails 7 properties
         # must do this programmatically because thats how encryption happens.
@@ -21,9 +24,17 @@ namespace :database_updates do
           u.send("#{column}=", u.send("#{column}_2"))
           puts "For #{klass} #{u.id}: Set #{column} to #{u.send(column)}}"
           raise "Values don't match!" if old_value != u.send(column)
-          # u.save!
         end
+        records_to_update << u
       end
+      puts "Bulk upserting #{records_to_update.size} #{klass} records"
+      klass.to_s.constantize.import(records_to_update,
+        on_duplicate_key_update: {
+          conflict_target: [:id],
+          columns: columns
+        },
+        validate: false,
+        batch_size: 1000)
       reload_model(klass)
     end
     puts "Done!"
@@ -39,15 +50,3 @@ def reload_model(klass)
   load "app/models/#{klass.to_s.underscore}.rb"
   puts "Reloaded #{klass}"
 end
-
-# def down
-#   reload_users_model
-#   User.all.each do |u|
-#     # takes the Rails 7 properties and puts in the attr_encrypted properties
-#     # must do this programmatically because thats how encryption happens.
-#     # We can't shortcut this via a db command
-#     u.otp_secret_2 = u.otp_secret
-#     u.save!
-#   end
-#   reload_users_model
-# end
