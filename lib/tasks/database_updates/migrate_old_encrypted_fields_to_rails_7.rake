@@ -10,52 +10,6 @@ namespace :database_updates do
       UserAuthenticationToken: [:authentication_token]
     }
 
-
-
-
-    #
-    # # BULK CODE
-    #
-    # records_to_update = []
-    # UpholdConnection.where.not(encrypted_uphold_access_parameters: nil).order(id: :asc).find_each do |uphold_connection|
-    #   access_params = uphold_connection.uphold_access_parameters
-    #   if access_params
-    #     parsed_access_params = JSON.parse(access_params)
-    #     if access_token_to_refresh_token.include?(parsed_access_params["access_token"])
-    #       parsed_access_params["refresh_token"] = access_token_to_refresh_token[parsed_access_params["access_token"]]
-    #       parsed_access_params["expiration_time"] = expiration_time
-    #       uphold_connection.uphold_access_parameters = JSON.dump(parsed_access_params)
-    #       records_to_update << uphold_connection
-    #     end
-    #   end
-    # end
-    #
-    # UpholdConnection.import(records_to_update,
-    #                         on_duplicate_key_update: {
-    #                           conflict_target: [:id],
-    #                           columns: [:encrypted_uphold_access_parameters, :encrypted_uphold_access_parameters_iv]
-    #                         },
-    #                         validate: false,
-    #                         batch_size: 1000)
-    #
-    #
-    # # END BULK CODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     class_and_columns.each do |klass, columns|
       reload_model(klass)
       records_to_update = []
