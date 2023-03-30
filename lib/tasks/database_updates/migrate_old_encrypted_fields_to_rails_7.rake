@@ -9,8 +9,57 @@ namespace :database_updates do
       UpholdConnection: [:uphold_code, :uphold_access_parameters],
       UserAuthenticationToken: [:authentication_token]
     }
+
+
+
+
+    #
+    # # BULK CODE
+    #
+    # records_to_update = []
+    # UpholdConnection.where.not(encrypted_uphold_access_parameters: nil).order(id: :asc).find_each do |uphold_connection|
+    #   access_params = uphold_connection.uphold_access_parameters
+    #   if access_params
+    #     parsed_access_params = JSON.parse(access_params)
+    #     if access_token_to_refresh_token.include?(parsed_access_params["access_token"])
+    #       parsed_access_params["refresh_token"] = access_token_to_refresh_token[parsed_access_params["access_token"]]
+    #       parsed_access_params["expiration_time"] = expiration_time
+    #       uphold_connection.uphold_access_parameters = JSON.dump(parsed_access_params)
+    #       records_to_update << uphold_connection
+    #     end
+    #   end
+    # end
+    #
+    # UpholdConnection.import(records_to_update,
+    #                         on_duplicate_key_update: {
+    #                           conflict_target: [:id],
+    #                           columns: [:encrypted_uphold_access_parameters, :encrypted_uphold_access_parameters_iv]
+    #                         },
+    #                         validate: false,
+    #                         batch_size: 1000)
+    #
+    #
+    # # END BULK CODE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     class_and_columns.each do |klass, columns|
       reload_model(klass)
+      records_to_update = []
+
       klass.to_s.constantize.all.each do |u|
         # takes the attr_encrypted properties and puts in the Rails 7 properties
         # must do this programmatically because thats how encryption happens.
@@ -21,9 +70,17 @@ namespace :database_updates do
           u.send("#{column}=", u.send("#{column}_2"))
           puts "For #{klass} #{u.id}: Set #{column} to #{u.send(column)}}"
           raise "Values don't match!" if old_value != u.send(column)
-          # u.save!
         end
+        records_to_update << u
       end
+      puts "Bulk upserting #{records_to_update.size} #{klass} records"
+      klass.import(records_to_update,
+                on_duplicate_key_update: {
+                  conflict_target: [:id],
+                  columns: columns
+                },
+                validate: false,
+                batch_size: 1000)
       reload_model(klass)
     end
     puts "Done!"
@@ -40,14 +97,9 @@ def reload_model(klass)
   puts "Reloaded #{klass}"
 end
 
-# def down
-#   reload_users_model
-#   User.all.each do |u|
-#     # takes the Rails 7 properties and puts in the attr_encrypted properties
-#     # must do this programmatically because thats how encryption happens.
-#     # We can't shortcut this via a db command
-#     u.otp_secret_2 = u.otp_secret
-#     u.save!
-#   end
-#   reload_users_model
-# end
+
+
+
+
+
+
