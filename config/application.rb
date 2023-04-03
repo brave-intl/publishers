@@ -63,9 +63,5 @@ module Publishers
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    config.active_record.encryption.primary_key = Rails.application.secrets[:active_record_encryption_primary_key]
-    config.active_record.encryption.deterministic_key = Rails.application.secrets[:active_record_encryption_deterministic_key]
-    config.active_record.encryption.key_derivation_salt = Rails.application.secrets[:active_record_encryption_key_derivation_salt]
   end
 end

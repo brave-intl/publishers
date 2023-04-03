@@ -1,6 +1,8 @@
 # typed: false
 
 class PaypalConnection < ApplicationRecord
+  attr_encrypted :refresh_token, key: proc { |record| record.class.encryption_key }, marshal: true
+
   JAPAN_COUNTRY_CODE = "JP".freeze
 
   belongs_to :user, class_name: "Publisher", foreign_key: :user_id

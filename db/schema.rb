@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_15_163035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
@@ -47,6 +47,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
 
   create_table "bitflyer_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
+    t.string "encrypted_access_token"
+    t.string "encrypted_access_token_iv"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
     t.string "expires_in"
     t.datetime "access_expiration_time", precision: nil
     t.string "display_name"
@@ -61,12 +65,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
     t.datetime "updated_at", default: -> { "now()" }, null: false
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
-    t.string "encrypted_access_token_2"
-    t.string "encrypted_access_token_2_iv"
-    t.string "encrypted_refresh_token_2"
-    t.string "encrypted_refresh_token_2_iv"
-    t.text "access_token"
-    t.text "refresh_token"
+    t.index ["encrypted_access_token_iv"], name: "index_bitflyer_connections_on_encrypted_access_token_iv", unique: true
+    t.index ["encrypted_refresh_token_iv"], name: "index_bitflyer_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_bitflyer_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_bitflyer_connections_on_publisher_id"
     t.index ["recipient_id"], name: "index_bitflyer_connections_on_recipient_id", unique: true
@@ -207,6 +207,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
 
   create_table "gemini_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
+    t.string "encrypted_access_token"
+    t.string "encrypted_access_token_iv"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
     t.string "expires_in"
     t.datetime "access_expiration_time", precision: nil
     t.string "display_name"
@@ -221,12 +225,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
     t.integer "recipient_id_status", default: 0, null: false
-    t.string "encrypted_access_token_2"
-    t.string "encrypted_access_token_2_iv"
-    t.string "encrypted_refresh_token_2"
-    t.string "encrypted_refresh_token_2_iv"
-    t.text "access_token"
-    t.text "refresh_token"
+    t.index ["encrypted_access_token_iv"], name: "index_gemini_connections_on_encrypted_access_token_iv", unique: true
+    t.index ["encrypted_refresh_token_iv"], name: "index_gemini_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_gemini_connections_on_publisher_id"
     t.index ["status"], name: "index_gemini_connections_on_status"
@@ -620,6 +620,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
 
   create_table "stripe_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
+    t.string "encrypted_access_token"
+    t.string "encrypted_access_token_iv"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
     t.string "stripe_user_id"
     t.string "display_name"
     t.string "state_token"
@@ -631,23 +635,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
     t.jsonb "capabilities"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "encrypted_access_token_2"
-    t.string "encrypted_access_token_2_iv"
-    t.string "encrypted_refresh_token_2"
-    t.string "encrypted_refresh_token_2_iv"
-    t.text "access_token"
-    t.text "refresh_token"
+    t.index ["encrypted_access_token_iv"], name: "index_stripe_connections_on_encrypted_access_token_iv", unique: true
+    t.index ["encrypted_refresh_token_iv"], name: "index_stripe_connections_on_encrypted_refresh_token_iv", unique: true
     t.index ["publisher_id"], name: "index_stripe_connections_on_publisher_id"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_secret"
+    t.string "encrypted_secret_iv"
     t.uuid "publisher_id"
     t.datetime "last_logged_in_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "encrypted_secret_2"
-    t.string "encrypted_secret_2_iv"
-    t.text "secret"
     t.index ["publisher_id"], name: "index_totp_registrations_on_publisher_id"
   end
 
@@ -725,6 +724,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
     t.uuid "uphold_id"
     t.uuid "address"
     t.uuid "publisher_id"
+    t.string "encrypted_uphold_code"
+    t.string "encrypted_uphold_code_iv"
+    t.string "encrypted_uphold_access_parameters"
+    t.string "encrypted_uphold_access_parameters_iv"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "status"
@@ -737,12 +740,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
     t.boolean "oauth_refresh_failed", default: false, null: false
     t.boolean "oauth_failure_email_sent", default: false, null: false
     t.datetime "access_expiration_time", precision: nil
-    t.string "encrypted_uphold_code_2"
-    t.string "encrypted_uphold_code_2_iv"
-    t.string "encrypted_uphold_access_parameters_2"
-    t.string "encrypted_uphold_access_parameters_2_iv"
-    t.text "uphold_code"
-    t.text "uphold_access_parameters"
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
@@ -758,11 +755,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
   end
 
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_authentication_token"
+    t.string "encrypted_authentication_token_iv"
     t.datetime "authentication_token_expires_at", precision: nil
     t.uuid "user_id", null: false
-    t.string "encrypted_authentication_token_2"
-    t.string "encrypted_authentication_token_2_iv"
-    t.text "authentication_token"
     t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 

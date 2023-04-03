@@ -35,8 +35,9 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   USE_BROWSER = 1
 
-  encrypt_column_transition("uphold_code")
-  encrypt_column_transition("uphold_access_parameters")
+  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
+  attr_encrypted :uphold_code
+  attr_encrypted :uphold_access_parameters
 
   class UpholdAccountState
     REAUTHORIZATION_NEEDED = :reauthorization_needed
@@ -108,7 +109,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   # TODO: Deprecate ASAP
   scope :has_stale_uphold_access_parameters, -> {
-    where.not(uphold_access_parameters: nil)
+    where.not(encrypted_uphold_access_parameters: nil)
       .where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
@@ -116,7 +117,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
-    where.not(uphold_code: nil)
+    where.not(encrypted_uphold_code: nil)
       .where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 

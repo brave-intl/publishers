@@ -4,12 +4,12 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "7.0.4.3"
+rails_version = "7.0.4.2"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.5.0"
 gem "railties", rails_version
 
-gem "rack", "2.2.6.4"
+gem "rack", "2.2.6.3"
 
 # All things countries
 gem "countries"
@@ -149,7 +149,8 @@ gem "slim-rails", "~> 3.1"
 
 gem "ssrf_filter", "1.0.7"
 
-gem "strong_migrations"
+# Don't use
+# gem "stripe", "~> 5.1", ">= 5.1.1"
 
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
