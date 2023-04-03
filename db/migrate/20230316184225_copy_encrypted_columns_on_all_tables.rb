@@ -77,8 +77,6 @@ class CopyEncryptedColumnsOnAllTables < ActiveRecord::Migration[7.0]
     add_column :bitflyer_connections, :encrypted_refresh_token_iv, :string
     BitflyerConnection.update_all("encrypted_access_token=encrypted_access_token_2")
     BitflyerConnection.update_all("encrypted_access_token_iv=encrypted_access_token_2_iv")
-    BitflyerConnection.update_all("encrypted_refresh_token=encrypted_refresh_token_2")
-    BitflyerConnection.update_all("encrypted_refresh_token_iv=encrypted_refresh_token_2_iv")
 
     add_column :gemini_connections, :encrypted_access_token, :string
     add_column :gemini_connections, :encrypted_access_token_iv, :string
@@ -86,8 +84,6 @@ class CopyEncryptedColumnsOnAllTables < ActiveRecord::Migration[7.0]
     add_column :gemini_connections, :encrypted_refresh_token_iv, :string
     GeminiConnection.update_all("encrypted_access_token=encrypted_access_token_2")
     GeminiConnection.update_all("encrypted_access_token_iv=encrypted_access_token_2_iv")
-    GeminiConnection.update_all("encrypted_refresh_token=encrypted_refresh_token_2")
-    GeminiConnection.update_all("encrypted_refresh_token_iv=encrypted_refresh_token_2_iv")
 
     add_column :stripe_connections, :encrypted_access_token, :string
     add_column :stripe_connections, :encrypted_access_token_iv, :string
@@ -95,8 +91,6 @@ class CopyEncryptedColumnsOnAllTables < ActiveRecord::Migration[7.0]
     add_column :stripe_connections, :encrypted_refresh_token_iv, :string
     StripeConnection.update_all("encrypted_access_token=encrypted_access_token_2")
     StripeConnection.update_all("encrypted_access_token_iv=encrypted_access_token_2_iv")
-    StripeConnection.update_all("encrypted_refresh_token=encrypted_refresh_token_2")
-    StripeConnection.update_all("encrypted_refresh_token_iv=encrypted_refresh_token_2_iv")
 
     add_column :totp_registrations, :encrypted_secret, :string
     add_column :totp_registrations, :encrypted_secret_iv, :string
@@ -108,9 +102,7 @@ class CopyEncryptedColumnsOnAllTables < ActiveRecord::Migration[7.0]
     add_column :uphold_connections, :encrypted_uphold_access_parameters, :string
     add_column :uphold_connections, :encrypted_uphold_access_parameters_iv, :string
     UpholdConnection.update_all("encrypted_uphold_code=encrypted_uphold_code_2")
-    UpholdConnection.update_all("encrypted_uphold_code_iv=encrypted_uphold_code_iv_2")
     UpholdConnection.update_all("encrypted_uphold_access_parameters_iv=encrypted_uphold_access_parameters_2_iv")
-    UpholdConnection.update_all("encrypted_uphold_access_parameters=encrypted_uphold_access_parameters_2")
 
 
     add_column :user_authentication_tokens, :encrypted_authentication_token, :string
