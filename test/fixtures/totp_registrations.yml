@@ -1,14 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% salt = SecureRandom.random_bytes(12) %>
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
 default:
   publisher: verified
   last_logged_in_at: <%= 2.days.ago %>
-  secret: "{\"p\":\"wGaRMQ3Q\",\"h\":{\"iv\":\"uJJLsghya2K1vGDG\",\"at\":\"JKGd7ZFGmlugdpxztPM4ew==\"}}"
+  encrypted_secret_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_secret: "<%= TotpRegistration.attr_encrypted_encrypt("secret", ROTP::Base32.random_base32, key: TotpRegistration.encryption_key, iv: salt ) %>"
 
 verified_totp:
   publisher: verified_totp_only
   last_logged_in_at: <%= 2.days.ago %>
-  secret: "{\"p\":\"wGaRMQ3Q\",\"h\":{\"iv\":\"uJJLsghya2K1vGDG\",\"at\":\"JKGd7ZFGmlugdpxztPM4ew==\"}}"
+  encrypted_secret_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_secret: "<%= TotpRegistration.attr_encrypted_encrypt("secret", ROTP::Base32.random_base32, key: TotpRegistration.encryption_key, iv: salt ) %>"
 
 admin:
   publisher: admin
   last_logged_in_at: <%= 2.days.ago %>
-  secret: "{\"p\":\"wGaRMQ3Q\",\"h\":{\"iv\":\"uJJLsghya2K1vGDG\",\"at\":\"JKGd7ZFGmlugdpxztPM4ew==\"}}"
+  encrypted_secret_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_secret: "<%= TotpRegistration.attr_encrypted_encrypt("secret", ROTP::Base32.random_base32, key: TotpRegistration.encryption_key, iv: salt ) %>"

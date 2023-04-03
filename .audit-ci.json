@@ -28,10 +28,6 @@
     "GHSA-7mwh-4pqv-wmr8|node-sass>sass-graph>scss-tokenizer",
     "GHSA-4wf5-vphf-c2xc|terser",
     "GHSA-fhg7-m89q-25r3|ua-parser-js",
-    "GHSA-4wf5-vphf-c2xc|@rails/webpacker>terser-webpack-plugin>terser",
-    "GHSA-p8p7-x288-28g6|@rails/webpacker>sass-loader>node-sass>node-gyp>request",
-    "GHSA-p8p7-x288-28g6|node-sass>node-gyp>request",
-    "GHSA-p8p7-x288-28g6|@rails/webpacker>sass-loader>node-sass>request",
-    "GHSA-p8p7-x288-28g6|node-sass>request"
+    "GHSA-4wf5-vphf-c2xc|@rails/webpacker>terser-webpack-plugin>terser"
   ]
 }

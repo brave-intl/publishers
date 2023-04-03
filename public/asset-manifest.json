@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.530dc430.css",
-    "main.js": "/static/js/main.32dea68d.js",
+    "main.js": "/static/js/main.a17818c4.js",
     "static/media/creator-logos-wide.png": "/static/media/creator-logos-wide.659e405dd7c94f22308e.png",
     "static/media/creator-logos-wide.webp": "/static/media/creator-logos-wide.66a57cd28d72d9e178b6.webp",
     "static/media/card-defranco.png": "/static/media/card-defranco.43ddea417be3635b228d.png",
@@ -14,10 +14,10 @@
     "static/media/creator-logos-mobile.webp": "/static/media/creator-logos-mobile.7132d7a1db4dc73b8385.webp",
     "index.html": "/index.html",
     "main.530dc430.css.map": "/static/css/main.530dc430.css.map",
-    "main.32dea68d.js.map": "/static/js/main.32dea68d.js.map"
+    "main.a17818c4.js.map": "/static/js/main.a17818c4.js.map"
   },
   "entrypoints": [
     "static/css/main.530dc430.css",
-    "static/js/main.32dea68d.js"
+    "static/js/main.a17818c4.js"
   ]
 }

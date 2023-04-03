@@ -11,8 +11,9 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
   belongs_to :publisher
 
-  encrypt_column_transition("access_token")
-  encrypt_column_transition("refresh_token")
+  attr_encrypted_options[:key] = proc { |record| record.class.encryption_key }
+  attr_encrypted :access_token
+  attr_encrypted :refresh_token
 
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true
@@ -55,7 +56,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   end
 
   def is_valid_connection?
-    access_expiration_time.present? && access_token.present? && refresh_token.present?
+    access_expiration_time.present? && encrypted_access_token.present? && encrypted_refresh_token.present?
   end
 
   def access_token_expired?
