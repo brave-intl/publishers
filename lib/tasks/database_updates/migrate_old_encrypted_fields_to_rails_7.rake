@@ -12,29 +12,31 @@ namespace :database_updates do
 
     class_and_columns.each do |klass, columns|
       reload_model(klass)
-      records_to_update = []
-
-      klass.to_s.constantize.all.each do |u|
-        # takes the attr_encrypted properties and puts in the Rails 7 properties
-        # must do this programmatically because thats how encryption happens.
-        # We can't shortcut this via a db command
-        columns.each do |column|
-          old_value = u.send("#{column}_2")
-          puts "For #{klass} #{u.id}: Setting #{column} to #{old_value}"
-          u.send("#{column}=", u.send("#{column}_2"))
-          puts "For #{klass} #{u.id}: Set #{column} to #{u.send(column)}}"
-          raise "Values don't match!" if old_value != u.send(column)
+      klass.to_s.constantize.find_in_batches(batch_size: 10000) do |batch_of_records|
+        records_to_update = []
+        batch_of_records.each do |u|
+          # takes the attr_encrypted properties and puts in the Rails 7 properties
+          # must do this programmatically because thats how encryption happens.
+          # We can't shortcut this via a db command
+          columns.each do |column|
+            old_value = u.send("#{column}_2")
+            puts "For #{klass} #{u.id}: Setting #{column} to #{old_value}"
+            u.send("#{column}=", u.send("#{column}_2"))
+            puts "For #{klass} #{u.id}: Set #{column} to #{u.send(column)}}"
+            raise "Values don't match!" if old_value != u.send(column)
+          end
+          records_to_update << u
         end
-        records_to_update << u
+
+        puts "Bulk upserting #{records_to_update.size} #{klass} records"
+        klass.to_s.constantize.import(records_to_update,
+                                      on_duplicate_key_update: {
+                                        conflict_target: [:id],
+                                        columns: columns
+                                      },
+                                      validate: false,
+                                      batch_size: 1000)
       end
-      puts "Bulk upserting #{records_to_update.size} #{klass} records"
-      klass.to_s.constantize.import(records_to_update,
-        on_duplicate_key_update: {
-          conflict_target: [:id],
-          columns: columns
-        },
-        validate: false,
-        batch_size: 1000)
       reload_model(klass)
     end
     puts "Done!"
