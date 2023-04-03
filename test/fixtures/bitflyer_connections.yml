@@ -1,11 +1,8 @@
 enabled_bitflyer_connection:
   publisher: bitflyer_pub
   recipient_id: 'bitflyer_pub_connectionABC'
-  <% salt = SecureRandom.random_bytes(12) %>
-  encrypted_access_token:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  'access_token', key: BitflyerConnection.encryption_key, iv: salt ) %>"
-  encrypted_access_token_iv: "<%= Base64.encode64(salt) %>"
-  encrypted_refresh_token:  "<%= TotpRegistration.attr_encrypted_encrypt('secret',  'access_token', key: BitflyerConnection.encryption_key, iv: salt ) %>"
-  encrypted_refresh_token_iv: "<%= Base64.encode64(salt) %>"
+  access_token:  "{\"p\":\"e/ENo7bAk4vGIUww\",\"h\":{\"iv\":\"OhYVbo8G5pOiKCeU\",\"at\":\"3XkxH1Pscfb1ZIhRhbFd/A==\"}}"
+  refresh_token:  "{\"p\":\"Ko/s19tu5aFATtNnNw==\",\"h\":{\"iv\":\"g+1aQdVgFvzZ0ZEQ\",\"at\":\"CwSB50ZQmgKTYUMRmmmrmA==\"}}"
   display_name: 123
   access_expiration_time: "<%= 2.days.ago %>"
 
