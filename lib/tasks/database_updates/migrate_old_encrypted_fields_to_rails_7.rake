@@ -17,7 +17,7 @@ namespace :database_updates do
         batch_of_records.each do |u|
           # takes the attr_encrypted properties and puts in the Rails 7 properties
           # must do this programmatically because thats how encryption happens.
-          # We can't shortcut this via a db command
+          # We can't shortcut this via a db command, but bulk inserting speeds things up
           columns.each do |column|
             old_value = u.send("#{column}_2")
             puts "For #{klass} #{u.id}: Setting #{column} to #{old_value}"
