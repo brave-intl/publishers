@@ -30,12 +30,12 @@ namespace :database_updates do
 
         puts "Bulk upserting #{records_to_update.size} #{klass} records"
         klass.to_s.constantize.import(records_to_update,
-                                      on_duplicate_key_update: {
-                                        conflict_target: [:id],
-                                        columns: columns
-                                      },
-                                      validate: false,
-                                      batch_size: 1000)
+          on_duplicate_key_update: {
+            conflict_target: [:id],
+            columns: columns
+          },
+          validate: false,
+          batch_size: 1000)
       end
       reload_model(klass)
     end
