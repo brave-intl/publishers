@@ -3,9 +3,8 @@ require "test_helper"
 describe CryptoAddress do
   it "only accepts approved chain types" do
     address = crypto_addresses(:sol_address)
-    assert_raises do
-      address.chain = "DOGE"
-    end
+    address.chain = "DOGE"
+    refute address.valid?
   end
 
   it "will not allow address or chain to be changed after create" do

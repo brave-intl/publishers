@@ -3,8 +3,9 @@ require "test_helper"
 describe CryptoAddressForChannel do
   it "only accepts approved chain types" do
     cafc = crypto_address_for_channels(:sol_address)
+    cafc.chain = "DOGE"
     assert_raises do
-      cafc.chain = "DOGE"
+      refute cafc.valid?
     end
   end
 
