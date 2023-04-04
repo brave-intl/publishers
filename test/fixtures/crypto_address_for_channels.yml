@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+sol_address:
+  chain: 'SOL'
+  channel: verified
+  crypto_address: sol_address
+
+eth_address:
+  chain: 'ETH'
+  channel: verified
+  crypto_address: eth_address

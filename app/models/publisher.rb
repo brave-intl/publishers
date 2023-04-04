@@ -50,6 +50,7 @@ class Publisher < ApplicationRecord
   has_many :notes, class_name: "PublisherNote", dependent: :destroy
   has_many :potential_payments
   has_many :invoices
+  has_many :crypto_addresses, dependent: :destroy
 
   belongs_to :selected_wallet_provider, polymorphic: true
 
