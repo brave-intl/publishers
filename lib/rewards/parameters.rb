@@ -25,7 +25,12 @@ module Rewards
         parameters.custodianRegions
       else
         LogException.perform(parameters)
-        raise StandardError.new("Could not load allowed regions")
+        fallback
+        # raise StandardError.new("Could not load allowed regions")
+      end
+      
+      def fallback
+        {"custodianRegions":{"uphold":{"allow":["AD","AU","AR","AT","BE","BR","BS","BZ","CA","CH","CL","CO","CR","CY","CZ","DK","EC","EE","FI","FR","GD","GT","GR","HK","HN","HU","IE","IS","IT","JM","KY","LI","LT","LV","LU","MC","MT","MX","NI","NO","NZ","PE","PL","PT","PY","SG","TR","UY","ES","SE","GB","US","UM","ZA"],"block":[]},"gemini":{"allow":["US"],"block":[]},"bitflyer":{"allow":["JP"],"block":[]}}}
       end
     end
   end
