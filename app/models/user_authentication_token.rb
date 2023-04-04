@@ -1,7 +1,7 @@
 # typed: true
 
 class UserAuthenticationToken < ApplicationRecord
-  encrypt_column_transition("authentication_token")
+  encrypts :authentication_token
 
   belongs_to :user, class_name: "Publisher", foreign_key: :user_id
 

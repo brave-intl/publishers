@@ -11,8 +11,8 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
   belongs_to :publisher
 
-  encrypt_column_transition("access_token")
-  encrypt_column_transition("refresh_token")
+  encrypts :access_token
+  encrypts :refresh_token
 
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true
