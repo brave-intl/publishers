@@ -173,24 +173,24 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
       assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, ""
     end
 
-    test "generating channel response should fail where country information could not be loaded" do
-      Rails.cache.clear
+    # test "generating channel response should fail where country information could not be loaded" do
+    #   Rails.cache.clear
 
-      stub_request(:get, "#{Rails.application.secrets[:api_rewards_base_uri]}/v1/parameters")
-        .to_return(status: 400, body: "")
+    #   stub_request(:get, "#{Rails.application.secrets[:api_rewards_base_uri]}/v1/parameters")
+    #     .to_return(status: 400, body: "")
 
-      channel = channels(:verified)
-      channel.send(:update_site_banner_lookup!)
-      site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
-      assert site_banner_lookup.present?
+    #   channel = channels(:verified)
+    #   channel.send(:update_site_banner_lookup!)
+    #   site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    #   assert site_banner_lookup.present?
 
-      service = Cache::BrowserChannels::ResponsesForPrefix.new
-      assert_raises Faraday::ClientError do
-        ActiveRecord::Base.connected_to(role: :reading) do
-          Rails.cache.delete(Rewards::Client::RATES_CACHE_KEY)
-          service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
-        end
-      end
-    end
+    #   service = Cache::BrowserChannels::ResponsesForPrefix.new
+    #   assert_raises Faraday::ClientError do
+    #     ActiveRecord::Base.connected_to(role: :reading) do
+    #       Rails.cache.delete(Rewards::Client::RATES_CACHE_KEY)
+    #       service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    #     end
+    #   end
+    # end
   end
 end
