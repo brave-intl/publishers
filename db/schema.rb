@@ -10,12 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_20_213156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_enum :chain, [
+    "SOL",
+    "ETH",
+  ], force: :cascade
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -149,9 +154,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_203232) do
     t.datetime "contest_timesout_at", precision: nil
     t.string "deposit_id"
     t.text "derived_brave_publisher_id"
+    t.string "public_name"
+    t.string "public_identifier"
     t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
+  end
+
+  create_table "crypto_address_for_channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.enum "chain", null: false, enum_type: "chain"
+    t.uuid "crypto_address_id", null: false
+    t.uuid "channel_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id", "chain"], name: "unique_crypto_chain_for_channels", unique: true
+    t.index ["channel_id"], name: "index_crypto_address_for_channels_on_channel_id"
+    t.index ["crypto_address_id"], name: "index_crypto_address_for_channels_on_crypto_address_id"
+  end
+
+  create_table "crypto_addresses", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "address", null: false
+    t.boolean "verified"
+    t.enum "chain", null: false, enum_type: "chain"
+    t.uuid "publisher_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_crypto_addresses_on_publisher_id"
   end
 
   create_table "csp_violation_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

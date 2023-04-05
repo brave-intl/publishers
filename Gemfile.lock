@@ -119,6 +119,9 @@ GEM
       activerecord (>= 4.2)
     activerecord-nulldb-adapter (0.8.0)
       activerecord (>= 5.2.0, < 7.1)
+    activerecord-postgres_enum (2.0.1)
+      activerecord (>= 5.2)
+      pg
     activerecord-session_store (2.0.0)
       actionpack (>= 5.2.4.1)
       activerecord (>= 5.2.4.1)
@@ -343,6 +346,8 @@ GEM
       net-protocol
     newrelic_rpm (8.16.0)
     nio4r (2.5.8)
+    nokogiri (1.14.2-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.2-x86_64-darwin)
@@ -655,6 +660,7 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-21
   x86_64-darwin-20
   x86_64-darwin-22
@@ -664,6 +670,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   activerecord-import (= 1.4.1)
   activerecord-nulldb-adapter (= 0.8.0)
+  activerecord-postgres_enum
   activerecord-session_store (~> 2.0)
   activerecord7-redshift-adapter!
   addressable (~> 2.8)
