@@ -186,8 +186,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       UpholdAccountState::RESTRICTED
     elsif !valid_country?
       UpholdAccountState::BLOCKED_COUNTRY
-    elsif uphold_reauthorization_needed?
-      UpholdAccountState::REAUTHORIZATION_NEEDED
+    # elsif uphold_reauthorization_needed?
+    #   UpholdAccountState::REAUTHORIZATION_NEEDED
     elsif uphold_verified? && !is_member?
       UpholdAccountState::RESTRICTED
     elsif uphold_verified? && is_member?

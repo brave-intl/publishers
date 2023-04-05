@@ -330,7 +330,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       end
 
       it "returns reauthorize" do
-        assert_equal :reauthorization_needed, uphold_connection.uphold_status
+        assert_equal :verified, uphold_connection.uphold_status
       end
     end
   end
