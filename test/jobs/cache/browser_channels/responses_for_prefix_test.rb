@@ -93,6 +93,49 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     result = PublishersPb::ChannelResponseList.decode(result)
     assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.gemini_connection_for_channel.first.recipient_id
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+    assert_equal result.channel_responses[0].site_banner_details.web3Url, ""
+  end
+
+  test "solana wallet generation" do
+    channel = channels(:verified)
+    channel.send(:update_site_banner_lookup!)
+    site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    assert site_banner_lookup.present?
+
+    service = Cache::BrowserChannels::ResponsesForPrefix.new
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
+    assert service.temp_file.present?
+    result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
+    result = PublishersPb::ChannelResponseList.decode(result)
+    assert result.channel_responses[0].wallets[0].uphold_wallet.address
+    assert_equal result.channel_responses[0].wallets[1].solana_wallet.address, channel.crypto_address_for_channels.sol_addresses.first.crypto_address.address
+    assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+    # in the test environment, the creators_host env variable is nil
+    assert_equal result.channel_responses[0].site_banner_details.web3Url, "/c/123456dfg6"
+  end
+
+  test "ethereum wallet generation" do
+    channel = channels(:verified)
+    channel.send(:update_site_banner_lookup!)
+    site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    assert site_banner_lookup.present?
+
+    service = Cache::BrowserChannels::ResponsesForPrefix.new
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
+    assert service.temp_file.present?
+    result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
+    result = PublishersPb::ChannelResponseList.decode(result)
+    assert result.channel_responses[0].wallets[0].uphold_wallet.address
+    assert_equal result.channel_responses[0].wallets[2].ethereum_wallet.address, channel.crypto_address_for_channels.eth_addresses.first.crypto_address.address
+    assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+    assert_equal result.channel_responses[0].site_banner_details.web3Url, "/c/123456dfg6"
+  end
+
+  test "channel details includes web3 address" do
   end
 
   describe "complex channel response file generation" do

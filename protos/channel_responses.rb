@@ -18,6 +18,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :logo_url, :string, 4
       repeated :donation_amounts, :double, 5
       optional :social_links, :message, 6, "publishers_pb.SocialLinks"
+      optional :web3Url, :string, 7
     end
     add_message "publishers_pb.UpholdWallet" do
       optional :wallet_state, :enum, 1, "publishers_pb.UpholdWalletState"
@@ -34,12 +35,20 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :wallet_state, :enum, 1, "publishers_pb.GeminiWalletState"
       optional :address, :string, 2
     end
+    add_message "publishers_pb.EthereumWallet" do
+      optional :address, :string, 1
+    end
+    add_message "publishers_pb.SolanaWallet" do
+      optional :address, :string, 1
+    end
     add_message "publishers_pb.Wallet" do
       oneof :provider do
         optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
         optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
         optional :bitflyer_wallet, :message, 3, "publishers_pb.BitflyerWallet"
         optional :gemini_wallet, :message, 4, "publishers_pb.GeminiWallet"
+        optional :ethereum_wallet, :message, 5, "publishers_pb.EthereumWallet"
+        optional :solana_wallet, :message, 6, "publishers_pb.SolanaWallet"
       end
     end
     add_message "publishers_pb.ChannelResponse" do
@@ -76,6 +85,8 @@ module PublishersPb
   PaypalWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PaypalWallet").msgclass
   BitflyerWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWallet").msgclass
   GeminiWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.GeminiWallet").msgclass
+  EthereumWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.EthereumWallet").msgclass
+  SolanaWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SolanaWallet").msgclass
   Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass

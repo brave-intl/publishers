@@ -16,6 +16,7 @@ message SiteBannerDetails {
   string logo_url = 4;
   repeated double donation_amounts = 5;
   SocialLinks social_links = 6;
+  string web3Url = 7;
 }
 
 enum UpholdWalletState {
@@ -57,12 +58,22 @@ enum GeminiWalletState {
   GEMINI_ACCOUNT_KYC = 1;
 }
 
+message EthereumWallet {
+  string address = 1;
+}
+
+message SolanaWallet {
+  string address = 1;
+}
+
 message Wallet {
   oneof provider {
     UpholdWallet uphold_wallet = 1;
     PaypalWallet paypal_wallet = 2;
     BitflyerWallet bitflyer_wallet = 3;
     GeminiWallet gemini_wallet = 4;
+    EthereumWallet ethereum_wallet = 5;
+    SolanaWallet solana_wallet = 6;
   }
 }
 
