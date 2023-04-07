@@ -35,8 +35,8 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   USE_BROWSER = 1
 
-  encrypt_column_transition("uphold_code")
-  encrypt_column_transition("uphold_access_parameters")
+  encrypts :uphold_code
+  encrypts :uphold_access_parameters
 
   class UpholdAccountState
     REAUTHORIZATION_NEEDED = :reauthorization_needed

@@ -18,8 +18,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   belongs_to :publisher
   has_many :gemini_connection_for_channels, dependent: :destroy
 
-  encrypt_column_transition("access_token")
-  encrypt_column_transition("refresh_token")
+  encrypts :access_token
+  encrypts :refresh_token
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT
 
   after_commit :create_recipient_ids, on: :create

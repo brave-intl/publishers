@@ -28,10 +28,6 @@ gem "activerecord7-redshift-adapter", git: "https://github.com/pennylane-hq/acti
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
 
-# attr_encrypted is no longer maintained. There are lots of function names that clash with
-# Rails 7 encrypts functionality. This branch has renamed the conflicting functions
-# you will be able to remove this after the migration
-gem "attr_encrypted", github: "PagerTree/attr_encrypted", branch: "rails-7-0-support"
 gem "activerecord-postgres_enum"
 
 # Integration with Matomo Piwik

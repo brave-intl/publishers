@@ -3,7 +3,7 @@
 class TotpRegistration < ApplicationRecord
   belongs_to :publisher
 
-  encrypt_column_transition("secret")
+  encrypts :secret
 
   def totp
     ROTP::TOTP.new(secret, issuer: totp_issuer)
