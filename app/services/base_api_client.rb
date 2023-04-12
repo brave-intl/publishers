@@ -83,7 +83,7 @@ class BaseApiClient < BaseService
 
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
-        faraday.response(:logger, Rails.logger, bodies: true, headers: true)
+        faraday.response(:logger, Rails.logger, bodies: false, headers: false)
 
         if raise_error
           faraday.use(Faraday::Response::RaiseError)
