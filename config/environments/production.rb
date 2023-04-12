@@ -171,14 +171,15 @@ Rails.application.configure do
   config.active_support.report_deprecations = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-    # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Use a different logger for distributed setups.
+  # require "syslog/logger"
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
+
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = proc { |severity, datetime, progname, msg|
-      filtered_msg = msg.gsub(/Bearer\s([a-f0-9-]{36,40})/, '<UUID>')
-      config.log_formatter.call(severity, datetime, progname, filtered_msg)
-    }
+    logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
