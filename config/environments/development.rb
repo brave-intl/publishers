@@ -50,6 +50,18 @@ Rails.application.configure do
     # Util::AttrEncrypted.monkey_patch_old_key_fallback
   end
 
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  # keep dev environment as much like prod as possible
+  config.log_formatter = ::Logger::Formatter.new
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = proc { |severity, datetime, progname, msg|
+      filtered_msg = msg.gsub(/Bearer\s([a-f0-9-]{36,40})/, '<UUID>')
+      config.log_formatter.call(severity, datetime, progname, filtered_msg)
+    }
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
+  end
+
   # End brave customizations
 
   # In the development environment your application's code is reloaded any time
