@@ -460,7 +460,7 @@ GEM
       json
     redis (5.0.6)
       redis-client (>= 0.9.0)
-    redis-client (0.14.0)
+    redis-client (0.14.1)
       connection_pool
     regexp_parser (2.7.0)
     render_async (2.1.11)
@@ -517,7 +517,7 @@ GEM
     semantic_range (3.0.0)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
-    sidekiq (7.0.7)
+    sidekiq (7.0.8)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
@@ -731,7 +731,7 @@ DEPENDENCIES
   sass-rails (~> 6.0.0)
   selenium-webdriver (~> 4.8.0)
   sendgrid-ruby (~> 6.6.2)
-  sidekiq (~> 7.0.6)
+  sidekiq (~> 7.0.8)
   sidekiq-scheduler (~> 5.0.1)
   simplecov
   slim-rails (~> 3.1)
