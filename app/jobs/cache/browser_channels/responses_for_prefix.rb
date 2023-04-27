@@ -181,7 +181,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
 
     public_id = site_banner_lookup.channel.public_identifier
-    details.web3Url = public_id ? "#{ENV["CREATORS_HOST"]}/c/#{public_id}" : ""
+    details.web3_url = public_id ? "#{ENV["CREATORS_HOST"]}/c/#{public_id}" : ""
 
     if site_banner_lookup.derived_site_banner_info["socialLinks"].present?
       social_links_pb = nil
