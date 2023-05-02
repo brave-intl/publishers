@@ -10,13 +10,21 @@ require "eyeshade/last_settlement_balance"
 
 class WalletTest < ActiveSupport::TestCase
   rate_info = {
-    "payload" => {
-      "BTC" => 0.00005418424016883016,
-      "ETH" => 0.000795331082073117,
-      "USD" => 0.2363863335301452,
-      "EUR" => 0.20187818378874756,
-      "GBP" => 0.1799810085548496
-    }
+    payload: {
+      bat: {
+        btc: 0.00001002,
+        btc_timeframe_change: 0,
+        eth: 0.00013862,
+        eth_timeframe_change: 0,
+        eur: 0.15505,
+        eur_timeframe_change: 0,
+        gbp: 0.137403,
+        gbp_timeframe_change: 0,
+        usd: 0.165864,
+        usd_timeframe_change: 0.69631645135915
+      }
+    },
+    lastUpdated: "2022-12-30T19:24:23.405184202Z"
   }
 
   accounts = [
@@ -166,7 +174,7 @@ class WalletTest < ActiveSupport::TestCase
      "settlement_currency" => "ETH",
      "type" => "contribution"}]
 
-  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, transactions: transactions, default_currency: "USD")
+  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, transactions: transactions, default_currency: "BAT")
 
   test "channel_balances have correct BAT and probi amounts" do
     assert_equal test_wallet.channel_balances.count, 2
@@ -175,9 +183,9 @@ class WalletTest < ActiveSupport::TestCase
       assert_equal (channel_balance.amount_probi + channel_balance.fees_probi).to_s, "58217204799751874334"
       assert_equal channel_balance.amount_bat.to_s, "55.306344559764280618"
       assert_equal channel_balance.fees_bat.to_s, "2.910860239987593716"
-      assert_equal channel_balance.amount_default_currency.to_s, "13.0736640114375707375771402950857336"
-      assert_equal channel_balance.fees_default_currency.to_s, "0.6880875795493458281193542960875632"
-      assert_equal channel_balance.default_currency, "USD"
+      assert_equal channel_balance.amount_default_currency.to_s, "55.306344559764280618"
+      assert_equal channel_balance.fees_default_currency.to_s, "2.910860239987593716"
+      assert_equal channel_balance.default_currency, "BAT"
     end
   end
 
@@ -187,8 +195,8 @@ class WalletTest < ActiveSupport::TestCase
     assert_equal referral_balance.amount_bat.to_s, "58.217204799751874334"
     assert_equal referral_balance.fees_bat, 0.00
     assert_equal referral_balance.fees_probi, 0
-    assert_equal referral_balance.default_currency, "USD"
-    assert_equal referral_balance.amount_default_currency.to_s, "13.7617515909869165656964945911732968"
+    assert_equal referral_balance.default_currency, "BAT"
+    assert_equal referral_balance.amount_default_currency.to_s, "58.217204799751874334"
     assert_equal referral_balance.fees_default_currency, 0.00
   end
 
