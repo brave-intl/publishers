@@ -31,7 +31,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
   }
 
   scope :payable, -> {
-    with_active_connection
+    where(payout_failed: false)
   }
 
   def provider_sym

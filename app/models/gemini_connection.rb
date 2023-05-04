@@ -32,6 +32,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       .where(is_verified: true)
       .where(status: "Active")
       .where.not(recipient_id: nil)
+      .where(payout_failed: false)
       .merge(in_supported_country)
   }
 

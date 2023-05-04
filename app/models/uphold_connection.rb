@@ -102,6 +102,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
     joins(:publisher)
       .where(is_member: true)
       .where.not(address: nil)
+      .where(payout_failed: false)
       .where("country != '#{UpholdConnection::JAPAN}' or
             country is null")
   }

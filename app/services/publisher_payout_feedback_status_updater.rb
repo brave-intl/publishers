@@ -18,7 +18,7 @@ class PublisherPayoutFeedbackStatusUpdater < BuilderBaseService
       provided_wp_id = channels[0]["walletProviderId"]
       if publisher_wp_id == provided_wp_id && publisher_wp_id.present?
         Rails.logger.info("Setting bad wallet for #{publisher.id} with email #{publisher.email}")
-        publisher.selected_wallet_provider&.record_refresh_failure!
+        publisher.selected_wallet_provider.update_column(:payout_failed, true)
       else
         Rails.logger.info("Wallet mismatch for publisher #{publisher.id}, perhaps they've already reconnected a new one")
         Rails.logger.info("Our record: #{publisher_wp_id}")
