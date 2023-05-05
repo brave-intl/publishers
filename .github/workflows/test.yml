@@ -36,13 +36,10 @@ jobs:
         with:
           ruby-version: 3.0.2
       - name: Setup firefox
-        id: setup-firefox
         uses: browser-actions/setup-firefox@v1
         with:
-          firefox-version: latest-esr
-        run: |
-            echo Installed firefox versions: ${{ steps.setup-firefox.outputs.firefox-version }}
-            firefox --version
+          firefox-version: "latest-esr"
+        run: firefox --version
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
