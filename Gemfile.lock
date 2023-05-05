@@ -517,11 +517,11 @@ GEM
     semantic_range (3.0.0)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
-    sidekiq (7.0.7)
+    sidekiq (7.1.0)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
-      redis-client (>= 0.11.0)
+      redis-client (>= 0.14.0)
     sidekiq-scheduler (5.0.2)
       rufus-scheduler (~> 3.2)
       sidekiq (>= 6, < 8)
@@ -731,8 +731,8 @@ DEPENDENCIES
   sass-rails (~> 6.0.0)
   selenium-webdriver (~> 4.8.0)
   sendgrid-ruby (~> 6.6.2)
-  sidekiq (~> 7.0.6)
-  sidekiq-scheduler (~> 5.0.1)
+  sidekiq (~> 7.1.0)
+  sidekiq-scheduler (~> 5.0.2)
   simplecov
   slim-rails (~> 3.1)
   solargraph
@@ -762,4 +762,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.3.26
+   2.4.9
