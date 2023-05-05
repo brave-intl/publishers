@@ -39,7 +39,6 @@ jobs:
         uses: browser-actions/setup-firefox@v1
         with:
           firefox-version: "latest-esr"
-        run: firefox --version
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
