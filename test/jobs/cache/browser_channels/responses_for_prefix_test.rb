@@ -93,7 +93,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     result = PublishersPb::ChannelResponseList.decode(result)
     assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.gemini_connection_for_channel.first.recipient_id
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
-    assert_equal result.channel_responses[0].site_banner_details.web3Url, ""
+    assert_equal result.channel_responses[0].site_banner_details.web3_url, ""
   end
 
   # test "solana wallet generation" do
@@ -113,7 +113,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
   #   assert_equal result.channel_responses[0].wallets[1].solana_wallet.address, channel.crypto_address_for_channels.sol_addresses.first.crypto_address.address
   #   assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   #   # in the test environment, the creators_host env variable is nil
-  #   assert_equal result.channel_responses[0].site_banner_details.web3Url, "/c/123456dfg6"
+  #   assert_equal result.channel_responses[0].site_banner_details.web3_url, "/c/123456dfg6"
   # end
 
   # test "ethereum wallet generation" do
@@ -132,11 +132,10 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
   #   assert result.channel_responses[0].wallets[0].uphold_wallet.address
   #   assert_equal result.channel_responses[0].wallets[2].ethereum_wallet.address, channel.crypto_address_for_channels.eth_addresses.first.crypto_address.address
   #   assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
-  #   assert_equal result.channel_responses[0].site_banner_details.web3Url, "/c/123456dfg6"
+  #   assert_equal result.channel_responses[0].site_banner_details.web3_url, "/c/123456dfg6"
   # end
 
   test "channel details includes web3 address" do
-    
   end
 
   describe "complex channel response file generation" do
