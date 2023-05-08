@@ -72,8 +72,6 @@ message Wallet {
     PaypalWallet paypal_wallet = 2;
     BitflyerWallet bitflyer_wallet = 3;
     GeminiWallet gemini_wallet = 4;
-    EthereumWallet ethereum_wallet = 5;
-    SolanaWallet solana_wallet = 6;
   }
 }
 

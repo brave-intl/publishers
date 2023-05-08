@@ -47,8 +47,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
         optional :paypal_wallet, :message, 2, "publishers_pb.PaypalWallet"
         optional :bitflyer_wallet, :message, 3, "publishers_pb.BitflyerWallet"
         optional :gemini_wallet, :message, 4, "publishers_pb.GeminiWallet"
-        optional :ethereum_wallet, :message, 5, "publishers_pb.EthereumWallet"
-        optional :solana_wallet, :message, 6, "publishers_pb.SolanaWallet"
       end
     end
     add_message "publishers_pb.ChannelResponse" do
