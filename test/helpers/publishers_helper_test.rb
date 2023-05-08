@@ -6,13 +6,21 @@ require "eyeshade/wallet"
 class PublishersHelperTest < ActionView::TestCase
   let(:rates) do
     {
-      "payload" => {
-        "BTC" => 0.00005418424016883016,
-        "ETH" => 0.000795331082073117,
-        "USD" => 2.2363863335301452,
-        "EUR" => 0.20187818378874756,
-        "GBP" => 0.1799810085548496
-      }
+      payload: {
+        bat: {
+          btc: 0.00001002,
+          btc_timeframe_change: 0,
+          eth: 0.00013862,
+          eth_timeframe_change: 0,
+          eur: 0.15505,
+          eur_timeframe_change: 0,
+          gbp: 0.137403,
+          gbp_timeframe_change: 0,
+          usd: 0.165864,
+          usd_timeframe_change: 0.69631645135915
+        }
+      },
+      lastUpdated: "2022-12-30T19:24:23.405184202Z"
     }
   end
 
@@ -72,7 +80,7 @@ class PublishersHelperTest < ActionView::TestCase
     publisher = publishers(:uphold_connected_details)
     publisher.save
 
-    assert_dom_equal %(~ 268.13 USD), publisher_converted_overall_balance(publisher) # 0 balance because this publisher has no channels
+    assert_dom_equal %(~ 188.14 USD), publisher_converted_overall_balance(publisher) # 0 balance because this publisher has no channels
   end
 
   class FakePublisher
@@ -104,7 +112,7 @@ class PublishersHelperTest < ActionView::TestCase
     publisher = publishers(:uphold_connected_details)
 
     assert_not_nil publisher.wallet
-    assert_dom_equal %(~ 268.13 USD), publisher_converted_overall_balance(publisher)
+    assert_dom_equal %(~ 188.14 USD), publisher_converted_overall_balance(publisher)
   end
 
   test "can extract the uuid from an owner_identifier" do
@@ -114,16 +122,24 @@ class PublishersHelperTest < ActionView::TestCase
   test "publishers_last_settlement_balance should return at least a positive 0 value" do
     publisher = FakePublisher.new(
       uphold_connection: {
-        default_currency: "USD"
+        default_currency: "BAT"
       },
       rates: {
-        "payload" => {
-          "BTC" => 0.00005418424016883016,
-          "ETH" => 0.000795331082073117,
-          "USD" => 0.2363863335301452,
-          "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496
-        }
+        payload: {
+          bat: {
+            btc: 0.00001002,
+            btc_timeframe_change: 0,
+            eth: 0.00013862,
+            eth_timeframe_change: 0,
+            eur: 0.15505,
+            eur_timeframe_change: 0,
+            gbp: 0.137403,
+            gbp_timeframe_change: 0,
+            usd: 0.165864,
+            usd_timeframe_change: 0.69631645135915
+          }
+        },
+        lastUpdated: "2022-12-30T19:24:23.405184202Z"
       },
       accounts: [
         {
@@ -138,14 +154,14 @@ class PublishersHelperTest < ActionView::TestCase
           "description" => "payout for referrals",
           "channel" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
           "amount" => "-94.617182149806375904",
-          "settlement_currency" => "ETH",
+          "settlement_currency" => "BAT",
           "settlement_amount" => "18.81",
           "type" => "referral_settlement"
         }
       ]
     )
     assert_not_nil publisher.wallet
-    assert_equal "~ 0.00 USD", publisher_converted_overall_balance(publisher)
+    assert_equal "~ 0.00 BAT", publisher_converted_overall_balance(publisher)
     assert_equal "0.00", publisher_overall_bat_balance(publisher)
   end
 
@@ -155,13 +171,21 @@ class PublishersHelperTest < ActionView::TestCase
         default_currency: "USD"
       },
       rates: {
-        "payload" => {
-          "BTC" => 0.00005418424016883016,
-          "ETH" => 0.000795331082073117,
-          "USD" => 0.2363863335301452,
-          "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496
-        }
+        payload: {
+          bat: {
+            btc: 0.00001002,
+            btc_timeframe_change: 0,
+            eth: 0.00013862,
+            eth_timeframe_change: 0,
+            eur: 0.15505,
+            eur_timeframe_change: 0,
+            gbp: 0.137403,
+            gbp_timeframe_change: 0,
+            usd: 0.165864,
+            usd_timeframe_change: 0.69631645135915
+          }
+        },
+        lastUpdated: "2022-12-30T19:24:23.405184202Z"
       },
       accounts: [
         {
@@ -176,14 +200,14 @@ class PublishersHelperTest < ActionView::TestCase
           "description" => "payout for referrals",
           "channel" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
           "amount" => "-94.617182149806375904",
-          "settlement_currency" => "ETH",
+          "settlement_currency" => "USD",
           "settlement_amount" => "18.81",
           "type" => "referral_settlement"
         }
       ]
     )
     assert_not_nil publisher.wallet
-    assert_equal "~ 13.76 USD", publisher_converted_overall_balance(publisher)
+    assert_equal "~ 9.66 USD", publisher_converted_overall_balance(publisher)
     assert_equal "58.22", publisher_overall_bat_balance(publisher)
 
     publisher = FakePublisher.new(
@@ -237,13 +261,13 @@ class PublishersHelperTest < ActionView::TestCase
       {
         "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
         "account_type" => "owner",
-        "balance" => "0.01"
+        "balance" => "0.10"
       }
     ]
     transactions = []
-    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "USD")
     publisher = mock
-    publisher.expects(:wallet).returns(fake_wallet).at_least_once
+    publisher.expects(:wallet).at_least_once.returns(fake_wallet)
     assert fake_wallet.referral_balance.amount_usd > 0
     assert has_balance?(publisher)
   end
@@ -253,13 +277,13 @@ class PublishersHelperTest < ActionView::TestCase
       {
         "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
         "account_type" => "channel",
-        "balance" => "0.01"
+        "balance" => "0.10"
       }
     ]
     transactions = []
-    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "BAT")
+    fake_wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, default_currency: "USD")
     publisher = mock
-    publisher.expects(:wallet).returns(fake_wallet).once
+    publisher.expects(:wallet).returns(fake_wallet).at_least_once
     assert fake_wallet.contribution_balance.channel_amounts_usd[0] > 0
     assert has_balance?(publisher)
   end

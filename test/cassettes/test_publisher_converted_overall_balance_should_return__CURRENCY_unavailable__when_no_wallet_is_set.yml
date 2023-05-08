@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://ratios.rewards.bravesoftware.com/v2/relative/provider/coingecko/bat/usd,eur,btc,eth,gbp/live
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.7.4
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '286'
+      Connection:
+      - keep-alive
+      Date:
+      - Wed, 03 May 2023 04:01:10 GMT
+      Cache-Control:
+      - max-age=831
+      Request-Id:
+      - ch8tp1fip9vtftn5fpvg
+      X-Request-Id:
+      - Eds2sfFA7fM7YgyZ
+      X-Cache:
+      - Hit from cloudfront
+      Via:
+      - 1.1 a3b5bb90516201e5ddd137696b7b0f50.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - SEA19-C3
+      X-Amz-Cf-Id:
+      - eMpcUDhlus2VwiFk1Emrw-ph9jdfzvgMNgFnHtSfAieDl4VsTz-lfA==
+    body:
+      encoding: UTF-8
+      string: '{"payload":{"bat":{"btc":0.0000083,"btc_timeframe_change":0,"eth":0.00012701,"eth_timeframe_change":0,"eur":0.214636,"eur_timeframe_change":0,"gbp":0.1895,"gbp_timeframe_change":0,"usd":0.236713,"usd_timeframe_change":-0.16646035162139}},"lastUpdated":"2023-05-03T04:00:01.515423903Z"}
+
+        '
+  recorded_at: Wed, 03 May 2023 04:01:10 GMT
+recorded_with: VCR 6.1.0

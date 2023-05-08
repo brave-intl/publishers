@@ -88,7 +88,7 @@ module PublishersHelper
 
   def publisher_converted_overall_balance(publisher)
     default_currency = publisher.selected_wallet_provider&.default_currency
-    return if default_currency == "BAT" || default_currency.blank?
+    return if default_currency.blank?
 
     result = I18n.t("helpers.publisher.conversion_unavailable", code: default_currency)
     error_catcher do

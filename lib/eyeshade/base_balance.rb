@@ -20,7 +20,7 @@ module Eyeshade
     OWNER = "owner"
 
     def initialize(rates, default_currency)
-      @rates = rates
+      @rates = (rates[:payload] && rates[:payload][:bat]) || {}
       @default_currency = default_currency
       @amount_probi = 0
       @fees_probi = 0
@@ -53,15 +53,17 @@ module Eyeshade
 
     # Expects and returns BigDecimals
     def convert(amount_bat, currency)
-      return amount_bat if currency == "BAT"
-      return if @rates[currency].nil?
+      # if no currency is provided, assume BAT
+      needed_currency = currency&.downcase || "bat"
+      return amount_bat if needed_currency == "bat"
+      return if @rates[needed_currency].nil?
       # (Albert Wang): It's possible that the resulting parameter is actually a String,
       # so we'll cast it
       if @rates[currency].is_a? String
         require "bigdecimal"
-        amount_bat * BigDecimal(@rates[currency])
+        amount_bat * BigDecimal(@rates[needed_currency])
       else
-        amount_bat * @rates[currency]
+        amount_bat * @rates[needed_currency]
       end
     end
 

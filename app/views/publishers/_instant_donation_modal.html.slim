@@ -12,7 +12,7 @@
         = link_to(t(".customize"), "#", class: 'btn btn-primary', id: "open-banner-button")
         - if uphold_connection&.uphold_verified.present? && uphold_connection&.default_currency.present?
           = hidden_field_tag 'preferred_currency', uphold_connection.default_currency
-          = hidden_field_tag 'conversion_rate', Ratio::Ratio.relative_cached(currency: uphold_connection.default_currency)
+          = hidden_field_tag 'conversion_rate', Ratio::Ratio.relative_cached
         - else
           = hidden_field_tag 'preferred_currency', 'USD'
           = hidden_field_tag 'conversion_rate', 0.18
