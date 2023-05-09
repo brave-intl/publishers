@@ -7,7 +7,7 @@ module Eyeshade
     def self.for_publisher(publisher:)
       transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
       @default_currency = publisher.uphold_connection&.default_currency
-      @rates = Ratio::Ratio.relative_cached(currency: "BAT")
+      @rates = Ratio::Ratio.relative_cached
       @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates: @rates, default_currency: @default_currency, transactions: transactions)
     end
 

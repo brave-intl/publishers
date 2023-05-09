@@ -35,6 +35,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.2
+      - name: Setup firefox
+        uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: "latest-esr"
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
