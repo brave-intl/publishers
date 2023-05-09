@@ -74,20 +74,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.gemini_wallet = gemini_wallet
           channel_response.wallets.push(wallet)
         end
-        # if !site_banner_lookup.channel.crypto_address_for_channels.sol_addresses.empty?
-        #   wallet = PublishersPb::Wallet.new
-        #   solana_wallet = PublishersPb::SolanaWallet.new
-        #   solana_wallet.address = site_banner_lookup.channel.crypto_address_for_channels.sol_addresses.first.crypto_address.address
-        #   wallet.solana_wallet = solana_wallet
-        #   channel_response.wallets.push(wallet)
-        # end
-        # if !site_banner_lookup.channel.crypto_address_for_channels.eth_addresses.empty?
-        #   wallet = PublishersPb::Wallet.new
-        #   ethereum_wallet = PublishersPb::EthereumWallet.new
-        #   ethereum_wallet.address = site_banner_lookup.channel.crypto_address_for_channels.eth_addresses.first.crypto_address.address
-        #   wallet.ethereum_wallet = ethereum_wallet
-        #   channel_response.wallets.push(wallet)
-        # end
       rescue => e
         LogException.perform(e)
       end

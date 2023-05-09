@@ -9,11 +9,11 @@ class CryptoAddressForChannel < ApplicationRecord
   scope :sol_addresses, -> { where(chain: "SOL") }
   scope :eth_addresses, -> { where(chain: "ETH") }
 
-  def eth_address
-    eth_addresses.first.crypto_address.address
+  def self.eth_address
+    eth_addresses.first.&crypto_address.&address
   end
 
-  def sol_address
-    sol_addresses.first.crypto_address.address
+  def self.sol_address
+    sol_addresses.first.&crypto_address.&address
   end
 end
