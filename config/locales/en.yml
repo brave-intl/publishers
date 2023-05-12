@@ -298,6 +298,19 @@ en:
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
       explicit_url: If the above button doesn't work, paste this link in your browser %{url}
+
+    payment_failure_email:
+      subject: A
+      body_html: >
+          We weren't able to send you your Brave Creators payout because there was an issue when we tried to make a deposit to your account.
+          <br/><br/>
+          Please log in to your wallet provider and check if there are any pending requirements, forms, notices, or restrictions on your wallet account, or reach out to your wallet provider for assistance.
+          <br/><br/>
+          Once everything has been resolved with your wallet provider account, please log in to your Brave Creators account (<a href="https://creators.brave.com">https://creators.brave.com</a>), then disconnect and reconnect your wallet provider account to your Brave Creators account.
+          <br/><br/>
+          If you’re still having trouble, you can <a href="https://support.brave.com/hc/en-us/requests/new?ticket_form_id=10061687185549">submit a Creators support ticket </a> for further assistance.
+          <br/><br/>
+          The Brave Creators Team
     login_partner_email:
       salutation: Howdy %{name},
       subject: You've been added as a partner on Brave Rewards
