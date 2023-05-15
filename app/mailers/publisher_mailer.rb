@@ -20,6 +20,15 @@ class PublisherMailer < ApplicationMailer
     end
   end
 
+  def payment_failure_email(publisher:)
+    @publisher = publisher
+    mail_if_destination_exists(
+      to: @publisher.email,
+      asm: transaction_asm_group_id,
+      subject: default_i18n_subject
+    )
+  end
+
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
   def verification_done(channel)
     @channel = channel
@@ -28,8 +37,7 @@ class PublisherMailer < ApplicationMailer
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail_if_destination_exists(
-      to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @channel.details.publication_title)
+      to: @publisher.email
     )
   end
 

@@ -7,7 +7,7 @@ class PublisherPayoutFeedbackStatusUpdaterTest < ActiveJob::TestCase
     test "sets bad wallet status on bad wallets" do
       publisher = publishers(:uphold_connected)
       refute publisher.selected_wallet_provider.oauth_refresh_failed
-      total_count_refresh_failed = UpholdConnection.with_active_connection.count
+      total_count_refresh_failed = UpholdConnection.payable_ignoring_oauth_failures.count
 
       mock_to_update_list = JSON.parse([
         {
@@ -22,8 +22,9 @@ class PublisherPayoutFeedbackStatusUpdaterTest < ActiveJob::TestCase
 
       PublisherPayoutFeedbackStatusUpdater.build.call(to_update_list: mock_to_update_list)
 
-      assert publisher.reload.selected_wallet_provider.oauth_refresh_failed
-      assert_equal total_count_refresh_failed - 1, UpholdConnection.with_active_connection.count
+      refute publisher.reload.selected_wallet_provider.oauth_refresh_failed
+      assert publisher.reload.selected_wallet_provider.payout_failed
+      assert_equal total_count_refresh_failed - 1, UpholdConnection.payable_ignoring_oauth_failures.count
     end
   end
 end

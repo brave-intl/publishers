@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_07_231600) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_04_203533) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
@@ -68,6 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_07_231600) do
     t.boolean "oauth_failure_email_sent", default: false, null: false
     t.text "access_token"
     t.text "refresh_token"
+    t.boolean "payout_failed", default: false, null: false
     t.index ["is_verified"], name: "index_bitflyer_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_bitflyer_connections_on_publisher_id"
     t.index ["recipient_id"], name: "index_bitflyer_connections_on_recipient_id", unique: true
@@ -247,6 +248,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_07_231600) do
     t.integer "recipient_id_status", default: 0, null: false
     t.text "access_token"
     t.text "refresh_token"
+    t.boolean "payout_failed", default: false, null: false
     t.index ["is_verified"], name: "index_gemini_connections_on_is_verified"
     t.index ["publisher_id"], name: "index_gemini_connections_on_publisher_id"
     t.index ["status"], name: "index_gemini_connections_on_status"
@@ -753,6 +755,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_07_231600) do
     t.datetime "access_expiration_time", precision: nil
     t.text "uphold_code"
     t.text "uphold_access_parameters"
+    t.boolean "payout_failed", default: false, null: false
     t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
     t.index ["uphold_id"], name: "index_uphold_connections_on_uphold_id"
