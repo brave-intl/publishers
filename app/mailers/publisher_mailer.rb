@@ -22,11 +22,11 @@ class PublisherMailer < ApplicationMailer
 
   def payment_failure_email(publisher:)
     @publisher = publisher
-      mail_if_destination_exists(
-        to: @publisher.email,
-        asm: transaction_asm_group_id,
-        subject: default_i18n_subject
-      )
+    mail_if_destination_exists(
+      to: @publisher.email,
+      asm: transaction_asm_group_id,
+      subject: default_i18n_subject
+    )
   end
 
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
