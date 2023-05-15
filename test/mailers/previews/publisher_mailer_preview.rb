@@ -21,6 +21,13 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.verify_email(publisher: publisher)
   end
 
+  def payment_failure_email
+    publisher = Publisher.first
+    publisher&.pending_email = "test@brave.com"
+    PublisherTokenGenerator.new(publisher: Publisher.first).perform
+    PublisherMailer.payment_failure_email(publisher: publisher)
+  end
+
   def verification_done
     publisher = Publisher.joins(:user_authentication_token).first
     PublisherTokenGenerator.new(publisher: publisher).perform
