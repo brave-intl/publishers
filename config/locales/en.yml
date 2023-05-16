@@ -304,9 +304,9 @@ en:
       body_html: >
         We weren't able to send you your Brave Creators payout because there was an issue when we tried to make a deposit to your account.
         <br/><br/>
-        Please log in to your account provider and check if there are any pending requirements, forms, notices, or restrictions on your wallet account, or reach out to your account provider for assistance.
+        Please log in to your account provider and check if there are any pending requirements, forms, notices, or restrictions on your account, or reach out to your account provider for assistance.
         <br/><br/>
-        Once everything has been resolved with your account provider account, please log in to your <a href="https://creators.brave.com">Brave Creators account</a>, then disconnect and reconnect your account provider account to your Brave Creators account.
+        Once everything has been resolved with your account provider, please log in to your <a href="https://creators.brave.com">Brave Creators account</a>, then disconnect and reconnect your account to your Brave Creators account.
         <br/><br/>
         If you’re still having trouble, you can <a href="https://support.brave.com/hc/en-us/requests/new?ticket_form_id=10061687185549">submit a Creators support ticket </a> for further assistance.
         <br/><br/>
