@@ -16,7 +16,12 @@ class PublisherPayoutFeedbackStatusUpdater < BuilderBaseService
       end
       publisher_wp_id = publisher.selected_wallet_provider&.wallet_provider_id
       provided_wp_id = channels[0]["walletProviderId"]
-      if publisher_wp_id == provided_wp_id && publisher_wp_id.present?
+      selected_wallet_provider = publisher.selected_wallet_provider
+      if selected_wallet_provider.blank?
+        Rails.logger.info("Couldn't find selected_wallet_provider for #{publisher_str}!")
+        next
+      end
+      if publisher_wp_id == provided_wp_id && publisher_wp_id.present? && !selected_wallet_provider.payout_failed
         Rails.logger.info("Setting bad wallet for #{publisher.id} with email #{publisher.email}")
         publisher.selected_wallet_provider.update_column(:payout_failed, true)
         PublisherMailer.payment_failure_email(publisher: publisher).deliver_later
