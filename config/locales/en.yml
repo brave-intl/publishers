@@ -302,15 +302,15 @@ en:
     payment_failure_email:
       subject: A
       body_html: >
-          We weren't able to send you your Brave Creators payout because there was an issue when we tried to make a deposit to your account.
-          <br/><br/>
-          Please log in to your wallet provider and check if there are any pending requirements, forms, notices, or restrictions on your wallet account, or reach out to your wallet provider for assistance.
-          <br/><br/>
-          Once everything has been resolved with your wallet provider account, please log in to your <a href="https://creators.brave.com">Brave Creators account</a>, then disconnect and reconnect your wallet provider account to your Brave Creators account.
-          <br/><br/>
-          If you’re still having trouble, you can <a href="https://support.brave.com/hc/en-us/requests/new?ticket_form_id=10061687185549">submit a Creators support ticket </a> for further assistance.
-          <br/><br/>
-          The Brave Creators Team
+        We weren't able to send you your Brave Creators payout because there was an issue when we tried to make a deposit to your account.
+        <br/><br/>
+        Please log in to your account provider and check if there are any pending requirements, forms, notices, or restrictions on your account, or reach out to your account provider for assistance.
+        <br/><br/>
+        Once everything has been resolved with your account provider, please log in to your <a href="https://creators.brave.com">Brave Creators account</a>, then disconnect and reconnect your account to your Brave Creators account.
+        <br/><br/>
+        If you’re still having trouble, you can <a href="https://support.brave.com/hc/en-us/requests/new?ticket_form_id=10061687185549">submit a Creators support ticket </a> for further assistance.
+        <br/><br/>
+        The Brave Creators Team
     login_partner_email:
       salutation: Howdy %{name},
       subject: You've been added as a partner on Brave Rewards
@@ -362,8 +362,8 @@ en:
         <br/><br/>
         Further, you are not permitted to earn through the Referral Program using a site that impersonates brave.com. If you would like to continue in the Referral Program, you will need to
         <ul>
-          <li>Change your site's domain name to not include the word "Brave".</li>
-          <li>Provide a visible, clear statement at the top of the page stating that you are not affiliated with Brave </li>
+        <li>Change your site's domain name to not include the word "Brave".</li>
+        <li>Provide a visible, clear statement at the top of the page stating that you are not affiliated with Brave </li>
         </ul>
         You can choose not to change your domain name, but you would have to change the download button to direct users to brave.com and not your Referral Code. You cannot earn through the Referral Program while impersonating Brave.
         <br/><br/>
@@ -891,7 +891,7 @@ en:
       new_auth_token_wrong_email_publisher_verified: Email doesn't match the publisher verification. Try leaving email blank to use the most recent email.
   site_channels:
     shared:
-      limit: "You have reached the limit of the number of site channels you can have associated with your account.  Please contact customer support if you need to have this increased" 
+      limit: "You have reached the limit of the number of site channels you can have associated with your account.  Please contact customer support if you need to have this increased"
       trusted_file: Place a Trusted File into your Domain
       verification_file:
         download_html: |
