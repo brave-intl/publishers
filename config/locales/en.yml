@@ -775,9 +775,11 @@ en:
         uphold_error: There was a problem connecting with Uphold. %{message}
         state_mismatch: Specifically, there was a mismatch between our state and Uphold.
         missing_state: There is no state token, this might have happened if you clicked the back button.
+        no_kyc: We found an issue with the connection to your Uphold account. Please check if there are any issues with your Uphold account, and try connecting again.
     gemini_connections:
       new:
         gemini_error: There was a problem connecting with Gemini. %{message}
+        no_kyc: We found an issue with the connection to your Gemini account. Please check if there are any issues with your Gemini account, and try connecting again.
       destroy:
         removed: Removed Gemini Connection
         errors: There were some errors removing your Gemini account. %{errors}

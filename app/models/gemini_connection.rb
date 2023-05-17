@@ -207,7 +207,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
         resp = conn.verify_through_gemini
 
-        raise InvalidUserError.new("Authorization failed, we Could not verify your Gemini user.") if resp.nil?
+        raise InvalidUserError.new(I18n.t(".publishers.gemini_connections.new.no_kyc")) if resp.nil?
 
         publisher.update!(selected_wallet_provider: conn)
       end

@@ -377,7 +377,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         FlaggedConnectionError.new("Cannot create Uphold connection.  Please contact Uphold to review your account's status.")
       # Deny unverified wallets
       elsif UpholdConnection.strict_create && !result.memberAt.present?
-        UnverifiedConnectionError.new("Cannot create Uphold connection. Please complete Uphold's account verification process and try again.")
+        UnverifiedConnectionError.new(I18n.t(".publishers.uphold.create.no_kyc"))
       # Deny duplicates
       elsif UpholdConnection.strict_create && UpholdConnection.in_use?(result.id)
         if UpholdConnection.is_suspended?(result.id)
