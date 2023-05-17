@@ -228,6 +228,7 @@ module MockUpholdResponses
   def stub_get_user_deposits_capability(http_status: 200)
     stub_get_user_capability(capability: "deposits", http_status: http_status)
   end
+
   def stub_get_user_deposits_capability_incapable(http_status: 200)
     stub_get_user_capability(capability: "deposits", http_status: http_status, requirements: [1], restrictions: [2])
   end
