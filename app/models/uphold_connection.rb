@@ -473,7 +473,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
         )
 
         if !conn.has_deposit_capability?
-          raise CapabilityError.new("Uphold has placed additional requirements or restrictions on your account and we cannot create your connection at this time.  Please contact Uphold directly.")
+          raise CapabilityError.new(I18n.t(".publishers.uphold.create.limited_functionality"))
         end
 
         # 3.) Pull data on existing user from uphold and set on model

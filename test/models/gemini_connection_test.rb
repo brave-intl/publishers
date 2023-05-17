@@ -236,6 +236,19 @@ class GeminiConnectionTest < SidekiqTestCase
       end
     end
 
+    describe "when the account is not active/capable" do
+      let(:publisher) { publishers(:gemini_not_completed) }
+
+      before do
+        mock_gemini_incapable_account_request!
+      end
+
+      it "should raise an error" do
+        err = assert_raises(GeminiConnection::CapabilityError) { GeminiConnection.create_new_connection!(publisher, access_token_response) }
+        assert_equal err.message, I18n.t(".publishers.gemini_connections.new.limited_functionality")
+      end
+    end
+
     describe "when the account is from an allowed country" do
       let(:publisher) { publishers(:gemini_completed) }
 

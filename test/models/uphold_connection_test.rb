@@ -85,6 +85,17 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       end
     end
 
+    describe "when incapable" do
+      before do
+        stub_get_user_deposits_capability_incapable
+      end
+
+      it "should raise an error" do
+        err = assert_raises(UpholdConnection::CapabilityError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+        assert_equal err.message, I18n.t(".publishers.uphold.create.limited_functionality")
+      end
+    end
+
     describe "when wallet already exists" do
       before do
         conn = UpholdConnection.where.not(uphold_id: nil).select(:uphold_id).first

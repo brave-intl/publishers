@@ -228,6 +228,9 @@ module MockUpholdResponses
   def stub_get_user_deposits_capability(http_status: 200)
     stub_get_user_capability(capability: "deposits", http_status: http_status)
   end
+  def stub_get_user_deposits_capability_incapable(http_status: 200)
+    stub_get_user_capability(capability: "deposits", http_status: http_status, requirements: [1], restrictions: [2])
+  end
 
   def stub_list_card_addresses(id: "024e51fc-5513-4d82-882c-9b22024280cc", type: UpholdConnectionForChannel::NETWORK, empty: false, http_status: 200)
     body = [{
