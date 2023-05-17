@@ -80,7 +80,8 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       end
 
       it "should raise an error" do
-        assert_raises(UpholdConnection::UnverifiedConnectionError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+        err = assert_raises(UpholdConnection::UnverifiedConnectionError) { UpholdConnection.create_new_connection!(publisher, access_token_response) }
+        assert_equal err.message, I18n.t(".publishers.uphold.create.no_kyc")
       end
     end
 

@@ -135,9 +135,6 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     users = Gemini::Account.find(token: access_token).users
     user = users.find { |u| u.is_verified && u.status == "Active" }
 
-    # If we couldn't find a verified account we'll take the first user.
-    user ||= users.first
-
     return if !user.present?
     update!(
       display_name: user.name,
@@ -206,9 +203,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
         )
 
         resp = conn.verify_through_gemini
-
         raise InvalidUserError.new(I18n.t(".publishers.gemini_connections.new.no_kyc")) if resp.nil?
-
         publisher.update!(selected_wallet_provider: conn)
       end
     end

@@ -223,6 +223,19 @@ class GeminiConnectionTest < SidekiqTestCase
       end
     end
 
+    describe "when the account is not verified" do
+      let(:publisher) { publishers(:gemini_not_completed) }
+
+      before do
+        mock_gemini_unverified_account_request!
+      end
+
+      it "should raise an error" do
+        err = assert_raises(GeminiConnection::InvalidUserError) { GeminiConnection.create_new_connection!(publisher, access_token_response) }
+        assert_equal err.message, I18n.t(".publishers.gemini_connections.new.no_kyc")
+      end
+    end
+
     describe "when the account is from an allowed country" do
       let(:publisher) { publishers(:gemini_completed) }
 
