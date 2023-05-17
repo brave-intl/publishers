@@ -18,6 +18,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :logo_url, :string, 4
       repeated :donation_amounts, :double, 5
       optional :social_links, :message, 6, "publishers_pb.SocialLinks"
+      optional :web3_url, :string, 7
     end
     add_message "publishers_pb.UpholdWallet" do
       optional :wallet_state, :enum, 1, "publishers_pb.UpholdWalletState"
