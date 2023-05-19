@@ -48,6 +48,19 @@ class GeminiConnection extends React.Component<any, any> {
           <GeminiIcon />
         </h6>
 
+        <div>
+          {this.state.error && (
+              <div className="alert alert-warning">{this.state.error} </div>
+          )}
+
+          {this.props.payoutFailed && (
+              <div className="alert alert-warning">
+                <FormattedMessage id={"walletServices.brave.paymentFailedWarning"} values={{
+                  custodian: 'Gemini'
+                }} />
+              </div>
+          )}
+
         <div className="row mb-2">
           <div className="col-6 text-dark text-truncate">
             <FormattedMessage
@@ -96,6 +109,7 @@ class GeminiConnection extends React.Component<any, any> {
             }} />
           </VerifyButton>
         )}
+        </div>
       </div>
     );
   }

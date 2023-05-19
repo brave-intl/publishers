@@ -90,7 +90,7 @@ top_referrer_gemini:
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
   selected_wallet_provider: top_referrer_gemini_connected (GeminiConnection)
-  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true }.to_json %>
+  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true,  UserFeatureFlags::GEMINI_ENABLED => true }.to_json %>
 
 top_referrer_bitflyer:
   email: "top_referrer_bitflyer@hello.org"

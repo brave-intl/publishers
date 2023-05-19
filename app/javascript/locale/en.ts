@@ -265,6 +265,7 @@ export default {
       description: "Connect a custodial account to receive BAT contributions and payouts.",
       title: "Account for BAT Payment",
       nonKycWarning: "Connect a custodial account to become a <em>verified creator</em>, and to begin receiving monthly payouts. You won’t be eligible for payouts until you connect a custodial account. <custodial_support_link>Learn more.</custodial_support_link>"
+      paymentFailedWarning: "We found an issue with the connection to your {custodian} account. Please check if there are any issues with your {custodian} account, and try connecting again."
     },
     connected: "Connected",
     currencies: {

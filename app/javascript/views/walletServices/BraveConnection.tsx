@@ -46,6 +46,7 @@ class BraveConnection extends React.Component<any, any> {
           verifyUrl={this.state.upholdConnection.verify_url}
           canCreateCards={this.state.upholdConnection['can_create_uphold_cards?']}
           oauth_refresh_failed={this.state.upholdConnection.oauth_refresh_failed}
+          payoutFailed={this.state.upholdConnection.payout_failed}
           loadData={this.loadData}
         />
       );
@@ -62,6 +63,7 @@ class BraveConnection extends React.Component<any, any> {
           isPayable={this.state.geminiConnection["payable?"]}
           validCountry={this.state.geminiConnection["valid_country?"]}
           recipientIdStatus={this.state.geminiConnection['recipient_id_status']}
+          payoutFailed={this.state.geminiConnection.payout_failed}
           verifyUrl={this.state.geminiConnection.verify_url}
           oauth_refresh_failed={this.state.geminiConnection.oauth_refresh_failed}
           loadData={this.loadData}
@@ -78,6 +80,7 @@ class BraveConnection extends React.Component<any, any> {
           displayName={this.state.bitflyerConnection.display_name}
           isPayable={this.state.bitflyerConnection["payable?"]}
           verifyUrl={this.state.bitflyerConnection.verify_url}
+          payoutFailed={this.state.bitflyerConnection.payout_failed}
           oauth_refresh_failed={this.state.bitflyerConnection.oauth_refresh_failed}
           loadData={this.loadData}
         />
