@@ -109,7 +109,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     assert service.temp_file.present?
     result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
-    assert_equal result.channel_responses[0].site_banner_details.web3_url, "/c/123456dfg6"
+    assert_equal URI.parse(result.channel_responses[0].site_banner_details.web3_url).path, "/c/123456dfg6"
   end
 
   describe "complex channel response file generation" do
