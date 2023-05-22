@@ -85,6 +85,7 @@ top_referrer:
 
 top_referrer_gemini:
   email: "top_referrer_gemini@hello.org"
+  name: "Gemini Top Referrer Completed"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
