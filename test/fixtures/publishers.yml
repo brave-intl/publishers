@@ -104,6 +104,16 @@ top_referrer_bitflyer:
   selected_wallet_provider: top_referrer_bitflyer_connected (BitflyerConnection)
   feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => false }.to_json %>
 
+bitflyer_two:
+  name: "Bitflyer Two Completed"
+  email: "bitflyer_two@hello.org"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= DateTime.now %>"
+  subscribed_to_marketing_emails: true
+  selected_wallet_provider: bitflyer_two_connected (BitflyerConnection)
+  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true }.to_json %>
+
 gemini_completed:
   email: "gemini@completed.org"
   name: "Gemini the Completed"
