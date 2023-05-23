@@ -85,12 +85,13 @@ top_referrer:
 
 top_referrer_gemini:
   email: "top_referrer_gemini@hello.org"
+  name: "Gemini Top Referrer Completed"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
   selected_wallet_provider: top_referrer_gemini_connected (GeminiConnection)
-  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true }.to_json %>
+  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true,  UserFeatureFlags::GEMINI_ENABLED => true }.to_json %>
 
 top_referrer_bitflyer:
   email: "top_referrer_bitflyer@hello.org"

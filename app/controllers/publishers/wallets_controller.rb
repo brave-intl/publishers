@@ -47,7 +47,7 @@ module Publishers
     # Returns a hash
     def gemini_wallet
       current_publisher.gemini_connection.as_json(
-        only: [:default_currency, :display_name, :recipient_id, :oauth_refresh_failed, :recipient_id_status],
+        only: [:default_currency, :display_name, :recipient_id, :oauth_refresh_failed, :recipient_id_status, :payout_failed],
         methods: [:payable?, :verify_url, :valid_country?]
       )
     end

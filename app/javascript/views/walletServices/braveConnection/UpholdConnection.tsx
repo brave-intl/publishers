@@ -35,6 +35,14 @@ class UpholdConnection extends React.Component<any, IUpholdConnectionState> {
             <div className="alert alert-warning">{this.state.error} </div>
           )}
 
+          {this.props.payoutFailed && (
+              <div className="alert alert-warning">
+                <FormattedMessage id={"walletServices.brave.paymentFailedWarning"} values={{
+                  custodian: 'Uphold'
+                }} />
+              </div>
+          )}
+
           <div className="row mb-2">
             <div className="col-6 text-dark text-truncate">
               <FormattedMessage

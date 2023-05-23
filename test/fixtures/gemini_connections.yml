@@ -34,6 +34,8 @@ top_referrer_gemini_connected:
   recipient_id: <%= SecureRandom.uuid %>
   country: 'US'
   is_verified: true
+  payout_failed: true
+  display_name: 'ABC'
   status: 'Active'
 
 gemini_blocked_country_connection:

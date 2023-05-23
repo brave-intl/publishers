@@ -93,6 +93,23 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     result = PublishersPb::ChannelResponseList.decode(result)
     assert_equal result.channel_responses[0].wallets[0].gemini_wallet.address, channel.gemini_connection_for_channel.first.recipient_id
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
+    assert_equal result.channel_responses[0].site_banner_details.web3_url, ""
+  end
+
+  test "includes web3 url when there is a crypto address" do
+    channel = channels(:verified)
+    channel.send(:update_site_banner_lookup!)
+    site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
+    assert site_banner_lookup.present?
+
+    service = Cache::BrowserChannels::ResponsesForPrefix.new
+    ActiveRecord::Base.connected_to(role: :reading) do
+      service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, SiteBannerLookup::NIBBLE_LENGTH_FOR_RESPONSES])
+    end
+    assert service.temp_file.present?
+    result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
+    result = PublishersPb::ChannelResponseList.decode(result)
+    assert_equal URI.parse(result.channel_responses[0].site_banner_details.web3_url).path, "/c/123456dfg6"
   end
 
   describe "complex channel response file generation" do
