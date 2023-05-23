@@ -65,4 +65,35 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
     assert_content "We found an issue with the connection"
     ActionController::Base.allow_forgery_protection = false
   end
+
+  test "Uphold payout failed test" do
+    # This test requires forgery protection in FF
+    ActionController::Base.allow_forgery_protection = true
+    publisher = publishers(:top_referrer)
+    wall = publisher.selected_wallet_provider
+    wall.payout_failed = true
+    wall.save!
+
+    sign_in publisher
+    visit home_publishers_path
+    assert_content "We found an issue with the connection"
+    ActionController::Base.allow_forgery_protection = false
+  end
+
+  test "Bitflyer payout failed test" do
+    # This test requires forgery protection in FF
+    ActionController::Base.allow_forgery_protection = true
+
+    Capybara.using_driver(:firefox_ja) do
+      publisher = publishers(:top_referrer_bitflyer)
+
+      sign_in publisher
+
+      visit home_publishers_path
+
+      assert_content "アカウントへの接続に問題が見つかりました"
+    end
+
+    ActionController::Base.allow_forgery_protection = false
+  end
 end
