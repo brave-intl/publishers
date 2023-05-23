@@ -52,4 +52,17 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
 
     refute_content page, I18n.t("publishers.home_balances.payout_in_progress")
   end
+
+  test "Gemini payout failed test" do
+    # This test requires forgery protection in FF
+    ActionController::Base.allow_forgery_protection = true
+    publisher = publishers(:top_referrer_gemini)
+
+    sign_in publisher
+
+    visit home_publishers_path
+
+    assert_content "We found an issue with the connection"
+    ActionController::Base.allow_forgery_protection = false
+  end
 end

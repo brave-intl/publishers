@@ -11,6 +11,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
   class InvalidUserError < WalletCreationError; end
 
+  class CapabilityError < WalletCreationError; end
+
   JAPAN = "JP"
 
   has_paper_trail
@@ -135,8 +137,14 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     users = Gemini::Account.find(token: access_token).users
     user = users.find { |u| u.is_verified && u.status == "Active" }
 
-    # If we couldn't find a verified account we'll take the first user.
-    user ||= users.first
+    if !user
+      user = users.find { |u| u.is_verified }
+      if !user
+        raise InvalidUserError.new(I18n.t(".publishers.gemini_connections.new.no_kyc"))
+      else
+        raise CapabilityError.new(I18n.t(".publishers.gemini_connections.new.limited_functionality"))
+      end
+    end
 
     return if !user.present?
     update!(
@@ -205,10 +213,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
           recipient_id_status: "present"
         )
 
-        resp = conn.verify_through_gemini
-
-        raise InvalidUserError.new("Authorization failed, we Could not verify your Gemini user.") if resp.nil?
-
+        conn.verify_through_gemini
         publisher.update!(selected_wallet_provider: conn)
       end
     end

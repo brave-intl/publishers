@@ -14,7 +14,8 @@ class EnqueueTopReferrerPayoutJobTest < NoTransactDBBleanupTest
 
   test "it enqueues only top referrers to to call EnqueuePublishersForPayoutJob (strategy: :deletion)" do
     top_publisher_ids = Publisher.with_verified_channel.in_top_referrer_program.pluck(:id)
-    services = [Payout::UpholdService, Payout::BitflyerService, Payout::GeminiService]
+    services = [Payout::UpholdService, Payout::BitflyerService]
+    # Gemini not to be called due to the payment_failure being true
     services.each do |service|
       service.any_instance.expects(:perform).with do |args|
         assert args[:publisher].id.in?(top_publisher_ids)
