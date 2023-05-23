@@ -55,7 +55,7 @@ class GeminiConnection extends React.Component<any, any> {
 
           {this.props.payoutFailed && (
               <div className="alert alert-warning">
-                <FormattedMessage id={"walletServices.brave.paymentFailedWarning"} values={{
+                <FormattedMessage id="walletServices.brave.paymentFailedWarning" values={{
                   custodian: 'Gemini'
                 }} />
               </div>

@@ -76,6 +76,7 @@ completed:
 
 top_referrer:
   email: "top_referrer@hello.org"
+  name: "Uphold Top Referrer Completed"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
@@ -94,13 +95,14 @@ top_referrer_gemini:
   feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true,  UserFeatureFlags::GEMINI_ENABLED => true }.to_json %>
 
 top_referrer_bitflyer:
+  name: "Bitflyer Top Referrer Completed"
   email: "top_referrer_bitflyer@hello.org"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
   selected_wallet_provider: top_referrer_bitflyer_connected (BitflyerConnection)
-  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true }.to_json %>
+  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => false }.to_json %>
 
 gemini_completed:
   email: "gemini@completed.org"

@@ -11,3 +11,5 @@ suspended_bitflyer_connection:
 
 top_referrer_bitflyer_connected:
   publisher: top_referrer_bitflyer
+  payout_failed: true
+  display_name: 'display_name'

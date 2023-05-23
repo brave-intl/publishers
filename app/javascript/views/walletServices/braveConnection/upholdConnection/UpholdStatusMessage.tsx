@@ -28,6 +28,7 @@ const UpholdStatusMessage = (props) => {
       messageId = "walletServices.uphold.status.connecting";
       break;
     case UpholdStatus.ReauthorizationNeeded:
+    case UpholdStatus.Unconnected:
       messageId = "walletServices.uphold.status.reauthorizationNeeded";
       url = null
       break;

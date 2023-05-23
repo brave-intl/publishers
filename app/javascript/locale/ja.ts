@@ -82,6 +82,7 @@ export default {
     brave: {
       title: "BAT受け取り用ウォレット",
       description: "ウォレットを接続してチップなどを受け取れるようにします。",
+      paymentFailedWarning: "{custodian} アカウントへの接続に問題が見つかりました。 custodian アカウントに問題がないか確認し、再度接続をお試しください。",
     },
     lastDeposit: "   ",
     lastDepositDate: "   ",
