@@ -320,7 +320,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    newrelic_rpm (8.16.0)
+    newrelic_rpm (9.2.2)
     nio4r (2.5.9)
     nokogiri (1.15.1-x86_64-darwin)
       racc (~> 1.4)
@@ -683,7 +683,7 @@ DEPENDENCIES
   minitest-rails
   minitest-retry
   mocha
-  newrelic_rpm (~> 8.16.0)
+  newrelic_rpm (~> 9.2.2)
   nokogiri (>= 1.14.3)
   omniauth-github (~> 2.0.1)
   omniauth-google-oauth2 (~> 1.1.1)
