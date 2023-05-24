@@ -12,6 +12,13 @@ Creators is powered by Ruby on Rails and React.
 
 Development with Docker and `docker-compose` is recommended for anyone just getting started.  If for any reason you wish to run the stack locally see [Local Installation Instructions](docs/LOCAL.md). Creators has a complex set of interactions however and has another application ([Eyeshade](https://github.com/brave-intl/bat-ledger)) as a core integration/service dependency that is most readily accessed via `docker-compose`.
 
+## Running locally with Overmind
+
+If you don't want to use docker, and want to develop locally, you can use [overmind](https://github.com/DarthSim/overmind):
+
+Make sure to install it and then run:
+`overmind start -N -f Procfile.dev`
+
 ## Running locally with docker-compose
 
 1. [install docker and docker compose](https://docs.docker.com/compose/install/).

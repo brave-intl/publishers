@@ -40,6 +40,12 @@ top_referrer_bitflyer_channel:
   verified: true
   deposit_id: 'bitflyer_pub_channel123'
 
+bitflyer_two_channel:
+  publisher: bitflyer_two
+  details: bitflyer_two_channel_details (SiteChannelDetails)
+  verified: true
+  deposit_id: 'bitflyer_pub_channel123'
+
 verified_exclude:
   publisher: medium_media_group
   details: verified_exclude_details (SiteChannelDetails)

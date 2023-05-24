@@ -18,11 +18,11 @@ class BitflyerRefreshJobTest < ActiveJob::TestCase
       end
 
       it "should return count" do
-        assert_equal(3, result)
+        assert_equal(4, result)
       end
 
       it "should return limit" do
-        assert_equal(2, BitflyerConnection.where(oauth_refresh_failed: true).count)
+        assert_equal(3, BitflyerConnection.where(oauth_refresh_failed: true).count)
       end
     end
   end

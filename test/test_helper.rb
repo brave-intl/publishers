@@ -43,6 +43,19 @@ Capybara.register_driver "firefox" do |app|
     options: opts
   )
 end
+
+Capybara.register_driver :firefox_ja do |app|
+  profile = Selenium::WebDriver::Firefox::Profile.new
+  profile["intl.accept_languages"] = "ja-JP"
+  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
+  opts.args << "--headless"
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    options: opts
+  )
+end
+
 Capybara.register_driver :rack_test_jp do |app|
   Capybara::RackTest::Driver.new(app, headers: {"HTTP_ACCEPT_LANGUAGE" => "ja-JP"})
 end

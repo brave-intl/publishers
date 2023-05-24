@@ -38,6 +38,16 @@ Rails.application.configure do
   require "connection_pool"
   REDIS = ConnectionPool.new(size: 5) { Redis.new }
 
+
+  # SESSION STORE
+  config.session_store :redis_session_store,
+                       key:  "_publishers_session",
+                       redis: {
+                         client: Redis.new(url: Rails.application.secrets[:redis_url]),
+                         expire_after: 120.minutes,
+                         key_prefix: 'publishers:session:'
+                       }
+
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "publishers_#{Rails.env}"
