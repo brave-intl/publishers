@@ -9,7 +9,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.5.0"
 gem "railties", rails_version
 
-gem "rack", "2.2.6.4"
+gem "rack"
 
 # All things countries
 gem "countries"
@@ -19,9 +19,6 @@ gem "active_model_serializers", "~> 0.10.0"
 
 # For bulk updates/imports
 gem "activerecord-import", "1.4.1"
-
-# ActiveRecord Session store for server side storage of session data
-gem "activerecord-session_store", "~> 2.0"
 
 gem "activerecord7-redshift-adapter", git: "https://github.com/pennylane-hq/activerecord7-redshift-adapter.git"
 
@@ -56,7 +53,7 @@ gem "domain_name"
 gem "faraday", "~> 2.7.4"
 gem "faraday-retry"
 
-gem "ffi", github: "ffi/ffi", tag: "v1.15.5", submodules: true
+gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
@@ -117,6 +114,7 @@ gem "recaptcha", "~> 5.12.3", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.0.6"
+gem "redis-session-store"
 
 gem "render_async", "~> 2.1.8"
 
