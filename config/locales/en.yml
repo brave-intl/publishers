@@ -204,7 +204,7 @@ en:
       body_html: |
         <p>Your %{date} invoice has a new document ready for you to view.</p>
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
-      button: Log in to Brave Rewards
+      button: Log in to Brave Creators
   batch_mailer:
     notification_for_kyc:
       subject: "Upcoming changes regarding referrals and Uphold Verified Membership"
@@ -293,10 +293,10 @@ en:
         The Brave Creators team
 
     login_email:
-      subject: Log in to Brave Rewards
+      subject: Log in to Brave Creators
       body_html: |
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
-      button: Log in to Brave Rewards
+      button: Log in to Brave Creators
       explicit_url: If the above button doesn't work, paste this link in your browser %{url}
 
     payment_failure_email:
@@ -318,7 +318,7 @@ en:
         You've been added as a partner on Brave Rewards.
         Click the private access link below to log in to your account with
         <strong>Brave Rewards</strong>. This link can only be used once.
-      button: Log in to Brave Rewards
+      button: Log in to Brave Creators
     notify_email_change:
       subject: Notification of Brave Rewards email change
       title: Notification of email change
@@ -414,14 +414,14 @@ en:
       title: Verification complete
       intro_html: |
         <p>Congratulations! You are now a verified Brave Rewards creator.</p> <p>Ready to claim your funds? Visit your Brave Rewards dashboard to submit your payment information using the button below.</p>
-      button: Log in to Brave Rewards
+      button: Log in to Brave Creators
     wallet_not_connected:
       subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |
         <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Rewards!</span></p>
-        <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
+        <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Creators and connect your wallet from the dashboard to receive your funds.</p>
       unsubscribe: These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
-      button: Log in to Brave Rewards
+      button: Log in to Brave Creators
     verify_email:
       subject: Verify your Brave Rewards email address
       body_html: |
@@ -687,7 +687,7 @@ en:
       youtube_login:
         channel_not_eligable_for_youtube_login: Channel is not able to use Youtube login. Please use your email address.
       require_publisher:
-        log_in_and_retry: Please log in to Brave Rewards and retry the operation
+        log_in_and_retry: Please Log in to Brave Creators and retry the operation
       register_twitch_channel:
         channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
       register_twitter_channel:
