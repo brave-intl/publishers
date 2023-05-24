@@ -13,7 +13,8 @@ class LogException
 
   def self.new_relic_params(publisher_params, params, expected:)
     {
-      custom_params: params.merge(publisher: publisher_params, expected: expected)
+      expected: expected,
+      custom_params: params.merge(publisher: publisher_params)
     }
   end
 
