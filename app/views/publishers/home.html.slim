@@ -18,7 +18,7 @@ noscript
 = hidden_field_tag 'publisher_id', @publisher.id
 
 #welcomeModal data-props="#{ { isOpen: new_publisher?(@publisher) }.to_json }"
-= javascript_pack_tag "WelcomeModal"
+= append_javascript_pack_tag "WelcomeModal"
 
 .dashboard
     #uphold_status
