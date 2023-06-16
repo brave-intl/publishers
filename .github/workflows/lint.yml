@@ -57,6 +57,8 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn --frozen-lockfile
+      - name: Yarn build
+        run: yarn build
       - name: Standard
         run: bundle exec standardrb
       - name: Brakeman
