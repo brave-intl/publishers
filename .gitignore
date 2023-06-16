@@ -47,6 +47,8 @@ package-lock.json
 
 /public/packs
 /public/packs-test
+/public/static
+
 /node_modules
 /yarn-error.log
 yarn-debug.log*
