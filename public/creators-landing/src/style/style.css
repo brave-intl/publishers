@@ -183,12 +183,13 @@ h4 {
 }
 
 .summary-spacer {
-  height: 100px;
+  min-height: 100px;
+  height: 13vw;
 }
 
 @media (min-width: 1200px) {
   .summary-spacer {
-    height: 200px;
+    min-height: 200px;
   }
 }
 
