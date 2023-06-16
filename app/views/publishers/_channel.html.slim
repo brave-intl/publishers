@@ -70,11 +70,6 @@
         .added-date.d-none.d-sm-block
           = t(".added", date: channel.created_at.to_date.iso8601)
           span.mx-2= ' | '
-        - if channel.uphold_connection.present? && !current_publisher.uphold_connection.japanese_account?
-          =image_tag 'uphold.svg', style: "width: 18px; height: 18px; margin-top: 3px;"
-          =link_to(t('.uphold'), "#{uphold_dashboard_url}/cards/#{channel.uphold_connection.card_id}", class: 'px-1', target: "_blank")
-          span.mx-2
-            = ' | '
         a.remove-channel href="#" data-channel-id=(channel.id)
           = t(".remove_verified")
         script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
