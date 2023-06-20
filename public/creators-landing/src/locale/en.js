@@ -74,7 +74,7 @@ export default {
       "Finish setting up your Creator's account by clicking on the secure login link in the email we just sent. Don't see the email? Be sure to check your spam folder or ",
     signinSuccess: "A login email is on the way",
     signinSuccessBody:
-      "Click on the secure login link in the email to access your account. Don't see the email? Be sure to check your spam folder or ",
+      "If your email matches our records, we've sent you a secure login link to access your account. Can't find the email? Please check your spam folder or ",
     signTryAgain: "click here to try again.",
     iconHelpHref: "https://support.brave.com/hc/en-us",
     iconMessageHref: "mailto: publishers@basicattentiontoken.org",
