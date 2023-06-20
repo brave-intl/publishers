@@ -246,6 +246,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    google-protobuf (3.21.12)
     google-protobuf (3.21.12-x86_64-darwin)
     hashdiff (1.0.1)
     hashie (5.0.0)
@@ -322,6 +323,8 @@ GEM
       net-protocol
     newrelic_rpm (9.2.2)
     nio4r (2.5.9)
+    nokogiri (1.15.1-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.15.1-x86_64-darwin)
       racc (~> 1.4)
     oauth2 (2.0.9)
@@ -641,6 +644,7 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
+  aarch64-linux
   x86_64-darwin-22
 
 DEPENDENCIES
@@ -748,4 +752,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.13
+   2.4.14

@@ -312,7 +312,6 @@ Rails.application.routes.draw do
       end
     end
     resources :promo_campaigns, only: %i[create]
-    root to: "dashboard#index" # <--- Root route
 
     resources :uphold_status_reports, only: [:index, :show]
   end
