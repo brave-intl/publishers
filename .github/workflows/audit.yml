@@ -60,7 +60,7 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Yarn build
-        run: cd public/creators-landing && yarn build
+        run: cd public/creators-landing && && yarn install && yarn build 
       - name: Yarn audit
         run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
       - name: Bundler Audit
