@@ -61,7 +61,7 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Yarn build
-        run: yarn build
+        run: cd public/creators-landing && yarn build
       - name: Prepare database
         run: PREPARING_DATABASE=1 RAILS_ENV=test bundle exec rails db:prepare
         env:
