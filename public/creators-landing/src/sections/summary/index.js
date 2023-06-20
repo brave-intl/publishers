@@ -10,7 +10,6 @@ import {
   CaratRightIcon,
   ChatIcon,
   HelpIcon,
-  MailIcon,
   CardButtonAnchor,
   SwoopBottom,
   SwoopTop,
