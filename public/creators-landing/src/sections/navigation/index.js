@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Image, ResponsiveContext, Anchor } from "grommet";
+import { Box, ResponsiveContext, Anchor } from "grommet";
 import { Link } from "react-router-dom";
 import { SecondaryButton } from "../../components";
 import Logo from "../../components/img/brave-rewards-creators-logo.jsx";
@@ -8,7 +8,7 @@ import BatPill from "../../components/img/built-with-bat-pill.jsx";
 import locale from "../../locale/en";
 import { NavWrapper, NavContainer } from "../../components/styled/container";
 import MobileNav from "./mobileNav";
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 const logAction = (action, value) => {
   if (window._paq) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Image, ResponsiveContext } from "grommet";
+import { Box, Text, ResponsiveContext } from "grommet";
 import { FooterLegal } from "../../components";
 import BuiltWithBat from "../../components/img/built-with-bat.jsx";
 import locale from "../../locale/en";
