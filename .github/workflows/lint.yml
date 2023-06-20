@@ -57,10 +57,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn --frozen-lockfile
-      - name: Yarn build
-        run: cd public/creators-landing && yarn install && yarn build 
-        env: 
-          process.env.CI : false
       - name: Standard
         run: bundle exec standardrb
       - name: Brakeman

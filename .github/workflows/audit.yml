@@ -59,10 +59,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Yarn install
         run: yarn --frozen-lockfile
-      - name: Yarn build
-        run: cd public/creators-landing && yarn install && yarn build 
-        env: 
-          process.env.CI : false
       - name: Yarn audit
         run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
       - name: Bundler Audit
