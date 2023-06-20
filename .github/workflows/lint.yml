@@ -58,7 +58,7 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Yarn build
-        run: cd public/creators-landing && && yarn install && yarn build 
+        run: cd public/creators-landing && yarn install && yarn build 
       - name: Standard
         run: bundle exec standardrb
       - name: Brakeman
