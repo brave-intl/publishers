@@ -16,7 +16,7 @@ class AdminFeatureTest < Capybara::Rails::TestCase
 
   test "can view admin home" do
     visit admin_root_path
-    assert_content page, "Contributions processed"
+    assert_content page, "Publishers"
   end
 
   test "can view a creators payments" do
