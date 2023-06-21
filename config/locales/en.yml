@@ -599,7 +599,7 @@ en:
       expired_authentication_token:
         expired_error: Your login link has expired. Please send yourself another one.
         heading: Login Link Expired
-        body: Login link access expires after 30 minutes and can only be used once
+        body: Login link access expires after 3 hours and can only be used once
         button: Send me a new link
       require_verified_email:
         email_verification_required: To continue please confirm your email address.
