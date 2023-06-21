@@ -129,6 +129,7 @@ Rails.application.routes.draw do
     member do
       get :verification_status
       get :cancel_add
+      get :total_verified_count
       delete :destroy
       resources :tokens, only: %() do
         get :reject_transfer, to: "channel_transfer#reject_transfer"
@@ -217,7 +218,7 @@ Rails.application.routes.draw do
       namespace :public, defaults: {format: :json} do
         get "channels", controller: "channels"
         namespace :channels, defaults: {format: :json} do
-          get "totals"
+          get "total_verified"
         end
       end
       namespace :channels, defaults: {format: :json} do
