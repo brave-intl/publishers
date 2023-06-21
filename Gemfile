@@ -27,10 +27,6 @@ gem "addressable", "~> 2.8"
 
 gem "activerecord-postgres_enum"
 
-# Integration with Matomo Piwik
-# Remove for rails 7 update
-# gem "autometal-piwik", require: "piwik", git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
-
 # Use AWS gem for s3 uploads
 gem "aws-sdk-s3", "~> 1.119.0"
 
