@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Heading, Image, ResponsiveContext } from 'grommet'
 import { Container, PrimaryButton } from '../../components'
 import CreatorsWide_webp from '../../components/img/creator-logos-wide.webp'
@@ -10,13 +10,30 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 export const Signoff = () => {
   const intl = useIntl();
+  const [channelsCount, SetChannelsCount] = useState(1000000); // defaults to 1mil
+
+  useEffect(() => {
+    fetchTotalVerifiedChannels();
+  }, []);
+
+  const fetchTotalVerifiedChannels = async () => {
+    try {
+      const response = await fetch("/api/v3/public/channels/total_verified");
+      const result = await response.json();
+
+      SetChannelsCount(result);
+    } catch(err) {
+      console.error(err)
+    }
+  }
+
   return (
     <Box align='center'>
       <Container align='center' pad='large'>
         <Box pad={{ horizontal: 'large' }}>
           <Heading alignSelf='center' level='4' textAlign='center'>
             <FormattedMessage id="signoff.headline" values={{
-              count: <strong>{intl.formatNumber(1000000)}</strong>
+              count: <strong>{intl.formatNumber(channelsCount)}</strong>
             }} />
           </Heading>
           <ResponsiveContext.Consumer>
