@@ -95,7 +95,8 @@
     "webpack-assets-manifest": "5",
     "webpack-cli": "4",
     "webpack-dev-server": "^4.15.0",
-    "webpack-merge": "5"
+    "webpack-merge": "5",
+    "semver": "^7.5.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.10.4",
