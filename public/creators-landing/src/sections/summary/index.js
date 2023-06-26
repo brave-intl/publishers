@@ -10,7 +10,6 @@ import {
   CaratRightIcon,
   ChatIcon,
   HelpIcon,
-  MailIcon,
   CardButtonAnchor,
   SwoopBottom,
   SwoopTop,
@@ -160,7 +159,6 @@ export const Summary = () => {
           <CardButton
             href={locale.summary.cardGenHref}
             icon={<HelpIcon />}
-            icon={<MailIcon />}
             title={<FormattedMessage id="summary.cardGen"/>}
           />
         </Box>

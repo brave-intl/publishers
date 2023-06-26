@@ -1,4 +1,4 @@
-export default {
+var ja = {
   nav: {
     logoHref: "/",
     batPillHref: "http://www.basicattentiontoken.org",
@@ -136,3 +136,5 @@ export default {
     fourHref: "https://basicattentiontoken.org"
   }
 };
+
+export default ja;

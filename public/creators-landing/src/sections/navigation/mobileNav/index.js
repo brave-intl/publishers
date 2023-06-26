@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Image, Menu } from "grommet";
+import { Box, Menu } from "grommet";
 import { Link } from "react-router-dom";
 import { withRouter } from "../../../withRouter";
 import locale from "../../../locale/en";
