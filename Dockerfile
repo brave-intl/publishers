@@ -42,7 +42,6 @@ RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --without tes
 RUN node --version
 RUN npm install -g yarn
 RUN yarn install --frozen-lockfile
-RUN yarn build
 
 # We copy all the files from the current directory to our
 # /app directory
@@ -50,6 +49,7 @@ RUN yarn build
 # The first one will select ALL The files of the current directory,
 # The second dot will copy it to the WORKDIR!
 COPY . .
+RUN cd public/creators-landing && yarn install && yarn build
 
 RUN NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
 
