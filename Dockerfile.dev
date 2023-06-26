@@ -51,6 +51,7 @@ RUN apt-get install -y python3
 RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose
+RUN yarn build
 RUN apt-get install chromium --fix-missing -y 
 
 EXPOSE 3000

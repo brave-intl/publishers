@@ -42,6 +42,7 @@ RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --without tes
 RUN node --version
 RUN npm install -g yarn
 RUN yarn install --frozen-lockfile
+RUN yarn build
 
 # We copy all the files from the current directory to our
 # /app directory
