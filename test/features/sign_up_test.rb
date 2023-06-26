@@ -55,7 +55,6 @@ class SignUpTest < Capybara::Rails::TestCase
     assert_content page, "Register Security Key"
   end
 
-
   test "a user can resend a log in email" do
     email = "unique@verified.org"
     assert Publisher.where(email: email).count == 0 # ensure we don't send log in link
