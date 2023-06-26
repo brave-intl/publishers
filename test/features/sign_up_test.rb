@@ -37,6 +37,24 @@ class SignUpTest < Capybara::Rails::TestCase
     assert_current_path(home_publishers_path(locale: :en))
   end
 
+  test "new users can register Yubikey" do
+    name = "Some name"
+    publisher = publishers(:unprompted)
+    sign_in publisher
+
+    visit email_verified_publishers_path
+
+    assert_content page, "Finish signing up"
+
+    fill_in "publisher_name", with: name
+    click_button("Sign Up")
+
+    assert_current_path(prompt_security_publishers_path(locale: :en))
+    click_link("Set Up 2FA")
+    click_link("Add Key")
+    assert_content page, "Register Security Key"
+  end
+
   test "a user can resend a log in email" do
     email = "unique@verified.org"
     assert Publisher.where(email: email).count == 0 # ensure we don't send log in link
