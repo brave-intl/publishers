@@ -26,7 +26,7 @@ html
       // on the DOM but before layout/paint. This allows us to set the class
       // before layout/paint and avoid a flash of content before the
       // detection has run.
-      if (window.u2f) {
+      if (typeof(PublicKeyCredential) !== 'undefined') {
         document.body.classList.add('js-feature-available-u2f');
       }
 
