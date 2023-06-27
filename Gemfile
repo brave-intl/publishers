@@ -4,7 +4,7 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "7.0.4.3"
+rails_version = "7.0.5.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.5.0"
 gem "railties", rails_version
