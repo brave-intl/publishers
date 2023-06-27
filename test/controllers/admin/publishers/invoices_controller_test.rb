@@ -47,7 +47,7 @@ class Admin::Publishers::OrganizationsControllerTest < ActionDispatch::Integrati
     describe "when file doesn't exist" do
       let(:subject) do
         post admin_publisher_invoice_upload_path(publisher_id: "_", invoice_id: invoice.id),
-          params: {file: []},
+          params: {file: nil},
           headers: {"content-type": "multipart/form-data"}
       end
 
