@@ -52,20 +52,22 @@ module Admin
       def upload
         @invoice = load_invoice
 
-        invoice_file = InvoiceFile.new(
-          invoice_id: @invoice.id,
-          uploaded_by: current_publisher,
-          file: params[:file]
-        )
-
         path = admin_publisher_invoice_path(
           publisher_id: params[:publisher_id],
           id: @invoice.id
         )
 
-        if params[:file].present? && invoice_file.save
-          PartnerMailer.invoice_file_added(invoice_file, @invoice.publisher).deliver_later
-          redirect_to path, flash: {notice: "Your document was uploaded successfully"}
+        if !params[:file].blank?
+          invoice_file = InvoiceFile.new(
+            invoice_id: @invoice.id,
+            uploaded_by: current_publisher,
+            file: params[:file]
+          )
+
+          if invoice_file.save
+            PartnerMailer.invoice_file_added(invoice_file, @invoice.publisher).deliver_later
+            redirect_to path, flash: {notice: "Your document was uploaded successfully"}
+          end
         else
           redirect_to path, flash: {alert: "Your document could not be uploaded"}
         end
