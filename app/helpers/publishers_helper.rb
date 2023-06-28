@@ -10,7 +10,7 @@ module PublishersHelper
   rescue => e
     LogException.perform(e)
   end
-  
+
   def publishers_meta_tags
     {
       title: t("shared.app_title"),
