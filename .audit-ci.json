@@ -32,6 +32,7 @@
     "GHSA-p8p7-x288-28g6|@rails/webpacker>sass-loader>node-sass>node-gyp>request",
     "GHSA-p8p7-x288-28g6|node-sass>node-gyp>request",
     "GHSA-p8p7-x288-28g6|@rails/webpacker>sass-loader>node-sass>request",
-    "GHSA-p8p7-x288-28g6|node-sass>request"
+    "GHSA-p8p7-x288-28g6|node-sass>request",
+    "GHSA-c2qf-rxjj-qqgw"
   ]
 }

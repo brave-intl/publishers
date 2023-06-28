@@ -4,7 +4,7 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "7.0.4.3"
+rails_version = "7.0.5.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.5.0"
 gem "railties", rails_version
@@ -26,10 +26,6 @@ gem "activerecord7-redshift-adapter", git: "https://github.com/pennylane-hq/acti
 gem "addressable", "~> 2.8"
 
 gem "activerecord-postgres_enum"
-
-# Integration with Matomo Piwik
-# Remove for rails 7 update
-# gem "autometal-piwik", require: "piwik", git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
 
 # Use AWS gem for s3 uploads
 gem "aws-sdk-s3", "~> 1.119.0"
@@ -153,7 +149,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.2.0"
 
-gem "webpacker", "~> 5.4.4"
+gem "shakapacker"
 
 # pagination support for models
 gem "will_paginate"

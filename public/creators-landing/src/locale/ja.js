@@ -1,4 +1,4 @@
-export default {
+var ja = {
   nav: {
     logoHref: "/",
     batPillHref: "http://www.basicattentiontoken.org",
@@ -108,7 +108,7 @@ export default {
     heading: "Brave Rewardsの仕組み",
     oneTitle: "Braveブラウザを使っているとを獲得できます",
     oneDesc:
-      "Brave RewardsはBATからを基盤に作られています。Braveのプライバシーを重視した広告を見るとを獲得することができます。",
+      "Brave RewardsはBATを基盤に作られています。Braveのプライバシーを重視した広告を見るとポイントを獲得することができます。",
     twoTitle: "そういったユーザがあなたのようなクリエイターやその作品に対してをチップとして送ります",
     twoDesc:
       "定期購読者、フォロワー、読者は毎月決まった金額分のチップを自動的に送ることや、都度任意の金額を送ることができます",
@@ -136,3 +136,5 @@ export default {
     fourHref: "https://basicattentiontoken.org"
   }
 };
+
+export default ja;

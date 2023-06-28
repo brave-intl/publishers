@@ -16,7 +16,7 @@ import {
 import BatPill from "../../../components/img/built-with-bat-pill.jsx";
 import locale from "../../../locale/en";
 import { FormattedMessage } from 'react-intl';
-import { Heading, Text, Box, Anchor, Image } from "grommet";
+import { Heading, Text, Box, Anchor } from "grommet";
 
 // Sign up and sign in shared this component since
 // they are so similar in structure. It only fires
