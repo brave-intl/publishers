@@ -914,6 +914,7 @@ en:
         <p>You can leave this screen now.
         We will send you an <strong>email with instructions within 24 hours.</strong></p>
     verification_choose_method:
+      alert: This channel has already been verified. To change the verification method please remove the channel and try again.
       heading: Choose a Verification Method
       trusted_file:
         heading: Download a trusted file
