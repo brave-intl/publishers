@@ -13,6 +13,6 @@ class Api::V3::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     get "/api/v3/public/channels/total_verified", headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"}
 
     assert_equal(200, response.status)
-    assert_equal(55, JSON.parse(response.body))
+    assert_equal(54, JSON.parse(response.body))
   end
 end

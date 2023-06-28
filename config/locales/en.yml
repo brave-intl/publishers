@@ -324,17 +324,6 @@ en:
       title: Notification of email change
       intro: This email confirms an update made to your email address with Brave Rewards. If you made this change, check your new email account for a link to confirm it.
       contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at https://community.brave.com/.
-    paypal:
-      missing_bank_account:
-        body_html:
-          Thank you for being a Brave Creator.
-          <br/><br/>
-          We have currently held your payment for the month of %{month}; as you have not verified your bank account with PayPal.
-          <br/><br/>
-          Once you verify your bank account with PayPal, please sign back in at creators.brave.com and refresh your PayPal account info.
-          Thank you.
-          <br/><br/>
-          The Brave Creators team
     suspend_publisher:
       subject: Your Brave Rewards account has been temporarily frozen
       intro: Thank you for being a Brave publisher.
@@ -649,25 +638,6 @@ en:
       last_deposit_date: "Last Deposit Date: "
       change: Change
       no_currency_selected: None selected
-    paypal_connection_panel:
-      bat_points: BAT Points
-      change: Change
-      check_balance: Check Balance
-      connect_with_paypal: Connect with Paypal
-      connect: Connect
-      connected: Connected
-      deposit_date_explanation: Contribution balance gets deposited into your connected account at the 8th of every month.
-      disconnect: Disconnect
-      heading: Your Deposit Account
-      last_deposit: "Last Deposit:"
-      last_deposit_date: "made on "
-      link_bank_account: Link Bank Account
-      need_bank_account: At least one bank account needs to be linked to your Paypal account in order to receive payments.
-      no_deposit_made_yet: "No deposit has been made yet"
-      refresh_account_label: I've linked one already.
-      refresh_account_button: Check again.
-      still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
-      view_account_summary: "Check Balance"
     promo_registration:
       remove: 'Remove promo code'
     channel:

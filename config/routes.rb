@@ -14,7 +14,6 @@ Rails.application.routes.draw do
 
   # FIXME: Are these event relevant?
   get "publishers/stripe_connection/new", to: "payment/connection/stripe_connections#edit"
-  get "publishers/paypal_connections/connect_callback", to: "payment/connection/paypal_connections#connect_callback"
 
   # oauth_controller base children
   get "publishers/bitflyer_connection/new", to: "payment/connection/bitflyer_connections#callback"
@@ -37,12 +36,6 @@ Rails.application.routes.draw do
     resource :gemini_connection
     resource :bitflyer_connection
     resource :uphold_connection, except: [:new]
-
-    resources :paypal_connections, only: [] do
-      get :connect_callback, on: :collection
-      get :refresh
-      patch :disconnect
-    end
   end
 
   # Once Publisher Logs in they access this resource
