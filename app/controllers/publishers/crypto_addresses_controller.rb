@@ -8,8 +8,13 @@ module Publishers
     end
 
     def destroy
-      @crypto_address = current_publisher.crypto_addresses.find(params[:id])
-      success = (@crypto_address.publisher_id == current_publisher.id) ? @crypto_address.destroy : false
+      begin
+        @crypto_address = current_publisher.crypto_addresses.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        return render json: {}, status: 404
+      end
+
+      success = @crypto_address.destroy
 
       respond_to do |format|
         format.json {

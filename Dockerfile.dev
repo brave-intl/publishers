@@ -54,6 +54,8 @@ RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose
 RUN apt-get install chromium --fix-missing -y
+
+COPY . .
 RUN cd public/creators-landing && yarn install && yarn build
 
 EXPOSE 3000

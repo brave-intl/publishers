@@ -13,7 +13,7 @@ class CryptoAddressForChannelsController < ApplicationController
   end
 
   def generate_nonce
-    set = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten
+    set = [("a".."z"), ("A".."Z"), (0..9)].map(&:to_a).flatten
     nonce = (0...32).map { set[rand(set.length)] }.join
     Rails.cache.write(nonce, true)
     render json: {nonce: nonce}
@@ -31,20 +31,21 @@ class CryptoAddressForChannelsController < ApplicationController
     valid_message = if Rails.cache.read(message)
       !!Rails.cache.delete(message)
     else
-      @errors << 'message is invalid'
+      @errors << "message is invalid"
       false
     end
 
     # check to make sure the user owns the address
-    verified = valid_message && case chain
-    when "SOL"
-      verify_solana_address(signature, account_address, message)
-    when "ETH"
-      verify_ethereum_address(signature, account_address, message)
-    else
-      @errors << 'address could not be verified'
-      false
-    end
+    verified = valid_message &&
+      case chain
+      when "SOL"
+        verify_solana_address(signature, account_address, message)
+      when "ETH"
+        verify_ethereum_address(signature, account_address, message)
+      else
+        @errors << "address could not be verified"
+        false
+      end
 
     # Create new crypto address, and remove any other addresses on the same chain for the channel
     success = verified && replace_crypto_address_for_channel(account_address, chain, current_channel)

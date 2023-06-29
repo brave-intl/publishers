@@ -29,7 +29,7 @@ module Publishers
 
       delete crypto_address_path(@crypto_address), headers: {"HTTP_ACCEPT" => "application/json"}
 
-      assert_response :bad_request
+      assert_response :not_found
       assert_not_nil CryptoAddress.find_by(id: @crypto_address.id)
     end
   end

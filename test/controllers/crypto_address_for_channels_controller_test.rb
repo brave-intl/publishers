@@ -21,10 +21,11 @@ class CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create crypto address for channel" do
-    signature = "2HyUsKGKze6sniXdXCsXwXFRWzcyevg59nzvQbSCUJk89Ljeqyngpbc1GiC6SKDnrP1gTC4KmwRTJkRo9mqjfEMc"
+    signature = "49gfaNA9d9KkabVNB48VsSNrJLh8AnRvWYTBJ7ws9wRhZvvuyGivqg56kpSZtrvNCsdVzFxEgPGnc7KS5WSyM3FF"
     account_address = "36fsf2BR6KNpHPLo9VawfoWEBqncKRMUpxbi3JVBNFWA"
     chain = "SOL"
-    message = "1686539896932"
+    message = "6tp6l5LIOkUcC0w27isXCBDQoOl5m7ki"
+    Rails.cache.write(message, true)
 
     CryptoAddressForChannelsController.any_instance.expects(:verify_solana_address).with(signature, account_address, message).returns(true)
     CryptoAddressForChannelsController.any_instance.expects(:replace_crypto_address_for_channel).with(account_address, chain, @channel).returns(true)
@@ -53,7 +54,7 @@ class CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
     }, headers: {"HTTP_ACCEPT" => "application/json"}
 
     assert_response :bad_request
-    assert_equal "address could not be verified", JSON.parse(response.body)["errors"]
+    assert_equal ["message is invalid"], JSON.parse(response.body)["errors"]
   end
 
   test "should change address for channel" do
@@ -83,12 +84,9 @@ class CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should verify Solana address" do
-    signature = "3mAsCPAU88U3U4ApPCrrPMuL8K3df3ydGoqGQRSXqgqzM2o1zpzsk2JU9uY8Z1oke7XSgCc1Lhaxu7K5sowt6Z6p"
+    signature = "49gfaNA9d9KkabVNB48VsSNrJLh8AnRvWYTBJ7ws9wRhZvvuyGivqg56kpSZtrvNCsdVzFxEgPGnc7KS5WSyM3FF"
     account_address = "36fsf2BR6KNpHPLo9VawfoWEBqncKRMUpxbi3JVBNFWA"
-    message = "this is an arbitrary string"
-
-    results = "true"
-    @controller.expects(:`).with("node scripts/verify_solana_message.js #{signature} #{account_address} #{message}").returns(results)
+    message = "6tp6l5LIOkUcC0w27isXCBDQoOl5m7ki"
 
     assert_equal true, @controller.verify_solana_address(signature, account_address, message)
   end
