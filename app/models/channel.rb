@@ -33,6 +33,7 @@ class Channel < ApplicationRecord
   has_many :uphold_connection_for_channel, dependent: :destroy
   has_many :gemini_connection_for_channel, dependent: :destroy
   has_many :crypto_address_for_channels, dependent: :destroy
+  has_many :crypto_addresses, through: :crypto_address_for_channels
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: "contested_by_channel_id"
 
@@ -371,6 +372,11 @@ class Channel < ApplicationRecord
     end
 
     self.public_identifier = identifier
+  end
+
+  def set_public_identifier!
+    set_public_identifier
+    save!
   end
 
   private

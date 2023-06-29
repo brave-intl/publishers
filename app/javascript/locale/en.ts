@@ -315,6 +315,9 @@ export default {
       title: "Uphold Account"
     },
     verify: "Continue to Verify"
+  },
+  publicChannelPage: {
+    privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted."
   }
 };
 
