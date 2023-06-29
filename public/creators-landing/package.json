@@ -39,6 +39,9 @@
       "last 1 safari version"
     ]
   },
+  "overrides": {
+    "optionator" : "0.9.3"
+  },  
   "resolutions": {
     "nth-check": "2.1.1"
   }

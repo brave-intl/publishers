@@ -143,9 +143,6 @@
     "@types/react": "16.4.7",
     "@types/styled-components": "5.1.0"
   },
-  "overrides": {
-    "optionator" : "0.9.3"
-  },  
   "browserslist": [
     "defaults"
   ]
