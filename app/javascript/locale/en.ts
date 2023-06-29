@@ -285,13 +285,6 @@ export default {
     },
     lastDeposit: "Last Deposit: <span>{value}</span>",
     lastDepositDate: "Last Deposit Date: <span>{value}</span>",
-    stripe: {
-      connect: "Connect to Stripe",
-      description: "Connect to Stripe to be able receive credit card payments.",
-      disconnect: "Disconnect",
-      enablePayouts: "You're uneligable to receive payouts. Check your Stripe Account for more details.",
-      title: "Account for Credit Card Payment",
-    },
     title: "Account Services",
     trouble: "Connection Failure",
     uphold: {

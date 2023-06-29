@@ -10,7 +10,6 @@ module UserFeatureFlags
   # This flag will be set to "true" for all new publishers.
   # It enforces KYC to be present in order to create a new promo code
   REFERRAL_KYC_REQUIRED = :referral_kyc_required
-  STRIPE_ENABLED = :stripe_enabled
   GEMINI_ENABLED = :gemini_enabled
   REFERRAL_ENABLED_OVERRIDE = :referral_enabled_override
   LOCATION_ENABLED = :location_enabled
@@ -22,7 +21,6 @@ module UserFeatureFlags
     MERCHANT,
     REFERRAL_KYC_REQUIRED,
     PROMO_LOCKOUT_TIME,
-    STRIPE_ENABLED,
     GEMINI_ENABLED,
     REFERRAL_ENABLED_OVERRIDE,
     LOCATION_ENABLED
@@ -40,7 +38,6 @@ module UserFeatureFlags
     scope :wire_only, -> { where("feature_flags->'#{WIRE_ONLY}' = 'true'") }
     scope :invoice, -> { where("feature_flags->'#{INVOICE}' = 'true'") }
     scope :merchant, -> { where("feature_flags->'#{MERCHANT}' = 'true'") }
-    scope :stripe_enabled, -> { where("feature_flags->'#{STRIPE_ENABLED}' = 'true'") }
     scope :gemini_enabled, -> { where("feature_flags->'#{GEMINI_ENABLED}' = 'true'") }
     scope :in_top_referrer_program, -> { where("feature_flags->'#{REFERRAL_ENABLED_OVERRIDE}' = 'true'") }
     scope :not_in_top_referrer_program, -> { where.not(id: in_top_referrer_program) }
@@ -93,10 +90,6 @@ module UserFeatureFlags
 
   def referral_kyc_not_required?
     !referral_kyc_required?
-  end
-
-  def stripe_enabled?
-    feature_flags.symbolize_keys[STRIPE_ENABLED].present?
   end
 
   def gemini_enabled?
