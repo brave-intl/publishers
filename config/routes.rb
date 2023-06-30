@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
 
   # FIXME: Are these event relevant?
-  get "publishers/stripe_connection/new", to: "payment/connection/stripe_connections#edit"
   get "publishers/paypal_connections/connect_callback", to: "payment/connection/paypal_connections#connect_callback"
 
   # oauth_controller base children
@@ -33,7 +32,6 @@ Rails.application.routes.draw do
 
   # These routes are for connecting to 3rd-party payment providers.
   namespace :connection, module: "payment/connection" do
-    resource :stripe_connection
     resource :gemini_connection
     resource :bitflyer_connection
     resource :uphold_connection, except: [:new]

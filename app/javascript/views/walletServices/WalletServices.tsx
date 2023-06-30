@@ -4,7 +4,6 @@ import ErrorBoundary from "../../components/errorBoundary/ErrorBoundary";
 import { FlexWrapper } from "../style";
 import BraveConnection from "./BraveConnection";
 import LastDepositInformation from "./LastDepositInformation";
-import StripeConnection from "./StripeConnection";
 
 class WalletServices extends React.Component<any, any> {
   constructor(props) {
@@ -26,13 +25,6 @@ class WalletServices extends React.Component<any, any> {
         <ErrorBoundary>
           <BraveConnection featureFlags={this.props.featureFlags} />
         </ErrorBoundary>
-
-        {this.props.featureFlags.stripe_enabled && (
-          <ErrorBoundary>
-            <hr />
-            <StripeConnection />
-          </ErrorBoundary>
-        )}
       </div>
     );
   }
