@@ -26,11 +26,6 @@ export default {
       show: "/connection/gemini_connection",
       destroy: "/connection/gemini_connection"
     },
-    stripe: {
-      connect: "/connection/stripe_connection",
-      show: "/connection/stripe_connection",
-      destroy: "/connection/stripe_connection"
-    },
     statements: {
       index: {
         path: "/publishers/statements"

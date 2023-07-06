@@ -54,7 +54,6 @@ class Publisher < ApplicationRecord
   belongs_to :selected_wallet_provider, polymorphic: true
 
   has_one :uphold_connection
-  has_one :stripe_connection
   has_one :gemini_connection
   has_one :bitflyer_connection
 
