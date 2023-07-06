@@ -55,7 +55,9 @@ class Cache::BrowserChannels::PrefixList
       "
         SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
         FROM site_banner_lookups
-        WHERE to_char(\"created_at\", 'YYYY-MM-DD') = :date",
+        LEFT OUTER JOIN publisher_status_updates ON publisher_status_updates.publisher_id = site_banner_lookups.publisher_id
+        WHERE to_char(\"created_at\", 'YYYY-MM-DD') = :date
+        AND publisher_status_updates.status = 'suspended'",
       {
         nibble_length: PREFIX_LENGTH * 2,
         date: date
