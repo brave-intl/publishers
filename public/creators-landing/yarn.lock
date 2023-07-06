@@ -9043,10 +9043,9 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-word-wrap@^1.2.3, word-wrap@~1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
-  integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+word-wrap@^1.2.3, word-wrap@aashutoshrathi/word-wrap, word-wrap@~1.2.3:
+  version "1.2.6"
+  resolved "https://codeload.github.com/aashutoshrathi/word-wrap/tar.gz/84981421a9ff67bf7604a1183c719b9bfe053994"
 
 workbox-background-sync@6.5.4:
   version "6.5.4"

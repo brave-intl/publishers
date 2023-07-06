@@ -869,6 +869,7 @@ ja:
       heading: ドメインを検証中です...
       help_html: "<p>この画面を終了できます。24時間以内に<strong>手順を記載したメールをお送りします。</strong> </p>"
     verification_choose_method:
+      alert: このチャンネルはすでに確認済みです。確認方法を変更するには、チャンネルを削除してからもう一度お試しください。
       heading: 認証方法を選択してください
       trusted_file:
         heading: 認証方法ファイルをダウンロード
