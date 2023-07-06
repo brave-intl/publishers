@@ -5,7 +5,6 @@ import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
 import { renderBannerEditor } from '../packs/banner_editor'
 
 import SiteBanner from 'brave-ui/features/rewards/siteBanner'
-import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 import en, { flattenMessages } from "../locale/en";
 import ja from "../locale/ja";
@@ -72,7 +71,6 @@ export default class BannerPreview extends React.Component {
   }
 
   render() {
-    initLocale(locale);
     const docLocale = document.body.dataset.locale;
     let localePackage = en;
     if (docLocale === "ja") {
@@ -92,9 +90,9 @@ export default class BannerPreview extends React.Component {
         logo={this.props.logo.url}
         donationAmounts={
           [
-            { tokens: this.props.donationAmounts[0], converted: (this.props.donationAmounts[0] * this.props.conversionRate).toFixed(2), selected: false },
-            { tokens: this.props.donationAmounts[1], converted: (this.props.donationAmounts[1] * this.props.conversionRate).toFixed(2), selected: false },
-            { tokens: this.props.donationAmounts[2], converted: (this.props.donationAmounts[2] * this.props.conversionRate).toFixed(2), selected: false }
+            { tokens: 1, converted: (1 * this.props.conversionRate).toFixed(2), selected: false },
+            { tokens: 5, converted: (5 * this.props.conversionRate).toFixed(2), selected: false },
+            { tokens: 10, converted: (10 * this.props.conversionRate).toFixed(2), selected: false }
           ]
         }
         social={this.getSocial()}
