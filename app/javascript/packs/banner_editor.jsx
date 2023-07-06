@@ -38,7 +38,6 @@ import {
 import DonationJar from "../../assets/images/icn-donation-jar@1x.png";
 import Spinner from "../utils/spinner";
 
-import { initLocale } from "brave-ui";
 import locale from "locale/en";
 import en, { flattenMessages } from "../locale/en";
 import ja from "../locale/ja";
@@ -923,7 +922,6 @@ export default class BannerEditor extends React.Component {
   }
 
   render() {
-    initLocale(locale);
     const locale = document.body.dataset.locale;
     let localePackage = en;
     if (locale === "ja") {
