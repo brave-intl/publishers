@@ -12,9 +12,6 @@ Rails.application.routes.draw do
 
   # Legacy routes based off OAuth connections. We will update our OAuth providers information, but need these until we do.
 
-  # FIXME: Are these event relevant?
-  get "publishers/paypal_connections/connect_callback", to: "payment/connection/paypal_connections#connect_callback"
-
   # oauth_controller base children
   get "publishers/bitflyer_connection/new", to: "payment/connection/bitflyer_connections#callback"
   get "publishers/uphold_verified", to: "payment/connection/uphold_connections#callback"
@@ -35,12 +32,6 @@ Rails.application.routes.draw do
     resource :gemini_connection
     resource :bitflyer_connection
     resource :uphold_connection, except: [:new]
-
-    resources :paypal_connections, only: [] do
-      get :connect_callback, on: :collection
-      get :refresh
-      patch :disconnect
-    end
   end
 
   # Once Publisher Logs in they access this resource

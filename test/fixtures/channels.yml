@@ -328,10 +328,10 @@ potentially_paid_youtube:
   verified: true
   details: potentially_paid_youtube_details (YoutubeChannelDetails)
 
-paypal_connected_website:
-  publisher: paypal_connected
+uphold_connected_channel:
+  publisher: uphold_connected
+  details: uphold_connected_site_channel (SiteChannelDetails)
   verified: true
-  details: paypal_connected_website_details (SiteChannelDetails)
 
 gemini_not_completed_website:
   publisher: gemini_not_completed

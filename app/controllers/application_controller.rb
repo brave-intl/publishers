@@ -101,10 +101,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def has_paypal_account?
-    current_publisher.present? && current_publisher.paypal_connection.present?
-  end
-
   def u2f
     @u2f ||= U2F::U2F.new(request.base_url)
   end

@@ -189,9 +189,6 @@ promo_enabled_site_details_not_verified:
 potentially_paid_site_details:
   brave_publisher_id: "pontiallypaid.org"
 
-paypal_connected_website_details:
-  brave_publisher_id: "paypalconnected.org"
-
 gemini_not_completed_website_details:
   brave_publisher_id: "gemini_not_connected_website_details.org"
 
