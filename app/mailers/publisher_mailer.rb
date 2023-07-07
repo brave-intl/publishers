@@ -33,6 +33,7 @@ class PublisherMailer < ApplicationMailer
   def verification_done(channel)
     @channel = channel
     @publisher = @channel.publisher
+    @publication_title = @channel.details.publication_title
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
