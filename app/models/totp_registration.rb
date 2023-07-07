@@ -20,7 +20,7 @@ class TotpRegistration < ApplicationRecord
   private
 
   def totp_issuer
-    issuer = "Brave Rewards"
+    issuer = "Brave Creators"
 
     environment = Rails.env
     if %w[development staging].include?(environment)

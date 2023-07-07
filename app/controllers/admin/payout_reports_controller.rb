@@ -97,8 +97,7 @@ class Admin::PayoutReportsController < AdminController
 
   def payouts_in_progress_params
     params.require(:payout_in_progress)
-      .permit(:paypal_connection,
-        :bitflyer_connection,
+      .permit(:bitflyer_connection,
         :uphold_connection,
         :gemini_connection).to_h.transform_values! { |v| v == "1" }
   end

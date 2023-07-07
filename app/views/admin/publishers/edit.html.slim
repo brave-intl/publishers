@@ -19,7 +19,7 @@
         label
           = f.check_box UserFeatureFlags::WIRE_ONLY, {}, checked: @publisher.wire_only?
           = " Wire transfers only"
-        .text-dark This feature disables uphold and paypal widgets.
+        .text-dark This feature disables uphold widgets.
       .form-group.border-bottom.pb-2
         label
           = f.check_box UserFeatureFlags::INVOICE, {}, checked: @publisher.invoice?

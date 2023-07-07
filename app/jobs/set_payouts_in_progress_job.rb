@@ -7,7 +7,6 @@ class SetPayoutsInProgressJob < ApplicationJob
 
   CONNECTIONS = [BitflyerConnection.name.underscore,
     GeminiConnection.name.underscore,
-    PaypalConnection.name.underscore,
     UpholdConnection.name.underscore].freeze
 
   def perform
