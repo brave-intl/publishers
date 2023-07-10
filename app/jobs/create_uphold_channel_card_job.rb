@@ -45,7 +45,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
     return upfc.card_id if card_exists?(uphold_connection, upfc.card_id)
 
     # If a user transfers their channel then we should try not to create duplicate uphold cards
-    card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Rewards"
+    card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Creators"
     cards = UpholdClient.card.where(uphold_connection: uphold_connection)
 
     return if cards.nil?

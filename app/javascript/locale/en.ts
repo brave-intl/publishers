@@ -33,7 +33,7 @@ export default {
       title: "Referral Stats",
     },
     welcome: {
-      description: "To get started on earning through the Brave Rewards system, here is a list of things we recommend setting up first.",
+      description: "To get started on earning through the Brave Creators system, here is a list of things we recommend setting up first.",
       first: {
         description: "Follow the instructions to verify that you're the rightful owner of properties.",
         number: "1",
@@ -44,7 +44,7 @@ export default {
         number: "2",
         title: "Connect wallet services",
       },
-      title: "Welcome to Brave Rewards",
+      title: "Welcome to Brave Creators",
     }
   },
   installs: "Installs",
@@ -306,7 +306,7 @@ export default {
         intro: "You won't be able to receive the monthly contributions from your fans until your wallet at Uphold is connected to us."
       },
       status: {
-        connecting: "Brave Rewards is connecting to your Uphold account.",
+        connecting: "Brave Creators is connecting to your Uphold account.",
         nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
         reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
         restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",

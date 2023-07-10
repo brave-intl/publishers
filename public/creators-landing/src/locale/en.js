@@ -6,14 +6,14 @@ var en = {
     signupHref: "/sign-up",
     login: "log in",
     loginHref: "/log-in",
-    logoAlt: "Brave Rewards Creator Logo",
+    logoAlt: "Brave Creator Logo",
     batPillAlt: "Built with BAT"
   },
   main: {
     home: {
       headline: "Earn more for content you publish to the web",
       subhead:
-        "Your viewers who use the Brave Browser may have contributed money to you while surfing the web through Brave Rewards. Simply sign up as a verified content creator on Brave Rewards to start collecting your contributions.",
+        "Your viewers who use the Brave Browser may have contributed money to you while surfing the web through Brave Creators. Simply sign up as a verified content creator on Brave Creators to start collecting your contributions.",
       examples: {
         headline: "Earn more through...",
         website: "Your own website",
@@ -62,7 +62,7 @@ var en = {
   signoff: {
     btn: "Sign up now",
     btnHref: "/sign-up",
-    headline: "Join over {count} content creators and publishers earning more from Brave Rewards"
+    headline: "Join over {count} content creators and publishers earning more from Brave Creators"
   },
   sign: {
     sentAgain:
@@ -88,13 +88,13 @@ var en = {
   spotlight: {
     heading: "You create content and we get you paid.",
     subhead:
-      "Brave Rewards helps you earn more for doing what you do best and get back some of that revenue lost for when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.",
-    bakerAlt: "Bart Baker Brave Rewards",
+      "Brave Creators helps you earn more for doing what you do best and get back some of that revenue lost for when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.",
+    bakerAlt: "Bart Baker Brave Creators",
     bakerCredit: "- Bart Baker",
     bakerHref: "https://www.youtube.com/BartBaKer",
     bakerQuote:
       "“Brave is basically free crowdfunding. It is like Patreon but without having to spend any of your hard earned money.”",
-    defrancoAlt: "Philip DeFranco Brave Rewards",
+    defrancoAlt: "Philip DeFranco Brave Creators",
     defrancoCredit: "- Philip DeFranco",
     defrancoHref: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw",
     defrancoQuote:
@@ -105,14 +105,14 @@ var en = {
     scottyQuote: "\"Brave is a great frictionless way for fans to support the creators they watch.\"",
   },
   summary: {
-    heading: "How does Brave Rewards work?",
+    heading: "How does Brave Creators work?",
     oneTitle: "Brave Browser users earn tokens by surfing the web",
     oneDesc:
-      "Brave Rewards is built on the Basic Attention Token (BAT). People who use the Brave Browser can earn tokens by viewing privacy-respecting ads.",
+      "Brave Creators is built on the Basic Attention Token (BAT). People who use the Brave Browser can earn tokens by viewing privacy-respecting ads.",
     twoTitle: "They tip tokens to you, their favorite content creator",
     twoDesc:
       "Your subscribers, followers, or readers can automatically tip a set amount to you each month, or give one-time tips in an amount of their choice.",
-    threeTitle: "You sign up as a verified content creator on Brave Rewards",
+    threeTitle: "You sign up as a verified content creator on Brave Creators",
     threeDesc:
       "Signing up as a verified content creator gives you access to the Creators dashboard, where you can manage all your tips. It will also give you access to your referral link, which you can use to earn more tokens.",
     fourTitle: "Collect your tips in the Creators dashboard",

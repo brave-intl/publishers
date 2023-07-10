@@ -56,8 +56,8 @@ en:
     ok: OK
     oh_no: "Oh no!"
     choose_different_verification_method: Choose Different Verification Method
-    support_note_html: If you have any questions, please contact the Brave Rewards team at <a href="https://community.brave.com/">https://community.brave.com/</a>
-    warning_note_html: This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Rewards team at <a href="https://community.brave.com/">https://community.brave.com/</a>
+    support_note_html: If you have any questions, please contact the Brave Creators team at <a href="https://community.brave.com/">https://community.brave.com/</a>
+    warning_note_html: This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Creators team at <a href="https://community.brave.com/">https://community.brave.com/</a>
 
   activerecord:
     shared:
@@ -164,7 +164,7 @@ en:
         all: All dates
       uphold_status:
         balance_sending: Contribution balance is transferred to your Uphold wallet monthly.
-        connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Rewards.
+        connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Creators.
         processing: |
           Your Uphold wallet is being connected to your account.
           If this takes more than a few minutes, please reconnect with Uphold.
@@ -178,9 +178,9 @@ en:
         unconnected: Not connected
         connection_problems: Connection problems
       uphold_status_description:
-        connecting: Brave Rewards is connecting to your Uphold account.
+        connecting: Brave Creators is connecting to your Uphold account.
         reauthorization_needed: Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your wallet.
-        unconnected: You need to connect to your Uphold account to receive contributions from Brave Rewards.
+        unconnected: You need to connect to your Uphold account to receive contributions from Brave Creators.
         restricted_member: Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.
         non_member: To receive your contribution balance, you'll need to fully verify your identity on Uphold.
         verified: Your Uphold wallet is ready to receive Brave Rewards.
@@ -190,7 +190,7 @@ en:
       twitter: Basic Attention Token Twitter
       reddit: Basic Attention Token Reddit
       bat: Basic Attention Token
-      footer_html: Brave Rewards is made by the fine folks at <a href="https://brave.com">Brave Software</a> and powered by the <a href="https://www.basicattentiontoken.org">Basic Attention Token.</a><br />View the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service.</a>
+      footer_html: Brave Creators is made by the fine folks at <a href="https://brave.com">Brave Software</a> and powered by the <a href="https://www.basicattentiontoken.org">Basic Attention Token.</a><br />View the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service.</a>
   modal_partials:
     two_factor_registration_complete:
       headline: Great!
@@ -203,7 +203,7 @@ en:
       subject: "A new document has been added to your invoice"
       body_html: |
         <p>Your %{date} invoice has a new document ready for you to view.</p>
-        Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
+        Click the button below to log in to your Brave Creators account. This email contains a private access link that can only be used once.
       button: Log in to Brave Creators
   batch_mailer:
     notification_for_kyc:
@@ -252,12 +252,12 @@ en:
       subject: "The %{channel_name} channel has been successfully transferred"
       title: Channel transfer approved
       intro_html: |
-        The %{channel_name} channel has been successfully transferred. If you did not intend for this to happen, please reach out to the Brave Rewards team at https://community.brave.com/.
+        The %{channel_name} channel has been successfully transferred. If you did not intend for this to happen, please reach out to the Brave Creators team at https://community.brave.com/.
     channel_transfer_approved_secondary:
       subject: "Your request to transfer the %{channel_name} channel has been approved"
       title: Channel transfer approved
       intro: |
-        Your request to transfer the channel, %{channel_name}, to your Brave Rewards account has been approved. You can now
+        Your request to transfer the channel, %{channel_name}, to your Brave Creators account has been approved. You can now
         collect funds contributed to this channel.
     channel_transfer_rejected_primary:
       subject: "The %{channel_name} channel transfer has been canceled"
@@ -269,16 +269,16 @@ en:
       intro: |
         Your request to transfer the %{channel_name} channel has been rejected by the current owner.  Please reply to this email if you require further assistance.
     confirm_email_change:
-      subject: Confirm email change on Brave Rewards
+      subject: Confirm email change on Brave Creators
       title: Confirm email change
       notice: |
         NOTE: This email contains a private access link. Anyone with it can manage private
         publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
-      intro: "We’ve received a request to update your Brave Rewards email address. Please confirm you would like to proceed with the change below."
+      intro: "We’ve received a request to update your Brave Creators email address. Please confirm you would like to proceed with the change below."
       confirmation_link: Confirm your email change
       confirmation_link_help: Use this link to confirm that you would like to proceed with this change
     email_user_on_hold:
-      subject: Regarding your Brave Rewards account
+      subject: Regarding your Brave Creators account
       body: >
         Thank you for being a Brave Creator.
         <br/><br/>
@@ -295,7 +295,7 @@ en:
     login_email:
       subject: Log in to Brave Creators
       body_html: |
-        Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
+        Click the button below to log in to your Brave Creators account. This email contains a private access link that can only be used once.
       button: Log in to Brave Creators
       explicit_url: If the above button doesn't work, paste this link in your browser %{url}
 
@@ -313,25 +313,25 @@ en:
         The Brave Creators Team
     login_partner_email:
       salutation: Howdy %{name},
-      subject: You've been added as a partner on Brave Rewards
+      subject: You've been added as a partner on Brave Creators
       body_html: |
-        You've been added as a partner on Brave Rewards.
+        You've been added as a partner on Brave Creators.
         Click the private access link below to log in to your account with
-        <strong>Brave Rewards</strong>. This link can only be used once.
+        <strong>Brave Creators</strong>. This link can only be used once.
       button: Log in to Brave Creators
     notify_email_change:
-      subject: Notification of Brave Rewards email change
+      subject: Notification of Brave Creators email change
       title: Notification of email change
-      intro: This email confirms an update made to your email address with Brave Rewards. If you made this change, check your new email account for a link to confirm it.
-      contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at https://community.brave.com/.
+      intro: This email confirms an update made to your email address with Brave Creators. If you made this change, check your new email account for a link to confirm it.
+      contact_support_html: If you did not intend for this to happen, please reach out to the Brave Creators team at https://community.brave.com/.
     suspend_publisher:
-      subject: Your Brave Rewards account has been temporarily frozen
+      subject: Your Brave Creators account has been temporarily frozen
       intro: Thank you for being a Brave publisher.
-      body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="https://community.brave.com/">https://community.brave.com/</a>
-      closing_html: Thank you.<br/>The Brave Rewards Team
+      body_html: We have noticed some unusual or suspicious contributions to your Brave Creators account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="https://community.brave.com/">https://community.brave.com/</a>
+      closing_html: Thank you.<br/>The Brave Creators Team
       contact_support: If you did not make this change yourself, please contact support ASAP
     suspend_publisher_for_brand_bidding:
-      subject: Your Brave Rewards account has been suspended
+      subject: Your Brave Creators account has been suspended
       body_html:
         We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code.
         <br/><br/>
@@ -343,7 +343,7 @@ en:
         <br/><br/>
         Thank you.
     suspend_publisher_for_brand_bidding_and_impersonation:
-      subject: Your Brave Rewards account has been suspended
+      subject: Your Brave Creators account has been suspended
       body_html:
         We've received reports that you are bidding on Brave branded keywords when running ad campaigns to promote your Brave Referral Code, as well as directing traffic to a site impersonating Brave.
         <br/><br/>
@@ -360,7 +360,7 @@ en:
         <br/><br/>
         Thank you.
     submit_appeal:
-      subject: Brave Rewards Appeal — Under Review
+      subject: Brave Creators Appeal — Under Review
       body: |
         Thank you for submitting your appeal. We’re reviewing it and will get back to you as soon as we can.
         <br/><br/>
@@ -368,7 +368,7 @@ en:
         <br/>
         The Brave Creators team
     accept_appeal:
-      subject: Brave Rewards Appeal — Accepted
+      subject: Brave Creators Appeal — Accepted
       body: |
         We read your appeal, and we’ve approved it. Your suspended BAT should be with you in the next payout cycle.
         <br/><br/>
@@ -376,9 +376,9 @@ en:
         <br/>
         The Brave Creators team
     reject_appeal:
-      subject: Brave Rewards Appeal — Denied
+      subject: Brave Creators Appeal — Denied
       body: |
-        We have concluded that the activity on your account was not in line with the Brave Rewards rules so we have denied your appeal.
+        We have concluded that the activity on your account was not in line with the Brave Creators rules so we have denied your appeal.
         While you remain able to receive BAT owned by people using Brave when they send it as tips or attention-based contributions, you are no longer eligible to receive BAT owned by Brave itself.
         <br/><br/>
         We appreciate your support,
@@ -388,7 +388,7 @@ en:
       subject: Please verify your Uphold identity to claim your %{total_amount} BAT
       body_html: |
         <p>You have <strong>%{total_amount} BAT</strong> worth of earnings waiting for you to verify your identity with Uphold.
-        <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p>
+        <p>To improve the security of Brave Creators and protect against fraud, we require that creators verify their identity with Uphold.</p>
         <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
       button: Verify wallet
       unsubscribe: These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
@@ -396,30 +396,30 @@ en:
       subject: Uphold account unable to receive funds
       body_html: |
         <p>Your Uphold account is not currently able to receive funds. Please check your account status to ensure that there are no active problems and that you are within transaction limit guidelines.</p>
-        <p>Your earnings will be held safely in your Brave Rewards account until your Uphold account is ready to receive funds again. If you have any questions, please reply to this email.</p>
+        <p>Your earnings will be held safely in your Brave Creators account until your Uphold account is ready to receive funds again. If you have any questions, please reply to this email.</p>
         <p>These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.</p>
     verification_done:
-      subject: "%{publication_title} is now verified on Brave Rewards"
+      subject: "%{publication_title} is now verified on Brave Creators"
       title: Verification complete
       intro_html: |
-        <p>Congratulations! You are now a verified Brave Rewards creator.</p> <p>Ready to claim your funds? Visit your Brave Rewards dashboard to submit your payment information using the button below.</p>
+        <p>Congratulations! You are now a verified Brave Creators creator.</p> <p>Ready to claim your funds? Visit your Brave Creators dashboard to submit your payment information using the button below.</p>
       button: Log in to Brave Creators
     wallet_not_connected:
       subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |
-        <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Rewards!</span></p>
-        <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Creators and connect your wallet from the dashboard to receive your funds.</p>
+        <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Creators!</span></p>
+        <p>Your earnings from Brave Creators are ready to be deposited. All you need to do is connect a wallet to your Brave Creators account.</p> <p>Log in to Brave Creators and connect your wallet from the dashboard to receive your funds.</p>
       unsubscribe: These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
       button: Log in to Brave Creators
     verify_email:
-      subject: Verify your Brave Rewards email address
+      subject: Verify your Brave Creators email address
       body_html: |
-        Click the button below to confirm your email address and create your account with Brave Rewards.
+        Click the button below to confirm your email address and create your account with Brave Creators.
       button: Verify email
     welcome:
       subject: Brave Publisher registration
       title: Publisher registration
-      intro: We've received a request to register a website with Brave Rewards
+      intro: We've received a request to register a website with Brave Creators
       contact: Contact person
       private_access_link_help: Use this link to continue and manage publisher registration
   channel_transfer:
@@ -464,13 +464,13 @@ en:
         missing_scope: "It looks like we're unable to read transactions from your Uphold account. This affects the ability to generate statements for direct contributions. "
         reauthorize: Click here to re-authorize with Uphold.
         contribution_settlement: Brave Settled Contributions
-        contribution_settlement_description: The total amount of contributions paid through Brave managed systems, including auto-contribute and custodial wallets.  5% fee is applied to support Brave Rewards and infrastructure costs.
+        contribution_settlement_description: The total amount of contributions paid through Brave managed systems, including auto-contribute and custodial wallets.  5% fee is applied to support Brave Creators and infrastructure costs.
         referral_settlement:  Referral Promo Earnings
         referral_settlement_description: The total amount paid for users who have ins talled and used Brave Browser for more than 30 days.
         uphold_contribution_settlement: Direct User Tips
         uphold_contribution_settlement_description: Tips made directly by Brave users are deposited into your Uphold Account as they come throughout the month. No fees are applicable for direct tips.
         fees: Fees
-        fees_description: The total amount of the fees taken from contributions to support Brave Rewards, and infrastructure costs.
+        fees_description: The total amount of the fees taken from contributions to support Brave Creators, and infrastructure costs.
         account: Publisher Account
     cases:
       shared:
@@ -501,12 +501,12 @@ en:
         messages: Messages
         new_message_title: Message
         send_message: "Send Message"
-        note_description: "Messages allow you to easy communicate to the Brave Rewards team."
+        note_description: "Messages allow you to easy communicate to the Brave Creators team."
         notice: Thanks for letting us know — we've received your appeal. We'll take a look as soon as we can, and then get back to you.
         last_updated_at: "Last updated about %{time} ago"
       message:
         ago: " ago"
-        support: "Brave Rewards Support"
+        support: "Brave Creators Support"
         attachments: "Attachments"
     payout_status:
       heading: Payout Progress
@@ -538,7 +538,7 @@ en:
     change_email_confirm:
       login_email_changed: Great!
       login_email_verified_html: |
-        <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Rewards.
+        <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Creators.
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
       website:
@@ -596,7 +596,7 @@ en:
         signup_prompt: Don't have an account?
         legacy_youtube_login: Legacy YouTube Login
       sign_up:
-        heading: Join Brave Rewards
+        heading: Join Brave Creators
         terms_of_service: I agree to Brave's terms & conditions
       resend_authentication_email:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
@@ -677,7 +677,7 @@ en:
       body: >
         We've noticed some unusual activity on your account. For that reason, we've suspended access while we take a closer look. Reasons may include violations of the <a href="https://support.brave.com/hc/en-us/articles/360029235132"> BAT grant guidelines.</a>
         <br/><br/>
-        We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
+        We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Creators.
         <br/><br/>
         If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a> where a real human will read and reply to your message.
 
@@ -735,7 +735,7 @@ en:
     instant_donation_modal:
       headline: Customize Your Tipping Banner
       intro:
-        html: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the <span style="color:#7d7bdc;">Send Tip Now</span> button.
+        html: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Creators panel from the URL bar and clicks the <span style="color:#7d7bdc;">Send Tip Now</span> button.
       tagline: Customize your banner with your own voice and image!
       skip: Skip for now
       preview: Preview Banner
@@ -800,7 +800,7 @@ en:
       group: "Group %{number}"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
-      violation: We regret to inform you that we've suspended your ability to participate in Brave Rewards Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from participating in our other programs.
+      violation: We regret to inform you that we've suspended your ability to participate in Brave Creators Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from participating in our other programs.
       referral: "Referral Promo Stats"
       check_statement: "Check your statement for this period's payout."
       tooltip:
@@ -819,7 +819,7 @@ en:
       referral_links: "Share the link to increase referrals"
       referral_link: "Referral Link"
       copy: "Copy"
-      brave_rewards_tm: "Brave Rewards"
+      brave_rewards_tm: "Brave Creators"
       on_youtube: "on YouTube"
       on_twitch: "on Twitch"
       on_twitter: "on Twitter"
@@ -831,7 +831,7 @@ en:
         The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service.</a>
   promo_mailer:
     activate_promo_2018q1:
-      subject: "Get your Brave Rewards referral code"
+      subject: "Get your Brave Creators referral code"
       body_one_html: |
         <p>We are giving away $1 million in tokens to creators who get their audience to switch to the Brave. You get approximately 5 USD in tokens for each user you bring to Brave using your referral code.</p>
       button: "Activate promo"
@@ -846,7 +846,7 @@ en:
     new_channel_registered_2018q1:
       subject: "Your referral code for %{publication_title} is ready"
   banner:
-    headline: "Brave Rewards"
+    headline: "Brave Creators"
     tagline: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content."
     upload_too_big: "The image is too big to resize, please try a smaller file"
   recaptcha:
@@ -974,14 +974,14 @@ en:
   static:
     no_js:
       welcome: Welcome to
-      header: Brave Rewards
+      header: Brave Creators
       body_html: |
         <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
           your content? Verify your site and unlock your contributions!</p>
-        <p>Brave Rewards lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
+        <p>Brave Creators lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
           of fans may have already filled your wallet!</p>
       new:
-        header: New to Brave Rewards?
+        header: New to Brave Creators?
         body: Start verification by entering your email.
       login:
         body: Log in to your dashboard.
