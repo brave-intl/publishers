@@ -33,6 +33,7 @@ class PublisherMailer < ApplicationMailer
   def verification_done(channel)
     @channel = channel
     @publisher = @channel.publisher
+    @publication_title = @channel.details.publication_title
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
@@ -141,14 +142,6 @@ class PublisherMailer < ApplicationMailer
     mail_if_destination_exists(
       to: @publisher.email,
       asm: transaction_asm_group_id,
-      subject: default_i18n_subject
-    )
-  end
-
-  def paypal_missing_bank_account(publisher)
-    @publisher = publisher
-    mail_if_destination_exists(
-      to: @publisher.email,
       subject: default_i18n_subject
     )
   end

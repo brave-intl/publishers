@@ -102,14 +102,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
-  def get_paypal_wallet_state(paypal_connection:)
-    if paypal_connection.verified_account?
-      PublishersPb::PaypalWalletState::PAYPAL_ACCOUNT_KYC
-    else
-      PublishersPb::PaypalWalletState::PAYPAL_ACCOUNT_NO_KYC
-    end
-  end
-
   def get_bitflyer_wallet_state(bitflyer_connection:)
     PublishersPb::BitflyerWalletState::BITFLYER_ACCOUNT_KYC
   end

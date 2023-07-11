@@ -181,12 +181,6 @@ class PublishersController < ApplicationController
     render partial: "uphold_wallet_panel"
   end
 
-  def paypal_wallet_panel
-    @publisher = current_publisher
-    @last_settlement_balance = Eyeshade::LastSettlementBalance.for_publisher(publisher: @publisher)
-    render partial: "paypal_wallet_panel"
-  end
-
   def choose_new_channel_type
   end
 
