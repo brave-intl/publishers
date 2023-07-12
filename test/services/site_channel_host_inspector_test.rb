@@ -5,11 +5,11 @@ require "webmock/minitest"
 
 class SiteChannelHostInspectorTest < ActiveJob::TestCase
   def setup
-    Rails.application.secrets[:host_inspector_offline] = false
+    Rails.application.credentials[:host_inspector_offline] = false
   end
 
   def teardown
-    Rails.application.secrets[:host_inspector_offline] = true
+    Rails.application.credentials[:host_inspector_offline] = true
   end
 
   test "inspects the domain for github" do

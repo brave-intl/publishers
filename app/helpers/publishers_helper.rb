@@ -150,11 +150,11 @@ module PublishersHelper
   end
 
   def uphold_dashboard_url
-    Rails.application.secrets[:uphold_dashboard_url]
+    Rails.application.credentials[:uphold_dashboard_url]
   end
 
   def terms_of_service_url
-    Rails.application.secrets[:terms_of_service_url]
+    Rails.application.credentials[:terms_of_service_url]
   end
 
   def uphold_status_class(publisher)
@@ -318,7 +318,7 @@ module PublishersHelper
   end
 
   def show_faq_link?
-    !Rails.application.secrets[:hide_faqs] && FaqCategory.ready_for_display.count > 0
+    !Rails.application.credentials[:hide_faqs] && FaqCategory.ready_for_display.count > 0
   end
 
   def channel_type(channel)

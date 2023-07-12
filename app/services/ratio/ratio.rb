@@ -8,7 +8,7 @@ module Ratio
 
     def relative
       # https://ratios.rewards.brave.com/v2/relative/provider/coingecko/bat/usd,eur/1d
-      return JSON.parse(relative_mock_response) if Rails.application.secrets[:bat_ratios_token].blank?
+      return JSON.parse(relative_mock_response) if Rails.application.credentials[:bat_ratios_token].blank?
       response = get("/v2/relative/provider/coingecko/bat/usd,eur,btc,eth,gbp/live")
 
       JSON.parse(response.body)
@@ -22,11 +22,11 @@ module Ratio
     end
 
     def api_base_uri
-      Rails.application.secrets[:bat_ratios_url]
+      Rails.application.credentials[:bat_ratios_url]
     end
 
     def api_authorization_header
-      "Bearer #{Rails.application.secrets[:bat_ratios_token]}"
+      "Bearer #{Rails.application.credentials[:bat_ratios_token]}"
     end
 
     def relative_mock_response

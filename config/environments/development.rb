@@ -15,7 +15,7 @@ Rails.application.configure do
   }
 
   config.cache_store = :redis_cache_store, {
-    url: Rails.application.secrets[:redis_url],
+    url: Rails.application.credentials[:redis_url],
     error_handler: ->(method:, returning:, exception:) { raise exception }
   }
 
@@ -26,7 +26,7 @@ Rails.application.configure do
   config.session_store :redis_session_store,
     key:  "_publishers_session",
     redis: {
-    client: Redis.new(url: Rails.application.secrets[:redis_url]),
+    client: Redis.new(url: Rails.application.credentials[:redis_url]),
     expire_after: 120.minutes,
     key_prefix: 'publishers:session:'
   }
@@ -36,8 +36,8 @@ Rails.application.configure do
   # Mailcatcher
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    port: Rails.application.secrets[:smtp_server_port] || 1025,
-    address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1"
+    port: Rails.application.credentials[:smtp_server_port] || 1025,
+    address: Rails.application.credentials[:smtp_server_address] || "127.0.0.1"
   }
 
   config.i18n.load_path += Dir["#{Rails.root}/config/locales/**/*.{rb,yml}"]

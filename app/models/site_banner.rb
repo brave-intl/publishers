@@ -86,7 +86,7 @@ class SiteBanner < ApplicationRecord
   end
 
   def pcdn_public_image_url(image)
-    "#{Rails.application.secrets[:s3_rewards_public_domain]}/#{image&.blob&.key}"
+    "#{Rails.application.credentials[:s3_rewards_public_domain]}/#{image&.blob&.key}"
   end
 
   def non_default_properties

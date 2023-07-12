@@ -3,4 +3,4 @@ p
   = t ".body"
   = " "
   = link_to(root_url, root_path)
-p= t ".contact", support_email: Rails.application.secrets[:support_email]
+p= t ".contact", support_email: Rails.application.credentials[:support_email]

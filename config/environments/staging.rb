@@ -24,7 +24,7 @@ Rails.application.configure do
   config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
 
   config.cache_store = :redis_cache_store, {
-    url: Rails.application.secrets[:redis_url],
+    url: Rails.application.credentials[:redis_url],
     connect_timeout: 30, # Defaults to 20 seconds
     read_timeout: 5, # Defaults to 1 second
     write_timeout: 10, # Defaults to 1 second
@@ -43,7 +43,7 @@ Rails.application.configure do
   config.session_store :redis_session_store,
                        key:  "_publishers_session",
                        redis: {
-                         client: Redis.new(url: Rails.application.secrets[:redis_url]),
+                         client: Redis.new(url: Rails.application.credentials[:redis_url]),
                          expire_after: 120.minutes,
                          key_prefix: 'publishers:session:'
                        }
@@ -53,15 +53,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "publishers_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:url_host] }
+  config.action_mailer.default_url_options = { host: Rails.application.credentials[:url_host] }
 
   # SMTP mailer settings (Sendgrid)
   config.action_mailer.smtp_settings = {
-    port: Rails.application.secrets[:smtp_server_port],
-    address: Rails.application.secrets[:smtp_server_address],
+    port: Rails.application.credentials[:smtp_server_port],
+    address: Rails.application.credentials[:smtp_server_address],
     user_name: "apikey", # see https://sendgrid.com/docs/API_Reference/SMTP_API/integrating_with_the_smtp_api.html
-    password: Rails.application.secrets[:sendgrid_api_key],
-    domain: Rails.application.secrets[:url_host],
+    password: Rails.application.credentials[:sendgrid_api_key],
+    domain: Rails.application.credentials[:url_host],
     authentication: :plain,
     enable_starttls_auto: true
   }

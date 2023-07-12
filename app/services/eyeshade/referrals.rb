@@ -5,7 +5,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
   PATH = "/v1/referrals"
 
   def groups
-    return offline_groups if Rails.application.secrets[:api_eyeshade_offline]
+    return offline_groups if Rails.application.credentials[:api_eyeshade_offline]
 
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
@@ -19,7 +19,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
   end
 
   def statement(publisher:, start_date:, end_date:)
-    return offline_statement if Rails.application.secrets[:api_eyeshade_offline]
+    return offline_statement if Rails.application.credentials[:api_eyeshade_offline]
 
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header

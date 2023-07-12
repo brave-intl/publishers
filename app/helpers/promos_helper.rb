@@ -4,7 +4,7 @@ module PromosHelper
   include ActionView::Helpers::DateHelper
 
   def active_promo_id
-    Rails.application.secrets[:active_promo_id]
+    Rails.application.credentials[:active_promo_id]
   end
 
   def promo_running?
@@ -12,7 +12,7 @@ module PromosHelper
   end
 
   def perform_promo_offline?
-    Rails.application.secrets[:api_promo_base_uri].blank?
+    Rails.application.credentials[:api_promo_base_uri].blank?
   end
 
   def offline_referral_code
@@ -79,7 +79,7 @@ module PromosHelper
   end
 
   def base_referral_url
-    Rails.application.secrets[:base_referral_url].to_s + "/"
+    Rails.application.credentials[:base_referral_url].to_s + "/"
   end
 
   def on_channel_type(channel)

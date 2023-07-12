@@ -174,7 +174,8 @@ group :development do
   gem "binding_of_caller"
   gem "listen", "~> 3.5"
 
-  gem "bullet"
+  # TODO add this back in after rails 7.1 officially drops
+  # gem "bullet"
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"

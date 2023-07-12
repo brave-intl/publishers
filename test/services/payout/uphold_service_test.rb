@@ -5,13 +5,13 @@ require "test_helper"
 class UpholdServiceTest < ActiveJob::TestCase
   before do
     PotentialPayment.destroy_all
-    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
-    @prev_fee_rate = Rails.application.secrets[:fee_rate]
+    @prev_offline = Rails.application.credentials[:api_eyeshade_offline]
+    @prev_fee_rate = Rails.application.credentials[:fee_rate]
   end
 
   after do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
-    Rails.application.secrets[:fee_rate] = @prev_fee_rate
+    Rails.application.credentials[:api_eyeshade_offline] = @prev_offline
+    Rails.application.credentials[:fee_rate] = @prev_fee_rate
   end
 
   describe "when publisher does not have a verified channel" do
@@ -139,8 +139,8 @@ class UpholdServiceTest < ActiveJob::TestCase
     end
 
     before do
-      Rails.application.secrets[:fee_rate] = 0.05
-      Rails.application.secrets[:api_eyeshade_offline] = false
+      Rails.application.credentials[:fee_rate] = 0.05
+      Rails.application.credentials[:api_eyeshade_offline] = false
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
       subject
@@ -165,7 +165,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
   describe "publisher has a verified channel" do
     before do
-      Rails.application.secrets[:api_eyeshade_offline] = false
+      Rails.application.credentials[:api_eyeshade_offline] = false
     end
 
     describe "when not uphold verified" do
@@ -192,7 +192,7 @@ class UpholdServiceTest < ActiveJob::TestCase
       end
 
       before do
-        Rails.application.secrets[:api_eyeshade_offline] = false
+        Rails.application.credentials[:api_eyeshade_offline] = false
         subject
       end
 
@@ -257,7 +257,7 @@ class UpholdServiceTest < ActiveJob::TestCase
         end
 
         before do
-          Rails.application.secrets[:fee_rate] = 0.05
+          Rails.application.credentials[:fee_rate] = 0.05
           @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
         end
 
@@ -266,7 +266,7 @@ class UpholdServiceTest < ActiveJob::TestCase
 
           describe "when payout_report exists" do
             before do
-              Rails.application.secrets[:api_eyeshade_offline] = false
+              Rails.application.credentials[:api_eyeshade_offline] = false
               subject
             end
 
@@ -323,7 +323,7 @@ class UpholdServiceTest < ActiveJob::TestCase
           let(:publisher) { publishers(:uphold_connected_details) }
 
           before do
-            Rails.application.secrets[:fee_rate] = 0.05
+            Rails.application.credentials[:fee_rate] = 0.05
             @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
             subject
           end

@@ -20,7 +20,7 @@ class Bitflyer::UpdateDepositIdService < BuilderBaseService
     case result
     when BitflyerConnection
       # FIXME: Ideally this would be part of it's own client
-      url = URI.parse(Rails.application.secrets[:bitflyer_host] + "/api/link/v1/account/create-deposit-id?request_id=" + SecureRandom.uuid)
+      url = URI.parse(Rails.application.credentials[:bitflyer_host] + "/api/link/v1/account/create-deposit-id?request_id=" + SecureRandom.uuid)
       request = Net::HTTP::Get.new(url.to_s)
 
       request["Authorization"] = "Bearer " + conn.access_token

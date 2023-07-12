@@ -4,7 +4,7 @@
 # TODO: Migrate method to lib/eyeshade/client, add annotations and struct types
 class Eyeshade::ContributionTotals < Eyeshade::BaseApiClient
   def perform
-    if Rails.application.secrets[:api_eyeshade_offline]
+    if Rails.application.credentials[:api_eyeshade_offline]
       result = perform_offline
     else
       begin

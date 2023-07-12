@@ -9,7 +9,7 @@ module Rewards
     private
 
     def api_base_uri
-      Rails.application.secrets[:api_rewards_base_uri]
+      Rails.application.credentials[:api_rewards_base_uri]
     end
   end
 end

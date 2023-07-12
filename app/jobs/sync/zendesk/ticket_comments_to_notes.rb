@@ -9,14 +9,14 @@ class Sync::Zendesk::TicketCommentsToNotes
     require "zendesk_api"
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
-      config.url = "#{Rails.application.secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
+      config.url = "#{Rails.application.credentials[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
 
       # Basic / Token Authentication
-      config.username = "#{Rails.application.secrets[:zendesk_username]}/token"
+      config.username = "#{Rails.application.credentials[:zendesk_username]}/token"
 
       # Choose one of the following depending on your authentication choice
       # config.token = "your zendesk token"
-      config.token = Rails.application.secrets[:zendesk_access_token]
+      config.token = Rails.application.credentials[:zendesk_access_token]
       # config.password = "your zendesk password"
 
       # OAuth Authentication
@@ -32,7 +32,7 @@ class Sync::Zendesk::TicketCommentsToNotes
 
     publisher_notes = []
     publisher = nil
-    admin = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email])
+    admin = Publisher.find_by(email: Rails.application.credentials[:zendesk_admin_email])
     zendesk_comments = client.ticket.find(id: zendesk_ticket_id).comments
     (0...zendesk_comments.count).each do |index|
       # The first email should be the publisher's email. Would be surprising otherwise

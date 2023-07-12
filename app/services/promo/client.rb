@@ -21,15 +21,15 @@ module Promo
     private
 
     def perform_offline?
-      Rails.application.secrets[:api_promo_base_uri].blank?
+      Rails.application.credentials[:api_promo_base_uri].blank?
     end
 
     def api_base_uri
-      Rails.application.secrets[:api_promo_base_uri]
+      Rails.application.credentials[:api_promo_base_uri]
     end
 
     def api_authorization_header
-      "Bearer #{Rails.application.secrets[:api_promo_key]}"
+      "Bearer #{Rails.application.credentials[:api_promo_key]}"
     end
 
     def proxy_url

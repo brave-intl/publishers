@@ -39,7 +39,7 @@ class SlackMessenger < BaseApiClient
   private
 
   def api_base_uri
-    Rails.application.secrets[:slack_webhook_url]
+    Rails.application.credentials[:slack_webhook_url]
   end
 
   def proxy_url

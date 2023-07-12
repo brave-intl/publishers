@@ -14,7 +14,7 @@ class Eyeshade::TopBalances < Eyeshade::BaseApiClient
   end
 
   def perform
-    if Rails.application.secrets[:api_eyeshade_offline]
+    if Rails.application.credentials[:api_eyeshade_offline]
       result =
         if @type == OWNER
           perform_offline_owner

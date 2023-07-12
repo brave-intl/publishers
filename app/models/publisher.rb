@@ -562,9 +562,9 @@ class Publisher < ApplicationRecord
       ISO3166::Country.all_names_with_codes
     end
 
-    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+    def encryption_key(key: Rails.application.credentials[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
-      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      # New implementations should use [Rails.application.credentials[:attr_encrypted_key]].pack("H*")
       key.byteslice(0, 32)
     end
 

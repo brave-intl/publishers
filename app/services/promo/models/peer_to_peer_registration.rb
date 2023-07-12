@@ -13,14 +13,14 @@ module Promo
       # Creates a new owner
       # @param [String] id The owner identifier
       def create(publisher:, promo_campaign:)
-        return perform_offline(publisher: publisher) if Rails.application.secrets[:api_promo_base_uri].blank?
-        response = put(PATH.expand(id: publisher.owner_identifier, cap: Rails.application.secrets[:peer_to_peer_cap]))
+        return perform_offline(publisher: publisher) if Rails.application.credentials[:api_promo_base_uri].blank?
+        response = put(PATH.expand(id: publisher.owner_identifier, cap: Rails.application.credentials[:peer_to_peer_cap]))
         payload = JSON.parse(response.body)
         payload.each do |promo_registration|
           PromoRegistration.create!(
             referral_code: promo_registration["referral_code"],
             publisher_id: publisher.id,
-            promo_id: Rails.application.secrets[:active_promo_id],
+            promo_id: Rails.application.credentials[:active_promo_id],
             promo_campaign_id: promo_campaign.id,
             kind: PromoRegistration::PEER_TO_PEER
           )
@@ -38,7 +38,7 @@ module Promo
         PromoRegistration.create!(
           referral_code: offline_promo,
           publisher_id: publisher.id,
-          promo_id: Rails.application.secrets[:active_promo_id],
+          promo_id: Rails.application.credentials[:active_promo_id],
           promo_campaign_id: PromoCampaign.find_by(name: PromoCampaign::PEER_TO_PEER).id,
           kind: PromoRegistration::PEER_TO_PEER
         )

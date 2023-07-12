@@ -11,7 +11,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
+    return perform_offline if Rails.application.credentials[:api_promo_base_uri].blank?
     stats = []
     @promo_registrations.in_batches(of: BATCH_SIZE) do |promo_registrations_batch|
       query_string = query_string(promo_registrations_batch)
@@ -97,11 +97,11 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def api_base_uri
-    Rails.application.secrets[:api_promo_base_uri]
+    Rails.application.credentials[:api_promo_base_uri]
   end
 
   def api_authorization_header
-    "Bearer #{Rails.application.secrets[:api_promo_key]}"
+    "Bearer #{Rails.application.credentials[:api_promo_key]}"
   end
 
   def query_string(promo_registrations)

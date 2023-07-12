@@ -72,11 +72,11 @@ module Oauth2::Config
       end
 
       def client_id
-        Rails.application.secrets[:gemini_client_id]
+        Rails.application.credentials[:gemini_client_id]
       end
 
       def client_secret
-        Rails.application.secrets[:gemini_client_secret]
+        Rails.application.credentials[:gemini_client_secret]
       end
 
       # Gemini auth grant flow uses a different host than api requests
@@ -122,11 +122,11 @@ module Oauth2::Config
       end
 
       def client_id
-        Rails.application.secrets[:uphold_client_id]
+        Rails.application.credentials[:uphold_client_id]
       end
 
       def client_secret
-        Rails.application.secrets[:uphold_client_secret]
+        Rails.application.credentials[:uphold_client_secret]
       end
 
       def authorization_url
@@ -161,11 +161,11 @@ module Oauth2::Config
       end
 
       def client_id
-        Rails.application.secrets[:bitflyer_client_id]
+        Rails.application.credentials[:bitflyer_client_id]
       end
 
       def client_secret
-        Rails.application.secrets[:bitflyer_client_secret]
+        Rails.application.credentials[:bitflyer_client_secret]
       end
 
       def authorization_url

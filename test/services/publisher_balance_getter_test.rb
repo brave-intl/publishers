@@ -4,15 +4,15 @@ require "test_helper"
 
 class PublisherBalanceGetterTest < ActiveJob::TestCase
   before(:example) do
-    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+    @prev_offline = Rails.application.credentials[:api_eyeshade_offline]
   end
 
   after(:example) do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
+    Rails.application.credentials[:api_eyeshade_offline] = @prev_offline
   end
 
   test "fills in empty balances only for channels that eyeshade does not return balance info" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+    Rails.application.credentials[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_details)
 
     # Only include owner account in response
@@ -36,7 +36,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
   end
 
   test "fills in empty owner balance if not included in eyeshade response" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+    Rails.application.credentials[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_details)
 
     # Owner balance not included in response

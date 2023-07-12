@@ -41,7 +41,7 @@ module BrowserChannelsDynoCaching
   end
 
   def set_lock_to_now
-    return true if Rails.application.secrets[:redis_url].blank?
+    return true if Rails.application.credentials[:redis_url].blank?
     conn = Redis.new
     conn.setnx(self.class::REDIS_THUNDERING_HERD_KEY, Time.now.to_i)
     conn.quit

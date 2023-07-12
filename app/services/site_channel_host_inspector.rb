@@ -34,7 +34,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:host_inspector_offline]
+    return perform_offline if Rails.application.credentials[:host_inspector_offline]
 
     # test HTTPS first
     https_result = inspect_uri(URI("https://#{url}"))

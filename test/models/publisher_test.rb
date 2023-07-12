@@ -11,11 +11,11 @@ class PublisherTest < ActiveSupport::TestCase
   include EyeshadeHelper
 
   before(:example) do
-    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+    @prev_offline = Rails.application.credentials[:api_eyeshade_offline]
   end
 
   after(:example) do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
+    Rails.application.credentials[:api_eyeshade_offline] = @prev_offline
   end
 
   describe "#authorized_to_act?" do
