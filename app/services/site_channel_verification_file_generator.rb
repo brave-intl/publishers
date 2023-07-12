@@ -26,7 +26,7 @@ class SiteChannelVerificationFileGenerator < BaseService
 
   def generate_file_content
     <<~HEREDOC
-      This is a Brave Rewards publisher verification file.
+      This is a Brave Creators publisher verification file.
 
       Domain: #{site_channel.details.brave_publisher_id}
       Token: #{site_channel.details.verification_token}

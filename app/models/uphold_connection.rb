@@ -27,7 +27,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  UPHOLD_CARD_LABEL = "Brave Rewards"
+  UPHOLD_CARD_LABEL = "Brave Creators"
   SUPPORTED_CURRENCIES = ["BAT", "USD"].freeze
 
   # Snooze for the next ~ 80 years, this is what I consider forever from now :)
