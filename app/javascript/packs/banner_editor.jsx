@@ -57,7 +57,7 @@ import "../../assets/stylesheets/components/banner-editor.scss";
 import "../../assets/stylesheets/components/spinner.scss";
 import "../../assets/stylesheets/components/slider.scss";
 
-const DEFAULT_TITLE = "Brave Rewards";
+const DEFAULT_TITLE = "Brave Creators";
 const DEFAULT_DESCRIPTION =
   "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content"
 
