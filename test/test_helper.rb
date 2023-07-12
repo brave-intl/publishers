@@ -20,7 +20,6 @@ require "test_helpers/mock_rewards_responses"
 require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
-require "minitest/retry"
 if ENV["USE_MINITEST_RETRY"]
   Minitest::Retry.use!(
     retry_count: 3, # The number of times to retry. The default is 3.
