@@ -33,10 +33,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       # Some malformed data shouldn't prevent the list from being generated.
 
-      # Skip if Publisher has been suspended
-      next if !site_banner_lookup.publisher.brave_payable?
-
       begin
+        # Skip if Publisher has been suspended
+        next if !site_banner_lookup.publisher.brave_payable?
+        
         if site_banner_lookup.publisher.selected_wallet_provider_type == UPHOLD_CONNECTION && site_banner_lookup.publisher.uphold_connection.present?
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
