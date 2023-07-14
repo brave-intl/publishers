@@ -401,12 +401,6 @@ en:
         <p>Your Uphold account is not currently able to receive funds. Please check your account status to ensure that there are no active problems and that you are within transaction limit guidelines.</p>
         <p>Your earnings will be held safely in your Brave Creators account until your Uphold account is ready to receive funds again. If you have any questions, please reply to this email.</p>
         <p>These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.</p>
-    verification_done:
-      subject: "%{publication_title} is now verified on Brave Creators"
-      title: Verification complete
-      intro_html: |
-        <p>Congratulations! You are now a verified Brave Creators creator.</p> <p>Ready to claim your funds? Visit your Brave Creators dashboard to submit your payment information using the button below.</p>
-      button: Log in to Brave Creators
     wallet_not_connected:
       subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |
