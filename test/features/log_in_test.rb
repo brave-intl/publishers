@@ -64,8 +64,8 @@ class LogInTest < Capybara::Rails::TestCase
     assert_enqueued_emails(1) do
       # Firefox headless wonkiness, needs to click this twice where it just worked in Chrome
       click_link("try again")
-      
-      if assert_no_emails 
+
+      if assert_no_emails
         click_link("try again")
       end
     end
