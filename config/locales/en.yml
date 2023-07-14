@@ -239,14 +239,17 @@ en:
         <br>The Brave Creators team</br>
         </p>
     channel_contested:
-      subject: "A channel transfer for %{channel_name} has been requested"
+      subject: "Important: Your channel is being transferred to another Brave Creators account"
       title: A request to transfer one of your channels has been made
       notice: |
         NOTE: This email contains a private access link. Anyone with it can manage private
         publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
       intro: |
-        Another publisher has verified your channel, %{channel_name}, and it will be transferred to their account in 10 days.
-        If you do not approve of this action, use the button below to reject the transfer.
+        Hi %{name},
+         <br/><br/>
+         Another Brave Creator account has registered "%{channel_name}". Your channel will be transferred to that Brave Creator account in 10 days. If this was not you or you do not approve of this channel transfer, use the button below to stop the transfer.
+         <br/><br/>
+         If you have any questions, you can <a href="https://support.brave.com/hc/en-us/requests/new?ticket_form_id=10061687185549">open a support ticket here</a>, or post on the official <a href="https://community.brave.com/">Brave Community forums</a>.
       button: Reject transfer
     channel_transfer_approved_primary:
       subject: "The %{channel_name} channel has been successfully transferred"
