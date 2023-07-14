@@ -402,11 +402,6 @@ ja:
       subject: Upholdアカウントでの資金の受け取りに失敗しました
       body_html: |
         <p>現在、あなたのUpholdアカウントでは資金を受け取ることができませんでした。 アカウントのステータスを確認し、問題が発生していないこと及びトランザクション制限がかかっていないことを確認してください。</p><p> Upholdアカウントが再び資金を受け取り可能になるまで、資金はBrave Creatorsアカウントに安全に保持されます。 ご質問がある場合は、このメールに返信してください。</p>
-    verification_done:
-      subject: "%{publication_title}がBrave Creatorsで承認されました"
-      title: 承認が完了しました
-      intro_html: |
-        <p>おめでとうございます！ これで認証済みBrave Creatorsクリエイターとして登録されました。</p> <p>資金を受け取る準備はできましたか？ Brave Creatorsダッシュボードにアクセスして、支払い設定を完了してください。</p>
     button: Brave Creatorsにログインする
     wallet_not_connected:
       subject: ウォレットを接続して資金を受け取る
