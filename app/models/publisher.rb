@@ -473,7 +473,7 @@ class Publisher < ApplicationRecord
   end
 
   def brave_payable?
-    selected_wallet_provider&.payable? && active? && !only_user_funds?
+    active? && !only_user_funds?
   end
 
   def country
