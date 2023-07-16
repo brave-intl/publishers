@@ -747,7 +747,7 @@ DEPENDENCIES
   sidekiq (~> 7.1.0)
   sidekiq-scheduler (~> 5.0.2)
   simplecov
-  slim-rails (~> 3.1)
+  slim-rails (= 3.6.2)
   solargraph
   sprockets (= 4.2.0)
   sprockets-rails (= 3.4.2)

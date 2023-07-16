@@ -133,7 +133,7 @@ gem "sidekiq", "~> 7.1.0"
 gem "sidekiq-scheduler", "~> 5.0.2"
 
 # slim for view templates
-gem "slim-rails", "~> 3.1"
+gem "slim-rails", "3.6.2"
 
 gem "ssrf_filter", "1.1.1"
 
