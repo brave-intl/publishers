@@ -20,15 +20,6 @@ require "test_helpers/mock_rewards_responses"
 require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
-if ENV["USE_MINITEST_RETRY"]
-  Minitest::Retry.use!(
-    retry_count: 3, # The number of times to retry. The default is 3.
-    verbose: true, # Whether or not to display the message at the time of retry. The default is true.
-    io: $stdout, # Display destination of retry when the message. The default is stdout.
-    exceptions_to_retry: [], # List of exceptions that will trigger a retry (when empty, all exceptions will).
-    methods_to_retry: [] # List of methods that will trigger a retry (when empty, all methods will).
-  )
-end
 Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!

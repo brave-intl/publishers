@@ -344,8 +344,6 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.18.1)
-    minitest-retry (0.2.2)
-      minitest (>= 5.0)
     mocha (2.0.4)
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
@@ -711,7 +709,6 @@ DEPENDENCIES
   meta-tags (~> 2.18.0)
   minitest
   minitest-rails!
-  minitest-retry
   mocha
   newrelic_rpm (~> 9.3.1)
   nokogiri (>= 1.14.3)

@@ -194,7 +194,6 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
-  gem "minitest-retry"
 
   # Image information library
   gem "fastimage", "~> 2.2.5"

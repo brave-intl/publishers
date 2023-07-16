@@ -17,8 +17,8 @@ connection_with_token:
   publisher: gemini_completed
   is_verified: true
   recipient_id: <%= SecureRandom.uuid %>
-  access_token:  "{\"p\":\"jAbpCZWg+WEt+Pd2\",\"h\":{\"iv\":\"ge8wrBvKjf37XCuL\",\"at\":\"khms5mVUubgSt1Kn3pqk7g==\"}}"
-  refresh_token: "{\"p\":\"NGzY2xXThfjkicba/A==\",\"h\":{\"iv\":\"f3ZKcZla2PcQ9INT\",\"at\":\"wEYWCO8FQpO1JLQCdwHB7g==\"}}"
+  access_token:  "{\"p\":\"0xnOKdDbiCtdeEFk\",\"h\":{\"iv\":\"TJ6Cl65f8nGNzIUL\",\"at\":\"zM37d8U9DlE5aeuZw9gdug==\"}}"
+  refresh_token:  "{\"p\":\"ziymXehmy9TdklEeqg==\",\"h\":{\"iv\":\"EEgxeAEDu02XafPW\",\"at\":\"AkwfcjxEbF752GYDrBiS+g==\"}}"
   country: 'BE'
   status: 'Active'
 
