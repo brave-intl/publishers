@@ -7,9 +7,9 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "deletes channel for publisher" do
-    prev_api_eyeshade_offline = Rails.application.credentials[:api_eyeshade_offline]
+    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
-      Rails.application.credentials[:api_eyeshade_offline] = false
+      Rails.application.secrets[:api_eyeshade_offline] = false
 
       publisher = publishers(:youtube_new)
       channel = channels(:youtube_new)
@@ -22,7 +22,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
 
       # assert something
     ensure
-      Rails.application.credentials[:api_eyeshade_offline] = prev_api_eyeshade_offline
+      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
   end
 

@@ -4,18 +4,18 @@ require "test_helper"
 
 class PublisherStatementGetterTest < ActiveJob::TestCase
   before(:example) do
-    @prev_offline = Rails.application.credentials[:api_eyeshade_offline]
+    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
 
   after(:example) do
-    Rails.application.credentials[:api_eyeshade_offline] = @prev_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
   end
 
   test "has the correct request format" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
 
-    stub_request(:get, "#{Rails.application.credentials[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
       .to_return(status: 200, body: [].to_json, headers: {})
 
     # This will raise an error if the stubbed request format isn't correct
@@ -23,7 +23,7 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
   end
 
   test "filters transactions by period" do
-    Rails.application.credentials[:api_eyeshade_offline] = true
+    Rails.application.secrets[:api_eyeshade_offline] = true
     publisher = publishers(:verified) # Has one channel
 
     statement_data = PublisherStatementGetter.new(publisher: publisher).perform
@@ -31,7 +31,7 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
   end
 
   test "replaces account identifiers with channel title if channel or 'All' if publisher" do
-    Rails.application.credentials[:api_eyeshade_offline] = true
+    Rails.application.secrets[:api_eyeshade_offline] = true
     publisher = publishers(:uphold_connected)
     statement_data = PublisherStatementGetter.new(publisher: publisher).perform
 

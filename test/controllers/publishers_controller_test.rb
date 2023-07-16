@@ -14,13 +14,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include MockRewardsResponses
 
   before do
-    @prev_eyeshade_offline = Rails.application.credentials[:api_eyeshade_offline]
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     stub_uphold_cards!
     stub_rewards_parameters
   end
 
   after do
-    Rails.application.credentials[:api_eyeshade_offline] = @prev_eyeshade_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
   SIGNUP_PARAMS = {

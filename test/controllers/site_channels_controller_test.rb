@@ -11,18 +11,18 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   include PublishersHelper
 
   before do
-    @prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
   end
 
   after do
-    Rails.application.credentials[:host_inspector_offline] = @prev_host_inspector_offline
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
   end
 
   test "should allow configurable limmit for creating channel for logged in publisher" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
 
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
       publisher = publishers(:verified)
       publisher.update!(site_channel_limit: 3)
       second_channel = channels(:default)
@@ -48,15 +48,15 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       assert_redirected_to controller: "/site_channels", action: "verification_choose_method", id: new_channel.id
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 
   test "should limit number of site channels logged in publisher" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
 
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
       publisher = publishers(:verified)
       second_channel = channels(:default)
       second_channel.update!(publisher_id: publisher.id)
@@ -78,15 +78,15 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       assert_equal(302, response.status)
       assert_equal(I18n.t("site_channels.shared.limit"), flash.alert)
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 
   test "should create channel for logged in publisher" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
 
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
       publisher = publishers(:verified)
 
       sign_in publishers(:verified)
@@ -109,12 +109,12 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       assert_redirected_to controller: "/site_channels", action: "verification_choose_method", id: new_channel.id
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 
   test "verify can verify the channel and redirect to the dashboard" do
-    Rails.application.credentials[:host_inspector_offline] = false
+    Rails.application.secrets[:host_inspector_offline] = false
     channel = channels(:global_inprocess)
 
     sign_in publishers(:global_media_group)
@@ -138,9 +138,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
 
       sign_in publishers(:verified)
 
@@ -160,15 +160,15 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
         assert_match(I18n.t("site_channels.create.duplicate_channel", domain: "verified.org"), element.text)
       end
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 
   #  test "can't create a Site Channel with an existing visible Site Channel with the same brave_publisher_id" do
-  #    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+  #    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
   #
   #    begin
-  #      Rails.application.credentials[:host_inspector_offline] = true
+  #      Rails.application.secrets[:host_inspector_offline] = true
   #
   #      before do
   #        Channel.delete_all
@@ -205,7 +205,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   #        assert_match("newsite.org is already present.", element.text)
   #      end
   #    ensure
-  #      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+  #      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
   #    end
   #  end
   #
@@ -253,9 +253,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "when channel creation exceeds the limit" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
 
       sign_in publishers(:promo_enabled)
 
@@ -271,14 +271,14 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       post site_channels_url, params: create_params
       assert Channel.count == count
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 
   test "when user only is in status 'only user funds' we do not register for promos" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
       publisher = publishers(:promo_enabled_but_only_user_funds)
 
       sign_in publishers(:promo_enabled_but_only_user_funds)
@@ -301,13 +301,13 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
         new_channel.update(verified: true)
       end
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
   test "two different publishers can have the same unverifed site channel" do
-    prev_host_inspector_offline = Rails.application.credentials[:host_inspector_offline]
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
-      Rails.application.credentials[:host_inspector_offline] = true
+      Rails.application.secrets[:host_inspector_offline] = true
       create_params = {
         channel: {
           details_attributes: {
@@ -336,7 +336,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       assert SiteChannelDetails.where(brave_publisher_id: "newsite.org").count, 2
     ensure
-      Rails.application.credentials[:host_inspector_offline] = prev_host_inspector_offline
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 end

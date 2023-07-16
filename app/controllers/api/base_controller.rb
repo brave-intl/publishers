@@ -3,12 +3,12 @@
 # To set authorization for the API, configure ENV["API_AUTH_TOKEN"] and
 # api_auth_token ENV["API_IP_WHITELIST"] (see secrets.yml)
 class Api::BaseController < ActionController::API
-  before_action :log_full_request, if: -> { Rails.application.credentials[:log_api_requests] }
+  before_action :log_full_request, if: -> { Rails.application.secrets[:log_api_requests] }
 
-  API_AUTH_TOKEN = Rails.application.credentials[:api_auth_token].freeze
+  API_AUTH_TOKEN = Rails.application.secrets[:api_auth_token].freeze
 
-  API_IP_WHITELIST = if Rails.application.credentials[:api_ip_whitelist]
-    Rails.application.credentials[:api_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
+  API_IP_WHITELIST = if Rails.application.secrets[:api_ip_whitelist]
+    Rails.application.secrets[:api_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
   else
     [].freeze
   end

@@ -6,15 +6,15 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   include EyeshadeHelper
 
   before(:example) do
-    @prev_offline = Rails.application.credentials[:api_eyeshade_offline]
+    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
 
   after(:example) do
-    Rails.application.credentials[:api_eyeshade_offline] = @prev_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
   end
 
   test "when offline returns a wallet with fake data" do
-    Rails.application.credentials[:api_eyeshade_offline] = true
+    Rails.application.secrets[:api_eyeshade_offline] = true
 
     publisher = publishers(:verified)
     result = PublisherWalletGetter.new(publisher: publisher).perform
@@ -24,7 +24,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
   describe "when online" do
     before do
-      Rails.application.credentials[:api_eyeshade_offline] = false
+      Rails.application.secrets[:api_eyeshade_offline] = false
     end
     let(:eyeshade_response) {
       {
@@ -139,7 +139,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   end
 
   test "when online returns a wallet" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
 
     publisher = publishers(:google_verified)
     publisher.channels.delete_all
@@ -161,7 +161,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   end
 
   test "when online returns a wallet with channel data" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
 
     publisher = publishers(:completed)
     wallet = {
@@ -196,7 +196,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   end
 
   test "when online only returns channel balances for verified channels and owner" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
     # Has one verified, and one unverified channel
     publisher = publishers(:partially_completed)
     wallet = {
@@ -215,7 +215,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   end
 
   test "uses the PublisherBalanceGetter to populate pending balances" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
 
     wallet = {
@@ -251,7 +251,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
     wallet = PublisherWalletGetter.new(publisher: publisher).perform
 
-    channel_amount_after_fees = (20 - 20 * Rails.application.credentials[:fee_rate])
+    channel_amount_after_fees = (20 - 20 * Rails.application.secrets[:fee_rate])
     owner_amounts_after_fees = 20
     overall_amount_after_fees = (channel_amount_after_fees * 3 + owner_amounts_after_fees).to_s
     assert_equal wallet.overall_balance.amount_bat.to_s, overall_amount_after_fees
@@ -259,7 +259,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   end
 
   test "uses the PublisherTransactionsGetter to get last settlement information" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_details)
 
     wallet = {
@@ -283,7 +283,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
   end
 
   test "gets a wallet with all empty eyeshade reponses" do
-    Rails.application.credentials[:api_eyeshade_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
 
     stub_all_eyeshade_wallet_responses(publisher: publisher)

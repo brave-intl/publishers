@@ -7,7 +7,7 @@
 # to simply mediating the interactions between the external API and the application.
 module Youtube
   class Client < BaseApiClient
-    def initialize(token: Rails.application.credentials[:youtube_api_key])
+    def initialize(token: Rails.application.secrets[:youtube_api_key])
       @token = token
     end
 

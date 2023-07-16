@@ -164,7 +164,7 @@ module SendGrid
       end
 
       def sg
-        @sg ||= SendGrid::API.new(api_key: Rails.application.credentials[:sendgrid_api_key])
+        @sg ||= SendGrid::API.new(api_key: Rails.application.secrets[:sendgrid_api_key])
       end
     end
   end

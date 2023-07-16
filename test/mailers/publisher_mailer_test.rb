@@ -4,11 +4,11 @@ require "test_helper"
 
 class PublisherMailerTest < ActionMailer::TestCase
   before do
-    @prev_eyeshade_offline = Rails.application.credentials[:api_eyeshade_offline]
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
 
   after do
-    Rails.application.credentials[:api_eyeshade_offline] = @prev_eyeshade_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
   test "wallet_not_connected" do

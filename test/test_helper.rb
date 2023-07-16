@@ -68,7 +68,7 @@ driver_urls << "objects.githubusercontent.com" # pulling firefox
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
-  config.filter_sensitive_data("<ENCODED API KEY>") { Rails.application.credentials[:sendgrid_api_key] }
+  config.filter_sensitive_data("<ENCODED API KEY>") { Rails.application.secrets[:sendgrid_api_key] }
   config.before_record do |i|
     i.response.body.force_encoding("UTF-8")
     i.response.headers.delete("Set-Cookie")

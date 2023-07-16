@@ -402,7 +402,7 @@ class PublisherMailer < ApplicationMailer
   # (Albert Wang): These are critical emails pertaining to login.
   # You can view the IDs here: https://mc.sendgrid.com/unsubscribe-groups
   def transaction_asm_group_id
-    SendGrid::ASM.new(group_id: Rails.application.credentials[:sendgrid_transactional_asm_group_id])
+    SendGrid::ASM.new(group_id: Rails.application.secrets[:sendgrid_transactional_asm_group_id])
   end
 
   def ensure_fresh_token

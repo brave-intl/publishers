@@ -22,7 +22,7 @@ module Publishers
 
     config.exceptions_app = routes
 
-    config.log_level = if Rails.application.credentials[:log_verbose].present?
+    config.log_level = if Rails.application.secrets[:log_verbose].present?
       :debug
     else
       :info
@@ -64,8 +64,8 @@ module Publishers
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.active_record.encryption.primary_key = Rails.application.credentials[:active_record_encryption_primary_key]
-    config.active_record.encryption.deterministic_key = Rails.application.credentials[:active_record_encryption_deterministic_key]
-    config.active_record.encryption.key_derivation_salt = Rails.application.credentials[:active_record_encryption_key_derivation_salt]
+    config.active_record.encryption.primary_key = Rails.application.secrets[:active_record_encryption_primary_key]
+    config.active_record.encryption.deterministic_key = Rails.application.secrets[:active_record_encryption_deterministic_key]
+    config.active_record.encryption.key_derivation_salt = Rails.application.secrets[:active_record_encryption_key_derivation_salt]
   end
 end

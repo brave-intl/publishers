@@ -5,7 +5,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Rails.application.credentials[:mailer_sender]
+  config.mailer_sender = Rails.application.secrets[:mailer_sender]
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -243,31 +243,31 @@ Devise.setup do |config|
   # config.omniauth :github, "APP_ID", "APP_SECRET", scope: "user,public_repo"
 
   config.omniauth :google_oauth2,
-    Rails.application.credentials[:google_client_id],
-    Rails.application.credentials[:google_client_secret],
+    Rails.application.secrets[:google_client_id],
+    Rails.application.secrets[:google_client_secret],
     {
       name: "register_youtube_channel",
       scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
     }
 
   config.omniauth :google_oauth2,
-    Rails.application.credentials[:google_client_id],
-    Rails.application.credentials[:google_client_secret],
+    Rails.application.secrets[:google_client_id],
+    Rails.application.secrets[:google_client_secret],
     {
       name: "youtube_login",
       scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
     }
 
   config.omniauth :twitch,
-    Rails.application.credentials[:twitch_client_id],
-    Rails.application.credentials[:twitch_client_secret],
+    Rails.application.secrets[:twitch_client_id],
+    Rails.application.secrets[:twitch_client_secret],
     {
       name: "register_twitch_channel"
     }
 
   config.omniauth :twitter2,
-    Rails.application.credentials[:twitter_client_id],
-    Rails.application.credentials[:twitter_client_secret],
+    Rails.application.secrets[:twitter_client_id],
+    Rails.application.secrets[:twitter_client_secret],
     {
       callback_path: "/publishers/auth/register_twitter_channel/callback",
       scope: "tweet.read users.read",
@@ -275,23 +275,23 @@ Devise.setup do |config|
     }
 
   config.omniauth :vimeo,
-    Rails.application.credentials[:vimeo_client_id],
-    Rails.application.credentials[:vimeo_client_secret],
+    Rails.application.secrets[:vimeo_client_id],
+    Rails.application.secrets[:vimeo_client_secret],
     {
       name: "register_vimeo_channel"
     }
 
   config.omniauth :reddit,
-    Rails.application.credentials[:reddit_client_id],
-    Rails.application.credentials[:reddit_client_secret],
+    Rails.application.secrets[:reddit_client_id],
+    Rails.application.secrets[:reddit_client_secret],
     {
       name: "register_reddit_channel",
       scope: "identity"
     }
 
   config.omniauth :github,
-    Rails.application.credentials[:github_client_id],
-    Rails.application.credentials[:github_client_secret],
+    Rails.application.secrets[:github_client_id],
+    Rails.application.secrets[:github_client_secret],
     {
       name: "register_github_channel",
       scope: "identity"

@@ -5,8 +5,8 @@ class Ability
   include PublishersHelper
 
   ROLES = %i[admin publisher].freeze
-  ADMIN_IP_WHITELIST = if Rails.application.credentials[:admin_ip_whitelist]
-    Rails.application.credentials[:admin_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
+  ADMIN_IP_WHITELIST = if Rails.application.secrets[:admin_ip_whitelist]
+    Rails.application.secrets[:admin_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
   else
     [].freeze
   end

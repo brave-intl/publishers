@@ -15,7 +15,7 @@ class VimeoChannelDetails < BaseChannelDetails
   end
 
   def omniauth_url
-    "https://api.vimeo.com/oauth/authorize?response_type=code&client_id=#{Rails.application.credentials[:vimeo_client_id]}&redirect_uri=#{Rails.application.credentials[:vimeo_redirect_uri]}/publishers/home&state=1"
+    "https://api.vimeo.com/oauth/authorize?response_type=code&client_id=#{Rails.application.secrets[:vimeo_client_id]}&redirect_uri=#{Rails.application.secrets[:vimeo_redirect_uri]}/publishers/home&state=1"
   end
 
   def authorizer_name

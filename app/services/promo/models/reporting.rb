@@ -9,7 +9,7 @@ module Promo
       BATCH_SIZE = 10
 
       def geo_stats_by_referral_code(referral_codes:, start_date:, end_date:, interval: nil)
-        return perform_offline(referral_codes, start_date, end_date) if Rails.application.credentials[:api_promo_base_uri].blank?
+        return perform_offline(referral_codes, start_date, end_date) if Rails.application.secrets[:api_promo_base_uri].blank?
 
         path = "api/2/promo/geoStatsByReferralCode"
 
