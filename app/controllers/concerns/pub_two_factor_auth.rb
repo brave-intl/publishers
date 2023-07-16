@@ -1,6 +1,6 @@
 # typed: ignore
 
-module TwoFactorAuth
+module PubTwoFactorAuth
   extend ActiveSupport::Concern
 
   included do
