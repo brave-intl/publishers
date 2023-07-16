@@ -9,10 +9,10 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   include Rails.application.routes.url_helpers
   include MockRewardsResponses
 
-  let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
+  let(:uphold_url) { Rails.configuration.pub_secrets[:uphold_api_uri] + "/v0/me" }
   before do
     stub_rewards_parameters
-    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    @prev_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
 
     stub_request(:get, uphold_url).to_return(body: {status: "restricted", uphold_id: "123e4567-e89b-12d3-a456-426655440000", currencies: []}.to_json)
     # Mock out the creation of cards
@@ -22,7 +22,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   after do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+    Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
   test "verified channel can be removed after confirmation" do
@@ -56,7 +56,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   test "dashboard can still load even when publisher's wallet cannot be fetched from eyeshade" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+    Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)
     sign_in publisher
 
@@ -68,8 +68,8 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   test "dashboard can still load even when publisher's balance cannot be fetched from eyeshade" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    Rails.application.secrets[:api_eyeshade_offline] = false
+    prev_api_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
+    Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
     sign_in publisher
 
@@ -83,7 +83,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     refute publisher.wallet.present?
     assert_content page, "Unavailable"
   ensure
-    Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
+    Rails.configuration.pub_secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
   end
 
   test "can connect an Uphold account" do

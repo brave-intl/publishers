@@ -14,7 +14,7 @@ namespace :sendgrid do
       ids = SendGrid::ApiHelper.upsert_contacts(publishers: publishers)
 
       SendGrid::ApiHelper.add_contacts_to_list(
-        list_id: Rails.application.secrets[:sendgrid_publishers_list_id],
+        list_id: Rails.configuration.pub_secrets[:sendgrid_publishers_list_id],
         contact_ids: ids
       )
 

@@ -11,7 +11,7 @@ class Promo::RegistrationInstallerTypeSetter < BaseApiClient
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
+    return perform_offline if Rails.configuration.pub_secrets[:api_promo_base_uri].blank?
     connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
@@ -33,10 +33,10 @@ class Promo::RegistrationInstallerTypeSetter < BaseApiClient
   end
 
   def api_base_uri
-    Rails.application.secrets[:api_promo_base_uri]
+    Rails.configuration.pub_secrets[:api_promo_base_uri]
   end
 
   def api_authorization_header
-    "Bearer #{Rails.application.secrets[:api_promo_key]}"
+    "Bearer #{Rails.configuration.pub_secrets[:api_promo_key]}"
   end
 end
