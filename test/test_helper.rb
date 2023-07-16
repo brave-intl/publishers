@@ -5,7 +5,7 @@ require "simplecov"
 SimpleCov.start "rails"
 require File.expand_path("../config/environment", __dir__)
 require "rails/test_help"
-require "webpacker"
+require "shakapacker"
 require "selenium-webdriver"
 require "webmock/minitest"
 require "webdrivers/geckodriver"
@@ -29,7 +29,7 @@ if ENV["USE_MINITEST_RETRY"]
     methods_to_retry: [] # List of methods that will trigger a retry (when empty, all methods will).
   )
 end
-Webpacker.compile
+Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 Capybara.register_driver "firefox" do |app|

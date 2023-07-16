@@ -86,7 +86,7 @@
     "react-tooltip": "^4.2.3",
     "sass": "^1.62.1",
     "sass-loader": "^13.3.1",
-    "shakapacker": "6.6.0",
+    "shakapacker": "7.0.2",
     "style-loader": "^3.3.3",
     "styled-components": "5.1.0",
     "terser-webpack-plugin": "5",

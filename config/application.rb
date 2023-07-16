@@ -11,9 +11,11 @@ Bundler.require(*Rails.groups)
 module Publishers
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     config.pub_secrets = config_for(:secrets) # this line loads the config/secrets.yml file and store it in this namespace
+    # Raise error when a before_action's only/except options reference missing actions
+    config.action_controller.raise_on_missing_callback_actions = false
 
     config.middleware.use HttpHeaderMiddleware
     config.middleware.use Rack::Deflater
