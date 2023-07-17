@@ -1,7 +1,7 @@
 # typed: false
 
 # Preview all emails at https://localhost:3000/rails/mailers
-# As of January 2019, the only active email in this lineup seem to be 'new_channel_registered_2018q1' and it fires at the same time as 'verification_done' when a new channel is verified.
+# As of January 2019, the only active email in this lineup seem to be 'new_channel_registered_2018q1'
 
 class PromoMailerPreview < ActionMailer::Preview
   def activate_promo_2018q1

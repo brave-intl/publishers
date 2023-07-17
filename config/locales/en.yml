@@ -239,14 +239,17 @@ en:
         <br>The Brave Creators team</br>
         </p>
     channel_contested:
-      subject: "A channel transfer for %{channel_name} has been requested"
+      subject: "Important: Your channel is being transferred to another Brave Creators account"
       title: A request to transfer one of your channels has been made
       notice: |
         NOTE: This email contains a private access link. Anyone with it can manage private
         publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
       intro: |
-        Another publisher has verified your channel, %{channel_name}, and it will be transferred to their account in 10 days.
-        If you do not approve of this action, use the button below to reject the transfer.
+        Hi %{name},
+         <br/><br/>
+         Another Brave Creator account has registered "%{channel_name}". Your channel will be transferred to that Brave Creator account in 10 days. If this was not you or you do not approve of this channel transfer, use the button below to stop the transfer.
+         <br/><br/>
+         If you have any questions, you can <a href="https://support.brave.com/hc/en-us/requests/new?ticket_form_id=10061687185549">open a support ticket here</a>, or post on the official <a href="https://community.brave.com/">Brave Community forums</a>.
       button: Reject transfer
     channel_transfer_approved_primary:
       subject: "The %{channel_name} channel has been successfully transferred"
@@ -398,12 +401,6 @@ en:
         <p>Your Uphold account is not currently able to receive funds. Please check your account status to ensure that there are no active problems and that you are within transaction limit guidelines.</p>
         <p>Your earnings will be held safely in your Brave Creators account until your Uphold account is ready to receive funds again. If you have any questions, please reply to this email.</p>
         <p>These emails have been auto-snoozed for one year. To learn more please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.</p>
-    verification_done:
-      subject: "%{publication_title} is now verified on Brave Creators"
-      title: Verification complete
-      intro_html: |
-        <p>Congratulations! You are now a verified Brave Creators creator.</p> <p>Ready to claim your funds? Visit your Brave Creators dashboard to submit your payment information using the button below.</p>
-      button: Log in to Brave Creators
     wallet_not_connected:
       subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |

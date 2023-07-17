@@ -39,7 +39,6 @@ class SiteChannelVerifier < BaseService
       return false
     else
       channel.verification_succeeded!(has_admin_approval)
-      verified_channel_post_verify
     end
 
     true
@@ -53,10 +52,6 @@ class SiteChannelVerifier < BaseService
 
   def contested_channel(brave_publisher_id)
     SiteChannelDetails.where(brave_publisher_id: brave_publisher_id).joins(:channel).where(channels: {verified: true}).first
-  end
-
-  def verified_channel_post_verify
-    MailerServices::VerificationDoneEmailer.new(verified_channel: channel).perform
   end
 
   def verify_site_channel
