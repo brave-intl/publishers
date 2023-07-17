@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       patch :complete_signup
       post :create_new_untethered_referral_code
       get :choose_new_channel_type
+      get :reject_transfer_success
       get :security, to: "publishers/security#index"
       get :prompt_security, to: "publishers/security#prompt"
       get :settings, to: "publishers/settings#index"

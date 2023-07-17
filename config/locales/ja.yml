@@ -499,7 +499,10 @@ ja:
       ensure_email: 認証を試みます
       ensure_email_html: |
         <strong>'%{login_email}'</strong> としてログインするには<strong>「続ける」</strong>を押してください
-
+    reject_transfer_success:
+      title: "%{channel_name}チャンネル移管はキャンセルされました"
+      body: "チャンネル%{channel_name}を別のサイト運営者に移管するリクエストを却下しました。"
+      button: 続ける
     change_email:
       login_email: ログインメールアドレス
       login_email_message: アカウントへのアクセスと復旧のために有効なメールアドレスが必要です。
