@@ -185,7 +185,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = @channel.publisher.name
     @email = @channel.publisher.email
 
-    @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
+    @transfer_url = reject_transfer_success_publishers_url(channel_name: @channel_name)
 
     mail_if_destination_exists(
       to: @email,

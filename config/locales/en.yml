@@ -526,7 +526,11 @@ en:
     ensure_email:
       ensure_email: Authentication Attempt
       ensure_email_html: |
-        Press <strong>Continue</strong> to login as <br/><strong>'%{login_email}'</strong>.  
+        Press <strong>Continue</strong> to login as <br/><strong>'%{login_email}'</strong>.
+    reject_transfer_success:
+      title: "The %{channel_name} channel transfer has been canceled"
+      body: "You have rejected the request to transfer the channel, %{channel_name} to another publisher."
+      button: Go to Brave Creators
     change_email:
       login_email: Login Email
       login_email_message: We need your valid email address for account access and recovery purposes.

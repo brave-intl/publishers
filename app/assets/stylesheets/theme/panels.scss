@@ -57,6 +57,10 @@ $brave-panels-borderRadius: 8px;
     &--collapsed {
       min-height: auto;
     }
+    &--spaced {
+      padding-top: $spacer * 2;
+      padding-bottom: $spacer * 2;
+    }
   }
 
   &--content {
