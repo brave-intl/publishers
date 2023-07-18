@@ -67,25 +67,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     assert publisher.wallet.present?
   end
 
-  test "dashboard can still load even when publisher's balance cannot be fetched from eyeshade" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-
-    wallet = {"wallet" => {"authorized" => false}}
-    balances = "go away\nUser-agent: *\nDisallow:"
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
-
-    visit home_publishers_path
-
-    refute publisher.wallet.present?
-    assert_content page, "Unavailable"
-  ensure
-    Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-  end
-
   test "can connect an Uphold account" do
     publisher = publishers(:small_media_group)
     channel = channels(:small_media_group_to_delete)

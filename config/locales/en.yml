@@ -608,6 +608,12 @@ en:
       name_placeholder: First and last name
       tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
     home:
+      rewards_banner:
+        heading: You’re earning as part of Brave Creators!
+        payout_heading: "Next Creators payout: "
+        payout_message: Creators receive payouts each month for any BAT that was automatically contributed to them by Brave Rewards users.
+        tips_heading: Tips
+        tips_message: Tips from Brave Rewards users go directly to your custodial account right when they make them. <a href=%{help_link}>Learn more</a>
       disabled_payouts: Payouts will be coming soon. Keep an eye on this space to connect your wallet.
       migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.

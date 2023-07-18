@@ -578,6 +578,12 @@ ja:
       name_placeholder: 氏名
       tos_html: 「%{action}」をクリックすると、%{tos_link}に同意したことになります
     home:
+      rewards_banner:
+        heading: Brave Creatorsとしての報酬を獲得しました！
+        payout_heading: "次回のクリエイター支払い："
+        payout_message: Brave Rewardsユーザーによるオートコントリビューションとして発生したBATについて、毎月定期的に支払処理を行なっています。
+        tips_heading: チップ
+        tips_message: Brave Rewardsユーザーからのチップはリアルタイムで直接カストディアルアカウントに送信されます。<a href=%{help_link}>詳細はこちら</a>
       disabled_payouts: 近日中に支払いが行われます。こちらからウォレットの接続設定が可能です。
       migration: 現在、定期メンテナンスを実施しています。 この間、Upholdウォレットに問題が発生する場合があります。 まもなく復旧する予定です。
       noscript: ダッシュボードを操作する場合は、ブラウザーでJavaScriptを有効にしてください。

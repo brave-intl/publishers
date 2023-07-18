@@ -1,0 +1,23 @@
+.row
+    .col-md.m-3.mb-4.shadow-sm.pt-5.pb-4.pr-4.pl-4.rounded.rewards-background
+      .rewards-banner-title.mb-4.ml-2= t('publishers.home.rewards_banner.heading')
+      .row
+        .col-sm-12.col-lg.m-sm-3.mt-lg-3.mb-lg-3.ml-lg-3.mr-lg-0
+          .info-card.row.shadow-sm.rounded.bg-white.no-gutters
+            .col-sm-12.col-md-3.text-center.d-flex.mb-4.mb-md-0
+              .my-auto.mx-auto
+                = image_tag("rewards_simple_purple.png", class: "rewards-banner-img")
+            .col-sm-12.col-md-9.d-flex
+              .pl-3.text-center.text-md-left
+                h6.mb-2.d-inline-block.d-md-block=t('publishers.home.rewards_banner.payout_heading')
+                h6.mb-3.d-inline-block.d-md-block.pl-2.pl-md-0.font-weight-normal = next_deposit_date
+                div =t('publishers.home.rewards_banner.payout_message')
+        .col-sm-12.col-lg.m-sm-3.mt-lg-3.mb-lg-3.ml-lg-0.mr-lg-3
+          .info-card.row.bg-white.shadow-sm.rounded.no-gutters
+            .col-sm-12.col-md-3.text-center.d-flex.mb-4.mb-md-0
+              .my-auto.mx-auto
+                = image_tag("rewards_panel.png", class: "rewards-banner-img")
+            .col-sm-12.col-md-9.d-flex
+              .pl-3.text-center.text-md-left
+                h6.mb-3=t('publishers.home.rewards_banner.tips_heading')
+                div =t('publishers.home.rewards_banner.tips_message', help_link: "https://support.brave.com/hc/en-us/articles/360021123971-How-do-I-tip-websites-and-Content-Creators-in-Brave-Rewards-").html_safe
