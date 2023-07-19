@@ -66,7 +66,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     # For some reason the old assert_select still picks up the previous page, even though the response.body shows empty results
     # So use nokogiri
     doc = Nokogiri::HTML(response.body)
-    assert doc.search('tbody > tr').blank?
+    assert doc.search("tbody > tr").blank?
     assert_response :success
   end
 

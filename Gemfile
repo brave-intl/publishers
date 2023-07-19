@@ -5,9 +5,9 @@ ruby "~> 3.0.2"
 source "https://rubygems.org"
 
 # rails_version = "7.0.6"
-gem "rails", github: 'rails/rails', branch: 'main'
+gem "rails", github: "rails/rails", branch: "main"
 gem "rails-html-sanitizer", "1.6.0"
-gem "railties",  github: 'rails/rails', branch: 'main' # '7.1.0.alpha' #github: 'rails/rails', branch: 'main'
+gem "railties", github: "rails/rails", branch: "main" # '7.1.0.alpha' #github: 'rails/rails', branch: 'main'
 
 gem "rack", "3.0.8"
 
@@ -155,7 +155,7 @@ gem "will_paginate"
 gem "yt", "~> 0.33.0"
 
 gem "zeitwerk", "~> 2.6.6"
-gem "zendesk_api", "~> 3.0.0"
+gem "zendesk_api", "= 1.38.rc1"
 
 gem "activerecord-nulldb-adapter", "0.9.0"
 
@@ -216,7 +216,7 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem "capybara"
   gem "minitest"
-  gem "minitest-rails", github: 'tsmartt/minitest-rails', branch: 'rails71'
+  gem "minitest-rails", github: "tsmartt/minitest-rails", branch: "rails71"
   gem "mocha", require: false
   gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test

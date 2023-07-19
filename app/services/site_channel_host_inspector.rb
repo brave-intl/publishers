@@ -49,7 +49,6 @@ class SiteChannelHostInspector < BaseService
     elsif require_https || https_www_result[:response].is_a?(NotFoundError)
       return failure_result(https_www_result[:response])
     end
-
     # test HTTP last
     http_result = inspect_uri(URI("http://#{url}"))
     if success_response?(http_result)
