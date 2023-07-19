@@ -33,7 +33,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: a8e653fdd0c24defea20b0414de17c044e2b73ab
+  revision: 47d0f4ec0f7fd6f3919d37dc158ae25e3cedcaab
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -129,6 +129,14 @@ GIT
       zeitwerk (~> 2.6)
 
 GIT
+  remote: https://github.com/rocketreferrals/rack-attack.git
+  revision: 37e32976b77280c50ab1a4fa067d4bdad849f216
+  branch: allow-rack-3
+  specs:
+    rack-attack (6.6.1)
+      rack (>= 1.0, < 4)
+
+GIT
   remote: https://github.com/tsmartt/minitest-rails.git
   revision: bb256aef20991da223aed7133bd1bff17b933ce6
   branch: rails71
@@ -166,7 +174,7 @@ GEM
       execjs (~> 2)
     awrence (1.2.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.785.0)
+    aws-partitions (1.788.0)
     aws-sdk-core (3.178.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -175,7 +183,7 @@ GEM
     aws-sdk-kms (1.71.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.129.0)
+    aws-sdk-s3 (1.130.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.6)
@@ -308,7 +316,7 @@ GEM
       railties (>= 6.0.0)
     inflection (1.0.0)
     io-console (0.6.0)
-    irb (1.7.2)
+    irb (1.7.4)
       reline (>= 0.3.6)
     jaro_winkler (1.5.6)
     jmespath (1.6.2)
@@ -591,9 +599,10 @@ GEM
       rubocop (~> 1.52.0)
       standard-custom (~> 1.0.0)
       standard-performance (~> 1.1.0)
-    standard-custom (1.0.1)
+    standard-custom (1.0.2)
       lint_roller (~> 1.0)
-    standard-performance (1.1.1)
+      rubocop (~> 1.50)
+    standard-performance (1.1.2)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.18.0)
     strong_migrations (1.5.0)
@@ -604,6 +613,8 @@ GEM
     temple (0.10.2)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
+    terser (1.1.17)
+      execjs (>= 0.3.0, < 3)
     thor (1.2.2)
     tilt (2.2.0)
     timeout (0.4.0)
@@ -728,6 +739,7 @@ DEPENDENCIES
   public_suffix (~> 5.0.1)
   puma (~> 6.3.0)
   rack (= 3.0.8)
+  rack-attack!
   rails!
   rails-controller-testing
   rails-html-sanitizer (= 1.6.0)
@@ -740,7 +752,7 @@ DEPENDENCIES
   rexml
   rotp (~> 6.2.0)
   rqrcode (~> 2.2.0)
-  sass-rails (~> 6.0.0)
+  sass-rails (>= 6)
   selenium-webdriver (~> 4.10.0)
   sendgrid-ruby (~> 6.6.2)
   shakapacker
@@ -755,6 +767,7 @@ DEPENDENCIES
   standard
   strong_migrations
   temping
+  terser
   tzinfo-data
   u2f (~> 1.0)
   uglifier

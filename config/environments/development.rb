@@ -31,7 +31,7 @@ Rails.application.configure do
        key_prefix: 'publishers:session:'
     }
 
-    # config.middleware.use(Rack::Attack)
+    config.middleware.use(Rack::Attack)
     config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "https" }
     # Mailcatcher
     config.action_mailer.delivery_method = :smtp
