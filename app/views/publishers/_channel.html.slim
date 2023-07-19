@@ -13,16 +13,17 @@
           .channel-summary
             h3.text-truncate= channel.publication_title
 
-        / The secondary information on the tile, balance, etc
+        / Options for connecting a crypto wallet
         div.channel-secondary-information.d-flex.justify-content-between
-          / Show the balance if the channel has been verified
-          - if channel.verified?
+          - if channel.verified? && current_publisher.feature_flags["p2p_enabled"]
             .bat-channel
-              h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
-              span.bat-channel--currency= " " + I18n.t(".bat_in_locale")
-              .bat-channel--period
-              small= t(".channel_balance_period")
+              .crypto-wallet-services data-props={ featureFlags: current_publisher.feature_flags, channel: channel }.to_json
+                .spinner
+                  .cssload-container
+                    .cssload-loading
+                      i
+                      i
+              = append_javascript_pack_tag('CryptoWalletServices')
 
           / Show the promo registration if the promo is running
           - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled? && !current_publisher.only_user_funds? && current_publisher.may_register_promo?

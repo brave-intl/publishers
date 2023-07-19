@@ -173,6 +173,10 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "sprockets-rails", "3.4.2"
 gem "sprockets", "4.2.0"
 
+gem "eth", "~> 0.4"
+gem "rbnacl"
+gem "base58"
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"

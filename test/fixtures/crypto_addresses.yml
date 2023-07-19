@@ -6,8 +6,32 @@ sol_address:
   chain: 'SOL'
   publisher: verified
 
+default_sol_address:
+  address: 'HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH'
+  verified: true
+  chain: 'SOL'
+  publisher: default
+
+other_default_sol_address:
+  address: 'BwG1C3hDdNq2rTDHvcMFwuokefdQvUQUXRQgwjJL86XM'
+  verified: true
+  chain: 'SOL'
+  publisher: default
+
 eth_address:
   address: '0x0472ec0185ebb8202f3d4ddb0226998889663cf2'
   verified: true
   chain: 'ETH'
   publisher: verified
+
+default_eth_address:
+  address: '0x38B4552d1503b5ED349c206A2e18FBC7789420d5'
+  verified: true
+  chain: 'ETH'
+  publisher: default
+
+other_default_eth_address:
+  address: '0xFA32b121738bD8d1d5fDD61aC3587533aaA86e67'
+  verified: true
+  chain: 'ETH'
+  publisher: default

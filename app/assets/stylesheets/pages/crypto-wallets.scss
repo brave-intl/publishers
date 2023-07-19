@@ -1,0 +1,65 @@
+.crypto-wallet-for-channel {
+  min-width: 300px;
+
+  .crypto-wallet-group {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+
+  .crypto-wallet-dropdown {
+    border: none;
+    padding-left: 30px;
+    background-color: #F0F1F4;
+    border-radius: 8px;
+    background-repeat: no-repeat;
+    background-position: bottom 10px left 10px;
+    background-size: 6.5%;
+  }
+
+  .crypto-wallet-dropdown-eth {
+    background-image: url(asset-path("eth-color.png"));
+  }
+
+  .crypto-wallet-dropdown-sol {
+    background-image: url(asset-path("sol-color.png"));
+  }
+
+  .menu {
+    padding: 5px;
+  }
+
+  .address-option {
+    padding: 10px;
+  }
+
+  .dropdown-indicator {
+    color: #666D89;
+  }
+
+  .indicator-separator {
+    display: none;
+  }
+
+  .new-wallet-button {
+    border-top: 1px solid #E8E9EE;
+    text-align: center;
+    padding: 10px;
+    padding-top: 15px;
+    color: #423EEE;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+
+  .trash-icon {
+    height: 18px;
+    width: 18px;
+    float: right;
+    margin-top: 4px;
+  }
+
+  .chain-label {
+    font-size: 0.8em;
+    font-weight: bold;
+    padding-bottom: 3px;
+  }
+}

@@ -13,6 +13,7 @@ module UserFeatureFlags
   GEMINI_ENABLED = :gemini_enabled
   REFERRAL_ENABLED_OVERRIDE = :referral_enabled_override
   LOCATION_ENABLED = :location_enabled
+  P2P_ENABLED = :p2p_enabled
 
   VALID_FEATURE_FLAGS = [
     DAILY_EMAILS_FOR_PROMO_STATS,
@@ -23,7 +24,8 @@ module UserFeatureFlags
     PROMO_LOCKOUT_TIME,
     GEMINI_ENABLED,
     REFERRAL_ENABLED_OVERRIDE,
-    LOCATION_ENABLED
+    LOCATION_ENABLED,
+    P2P_ENABLED
   ].freeze
 
   # Values stored in DAILY_EMAILS_FOR_PROMO_STATS
@@ -41,6 +43,7 @@ module UserFeatureFlags
     scope :gemini_enabled, -> { where("feature_flags->'#{GEMINI_ENABLED}' = 'true'") }
     scope :in_top_referrer_program, -> { where("feature_flags->'#{REFERRAL_ENABLED_OVERRIDE}' = 'true'") }
     scope :not_in_top_referrer_program, -> { where.not(id: in_top_referrer_program) }
+    scope :p2p_enabled, -> { where("feature_flags->'#{P2P_ENABLED}' = 'true'") }
   end
 
   def update_feature_flags_from_form(update_flag_params)

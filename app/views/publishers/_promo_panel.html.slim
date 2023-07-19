@@ -29,10 +29,6 @@
           .promo-flex-col#react-promo-panel data-props={publisherId: @current_publisher.id}.to_json
           = append_javascript_pack_tag('referrals/ReferralPanel')
           - if @publisher.promo_lockout_time.present?
-            .promo-panel-item.promo-panel-item-alert
-              #promo-panel-alert
-                = t('promo.dashboard.expiration', time: distance_of_time_in_words_to_now(@publisher.promo_lockout_time))
-
 
 - else
   .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
