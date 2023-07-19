@@ -172,7 +172,6 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.4.2"
 gem "sprockets", "4.2.0"
-gem "uglifier"
 
 group :development do
   gem "better_errors"

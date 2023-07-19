@@ -625,8 +625,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     u2f (1.0.0)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
     unaccent (0.4.0)
     unf (0.1.4)
       unf_ext
@@ -770,7 +768,6 @@ DEPENDENCIES
   terser
   tzinfo-data
   u2f (~> 1.0)
-  uglifier
   vcr
   wasm-thumbnail-rb!
   wasmer!
