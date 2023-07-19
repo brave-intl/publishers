@@ -13,9 +13,8 @@ class CryptoAddressForChannelsController < ApplicationController
   end
 
   def generate_nonce
-    set = [("a".."z"), ("A".."Z"), (0..9)].map(&:to_a).flatten
-    nonce = (0...32).map { set[rand(set.length)] }.join
-    Rails.cache.write(nonce, true)
+    nonce = SecureRandom.uuid
+    Rails.cache.write(nonce, current_publisher.id)
     render json: {nonce: nonce}
   end
 
@@ -28,7 +27,7 @@ class CryptoAddressForChannelsController < ApplicationController
     @errors = []
 
     # check that the message is a valid nonce and delete after use
-    valid_message = if Rails.cache.read(message)
+    valid_message = if Rails.cache.read(message) == current_publisher.id
       !!Rails.cache.delete(message)
     else
       @errors << "message is invalid"

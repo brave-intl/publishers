@@ -21,11 +21,11 @@ class CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create crypto address for channel" do
-    signature = "49gfaNA9d9KkabVNB48VsSNrJLh8AnRvWYTBJ7ws9wRhZvvuyGivqg56kpSZtrvNCsdVzFxEgPGnc7KS5WSyM3FF"
+    signature = "agABpynouN8NTjAxZXk5fEpfKRRiQ1nfc813juxr8a71TRsXxetiKeLahSbJC8XJTyz684PKtXq28snBoSTPB2s"
     account_address = "36fsf2BR6KNpHPLo9VawfoWEBqncKRMUpxbi3JVBNFWA"
     chain = "SOL"
-    message = "6tp6l5LIOkUcC0w27isXCBDQoOl5m7ki"
-    Rails.cache.write(message, true)
+    message = "d1133a45-deed-4398-9f85-5df3864ca460"
+    Rails.cache.write(message, @publisher.id)
 
     CryptoAddressForChannelsController.any_instance.expects(:verify_solana_address).with(signature, account_address, message).returns(true)
     CryptoAddressForChannelsController.any_instance.expects(:replace_crypto_address_for_channel).with(account_address, chain, @channel).returns(true)
@@ -84,9 +84,9 @@ class CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should verify Solana address" do
-    signature = "49gfaNA9d9KkabVNB48VsSNrJLh8AnRvWYTBJ7ws9wRhZvvuyGivqg56kpSZtrvNCsdVzFxEgPGnc7KS5WSyM3FF"
+    signature = "agABpynouN8NTjAxZXk5fEpfKRRiQ1nfc813juxr8a71TRsXxetiKeLahSbJC8XJTyz684PKtXq28snBoSTPB2s"
     account_address = "36fsf2BR6KNpHPLo9VawfoWEBqncKRMUpxbi3JVBNFWA"
-    message = "6tp6l5LIOkUcC0w27isXCBDQoOl5m7ki"
+    message = "d1133a45-deed-4398-9f85-5df3864ca460"
 
     assert_equal true, @controller.verify_solana_address(signature, account_address, message)
   end
