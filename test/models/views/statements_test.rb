@@ -4,7 +4,7 @@ require "test_helper"
 require "pry"
 
 class StatementsTest < ActiveSupport::TestCase
-  let(:subject) { Views::User::Statements.new(publisher: publishers(:default)).overviews }
+  let(:subject) { Views::User::Statements.new(publisher: publishers(:unprompted)).overviews }
 
   describe "when there are no statements" do
     it "has no overviews" do

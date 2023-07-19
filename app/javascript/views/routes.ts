@@ -50,5 +50,15 @@ export default {
       path: "/publishers/wallet",
       latest: "/publishers/wallet/latest"
     },
+    cryptoAddressForChannels: {
+      create: "/channels/{channel_id}/crypto_address_for_channels",
+      index: "/channels/{channel_id}/crypto_address_for_channels",
+      changeAddress: "/channels/{channel_id}/crypto_address_for_channels/change_address",
+      generateNonce: "/channels/{channel_id}/crypto_address_for_channels/generate_nonce"
+    },
+    cryptoAddresses: {
+      index: "/publishers/crypto_addresses",
+      delete: "/publishers/crypto_addresses/{id}"
+    }
   }
 };

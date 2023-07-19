@@ -66,6 +66,14 @@ p.update!({ feature_flags: {"gemini_enabled"=>true, "bitflyer_enabled"=>true, "p
 
 If however, you are developing on an M1 using docker-compose and find yourself in the position of needing to update a dependency/Gemfile, you are going to run into a wall.  Several gems (including Sorbet) are installed conditionally based on the chipset of the device.  Thus, your local development Gemfile will be different from what is run in CI/CD and Sorbet is required for builds.  Unfortunately for the moment the only way to properly update the Gemfile is to either install locally or to use an device that is using an x86 chipset.
 
+You may also need to install automake and libtools before running bundle install because of the eth gem, and libsodium for the rbnacl gem:
+```
+$ brew install automake
+$ autoreconf -i
+$ brew install libtool
+$ brew install libsodium
+```
+
 ## Errata
 
 - [Legacy Docs](docs/LEGACY.md) - Preserved content that requires review/updates

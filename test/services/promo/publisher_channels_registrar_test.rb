@@ -25,7 +25,7 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
   end
 
   test "registrar does not register unverified channel" do
-    publisher = publishers(:default) # has two unverified channels
+    publisher = publishers(:fake1) # has one unverified channel
 
     assert_no_difference "PromoRegistration.count" do
       publisher.channels.find_each do |channel|

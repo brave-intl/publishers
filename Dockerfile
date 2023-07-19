@@ -7,7 +7,10 @@ RUN apt-get install -y nodejs \
   git \
   curl \
   libjemalloc2 \
-  python3
+  python3 \
+  libtool \
+  automake \
+  libsodium23
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
