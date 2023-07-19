@@ -11,10 +11,10 @@ class Rack::Attack
 
   # Safelists
   API_IP_WHITELIST = if Rails.application.secrets[:api_ip_whitelist]
-                       Rails.application.secrets[:api_ip_whitelist].split(",").freeze
-                     else
-                       [].freeze
-                     end
+    Rails.application.secrets[:api_ip_whitelist].split(",").freeze
+  else
+    [].freeze
+  end
 
   safelist("allow/API_IP_WHITELIST") do |req|
     # Requests are allowed if the return value is truthy
@@ -147,7 +147,7 @@ class Rack::Attack
   throttle("registrations/create", limit: 10, period: 1.hour) do |req|
     if (req.path.starts_with?("/publishers/registrations") ||
       req.path.starts_with?("/publishers/resend_authentication_email")
-    ) && (req.post? || req.patch? || req.put?)
+       ) && (req.post? || req.patch? || req.put?)
       req.remote_ip
     end
   end

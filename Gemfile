@@ -101,7 +101,7 @@ gem "public_suffix", "~> 5.0.1"
 gem "puma", "~> 6.3.0"
 
 # Make cracking a little bit harder
-gem "rack-attack", github: 'rocketreferrals/rack-attack', branch: 'allow-rack-3'
+gem "rack-attack", github: "rocketreferrals/rack-attack", branch: "allow-rack-3"
 
 gem "rails-i18n", "~> 7.0.6"
 
@@ -121,7 +121,7 @@ gem "rexml"
 gem "rqrcode", "~> 2.2.0"
 
 # SCSS for stylesheets
-gem 'sass-rails', '>= 6'
+gem "sass-rails", ">= 6"
 
 # Sendgrid mail service
 gem "sendgrid-ruby", "~> 6.6.2"
