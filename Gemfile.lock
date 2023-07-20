@@ -32,6 +32,14 @@ GIT
       pg (~> 1.0)
 
 GIT
+  remote: https://github.com/rack/rack-attack.git
+  revision: d660667ddd8ef9f4035796b41853986ac1e11a0f
+  branch: allow-rack-3
+  specs:
+    rack-attack (6.6.1)
+      rack (>= 1.0, < 4)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: 463ce660db9efb8e2f21231add8e85c132e8ac62
   branch: main
@@ -127,14 +135,6 @@ GIT
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
-
-GIT
-  remote: https://github.com/rocketreferrals/rack-attack.git
-  revision: 37e32976b77280c50ab1a4fa067d4bdad849f216
-  branch: allow-rack-3
-  specs:
-    rack-attack (6.6.1)
-      rack (>= 1.0, < 4)
 
 GIT
   remote: https://github.com/tsmartt/minitest-rails.git

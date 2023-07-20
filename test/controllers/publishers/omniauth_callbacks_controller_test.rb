@@ -785,7 +785,6 @@ module Publishers
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
       get(url)
-      puts response.body
       follow_redirect!
 
       OmniAuth.config.mock_auth[:register_reddit_channel] = auth_hash(
