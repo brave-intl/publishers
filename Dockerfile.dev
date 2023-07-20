@@ -15,7 +15,7 @@ RUN apt-get install -y nodejs \
 
 RUN gem install bundler
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.70.0
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /var/www/
