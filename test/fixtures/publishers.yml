@@ -183,12 +183,12 @@ admin:
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 zendesk_admin:
-  email: <%= Rails.application.secrets[:zendesk_admin_email] %>
+  email: <%= Rails.configuration.pub_secrets[:zendesk_admin_email] %>
   role: "admin"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 zendesk_end_user:
-  email: <%= Rails.application.secrets[:zendesk_end_user_email] %>
+  email: <%= Rails.configuration.pub_secrets[:zendesk_end_user_email] %>
   role: "publisher"
 
 partner:

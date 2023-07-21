@@ -68,7 +68,7 @@ module Eyeshade
     end
 
     def fee_rate
-      Rails.application.secrets[:fee_rate].to_d
+      Rails.configuration.pub_secrets[:fee_rate].to_d
     end
   end
 end

@@ -11,7 +11,11 @@ Bundler.require(*Rails.groups)
 module Publishers
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
+
+    config.pub_secrets = config_for(:secrets) # this line loads the config/secrets.yml file and store it in this namespace
+    # Raise error when a before_action's only/except options reference missing actions
+    config.action_controller.raise_on_missing_callback_actions = false
 
     config.middleware.use HttpHeaderMiddleware
     config.middleware.use Rack::Deflater
@@ -22,7 +26,7 @@ module Publishers
 
     config.exceptions_app = routes
 
-    config.log_level = if Rails.application.secrets[:log_verbose].present?
+    config.log_level = if Rails.configuration.pub_secrets[:log_verbose].present?
       :debug
     else
       :info
@@ -64,8 +68,8 @@ module Publishers
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.active_record.encryption.primary_key = Rails.application.secrets[:active_record_encryption_primary_key]
-    config.active_record.encryption.deterministic_key = Rails.application.secrets[:active_record_encryption_deterministic_key]
-    config.active_record.encryption.key_derivation_salt = Rails.application.secrets[:active_record_encryption_key_derivation_salt]
+    config.active_record.encryption.primary_key = Rails.configuration.pub_secrets[:active_record_encryption_primary_key]
+    config.active_record.encryption.deterministic_key = Rails.configuration.pub_secrets[:active_record_encryption_deterministic_key]
+    config.active_record.encryption.key_derivation_salt = Rails.configuration.pub_secrets[:active_record_encryption_key_derivation_salt]
   end
 end

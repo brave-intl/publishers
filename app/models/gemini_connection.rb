@@ -226,7 +226,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
       Oauth2::Config::Gemini
     end
 
-    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+    def encryption_key(key: Rails.configuration.pub_secrets[:attr_encrypted_key])
       [key].pack("H*")
     end
 

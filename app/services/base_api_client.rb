@@ -153,6 +153,6 @@ class BaseApiClient < BaseService
   end
 
   def proxy_url
-    Rails.application.secrets[:proxy_url]
+    Rails.configuration.pub_secrets[:proxy_url]
   end
 end

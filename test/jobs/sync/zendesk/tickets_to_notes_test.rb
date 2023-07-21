@@ -10,24 +10,24 @@ class Sync::Zendesk::TicketsToNotesTest < ActiveJob::TestCase
       require "zendesk_api"
       client = ZendeskAPI::Client.new do |config|
         # Mandatory:
-        config.url = "#{Rails.application.secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
+        config.url = "#{Rails.configuration.pub_secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
 
         # Basic / Token Authentication
-        config.username = Rails.application.secrets[:zendesk_username]
+        config.username = Rails.configuration.pub_secrets[:zendesk_username]
 
         # Choose one of the following depending on your authentication choice
         # config.token = "your zendesk token"
         # config.password = "your zendesk password"
 
         # OAuth Authentication
-        config.access_token = Rails.application.secrets[:zendesk_access_token]
+        config.access_token = Rails.configuration.pub_secrets[:zendesk_access_token]
         config.retry = true
       end
 
       response = client.search(
         query:
           "type:ticket " \
-          "group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}" +
+          "group_id:#{Rails.configuration.pub_secrets[:zendesk_publisher_group_id]}" +
           (start_date.present? ? " updated>#{start_date}" : "")
       )
       assert response.count, 1
