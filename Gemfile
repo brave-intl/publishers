@@ -224,7 +224,7 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem "capybara"
   gem "minitest"
-  gem "minitest-rails", github: "tsmartt/minitest-rails", branch: "rails71"
+  gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
   gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test

@@ -7,6 +7,14 @@ GIT
       omniauth-oauth2
 
 GIT
+  remote: https://github.com/brave-intl/minitest-rails.git
+  revision: bb256aef20991da223aed7133bd1bff17b933ce6
+  branch: rails71
+  specs:
+    minitest-rails (7.0.0)
+      minitest (~> 5.18)
+
+GIT
   remote: https://github.com/brave-intl/omniauth-reddit.git
   revision: a9abff8c5a6de217811945dc6f2949d26debfb29
   branch: master
@@ -135,14 +143,6 @@ GIT
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
-
-GIT
-  remote: https://github.com/tsmartt/minitest-rails.git
-  revision: bb256aef20991da223aed7133bd1bff17b933ce6
-  branch: rails71
-  specs:
-    minitest-rails (7.0.0)
-      minitest (~> 5.18)
 
 GIT
   remote: https://github.com/wasmerio/wasmer-ruby.git
