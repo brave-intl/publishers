@@ -281,13 +281,13 @@ GEM
       rbsecp256k1 (~> 5.1)
       scrypt (~> 3.0)
     execjs (2.8.1)
-    faraday (2.7.10)
+    faraday (2.7.5)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
-    faraday-retry (2.2.0)
+    faraday-retry (2.1.0)
       faraday (~> 2.0)
     fastimage (2.2.7)
     ffi (1.15.5)
@@ -721,8 +721,8 @@ DEPENDENCIES
   domain_name
   dotenv-rails (= 2.8.1)
   eth (~> 0.4)
-  faraday (~> 2.7.4)
-  faraday-retry
+  faraday (= 2.7.5)
+  faraday-retry (= 2.1.0)
   fastimage (~> 2.2.5)
   ffi
   font-awesome-rails (~> 4.7.0.4)
