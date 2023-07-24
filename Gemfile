@@ -20,8 +20,6 @@ gem "active_model_serializers", "~> 0.10.0"
 # For bulk updates/imports
 gem "activerecord-import", "1.4.1"
 
-gem "activerecord7-redshift-adapter", git: "https://github.com/pennylane-hq/activerecord7-redshift-adapter.git"
-
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
 
