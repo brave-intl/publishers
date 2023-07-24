@@ -21,7 +21,8 @@ Rails.application.configure do
   }
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
+  # config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
+  config.assets.js_compressor = :terser
 
   config.cache_store = :redis_cache_store, {
     url: Rails.configuration.pub_secrets[:redis_url],
