@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 04c97aec8aa696165e98f46ecec2b13410629be0
+  revision: 5f3eb2195ba503919665028c01e4c76125e59fac
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -624,7 +624,7 @@ GEM
     standard-performance (1.1.2)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.18.0)
-    strong_migrations (1.5.0)
+    strong_migrations (1.6.0)
       activerecord (>= 5.2)
     temping (4.0.0)
       activerecord (>= 5.2, < 7.1)
