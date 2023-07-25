@@ -8,7 +8,7 @@ Rails.application.configure do
   config.middleware.use(Rack::Attack)
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
-  # config.webpacker.check_yarn_integrity = false
+  config.webpacker.check_yarn_integrity = false
 
   # Allow images from CDN
   config.action_dispatch.default_headers = {
@@ -21,11 +21,10 @@ Rails.application.configure do
   }
 
   # Compress JavaScripts and CSS.
-  # config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
-  config.assets.js_compressor = :terser
+  config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
 
   config.cache_store = :redis_cache_store, {
-    url: Rails.configuration.pub_secrets[:redis_url],
+    url: Rails.application.secrets[:redis_url],
     connect_timeout: 30, # Defaults to 20 seconds
     read_timeout: 5, # Defaults to 1 second
     write_timeout: 10, # Defaults to 1 second
@@ -41,9 +40,9 @@ Rails.application.configure do
 
   # SESSION STORE
   config.session_store :redis_session_store,
-                       key: "_publishers_session",
+                       key:  "_publishers_session",
                        redis: {
-                         client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
+                         client: Redis.new(url: Rails.application.secrets[:redis_url]),
                          expire_after: 120.minutes,
                          key_prefix: 'publishers:session:'
                        }
@@ -53,15 +52,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "publishers_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: Rails.configuration.pub_secrets[:url_host] }
+  config.action_mailer.default_url_options = { host: Rails.application.secrets[:url_host] }
 
   # SMTP mailer settings (Sendgrid)
   config.action_mailer.smtp_settings = {
-    port: Rails.configuration.pub_secrets[:smtp_server_port],
-    address: Rails.configuration.pub_secrets[:smtp_server_address],
+    port: Rails.application.secrets[:smtp_server_port],
+    address: Rails.application.secrets[:smtp_server_address],
     user_name: "apikey", # see https://sendgrid.com/docs/API_Reference/SMTP_API/integrating_with_the_smtp_api.html
-    password: Rails.configuration.pub_secrets[:sendgrid_api_key],
-    domain: Rails.configuration.pub_secrets[:url_host],
+    password: Rails.application.secrets[:sendgrid_api_key],
+    domain: Rails.application.secrets[:url_host],
     authentication: :plain,
     enable_starttls_auto: true
   }
@@ -109,7 +108,7 @@ Rails.application.configure do
   # End Brave customizations
 
   # Code is not reloaded between requests.
-  config.enable_reloading = false
+  config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -123,11 +122,11 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  config.require_master_key = false
+  # config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"]&.present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
@@ -150,28 +149,17 @@ Rails.application.configure do
   # config.action_cable.url = "wss://example.com/cable"
   # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
 
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  # config.assume_ssl = true
-
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
-  # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
-                                       .tap { |logger| logger.formatter = ::Logger::Formatter.new }
-                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+  # Include generic and useful information about system operation, but avoid logging too much
+  # information to avoid inadvertent exposure of personally identifiable information (PII).
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
-  # Info include generic and useful information about system operation, but avoids logging too much
-  # information to avoid inadvertent exposure of personally identifiable information (PII). Use "debug"
-  # for everything.
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
-
   # Use a different cache store in production.
-  config.cache_classes = true
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
@@ -191,14 +179,19 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
+
+  # Use a different logger for distributed setups.
+  # require "syslog/logger"
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
+
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
+  end
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end

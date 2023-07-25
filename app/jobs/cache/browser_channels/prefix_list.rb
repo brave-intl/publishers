@@ -74,9 +74,9 @@ class Cache::BrowserChannels::PrefixList
 
   def save_to_s3!(temp_file_path:, save_to_filename:)
     return if Rails.env.test?
-    Aws.config[:credentials] = Aws::Credentials.new(Rails.configuration.pub_secrets[:s3_rewards_access_key_id], Rails.configuration.pub_secrets[:s3_rewards_secret_access_key])
-    s3 = Aws::S3::Resource.new(region: Rails.configuration.pub_secrets[:s3_rewards_bucket_region])
-    obj = s3.bucket(Rails.configuration.pub_secrets[:s3_rewards_bucket_name]).object(save_to_filename)
+    Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_rewards_access_key_id], Rails.application.secrets[:s3_rewards_secret_access_key])
+    s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards_bucket_region])
+    obj = s3.bucket(Rails.application.secrets[:s3_rewards_bucket_name]).object(save_to_filename)
     obj.upload_file(temp_file_path)
   end
 

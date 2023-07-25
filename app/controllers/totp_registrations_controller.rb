@@ -1,5 +1,8 @@
 # typed: ignore
 
+require "concerns/two_factor_registration"
+require "concerns/logout"
+
 class TotpRegistrationsController < ApplicationController
   helper QrCodeHelper
   include Logout

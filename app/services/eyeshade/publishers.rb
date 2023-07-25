@@ -7,7 +7,7 @@ class Eyeshade::Publishers < Eyeshade::BaseApiClient
   RESOURCE = "/v2/publishers"
 
   def create_settlement(body:)
-    return {} if Rails.configuration.pub_secrets[:api_eyeshade_offline]
+    return {} if Rails.application.secrets[:api_eyeshade_offline]
 
     response = connection.post do |request|
       request.headers["Authorization"] = api_authorization_header

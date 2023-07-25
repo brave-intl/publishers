@@ -9,11 +9,11 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
   before(:example) do
     stub_rewards_parameters
-    @prev_host_inspector_offline = Rails.configuration.pub_secrets[:host_inspector_offline]
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
   end
 
   after(:example) do
-    Rails.configuration.pub_secrets[:host_inspector_offline] = @prev_host_inspector_offline
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
   end
 
   def stub_verification_public_file(channel, body: nil, status: 200)
@@ -61,7 +61,7 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
   # What I will do is add basic controller tests/specs to the site channel controller to offset some of this.
 
   #  test "When bad ssl happens" do
-  #    Rails.configuration.pub_secrets[:host_inspector_offline] = false
+  #    Rails.application.secrets[:host_inspector_offline] = false
   #    stub_request(:get, %r{\Ahttps://.*\z}).with(headers: {Host: "self-signed.badssl.com"})
   #      .to_raise(OpenSSL::SSL::SSLError.new("SSL_connect returned=1 errno=0 state=error: certificate verify failed"))
   #
@@ -100,7 +100,7 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
   end
 
   test "verification_failed modal appears after failed verification attempt for public file" do
-    Rails.configuration.pub_secrets[:host_inspector_offline] = false
+    Rails.application.secrets[:host_inspector_offline] = false
 
     publisher = publishers(:default)
     sign_in publisher

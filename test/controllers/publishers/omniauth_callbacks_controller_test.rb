@@ -64,9 +64,9 @@ module Publishers
 
     before(:example) do
       OmniAuth.config.test_mode = true
-      @active_promo_id_original = Rails.configuration.pub_secrets[:active_promo_id]
-      Rails.configuration.pub_secrets[:active_promo_id] = ""
-      uphold_url = Rails.configuration.pub_secrets[:uphold_api_uri] + "/v0/me"
+      @active_promo_id_original = Rails.application.secrets[:active_promo_id]
+      Rails.application.secrets[:active_promo_id] = ""
+      uphold_url = Rails.application.secrets[:uphold_api_uri] + "/v0/me"
       stub_request(:get, uphold_url).to_return(body: {status: "pending", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000"}.to_json)
       # Mock out the creation of cards
       stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
@@ -75,7 +75,7 @@ module Publishers
     end
 
     after(:example) do
-      Rails.configuration.pub_secrets[:active_promo_id] = @active_promo_id_original
+      Rails.application.secrets[:active_promo_id] = @active_promo_id_original
       OmniAuth.config.test_mode = false
     end
   end

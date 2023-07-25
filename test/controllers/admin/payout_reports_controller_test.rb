@@ -12,10 +12,10 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
   include EyeshadeHelper
 
-  let(:uphold_url) { Rails.configuration.pub_secrets[:uphold_api_uri] + "/v0/me" }
+  let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
 
   before do
-    @prev_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     stub_request(:get, uphold_url).to_return(body: {status: "ok", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000"}.to_json)
 
     # Mock out the creation of cards
@@ -29,7 +29,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   after do
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
     Rails.cache.clear
   end
 
@@ -85,7 +85,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       }
     ].to_json
 
-    stub_request(:get, "#{Rails.configuration.pub_secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true")
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true")
       .to_return(status: 200, body: balance_response)
     assert_difference("PayoutReport.count", 1) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do
@@ -135,7 +135,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       }
     ].to_json
 
-    stub_request(:get, "#{Rails.configuration.pub_secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true")
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true")
       .to_return(status: 200, body: balance_response)
 
     assert_difference("PayoutReport.count", 1) do

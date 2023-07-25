@@ -103,7 +103,7 @@ module ChannelsHelper
     when "no_https"
       I18n.t("helpers.channels.verification_failure_cta.no_https")
     else
-      I18n.t("helpers.channels.verification_failure_cta.generic", support_email: Rails.configuration.pub_secrets[:support_email])
+      I18n.t("helpers.channels.verification_failure_cta.generic", support_email: Rails.application.secrets[:support_email])
     end
   end
 

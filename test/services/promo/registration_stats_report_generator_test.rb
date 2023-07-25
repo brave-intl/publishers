@@ -6,11 +6,11 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   include PromosHelper
 
   before do
-    @prev_offline = Rails.configuration.pub_secrets[:api_promo_base_uri]
+    @prev_offline = Rails.application.secrets[:api_promo_base_uri]
   end
 
   after do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = @prev_offline
+    Rails.application.secrets[:api_promo_base_uri] = @prev_offline
   end
 
   STATS = [
@@ -110,7 +110,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for running total without geo information" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -140,7 +140,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for running total without geo information (2)" do # earlier end_date
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -168,7 +168,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for monthly without geo information" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -199,7 +199,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for weekly without geo information" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -231,7 +231,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for daily without geo information" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -262,7 +262,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for running total with geo information" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -297,7 +297,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for weekly with geo information" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 

@@ -5,15 +5,15 @@ require "webmock/minitest"
 
 class Promo::PeerToPeerRegistrationTest < ActiveJob::TestCase
   before(:example) do
-    @prev_promo_api_uri = Rails.configuration.pub_secrets[:api_promo_base_uri]
+    @prev_promo_api_uri = Rails.application.secrets[:api_promo_base_uri]
   end
 
   after(:example) do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = @prev_promo_api_uri
+    Rails.application.secrets[:api_promo_base_uri] = @prev_promo_api_uri
   end
 
   test "creates a promo for a user" do
-    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
     prev_promo_registration_count = PromoRegistration.count
     publisher = publishers(:default)
     stub_request(:put, /api\/2\/promo\/referral_code\/p2p/).to_return(

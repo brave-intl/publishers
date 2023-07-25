@@ -8,13 +8,13 @@ class Sync::Zendesk::TicketsToNotes
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
 
-      config.url = "#{Rails.configuration.pub_secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
+      config.url = "#{Rails.application.secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
 
       # Basic / Token Authentication
-      config.username = "#{Rails.configuration.pub_secrets[:zendesk_username]}/token"
+      config.username = "#{Rails.application.secrets[:zendesk_username]}/token"
 
       # Choose one of the following depending on your authentication choice
-      config.token = Rails.configuration.pub_secrets[:zendesk_access_token]
+      config.token = Rails.application.secrets[:zendesk_access_token]
       # config.password = "your zendesk password"
 
       # OAuth Authentication
@@ -48,7 +48,7 @@ class Sync::Zendesk::TicketsToNotes
     # Zendesk's `updated` gets updated if a new comment is added.
     updated = start_date.present? ? " updated>#{start_date}" : ""
     response = client
-      .search(query: "type:ticket group_id:#{Rails.configuration.pub_secrets[:zendesk_publisher_group_id]}#{updated}")
+      .search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}#{updated}")
       .page(page_number)
     response.each do |result|
       Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)

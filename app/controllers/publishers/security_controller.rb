@@ -1,5 +1,7 @@
 # typed: ignore
 
+require "concerns/two_factor_registration"
+
 module Publishers
   class SecurityController < ApplicationController
     include PublishersHelper

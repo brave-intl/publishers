@@ -1,7 +1,9 @@
 # typed: ignore
 
+require "concerns/two_factor_auth"
+
 class U2fAuthenticationsController < ApplicationController
-  include PubTwoFactorAuth
+  include TwoFactorAuth
   include Logout
   include TwoFactorRegistration
 

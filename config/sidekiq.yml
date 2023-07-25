@@ -15,6 +15,18 @@
       cron: "42 1 * * *"
       decription: "For Site Channels created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
       queue: scheduler
+    EnqueueNightlyEmailsForPromoPublishersJob:
+      class: EnqueueEmailsForPromoPublishersJob
+      cron: "0 4 * * *"
+      args: [ 'nightly' ]
+      decription: "For nightly breakdown stats sent to top referrers"
+      queue: scheduler
+    EnqueueMonthlyEmailsForPromoPublishersJob:
+      class: EnqueueEmailsForPromoPublishersJob
+      cron: "0 0 1 * *"
+      args: [ 'monthly' ]
+      decription: "For monthly breakdown stats sent to top referrers including the last 4 months of data"
+      queue: scheduler
     CleanStaleUpholdDataJob:
       cron: "0 4 * * *"
       description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
@@ -67,18 +79,6 @@
     SetPayoutsInProgressJob:
       cron: "0 0 12 * *"
       description: "Sets a flag in redis which tells the app to display 'payout in progress' at the beginning of the month."
-      queue: scheduler
-    BitflyerRefreshJob:
-      cron: "0 4 * * *"
-      description: "Refresh n expired wallet connections per interval at a rate of r requests/min"
-      queue: scheduler
-    UpholdRefreshJob:
-      cron: "0 0 * * *"
-      description: "Refresh n expired wallet connections per interval at a rate of r requests/min"
-      queue: scheduler
-    GeminiRefreshJob:
-      cron: "0 2 * * *"
-      description: "Refresh n expired wallet connections per interval at a rate of r requests/min"
       queue: scheduler
 
 :verbose: true

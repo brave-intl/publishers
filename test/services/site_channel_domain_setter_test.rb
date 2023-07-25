@@ -5,16 +5,16 @@ require "webmock/minitest"
 
 class SiteChannelDomainSetterTest < ActiveJob::TestCase
   def setup
-    @prev_host_inspector_offline = Rails.configuration.pub_secrets[:host_inspector_offline]
-    @prev_api_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    @prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
 
-    Rails.configuration.pub_secrets[:host_inspector_offline] = false
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
+    Rails.application.secrets[:host_inspector_offline] = false
+    Rails.application.secrets[:api_eyeshade_offline] = false
   end
 
   def teardown
-    Rails.configuration.pub_secrets[:host_inspector_offline] = @prev_host_inspector_offline
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_api_eyeshade_offline
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_api_eyeshade_offline
   end
 
   test "normalizes and inspects the domain" do

@@ -1,7 +1,9 @@
 # typed: ignore
 
+require "concerns/two_factor_auth"
+
 class TotpAuthenticationsController < ApplicationController
-  include PubTwoFactorAuth
+  include TwoFactorAuth
   include Logout
   include TwoFactorRegistration
   include PendingActions

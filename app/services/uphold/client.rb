@@ -24,7 +24,7 @@ module Uphold
     private
 
     def perform_offline?
-      Rails.configuration.pub_secrets[:uphold_api_uri].blank?
+      Rails.application.secrets[:uphold_api_uri].blank?
     end
   end
 end

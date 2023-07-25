@@ -1,5 +1,8 @@
 # typed: ignore
 
+require "concerns/two_factor_registration"
+require "concerns/logout"
+
 class U2fRegistrationsController < ApplicationController
   include Logout
   include TwoFactorRegistration

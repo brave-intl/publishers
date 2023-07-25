@@ -31,9 +31,9 @@ module Uphold
       # Example response:
       # {"access_token":"12345","token_type":"bearer","expires_in":3599,"refresh_token":"43210","scope":"cards:read user:read"}
       def post_to_uphold(refresh_token)
-        uri = URI.parse("#{Rails.configuration.pub_secrets[:uphold_api_uri]}#{PATH}")
+        uri = URI.parse("#{Rails.application.secrets[:uphold_api_uri]}#{PATH}")
         request = Net::HTTP::Post.new(uri)
-        request.basic_auth(Rails.configuration.pub_secrets[:uphold_client_id], Rails.configuration.pub_secrets[:uphold_client_secret])
+        request.basic_auth(Rails.application.secrets[:uphold_client_id], Rails.application.secrets[:uphold_client_secret])
         request.content_type = "application/x-www-form-urlencoded"
         request.set_form_data(
           "grant_type" => "refresh_token",

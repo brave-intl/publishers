@@ -12,13 +12,13 @@ html
         = yield
       .footer
         .social
-          a.social-icon href= "#{Rails.configuration.pub_secrets[:brave_website_url]}"
+          a.social-icon href= "#{Rails.application.secrets[:brave_website_url]}"
             = image_tag(attachments["social_brave.png"]&.url, alt: t("layouts.mailer.brave"))
-          a.social-icon href= "#{Rails.configuration.pub_secrets[:bat_website_url]}"
+          a.social-icon href= "#{Rails.application.secrets[:bat_website_url]}"
             = image_tag(attachments["social_bat.png"]&.url, alt: t("layouts.mailer.bat"))
-          a.social-icon href= "#{Rails.configuration.pub_secrets[:bat_reddit_url]}"
+          a.social-icon href= "#{Rails.application.secrets[:bat_reddit_url]}"
             = image_tag(attachments["social_reddit.png"]&.url, alt: t("layouts.mailer.reddit"))
-          a.social-icon href= "#{Rails.configuration.pub_secrets[:bat_twitter_url]}"
+          a.social-icon href= "#{Rails.application.secrets[:bat_twitter_url]}"
             = image_tag(attachments["social_twitter.png"]&.url, alt: t("layouts.mailer.twitter"))
             
         p= t "layouts.mailer.footer_html"

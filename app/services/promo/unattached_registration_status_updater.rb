@@ -37,11 +37,11 @@ class Promo::UnattachedRegistrationStatusUpdater < BaseApiClient
   private
 
   def api_base_uri
-    Rails.configuration.pub_secrets[:api_promo_base_uri]
+    Rails.application.secrets[:api_promo_base_uri]
   end
 
   def api_authorization_header
-    "Bearer #{Rails.configuration.pub_secrets[:api_promo_key]}"
+    "Bearer #{Rails.application.secrets[:api_promo_key]}"
   end
 
   def query_string

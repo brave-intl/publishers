@@ -1,6 +1,6 @@
 namespace :database_updates do
   task backfill_publisher_statuses: :environment do
-    admin = Publisher.find_by(email: Rails.configuration.pub_secrets[:zendesk_admin_email])
+    admin = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email])
     admin = Publisher.first
 
     publishers = Publisher.all

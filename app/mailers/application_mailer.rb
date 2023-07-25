@@ -1,12 +1,12 @@
 # typed: ignore
 
 class ApplicationMailer < ActionMailer::Base
-  INTERNAL_EMAIL = Rails.configuration.pub_secrets[:internal_email].freeze
-  BIZDEV_EMAIL = Rails.configuration.pub_secrets[:bizdev_email].freeze
-  PAYOUT_CONTACT_EMAIL = Rails.configuration.pub_secrets[:payout_contact_email].freeze
-  BRAND_BIDDING_EMAIL = Rails.configuration.pub_secrets[:brand_bidding_email].freeze
+  INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
+  BIZDEV_EMAIL = Rails.application.secrets[:bizdev_email].freeze
+  PAYOUT_CONTACT_EMAIL = Rails.application.secrets[:payout_contact_email].freeze
+  BRAND_BIDDING_EMAIL = Rails.application.secrets[:brand_bidding_email].freeze
 
-  default from: Rails.configuration.pub_secrets[:from_email]
+  default from: Rails.application.secrets[:from_email]
   layout "mailer"
 
   before_action :require_premailer

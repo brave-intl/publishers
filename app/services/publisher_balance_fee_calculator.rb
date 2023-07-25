@@ -26,7 +26,7 @@ class PublisherBalanceFeeCalculator < BaseApiClient
   private
 
   def fee_rate
-    raise if Rails.configuration.pub_secrets[:fee_rate].blank?
-    Rails.configuration.pub_secrets[:fee_rate].to_d
+    raise if Rails.application.secrets[:fee_rate].blank?
+    Rails.application.secrets[:fee_rate].to_d
   end
 end

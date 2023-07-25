@@ -2,7 +2,7 @@
 
 module Publishers
   class TwoFactorAuthenticationsRemovalsController < ApplicationController
-    include PubTwoFactorAuth
+    include TwoFactorAuth
     include Logout
     include TwoFactorRegistration
 

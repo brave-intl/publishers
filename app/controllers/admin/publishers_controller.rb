@@ -13,6 +13,7 @@ class Admin::PublishersController < AdminController
     end
 
     if params[:q].present?
+
       @publishers = publishers_search(@publishers, params[:q])
     end
 
