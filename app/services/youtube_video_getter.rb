@@ -8,7 +8,7 @@ class YoutubeVideoGetter < BaseApiClient
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:youtube_api_key].blank?
+    return perform_offline if Rails.configuration.pub_secrets[:youtube_api_key].blank?
 
     Yt::Video.new(id: @id).channel_id
   end

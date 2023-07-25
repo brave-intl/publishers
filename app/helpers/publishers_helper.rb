@@ -3,23 +3,12 @@
 module PublishersHelper
   include ChannelsHelper
 
-  PAYPAL_TEMPLATE = Addressable::Template.new("https://{host}/connect{?flowEntry,client_id,scope,redirect_uri}")
   PENNY = 0.01
 
   def error_catcher
     yield
   rescue => e
     LogException.perform(e)
-  end
-
-  def paypal_connect_url
-    PAYPAL_TEMPLATE.expand(
-      host: Rails.application.secrets[:paypal_connect_uri]&.sub("https://", ""),
-      flowEntry: "static",
-      client_id: Rails.application.secrets[:paypal_client_id],
-      scope: "openid email address https://uri.paypal.com/services/paypalattributes",
-      redirect_uri: publishers_paypal_connections_connect_callback_url(locale: nil)
-    ).to_s
   end
 
   def publishers_meta_tags
@@ -161,11 +150,11 @@ module PublishersHelper
   end
 
   def uphold_dashboard_url
-    Rails.application.secrets[:uphold_dashboard_url]
+    Rails.configuration.pub_secrets[:uphold_dashboard_url]
   end
 
   def terms_of_service_url
-    Rails.application.secrets[:terms_of_service_url]
+    Rails.configuration.pub_secrets[:terms_of_service_url]
   end
 
   def uphold_status_class(publisher)
@@ -329,7 +318,7 @@ module PublishersHelper
   end
 
   def show_faq_link?
-    !Rails.application.secrets[:hide_faqs] && FaqCategory.ready_for_display.count > 0
+    !Rails.configuration.pub_secrets[:hide_faqs] && FaqCategory.ready_for_display.count > 0
   end
 
   def channel_type(channel)

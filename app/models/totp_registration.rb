@@ -10,9 +10,9 @@ class TotpRegistration < ApplicationRecord
   end
 
   class << self
-    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+    def encryption_key(key: Rails.configuration.pub_secrets[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
-      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      # New implementations should use [Rails.configuration.pub_secrets[:attr_encrypted_key]].pack("H*")
       key.byteslice(0, 32)
     end
   end
@@ -20,7 +20,7 @@ class TotpRegistration < ApplicationRecord
   private
 
   def totp_issuer
-    issuer = "Brave Rewards"
+    issuer = "Brave Creators"
 
     environment = Rails.env
     if %w[development staging].include?(environment)

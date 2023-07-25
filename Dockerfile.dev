@@ -8,12 +8,14 @@ RUN apt-get install -y nodejs \
   curl \
   libjemalloc2 \
   wget \
-  firefox-esr
-
+  firefox-esr \
+  libtool \
+  automake \
+  libsodium23
 
 RUN gem install bundler
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.70.0
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /var/www/
@@ -52,6 +54,8 @@ RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose
 RUN apt-get install chromium --fix-missing -y
+
+COPY . .
 RUN cd public/creators-landing && yarn install && yarn build
 
 EXPOSE 3000

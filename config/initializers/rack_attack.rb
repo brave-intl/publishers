@@ -146,7 +146,7 @@ class Rack::Attack
 
   throttle("registrations/create", limit: 10, period: 1.hour) do |req|
     if (req.path.starts_with?("/publishers/registrations") ||
-        req.path.starts_with?("/publishers/resend_authentication_email")
+      req.path.starts_with?("/publishers/resend_authentication_email")
        ) && (req.post? || req.patch? || req.put?)
       req.remote_ip
     end

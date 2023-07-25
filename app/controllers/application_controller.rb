@@ -4,10 +4,10 @@ class ApplicationController < ActionController::Base
   require "error_handler"
   include ErrorHandler
 
-  if Rails.application.secrets[:basic_auth_user] && Rails.application.secrets[:basic_auth_password]
+  if Rails.configuration.pub_secrets[:basic_auth_user] && Rails.configuration.pub_secrets[:basic_auth_password]
     http_basic_authenticate_with(
-      name: Rails.application.secrets[:basic_auth_user],
-      password: Rails.application.secrets[:basic_auth_password]
+      name: Rails.configuration.pub_secrets[:basic_auth_user],
+      password: Rails.configuration.pub_secrets[:basic_auth_password]
     )
   end
 
@@ -99,10 +99,6 @@ class ApplicationController < ActionController::Base
         render json: {message: "Unverified request"}, status: 401
       }
     end
-  end
-
-  def has_paypal_account?
-    current_publisher.present? && current_publisher.paypal_connection.present?
   end
 
   def u2f

@@ -103,7 +103,7 @@ module ChannelsHelper
     when "no_https"
       I18n.t("helpers.channels.verification_failure_cta.no_https")
     else
-      I18n.t("helpers.channels.verification_failure_cta.generic", support_email: Rails.application.secrets[:support_email])
+      I18n.t("helpers.channels.verification_failure_cta.generic", support_email: Rails.configuration.pub_secrets[:support_email])
     end
   end
 
@@ -121,6 +121,19 @@ module ChannelsHelper
       I18n.t("shared.time_until_transfer_fallback")
     else
       distance_of_time_in_words(Time.now, channel.contesting_channel.contest_timesout_at)
+    end
+  end
+
+  def setup_current_channel
+    @current_channel = current_publisher.channels.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      format.json {
+        head 404
+      }
+      format.html {
+        redirect_to home_publishers_path, notice: t("shared.channel_not_found")
+      }
     end
   end
 end

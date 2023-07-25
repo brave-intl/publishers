@@ -31,7 +31,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
+      payable = site_banner_lookup.publisher.brave_payable?
       # Some malformed data shouldn't prevent the list from being generated.
+
       begin
         if site_banner_lookup.publisher.selected_wallet_provider_type == UPHOLD_CONNECTION && site_banner_lookup.publisher.uphold_connection.present?
           wallet = PublishersPb::Wallet.new
@@ -41,7 +43,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
             uphold_address = site_banner_lookup.channel&.uphold_connection&.address || ""
-            uphold_wallet.address = uphold_address
+            print site_banner_lookup.channel_identifier
+            uphold_wallet.address = payable ? uphold_address : ""
           else
             uphold_wallet.address = ""
             LogException.perform("Wallet outside of allowed. Country: #{connection.country} Id: #{connection.id} Publisher #{site_banner_lookup.publisher.id}", expected: true)
@@ -55,7 +58,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           connection = site_banner_lookup.publisher.bitflyer_connection
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: connection)
-          bitflyer_wallet.address = site_banner_lookup.channel.deposit_id
+          bitflyer_wallet.address = payable ? site_banner_lookup.channel.deposit_id : ""
 
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
@@ -68,7 +71,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
             gemini_address = site_banner_lookup.channel&.gemini_connection&.recipient_id || ""
-            gemini_wallet.address = gemini_address
+            gemini_wallet.address = payable ? gemini_address : ""
           end
 
           wallet.gemini_wallet = gemini_wallet
@@ -99,14 +102,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
       PublishersPb::UpholdWalletState::UPHOLD_ACCOUNT_KYC
     else
       PublishersPb::UpholdWalletState::UPHOLD_ACCOUNT_NO_KYC
-    end
-  end
-
-  def get_paypal_wallet_state(paypal_connection:)
-    if paypal_connection.verified_account?
-      PublishersPb::PaypalWalletState::PAYPAL_ACCOUNT_KYC
-    else
-      PublishersPb::PaypalWalletState::PAYPAL_ACCOUNT_NO_KYC
     end
   end
 
@@ -148,12 +143,12 @@ class Cache::BrowserChannels::ResponsesForPrefix
   def save_to_s3!(prefix:)
     path = @temp_file.path
     Aws.config[:credentials] = Aws::Credentials.new(
-      Rails.application.secrets[:s3_rewards2_access_key_id],
-      Rails.application.secrets[:s3_rewards2_secret_access_key]
+      Rails.configuration.pub_secrets[:s3_rewards2_access_key_id],
+      Rails.configuration.pub_secrets[:s3_rewards2_secret_access_key]
     )
 
-    s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards2_bucket_region])
-    obj = s3.bucket(Rails.application.secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
+    s3 = Aws::S3::Resource.new(region: Rails.configuration.pub_secrets[:s3_rewards2_bucket_region])
+    obj = s3.bucket(Rails.configuration.pub_secrets[:s3_rewards2_bucket_name]).object(PATH + prefix)
     obj.upload_file(path)
   end
 

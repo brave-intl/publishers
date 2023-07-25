@@ -53,7 +53,7 @@ const DefaultNav = () => {
           >
             <Anchor
               as="span"
-              a11yTitle="Sign up to be a Brave Rewards Creator"
+              a11yTitle="Sign up to be a Brave Creator"
               color="white"
               label={intl.formatMessage({ id: "nav.signup"})}
               name={intl.formatMessage({ id: "nav.signup"})}

@@ -5,7 +5,18 @@ sol_address:
   channel: verified
   crypto_address: sol_address
 
+default_sol_address:
+  chain: 'SOL'
+  channel: default
+  crypto_address: default_sol_address
+
 eth_address:
   chain: 'ETH'
   channel: verified
   crypto_address: eth_address
+
+default_eth_address:
+  chain: 'ETH'
+  channel: default
+  crypto_address: default_eth_address
+

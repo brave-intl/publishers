@@ -5,7 +5,7 @@ require "simplecov"
 SimpleCov.start "rails"
 require File.expand_path("../config/environment", __dir__)
 require "rails/test_help"
-require "webpacker"
+require "shakapacker"
 require "selenium-webdriver"
 require "webmock/minitest"
 require "webdrivers/geckodriver"
@@ -20,17 +20,7 @@ require "test_helpers/mock_rewards_responses"
 require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
-require "minitest/retry"
-if ENV["USE_MINITEST_RETRY"]
-  Minitest::Retry.use!(
-    retry_count: 3, # The number of times to retry. The default is 3.
-    verbose: true, # Whether or not to display the message at the time of retry. The default is true.
-    io: $stdout, # Display destination of retry when the message. The default is stdout.
-    exceptions_to_retry: [], # List of exceptions that will trigger a retry (when empty, all exceptions will).
-    methods_to_retry: [] # List of methods that will trigger a retry (when empty, all methods will).
-  )
-end
-Webpacker.compile
+Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 Capybara.register_driver "firefox" do |app|
@@ -69,7 +59,7 @@ driver_urls << "objects.githubusercontent.com" # pulling firefox
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
-  config.filter_sensitive_data("<ENCODED API KEY>") { Rails.application.secrets[:sendgrid_api_key] }
+  config.filter_sensitive_data("<ENCODED API KEY>") { Rails.configuration.pub_secrets[:sendgrid_api_key] }
   config.before_record do |i|
     i.response.body.force_encoding("UTF-8")
     i.response.headers.delete("Set-Cookie")

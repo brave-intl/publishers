@@ -36,7 +36,6 @@ class Publisher < ApplicationRecord
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
   has_one :case
-  has_one :paypal_connection, -> { where(hidden: false) }, foreign_key: :user_id, class_name: "PaypalConnection"
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -474,7 +473,7 @@ class Publisher < ApplicationRecord
   end
 
   def brave_payable?
-    selected_wallet_provider&.payable?
+    active? && !only_user_funds?
   end
 
   def country
@@ -563,9 +562,9 @@ class Publisher < ApplicationRecord
       ISO3166::Country.all_names_with_codes
     end
 
-    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+    def encryption_key(key: Rails.configuration.pub_secrets[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
-      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      # New implementations should use [Rails.configuration.pub_secrets[:attr_encrypted_key]].pack("H*")
       key.byteslice(0, 32)
     end
 

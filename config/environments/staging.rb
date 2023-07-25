@@ -8,7 +8,7 @@ Rails.application.configure do
   config.middleware.use(Rack::Attack)
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
+  # config.webpacker.check_yarn_integrity = false
 
   # Allow images from CDN
   config.action_dispatch.default_headers = {
@@ -21,10 +21,11 @@ Rails.application.configure do
   }
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
+  # config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
+  config.assets.js_compressor = :terser
 
   config.cache_store = :redis_cache_store, {
-    url: Rails.application.secrets[:redis_url],
+    url: Rails.configuration.pub_secrets[:redis_url],
     connect_timeout: 30, # Defaults to 20 seconds
     read_timeout: 5, # Defaults to 1 second
     write_timeout: 10, # Defaults to 1 second
@@ -43,7 +44,7 @@ Rails.application.configure do
   config.session_store :redis_session_store,
                        key:  "_publishers_session",
                        redis: {
-                         client: Redis.new(url: Rails.application.secrets[:redis_url]),
+                         client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
                          expire_after: 120.minutes,
                          key_prefix: 'publishers:session:'
                        }
@@ -53,15 +54,15 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "publishers_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets[:url_host] }
+  config.action_mailer.default_url_options = { host: Rails.configuration.pub_secrets[:url_host] }
 
   # SMTP mailer settings (Sendgrid)
   config.action_mailer.smtp_settings = {
-    port: Rails.application.secrets[:smtp_server_port],
-    address: Rails.application.secrets[:smtp_server_address],
+    port: Rails.configuration.pub_secrets[:smtp_server_port],
+    address: Rails.configuration.pub_secrets[:smtp_server_address],
     user_name: "apikey", # see https://sendgrid.com/docs/API_Reference/SMTP_API/integrating_with_the_smtp_api.html
-    password: Rails.application.secrets[:sendgrid_api_key],
-    domain: Rails.application.secrets[:url_host],
+    password: Rails.configuration.pub_secrets[:sendgrid_api_key],
+    domain: Rails.configuration.pub_secrets[:url_host],
     authentication: :plain,
     enable_starttls_auto: true
   }
@@ -123,7 +124,7 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  config.require_master_key = false
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -135,7 +136,7 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.publi
   # config.asset_host = "http://assets.example.com"
 
   # Specifies the header that your server uses for sending files.

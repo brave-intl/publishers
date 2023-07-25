@@ -10,7 +10,7 @@ default: &default
   agreed_to_tos: "<%= 1.day.ago %>"
   last_sign_in_ip: "192.168.1.1"
   current_sign_in_ip: "192.168.1.1"
-  feature_flags: <%= { UserFeatureFlags::GEMINI_ENABLED => true }.to_json %>
+  feature_flags: <%= { UserFeatureFlags::GEMINI_ENABLED => true, UserFeatureFlags::P2P_ENABLED => true }.to_json %>
 
 verified:
   <<: *default
@@ -183,12 +183,12 @@ admin:
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 zendesk_admin:
-  email: <%= Rails.application.secrets[:zendesk_admin_email] %>
+  email: <%= Rails.configuration.pub_secrets[:zendesk_admin_email] %>
   role: "admin"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 zendesk_end_user:
-  email: <%= Rails.application.secrets[:zendesk_end_user_email] %>
+  email: <%= Rails.configuration.pub_secrets[:zendesk_end_user_email] %>
   role: "publisher"
 
 partner:
@@ -371,10 +371,6 @@ promo_enabled_but_only_user_funds:
 
 potentially_paid:
   email: "priscilla@potentiallypaid.org"
-
-paypal_connected:
-  <<: *default
-  email: "paypal_connected@example.org"
 
 promo_not_registered:
   email: "promo_not_registered@brave.com"

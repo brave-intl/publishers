@@ -29,15 +29,6 @@ message UpholdWallet {
   string address = 2;
 }
 
-enum PaypalWalletState {
-  PAYPAL_ACCOUNT_NO_KYC = 0;
-  PAYPAL_ACCOUNT_KYC = 1;
-}
-
-message PaypalWallet {
-  PaypalWalletState wallet_state = 1;
-}
-
 message BitflyerWallet {
   BitflyerWalletState wallet_state = 1;
   string address = 2;

@@ -530,12 +530,12 @@ class ChannelTest < ActionDispatch::IntegrationTest
 
       describe "#using_active_bitflyer_connection" do
         before do
-          # I don't know why we create 78 channels on the fixture
+          # I don't know why we create 79 channels on the fixture
           assert Channel.count == 78
         end
 
-        test "count should eq 4" do
-          assert Channel.using_active_bitflyer_connection.count == 5
+        test "count should eq 5" do
+          assert_equal(5, Channel.using_active_bitflyer_connection.count)
         end
 
         describe "when oauth2 failure" do
