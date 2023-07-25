@@ -15,18 +15,6 @@
       cron: "42 1 * * *"
       decription: "For Site Channels created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
       queue: scheduler
-    EnqueueNightlyEmailsForPromoPublishersJob:
-      class: EnqueueEmailsForPromoPublishersJob
-      cron: "0 4 * * *"
-      args: [ 'nightly' ]
-      decription: "For nightly breakdown stats sent to top referrers"
-      queue: scheduler
-    EnqueueMonthlyEmailsForPromoPublishersJob:
-      class: EnqueueEmailsForPromoPublishersJob
-      cron: "0 0 1 * *"
-      args: [ 'monthly' ]
-      decription: "For monthly breakdown stats sent to top referrers including the last 4 months of data"
-      queue: scheduler
     CleanStaleUpholdDataJob:
       cron: "0 4 * * *"
       description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
