@@ -30,4 +30,54 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
       Channels::ApproveChannelTransfer.new(channel: channel).perform
     end
   end
+
+  test "raises if the from is suspended" do
+    channel = channels(:fraudulently_verified_site)
+    contested_by_channel = channels(:locked_out_site)
+
+    # contest the channel
+    Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+
+    # after this the from gets suspended
+    contested_by_channel.publisher.suspend!
+
+    assert_raises do
+      Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
+
+    end
+    contested_by_channel.reload
+    assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
+
+    # ensure contested_by channel now is verified
+    refute contested_by_channel.verified?
+    assert contested_by_channel.verification_pending
+
+    # refute original channel is destroyed
+    refute Channel.where(id: channel.id).empty?
+  end
+
+  test "raises if the to is suspended" do
+    channel = channels(:fraudulently_verified_site)
+    contested_by_channel = channels(:locked_out_site)
+
+    # contest the channel
+    Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+
+    # after this the from gets suspended
+    channel.publisher.suspend!
+
+    assert_raises do
+      Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
+
+    end
+    contested_by_channel.reload
+    assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
+
+    # ensure contested_by channel now is verified
+    refute contested_by_channel.verified?
+    assert contested_by_channel.verification_pending
+
+    # refute original channel is destroyed
+    refute Channel.where(id: channel.id).empty?
+  end
 end
