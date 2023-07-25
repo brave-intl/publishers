@@ -43,7 +43,6 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
 
     assert_raises do
       Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
-
     end
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
@@ -68,7 +67,6 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
 
     assert_raises do
       Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
-
     end
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
