@@ -22,11 +22,11 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   before do
-    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    @prev_host_inspector_offline = Rails.configuration.pub_secrets[:host_inspector_offline]
   end
 
   after do
-    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+    Rails.configuration.pub_secrets[:host_inspector_offline] = @prev_host_inspector_offline
   end
 
   test "regular users cannot access" do
@@ -60,15 +60,14 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     get admin_publishers_path, params: {q: publisher.name.to_s}
     assert_response :success
-    assert_select "tbody" do
-      assert_select "tr", true
-    end
+    assert_select "tbody > tr", true
 
     get admin_publishers_path, params: {q: "#{publisher.name}failure"}
+    # For some reason the old assert_select still picks up the previous page, even though the response.body shows empty results
+    # So use nokogiri
+    doc = Nokogiri::HTML(response.body)
+    assert doc.search("tbody > tr").blank?
     assert_response :success
-    assert_select "tbody" do
-      assert_select "tr", false
-    end
   end
 
   describe "search" do
@@ -156,7 +155,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "admins can approve channels waiting for admin approval" do
-    Rails.application.secrets[:host_inspector_offline] = false
+    Rails.configuration.pub_secrets[:host_inspector_offline] = false
     admin = publishers(:admin)
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)

@@ -7,16 +7,16 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
   include PromosHelper
 
   before(:example) do
-    @prev_promo_api_uri = Rails.application.secrets[:api_promo_base_uri]
+    @prev_promo_api_uri = Rails.configuration.pub_secrets[:api_promo_base_uri]
   end
 
   after(:example) do
-    Rails.application.secrets[:api_promo_base_uri] = @prev_promo_api_uri
+    Rails.configuration.pub_secrets[:api_promo_base_uri] = @prev_promo_api_uri
   end
 
   test "saves the stats" do
     # ensure an external request is attempted to be stubbed by turning on promo
-    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
 
     # create two registrations
     PromoRegistration.create(promo_id: active_promo_id, referral_code: "ABC123", kind: PromoRegistration::UNATTACHED)
@@ -41,7 +41,7 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
        "first_runs" => 1,
        "finalized" => 0}].to_json
 
-    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456"
+    request_url = "#{Rails.configuration.pub_secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456"
     stub_request(:get, request_url)
       .to_return(status: 200, body: stubbed_response_body)
 
@@ -54,7 +54,7 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
 
   test "makes the request in batches if > 100 codes" do
     assert_equal PromoRegistration.count, 6
-    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     number_of_codes_needed = 200 - PromoRegistration.count
 
     # Insert ~200 referral codes
@@ -83,7 +83,7 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
                                             "first_runs" => 0,
                                             "finalized" => 0})
       end
-      request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode#{batch_query_string}"
+      request_url = "#{Rails.configuration.pub_secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode#{batch_query_string}"
       stub_request(:get, request_url).to_return(status: 200, body: batch_response.to_json)
     end
 

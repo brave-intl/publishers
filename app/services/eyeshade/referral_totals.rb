@@ -5,7 +5,7 @@
 # See for initial typed definitions:  lib/eyeshade/client.rb and lib/eyeshade/types.rb
 class Eyeshade::ReferralTotals < Eyeshade::BaseApiClient
   def perform
-    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
+    return perform_offline if Rails.configuration.pub_secrets[:api_eyeshade_offline]
 
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header

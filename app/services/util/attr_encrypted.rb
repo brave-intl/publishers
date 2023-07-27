@@ -53,8 +53,8 @@ class Util::AttrEncrypted
 
   def self.monkey_patch_old_key_fallback
     hash_model_to_columns = Util::AttrEncrypted.get_all_encrypted_fields
-    old_key = Rails.application.secrets[:attr_encrypted_key_old]
-    new_key = Rails.application.secrets[:attr_encrypted_key]
+    old_key = Rails.configuration.pub_secrets[:attr_encrypted_key_old]
+    new_key = Rails.configuration.pub_secrets[:attr_encrypted_key]
 
     hash_model_to_columns.each do |model, encrypted_fields|
       encrypted_fields.each do |field|
