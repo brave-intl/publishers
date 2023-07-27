@@ -68,6 +68,9 @@ module Publishers
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Configure ActiveRecord Encryption
+    config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA1
+    config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
     config.active_record.encryption.primary_key = Rails.configuration.pub_secrets[:active_record_encryption_primary_key]
     config.active_record.encryption.deterministic_key = Rails.configuration.pub_secrets[:active_record_encryption_deterministic_key]
     config.active_record.encryption.key_derivation_salt = Rails.configuration.pub_secrets[:active_record_encryption_key_derivation_salt]
