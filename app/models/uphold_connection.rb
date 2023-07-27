@@ -27,7 +27,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  UPHOLD_CARD_LABEL = "Brave Rewards"
+  UPHOLD_CARD_LABEL = "Brave Creators"
   SUPPORTED_CURRENCIES = ["BAT", "USD"].freeze
 
   # Snooze for the next ~ 80 years, this is what I consider forever from now :)
@@ -219,7 +219,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def verify_url
-    Rails.application.secrets[:uphold_dashboard_url]
+    Rails.configuration.pub_secrets[:uphold_dashboard_url]
   end
 
   def can_create_uphold_cards?
@@ -530,9 +530,9 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       Publisher.suspended.joins(:uphold_connection).where(uphold_connection: {uphold_id: uphold_id}).count >= ::Publisher::MAX_SUSPENSIONS
     end
 
-    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+    def encryption_key(key: Rails.configuration.pub_secrets[:attr_encrypted_key])
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
-      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      # New implementations should use [Rails.configuration.pub_secrets[:attr_encrypted_key]].pack("H*")
       key.byteslice(0, 32)
     end
   end

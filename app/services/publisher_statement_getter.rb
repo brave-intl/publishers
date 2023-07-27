@@ -128,10 +128,10 @@ class PublisherStatementGetter < BaseApiClient
   end
 
   def api_base_uri
-    Rails.application.secrets[:api_eyeshade_base_uri]
+    Rails.configuration.pub_secrets[:api_eyeshade_base_uri]
   end
 
   def api_authorization_header
-    "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
+    "Bearer #{Rails.configuration.pub_secrets[:api_eyeshade_key]}"
   end
 end

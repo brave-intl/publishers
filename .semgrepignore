@@ -27,3 +27,6 @@ tests/
 
 # Ignore pre-generated homepage
 public/static/js/
+
+# Rails test environment
+config/environments/test.rb

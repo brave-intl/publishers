@@ -141,7 +141,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
       end
     end
 
-    def encryption_key(key: Rails.application.secrets[:attr_encrypted_key])
+    def encryption_key(key: Rails.configuration.pub_secrets[:attr_encrypted_key])
       [key].pack("H*")
     end
   end

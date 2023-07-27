@@ -5,7 +5,7 @@ class PublisherMailer < ApplicationMailer
   helper PublishersHelper
 
   after_action :ensure_fresh_token,
-    only: %i[login_email verify_email verification_done confirm_email_change]
+    only: %i[login_email verify_email confirm_email_change]
 
   # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
   def login_email(publisher)
@@ -29,19 +29,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  # Best practice is to use the MailerServices::VerificationDoneEmailer service
-  def verification_done(channel)
-    @channel = channel
-    @publisher = @channel.publisher
-    @publication_title = @channel.details.publication_title
-    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
-    path = Rails.root.join("app/assets/images/verified-icon.png")
-    attachments.inline["verified-icon.png"] = File.read(path)
-    mail_if_destination_exists(
-      to: @publisher.email
-    )
-  end
-
   def wallet_refresh_failure(publisher, wallet_provider)
     @publisher = publisher
     @publisher_log_in_url = log_in_publishers_url
@@ -60,23 +47,6 @@ class PublisherMailer < ApplicationMailer
     attachments["promos.csv"] = attachment
     mail_if_destination_exists(
       to: publisher.email
-    )
-  end
-
-  # TODO: Refactor
-  # Like the above but without the private access link
-  def verification_done_internal(channel)
-    raise unless self.class.should_send_internal_emails?
-    @channel = channel
-    @publisher = @channel.publisher
-    @private_reauth_url = "{redacted}"
-    path = Rails.root.join("app/assets/images/verified-icon.png")
-    attachments.inline["verified-icon.png"] = File.read(path)
-    mail_if_destination_exists(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.verification_done.subject", publication_title: @channel.details.publication_title)}",
-      template_name: "verification_done"
     )
   end
 
@@ -215,7 +185,7 @@ class PublisherMailer < ApplicationMailer
     @publisher_name = @channel.publisher.name
     @email = @channel.publisher.email
 
-    @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
+    @transfer_url = reject_transfer_success_publishers_url(channel_name: @channel_name)
 
     mail_if_destination_exists(
       to: @email,
@@ -402,7 +372,7 @@ class PublisherMailer < ApplicationMailer
   # (Albert Wang): These are critical emails pertaining to login.
   # You can view the IDs here: https://mc.sendgrid.com/unsubscribe-groups
   def transaction_asm_group_id
-    SendGrid::ASM.new(group_id: Rails.application.secrets[:sendgrid_transactional_asm_group_id])
+    SendGrid::ASM.new(group_id: Rails.configuration.pub_secrets[:sendgrid_transactional_asm_group_id])
   end
 
   def ensure_fresh_token

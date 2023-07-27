@@ -53,8 +53,8 @@ ja:
     ok: OK
     oh_no: "おや？"
     choose_different_verification_method: 別の認証方法を選択する
-    support_note_html: ご質問がある場合は、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>のBrave Rewardsチームにお問い合わせください。
-    warning_note_html: このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>のBrave Rewardsチームにお問い合わせください。
+    support_note_html: ご質問がある場合は、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。
+    warning_note_html: このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。
 
   activerecord:
     shared:
@@ -161,7 +161,7 @@ ja:
         all: 全期間
       uphold_status:
         balance_sending: 支援された残高は毎月Upholdのウォレットに送金されます
-        connect_to_uphold: Brave Rewardsからの支援を受け取るにはUpholdにウォレットを作る必要があります
+        connect_to_uphold: Brave Creatorsからの支援を受け取るにはUpholdにウォレットを作る必要があります
         processing: |
             Upholdウォレットはアカウントに接続しています
             これに数分かかる場合は、Upholdを接続し直してください。
@@ -175,19 +175,19 @@ ja:
         unconnected: 接続されていません
         connection_problems: 接続エラー
       uphold_status_description:
-        connecting: Brave RewardsがUpholdアカウントに接続しています。
+        connecting: Brave CreatorsがUpholdアカウントに接続しています。
         reauthorization_needed: Upholdとの通信に問題があります。
-        unconnected: Brave Rewardsからの支援を受け取るには、Upholdアカウントに接続する必要があります。
+        unconnected: Brave Creatorsからの支援を受け取るには、Upholdアカウントに接続する必要があります。
         restricted_member: 現在、Upholdの取引レベルに制限がかかっています。 サポートが必要な場合は、Upholdにお問い合わせください。
         non_member: 支援残高を受け取るには、Upholdで本人確認を行う必要があります。
-        verified: UpholdウォレットはBrave Rewardsを受け取る準備ができています。
+        verified: UpholdウォレットはBrave Creatorsを受け取る準備ができています。
   layouts:
     mailer:
       brave: Braveウェブサイト
       twitter: Basic Attention Token Twitter
       reddit: Basic Attention Token Reddit
       bat: Basic Attention Token
-      footer_html: Brave RewardsはBrave Softwareのメンバーによって開発され、Basic Attention Tokenを用いて運営されています。
+      footer_html: Brave CreatorsはBrave Softwareのメンバーによって開発され、Basic Attention Tokenを用いて運営されています。
   modal_partials:
     two_factor_registration_complete:
       headline: 成功！
@@ -199,16 +199,16 @@ ja:
     invoice_file_added:
       subject: "請求書に新しいドキュメントが追加されました"
       body_html: |
-        <p>%{date}の請求書には新しいドキュメントが追加されました</p>下のボタンをクリックして、Brave Rewardsアカウントにログインしてください。 このメールには、一度しか使用できないプライベートログインが含まれています。
-      button: Brave Rewardsにログインする
+        <p>%{date}の請求書には新しいドキュメントが追加されました</p>下のボタンをクリックして、Brave Creatorsアカウントにログインしてください。 このメールには、一度しか使用できないプライベートログインが含まれています。
+      button: Brave Creatorsにログインする
   batch_mailer:
     update_to_rates:
       subject: リファラル報酬の変更 - ご確認ください
     update_to_tos:
-      subject: クリエイター向けBrave Rewards利用規約の更新
+      subject: クリエイター向けBrave Creators利用規約の更新
       body: >
         <p>
-          魅力的でも刺激的でもないことはわかっていますが、<a href="https://basicattentiontoken.org/publisher-terms-of-service/"> Brave Rewards利用規約</a>に変更を加えました。 更新されたドキュメント全体は上記からご確認いただけますが、最近の変更の簡単な概要を以下に示します。
+          魅力的でも刺激的でもないことはわかっていますが、<a href="https://basicattentiontoken.org/publisher-terms-of-service/"> Brave Creators利用規約</a>に変更を加えました。 更新されたドキュメント全体は上記からご確認いただけますが、最近の変更の簡単な概要を以下に示します。
         </p>
         6月:
         <table cellpadding="2" cellspacing="2" border="0">
@@ -247,7 +247,7 @@ ja:
           <tr>
             <td style="vertical-align:top;">&ndash;</td>
             <td>
-            16歳以上の人が親の許可を得てBrave Rewardsを使用できるようにしました。
+            16歳以上の人が親の許可を得てBrave Creatorsを使用できるようにしました。
             </td>
           </tr>
           <tr>
@@ -267,9 +267,9 @@ ja:
         <p>これはあくまで要点で、変更の全てを説明したものではありません。実際の内容は <a href="https://basicattentiontoken.org/publisher-terms-of-service/">こちら</a>からご確認ください</p>
 
         <p>
-          Brave Rewardsのクリエイターの皆様、
+          Creatorsのクリエイターの皆様、
           <br/>
-          Brave Rewardsチーム
+          Creatorsチーム
         </p>
   publisher_mailer:
     shared:
@@ -314,12 +314,12 @@ ja:
       subject: "%{channel_name}チャンネルは正常に移管されました"
       title: チャンネルの移管が承認されました
       intro_html: |
-        %{channel_name}チャンネルは正常に移管されました。お心当りのない場合は<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>からBrave Rewardsチームに連絡してください。
+        %{channel_name}チャンネルは正常に移管されました。お心当りのない場合は<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>からBrave Creatorsチームに連絡してください。
     channel_transfer_approved_secondary:
       subject: "%{channel_name}チャンネルを移管するリクエストが承認されました"
       title: チャンネルの移管が承認されました
       intro: |
-        チャンネル%{channel_name}をBrave Rewardsアカウントに転送するリクエストが承認されました。 今後、このチャンネルに送られた資金を回収できます。
+        チャンネル%{channel_name}をBrave Creatorsアカウントに転送するリクエストが承認されました。 今後、このチャンネルに送られた資金を回収できます。
     channel_transfer_rejected_primary:
       subject: "%{channel_name}チャンネル移管はキャンセルされました"
       title: チャンネルの移管がキャンセルされました
@@ -330,15 +330,15 @@ ja:
       intro: |
         %{channel_name}チャンネルを移管するリクエストは、現在の所有者によって却下されました。 さらにサポートが必要な場合は、このメールに返信してください。
     confirm_email_change:
-      subject: Brave Rewardsのメールアドレス変更確認
+      subject: Brave Creatorsのメールアドレス変更確認
       title: メールアドレス変更を確認してください
       notice: |
         NOTE: このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。
-      intro: "Brave Rewardsのメールアドレスの変更リクエストを受け取りました。 以下の変更を続行することを確認してください。"
+      intro: "Brave Creatorsのメールアドレスの変更リクエストを受け取りました。 以下の変更を続行することを確認してください。"
       confirmation_link: メールアドレス変更を確認する
       confirmation_link_help: 変更を続行する場合はこのリンクをクリックしてください
     email_user_on_hold:
-      subject: Brave Rewardsアカウントについて
+      subject: Brave Creatorsアカウントについて
       body: >
         Braveクリエイターの皆様、
         <br/><br/>
@@ -354,74 +354,69 @@ ja:
         Brave クリエイターチーム
 
     login_email:
-      subject: Brave Rewardsにログインする
+      subject: Brave Creatorsにログインする
       body_html: |
-        下のボタンをクリックして、Brave Rewardsアカウントにログインできます。このメールには、一度しか使用できないプライベートログインが含まれています。
-      button: Brave Rewardsにログイン
+        下のボタンをクリックして、Brave Creatorsアカウントにログインできます。このメールには、一度しか使用できないプライベートログインが含まれています。
+      button: Brave Creatorsにログイン
       explicit_url: もし上のボタンがうまく動かない場合、ブラウザにこのリンクを貼り付けてください %{url}
     login_partner_email:
       salutation: こんにちは%{name}さん、
-      subject: Brave Rewardsのパートナーとして追加されました
+      subject: Brave Creatorsのパートナーとして追加されました
       body_html: |
-        Brave Rewardsのパートナーとして追加されました
+        Brave Creatorsのパートナーとして追加されました
         下のプライベートリンクをクリックしてアカウントにログインしてください。
-        <strong>Brave Rewards</strong>
+        <strong>Brave Creators</strong>
         このリンクは一度だけ使用できます
-      button: Brave Rewardsにログイン
+      button: Brave Creatorsにログイン
     notify_email_change:
-      subject: Brave Rewardsのメールアドレス変更のお知らせ
+      subject: Brave Creatorsのメールアドレス変更のお知らせ
       title: メールアドレス変更のお知らせ
-      intro: このメールは、Brave Rewardsでメールアドレスが更新されたことを確認するものです。 この変更を行った場合は、新しいメールアドレスからリンクをご確認ください。
-      contact_support_html: お心当りのない場合は<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>からBrave Rewardsチームにご連絡ください。
+      intro: このメールは、Brave Creatorsでメールアドレスが更新されたことを確認するものです。 この変更を行った場合は、新しいメールアドレスからリンクをご確認ください。
+      contact_support_html: お心当りのない場合は<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>からBrave Creatorsチームにご連絡ください。
     suspend_publisher:
-      subject: Brave Rewardsアカウントは一時的に凍結されました
+      subject: Brave Creatorsアカウントは一時的に凍結されました
       intro: Braveパブリッシャーの皆様、
-      body_html: Brave Rewardsアカウントへの異常なまたは不審な支援が確認されました。そのため、アカウントへの支払いが一時的に凍結されています。<br /> <br /> 例えば、小さなチャンネルに対する不当に大きな支援や、ユーザーの成長プール資金ばかりが送られていたケースがそれに当たります。<br /> <br /> 詳しくは<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>までお問い合わせください。
-      closing_html: ご確認をよろしくお願いいたします.<br/>Brave Rewardsチーム
+      body_html: Brave Creatorsアカウントへの異常なまたは不審な支援が確認されました。そのため、アカウントへの支払いが一時的に凍結されています。<br /> <br /> 例えば、小さなチャンネルに対する不当に大きな支援や、ユーザーの成長プール資金ばかりが送られていたケースがそれに当たります。<br /> <br /> 詳しくは<a href="https://community.brave.com/c/japanese-support/148">https://community.brave.com/c/japanese-support/148</a>までお問い合わせください。
+      closing_html: ご確認をよろしくお願いいたします.<br/>Brave Creatorsチーム
       contact_support: この変更がご自身で行なったものでない場合は、できるだけ早くサポートにご連絡ください
     submit_appeal:
-      subject: Brave Rewardsへの異議申し立て — レビュー中です
+      subject: Brave Creatorsへの異議申し立て — レビュー中です
       body: |
         申し立てを送信していただきありがとうございます。 現在審査を行っております。できるだけ早くご連絡いたします。<br/><br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave クリエイターチーム
     accept_appeal:
-      subject: Brave Rewardsへの異議申し立て — 承認されました
+      subject: Brave Creatorsへの異議申し立て — 承認されました
       body: |
         いただいた申立てについて再度審査させていただいた結果承認しました。 保留されていたBAT支払いは、次の支払いサイクルで合わせて支払われます。<br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave クリエイターチーム
     reject_appeal:
-      subject: Brave Rewardsへの異議申し立て — 否認されました
+      subject: Brave Creatorsへの異議申し立て — 否認されました
       body: |
-        お客様のアカウントでのアクティビティはBrave Rewardsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATを受け取ることはできますが、Braveが所有するBATを受け取ることはできません。
+        お客様のアカウントでのアクティビティはBrave Creatorsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATを受け取ることはできますが、Braveが所有するBATを受け取ることはできません。
          <br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave クリエイターチーム
 
     uphold_kyc_incomplete:
       subject: Upholdで本人確認を行ってください
       body_html: |
-        <p> Brave Rewardsのセキュリティ向上と、不正行為を防止するため、Upholdで本人確認を行う必要があります。</p> <p> Upholdで本人確認が完了すると、次回支払いサイクルで収益が支払われます。 それまでの間、収益はアカウントに安全に保留されます。</p> <p> Braveのクリエイターの皆様、出金プロセスの正確性・整合性の向上にご理解・ご協力いただきありがとうございます。</p>
+        <p> Brave Creatorsのセキュリティ向上と、不正行為を防止するため、Upholdで本人確認を行う必要があります。</p> <p> Upholdで本人確認が完了すると、次回支払いサイクルで収益が支払われます。 それまでの間、収益はアカウントに安全に保留されます。</p> <p> Braveのクリエイターの皆様、出金プロセスの正確性・整合性の向上にご理解・ご協力いただきありがとうございます。</p>
       button: ウォレットを認証する
     uphold_member_restricted:
       subject: Upholdアカウントでの資金の受け取りに失敗しました
       body_html: |
-        <p>現在、あなたのUpholdアカウントでは資金を受け取ることができませんでした。 アカウントのステータスを確認し、問題が発生していないこと及びトランザクション制限がかかっていないことを確認してください。</p><p> Upholdアカウントが再び資金を受け取り可能になるまで、資金はBrave Rewardsアカウントに安全に保持されます。 ご質問がある場合は、このメールに返信してください。</p>
-    verification_done:
-      subject: "%{publication_title}がBrave Rewardsで承認されました"
-      title: 承認が完了しました
-      intro_html: |
-        <p>おめでとうございます！ これで認証済みBrave Rewardsクリエイターとして登録されました。</p> <p>資金を受け取る準備はできましたか？ Brave Rewardsダッシュボードにアクセスして、支払い設定を完了してください。</p>
-    button: Brave Rewardsにログインする
+        <p>現在、あなたのUpholdアカウントでは資金を受け取ることができませんでした。 アカウントのステータスを確認し、問題が発生していないこと及びトランザクション制限がかかっていないことを確認してください。</p><p> Upholdアカウントが再び資金を受け取り可能になるまで、資金はBrave Creatorsアカウントに安全に保持されます。 ご質問がある場合は、このメールに返信してください。</p>
+    button: Brave Creatorsにログインする
     wallet_not_connected:
       subject: ウォレットを接続して資金を受け取る
       body_html: |
-        <p> Brave Rewardsからの収益を受け取り可能です。これにもはウォレットをBrave Rewardsアカウントに接続する必要があります。</p> <p> Brave Rewardsにログインし、ダッシュボードからウォレットの接続設定を完了し、資金を受け取りましょう。</p>
-      button: Brave Rewardsにログインする
+        <p> Brave Creatorsからの収益を受け取り可能です。これにもはウォレットをBrave Creatorsアカウントに接続する必要があります。</p> <p> Brave Creatorsにログインし、ダッシュボードからウォレットの接続設定を完了し、資金を受け取りましょう。</p>
+      button: Brave Creatorsにログインする
     verify_email:
-      subject: Brave Rewardsに登録したメールアドレスを承認する
+      subject: Brave Creatorsに登録したメールアドレスを承認する
       body_html: |
-        下のボタンをクリックするとメールアドレスを承認し、Brave Rewardsアカウントを作成することができます。
+        下のボタンをクリックするとメールアドレスを承認し、Brave Creatorsアカウントを作成することができます。
       button: メールアドレスを承認する
     welcome:
       subject: Braveパブリッシャー登録
       title: パブリッシャー登録
-      intro: ウェブサイトのBrave Rewardsへの参加リクエストをいただきました。
+      intro: ウェブサイトのBrave Creatorsへの参加リクエストをいただきました。
       contact: 連絡先(担当者)
       private_access_link_help: 以下のリンクをクリックするとパブリッシャー登録を継続することが可能です
   channel_transfer:
@@ -474,12 +469,12 @@ ja:
         messages: メッセージ
         new_message_title: メッセージ
         send_message: "メッセージを送信する"
-        note_description: "メッセージをつけていただくことと、Brave Rewardsチームとのコミュニケーションがスムーズになります。"
+        note_description: "メッセージをつけていただくことと、Brave Creatorsチームとのコミュニケーションがスムーズになります。"
         notice: お知らせいただきありがとうございます—異議申し立てを受け取りました。 できるだけ早く確認し、ご連絡いたします。
         last_updated_at: "約%{time}前に最終更新"
       message:
         ago: " 前"
-        support: "Brave Rewards サポート"
+        support: "Brave Creators サポート"
         attachments: "添付"
     payout_status:
       heading: Payout Progress
@@ -504,7 +499,10 @@ ja:
       ensure_email: 認証を試みます
       ensure_email_html: |
         <strong>'%{login_email}'</strong> としてログインするには<strong>「続ける」</strong>を押してください
-
+    reject_transfer_success:
+      title: "%{channel_name}チャンネル移管はキャンセルされました"
+      body: "チャンネル%{channel_name}を別のサイト運営者に移管するリクエストを却下しました。"
+      button: 続ける
     change_email:
       login_email: ログインメールアドレス
       login_email_message: アカウントへのアクセスと復旧のために有効なメールアドレスが必要です。
@@ -513,7 +511,7 @@ ja:
     change_email_confirm:
       login_email_changed: メールアドレスの変更に成功
       login_email_verified_html: |
-        <strong> '%{login_email}' </strong>が承認されました。 このメールをログインとして使用して、Brave Rewardsのアカウントにアクセスしてください。
+        <strong> '%{login_email}' </strong>が承認されました。 このメールをログインとして使用して、Creatorsのアカウントにアクセスしてください。
     choose_new_channel_type:
       intro: まずは普段コンテンツを追加するチャンネルを選択してください。
       website:
@@ -569,7 +567,7 @@ ja:
         signup_prompt: アカウントをお持ちではないですか？
         legacy_youtube_login: (旧) YouTubeログイン
       sign_up:
-        heading: Brave Rewardsに参加する
+        heading: Creatorsに参加する
         terms_of_service: "Braveの利用規約に同意します"
       resend_authentication_email:
         access_throttled: ログインしようとした回数が多すぎて、アクセスが制限されました。 あとでもう一度試してみてください。
@@ -624,7 +622,7 @@ ja:
       youtube_login:
         channel_not_eligable_for_youtube_login: チャンネルはYoutubeログインを使用できません。 メールアドレスを使用してください。
       require_publisher:
-        log_in_and_retry: Brave Rewardsにログインして、もう一度実行してください。
+        log_in_and_retry: Brave Creatorsにログインして、もう一度実行してください。
       register_twitch_channel:
         channel_already_registered: このTwitchアカウント%{channel_title}は既に申請しています。 2番目のアカウントを請求する場合は、Twitchからサインアウトして、もう一度試してください。
       register_twitter_channel:
@@ -652,7 +650,7 @@ ja:
       statement_file_name: BravePaymentsステートメント
     suspended_error:
       heading_html: アカウントは審査中です
-      body: "アカウントで異常なアクティビティが発生しています。 そのため、詳細を確認する間、アクセスを停止しました。 理由には、<a href=\"https://support.brave.com/hc/en-us/articles/360029235132\"> BAT付与ガイドラインの違反が含まれる場合があります。</a>\nご不便をおかけ申し訳ありませんが、アカウントとBrave Rewardsの保護するため、ご理解とご協力をお願い足します。\n原因に心当たりがございましたら、ご連絡いただくことで早期に解決できる可能性があります。 <a href=\"mailto:suspensions@brave.com\">suspensions@brave.com</a>までご連絡いただければ、担当者が確認しご対応いたします。"
+      body: "アカウントで異常なアクティビティが発生しています。 そのため、詳細を確認する間、アクセスを停止しました。 理由には、<a href=\"https://support.brave.com/hc/en-us/articles/360029235132\"> BAT付与ガイドラインの違反が含まれる場合があります。</a>\nご不便をおかけ申し訳ありませんが、アカウントとBrave Creatorsの保護するため、ご理解とご協力をお願い足します。\n原因に心当たりがございましたら、ご連絡いただくことで早期に解決できる可能性があります。 <a href=\"mailto:suspensions@brave.com\">suspensions@brave.com</a>までご連絡いただければ、担当者が確認しご対応いたします。"
 
 
     two_factor_authentication_removal:
@@ -697,7 +695,7 @@ ja:
     instant_donation_modal:
       headline: チップ受け取り用のバナーをカスタマイズする
       intro:
-        html: Braveブラウザのユーザがあなたのサイトを訪れた際、オリジナルのバナーからチップを送信できるようになりました。 このバナーは、ファンがURLバーからBrave Rewardsパネルを開き、<span style="color:#7d7bdc;">Send Tip Now</span>ボタンをクリックすると表示されます。
+        html: Braveブラウザのユーザがあなたのサイトを訪れた際、オリジナルのバナーからチップを送信できるようになりました。 このバナーは、ファンがURLバーからBrave Creatorsパネルを開き、<span style="color:#7d7bdc;">Send Tip Now</span>ボタンをクリックすると表示されます。
       tagline: あなたの言葉と画像でバナーをカスタマイズしてください！
       skip: スキップ
       preview: バナーをプレビュー
@@ -748,7 +746,7 @@ ja:
       group: 'グループ %{number}'
       active_referral: "アクティブ"
       add_channel: "紹介リンクを取得するには、ウェブサイトまたはチャンネルを確認してください。"
-      violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Rewardsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。
+      violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Creatorsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。
       referral: "紹介プロモーションの統計"
       check_statement: "この期間の支払いについては、明細を確認してください。"
       signups_disabled: "リファラルプログラムを用いた新規登録は現在一時停止中です。再開時はお知らせいたします。"
@@ -767,7 +765,7 @@ ja:
       referral_links: "リンクをシェアして紹介数を増やす"
       referral_link: "紹介リンク"
       copy: "コピー"
-      brave_rewards_tm: "Brave Rewards"
+      brave_rewards_tm: "Brave Creators"
       on_youtube: "YouTube"
       on_twitch: "Twitch"
       on_twitter: "Twitter"
@@ -778,7 +776,7 @@ ja:
       tos_2_html: プロモーションオファーは、Brave紹介プログラムへの参加に関する現在の条件を規定し、参照により<a href="https://basicattentiontoken.org/publisher-terms-of-service/">本利用規約</a>に組み込まれます。
   promo_mailer:
     activate_promo_2018q1:
-      subject: "Brave Rewardsの紹介コードを取得する"
+      subject: "Brave Creatorsの紹介コードを取得する"
       body_one_html: |
         <p>Braveを自分のファンに紹介して頂けるクリエイターの皆様に100万ドル分のトークンを提供しています。 紹介リンクを使ってBraveを使い始めたユーザー1人ごとに、約5米国ドル相当のトークンを受け取れます。</p>
       button: "プロモーションを有効にする"
@@ -793,7 +791,7 @@ ja:
     new_channel_registered_2018q1:
       subject: "%{publication_title}の紹介コードの準備ができました"
   banner:
-    headline: "Brave Rewards"
+    headline: "Brave Creators"
     tagline: "サイトに訪れてくれてありがとうございます。Braveが掲げるユーザプライバシー保護の理念に共感し、プログラムに参加しています。ウェブをクリーンで安全な場所にしていくため、ファンの皆様からのご支援を歓迎しています。皆様からいただいたチップで今後もコンテンツを作成し、改善していきたいと思います。よろしくお願いいたします。"
   recaptcha:
     errors:
@@ -910,12 +908,12 @@ ja:
   static:
     no_js:
       welcome: ようこそ
-      header: Brave Rewardsへ
+      header: Brave Creatorsへ
       body_html: |
         <p class="leadin">ウェブサイトをお持ちですか？または <strong>YouTube</strong>にチャンネルをお持ちでコンテンツの収益化にご興味がありますか？サイトを認証することで送られた支援を受け取ることができます。</p>
-        <p>Brave Rewardsを通じてBraveを使っているユーザからトークンで応援を受け取ることができます。以下の簡単なステップで登録を完了しましょう！たくさんのユーザから支援を受けられる可能性があります。</p>
+        <p>Brave Creatorsを通じてBraveを使っているユーザからトークンで応援を受け取ることができます。以下の簡単なステップで登録を完了しましょう！たくさんのユーザから支援を受けられる可能性があります。</p>
       new:
-        header: Brave Rewardsを利用するのははじめてですか？
+        header: Brave Creatorsを利用するのははじめてですか？
         body: メールを入力して認証を開始します。
       login:
         body: ダッシュボードにログインします。

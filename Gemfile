@@ -4,12 +4,12 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "7.0.5.1"
-gem "rails", rails_version
-gem "rails-html-sanitizer", "1.5.0"
-gem "railties", rails_version
+# rails_version = "7.0.6"
+gem "rails", github: "rails/rails", branch: "main"
+gem "rails-html-sanitizer", "1.6.0"
+gem "railties", github: "rails/rails", branch: "main" # '7.1.0.alpha' #github: 'rails/rails', branch: 'main'
 
-gem "rack"
+gem "rack", "3.0.8"
 
 # All things countries
 gem "countries"
@@ -20,40 +20,38 @@ gem "active_model_serializers", "~> 0.10.0"
 # For bulk updates/imports
 gem "activerecord-import", "1.4.1"
 
-gem "activerecord7-redshift-adapter", git: "https://github.com/pennylane-hq/activerecord7-redshift-adapter.git"
-
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
 
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.119.0"
+gem "aws-sdk-s3", "~> 1.129"
 
 gem "bootstrap", "4.6.0"
 
 gem "brotli", "~> 0.4.0"
 
 # Authorization
-gem "cancancan", "~> 3.4.0"
+gem "cancancan", "~> 3.5.0"
 
-gem "connection_pool", "~> 2.3.0"
+gem "connection_pool", "~> 2.4"
 
 # Authentication
-gem "devise", "~> 4.8.1"
+gem "devise", "~> 4.9.2"
 
-gem "dnsruby", "~> 1.61.9", require: false
+gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "~> 2.7.4"
-gem "faraday-retry"
+gem "faraday", "2.7.5"
+gem "faraday-retry", "2.1.0"
 
 gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
-gem "google-protobuf", "~> 3.21.12"
+gem "google-protobuf", "~> 3.23.4"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
@@ -64,7 +62,7 @@ gem "nokogiri", ">= 1.14.3"
 # Open Graph tag
 gem "meta-tags", "~> 2.18.0"
 
-gem "newrelic_rpm", "~> 9.2.2"
+gem "newrelic_rpm", "~> 9.3.1"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
@@ -98,15 +96,15 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.0.2"
+gem "puma", "~> 6.3.0"
 
 # Make cracking a little bit harder
-gem "rack-attack", "~> 6.6.1"
+gem "rack-attack", github: "rack/rack-attack", branch: "allow-rack-3"
 
 gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
-gem "recaptcha", "~> 5.12.3", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.14.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.0.6"
@@ -118,13 +116,15 @@ gem "render_async", "~> 2.1.8"
 gem "rexml"
 
 # Generate QR codes for TOTP 2fa
-gem "rqrcode", "~> 2.1.2"
+gem "rqrcode", "~> 2.2.0"
 
 # SCSS for stylesheets
-gem "sass-rails", "~> 6.0.0"
+gem "sass-rails", ">= 6"
 
 # Sendgrid mail service
 gem "sendgrid-ruby", "~> 6.6.2"
+
+gem "terser"
 
 # Exception logging
 # We don't use anymore
@@ -136,9 +136,9 @@ gem "sidekiq", "~> 7.1.0"
 gem "sidekiq-scheduler", "~> 5.0.2"
 
 # slim for view templates
-gem "slim-rails", "~> 3.1"
+gem "slim-rails", "3.6.2"
 
-gem "ssrf_filter", "1.0.7"
+gem "ssrf_filter", "1.1.1"
 
 gem "strong_migrations"
 
@@ -160,7 +160,7 @@ gem "yt", "~> 0.33.0"
 gem "zeitwerk", "~> 2.6.6"
 gem "zendesk_api", "= 1.38.rc1"
 
-gem "activerecord-nulldb-adapter", "0.8.0"
+gem "activerecord-nulldb-adapter", "0.9.0"
 
 gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
 gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
@@ -169,15 +169,19 @@ gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.4.2"
-gem "sprockets", "3.7.2"
-gem "uglifier"
+gem "sprockets", "4.2.0"
+
+gem "eth", "~> 0.4"
+gem "rbnacl"
+gem "base58"
 
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
   gem "listen", "~> 3.5"
 
-  gem "bullet"
+  # TODO add this back in after rails 7.1 officially drops
+  # gem "bullet"
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
@@ -196,7 +200,6 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
-  gem "minitest-retry"
 
   # Image information library
   gem "fastimage", "~> 2.2.5"
@@ -219,11 +222,11 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem "capybara"
   gem "minitest"
-  gem "minitest-rails"
+  gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
   gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test
-  gem "selenium-webdriver", "~> 4.8.0"
+  gem "selenium-webdriver", "~> 4.10.0"
   gem "solargraph"
   gem "dotenv-rails", "2.8.1"
 end

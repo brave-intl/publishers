@@ -6,14 +6,14 @@ export default {
       signupHref: "/sign-up",
       login: "ログイン",
       loginHref: "/log-in",
-      logoAlt: "Brave Rewards Creator Logo",
+      logoAlt: "Brave Creators Logo",
       batPillAlt: "Built with BAT"
     },
     main: {
       home: {
         headline: "あなたのコンテンツを収益化しませんか？",
         subhead:
-          "コンテンツ閲覧者がBraveブラウザを利用していると、Brave Rewardsを通じて支援を受けることが可能です。認証済みクリエイターに登録し、コンテンツからの収益化をはじめてみませんか？",
+          "コンテンツ閲覧者がBraveブラウザを利用していると、Brave Creatorsを通じて支援を受けることが可能です。認証済みクリエイターに登録し、コンテンツからの収益化をはじめてみませんか？",
         examples: {
           headline: "以下のようなサービスを登録できます",
           website: "あなたのWebサイト",
@@ -29,7 +29,7 @@ export default {
         }
       },
       signin: {
-        heading: "Brave Rewardsにログインする",
+        heading: "Brave Creatorsにログインする",
         subhead:
           "あなたのメールアドレスに安全なログイン用のリンクが送信されます。",
         inputPlaceholder: "メールアドレス",
@@ -62,7 +62,7 @@ export default {
     signoff: {
       btn: "新規登録",
       btnHref: "/sign-up",
-      headline: "すでに{count}以上のコンテンツクリエイターや出版社がBrave Rewardsに参加し、収益を上げ始めています"
+      headline: "すでに{count}以上のコンテンツクリエイターや出版社がBrave Creatorsに参加し、収益を上げ始めています"
     },
     sign: {
       sentAgain:
@@ -86,15 +86,15 @@ export default {
       iconCommunityTitle: "BAT Community"
     },
     spotlight: {
-      heading: "あなたのコンテンツをBrave Rewardsで収益化できます",
+      heading: "あなたのコンテンツをBrave Creatorsで収益化できます",
       subhead:
-        "Brave Rewardsは、作品やコンテンツからより多くの収益を上げ、広告ブロック等で減ってしまった収益を取り戻すことをサポートします。広告収益だけに依存する代わりに、ユーザからコンテンツへの直接支払いを受けることができるようになります。",
-      bakerAlt: "Bart Baker Brave Rewards",
+        "Brave Creatorsは、作品やコンテンツからより多くの収益を上げ、広告ブロック等で減ってしまった収益を取り戻すことをサポートします。広告収益だけに依存する代わりに、ユーザからコンテンツへの直接支払いを受けることができるようになります。",
+      bakerAlt: "Bart Baker Brave Creators",
       bakerCredit: "- Bart Baker",
       bakerHref: "https://www.youtube.com/BartBaKer",
       bakerQuote:
         "“Braveはいわば無料で参加できるクラウドファウンディングのようなものです。支援者は自分の財布を傷めずにあなたの活動を支援することができるのです！",
-      defrancoAlt: "Philip DeFranco Brave Rewards",
+      defrancoAlt: "Philip DeFranco Brave Creators",
       defrancoCredit: "- Philip DeFranco",
       defrancoHref: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw",
       defrancoQuote:
@@ -105,14 +105,14 @@ export default {
       scottyQuote: "\"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます\"",
     },
     summary: {
-      heading: "Brave Rewardsの仕組み",
+      heading: "Brave Creatorsの仕組み",
       oneTitle: "Braveブラウザを使っているとを獲得できます",
       oneDesc:
-        "Brave RewardsはBATを基盤に作られています。Braveのプライバシーを重視した広告を見るとポイントを獲得することができます。",
+        "Brave CreatorsはBATを基盤に作られています。Braveのプライバシーを重視した広告を見るとポイントを獲得することができます。",
       twoTitle: "そういったユーザがあなたのようなクリエイターやその作品に対してをチップとして送ります",
       twoDesc:
         "定期購読者、フォロワー、読者は毎月決まった金額分のチップを自動的に送ることや、都度任意の金額を送ることができます",
-      threeTitle: "Brave Rewardsの認証済みコンテンツクリエイターになる",
+      threeTitle: "Brave Creatorsの認証済みコンテンツクリエイターになる",
       threeDesc:
         "認証済みコンテンツクリエイターになると、クリエイター向けダッシュボードにアクセスすることが可能になります。ダッシュボードでは受け取ったチップを確認できる他、紹介用のURLを取得することが可能です。Braveを紹介することによってより多くのを獲得することができます。",
       fourTitle: "クリエイターダッシュボードでチップを回収する",

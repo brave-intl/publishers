@@ -12,11 +12,11 @@ class SearchTest < ActionDispatch::IntegrationTest
   let(:controller) { Foo.new }
 
   before do
-    @prev_youtube = Rails.application.secrets[:youtube_api_key]
+    @prev_youtube = Rails.configuration.pub_secrets[:youtube_api_key]
   end
 
   after do
-    Rails.application.secrets[:youtube_api_key] = @prev_youtube
+    Rails.configuration.pub_secrets[:youtube_api_key] = @prev_youtube
   end
 
   describe "extract_video_id" do
@@ -73,13 +73,13 @@ class SearchTest < ActionDispatch::IntegrationTest
 
   describe "extract_channel_from_user" do
     it "extracts channel from username" do
-      Rails.application.secrets[:youtube_api_key] = nil
+      Rails.configuration.pub_secrets[:youtube_api_key] = nil
       channel_id = controller.send(:extract_channel_from_user, "youtube.com/user/BartBaKer")
       assert_equal "channel_id", channel_id
     end
 
     it "extracts channel id with parameters" do
-      Rails.application.secrets[:youtube_api_key] = nil
+      Rails.configuration.pub_secrets[:youtube_api_key] = nil
       channel_id = controller.send(:extract_channel_from_user, "youtube.com/user/BartBaKer/videos")
       assert_equal "channel_id", channel_id
     end
@@ -93,7 +93,7 @@ class SearchTest < ActionDispatch::IntegrationTest
       end
 
       it "returns empty string when user is not found" do
-        Rails.application.secrets[:youtube_api_key] = "key"
+        Rails.configuration.pub_secrets[:youtube_api_key] = "key"
         channel_id = controller.send(:extract_channel_from_user, "youtube.com/user/#{user}/videos")
         assert_equal channel_id, ""
       end

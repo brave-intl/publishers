@@ -1,0 +1,10 @@
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+      .col-small-centered
+        = render "icon_circled_check"
+        .single-panel--wrapper--spaced
+          h3.single-panel= t ".title", channel_name: params[:channel_name]
+          p= t ".body", channel_name: params[:channel_name]
+          = link_to(t(".button"), root_path, class: "btn btn-block btn-primary")

@@ -66,6 +66,8 @@ Rails.application.routes.draw do
           get :latest
         end
 
+        resources :crypto_addresses, only: %i[index destroy]
+
         resources :promo_registrations, only: [:index, :create] do
           collection do
             get :for_referral_code
@@ -90,6 +92,7 @@ Rails.application.routes.draw do
       patch :complete_signup
       post :create_new_untethered_referral_code
       get :choose_new_channel_type
+      get :reject_transfer_success
       get :security, to: "publishers/security#index"
       get :prompt_security, to: "publishers/security#prompt"
       get :settings, to: "publishers/settings#index"
@@ -115,6 +118,13 @@ Rails.application.routes.draw do
   devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
 
   resources :channels, only: %i[destroy] do
+    resources :crypto_address_for_channels, only: %i[index create] do
+      collection do
+        post :change_address
+        get :generate_nonce
+      end
+    end
+
     member do
       get :verification_status
       get :cancel_add

@@ -1,7 +1,7 @@
 desc "Rekey (change keys) of all encrypted fields"
 task rekey: :environment do
-  old_key = Rails.application.secrets[:attr_encrypted_key_old]
-  new_key = Rails.application.secrets[:attr_encrypted_key]
+  old_key = Rails.configuration.pub_secrets[:attr_encrypted_key_old]
+  new_key = Rails.configuration.pub_secrets[:attr_encrypted_key]
 
   hash_model_to_columns = Util::AttrEncrypted.get_all_encrypted_fields
 

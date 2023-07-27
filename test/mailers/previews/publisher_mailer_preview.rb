@@ -28,12 +28,6 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.payment_failure_email(publisher: publisher)
   end
 
-  def verification_done
-    publisher = Publisher.joins(:user_authentication_token).first
-    PublisherTokenGenerator.new(publisher: publisher).perform
-    PublisherMailer.verification_done(publisher.channels.first)
-  end
-
   def wallet_refresh_failure
     PublisherMailer.wallet_refresh_failure(Publisher.first, "Uphold")
   end

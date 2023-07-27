@@ -1,10 +1,8 @@
 # typed: ignore
 
-require "concerns/two_factor_auth"
-
 class TwoFactorAuthenticationsController < ApplicationController
   include PublishersHelper
-  include TwoFactorAuth
+  include PubTwoFactorAuth
   include Logout
   include TwoFactorRegistration
 

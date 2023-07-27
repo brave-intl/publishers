@@ -25,7 +25,7 @@ export default {
         number: "2",
         title: "ウォレットサービスの接続",
       },
-      title: "Brave Rewardsへようこそ",
+      title: "Brave Creatorsへようこそ",
     }
   },
   makeMonthly: "毎月定額払いにする",

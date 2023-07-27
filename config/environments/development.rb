@@ -3,68 +3,69 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
-  # Allow images from CDN
-  config.action_dispatch.default_headers = {
-    "Access-Control-Allow-Origin" => "https://localhost:3000",
-    "Access-Control-Request-Method" => "GET",
-    "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-    "Access-Control-Allow-Methods" => "GET",
-    "Permissions-Policy" => "interest-cohort=()"
-  }
+    # Verifies that versions and hashed value of the package contents in the project's package.json
+    # config.webpacker.check_yarn_integrity = false
+    # Allow images from CDN
+    config.action_dispatch.default_headers = {
+       "Access-Control-Allow-Origin" => "https://localhost:3000",
+       "Access-Control-Request-Method" => "GET",
+       "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+       "Access-Control-Allow-Methods" => "GET",
+       "Permissions-Policy" => "interest-cohort=()"
+    }
 
-  config.cache_store = :redis_cache_store, {
-    url: Rails.application.secrets[:redis_url],
-    error_handler: ->(method:, returning:, exception:) { raise exception }
-  }
+    config.cache_store = :redis_cache_store, {
+       url: Rails.configuration.pub_secrets[:redis_url],
+       error_handler: ->(method:, returning:, exception:) { raise exception }
+    }
 
-  require "connection_pool"
-  REDIS = ConnectionPool.new(size: 5) { Redis.new }
+    require "connection_pool"
+    REDIS = ConnectionPool.new(size: 5) { Redis.new }
 
-  # SESSION STORE
-  config.session_store :redis_session_store,
-    key:  "_publishers_session",
-    redis: {
-    client: Redis.new(url: Rails.application.secrets[:redis_url]),
-    expire_after: 120.minutes,
-    key_prefix: 'publishers:session:'
-  }
+    # SESSION STORE
+    config.session_store :redis_session_store,
+       key:  "_publishers_session",
+       redis: {
+       client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
+       expire_after: 120.minutes,
+       key_prefix: 'publishers:session:'
+    }
 
-  config.middleware.use(Rack::Attack)
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "https" }
-  # Mailcatcher
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    port: Rails.application.secrets[:smtp_server_port] || 1025,
-    address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1"
-  }
+    config.middleware.use(Rack::Attack)
+    config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "https" }
+    # Mailcatcher
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+       port: Rails.configuration.pub_secrets[:smtp_server_port] || 1025,
+       address: Rails.configuration.pub_secrets[:smtp_server_address] || "127.0.0.1"
+    }
 
-  config.i18n.load_path += Dir["#{Rails.root}/config/locales/**/*.{rb,yml}"]
-  config.i18n.default_locale = :en
-  config.assets.debug = true
+    config.i18n.load_path += Dir["#{Rails.root}/config/locales/**/*.{rb,yml}"]
+    config.i18n.default_locale = :en
+    config.assets.debug = true
 
-  # Use an evented file watcher to asynchronously detect changes in source code,
-  # routes, locales, etc. This feature depends on the listen gem.
-  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+    # Use an evented file watcher to asynchronously detect changes in source code,
+    # routes, locales, etc. This feature depends on the listen gem.
+    config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Resolves docker error "Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1"
-  config.web_console.whitelisted_ips = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-  config.logger = ActiveSupport::Logger.new(config.paths["log"].first, 1, 50.megabytes)
-  config.log_level = :debug
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.rails_logger = true
-    # Enable this if rotating keys for encrypted fields
-    # Util::AttrEncrypted.monkey_patch_old_key_fallback
-  end
+    # Resolves docker error "Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1"
+    config.web_console.whitelisted_ips = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    config.logger = ActiveSupport::Logger.new(config.paths["log"].first, 1, 50.megabytes)
+    config.log_level = :debug
+    # config.after_initialize do
+       # Bullet.enable = true
+       # Bullet.rails_logger = true
+       # Enable this if rotating keys for encrypted fields
+       # Util::AttrEncrypted.monkey_patch_old_key_fallback
+     # end
 
-  # End brave customizations
+    # End brave customizations
+
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  config.enable_reloading = false
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -77,19 +78,19 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join("tmp/caching-dev.txt").exist?
+  # if Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    # config.cache_store = :memory_store
+    #config.cache_store = :memory_store
     config.public_file_server.headers = {
       "Cache-Control" => "public, max-age=#{2.days.to_i}"
     }
-  else
-    config.action_controller.perform_caching = false
+  # else
+  #   config.action_controller.perform_caching = false
 
-    config.cache_store = :null_store
-  end
+  #   config.cache_store = :null_store
+  # end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
@@ -113,6 +114,9 @@ Rails.application.configure do
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
+
+  # Highlight code that enqueued background job in logs.
+  config.active_job.verbose_enqueue_logs = true
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
