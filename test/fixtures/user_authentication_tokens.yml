@@ -2,7 +2,7 @@ default_user_authentication_token: &default_user_authentication_token
   authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
   # authenticity_token run through console with
   # UserAuthenticationToken.attribute_types["authentication_token"].serialize("authentication_token")
-  authentication_token: "{\"p\":\"4srhdfld+ax+U8PseIkx+vDA3zw=\",\"h\":{\"iv\":\"O2Sq2sgYGhcktWIp\",\"at\":\"zLGdhZh2ytVLtAD2lM4dNA==\"}}"
+  authentication_token: "{\"p\":\"2eXOx53fs0/AzeJdmiPPuVAR+PE=\",\"h\":{\"iv\":\"tTfjtUUCwZGPE9mu\",\"at\":\"DBlolp810/sk8qxfmqHiQg==\"}}"
   user: default
 
 completed_user_authentication_token:

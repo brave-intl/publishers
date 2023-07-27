@@ -3,14 +3,14 @@ default:
   last_logged_in_at: <%= 2.days.ago %>
   # run through console with
   # TotpRegistration.attribute_types["secret"].serialize('secret')
-  secret: "{\"p\":\"YKrEwFIZ\",\"h\":{\"iv\":\"KZWZ2MqXQglldRB5\",\"at\":\"1Ck0jUQSUXPa5an0zd49rw==\"}}"
+  secret: "{\"p\":\"yqWaK64e\",\"h\":{\"iv\":\"MzF4S8HgP1iRs/2x\",\"at\":\"wuShPjrQ9VYKLXi3OrLwng==\"}}"
 
 verified_totp:
   publisher: verified_totp_only
   last_logged_in_at: <%= 2.days.ago %>
-  secret: "{\"p\":\"YKrEwFIZ\",\"h\":{\"iv\":\"KZWZ2MqXQglldRB5\",\"at\":\"1Ck0jUQSUXPa5an0zd49rw==\"}}"
+  secret: "{\"p\":\"yqWaK64e\",\"h\":{\"iv\":\"MzF4S8HgP1iRs/2x\",\"at\":\"wuShPjrQ9VYKLXi3OrLwng==\"}}"
 
 admin:
   publisher: admin
   last_logged_in_at: <%= 2.days.ago %>
-  secret: "{\"p\":\"YKrEwFIZ\",\"h\":{\"iv\":\"KZWZ2MqXQglldRB5\",\"at\":\"1Ck0jUQSUXPa5an0zd49rw==\"}}"
+  secret: "{\"p\":\"yqWaK64e\",\"h\":{\"iv\":\"MzF4S8HgP1iRs/2x\",\"at\":\"wuShPjrQ9VYKLXi3OrLwng==\"}}"
