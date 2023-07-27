@@ -17,8 +17,8 @@ connection_with_token:
   publisher: gemini_completed
   is_verified: true
   recipient_id: <%= SecureRandom.uuid %>
-  access_token:  "{\"p\":\"0xnOKdDbiCtdeEFk\",\"h\":{\"iv\":\"TJ6Cl65f8nGNzIUL\",\"at\":\"zM37d8U9DlE5aeuZw9gdug==\"}}"
-  refresh_token:  "{\"p\":\"ziymXehmy9TdklEeqg==\",\"h\":{\"iv\":\"EEgxeAEDu02XafPW\",\"at\":\"AkwfcjxEbF752GYDrBiS+g==\"}}"
+  access_token:  "{\"p\":\"A0HSi12c290Vt49G\",\"h\":{\"iv\":\"8SE1PADLaF6w6jtC\",\"at\":\"reenmNCUIVS9v1S9vpgq+A==\"}}"
+  refresh_token:  "{\"p\":\"VLGgjToTY/UVHw8xmw==\",\"h\":{\"iv\":\"vEXWd62T+g1mEoHp\",\"at\":\"5Y4beeO3sBmiN0SDftA/Uw==\"}}"
   country: 'BE'
   status: 'Active'
 
@@ -26,8 +26,8 @@ connection_not_verified:
   publisher: gemini_not_completed
   is_verified: false
   status: 'Active'
-  access_token:  'access_token'
-  refresh_token:  'refresh_token'
+  access_token:  "{\"p\":\"A0HSi12c290Vt49G\",\"h\":{\"iv\":\"8SE1PADLaF6w6jtC\",\"at\":\"reenmNCUIVS9v1S9vpgq+A==\"}}"
+  refresh_token:  "{\"p\":\"VLGgjToTY/UVHw8xmw==\",\"h\":{\"iv\":\"vEXWd62T+g1mEoHp\",\"at\":\"5Y4beeO3sBmiN0SDftA/Uw==\"}}"
 
 top_referrer_gemini_connected:
   publisher: top_referrer_gemini

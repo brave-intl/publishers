@@ -3,8 +3,8 @@ enabled_bitflyer_connection:
   recipient_id: 'bitflyer_pub_connectionABC'
   # run through console with
   # BitflyerConnection.attribute_types["access_token"].serialize('access_token')
-  access_token:  "{\"p\":\"0xnOKdDbiCtdeEFk\",\"h\":{\"iv\":\"TJ6Cl65f8nGNzIUL\",\"at\":\"zM37d8U9DlE5aeuZw9gdug==\"}}"
-  refresh_token:  "{\"p\":\"ziymXehmy9TdklEeqg==\",\"h\":{\"iv\":\"EEgxeAEDu02XafPW\",\"at\":\"AkwfcjxEbF752GYDrBiS+g==\"}}"
+  access_token:  "{\"p\":\"A0HSi12c290Vt49G\",\"h\":{\"iv\":\"8SE1PADLaF6w6jtC\",\"at\":\"reenmNCUIVS9v1S9vpgq+A==\"}}"
+  refresh_token:  "{\"p\":\"VLGgjToTY/UVHw8xmw==\",\"h\":{\"iv\":\"vEXWd62T+g1mEoHp\",\"at\":\"5Y4beeO3sBmiN0SDftA/Uw==\"}}"
   display_name: 123
   access_expiration_time: "<%= 2.days.ago %>"
 
