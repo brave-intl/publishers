@@ -10,6 +10,9 @@ import Navbar from "../packs/navbar.jsx";
 
 import FailureDialog from "./bannerEditor/FailureDialog";
 
+import { ThemeProvider } from "brave-ui/theme";
+import Theme from "brave-ui/theme/brave-default";
+
 import styled from "styled-components";
 import {
   Editor,
@@ -59,7 +62,7 @@ import "../../assets/stylesheets/components/slider.scss";
 
 const DEFAULT_TITLE = "Brave Creators";
 const DEFAULT_DESCRIPTION =
-  "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content"
+  "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content";
 
 export default class BannerEditor extends React.Component {
   constructor(props) {
@@ -275,7 +278,7 @@ export default class BannerEditor extends React.Component {
       //500ms timeout prevents quick flash when load times are fast.
       setTimeout(async () => {
         if (banner) {
-          banner.socialLinks = banner.socialLinks || {}
+          banner.socialLinks = banner.socialLinks || {};
           that.setState({
             title: banner.title || DEFAULT_TITLE,
             description: banner.description || DEFAULT_DESCRIPTION,
@@ -929,96 +932,96 @@ export default class BannerEditor extends React.Component {
     }
     return (
       <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
-      <Editor onClick={e => this.handleLinkSelection(e)}>
-        {this.renderLoadingScreen()}
-        {this.renderDialogue()}
+        <Editor onClick={e => this.handleLinkSelection(e)}>
+          {this.renderLoadingScreen()}
+          {this.renderDialogue()}
 
-        <Navbar
-          defaultSiteBanner={this.props.defaultSiteBanner}
-          channelBanners={this.props.channelBanners}
-          channelIndex={this.state.channelIndex}
-          defaultSiteBannerMode={this.state.defaultSiteBannerMode}
-          incrementChannelIndex={this.incrementChannelIndex}
-          decrementChannelIndex={this.decrementChannelIndex}
-          toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode}
-          save={this.save}
-          close={this.close}
-          preview={this.preview}
-        />
+          <Navbar
+            defaultSiteBanner={this.props.defaultSiteBanner}
+            channelBanners={this.props.channelBanners}
+            channelIndex={this.state.channelIndex}
+            defaultSiteBannerMode={this.state.defaultSiteBannerMode}
+            incrementChannelIndex={this.incrementChannelIndex}
+            decrementChannelIndex={this.decrementChannelIndex}
+            toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode}
+            save={this.save}
+            close={this.close}
+            preview={this.preview}
+          />
 
-        <Template>
-          <Logo url={this.state.logo.url}>
-            <Input
-              type="file"
-              id="logoInput"
-              accept="image/png, image/jpeg, image/webp"
-              onChange={e => this.addLogo(e)}
-            />
-            <Label logo htmlFor="logoInput" />
-          </Logo>
-
-          <Cover url={this.state.cover.url}>
-            <Input
-              type="file"
-              id="backgroundInput"
-              accept="image/png, image/jpeg, image/webp"
-              onChange={e => this.addCover(e)}
-            />
-            <Label htmlFor="backgroundInput" />
-          </Cover>
-
-          <Content>
-            <Links>
-              <Text links>
-                <FormattedMessage id="siteBanner.links" />
-              </Text>
-
-              {this.renderLinks()}
-
-              {this.renderLinkInput() && (
-                <LinkInputWrapper>
-                  <DropdownToggle>
-                    {this.renderIcon(this.state.linkOption)}
-                    <Caret onClick={e => this.toggleDropdown(e)} id="toggle">
-                      &#9662;
-                    </Caret>
-                  </DropdownToggle>
-                  <TextInput
-                    link
-                    placeholder={this.currentPlaceholder()}
-                    placeholderTextColor="#707070"
-                    onChange={this.updateCurrentUsername}
-                    value={this.state.currentUsername}
-                    maxLength={80}
-                  />
-                  {this.renderDropdown()}
-                  <Text add onClick={() => this.addLink()}>
-                    <FormattedMessage id="siteBanner.addChannel" />
-                  </Text>
-                </LinkInputWrapper>
-              )}
-            </Links>
-
-            <ExplanatoryText>
-              <TextInput
-                headline
-                onChange={this.updateTitle}
-                value={this.state.title}
-                maxLength={21}
-                type="text"
+          <Template>
+            <Logo url={this.state.logo.url}>
+              <Input
+                type="file"
+                id="logoInput"
+                accept="image/png, image/jpeg, image/webp"
+                onChange={e => this.addLogo(e)}
               />
-              <TextArea
-                description
-                onChange={this.updateDescription}
-                value={this.state.description}
-                maxLength={330}
-                type="text"
+              <Label logo htmlFor="logoInput" />
+            </Logo>
+
+            <Cover url={this.state.cover.url}>
+              <Input
+                type="file"
+                id="backgroundInput"
+                accept="image/png, image/jpeg, image/webp"
+                onChange={e => this.addCover(e)}
               />
-            </ExplanatoryText>
-          </Content>
-        </Template>
-      </Editor>
-    </IntlProvider>
+              <Label htmlFor="backgroundInput" />
+            </Cover>
+
+            <Content>
+              <Links>
+                <Text links>
+                  <FormattedMessage id="siteBanner.links" />
+                </Text>
+
+                {this.renderLinks()}
+
+                {this.renderLinkInput() && (
+                  <LinkInputWrapper>
+                    <DropdownToggle>
+                      {this.renderIcon(this.state.linkOption)}
+                      <Caret onClick={e => this.toggleDropdown(e)} id="toggle">
+                        &#9662;
+                      </Caret>
+                    </DropdownToggle>
+                    <TextInput
+                      link
+                      placeholder={this.currentPlaceholder()}
+                      placeholderTextColor="#707070"
+                      onChange={this.updateCurrentUsername}
+                      value={this.state.currentUsername}
+                      maxLength={80}
+                    />
+                    {this.renderDropdown()}
+                    <Text add onClick={() => this.addLink()}>
+                      <FormattedMessage id="siteBanner.addChannel" />
+                    </Text>
+                  </LinkInputWrapper>
+                )}
+              </Links>
+
+              <ExplanatoryText>
+                <TextInput
+                  headline
+                  onChange={this.updateTitle}
+                  value={this.state.title}
+                  maxLength={21}
+                  type="text"
+                />
+                <TextArea
+                  description
+                  onChange={this.updateDescription}
+                  value={this.state.description}
+                  maxLength={330}
+                  type="text"
+                />
+              </ExplanatoryText>
+            </Content>
+          </Template>
+        </Editor>
+      </IntlProvider>
     );
   }
 }
@@ -1043,7 +1046,9 @@ export function renderBannerEditor(
   };
 
   ReactDOM.render(
-    <BannerEditor {...props} />,
+    <ThemeProvider theme={Theme}>,
+      <BannerEditor {...props} />,
+    </ThemeProvider>,
     document.getElementById("rewards-banner-container").parentElement
       .parentElement
   );
