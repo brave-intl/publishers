@@ -35,7 +35,9 @@ default: &default
 
   # Additional paths webpack should look up modules
   # ['app/assets', 'engine/foo/app/assets']
-  additional_paths: []
+  additional_paths: [
+    './node_modules/brave-ui/src'
+  ]
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
