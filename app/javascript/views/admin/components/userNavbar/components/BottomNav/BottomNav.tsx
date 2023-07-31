@@ -7,7 +7,7 @@ import {
   PaperAirplaneIcon,
   PaymentDueIcon,
   SettingsIcon,
-  VerifiedIcon,
+  VerifiedSIcon,
   WalletInfoIcon,
   WalletManageIcon
 } from "brave-ui/components/icons";
@@ -43,7 +43,7 @@ export default class BottomNav extends React.Component<{}, {}> {
             <InnerNav>
               <NavIcon>
                 {" "}
-                <VerifiedIcon />
+                <VerifiedSIcon />
               </NavIcon>
               <NavText>Channels</NavText>
             </InnerNav>

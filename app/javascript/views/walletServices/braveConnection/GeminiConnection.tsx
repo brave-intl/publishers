@@ -4,8 +4,8 @@ import { FormattedMessage } from "react-intl";
 import routes from "../../routes";
 import { FlexWrapper } from "../../style";
 import GeminiIcon from "./geminiConnection/GeminiIcon";
-import { VerifyButton } from "./VerifyButton";
 import DisconnectPrompt from "./upholdConnection/UpholdDisconnectPrompt";
+import { VerifyButton } from "./VerifyButton";
 
 class GeminiConnection extends React.Component<any, any> {
   constructor(props) {
