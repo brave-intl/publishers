@@ -4,10 +4,10 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import routes from "../routes";
 
 import { LoaderIcon } from "brave-ui/components/icons";
+import BitflyerConnection from "./braveConnection/BitflyerConnection";
 import GeminiConnection from "./braveConnection/GeminiConnection";
 import NotConnected from "./braveConnection/NotConnected";
 import UpholdConnection from "./braveConnection/UpholdConnection";
-import BitflyerConnection from "./braveConnection/BitflyerConnection";
 
 // This class serves as the entry point for establishing a wallet connection.
 // It allows users to establish a connection to different crypto wallet providers.
@@ -103,7 +103,7 @@ class BraveConnection extends React.Component<any, any> {
         bitflyerConnection: null,
         geminiConnection: null,
         isLoading: false,
-        locale: locale,
+        locale,
         upholdConnection: null,
       };
 

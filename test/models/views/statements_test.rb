@@ -48,7 +48,7 @@ class StatementsTest < ActiveSupport::TestCase
     end
 
     before do
-      @statement_mock = MiniTest::Mock.new
+      @statement_mock = Minitest::Mock.new
       @statement_mock.expect(:perform, statements)
     end
 
@@ -522,7 +522,7 @@ class StatementsTest < ActiveSupport::TestCase
     end
 
     before do
-      @statement_mock = MiniTest::Mock.new
+      @statement_mock = Minitest::Mock.new
       @statement_mock.expect(:perform, statements)
     end
 
@@ -599,7 +599,7 @@ class StatementsTest < ActiveSupport::TestCase
     end
 
     before do
-      @statement_mock = MiniTest::Mock.new
+      @statement_mock = Minitest::Mock.new
       @statement_mock.expect(:perform, statements)
     end
 
