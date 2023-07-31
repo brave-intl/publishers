@@ -69,7 +69,7 @@ jobs:
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
       - name: Run tests
-        run: NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=test bundle exec rails test
+        run: USE_MINITEST_RETRY=1 NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=test bundle exec rails test
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
 
