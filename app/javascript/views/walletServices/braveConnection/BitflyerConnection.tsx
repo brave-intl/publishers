@@ -3,8 +3,8 @@ import { FormattedMessage } from "react-intl";
 
 import routes from "../../routes";
 import { FlexWrapper } from "../../style";
-import { VerifyButton } from "./VerifyButton";
 import BitflyerIcon from "./bitflyerConnection/BitflyerIcon";
+import { VerifyButton } from "./VerifyButton";
 
 class BitflyerConnection extends React.Component<any, any> {
     constructor(props) {

@@ -26,7 +26,7 @@ gem "addressable", "~> 2.8"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.129"
+gem "aws-sdk-s3", "~> 1.132.0"
 
 gem "bootstrap", "4.6.0"
 
@@ -44,8 +44,8 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.7.5"
-gem "faraday-retry", "2.1.0"
+gem "faraday", "2.7.10"
+gem "faraday-retry", "2.2.0"
 
 gem "ffi"
 
@@ -54,7 +54,7 @@ gem "font-awesome-rails", "~> 4.7.0.4"
 gem "google-protobuf", "~> 3.23.4"
 
 # Make logs less mad verbose
-gem "lograge", "~> 0.4"
+gem "lograge", "~> 0.13.0"
 
 # Dependency for rails
 gem "nokogiri", ">= 1.14.3"
@@ -99,7 +99,7 @@ gem "public_suffix", "~> 5.0.1"
 gem "puma", "~> 6.3.0"
 
 # Make cracking a little bit harder
-gem "rack-attack", github: "rack/rack-attack", branch: "allow-rack-3"
+gem "rack-attack", github: "rack/rack-attack", branch: "main"
 
 gem "rails-i18n", "~> 7.0.6"
 
@@ -222,6 +222,7 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem "capybara"
   gem "minitest"
+  gem "minitest-retry"
   gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
   gem "webdrivers", "~> 5.0", require: false
