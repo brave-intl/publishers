@@ -394,10 +394,6 @@ class Publisher < ApplicationRecord
     role == BROWSER_USER
   end
 
-  def default_site_banner
-    site_banners.detect { |sb| sb.id == default_site_banner_id }
-  end
-
   def update_site_banner_lookup!
     channels.verified.find_each do |channel|
       channel.update_site_banner_lookup!

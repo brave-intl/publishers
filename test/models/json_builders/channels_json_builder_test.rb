@@ -96,23 +96,11 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     end
   end
 
-  test "returns default site_banner if default_site_banner_mode is true" do
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
-
-    default_site_banner = site_banners(:verified_default_banner)
-    verified_channel = channels(:verified)
-    channel = get_channel_from_json(channels, verified_channel.details.channel_identifier)
-
-    assert_equal channel[SITE_BANNER_INDEX]["title"], default_site_banner[:title]
-  end
-
-  test "returns channel site_banner if default_site_banner_mode is false" do
+  test "returns channel site_banner" do
     verified_channel = channels(:verified)
     channel_site_banner = site_banners(:verified_channel_banner)
 
     channel_site_banner.update(channel_id: verified_channel.id)
-    verified_channel.publisher.update(default_site_banner_mode: false)
-
     channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
 
     verified_channel = channels(:verified)
@@ -122,7 +110,6 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
 
   test "returns {} for site_banner if err" do
     verified_channel = channels(:verified)
-    verified_channel.publisher.update(default_site_banner_mode: false)
     # Simulated error
     verified_channel.site_banner = nil
 
