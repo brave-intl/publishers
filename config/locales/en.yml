@@ -974,10 +974,9 @@ en:
       welcome: Welcome to
       header: Brave Creators
       body_html: |
-        <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
+        <p class="leadin">Are you a social media creator interested in monetizing
           your content? Verify your site and unlock your contributions!</p>
-        <p>Brave Creators lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
-          of fans may have already filled your wallet!</p>
+        <p>Brave Creators lets Brave users contribute tokens to you. Simply follow the steps to register with us.</p>
       new:
         header: New to Brave Creators?
         body: Start verification by entering your email.
