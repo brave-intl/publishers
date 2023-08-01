@@ -200,9 +200,9 @@ GEM
     bindex (0.8.1)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
-    bootstrap (4.6.0)
+    bootstrap (4.6.2)
       autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.14.3, < 2)
+      popper_js (>= 1.16.1, < 2)
       sassc-rails (>= 2.0.0)
     brakeman (6.0.1)
     brotli (0.4.0)
@@ -295,6 +295,7 @@ GEM
       activesupport (>= 5.0)
     google-protobuf (3.23.4-arm64-darwin)
     google-protobuf (3.23.4-x86_64-darwin)
+    google-protobuf (3.23.4-x86_64-linux)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.1.0)
@@ -376,6 +377,8 @@ GEM
     nokogiri (1.15.3-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.15.3-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -680,7 +683,7 @@ GEM
     yard (0.9.34)
     yt (0.33.4)
       activesupport
-    zeitwerk (2.6.9)
+    zeitwerk (2.6.10)
     zendesk_api (1.38.0.rc1)
       faraday (> 2.0.0)
       faraday-multipart
@@ -692,6 +695,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   x86_64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
@@ -703,7 +707,7 @@ DEPENDENCIES
   base58
   better_errors
   binding_of_caller
-  bootstrap (= 4.6.0)
+  bootstrap (= 4.6.2)
   brakeman
   brotli (~> 0.4.0)
   bundler-audit
