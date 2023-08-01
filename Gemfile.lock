@@ -295,6 +295,7 @@ GEM
       activesupport (>= 5.0)
     google-protobuf (3.23.4-arm64-darwin)
     google-protobuf (3.23.4-x86_64-darwin)
+    google-protobuf (3.23.4-x86_64-linux)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.1.0)
@@ -376,6 +377,8 @@ GEM
     nokogiri (1.15.3-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.15.3-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -692,6 +695,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   x86_64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
