@@ -140,7 +140,7 @@
     "typescript": "^5.1.6"
   },
   "resolutions": {
-    "node-fetch": "2.6.7",
+    "node-fetch": "2.6.12",
     "@types/react": "16.4.7",
     "@types/styled-components": "5.1.0"
   },
