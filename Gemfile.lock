@@ -689,7 +689,6 @@ GEM
     yard (0.9.34)
     yt (0.33.4)
       activesupport
-    zendesk_api (1.38.0.rc2)
     zeitwerk (2.6.11)
       faraday (> 2.0.0)
       faraday-multipart
@@ -697,6 +696,7 @@ GEM
       inflection
       mini_mime
       multipart-post (~> 2.0)
+    zendesk_api (1.38.0.rc2)
 
 PLATFORMS
   arm64-darwin-21
