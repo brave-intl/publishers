@@ -689,8 +689,8 @@ GEM
     yard (0.9.34)
     yt (0.33.4)
       activesupport
+    zendesk_api (1.38.0.rc2)
     zeitwerk (2.6.11)
-    zendesk_api (1.38.0.rc1)
       faraday (> 2.0.0)
       faraday-multipart
       hashie (>= 3.5.2, < 6.0.0)
@@ -803,7 +803,7 @@ DEPENDENCIES
   will_paginate
   yt (~> 0.33.0)
   zeitwerk (~> 2.6.6)
-  zendesk_api (= 1.38.rc1)
+  zendesk_api (= 1.38.0.rc2)
 
 RUBY VERSION
    ruby 3.0.2p107

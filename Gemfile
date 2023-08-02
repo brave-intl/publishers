@@ -158,7 +158,7 @@ gem "will_paginate"
 gem "yt", "~> 0.33.0"
 
 gem "zeitwerk", "~> 2.6.6"
-gem "zendesk_api", "= 1.38.rc1"
+gem "zendesk_api", "= 1.38.0.rc2"
 
 gem "activerecord-nulldb-adapter", "0.9.0"
 
