@@ -32,6 +32,13 @@ GIT
       wasmer (~> 1.0)
 
 GIT
+  remote: https://github.com/mshibuya/ssrf_filter.git
+  revision: 98d9ae38e52f67381e677f0472fa7eac0577810f
+  branch: fix-body-read-failure
+  specs:
+    ssrf_filter (1.1.1)
+
+GIT
   remote: https://github.com/rack/rack-attack.git
   revision: d82c9fd7e3efc6fa9859d917d7ab2d90e5a258cf
   branch: main
@@ -608,7 +615,6 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    ssrf_filter (1.1.1)
     standard (1.30.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -780,7 +786,7 @@ DEPENDENCIES
   solargraph
   sprockets (= 4.2.0)
   sprockets-rails (= 3.4.2)
-  ssrf_filter (= 1.1.1)
+  ssrf_filter!
   standard
   strong_migrations
   temping

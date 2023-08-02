@@ -138,7 +138,7 @@ gem "sidekiq-scheduler", "~> 5.0.2"
 # slim for view templates
 gem "slim-rails", "3.6.2"
 
-gem "ssrf_filter", "1.1.1"
+gem "ssrf_filter", github: "mshibuya/ssrf_filter", branch: "fix-body-read-failure"
 
 gem "strong_migrations"
 
