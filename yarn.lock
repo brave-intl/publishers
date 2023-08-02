@@ -1719,14 +1719,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16 || 17 || 18", "@types/react@16.4.7", "@types/react@^16":
-  version "16.4.7"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.7.tgz#f33f6d759a7e1833befa15224d68942d178a5a3f"
-  integrity sha512-tHpSs7HMyjnpyfzka1G0pYh7rBNdpwGgcIDT4vfV6jUaR69yOHo/vNH2H+d9iYHo9xnX4qDe7UalPe9HiGRkLw==
-  dependencies:
-    csstype "^2.2.0"
-
-"@types/react@^16.4.7":
+"@types/react@*", "@types/react@16 || 17 || 18", "@types/react@16.14.43", "@types/react@^16", "@types/react@^16.4.7":
   version "16.14.43"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.14.43.tgz#bc6e7a0e99826809591d38ddf1193955de32c446"
   integrity sha512-7zdjv7jvoLLQg1tTvpQsm+hyNUMT2mPlNV1+d0I8fbGhkJl82spopMyBlu4wb1dviZAxpGdk5eHu/muacknnfw==
