@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: e980f158a4d48c712024b50cf61f20ce1a0265ed
+  revision: db6159ce62b393d4422d4890f26b53c66db5c4f9
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -165,7 +165,7 @@ GEM
     activerecord-postgres_enum (2.0.1)
       activerecord (>= 5.2)
       pg
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     android_key_attestation (0.3.0)
     ast (2.4.2)
@@ -469,7 +469,7 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.1.1)
+    rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
@@ -806,7 +806,7 @@ DEPENDENCIES
   zendesk_api (= 1.38.0.rc2)
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.4.13
