@@ -19,12 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
     localePackage = ja;
   }
 
-  const element =  document.getElementsByClassName("crypto-wallet-services")[0]
-  const props = JSON.parse(element.dataset.props);
-  ReactDOM.render(
-    <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
-      <CryptoWalletServices {...props} />
-    </IntlProvider>,
-    element
-  );
+  const channels = document.querySelectorAll(".crypto-wallet-services")
+
+  channels.forEach((channel) => {
+    const channelId = channel.dataset.channelId;
+    const props = JSON.parse(channel.dataset.props);
+    
+    ReactDOM.render(
+      <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
+        <CryptoWalletServices {...props} />
+      </IntlProvider>,
+      channel
+    );
+  });
 });
