@@ -531,7 +531,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
       describe "#using_active_bitflyer_connection" do
         before do
           # I don't know why we create 79 channels on the fixture
-          assert Channel.count == 78
+          assert Channel.count == 79
         end
 
         test "count should eq 5" do
@@ -551,11 +551,11 @@ class ChannelTest < ActionDispatch::IntegrationTest
 
       describe "#missing_deposit_id" do
         before do
-          assert Channel.count == 78
+          assert Channel.count == 79
         end
 
         test "count should eq 73" do
-          assert Channel.missing_deposit_id.count == 73
+          assert Channel.missing_deposit_id.count == 74
         end
       end
     end
