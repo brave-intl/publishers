@@ -160,6 +160,11 @@ alice_default_twitter:
   details: uphold_connected_twitter_default (TwitterChannelDetails)
   verified: true
 
+alice_default_twitter_ii:
+  publisher: default
+  details: uphold_connected_twitter_default_ii (TwitterChannelDetails)
+  verified: true
+
 youtube_initial:
   publisher: youtube_initial
   details: youtube_initial_details (YoutubeChannelDetails)
