@@ -32,13 +32,6 @@ GIT
       wasmer (~> 1.0)
 
 GIT
-  remote: https://github.com/mshibuya/ssrf_filter.git
-  revision: 98d9ae38e52f67381e677f0472fa7eac0577810f
-  branch: fix-body-read-failure
-  specs:
-    ssrf_filter (1.1.1)
-
-GIT
   remote: https://github.com/rack/rack-attack.git
   revision: a7d7be1eead76a1b3e30dbe402cc41caf799ea28
   branch: main
@@ -618,6 +611,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    ssrf_filter (1.0.7)
     standard (1.30.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -693,7 +687,7 @@ GEM
     yt (0.33.4)
       activesupport
     zeitwerk (2.6.11)
-    zendesk_api (1.38.0.rc2)
+    zendesk_api (3.0.2)
       faraday (> 2.0.0)
       faraday-multipart
       hashie (>= 3.5.2, < 6.0.0)
@@ -790,7 +784,7 @@ DEPENDENCIES
   solargraph
   sprockets (= 4.2.0)
   sprockets-rails (= 3.4.2)
-  ssrf_filter!
+  ssrf_filter (= 1.0.7)
   standard
   strong_migrations
   temping
@@ -807,10 +801,10 @@ DEPENDENCIES
   will_paginate
   yt (~> 0.33.0)
   zeitwerk (~> 2.6.6)
-  zendesk_api (= 1.38.0.rc2)
+  zendesk_api (= 3.0.2)
 
 RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.17
+   2.4.13

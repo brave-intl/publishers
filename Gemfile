@@ -138,7 +138,7 @@ gem "sidekiq-scheduler", "~> 5.0.2"
 # slim for view templates
 gem "slim-rails", "3.6.2"
 
-gem "ssrf_filter", github: "mshibuya/ssrf_filter", branch: "fix-body-read-failure"
+gem "ssrf_filter", "1.0.7"
 
 gem "strong_migrations"
 
@@ -158,7 +158,7 @@ gem "will_paginate"
 gem "yt", "~> 0.33.0"
 
 gem "zeitwerk", "~> 2.6.6"
-gem "zendesk_api", "= 1.38.0.rc2"
+gem "zendesk_api", "= 3.0.2"
 
 gem "activerecord-nulldb-adapter", "0.9.0"
 
