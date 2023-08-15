@@ -31,7 +31,7 @@ class EnqueuePublishersForPayoutService
     filtered_publishers = if @publisher_ids.present?
       base_publishers.where(id: @publisher_ids)
     else
-      base_publishers.with_verified_channel.not_in_top_referrer_program
+      base_publishers.with_verified_channel
     end
 
     # DEAL WITH MANUAL CASE AND SET UP EACH WALLETS VARS
