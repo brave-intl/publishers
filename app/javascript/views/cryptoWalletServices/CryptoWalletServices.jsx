@@ -80,7 +80,7 @@ class CryptoWalletServices extends React.Component {
 
   connectSolanaAddress = async () => {
     if (!window.solana) {
-      this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetsolanaConnectError'));
+      this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.solanaConnectError'));
       return false;
     }
 
@@ -96,7 +96,7 @@ class CryptoWalletServices extends React.Component {
 
       const nonce = await this.getNonce();
       if (!nonce) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetgenericError'))
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.genericError'))
         return;
       }
       const encodedMessage = new TextEncoder().encode(nonce)
@@ -105,7 +105,7 @@ class CryptoWalletServices extends React.Component {
       try {
         signedMessage = await window.solana.signMessage(encodedMessage, "utf8")
       } catch (err) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetsolanaConnectionFailure'))
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.solanaConnectionFailure'))
         return;
       }
 
@@ -129,7 +129,7 @@ class CryptoWalletServices extends React.Component {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const address = accounts[0]
       if (!address) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetethereumConnectError'));
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.ethereumConnectError'));
         return;
       }
 
