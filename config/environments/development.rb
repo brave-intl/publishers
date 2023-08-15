@@ -27,7 +27,7 @@ Rails.application.configure do
        key:  "_publishers_session",
        redis: {
        client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
-       expire_after: 120.minutes,
+       expire_after: 30.days,
        key_prefix: 'publishers:session:'
     }
 
@@ -65,7 +65,7 @@ Rails.application.configure do
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.enable_reloading = false
+  config.enable_reloading = true
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -79,7 +79,7 @@ Rails.application.configure do
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   # if Rails.root.join("tmp/caching-dev.txt").exist?
-    config.action_controller.perform_caching = true
+    config.action_controller.perform_caching = false
     config.action_controller.enable_fragment_cache_logging = true
 
     #config.cache_store = :memory_store
