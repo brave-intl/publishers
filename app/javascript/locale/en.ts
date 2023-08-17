@@ -186,7 +186,7 @@ export default {
     cancel: "Cancel",
     closeBanner: "Done",
     defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
-    header: "Tipping Banner",
+    header: "Contribution Banner",
     links: "Links",
     oneBannerHeader: "Use one banner for all channels?",
     oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
