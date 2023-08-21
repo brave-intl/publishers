@@ -159,6 +159,7 @@ alice_default_twitter:
   publisher: default
   details: uphold_connected_twitter_default (TwitterChannelDetails)
   verified: true
+  public_identifier: 'c6587d7de522444595e2'
 
 alice_default_twitter_ii:
   publisher: default

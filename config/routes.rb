@@ -155,6 +155,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "c/:public_identifier", to: "public_channel#show", as: :public_channel
+
   resources :faqs, only: [:index]
 
   root "static#index"
