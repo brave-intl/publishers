@@ -95,10 +95,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
   end
 
   def site_banner_details(channel)
-    publisher = channel.publisher
-    if publisher.default_site_banner_mode && publisher.default_site_banner_id
-      publisher.default_site_banner.non_default_properties
-    elsif channel.site_banner
+    if channel.site_banner
       channel.site_banner.non_default_properties
     else
       {}

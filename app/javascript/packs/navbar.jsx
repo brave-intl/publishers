@@ -1,10 +1,9 @@
 import React from 'react'
 import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
 import styled from 'styled-components'
-import { Container, BrandBar, ControlBar, BrandImage, BrandText, ToggleText, ToggleWrapper, Button, Channels, Text} from '../packs/style.jsx'
+import { Container, BrandBar, ControlBar, BrandImage, BrandText, Button, Channels, Text} from '../packs/style.jsx'
 
 import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
-import Toggle from 'brave-ui/components/formControls/toggle'
 import { YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, CaratLeftIcon, CaratRightIcon, VerifiedSIcon} from 'brave-ui/components/icons'
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
@@ -14,9 +13,6 @@ import ja from "../locale/ja"
 export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      toggled: false,
-    }
   }
 
   render(){
@@ -35,17 +31,6 @@ export default class Navbar extends React.Component {
           <BrandText>
             <FormattedMessage id="siteBanner.header" />
           </BrandText>
-          <ToggleText>
-            <FormattedMessage id="siteBanner.toggleSharedBannerContent" />
-          </ToggleText>
-          <ToggleWrapper>
-          {
-            this.props.channelBanners.length > 0 ?
-            <Toggle id='banner-toggle' checked={this.props.defaultSiteBannerMode} disabled={false} type={'light'} size={'large'} onToggle={this.props.toggleDefaultSiteBannerMode}></Toggle>
-            :
-            <Toggle id='banner-toggle' checked={this.props.defaultSiteBannerMode} disabled={false} type={'light'} size={'large'}></Toggle>
-          }
-          </ToggleWrapper>
         </BrandBar>
 
         <ControlBar>
