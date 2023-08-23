@@ -1,7 +1,7 @@
 class CreateChannelBannersFromDefaultSiteBanners < ApplicationJob
   queue_as :default
 
-  def perform(channel_ids: [])
+  def perform(channel_ids)
     channel_ids.each do |id|
       channel = Channel.find(id)
       # Create a new site_banner and copy details from the default_site_banner, if existing
