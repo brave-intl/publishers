@@ -13,8 +13,10 @@ services:
       DATABASE_URL_TEST: postgres://postgres@postgres:5432/brave_publishers_test
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
+      SSL: off
+      PORT: 3000
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
-    command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
+    command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s -b '0.0.0.0'"
     networks:
       - default
     depends_on:
@@ -26,7 +28,24 @@ services:
     ports:
       - "3000:3000"
     env_file: .env.docker.dev
-
+  next:
+    build: nextjs/.
+    command: npm run dev
+    volumes:
+      - ./nextjs:/app
+      - /app/node_modules # <-- try adding this!
+    ports:
+      - "5000:3000"
+      - "9231:9231" # debugger ports
+      - "9232:9232"
+      - "9229:9229"
+      - "9230:9230"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - web
+    networks:
+      - default
   postgres:
     image: postgres:15-alpine
     environment:

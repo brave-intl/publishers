@@ -7,7 +7,7 @@ Rails.application.configure do
     # config.webpacker.check_yarn_integrity = false
     # Allow images from CDN
     config.action_dispatch.default_headers = {
-       "Access-Control-Allow-Origin" => "https://localhost:3000",
+       "Access-Control-Allow-Origin" => "http://0.0.0.0:3000",
        "Access-Control-Request-Method" => "GET",
        "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
        "Access-Control-Allow-Methods" => "GET",
@@ -43,6 +43,8 @@ Rails.application.configure do
     config.i18n.load_path += Dir["#{Rails.root}/config/locales/**/*.{rb,yml}"]
     config.i18n.default_locale = :en
     config.assets.debug = true
+
+    config.hosts.clear
 
     # Use an evented file watcher to asynchronously detect changes in source code,
     # routes, locales, etc. This feature depends on the listen gem.
