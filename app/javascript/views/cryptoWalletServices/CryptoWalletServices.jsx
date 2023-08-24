@@ -1,5 +1,5 @@
 import * as React from "react";
-import { injectIntl } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 import ErrorBoundary from "../../components/errorBoundary/ErrorBoundary";
 import CryptoWalletOption from './CryptoWalletOption'
 import Select from 'react-select'
@@ -12,6 +12,7 @@ class CryptoWalletServices extends React.Component {
     super(props);
 
     this.channel = props.channel;
+    this.intl = props.intl;
     
     this.state = {
       solOptions: [],
@@ -79,7 +80,7 @@ class CryptoWalletServices extends React.Component {
 
   connectSolanaAddress = async () => {
     if (!window.solana) {
-      this.setErrorText('Connect a Solana wallet to add an address');
+      this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetsolanaConnectError'));
       return false;
     }
 
@@ -95,7 +96,7 @@ class CryptoWalletServices extends React.Component {
 
       const nonce = await this.getNonce();
       if (!nonce) {
-        this.setErrorText('An error occurred. Please try again later.')
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetgenericError'))
         return;
       }
       const encodedMessage = new TextEncoder().encode(nonce)
@@ -104,7 +105,7 @@ class CryptoWalletServices extends React.Component {
       try {
         signedMessage = await window.solana.signMessage(encodedMessage, "utf8")
       } catch (err) {
-        this.setErrorText('Solana connection was interrupted')
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetsolanaConnectionFailure'))
         return;
       }
 
@@ -128,7 +129,7 @@ class CryptoWalletServices extends React.Component {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const address = accounts[0]
       if (!address) {
-        this.setErrorText('Connect an Ethereum wallet to add an address');
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidgetethereumConnectError'));
         return;
       }
 
@@ -140,7 +141,7 @@ class CryptoWalletServices extends React.Component {
 
       const nonce = await this.getNonce();
       if (!nonce) {
-        this.setErrorText('An error occurred. Please try again later.')
+        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.genericError'))
         return;
       }
 
@@ -162,7 +163,7 @@ class CryptoWalletServices extends React.Component {
         this.handleConnectionResponse(response)
       });
     } else {
-      this.setErrorText('Connect an Ethereum wallet to add an address');
+      this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.ethereumConnectError'));
       return;
     }
   }
@@ -172,7 +173,7 @@ class CryptoWalletServices extends React.Component {
     if (response.status < 300) {
       this.loadData();
     } else {
-      setErrorText('Connecting new address failed')
+      setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.addressConnectFailure'))
     }
   }
 
@@ -209,7 +210,6 @@ class CryptoWalletServices extends React.Component {
         method: 'delete',
         url: routes.publishers.cryptoAddresses.delete.replace('{id}', address.id),
       }).then((response) => {
-        console.log(response)
         this.handleConnectionResponse(response)
       });
   }
@@ -218,16 +218,16 @@ class CryptoWalletServices extends React.Component {
     return (
       <div className="crypto-wallet-for-channel">
         <ErrorBoundary>
-          <small>P2P WALLETS</small>
+          <small><FormattedMessage id="walletServices.addCryptoWidget.widgetTitle" /></small>
           <div className="crypto-wallet-group">
-            <div className='chain-label'>Ethereum</div>
+            <div className='chain-label'><FormattedMessage id="walletServices.addCryptoWidget.ethereum" /></div>
             <Select
               options={this.state.ethOptions}
               onChange={this.changeAddress.bind(this)}
               components={{
                 Option: CryptoWalletOption
               }}
-              placeholder='Not Connected'
+              placeholder={<FormattedMessage id='walletServices.addCryptoWidget.notConnected' />}
               value={this.state.currentEthAddress}
               deleteAddress={this.deleteAddress.bind(this)}
               formatCryptoAddress={this.formatCryptoAddress.bind(this)}
@@ -240,14 +240,14 @@ class CryptoWalletServices extends React.Component {
             />
           </div>
           <div className="crypto-wallet-group">
-            <div className='chain-label'>Solana</div>
+            <div className='chain-label'><FormattedMessage id="walletServices.addCryptoWidget.solana" /></div>
             <Select
               options={this.state.solOptions}
               onChange={this.changeAddress.bind(this)}
               components={{
                 Option: CryptoWalletOption
               }}
-              placeholder='Not Connected'
+              placeholder={<FormattedMessage id='walletServices.addCryptoWidget.notConnected' />}
               value={this.state.currentSolAddress}
               deleteAddress={this.deleteAddress.bind(this)}
               formatCryptoAddress={this.formatCryptoAddress.bind(this)}
