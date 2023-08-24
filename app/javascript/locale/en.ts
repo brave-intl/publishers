@@ -314,11 +314,23 @@ export default {
       },
       title: "Uphold Account"
     },
-    verify: "Continue to Verify"
+    verify: "Continue to Verify",
+    addCryptoWidget: {
+      addWallet: "Add new wallet",
+      solanaConnectError: "Connect a Solana wallet to add an address",
+      ethereumConnectError: "Connect an Ethereum wallet to add an address",
+      widgetTitle: "P2P WALLETS",
+      ethereum: "Ethereum",
+      solana: "Solana",
+      genericError: "An error occurred. Please try again later.",
+      addressConnectFailure: "Connecting new address failed",
+      solanaConnectionFailure: "Solana connection was interrupted",
+      notConnected: "Not Connected",
+    }
   },
   publicChannelPage: {
     privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted."
-  }
+  },
 };
 
 
