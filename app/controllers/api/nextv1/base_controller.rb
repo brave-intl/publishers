@@ -6,5 +6,4 @@ class Api::Nextv1::BaseController < ActionController::API
   before_action :log_full_request, if: -> { Rails.configuration.pub_secrets[:log_api_requests] }
 
   before_action :authenticate_publisher!
-
 end

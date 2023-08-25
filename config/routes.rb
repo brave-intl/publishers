@@ -165,7 +165,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: :json} do
     # /api/v1/
 
-    namespace :nextv1,  defaults: {format: :json} do
+    namespace :nextv1, defaults: {format: :json} do
       namespace :publishers do
         get :me
       end
