@@ -1,28 +1,16 @@
 /** @type {import('next').NextConfig} */
-const StylelintPlugin = require('stylelint-webpack-plugin');
-// const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+import StylelintPlugin from 'stylelint-webpack-plugin';
+// const withNextIntl = require('next-intl/plugin')('./i18n.ts');  // convert to es6 modules
+
+if ('development' == process.env.NODE_ENV) {
+  console.log("Rejecting node tls");
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; 
+}
 
 const nextConfig = {
   eslint: {
     dirs: ['src'],
-  },
-
-  // https://nextjs.org/docs/migrating/incremental-adoption#rewrites
-  async rewrites() {
-    return {
-      // After checking all Next.js pages (including dynamic routes)
-      // and static files we proxy any other requests
-      fallback: [
-        {
-          source: '/en/:path*',
-          destination: `http://localhost:3000/:path*`,
-        },
-        {
-          source: '/:path*',
-          destination: `http://localhost:3000/:path*`,
-        },
-      ],
-    }
   },
 
   output: 'standalone',
@@ -73,5 +61,5 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
 // module.exports = withNextIntl(nextConfig);
+export default nextConfig;

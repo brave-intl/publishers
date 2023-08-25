@@ -28,7 +28,7 @@ async function getUser() {
         Cookie: `_publishers_session=${pubCookieSession}`
       },
     }
-    const res = await fetch('http://localhost:3000/api/nextv1/publishers/me', options);
+    const res = await fetch('https://127.0.0.1:3000/api/nextv1/publishers/me', options);
 
     const data = await res.json();
     console.log(data);
