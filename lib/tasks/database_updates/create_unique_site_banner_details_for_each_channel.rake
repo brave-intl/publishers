@@ -6,7 +6,7 @@ namespace :database_updates do
     channel_count = channels.count
     puts "#{channels.count} channels have no site banner associated."
 
-    channels.each_slice(500) do |channel_chunk|
+    channels.each_slice(100) do |channel_chunk|
       CreateChannelBannersFromDefaultSiteBanners.perform_later(channel_chunk)
     end
 
