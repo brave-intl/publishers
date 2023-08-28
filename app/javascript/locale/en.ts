@@ -186,7 +186,7 @@ export default {
     cancel: "Cancel",
     closeBanner: "Done",
     defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
-    header: "Tipping Banner",
+    header: "Contribution Banner",
     links: "Links",
     oneBannerHeader: "Use one banner for all channels?",
     oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
@@ -314,8 +314,23 @@ export default {
       },
       title: "Uphold Account"
     },
-    verify: "Continue to Verify"
-  }
+    verify: "Continue to Verify",
+    addCryptoWidget: {
+      addWallet: "Add new wallet",
+      solanaConnectError: "Connect a Solana wallet to add an address",
+      ethereumConnectError: "Connect an Ethereum wallet to add an address",
+      widgetTitle: "P2P WALLETS",
+      ethereum: "Ethereum",
+      solana: "Solana",
+      genericError: "An error occurred. Please try again later.",
+      addressConnectFailure: "Connecting new address failed",
+      solanaConnectionFailure: "Solana connection was interrupted",
+      notConnected: "Not Connected",
+    }
+  },
+  publicChannelPage: {
+    privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted."
+  },
 };
 
 

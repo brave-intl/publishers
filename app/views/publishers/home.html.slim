@@ -44,9 +44,7 @@ noscript
         - if !(@publisher.excluded_from_payout? || @publisher.wire_only?)
           = render partial: 'wallet_services'
 
-      - if promo_running?
-          = render partial: 'promo_panel'
-      - elsif @publisher.channels.empty?
+      - if @publisher.channels.empty?
         .col-md.mb-4
           .add-channel-cta
             = t ".add_channel_cta"

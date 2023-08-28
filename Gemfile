@@ -84,7 +84,7 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 gem "omniauth-github", "~> 2.0.1"
 
 # Model record auditing
-gem "paper_trail", "~> 14.0.0"
+gem "paper_trail", "~> 15.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"

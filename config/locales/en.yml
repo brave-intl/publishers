@@ -46,7 +46,7 @@ en:
     existing_account: Already have an account?
     error: Oh no! Something went wrong, please contact support.
     get_started: Get Started
-    instant_donation: Tipping Banner
+    instant_donation: Contribution Banner
     invalid_totp: Invalid 6-digit code. Please try again.
     log_in: Log In
     remove: Remove
@@ -731,7 +731,7 @@ en:
       deny: Cancel
       confirm: Disconnect
     instant_donation_modal:
-      headline: Customize Your Tipping Banner
+      headline: Customize Your Contribution Banner
       intro:
         html: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Creators panel from the URL bar and clicks the <span style="color:#7d7bdc;">Send Tip Now</span> button.
       tagline: Customize your banner with your own voice and image!

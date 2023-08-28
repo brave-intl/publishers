@@ -141,7 +141,7 @@
   },
   "resolutions": {
     "node-fetch": "3.3.2",
-    "@types/react": "16.14.43",
+    "@types/react": "16.14.45",
     "@types/styled-components": "5.1.26"
   },
   "browserslist": [

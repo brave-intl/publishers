@@ -44,10 +44,6 @@ class Publishers::SiteBannersController < ApplicationController
     render status: 400, json: {message: e.message}.to_json
   end
 
-  def set_default_site_banner_mode
-    current_publisher.update(default_site_banner_mode: params[:dbm])
-  end
-
   private
 
   def site_banner
