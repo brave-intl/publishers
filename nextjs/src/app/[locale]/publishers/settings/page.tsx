@@ -4,7 +4,6 @@ import Button from '@brave/leo/react/button';
 import Checkbox from '@brave/leo/react/checkbox';
 import Dialog from '@brave/leo/react/dialog';
 import Toggle from '@brave/leo/react/toggle';
-import Head from 'next/head';
 import { useContext, useState } from 'react';
 import * as React from 'react';
 
@@ -40,9 +39,6 @@ export default function SettingsPage() {
 
   return (
     <main className='main'>
-      <Head>
-        <title>Settings</title>
-      </Head>
       <section className='content-width'>
         <Card className='mb-3'>
           <h2 className='mb-2'>Account Settings</h2>

@@ -10,9 +10,6 @@ import Card from '@/components/Card';
 export default function TOTPNewPage() {
   return (
     <main className='main'>
-      <Head>
-        <title>Setup Authenticator</title>
-      </Head>
       <section className='content-width-sm'>
         <Card>
           <div className='[&>*]:mb-2'>

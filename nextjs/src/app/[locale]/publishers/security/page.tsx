@@ -3,7 +3,6 @@
 import Alert from '@brave/leo/react/alert';
 import Button from '@brave/leo/react/button';
 import Icon from '@brave/leo/react/icon';
-import Head from 'next/head';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -15,9 +14,6 @@ import USBOutline from '~/images/usb_outline.svg';
 export default function SecurityPage() {
   return (
     <main className='main'>
-      <Head>
-        <title>Security</title>
-      </Head>
       <section className='content-width'>
         <Card>
           <div className='mb-3 flex flex-col items-start justify-between md:flex-row'>

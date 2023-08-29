@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "prepare": "husky install",
     "start": "NODE_ENV=test karma start",
     "lint": "yarn run lint-scss && yarn run lint-js-css && yarn run lint-ts",
     "lint-scss": "stylelint --config '.stylelintrc-scss.json' 'app/**/*.scss' --syntax scss",
@@ -101,6 +102,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/preset-react": "^7.22.5",
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
     "@rails/webpacker": "^5.4.4",
     "@types/jest": "^29.5.3",
     "@types/react": "^16.4.7",

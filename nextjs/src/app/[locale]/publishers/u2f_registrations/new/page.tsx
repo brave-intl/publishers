@@ -10,9 +10,6 @@ import Card from '@/components/Card';
 export default function U2fRegistrations() {
   return (
     <main className='main'>
-      <Head>
-        <title>Register Key</title>
-      </Head>
       <section className='content-width-sm'>
         <Card>
           <h1>Register Security Key</h1>

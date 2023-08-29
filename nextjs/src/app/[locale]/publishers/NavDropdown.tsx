@@ -1,6 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useContext, useRef, useState } from 'react';
 
@@ -53,14 +54,16 @@ const NavDropdown = () => {
               <div className='text-gray-40'>{user.email}</div>
             </div>
             <ul className='flex flex-col'>
-              {['security', 'log_out', 'help', 'faqs'].map((title) => (
-                <li
-                  key={title}
-                  className='border-t border-gray-20 p-2 text-center'
-                >
-                  <a href=''>{t(title)}</a>
-                </li>
-              ))}
+              {['security', 'settings', 'log_out', 'help', 'faqs'].map(
+                (title) => (
+                  <li
+                    key={title}
+                    className='border-t border-gray-20 p-2 text-center'
+                  >
+                    <Link href={`/publishers/${title}`}>{t(title)}</Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
         )}

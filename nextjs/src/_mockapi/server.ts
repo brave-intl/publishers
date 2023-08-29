@@ -16,10 +16,9 @@ export function makeServer() {
     },
 
     routes() {
-      this.urlPrefix = 'https://localhost:3001';
-      this.namespace = '/api/v1/';
+      this.namespace = '/api/v1';
 
-      this.get('user/me', (schema) => {
+      this.get('/user/me', (schema) => {
         return schema.first('user').attrs;
       });
     },

@@ -2,6 +2,7 @@
   "name": "creators-next",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 node scripts/create-local-server.js",
@@ -11,7 +12,6 @@
     "lint:fix": "eslint src --fix && npm run format",
     "lint:strict": "eslint --max-warnings=0 src",
     "postinstall": "node scripts/copyLeoIcons.js",
-    "prepare": "husky install",
     "start": "next start -p 3001",
     "stylelint": "stylelint \"**/*.css\"",
     "test": "jest",
@@ -30,8 +30,6 @@
     "react-responsive": "^9.0.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.7",
-    "@commitlint/config-conventional": "^17.6.7",
     "@faker-js/faker": "^8.0.2",
     "@svgr/webpack": "^8.0.1",
     "@testing-library/jest-dom": "^5.17.0",
