@@ -11,6 +11,9 @@ class CreateChannelBannersFromDefaultSiteBanners < ApplicationJob
         new_site_banner = SiteBanner.new(default_site_banner.attributes.except("id"))
         new_site_banner.channel_id = channel.id
 
+        # needs to be called twice, because the attachments won't persist until the model has been saved
+        new_site_banner.save!
+
         # Copy the attached images (logo and background_image) if they exist
         if default_site_banner.logo.attached?
           new_site_banner.logo.attach(default_site_banner.logo.blob)
