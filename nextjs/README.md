@@ -38,7 +38,7 @@ then type
 > show recommended extensions
 ```
 
-Install all the extensions listed and restart VSCode
+Install all the extensions listed and quit VSCode completely. Finally, open the project at the `nextJS` directory with VSCode
 
 ### Commit Message Convention
 
