@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+// import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { cookies, headers } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import * as React from 'react';
 
@@ -49,29 +49,32 @@ export const metadata: Metadata = {
   },
 };
 
-async function getUser() {
-  try {
-    console.log(headers());
-    console.log(cookies());
+// async function getUser() {
+//   try {
+//     console.log(headers());
+//     console.log(cookies());
 
-    const pubCookieSession = cookies().get('_publishers_session')?.value ?? ''
+//     const pubCookieSession = cookies().get('_publishers_session')?.value ?? '';
 
-    console.log(pubCookieSession)
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `_publishers_session=${pubCookieSession}`
-      },
-    }
-    const res = await fetch('https://127.0.0.1:3000/api/nextv1/publishers/me', options);
+//     console.log(pubCookieSession);
+//     const options = {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Cookie: `_publishers_session=${pubCookieSession}`,
+//       },
+//     };
+//     const res = await fetch(
+//       'https://127.0.0.1:3000/api/nextv1/publishers/me',
+//       options,
+//     );
 
-    const data = await res.json();
-    console.log(data);
-    // setUserData(data);
-  } catch (err) {
-    return err;
-  }
-}
+//     const data = await res.json();
+//     console.log(data);
+//     // setUserData(data);
+//   } catch (err) {
+//     return err;
+//   }
+// }
 
 export default async function RootLayout({
   children,

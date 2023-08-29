@@ -1,7 +1,6 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
-import Head from 'next/head';
 import Link from 'next/link';
 import * as React from 'react';
 
