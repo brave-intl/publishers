@@ -1,0 +1,105 @@
+.navbar {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 80px;
+  padding: 0 15px;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+  margin: 4px;
+
+  border: solid 1px #d3d5d7;
+  border-radius: 18px;
+}
+
+.avatar svg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.dropdownWrap {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.lock {
+  display: block;
+  width: 15px;
+  height: 15px;
+  margin: 8px 4px 4px;
+}
+
+.chevron {
+  width: 15px;
+  height: 15px;
+  margin: 4px;
+  transition: 0.3s;
+}
+
+.chevron.active {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 15px;
+
+  min-width: 250px;
+
+  background: white;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 0 rgb(47 48 50 / 15%)
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 12px;
+
+  color: #1e2029;
+  text-decoration: none;
+}
+
+.userName {
+  margin-bottom: 5px;
+  font-size: 20px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.userEmail {
+  font-size: 14px;
+  line-height: 1;
+  color: #84889c;
+}
+
+.userLinks li {
+  display: flex;
+  justify-content: center;
+
+  padding: 20px;
+
+  font-size: 16px;
+  line-height: 1;
+  color: #1e2029;
+
+  border-top: solid 1px #e7ebee;
+}
+
+.userLinks li:last-child {
+  padding-bottom: 30px;
+}

@@ -7,7 +7,7 @@ Rails.application.configure do
     # config.webpacker.check_yarn_integrity = false
     # Allow images from CDN
     config.action_dispatch.default_headers = {
-       "Access-Control-Allow-Origin" => "https://localhost:3000",
+       "Access-Control-Allow-Origin" => "https://0.0.0.0:3000",
        "Access-Control-Request-Method" => "GET",
        "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
        "Access-Control-Allow-Methods" => "GET",

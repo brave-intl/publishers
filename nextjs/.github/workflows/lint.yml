@@ -1,0 +1,40 @@
+name: Code Check
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+concurrency:
+  group: ${{ github.job }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: ⬣ ESLint, ʦ TypeScript, 🎨 Stylelint, and 🃏 Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📥 Download deps
+        uses: u0reo/npm-install@fix/restore-failure
+        with:
+          useRollingCache: true
+
+      - name: 🔬 Lint
+        run: npm run lint:strict
+
+      - name: 🎨 Stylelint
+        run: npm run stylelint
+
+      - name: 🔎 Type check
+        run: npm run typecheck
+
+      - name: 🃏 Run jest
+        run: npm run test

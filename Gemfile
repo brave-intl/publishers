@@ -96,7 +96,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.3.0"
+gem "puma", "~> 6.3.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
@@ -149,7 +149,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.2.0"
 
-gem "shakapacker"
+gem "shakapacker", "7.0.3"
 
 # pagination support for models
 gem "will_paginate"
