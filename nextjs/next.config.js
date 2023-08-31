@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
-import StylelintPlugin from 'stylelint-webpack-plugin';
-// const withNextIntl = require('next-intl/plugin')('./i18n.ts');  // convert to es6 modules
+const StylelintPlugin = require('stylelint-webpack-plugin');
+const withNextIntl = require('next-intl/plugin')('./i18n.ts');
 
 if ('development' == process.env.NODE_ENV) {
-  console.log("Rejecting node tls");
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; 
+  console.log('Rejecting node tls');
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 }
 
 const nextConfig = {
@@ -61,5 +61,4 @@ const nextConfig = {
   },
 };
 
-// module.exports = withNextIntl(nextConfig);
-export default nextConfig;
+module.exports = withNextIntl(nextConfig);

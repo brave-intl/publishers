@@ -1,53 +1,59 @@
-import { createServer as createHttpsServer } from 'https';
-import next from 'next';
-import express from 'express';
-import { readFileSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { createProxyMiddleware } from "http-proxy-middleware"
+var https = require('https');
+var next = require('next');
+var express = require('express');
+var fs = require('fs');
+var path = require('path');
+var { createProxyMiddleware } = require('http-proxy-middleware');
 
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev, config: '../next.config.js' });
-const handle = app.getRequestHandler();
-const PORT = process.env.PORT || 5000;
-const isDevelopment = process.env.NODE_ENV !== 'production'
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+var dev = process.env.NODE_ENV !== 'production';
+var app = next({ dev, config: '../next.config.js' });
+var handle = app.getRequestHandler();
+var PORT = process.env.PORT || 5001;
+var isDevelopment = process.env.NODE_ENV !== 'production';
 
 app
   .prepare()
-  .then(() => {
-    const expressApp = express()
+  .then(function () {
+    var expressApp = express();
 
-    // Paths next will handle, route them explicitly, everything else goes to rails
-    expressApp.get('/publishers/settings', (req, res) => { return handle(req, res)});
-    expressApp.get('*_next*', (req, res) => { return handle(req, res)});
+    expressApp.get('/publishers/settings', function (req, res) {
+      return handle(req, res);
+    });
+    expressApp.get('*_next*', function (req, res) {
+      return handle(req, res);
+    });
 
-    // Proxy over to Rails
-    expressApp.use('*', createProxyMiddleware('**', {
-      logger: console,
-      target: 'https://127.0.0.1:3000', changeOrigin: true, secure: !isDevelopment,
-      // https://stackoverflow.com/a/58752889  since changeOrigin doesn't work for the type of request we actually need, PUT
-      onProxyReq: function (request) {
-        request.setHeader("origin", "https://127.0.0.1:3000");
-      }
-    }))
+    expressApp.use(
+      '*',
+      createProxyMiddleware('**', {
+        logger: console,
+        target: 'https://web:3000',
+        changeOrigin: true,
+        secure: !isDevelopment,
+        onProxyReq: function (request) {
+          request.setHeader('origin', 'https://web:3000');
+        },
+      }),
+    );
 
-    const server = createHttpsServer(
+    var server = https.createServer(
       {
-        key: readFileSync(path.join(__dirname, '..', '..', 'ssl', 'server.key')),
-        cert: readFileSync(path.join(__dirname, '..', '..', 'ssl', 'server.crt')),
+        key: fs.readFileSync(
+          path.join(__dirname, '..', '..', 'ssl', 'server.key'),
+        ),
+        cert: fs.readFileSync(
+          path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
+        ),
       },
       expressApp,
     );
 
-    return server.listen(PORT, (err) => {
+    return server.listen(PORT, function (err) {
       if (err) throw err;
 
-      console.log('> Ready on https://localhost:5000');
+      console.log('> Ready on https://localhost:5001');
     });
   })
-  .catch((err) => {
-    console.log('Error:::::', err)
+  .catch(function (err) {
+    console.log('Error:::::', err);
   });
