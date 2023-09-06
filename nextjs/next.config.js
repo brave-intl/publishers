@@ -11,6 +11,7 @@ if ('development' == process.env.NODE_ENV) {
 const nextConfig = {
   eslint: {
     dirs: ['src'],
+    ignoreDuringBuilds: true,
   },
 
   output: 'standalone',

@@ -31,4 +31,5 @@ npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/public/icons/*
+# leo static assets
+/public/icons

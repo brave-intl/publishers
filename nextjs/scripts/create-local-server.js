@@ -16,6 +16,9 @@ app
   .then(function () {
     var expressApp = express();
 
+    expressApp.get('en/publishers/settings', function (req, res) {
+      return handle(req, res);
+    });
     expressApp.get('/publishers/settings', function (req, res) {
       return handle(req, res);
     });
@@ -27,11 +30,13 @@ app
       '*',
       createProxyMiddleware('**', {
         logger: console,
-        target: 'https://web:3000',
+        target: 'https://web:3001',
         changeOrigin: true,
         secure: !isDevelopment,
         onProxyReq: function (request) {
-          request.setHeader('origin', 'https://web:3000');
+          console.log('before')
+          request.setHeader('origin', 'https://web:3001');
+          console.log('after')
         },
       }),
     );
@@ -51,7 +56,7 @@ app
     return server.listen(PORT, function (err) {
       if (err) throw err;
 
-      console.log('> Ready on https://localhost:5001');
+      console.log('> Ready on https://web:5001');
     });
   })
   .catch(function (err) {

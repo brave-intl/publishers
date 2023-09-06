@@ -20,7 +20,7 @@ export function makeServer() {
       this.namespace = '/api/v1/';
 
       this.get('user/me', (schema) => {
-        return schema!.first('user')!.attrs;
+        return schema.first('user').attrs;
       });
     },
   });

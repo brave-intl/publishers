@@ -22,7 +22,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#ad11c8033e8ab248892b5b64cc5d33df9df6da33",
+    "@brave/leo": "github:brave/leo#51a2b99bd8939658c1195e9ee83450911eb3b889",
     "clsx": "^2.0.0",
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",
@@ -57,10 +57,12 @@
     "next-router-mock": "^0.9.7",
     "postcss": "^8.4.27",
     "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.3",
     "stylelint": "^15.10.2",
     "stylelint-config-clean-order": "^5.0.1",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-webpack-plugin": "^4.1.1",
+    "tailwindcss": "^3.3.3",
     "typescript": "^4.9.4"
   },
   "lint-staged": {
