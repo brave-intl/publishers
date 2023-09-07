@@ -1,5 +1,5 @@
-class CreateChannelBannersFromDefaultSiteBanners < ApplicationJob
-  queue_as :default
+class CreateChannelBannersFromDefaultSiteBannersJob < ApplicationJob
+  queue_as :low
 
   def perform(channel_ids)
     channel_ids.each do |id|
