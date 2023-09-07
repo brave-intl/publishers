@@ -33,7 +33,7 @@ GIT
 
 GIT
   remote: https://github.com/rack/rack-attack.git
-  revision: a7d7be1eead76a1b3e30dbe402cc41caf799ea28
+  revision: c9bd363a69faedaf0590be6ba191db46db387a25
   branch: main
   specs:
     rack-attack (6.7.0)
@@ -41,7 +41,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: e980f158a4d48c712024b50cf61f20ce1a0265ed
+  revision: 4aa1625edd61480db2d4925e96a20d15d8a9c7e7
   branch: main
   specs:
     actioncable (7.1.0.alpha)
@@ -69,7 +69,7 @@ GIT
       net-imap
       net-pop
       net-smtp
-      rails-dom-testing (~> 2.0)
+      rails-dom-testing (~> 2.2)
     actionpack (7.1.0.alpha)
       actionview (= 7.1.0.alpha)
       activesupport (= 7.1.0.alpha)
@@ -77,7 +77,7 @@ GIT
       rack (>= 2.2.4)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
-      rails-dom-testing (~> 2.0)
+      rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
     actiontext (7.1.0.alpha)
       actionpack (= 7.1.0.alpha)
@@ -90,7 +90,7 @@ GIT
       activesupport (= 7.1.0.alpha)
       builder (~> 3.1)
       erubi (~> 1.11)
-      rails-dom-testing (~> 2.0)
+      rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
     activejob (7.1.0.alpha)
       activesupport (= 7.1.0.alpha)
@@ -108,10 +108,14 @@ GIT
       activesupport (= 7.1.0.alpha)
       marcel (~> 1.0)
     activesupport (7.1.0.alpha)
+      base64
+      bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       connection_pool (>= 2.2.5)
+      drb
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
+      mutex_m
       tzinfo (~> 2.0)
     rails (7.1.0.alpha)
       actioncable (= 7.1.0.alpha)
@@ -158,7 +162,7 @@ GEM
     activerecord-postgres_enum (2.0.1)
       activerecord (>= 5.2)
       pg
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     android_key_attestation (0.3.0)
     ast (2.4.2)
@@ -166,8 +170,8 @@ GEM
       execjs (~> 2)
     awrence (1.2.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.797.0)
-    aws-sdk-core (3.180.1)
+    aws-partitions (1.812.0)
+    aws-sdk-core (3.181.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -175,7 +179,7 @@ GEM
     aws-sdk-kms (1.71.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.132.0)
+    aws-sdk-s3 (1.132.1)
       aws-sdk-core (~> 3, >= 3.179.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.6)
@@ -183,6 +187,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     backport (1.2.0)
     base58 (0.2.3)
+    base64 (0.1.1)
     bcrypt (3.1.19)
     benchmark (0.2.1)
     better_errors (2.10.1)
@@ -196,6 +201,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
+    bigdecimal (3.1.4)
     bindata (2.4.15)
     bindex (0.8.1)
     binding_of_caller (1.0.0)
@@ -262,15 +268,18 @@ GEM
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
       railties (>= 3.2)
+    drb (2.1.1)
+      ruby2_keywords
     e2mmap (0.1.0)
     erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
-    eth (0.5.10)
+    eth (0.5.11)
+      forwardable (~> 1.3)
       keccak (~> 1.3)
       konstructor (~> 1.0)
       openssl (>= 2.2, < 4.0)
-      rbsecp256k1 (~> 5.1)
+      rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
     execjs (2.8.1)
     faraday (2.7.10)
@@ -288,12 +297,12 @@ GEM
       rake
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
+    forwardable (1.3.3)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.23.4-aarch64-linux)
     google-protobuf (3.23.4-arm64-darwin)
     google-protobuf (3.23.4-x86_64-darwin)
     google-protobuf (3.23.4-x86_64-linux)
@@ -355,7 +364,7 @@ GEM
     meta-tags (2.18.0)
       actionpack (>= 3.2.0, < 7.1)
     method_source (1.0.0)
-    mini_mime (1.1.2)
+    mini_mime (1.1.5)
     mini_portile2 (2.8.4)
     minitest (5.19.0)
     minitest-retry (0.2.2)
@@ -364,6 +373,7 @@ GEM
       ruby2_keywords (>= 0.0.5)
     multi_xml (0.6.0)
     multipart-post (2.3.0)
+    mutex_m (0.1.2)
     net-imap (0.3.7)
       date
       net-protocol
@@ -375,13 +385,11 @@ GEM
       net-protocol
     newrelic_rpm (9.3.1)
     nio4r (2.5.9)
-    nokogiri (1.15.3-aarch64-linux)
+    nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.3-arm64-darwin)
+    nokogiri (1.15.4-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.3-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.3-x86_64-linux)
+    nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -417,8 +425,8 @@ GEM
     openssl-signature_algorithm (1.3.0)
       openssl (> 2.0)
     orm_adapter (0.5.0)
-    paper_trail (14.0.0)
-      activerecord (>= 6.0)
+    paper_trail (15.0.0)
+      activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.23.0)
     parser (3.2.2.3)
@@ -445,7 +453,7 @@ GEM
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
     public_suffix (5.0.3)
-    puma (6.3.0)
+    puma (6.3.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.7.1)
@@ -465,14 +473,14 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.1.1)
+    rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
-    rails-i18n (7.0.7)
+    rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
     rainbow (3.1.1)
@@ -483,20 +491,20 @@ GEM
     rbnacl (7.1.1)
       ffi
     rbs (2.8.4)
-    rbsecp256k1 (5.1.1)
+    rbsecp256k1 (6.0.0)
       mini_portile2 (~> 2.8)
       pkg-config (~> 1.5)
       rubyzip (~> 2.3)
     recaptcha (5.14.0)
-    redis (5.0.6)
+    redis (5.0.7)
       redis-client (>= 0.9.0)
-    redis-client (0.15.0)
+    redis-client (0.16.0)
       connection_pool
     redis-session-store (0.11.5)
       actionpack (>= 6, < 8)
       redis (>= 3, < 6)
     regexp_parser (2.8.1)
-    reline (0.3.7)
+    reline (0.3.8)
       io-console (~> 0.5)
     render_async (2.1.11)
     request_store (1.5.1)
@@ -513,19 +521,21 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
-    rubocop (1.52.1)
+    rubocop (1.56.1)
+      base64 (~> 0.1.1)
       json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.2.2.3)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.0, < 2.0)
+      rubocop-ast (>= 1.28.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.29.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.18.0)
+    rubocop-performance (1.19.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.13.0)
@@ -555,7 +565,7 @@ GEM
     semantic_range (3.0.0)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
-    shakapacker (7.0.2)
+    shakapacker (7.0.3)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -612,19 +622,19 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.7)
-    standard (1.30.1)
+    standard (1.31.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
-      rubocop (~> 1.52.0)
+      rubocop (~> 1.56.0)
       standard-custom (~> 1.0.0)
-      standard-performance (~> 1.1.0)
+      standard-performance (~> 1.2)
     standard-custom (1.0.2)
       lint_roller (~> 1.0)
       rubocop (~> 1.50)
-    standard-performance (1.1.2)
+    standard-performance (1.2.0)
       lint_roller (~> 1.1)
-      rubocop-performance (~> 1.18.0)
-    strong_migrations (1.6.0)
+      rubocop-performance (~> 1.19.0)
+    strong_migrations (1.6.1)
       activerecord (>= 5.2)
     temping (4.0.0)
       activerecord (>= 5.2, < 7.1)
@@ -671,7 +681,7 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0, < 4.11)
-    webmock (3.18.1)
+    webmock (3.19.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -696,7 +706,6 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
-  aarch64-linux
   arm64-darwin-21
   x86_64-darwin-22
   x86_64-linux
@@ -750,14 +759,14 @@ DEPENDENCIES
   omniauth-twitch (~> 1.2.0)
   omniauth-twitter2
   omniauth-vimeo!
-  paper_trail (~> 14.0.0)
+  paper_trail (~> 15.0.0)
   pg (>= 0.18, < 2.0)
   premailer-rails (~> 1.12.0)
   pry
   pry-byebug
   pry-stack_explorer (~> 0.6.1)
   public_suffix (~> 5.0.1)
-  puma (~> 6.3.0)
+  puma (~> 6.3.1)
   rack (= 3.0.8)
   rack-attack!
   rails!
@@ -776,7 +785,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver (~> 4.10.0)
   sendgrid-ruby (~> 6.6.2)
-  shakapacker
+  shakapacker (= 7.0.3)
   sidekiq (~> 7.1.0)
   sidekiq-scheduler (~> 5.0.2)
   simplecov
@@ -807,4 +816,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.13
+   2.4.18

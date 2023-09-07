@@ -1,0 +1,5 @@
+.main {
+  height: calc(100vh - 80px);
+  padding: 50px;
+  background: #eceff1;
+}

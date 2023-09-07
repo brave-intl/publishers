@@ -1,0 +1,9 @@
+{
+  "NavDropdown": {
+    "security": "Security",
+    "settings": "Settings",
+    "log_out": "Log Out",
+    "help": "Help",
+    "faqs": "FAQs"
+  }
+}

@@ -87,7 +87,7 @@
     "react-tooltip": "^4.2.3",
     "sass": "^1.64.1",
     "sass-loader": "^13.3.2",
-    "shakapacker": "7.0.2",
+    "shakapacker": "7.0.3",
     "style-loader": "^3.3.3",
     "styled-components": "5.3.11",
     "terser-webpack-plugin": "5.3.9",
@@ -141,7 +141,7 @@
   },
   "resolutions": {
     "node-fetch": "3.3.2",
-    "@types/react": "16.14.43",
+    "@types/react": "16.14.45",
     "@types/styled-components": "5.1.26"
   },
   "browserslist": [

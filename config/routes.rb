@@ -108,11 +108,7 @@ Rails.application.routes.draw do
       post :ensure_email_confirm
     end
 
-    resources :site_banners, controller: "publishers/site_banners" do
-      collection do
-        post :set_default_site_banner_mode
-      end
-    end
+    resources :site_banners, controller: "publishers/site_banners"
   end
 
   devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
@@ -155,6 +151,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "c/:public_identifier", to: "public_channel#show", as: :public_channel
+
   resources :faqs, only: [:index]
 
   root "static#index"
@@ -164,6 +162,13 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     # /api/v1/
+
+    namespace :nextv1, defaults: {format: :json} do
+      namespace :publishers do
+        get :me
+      end
+    end
+
     namespace :v1, defaults: {format: :json} do
       resources :publishers, defaults: {format: :json} do
         post "publisher_status_updates"
