@@ -2,31 +2,26 @@
   "name": "creators-next",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "postcss":  {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
   "scripts": {
-    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 node scripts/create-local-server.js",
     "build": "next build",
-    "start": "next start -p 3000",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/create-local-server.js",
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
     "lint": "next lint",
     "lint:fix": "eslint src --fix && npm run format",
     "lint:strict": "eslint --max-warnings=0 src",
-    "typecheck": "tsc --noEmit --incremental false",
-    "test:watch": "jest --watch",
-    "test": "jest",
+    "start": "next start -p 3001",
     "stylelint": "stylelint \"**/*.css\"",
-    "format": "prettier -w .",
-    "format:check": "prettier -c ."
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
+    "@brave/leo": "github:brave/leo#51a2b99bd8939658c1195e9ee83450911eb3b889",
     "clsx": "^2.0.0",
     "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
     "next": "^13.4.12",
-    "next-http-proxy-middleware": "^1.2.5",
     "next-intl": "^3.0.0-beta.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,7 +38,6 @@
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "autoprefixer": "^10.4.14",
-    "husky": "^8.0.3",
     "eslint": "^8.45.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "^13.4.12",
@@ -58,11 +52,13 @@
     "next-router-mock": "^0.9.7",
     "postcss": "^8.4.27",
     "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.3",
     "stylelint": "^15.10.2",
     "stylelint-config-clean-order": "^5.0.1",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-webpack-plugin": "^4.1.1",
-    "typescript": "^5.1.6"
+    "tailwindcss": "^3.3.3",
+    "typescript": "^4.9.4"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [

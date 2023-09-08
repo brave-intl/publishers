@@ -23,10 +23,9 @@
 npm-debug.log*
 .pnpm-debug.log*
 
-# local env files
-.env
-.env*.local
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# leo static assets
+/public/icons
