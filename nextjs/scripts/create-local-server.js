@@ -1,64 +1,32 @@
-var https = require('https');
-var next = require('next');
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
-var { createProxyMiddleware } = require('http-proxy-middleware');
+const { createServer } = require('https');
+const httpProxy = require('http-proxy');
+const chalk = require('chalk');
+const { parse } = require('url');
+const next = require('next');
+const path = require('path');
+const fs = require('fs');
 
-var dev = process.env.NODE_ENV !== 'production';
-var app = next({ dev, config: '../next.config.js' });
-var handle = app.getRequestHandler();
-var PORT = process.env.PORT || 5001;
-var isDevelopment = process.env.NODE_ENV !== 'production';
+const PORT = 5001;
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
-app
-  .prepare()
-  .then(function () {
-    var expressApp = express();
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, '..', '..', 'ssl', 'server.key')),
+  cert: fs.readFileSync(path.join(__dirname, '..', '..', 'ssl', 'server.crt')),
+};
 
-    expressApp.get('en/publishers/settings', function (req, res) {
-      return handle(req, res);
-    });
-    expressApp.get('/publishers/settings', function (req, res) {
-      return handle(req, res);
-    });
-    expressApp.get('*_next*', function (req, res) {
-      return handle(req, res);
-    });
+app.prepare().then(() => {
+  createServer(httpsOptions, (req, res) => {
+    const parsedUrl = parse(req.url, true);
 
-    expressApp.use(
-      '*',
-      createProxyMiddleware('**', {
-        logger: console,
-        target: 'https://web:3001',
-        changeOrigin: true,
-        secure: !isDevelopment,
-        onProxyReq: function (request) {
-          console.log('before')
-          request.setHeader('origin', 'https://web:3001');
-          console.log('after')
-        },
-      }),
+    handle(req, res, parsedUrl);
+  }).listen(PORT, (err) => {
+    if (err) throw err;
+    console.log(
+      chalk.green(
+        `> Server started on ${chalk.bold.green(`https://localhost:${PORT}`)}`,
+      ),
     );
-
-    var server = https.createServer(
-      {
-        key: fs.readFileSync(
-          path.join(__dirname, '..', '..', 'ssl', 'server.key'),
-        ),
-        cert: fs.readFileSync(
-          path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
-        ),
-      },
-      expressApp,
-    );
-
-    return server.listen(PORT, function (err) {
-      if (err) throw err;
-
-      console.log('> Ready on https://web:5001');
-    });
-  })
-  .catch(function (err) {
-    console.log('Error:::::', err);
   });
+});

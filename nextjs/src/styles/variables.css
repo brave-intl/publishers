@@ -1,5 +1,3 @@
-@import url("@brave/leo/tokens/css/variables.css");
-
 :root {
   /* Brave Leo overrides for variables that use Font-Family */
   --leo-font-primary-heading-display1: 500 var(--leo-typography-primary-heading-display1-font-size)/var(--leo-typography-primary-heading-display1-line-height) var(--font-poppins);

@@ -2,11 +2,6 @@
   "name": "creators-next",
   "version": "0.1.0",
   "private": true,
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
   "scripts": {
     "build": "next build",
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/create-local-server.js",

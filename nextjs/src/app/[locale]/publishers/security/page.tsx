@@ -2,7 +2,7 @@
 
 import Alert from '@brave/leo/react/alert';
 import Button from '@brave/leo/react/button';
-// import Icon from '@brave/leo/react/icon';
+import Icon from '@brave/leo/react/icon';
 import Head from 'next/head';
 import Link from 'next/link';
 import * as React from 'react';
@@ -32,7 +32,7 @@ export default function SecurityPage() {
             </div>
             <div className='mt-2 text-white md:mt-0.5 md:pl-5'>
               <div className='flex items-center gap-0.5 rounded bg-green-30 px-2 py-1'>
-                {/* <Icon name='check-circle-outline' /> Enabled */}
+                <Icon name='check-circle-outline' /> Enabled
               </div>
             </div>
           </div>

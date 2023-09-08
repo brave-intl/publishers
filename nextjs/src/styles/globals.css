@@ -1,7 +1,9 @@
+@import url("@brave/leo/tokens/css/variables.css");
 @import url("./variables.css");
-@import url("tailwindcss/base");
-@import url("tailwindcss/components");
-@import url("tailwindcss/utilities");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer utilities {
   .border-primary {
@@ -58,6 +60,8 @@ h4 {
 }
 
 hr {
+  @apply my-2;
+
   margin-top: var(--leo-spacing-16);
   margin-bottom: var(--leo-spacing-16);
   border: 0;
@@ -65,13 +69,11 @@ hr {
 }
 
 .main {
+  @apply py-4 px-2;
+
   display: flex;
   justify-content: center;
-
   height: calc(100vh - 80px);
-  padding: 0 var(--leo-spacing-16) var(--leo-spacing-32);
-  padding-top: var(--leo-spacing-32);
-
   background: var(--leo-color-page-background);
 }
 

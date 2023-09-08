@@ -2,11 +2,15 @@
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const withNextIntl = require('next-intl/plugin')('./i18n.ts');
 
-if ('development' == process.env.NODE_ENV) {
-  console.log('Rejecting node tls');
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-}
+const nextAllowList = [
+  '_next',
+  'publishers/settings',
+  'publishers/security',
+  'publishers/totp_registrations/new',
+  'publishers/u2f_registrations/new',
+  'icons',
+  'favicon',
+];
 
 const nextConfig = {
   eslint: {
@@ -15,16 +19,21 @@ const nextConfig = {
   },
 
   output: 'standalone',
-
   reactStrictMode: true,
   swcMinify: true,
 
-  // Uncoment to add domain whitelist
-  // images: {
-  //   domains: [
-  //     'res.cloudinary.com',
-  //   ],
-  // },
+  // TODO: remove this code once Proxy is no longer needed
+  images: { unoptimized: process.env.NODE_ENV === 'development' },
+  async redirects() {
+    return [
+      {
+        source: `/:path((?!${nextAllowList.join('|')}).*)`,
+        destination: `https://${process.env.OLD_HOST_DOMAIN}/:path*`,
+        permanent: false,
+      },
+    ];
+  },
+  //
 
   webpack(config) {
     // Grab the existing rule that handles SVG imports

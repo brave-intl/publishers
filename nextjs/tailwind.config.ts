@@ -4,26 +4,27 @@ export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   presets: [require('@brave/leo/tokens/tailwind')],
   theme: {
+    // TODO: Update when Brave leo has these variables
     borderRadius: {
       none: '0',
-      '1': 'var(--leo-radius-1)',
-      '2': 'var(--leo-radius-2)',
-      DEFAULT: 'var(--leo-radius-8)',
-      '4': 'var(--leo-radius-4)',
-      '8': 'var(--leo-radius-8)',
-      '16': 'var(--leo-radius-16)',
+      '1': '1px',
+      '2': '2px',
+      DEFAULT: '8px',
+      '4': '4px',
+      '8': '8px',
+      '16': '16px',
       full: '9999px',
     },
     extend: {
       // TODO: Update when Brave leo has these variables
       spacing: {
         px: '1px',
-        '0.5': 'var(--leo-spacing-4)',
-        '1': 'var(--leo-spacing-8)',
-        '2': 'var(--leo-spacing-16)',
-        '3': 'var(--leo-spacing-24)',
-        '4': 'var(--leo-spacing-32)',
-        '5': 'var(--leo-spacing-40)',
+        '0.5': '4px',
+        '1': '8px',
+        '2': '16px',
+        '3': '24px',
+        '4': '32px',
+        '5': '40px',
       },
       boxShadow: {
         shadow: 'var(--leo-effect-elevation-dark-01)',
