@@ -30,7 +30,7 @@ const nextConfig = {
     return [
       {
         source: `/api/:path*`,
-        destination: `https://web:3000/api/:path*`,
+        destination: `https://${process.env.PUBLISHERS_API_HOST}/api/:path*`,
       },
     ];
   },
@@ -39,7 +39,7 @@ const nextConfig = {
     return [
       {
         source: `/:path((?!${nextAllowList.join('|')}).*)`,
-        destination: `https://localhost:3000/:path*`,
+        destination: `https://${process.env.PUBLISHERS_HOST}/:path*`,
         permanent: false,
       },
     ];
