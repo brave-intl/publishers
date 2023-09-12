@@ -29,7 +29,7 @@ export default function UserProvider({
   useEffect(() => {
     async function getUser() {
       try {
-        const data = await apiRequest('user/me');
+        const data = await apiRequest('publishers/me');
         updateUser(data);
       } catch (err) {
         return err;
