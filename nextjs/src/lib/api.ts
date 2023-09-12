@@ -5,17 +5,11 @@ export async function apiRequest(
   apiVersion: string = 'v1',
 ) {
   try {
-    const environment = process.env.NODE_ENV;
-    // TODO: This will need to be updated with ENV variables and the actual urls before launch
-    const domain =
-      environment === 'development'
-        ? 'https://localhost:3001'
-        : 'creators.brave.com';
     const options = {
       method,
       params,
     };
-    const endpoint = `${domain}/api/${apiVersion}/${path}`;
+    const endpoint = `/api/next${apiVersion}/${path}`;
     const result = await fetch(endpoint, options);
     const payload = await result.json();
 
