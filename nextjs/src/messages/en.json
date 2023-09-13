@@ -65,7 +65,7 @@
         "intro": "Use an app on your phone to get an authentication code. You will be asked to type in this code when logging in.",
         "enabled": "Authenticator app has been set up",
         "disabled": "Authenticator app has not been set up",
-        "disabled_without_fallback_html": "<strong>Recommended:</strong> Set up an authenticator as the secondary 2FA in case you run into a problem with the security key.",
+        "disabled_without_fallback_html": "Recommended: Set up an authenticator as the secondary 2FA in case you run into a problem with the security key.",
         "reconfigure": "Reconfigure",
         "button": "Set up",
         "destroy": "Disable",
@@ -74,7 +74,7 @@
           "intro": "Your remaining two-factor authentication method:",
           "none": "None",
           "no_totp_warning": "Authenticator app provides a good fallback method to log in to your account securely in the case that you lose the hardware security key.",
-          "no_2fa_warning_html": "Disabling authenticator app will effectively <strong>turn off the two-factor authentication</strong> for your account.",
+          "no_2fa_warning_html": "Disabling authenticator app will effectively turn off the two-factor authentication for your account.",
           "final_confirmation": "Are you sure you want to disable authenticator app? ",
           "deny": "Do Not Disable",
           "confirm": "Disable it for now"
@@ -87,7 +87,7 @@
         "intro_warning": "Currently, security key is supported by Brave, Google Chrome, and Opera.",
         "browser": {
           "heading": "Limited Browser Support",
-          "content_html": "This means you will need to update to the latest <strong>Brave</strong>, <strong>Google Chrome</strong> or <strong>Opera</strong> in order to set up and log in using security keys. More browsers will start supporting the security key in the near future. We will inform you on the changes."
+          "content_html": "This means you will need to update to the latest Brave, Google Chrome or Opera in order to set up and log in using security keys. More browsers will start supporting the security key in the near future. We will inform you on the changes."
         },
         "device": {
           "tooltip": "A list of security keys that have been tested",
@@ -136,7 +136,7 @@
         "intro": "Your remaining two-factor authentication method:",
         "remaining_totp": "Authenticator app on your phone",
         "none": "None",
-        "no_2fa_warning_html": "Removing this security key will effectively\n<strong>turn off the two-factor authentication</strong>\nfor your account.\n",
+        "no_2fa_warning_html": "Removing this security key will effectively\nturn off the two-factor authentication\nfor your account.\n",
         "final_confirmation": "Are you sure you want to remove this security key?",
         "deny": "Do Not Remove",
         "confirm": "Remove Security Key"

@@ -61,13 +61,13 @@
           "final_confirmation": "本当にAuthenticatorアプリを無効にしますか？\n",
           "header": "Authenticatorを無効化しますか？",
           "intro": "残りの二要素認証方法 : ",
-          "no_2fa_warning_html": "Authenticatorアプリを無効化すると、アカウントに設定された\n<strong>二要素認証が直ちに無効になります。</strong>\n",
+          "no_2fa_warning_html": "Authenticatorアプリを無効化すると、アカウントに設定された\n二要素認証が直ちに無効になります。\n",
           "no_totp_warning": "Authenticatorアプリは万が一物理的なセキュリティキーを紛失した際の、\n予備の手段として最適です。\n",
           "none": "なし"
         },
         "destroy": "無効化する",
         "disabled": "二要素認証アプリが未設定",
-        "disabled_without_fallback_html": "<strong>推奨:</strong> セキュリティリスクを下げるため、必ずAuthenticatorを二要素認証用に設定してください。\n",
+        "disabled_without_fallback_html": "推奨: セキュリティリスクを下げるため、必ずAuthenticatorを二要素認証用に設定してください。\n",
         "enabled": "二要素認証アプリの設定済",
         "heading": "二要素認証用スマートフォンアプリ",
         "intro": "二要素認証利用時にログインに必要なコードを生成するスマートフォンアプリです。\n",
@@ -76,7 +76,7 @@
       },
       "u2f": {
         "browser": {
-          "content_html": "セキュリティキーを設定するには、最新の<strong> Brave </strong>、<strong>Google Chrome </ strong>または<strong> Opera </strong>に更新する必要があります。将来的にはより多くのブラウザがサポートを開始する予定です。今後更新があればお知らせ致します。",
+          "content_html": "セキュリティキーを設定するには、最新の Brave 、Google Chrome </ strong>または Opera に更新する必要があります。将来的にはより多くのブラウザがサポートを開始する予定です。今後更新があればお知らせ致します。",
           "heading": "ブラウザが対応していません。"
         },
         "button": "セキュリティキーを追加する",
@@ -136,7 +136,7 @@
         "final_confirmation": "本当にAuthenticatorアプリを無効にしますか？",
         "header": "セキュリティキーを削除しますか？",
         "intro": "残りの二要素認証手段：",
-        "no_2fa_warning_html": "Authenticatorアプリを無効化すると、アカウントに設定された <strong>二要素認証が直ちに無効になります。</strong>\n",
+        "no_2fa_warning_html": "Authenticatorアプリを無効化すると、アカウントに設定された 二要素認証が直ちに無効になります。\n",
         "none": "なし",
         "remaining_totp": "二要素認証用スマートフォンアプリ"
       },
