@@ -101,15 +101,15 @@
   },
   "totp_registrations": {
     "new": {
-      "cancel": "",
-      "heading": "",
-      "password_prompt": "",
-      "step_1": "",
-      "step_2": "",
-      "step_2_alt": "",
-      "step_3": "",
-      "submit_value": "",
-      "warning": ""
+      "cancel": "キャンセル",
+      "heading": "Authenticatorアプリのセットアップ",
+      "warning": "再設定すると、既存の認証コードデバイスが無効になります",
+      "step_1": "スマートフォンに認証アプリをインストールします",
+      "step_2": "アプリで以下のQRコードをスキャンします",
+      "step_2_alt": "QRコードをスキャンできない場合は、次のコードを入力してください：",
+      "step_3": "スキャンが完了したら、アプリから6桁のコードを入力します。",
+      "password_prompt": "6桁のコード",
+      "submit_value": "完了"
     }
   },
   "u2f_registrations": {
