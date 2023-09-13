@@ -5,6 +5,7 @@ import Checkbox from '@brave/leo/react/checkbox';
 import Dialog from '@brave/leo/react/dialog';
 import Toggle from '@brave/leo/react/toggle';
 import Head from 'next/head';
+import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
 import * as React from 'react';
 
@@ -19,6 +20,7 @@ export default function SettingsPage() {
   const [isModalOpen, setModalIsOpen] = useState(false);
   const [settings, setSettings] = useState<Partial<UserType>>(user);
   const [isEditMode, setIsEditMode] = useState(false);
+  const t = useTranslations();
 
   function updateAccountSettings() {
     apiRequest('publishers/me', settings, 'POST');
@@ -41,13 +43,14 @@ export default function SettingsPage() {
   return (
     <main className='main'>
       <Head>
-        <title>Settings</title>
+        <title>{t('Settings.title')}</title>
+        hello
       </Head>
       <section className='content-width'>
         <Card className='mb-3'>
-          <h2 className='mb-2'>Account Settings</h2>
+          <h2 className='mb-2'>{t('Settings.index.header')}</h2>
           <div className='flex items-center justify-between'>
-            <p>Keep my login active for 30 days</p>
+            <p>{t('Settings.index.extended_login.intro')}</p>
             <Toggle
               size='small'
               checked={settings.thirty_day_login}
@@ -58,7 +61,7 @@ export default function SettingsPage() {
 
         <Card className='mb-3'>
           <div className='mb-2 flex items-center justify-between'>
-            <h2>Contact</h2>
+            <h2>{t('Settings.index.contact.heading')}</h2>
             <div>
               {isEditMode ? (
                 <div>
@@ -70,14 +73,14 @@ export default function SettingsPage() {
                     }}
                     kind='filled'
                   >
-                    Save
+                    {t('Settings.buttons.save')}
                   </Button>
                   <Button
                     kind='plain'
                     size='large'
                     onClick={() => setIsEditMode(false)}
                   >
-                    Cancel
+                    {t('Settings.buttons.cancel')}
                   </Button>
                 </div>
               ) : (
@@ -86,7 +89,7 @@ export default function SettingsPage() {
                   size='large'
                   onClick={() => setIsEditMode(true)}
                 >
-                  Edit Contact
+                  {t('Settings.index.contact.edit')}
                 </Button>
               )}
             </div>
@@ -94,7 +97,9 @@ export default function SettingsPage() {
 
           <div>
             <div>
-              <label className='font-semibold'>Name</label>
+              <label className='font-semibold'>
+                {t('Settings.index.contact.name')}
+              </label>
               <div className='mb-2'>
                 {isEditMode ? (
                   <input
@@ -108,7 +113,9 @@ export default function SettingsPage() {
               </div>
             </div>
             <div>
-              <label className='font-semibold'>Email</label>
+              <label className='font-semibold'>
+                {t('Settings.index.contact.email')}
+              </label>
               <div>
                 {isEditMode ? (
                   <input
@@ -125,7 +132,7 @@ export default function SettingsPage() {
         </Card>
 
         <Card className='mb-3'>
-          <h2 className='mb-2'>Email Settings</h2>
+          <h2 className='mb-2'>{t('Settings.index.email.heading')}</h2>
           <div>
             <Checkbox
               checked={settings.subscribed_to_marketing_emails}
@@ -133,39 +140,33 @@ export default function SettingsPage() {
                 handleToggleChange(e, 'subscribed_to_marketing_emails')
               }
             >
-              By checking here, I consent to be informed of newfeatures and
-              promotions via email
+              {t('Settings.index.email.marketing_label')}
             </Checkbox>
           </div>
         </Card>
 
         <Card className='mb-3'>
-          <h2 className='mb-2'>Account Deletion</h2>
-          <div>
-            Your channels and all accounts related information will be
-            permanently deleted from our database as well as from connected
-            providers. This cannot be undone.
-          </div>
+          <h2 className='mb-2'>{t('Settings.index.delete_account.heading')}</h2>
+          <div>{t('Settings.index.delete_account.warning')}</div>
           <Button
             className='mt-4'
             kind='outline'
             onClick={() => setModalIsOpen(!isModalOpen)}
           >
-            Delete My Account
+            {t('Settings.index.delete_account.button')}
           </Button>
         </Card>
         <Dialog isOpen={isModalOpen}>
-          <div slot='title'>Are you sure you want to delete your account?</div>
-          <div>
-            Your Brave Creators account and information will be permanently
-            deleted from our database. This action cannot be undone.
+          <div slot='title'>
+            {t('Settings.index.delete_account.prompt.header')}
           </div>
+          <div>{t('Settings.index.delete_account.prompt.warning')}</div>
           <div slot='actions'>
             <Button onClick={() => setModalIsOpen(false)}>
-              No, keep my account active
+              {t('Settings.index.delete_account.prompt.deny')}
             </Button>
             <Button kind='outline' onClick={deleteAccount}>
-              Yes, I'm certain
+              {t('Settings.index.delete_account.prompt.confirm')}
             </Button>
           </div>
         </Dialog>
