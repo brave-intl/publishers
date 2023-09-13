@@ -10,6 +10,7 @@ const nextAllowList = [
   'publishers/u2f_registrations/new',
   'icons',
   'favicon',
+  'api',
 ];
 
 const nextConfig = {
@@ -24,11 +25,21 @@ const nextConfig = {
 
   // TODO: remove this code once Proxy is no longer needed
   images: { unoptimized: process.env.NODE_ENV === 'development' },
+
+  async rewrites() {
+    return [
+      {
+        source: `/api/:path*`,
+        destination: `https://${process.env.PUBLISHERS_API_HOST}/api/:path*`,
+      },
+    ];
+  },
+
   async redirects() {
     return [
       {
         source: `/:path((?!${nextAllowList.join('|')}).*)`,
-        destination: `https://${process.env.OLD_HOST_DOMAIN}/:path*`,
+        destination: `https://${process.env.PUBLISHERS_HOST}/:path*`,
         permanent: false,
       },
     ];

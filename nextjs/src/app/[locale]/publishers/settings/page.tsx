@@ -21,12 +21,12 @@ export default function SettingsPage() {
   const [isEditMode, setIsEditMode] = useState(false);
 
   function updateAccountSettings() {
-    apiRequest('user/me', settings, 'POST');
+    apiRequest('publishers/me', settings, 'POST');
     updateUser(settings);
   }
 
   function deleteAccount() {
-    apiRequest('user/me', null, 'DELETE');
+    apiRequest('publishers/me', null, 'DELETE');
   }
 
   function handleToggleChange(e: CustomEvent, name: string) {

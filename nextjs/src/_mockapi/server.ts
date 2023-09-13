@@ -16,12 +16,13 @@ export function makeServer() {
     },
 
     routes() {
-      this.urlPrefix = 'https://localhost:3001';
-      this.namespace = '/api/v1/';
+      this.namespace = '/api/nextv1/';
 
-      this.get('user/me', (schema) => {
-        return schema.first('user').attrs;
-      });
+      this.passthrough('*');
+      // [--Example--]
+      // this.get('user/me', (schema) => {
+      //   return schema.first('user').attrs;
+      // });
     },
   });
 
