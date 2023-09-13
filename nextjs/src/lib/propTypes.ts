@@ -1,7 +1,5 @@
 export type UserType = {
   id: string;
-  firstName: string;
-  lastName: string;
   name: string;
   streetAddress: string;
   cityStateZip: string;
@@ -10,4 +8,6 @@ export type UserType = {
   password: string;
   email: string;
   avatar: string;
+  thirty_day_login: boolean;
+  subscribed_to_marketing_emails: boolean;
 };

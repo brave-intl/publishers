@@ -38,3 +38,6 @@ jobs:
 
       - name: 🃏 Run jest
         run: npm run test
+
+      - name: 🦁 Brave Leo audit
+        run: npm exec leo-check
