@@ -14,8 +14,6 @@ class Api::Nextv1::PublishersController < Api::Nextv1::BaseController
       MailerServices::ConfirmEmailChangeEmailer.new(publisher: current_publisher).perform
     end
 
-    return success
-
     respond_to do |format|
       if success
         format.json { render json: {} }
