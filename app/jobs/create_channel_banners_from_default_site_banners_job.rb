@@ -42,7 +42,7 @@ class CreateChannelBannersFromDefaultSiteBannersJob < ApplicationJob
 
       SiteBanner.set_callback(:save, :after, :update_site_banner_lookup!)
     rescue => e
-      puts "Could not update channel #{channel.id}: #{e.message}"
+      puts "Could not update channel: #{e.message}"
     end
     # make sure the callback is re-set even if there's an error
     SiteBanner.set_callback(:save, :after, :update_site_banner_lookup!)
