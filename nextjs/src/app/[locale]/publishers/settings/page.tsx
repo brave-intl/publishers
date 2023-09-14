@@ -11,6 +11,7 @@ import * as React from 'react';
 
 import { apiRequest } from '@/lib/api';
 import UserContext from '@/lib/context/UserContext';
+import { pick } from '@/lib/helper';
 import { UserType } from '@/lib/propTypes';
 
 import Card from '@/components/Card';
@@ -22,18 +23,32 @@ export default function SettingsPage() {
   const [isEditMode, setIsEditMode] = useState(false);
   const t = useTranslations();
 
-  function updateAccountSettings() {
-    apiRequest('publishers/me', settings, 'POST');
+  function updateAccountSettings(newSettings?) {
+    apiRequest(
+      'publishers/update',
+      {
+        publisher: pick(
+          newSettings || settings,
+          'email',
+          'name',
+          'subscribed_to_marketing_emails',
+          'thirty_day_login',
+        ),
+      },
+      'POST',
+    );
     updateUser(settings);
   }
 
   function deleteAccount() {
-    apiRequest('publishers/me', null, 'DELETE');
+    apiRequest('publishers', null, 'DELETE');
   }
 
   function handleToggleChange(e: CustomEvent, name: string) {
-    setSettings({ ...settings, [name]: e.detail.checked });
-    updateAccountSettings();
+    const newSettings = { ...settings, [name]: e.detail.checked };
+
+    setSettings(newSettings);
+    updateAccountSettings(newSettings);
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
