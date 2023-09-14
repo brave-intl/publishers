@@ -40,7 +40,6 @@ package-lock.json
 
 # Editors
 .idea
-.vscode
 
 .irb_history
 .history

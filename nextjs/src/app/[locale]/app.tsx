@@ -9,7 +9,7 @@ export default function App({ children }: { children: React.ReactNode }) {
   const [mockServer, setMockServer] = useState(false);
 
   if (environment !== 'production' && !mockServer) {
-    makeServer();
+    // makeServer();
     setMockServer(true);
   }
 

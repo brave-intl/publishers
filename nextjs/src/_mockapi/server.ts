@@ -16,7 +16,7 @@ export function makeServer() {
     },
 
     routes() {
-      this.namespace = '/api/nextv1/';
+      // this.namespace = '/api/nextv1/';
 
       this.passthrough('*');
       // [--Example--]

@@ -30,7 +30,11 @@ export default function UserProvider({
     async function getUser() {
       try {
         const data = await apiRequest('publishers/me');
-        updateUser(data);
+        if (data.errors) {
+          window.location.href = '/log-in';
+        } else {
+          updateUser(data);
+        }
       } catch (err) {
         return err;
       }

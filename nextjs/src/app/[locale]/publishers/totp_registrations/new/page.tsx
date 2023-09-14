@@ -3,11 +3,14 @@
 import Button from '@brave/leo/react/button';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
 import Card from '@/components/Card';
 
 export default function TOTPNewPage() {
+  const t = useTranslations();
+
   return (
     <main className='main'>
       <Head>
@@ -16,25 +19,24 @@ export default function TOTPNewPage() {
       <section className='content-width-sm'>
         <Card>
           <div className='[&>*]:mb-2'>
-            <h1>Set Up Authenticator App</h1>
-            <div>1. Install an authenticator app on your mobile phone.</div>
+            <h1>{t('totp_registrations.new.heading')}</h1>
+            <div>1. {t('totp_registrations.new.step_1')}</div>
             <div>
-              2. Scan the QR code below with your app. If you can't scan the QR
-              code, enter this code: <span>QR CODE GOES HERE</span>
+              2. {t('totp_registrations.new.step_2')}{' '}
+              {t('totp_registrations.new.step_2_alt')}
+              <span>QR CODE GOES HERE</span>
             </div>
             <div>QR IMAGE</div>
-            <div>
-              3. Enter the 6-digit code from the app once the scan is complete.
-            </div>
+            <div>3. {t('totp_registrations.new.step_3')}</div>
             <div>INPUT GOES HERE</div>
           </div>
           <div className='mt-4 flex justify-between'>
             <div className='flex w-[120px]'>
-              <Button>Complete</Button>
+              <Button>{t('totp_registrations.new.submit_value')}</Button>
             </div>
             <div className='flex w-[120px]'>
               <Link href='../security'>
-                <Button kind='plain'>Cancel</Button>
+                <Button kind='plain'>{t('Settings.buttons.cancel')}</Button>
               </Link>
             </div>
           </div>

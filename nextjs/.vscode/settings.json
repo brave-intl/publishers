@@ -1,0 +1,50 @@
+{
+  "css.validate": false,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true,
+    "source.fixAll": true
+  },
+  "eslint.codeActionsOnSave.rules": [
+    "!unused-imports/no-unused-imports",
+    "*"
+  ],
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "explorer.sortOrder": "filesFirst",
+  "explorer.fileNesting.enabled": true,
+  "explorer.compactFolders": false,
+  "explorer.fileNesting.patterns": {
+    "next.config.js": ".eslintrc.js, .gitignore, .npmrc, .prettierignore, .prettierrc.js, .stylelintrc, commitlint.config.js, jest.config.js, jest.setup.js, next-env.d.ts, postcss.config.js, tsconfig.json, i18n.ts",
+    "README.md": "TODO.md"
+  },
+  "search.exclude": {
+    "package-lock.json": true,
+    "**/node_modules": true
+  },
+  "tailwind-fold.autoFold": true,
+  "tailwind-fold.unfoldIfLineSelected": true,
+  "tailwind-fold.foldedText": "className",
+  "tailwind-fold.foldLengthThreshold": 10,
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classNames",
+    "containerClassName"
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#003c46",
+    "titleBar.activeBackground": "#007b91",
+    "titleBar.activeForeground": "#F6FBFB"
+  },
+  "i18n-ally.theme.annotation": "rgba(255, 255, 255)",
+  // "i18n-ally.enabledFrameworks": ["next-intl"],
+  "i18n-ally.localesPaths": ["src/messages"],
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.keepFulfilled": true,
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.extract.ignored": ["|"],
+  "i18n-ally.annotationMaxLength": 60,
+  "i18n-ally.extract.autoDetect": true
+}
