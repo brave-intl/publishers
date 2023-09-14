@@ -2,16 +2,18 @@
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const withNextIntl = require('next-intl/plugin')('./i18n.ts');
 
-const nextAllowList = [
-  '_next',
+const nextAllowRoutes = ['_next', 'icons', 'favicon', 'api'];
+const nextAllowPageRoutes = [
   'publishers/settings',
   'publishers/security',
   'publishers/totp_registrations/new',
   'publishers/u2f_registrations/new',
-  'icons',
-  'favicon',
-  'api',
 ];
+const routeMatch = [
+  nextAllowPageRoutes.map((r) => `ja/${r}`).join('|'),
+  nextAllowPageRoutes.join('|'),
+  nextAllowRoutes.join('|'),
+].join('|');
 
 const nextConfig = {
   eslint: {
@@ -38,7 +40,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: `/:path((?!${nextAllowList.join('|')}).*)`,
+        source: `/:path((?!${routeMatch}).*)`,
         destination: `https://${process.env.PUBLISHERS_HOST}/:path*`,
         permanent: false,
       },
