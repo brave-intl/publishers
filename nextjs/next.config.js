@@ -2,6 +2,9 @@
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const withNextIntl = require('next-intl/plugin')('./i18n.ts');
 
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 const nextAllowRoutes = ['_next', 'icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
   'publishers/settings',
@@ -46,7 +49,6 @@ const nextConfig = {
       },
     ];
   },
-  //
 
   webpack(config) {
     // Grab the existing rule that handles SVG imports

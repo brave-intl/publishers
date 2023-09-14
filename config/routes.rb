@@ -166,6 +166,7 @@ Rails.application.routes.draw do
     namespace :nextv1, defaults: {format: :json} do
       namespace :publishers do
         get :me
+        post :update
       end
     end
 
