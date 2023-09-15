@@ -16,7 +16,6 @@ import {
   SocialLink,
 } from "./PublicChannelPageStyle.js";
 
-
 import twitch from "../../../assets/images/social-twitch.png";
 import youtube from "../../../assets/images/social-youtube.png";
 import twitter from "../../../assets/images/social-twitter.png";
@@ -27,13 +26,13 @@ class PublicChannelPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.channel = props.channel
     this.coverUrl = this.replaceBlankUrl(this.props.siteBanner, "backgroundUrl");
     this.logoUrl = this.replaceBlankUrl(this.props.siteBanner, "logoUrl")
     this.title = props.siteBanner && props.siteBanner.title;
     this.description = props.siteBanner && props.siteBanner.description;
     this.socialLinks = props.siteBanner && props.siteBanner.socialLinks || [];
-    
+    this.cryptoAddresses = props.cryptoAddresses;
+
     this.socialIcons = { youtube, twitter, twitch };
   }
 
@@ -70,7 +69,7 @@ class PublicChannelPage extends React.Component {
               </div>
             </DescriptionContainer>
             <CryptoPaymentContainer className='col-xs-12 col-lg-6'>
-              <CryptoPaymentWidget/>
+              <CryptoPaymentWidget cryptoAddresses={this.cryptoAddresses} />
               <PrivacyDisclaimer>
                 <FormattedMessage id="publicChannelPage.privacyDisclaimer" />
               </PrivacyDisclaimer>
