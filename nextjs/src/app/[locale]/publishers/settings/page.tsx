@@ -3,8 +3,10 @@
 import Button from '@brave/leo/react/button';
 import Checkbox from '@brave/leo/react/checkbox';
 import Dialog from '@brave/leo/react/dialog';
+import Input from '@brave/leo/react/input';
 import Toggle from '@brave/leo/react/toggle';
 import Head from 'next/head';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
 import * as React from 'react';
@@ -21,6 +23,7 @@ export default function SettingsPage() {
   const [isModalOpen, setModalIsOpen] = useState(false);
   const [settings, setSettings] = useState<Partial<UserType>>(user);
   const [isEditMode, setIsEditMode] = useState(false);
+  const { push } = useRouter();
   const t = useTranslations();
 
   function updateAccountSettings(newSettings?) {
@@ -41,7 +44,8 @@ export default function SettingsPage() {
   }
 
   function deleteAccount() {
-    apiRequest('publishers', null, 'DELETE');
+    apiRequest('publishers/destroy', null, 'DELETE');
+    push('/');
   }
 
   function handleToggleChange(e: CustomEvent, name: string) {
@@ -115,9 +119,9 @@ export default function SettingsPage() {
               <label className='font-semibold'>
                 {t('Settings.index.contact.name')}
               </label>
-              <div className='mb-2'>
+              <div className='mb-2 sm:w-[400px]'>
                 {isEditMode ? (
-                  <input
+                  <Input
                     value={settings.name}
                     onChange={handleInputChange}
                     name='name'
@@ -131,9 +135,9 @@ export default function SettingsPage() {
               <label className='font-semibold'>
                 {t('Settings.index.contact.email')}
               </label>
-              <div>
+              <div className='sm:w-[400px]'>
                 {isEditMode ? (
-                  <input
+                  <Input
                     value={settings.email}
                     onChange={handleInputChange}
                     name='email'

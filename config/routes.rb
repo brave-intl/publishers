@@ -168,6 +168,7 @@ Rails.application.routes.draw do
       namespace :publishers do
         get :me
         post :update
+        delete :destroy
       end
     end
 
