@@ -81,9 +81,9 @@
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
     "qr-code-styling": "^1.6.0-rc.1",
-    "react": "^16.6.3",
+    "react": "^18.0.0",
     "react-avatar-editor": "^13.0.0",
-    "react-dom": "^16.6.3",
+    "react-dom": "^18.0.0",
     "react-intl": "^6.4.4",
     "react-select": "^5.7.4",
     "react-tooltip": "^4.2.3",
@@ -106,8 +106,8 @@
     "@babel/preset-react": "^7.22.5",
     "@rails/webpacker": "^5.4.4",
     "@types/jest": "^29.5.3",
-    "@types/react": "^16.4.7",
-    "@types/react-dom": "^16.0.6",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@types/styled-components": "^5.1.26",
     "audit-ci": "6.6.1",
     "autoprefixer": "10.4.14",
@@ -144,7 +144,7 @@
   },
   "resolutions": {
     "node-fetch": "3.3.2",
-    "@types/react": "16.14.45",
+    "@types/react": "^18.0.0",
     "@types/styled-components": "5.1.26"
   },
   "browserslist": [
