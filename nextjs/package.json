@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#51a2b99bd8939658c1195e9ee83450911eb3b889",
+    "@brave/leo": "github:brave/leo#86be9379ea55a7e32b56beee05a4e57caa1c0da2",
     "axios": "^1.5.0",
     "clsx": "^2.0.0",
     "next": "^13.4.12",
@@ -45,6 +45,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "http-proxy": "^1.18.1",
     "jest": "^29.6.1",
     "jest-environment-jsdom": "^29.6.1",
     "lint-staged": "^13.2.3",
