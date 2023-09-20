@@ -5,7 +5,6 @@ applications:
     phases:
       preBuild:
         commands:
-          - cd nextjs
           - npm ci
           - node scripts/copyLeoIcons.js
       # IMPORTANT - Please verify your build commands
@@ -14,7 +13,7 @@ applications:
           - npm run build
     artifacts:
       # IMPORTANT - Please verify your build output directory
-      baseDirectory: /nextjs/.next
+      baseDirectory: /.next
       files:
         - '**/*'
     cache:
