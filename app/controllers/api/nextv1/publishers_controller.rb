@@ -4,7 +4,9 @@ class Api::Nextv1::PublishersController < Api::Nextv1::BaseController
   include ActionController::MimeResponds
 
   def me
-    render(json: current_publisher.to_json, status: 200)
+    publisher_hash = JSON.parse(current_publisher.to_json)
+    publisher_hash["two_factor_enabled"] = two_factor_enabled?(current_publisher)
+    render(json: publisher_hash.to_json, status: 200)
   end
 
   def update
