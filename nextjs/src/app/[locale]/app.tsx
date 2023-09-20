@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { makeServer } from '../../_mockapi/server';
+// import { makeServer } from '../../_mockapi/server';
 const environment = process.env.NODE_ENV;
 
 export default function App({ children }: { children: React.ReactNode }) {

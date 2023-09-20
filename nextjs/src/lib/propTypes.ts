@@ -11,4 +11,5 @@ export type UserType = {
   avatar: string;
   thirty_day_login: boolean;
   subscribed_to_marketing_emails: boolean;
+  two_factor_enabled: boolean;
 };
