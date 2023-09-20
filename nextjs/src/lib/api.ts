@@ -1,33 +1,30 @@
+import axios from 'axios';
+
 export async function apiRequest(
   path: string,
-  params?: unknown,
+  data?: unknown,
   method: string = 'GET',
   apiVersion: string = 'v1',
 ) {
   try {
-    const options = {
-      method,
-      params,
-    };
-    const endpoint = `/api/next${apiVersion}/${path}`;
-    const result = await fetch(endpoint, options);
-    const payload = await result.json();
+    const url = `/api/next${apiVersion}/${path}`;
+    const response = await axios({ method, url, data });
 
     // verify request had 2xx status code
-    if (!result.ok) {
+    if (response.statusText !== 'OK') {
       // Imperatively navigate to Unauthorized page on 403
-      if (result.status === 403) {
+      if (response.status === 403) {
         // TODO: This path doesn't exist yet
         window.location.replace('/unauthorized');
       }
 
-      if (result.status >= 500) {
+      if (response.status >= 500) {
         throw new Error('Server error occurred. Try again later.');
       }
-      throw payload;
+      throw response.data;
     }
 
-    return payload;
+    return response.data;
   } catch (err) {
     return { errors: [err] };
   }

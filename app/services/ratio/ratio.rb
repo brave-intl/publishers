@@ -21,6 +21,17 @@ module Ratio
       end
     end
 
+    def channel_page
+      response = get("/v2/relative/provider/coingecko/eth,sol/usd/live")
+      JSON.parse(response.body)
+    end
+
+    def self.channel_page_cached
+      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.minute) do
+        Ratio.new.channel_page
+      end
+    end
+
     def api_base_uri
       Rails.configuration.pub_secrets[:bat_ratios_url]
     end

@@ -152,6 +152,7 @@ Rails.application.routes.draw do
   end
 
   get "c/:public_identifier", to: "public_channel#show", as: :public_channel
+  get "/get_ratios", to: "public_channel#get_ratios"
 
   resources :faqs, only: [:index]
 
@@ -166,6 +167,8 @@ Rails.application.routes.draw do
     namespace :nextv1, defaults: {format: :json} do
       namespace :publishers do
         get :me
+        post :update
+        delete :destroy
       end
     end
 
