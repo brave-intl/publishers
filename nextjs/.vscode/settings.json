@@ -1,4 +1,13 @@
 {
+  "files.exclude": {
+    "amplify/.config": true,
+    "amplify/**/*-parameters.json": true,
+    "amplify/**/amplify.state": true,
+    "amplify/**/transform.conf.json": true,
+    "amplify/#current-cloud-backend": true,
+    "amplify/backend/amplify-meta.json": true,
+    "amplify/backend/awscloudformation": true
+  },
   "css.validate": false,
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
@@ -39,12 +48,15 @@
     "titleBar.activeForeground": "#F6FBFB"
   },
   "i18n-ally.theme.annotation": "rgba(255, 255, 255)",
-  // "i18n-ally.enabledFrameworks": ["next-intl"],
-  "i18n-ally.localesPaths": ["src/messages"],
+  "i18n-ally.localesPaths": [
+    "src/messages"
+  ],
   "i18n-ally.sortKeys": true,
   "i18n-ally.keepFulfilled": true,
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.extract.ignored": ["|"],
+  "i18n-ally.extract.ignored": [
+    "|"
+  ],
   "i18n-ally.annotationMaxLength": 60,
   "i18n-ally.extract.autoDetect": true
 }
