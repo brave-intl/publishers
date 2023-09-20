@@ -5,13 +5,12 @@ applications:
     phases:
       preBuild:
         commands:
-          - pwd
-          - npm install
+          - npm ci
           - node scripts/copyLeoIcons.js
       # IMPORTANT - Please verify your build commands
       build:
         commands:
-          - npm run build
+          - PUBLISHERS_HOST=creators.bsg.brave.software npm run build
     artifacts:
       # IMPORTANT - Please verify your build output directory
       baseDirectory: /.next
