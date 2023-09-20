@@ -55,7 +55,7 @@ export default function SettingsPage() {
     updateAccountSettings(newSettings);
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleInputChange(e: any) {
     setSettings({ ...settings, [e.target.name]: e.target.value });
   }
 
@@ -120,7 +120,7 @@ export default function SettingsPage() {
                 {t('Settings.index.contact.name')}
               </label>
               <div className='mb-2 sm:w-[400px]'>
-                {isEditMode ? (
+                {/* {isEditMode ? (
                   <Input
                     value={settings.name}
                     onChange={handleInputChange}
@@ -128,7 +128,7 @@ export default function SettingsPage() {
                   />
                 ) : (
                   user.name
-                )}
+                )} */}
               </div>
             </div>
             <div>
@@ -136,7 +136,7 @@ export default function SettingsPage() {
                 {t('Settings.index.contact.email')}
               </label>
               <div className='sm:w-[400px]'>
-                {isEditMode ? (
+                {/* {isEditMode ? (
                   <Input
                     value={settings.email}
                     onChange={handleInputChange}
@@ -144,7 +144,7 @@ export default function SettingsPage() {
                   />
                 ) : (
                   user.email
-                )}
+                )} */}
               </div>
             </div>
           </div>
