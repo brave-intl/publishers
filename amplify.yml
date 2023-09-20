@@ -5,7 +5,8 @@ applications:
     phases:
       preBuild:
         commands:
-          - npm ci
+          - pwd
+          - npm install
           - node scripts/copyLeoIcons.js
       # IMPORTANT - Please verify your build commands
       build:
