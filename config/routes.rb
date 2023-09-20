@@ -166,7 +166,7 @@ Rails.application.routes.draw do
 
     namespace :nextv1, defaults: {format: :json} do
       resources :publishers, only: [:update, :destroy]
-      get 'publishers/me', to: 'publishers#me'
+      get "publishers/me", to: "publishers#me"
 
       namespace :totp_registrations do
         get :new
