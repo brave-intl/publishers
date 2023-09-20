@@ -1,20 +1,22 @@
 version: 1
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - cd nextjs
-        - npm ci
-        - node scripts/copyLeoIcons.js
-    # IMPORTANT - Please verify your build commands
-    build:
-      commands:
-        - npm run build
-  artifacts:
-    # IMPORTANT - Please verify your build output directory
-    baseDirectory: /nextjs/.next
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
+applications:
+- appRoot: nextjs
+  frontend:
+    phases:
+      preBuild:
+        commands:
+          - cd nextjs
+          - npm ci
+          - node scripts/copyLeoIcons.js
+      # IMPORTANT - Please verify your build commands
+      build:
+        commands:
+          - npm run build
+    artifacts:
+      # IMPORTANT - Please verify your build output directory
+      baseDirectory: /nextjs/.next
+      files:
+        - '**/*'
+    cache:
+      paths:
+        - node_modules/**/*
