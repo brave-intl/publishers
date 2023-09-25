@@ -134,6 +134,7 @@ gem "terser"
 gem "sidekiq", "~> 7.1.3"
 
 gem "sidekiq-scheduler", "~> 5.0.2"
+gem "sidekiq-throttled", "~> 1.0.0.alpha.1"
 
 # slim for view templates
 gem "slim-rails", "3.6.2"
@@ -225,9 +226,8 @@ group :development, :test do
   gem "minitest-retry"
   gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
-  gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test
-  gem "selenium-webdriver", "~> 4.10.0"
+  gem "selenium-webdriver", "~> 4.12"
   gem "solargraph"
   gem "dotenv-rails", "2.8.1"
 end

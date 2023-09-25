@@ -28,7 +28,7 @@ export default function SettingsPage() {
 
   function updateAccountSettings(newSettings?) {
     apiRequest(
-      'publishers/update',
+      `publishers/${user.id}`,
       {
         publisher: pick(
           newSettings || settings,
@@ -38,13 +38,13 @@ export default function SettingsPage() {
           'thirty_day_login',
         ),
       },
-      'POST',
+      'PUT',
     );
     updateUser(settings);
   }
 
   function deleteAccount() {
-    apiRequest('publishers/destroy', null, 'DELETE');
+    apiRequest('publishers', null, 'DELETE');
     push('/');
   }
 
@@ -55,8 +55,8 @@ export default function SettingsPage() {
     updateAccountSettings(newSettings);
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSettings({ ...settings, [e.target.name]: e.target.value });
+  function handleInputChange(e, name) {
+    setSettings({ ...settings, [name]: e.detail.value });
   }
 
   return (
@@ -123,7 +123,7 @@ export default function SettingsPage() {
                 {isEditMode ? (
                   <Input
                     value={settings.name}
-                    onChange={handleInputChange}
+                    onInput={(e) => handleInputChange(e, 'name')}
                     name='name'
                   />
                 ) : (
@@ -139,7 +139,7 @@ export default function SettingsPage() {
                 {isEditMode ? (
                   <Input
                     value={settings.email}
-                    onChange={handleInputChange}
+                    onInput={(e) => handleInputChange(e, 'email')}
                     name='email'
                   />
                 ) : (
@@ -152,7 +152,8 @@ export default function SettingsPage() {
 
         <Card className='mb-3'>
           <h2 className='mb-2'>{t('Settings.index.email.heading')}</h2>
-          <div>
+          <h4>Notifications</h4>
+          <div className='mt-1'>
             <Checkbox
               checked={settings.subscribed_to_marketing_emails}
               onChange={(e) =>

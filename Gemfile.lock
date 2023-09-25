@@ -503,6 +503,7 @@ GEM
       redis-client (>= 0.9.0)
     redis-client (0.17.0)
       connection_pool
+    redis-prescription (2.6.0)
     redis-session-store (0.11.5)
       actionpack (>= 6, < 8)
       redis (>= 3, < 6)
@@ -561,7 +562,7 @@ GEM
       tilt
     scrypt (3.0.7)
       ffi-compiler (>= 1.0, < 2.0)
-    selenium-webdriver (4.10.0)
+    selenium-webdriver (4.12.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -582,6 +583,9 @@ GEM
       rufus-scheduler (~> 3.2)
       sidekiq (>= 6, < 8)
       tilt (>= 1.4.0)
+    sidekiq-throttled (1.0.0.alpha.1)
+      redis-prescription (~> 2.2)
+      sidekiq (>= 6.5)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -680,16 +684,12 @@ GEM
       openssl (>= 2.2)
       safety_net_attestation (~> 0.4.0)
       tpm-key_attestation (~> 0.12.0)
-    webdrivers (5.3.1)
-      nokogiri (~> 1.6)
-      rubyzip (>= 1.3.0)
-      selenium-webdriver (~> 4.0, < 4.11)
     webmock (3.19.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.8.1)
-    websocket (1.2.9)
+    websocket (1.2.10)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -787,11 +787,12 @@ DEPENDENCIES
   rotp (~> 6.2.0)
   rqrcode (~> 2.2.0)
   sass-rails (>= 6)
-  selenium-webdriver (~> 4.10.0)
+  selenium-webdriver (~> 4.12)
   sendgrid-ruby (~> 6.6.2)
   shakapacker (= 7.0.3)
   sidekiq (~> 7.1.3)
   sidekiq-scheduler (~> 5.0.2)
+  sidekiq-throttled (~> 1.0.0.alpha.1)
   simplecov
   slim-rails (= 3.6.2)
   solargraph
@@ -809,7 +810,6 @@ DEPENDENCIES
   wasmer!
   web-console
   webauthn
-  webdrivers (~> 5.0)
   webmock (~> 3.0)
   will_paginate
   yt (~> 0.33.0)
@@ -820,4 +820,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.19
+   2.4.13
