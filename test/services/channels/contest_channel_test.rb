@@ -84,6 +84,8 @@ class ContestChannelTest < ActiveJob::TestCase
     admin = Publisher.admin.first
     PublisherStatusUpdater.new.perform(user: channel.publisher, status: "active", admin: admin, note: "test")
     PublisherStatusUpdater.new.perform(user: contested_by_channel_two.publisher, status: "active", admin: admin, note: "test")
+    channel.reload.publisher.reload
+    contested_by_channel_two.reload.publisher.reload
 
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel_two).perform
 
