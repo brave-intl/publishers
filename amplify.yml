@@ -10,7 +10,7 @@ applications:
       # IMPORTANT - Please verify your build commands
       build:
         commands:
-          - PUBLISHERS_HOST=creators.bsg.brave.software npm run build
+          - PUBLISHERS_HOST=creators-api.bsg.brave.software npm run build
     artifacts:
       # IMPORTANT - Please verify your build output directory
       baseDirectory: /.next
