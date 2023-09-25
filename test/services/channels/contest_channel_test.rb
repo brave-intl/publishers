@@ -75,7 +75,16 @@ class ContestChannelTest < ActiveJob::TestCase
 
     first_contest_token = channel.contest_token
 
-    # contest channel from a different account
+    assert_raises(Channels::ContestChannel::SuspendedPublisherError) do
+      # contest channel from a different account
+      Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel_two).perform
+    end
+
+    # Make them both active
+    admin = Publisher.admin.first
+    PublisherStatusUpdater.new.perform(user: channel.publisher, status: "active", admin: admin, note: 'test')
+    PublisherStatusUpdater.new.perform(user: contested_by_channel_two.publisher, status: "active", admin: admin, note: 'test')
+
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel_two).perform
 
     assert_equal channel.contested_by_channel, contested_by_channel_two
