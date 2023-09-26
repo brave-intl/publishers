@@ -149,7 +149,7 @@ class CryptoWalletServices extends React.Component {
         method: 'personal_sign',
         params: [address, nonce]
       })
-      console.log(nonce)
+
       axios({
         method: 'post',
         url: routes.publishers.cryptoAddressForChannels.create.replace('{channel_id}', this.channel.id),
@@ -260,6 +260,9 @@ class CryptoWalletServices extends React.Component {
             />
           </div>
           <div className='alert-warning'>{this.state.errorText}</div>
+          {(this.state.currentSolAddress || this.state.currentEthAddress) && (
+            <a href={`/c/${this.channel.public_identifier}`}><FormattedMessage id="walletServices.addCryptoWidget.channelPageLink" /></a>
+          )}
         </ErrorBoundary>
       </div>
     );

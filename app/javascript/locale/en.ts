@@ -326,6 +326,7 @@ export default {
       addressConnectFailure: "Connecting new address failed",
       solanaConnectionFailure: "Solana connection was interrupted",
       notConnected: "Not Connected",
+      channelPageLink: "View Channel Page",
     }
   },
   publicChannelPage: {
