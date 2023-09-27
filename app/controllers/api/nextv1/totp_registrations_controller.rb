@@ -27,9 +27,9 @@ class Api::Nextv1::TotpRegistrationsController < Api::Nextv1::BaseController
 
         logout_everybody_else!(current_publisher)
 
-       render(json: {}, status: 200)
+        render(json: {}, status: 200)
       else
-       render(json: {errors: totp_registration.errors}, status: 400)
+        render(json: {errors: totp_registration.errors}, status: 400)
       end
     end
   end
