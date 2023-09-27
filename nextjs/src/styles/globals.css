@@ -68,6 +68,17 @@ hr {
   border-top: 1px solid rgb(30 32 41 / 10%);
 }
 
+[slot='errors'] {
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+
+  margin-top: var(--leo-spacing-s);
+
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
 .main {
   @apply py-4 px-2;
 
@@ -86,4 +97,25 @@ hr {
 
 .content-width-sm {
   width: 650px;
+}
+
+.animate-dash {
+  animation: dash 1.5s ease-in-out infinite
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
 }

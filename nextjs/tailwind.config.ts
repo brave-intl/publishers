@@ -16,6 +16,9 @@ export default {
       full: '9999px',
     },
     extend: {
+      colors: {
+        green: '#02b999',
+      },
       // TODO: Update when Brave leo has these variables
       spacing: {
         px: '1px',
