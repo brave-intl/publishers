@@ -245,6 +245,8 @@ module PublishersHelper
     token = publisher.authentication_token
     options = {token: token}
     options[:confirm_email] = confirm_email if confirm_email
+    options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
+    options[:port] = 5001
     publisher_url(publisher, options)
   end
 
