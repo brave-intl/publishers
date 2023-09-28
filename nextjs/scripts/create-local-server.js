@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const { createServer } = require('https');
-var url=require('url');
+var url = require('url');
 const PORT = 5001;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -42,19 +42,21 @@ app
       '*',
       createProxyMiddleware('**', {
         logger: console,
-        target: 'https://localhost:3000',
+        target: 'https://web:3000',
         changeOrigin: true,
         secure: !isDevelopment,
         onProxyReq: (proxyReq, request, response) => {
-          proxyReq.setHeader('origin', 'https://localhost:3000');
+          proxyReq.setHeader('origin', 'https://web:3000');
         },
         onProxyRes: (proxyRes, request, response) => {
           const redir = proxyRes.headers['location'];
-          if(redir) {
-            const host = parse(redir).host
-            if(`https://${host}` == 'https://localhost:3000') {
-              const newRedirUrlToProxy = `https://localhost:5001${parse(redir).pathname}`
-              proxyRes.headers['location'] = newRedirUrlToProxy
+          if (redir) {
+            const host = parse(redir).host;
+            if (`https://${host}` == 'https://web:3000') {
+              const newRedirUrlToProxy = `https://localhost:5001${
+                parse(redir).pathname
+              }`;
+              proxyRes.headers['location'] = newRedirUrlToProxy;
             }
           }
         },
@@ -76,11 +78,13 @@ app
     return server.listen(PORT, (err) => {
       if (err) throw err;
 
-    console.log(
-      chalk.green(
-        `> Server started on ${chalk.bold.green(`https://localhost:${PORT}`)}`,
-      ),
-    );
+      console.log(
+        chalk.green(
+          `> Server started on ${chalk.bold.green(
+            `https://localhost:${PORT}`,
+          )}`,
+        ),
+      );
     });
   })
   .catch((err) => {
