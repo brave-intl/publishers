@@ -33,7 +33,7 @@ class Api::Nextv1::U2fRegistrationsController < Api::Nextv1::BaseController
         logout_everybody_else!(current_publisher)
         render(json: {}, status: 200)
       when BFailure
-        render(json: { errors: ["Webauthn registration failed"] }, status: 400) && return
+        render(json: {errors: ["Webauthn registration failed"]}, status: 400) && return
       else
         raise result
       end
