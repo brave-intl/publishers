@@ -23,6 +23,11 @@ html {
   box-sizing: inherit;
 }
 
+body {
+  color: var(--leo-color-text-primary);
+  background: var(--leo-color-page-background);
+}
+
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
   margin: 0;
   padding: 0;
@@ -64,8 +69,10 @@ hr {
 
   margin-top: var(--leo-spacing-16);
   margin-bottom: var(--leo-spacing-16);
+
+  opacity: 0.4;
   border: 0;
-  border-top: 1px solid rgb(30 32 41 / 10%);
+  border-top: 1px solid var(--leo-color-text-primary);
 }
 
 .main {
@@ -86,4 +93,25 @@ hr {
 
 .content-width-sm {
   width: 650px;
+}
+
+.animate-dash {
+  animation: dash 1.5s ease-in-out infinite
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
 }

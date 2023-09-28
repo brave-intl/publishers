@@ -21,4 +21,28 @@
   --leo-font-components-button-default: 600 var(--leo-typography-components-button-default-font-size)/var(--leo-typography-components-button-default-line-height) var(--font-poppins);
   --leo-font-components-button-large: 600 var(--leo-typography-components-button-large-font-size)/var(--leo-typography-components-button-large-line-height) var(--font-poppins);
   --leo-font-components-button-jumbo: 600 var(--leo-typography-components-button-jumbo-font-size)/var(--leo-typography-components-button-jumbo-line-height) var(--font-poppins);
+
+  /* this needs to be fixed in Leo */
+  --leo-color-text-primary: rgb(13 15 20);
+}
+
+/* this needs to be fixed in Leo */
+[data-theme="light"] {
+  --leo-color-text-primary: rgb(13 15 20);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --leo-color-text-primary: rgb(13 15 20);
+  }
+}
+
+[data-theme="dark"] {
+  --leo-color-text-primary: rgb(246 247 248);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --leo-color-text-primary: rgb(246 247 248);
+  }
 }

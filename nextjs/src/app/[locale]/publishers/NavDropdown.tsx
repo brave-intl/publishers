@@ -47,7 +47,7 @@ const NavDropdown = () => {
           })}
         />
         {isDropdownOpen && (
-          <div className='rounded-sm shadow absolute right-2 top-full z-10 min-w-[250px] bg-white'>
+          <div className='rounded-sm shadow absolute right-2 top-full z-10 min-w-[250px] bg-container'>
             <div className='flex flex-col items-center p-2'>
               <Avatar />
               <h3>{user.name}</h3>

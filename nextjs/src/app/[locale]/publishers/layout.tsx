@@ -13,7 +13,7 @@ export default function NavigationLayout({
 }) {
   return (
     <UserProvider>
-      <div className='relative flex items-center justify-between px-2'>
+      <div className='relative flex items-center justify-between bg-container px-2 transition-colors'>
         <Image
           src={profilePic}
           alt='Brave Creators Logo'

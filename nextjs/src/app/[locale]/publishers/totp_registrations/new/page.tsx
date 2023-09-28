@@ -52,7 +52,7 @@ export default function TOTPNewPage() {
             <div>
               {totp.qr_code_svg && (
                 <NextImage
-                  className='border-primary box-content rounded-2 p-2'
+                  className='border-primary box-content rounded-2 bg-white p-2'
                   useSkeleton
                   width='200'
                   height='200'
