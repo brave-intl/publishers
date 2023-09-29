@@ -13,9 +13,8 @@ services:
       DATABASE_URL_TEST: postgres://postgres@postgres:5432/brave_publishers_test
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
-      PORT: 3000
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
-    command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s -b '0.0.0.0'"
+    command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
     networks:
       - default
     depends_on:
@@ -31,10 +30,13 @@ services:
     build: nextjs/.
     command: npm run dev
     volumes:
-      - ./nextjs:/app
+      - type: bind
+        source: ./nextjs
+        target: /app
       - /app/node_modules # <-- try adding this!
+      - ./ssl:/ssl
     ports:
-      - "5000:3000"
+      - "5001:5001"
       - "9231:9231" # debugger ports
       - "9232:9232"
       - "9229:9229"

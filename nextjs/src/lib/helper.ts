@@ -11,3 +11,12 @@ export function getFromSessionStorage(key: string): string | null {
   }
   return null;
 }
+
+export function pick(obj, ...keys) {
+  return keys.reduce((picked, key) => {
+    if (key in obj) {
+      picked[key] = obj[key];
+    }
+    return picked;
+  }, {});
+}

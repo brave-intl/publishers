@@ -8,7 +8,6 @@ require "rails/test_help"
 require "shakapacker"
 require "selenium-webdriver"
 require "webmock/minitest"
-require "webdrivers/geckodriver"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 require "test_helpers/service_class_helpers"
@@ -33,7 +32,8 @@ end
 Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
-Capybara.register_driver "firefox" do |app|
+
+Capybara.register_driver :firefox do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
   opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
   opts.args << "--headless"
@@ -59,23 +59,17 @@ end
 Capybara.register_driver :rack_test_jp do |app|
   Capybara::RackTest::Driver.new(app, headers: {"HTTP_ACCEPT_LANGUAGE" => "ja-JP"})
 end
-Capybara.default_driver = "firefox"
-driver_urls = Webdrivers::Common.subclasses.map do |driver|
-  Addressable::URI.parse(driver.base_url).host
-end
-driver_urls << "127.0.0.1"
-driver_urls << "localhost"
-driver_urls << "objects.githubusercontent.com" # pulling firefox
+Capybara.default_driver = :firefox
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
+  config.ignore_localhost = true
   config.filter_sensitive_data("<ENCODED API KEY>") { Rails.configuration.pub_secrets[:sendgrid_api_key] }
   config.before_record do |i|
     i.response.body.force_encoding("UTF-8")
     i.response.headers.delete("Set-Cookie")
     i.request.headers.delete("Authorization")
   end
-  config.ignore_hosts(*driver_urls)
   config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = {match_requests_on: %i[method uri body], decode_compressed_response: true}
 end
