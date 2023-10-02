@@ -27,19 +27,15 @@ export default function SettingsPage() {
   const t = useTranslations();
 
   function updateAccountSettings(newSettings?) {
-    apiRequest(
-      `publishers/${user.id}`,
-      {
-        publisher: pick(
-          newSettings || settings,
-          'email',
-          'name',
-          'subscribed_to_marketing_emails',
-          'thirty_day_login',
-        ),
-      },
-      'PUT',
-    );
+    apiRequest(`publishers/${user.id}`, 'PUT', {
+      publisher: pick(
+        newSettings || settings,
+        'email',
+        'name',
+        'subscribed_to_marketing_emails',
+        'thirty_day_login',
+      ),
+    });
     updateUser(settings);
   }
 

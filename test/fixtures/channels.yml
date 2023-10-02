@@ -165,6 +165,7 @@ alice_default_twitter_ii:
   publisher: default
   details: uphold_connected_twitter_default_ii (TwitterChannelDetails)
   verified: true
+  public_identifier: 'fd04faddd96bdd3b9840'
 
 youtube_initial:
   publisher: youtube_initial
