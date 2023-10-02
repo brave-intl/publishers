@@ -130,12 +130,16 @@ class Admin::PublishersController < AdminController
 
     authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform
 
-    options = {}
-    options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
-    options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?
-    base = root_url(options).gsub("/?locale=en", "")
+    if Rails.configuration.pub_secrets[:next_proxy_url] && Rails.configuration.pub_secrets[:nextjs_enabled]
+      options = {}
+      options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
+      options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?
+      base = root_url(options).gsub("/?locale=en", "")
+      login_url = base + "/publishers/" + @publisher.id + "?token=" + authentication_token
+    else
+      login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
+    end
 
-    login_url = base + "/publishers/" + @publisher.id + "?token=" + authentication_token
     if @publisher.totp_registration.present?
       render json: {
         login_url: login_url,
