@@ -37,23 +37,26 @@ app
       return handle(req, res);
     });
 
+    const pubHost = `https://${process.env.PUBLISHERS_HOST}`;
+    const nextHost = `https://${process.env.NEXT_HOST}`
+
     // Proxy over to Rails
     expressApp.use(
       '*',
       createProxyMiddleware('**', {
         logger: console,
-        target: 'https://web:3000',
+        target: pubHost,
         changeOrigin: true,
         secure: !isDevelopment,
         onProxyReq: (proxyReq, request, response) => {
-          proxyReq.setHeader('origin', 'https://web:3000');
+          proxyReq.setHeader('origin', pubHost);
         },
         onProxyRes: (proxyRes, request, response) => {
           const redir = proxyRes.headers['location'];
           if (redir) {
             const host = parse(redir).host;
-            if (`https://${host}` == 'https://web:3000') {
-              const newRedirUrlToProxy = `https://localhost:5001${
+            if (`https://${host}` == pubHost) {
+              const newRedirUrlToProxy = `${nextHost}${
                 parse(redir).pathname
               }`;
               proxyRes.headers['location'] = newRedirUrlToProxy;
