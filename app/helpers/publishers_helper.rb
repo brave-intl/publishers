@@ -246,7 +246,7 @@ module PublishersHelper
     options = {token: token}
     options[:confirm_email] = confirm_email if confirm_email
     options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
-    options[:port] = 5001
+    options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?
     publisher_url(publisher, options)
   end
 
