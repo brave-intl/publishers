@@ -245,8 +245,10 @@ module PublishersHelper
     token = publisher.authentication_token
     options = {token: token}
     options[:confirm_email] = confirm_email if confirm_email
-    options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
-    options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?
+    if Rails.configuration.pub_secrets[:next_proxy_url] && Rails.configuration.pub_secrets[:nextjs_enabled]
+      options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
+      options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?
+    end
     publisher_url(publisher, options)
   end
 
