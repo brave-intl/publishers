@@ -46,43 +46,6 @@
       "alert": "アカウント設定が更新されました"
     }
   },
-  "activerecord": {
-    "shared": {
-      "errors": "リクエストの保存中にエラーが発生しました："
-    },
-    "attributes": {
-      "publisher": {
-        "visible": "はい。Braveのマーケティングチャンネルにサイトを掲載して、認知を広めます",
-        "name": "氏名"
-      },
-      "site_channel_details": {
-        "brave_publisher_id": "Webサイトドメイン",
-        "brave_publisher_id_unnormalized": "Webサイトドメイン"
-      },
-      "u2f_registration": {
-        "name": "セキュリティーキーの名前"
-      }
-    },
-    "errors": {
-      "models": {
-        "invoice": {
-          "attributes": {
-            "date": "パートナーごとに一意である必要があります"
-          }
-        },
-        "site_channel_details": {
-          "attributes": {
-            "brave_publisher_id": {
-              "api_error_cant_normalize": "APIエラーのために正規化できません",
-              "exclusion_list_error": "Brave Publisherの除外リストに含まれていました。 さらにサポートが必要な場合は、<a href=\"https://community.brave.com/c/japanese-support/148\">https://community.brave.com/c/japanese-support/148</a>にお問い合わせください。",
-              "taken": "入力したドメインは既に認証されており、別のアカウントに追加されています。 さらにサポートが必要な場合は、<a href=\"https://community.brave.com/c/japanese-support/148\">https://community.brave.com/c/japanese-support/148</a>にお問い合わせください。",
-              "invalid_uri": "無効なドメインURI"
-            }
-          }
-        }
-      }
-    }
-  },
   "security": {
     "index": {
       "enabled_no": "無効",
@@ -136,51 +99,17 @@
       "subheading": "2要素認証の設定をしてください"
     }
   },
-  "shared": {
-    "add_channel": "チャンネルを追加",
-    "app_title": "Brave クリエイター",
-    "app_description": "Webサイトや、YoutubeやTwitchにチャンネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。",
-    "cancel": "キャンセル",
-    "channel_created": "チャンネルを作成しました。24-48時間以内に認証ステータスが表示されます。",
-    "channel_contested": "チャンネルは %{time_until_transfer}以内に現在の所有者から移管されます",
-    "channel_could_not_be_contested": "チャンネルに異議を申し立てることができませんでした。 これが誤っていると思われる場合は、support + publishers @ basicattentiontoken.org までメールでお問い合わせください",
-    "channel_transfer_rejected": "チャンネル移管が却下されました。",
-    "time_until_transfer_fallback": "あと少し",
-    "channel_contested_by": "チャンネルは別のサイト運営者によって検証されており、却下しない限り、%{time_until_transfer}でそのアカウントに移行されます。",
-    "channel_not_found": "チャンネルが見つかりませんでした",
-    "channel_removed": "チャンネルが削除されました",
-    "continue": "続ける",
-    "dashboard": "ダッシュボード",
-    "referrals": "リファラル",
-    "payments": "支払い",
-    "download": "ダウンロード",
-    "existing_account": "既にアカウントをお持ちですか?",
-    "error": "問題が発生しました。サポートにお問い合わせください。",
-    "get_started": "さあ始めましょう",
-    "instant_donation": "チップ受付用バナー",
-    "invalid_totp": "6桁のコードが誤っています。もう一度試してください。",
-    "log_in": "ログイン",
-    "remove": "削除",
-    "terms_of_service": "利用規約",
-    "lost_2fa": "二段階認証に問題がありますか？",
-    "faqs": "FAQ",
-    "ok": "OK",
-    "oh_no": "おや？",
-    "choose_different_verification_method": "別の認証方法を選択する",
-    "support_note_html": "ご質問がある場合は、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。",
-    "warning_note_html": "このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。"
-  },
   "totp_registrations": {
     "new": {
       "cancel": "キャンセル",
       "heading": "Authenticatorアプリのセットアップ",
-      "password_prompt": "6桁のコード",
+      "warning": "再設定すると、既存の認証コードデバイスが無効になります",
       "step_1": "スマートフォンに認証アプリをインストールします",
       "step_2": "アプリで以下のQRコードをスキャンします",
       "step_2_alt": "QRコードをスキャンできない場合は、次のコードを入力してください：",
       "step_3": "スキャンが完了したら、アプリから6桁のコードを入力します。",
-      "submit_value": "完了",
-      "warning": "再設定すると、既存の認証コードデバイスが無効になります"
+      "password_prompt": "6桁のコード",
+      "submit_value": "完了"
     }
   },
   "u2f_registrations": {

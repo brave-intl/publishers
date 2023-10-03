@@ -42,7 +42,7 @@ If for any reason some step in the command chain breaks, simply review the [Make
 
 ## The advanced pieces
 
-- [Environment Variables (Docker should handle most of this)](docs/ENVIRONMENT.md)
+- [Environment Variables (Optional, Docker should handle most of this)](docs/ENVIRONMENT.md)
 - [Docker Network Configuration(Informational)](docs/NETWORKS.md)
 - [Creating a new Channel](docs/CHANNELS.md)
 - [Configuring 3rd Party APIs (Optional)](docs/API.md)

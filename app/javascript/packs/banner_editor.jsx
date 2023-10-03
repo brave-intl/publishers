@@ -621,8 +621,8 @@ export default class BannerEditor extends React.Component {
             <YoutubeColorIcon
               className="banner-link-option"
               style={{
-                height: "30px",
-                width: "30px",
+                height: "25px",
+                width: "25px",
                 display: "inline-block",
                 marginBottom: "12px"
               }}
@@ -700,7 +700,7 @@ export default class BannerEditor extends React.Component {
             style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
           >
             <YoutubeColorIcon
-              style={{ height: "28px", width: "28px", margin: "auto" }}
+              style={{ height: "25px", width: "25px", margin: "auto" }}
             />
           </div>
           <div

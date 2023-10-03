@@ -75,17 +75,6 @@ hr {
   border-top: 1px solid var(--leo-color-text-primary);
 }
 
-[slot='errors'] {
-  display: flex;
-  flex-direction: row;
-  gap: var(--leo-spacing-m);
-  align-items: center;
-
-  margin-top: var(--leo-spacing-s);
-
-  color: var(--leo-color-systemfeedback-error-icon);
-}
-
 .main {
   @apply py-4 px-2;
 

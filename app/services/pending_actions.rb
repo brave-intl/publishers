@@ -121,14 +121,7 @@ module PendingActions
     def step_up! context
       if context.two_factor_enabled?(current_publisher)
         save! context
-        if context.class.name.include?("Nextv1")
-          execute! context
-          # context.render(json: {
-          #   error: '2fa_required'
-          # }, status: 200)
-        else
-          context.redirect_to context.two_factor_authentications_path
-        end
+        context.redirect_to context.two_factor_authentications_path
       else
         execute! context
       end

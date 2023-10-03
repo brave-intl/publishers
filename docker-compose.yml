@@ -43,8 +43,6 @@ services:
       - "9230:9230"
     environment:
       NODE_ENV: development
-      PUBLISHERS_HOST: web:3000
-      NEXT_HOST: localhost:5001
     depends_on:
       - web
     networks:

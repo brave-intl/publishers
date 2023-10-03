@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export async function apiRequest(
   path: string,
-  method: string = 'GET',
   data?: unknown,
+  method: string = 'GET',
   apiVersion: string = 'v1',
 ) {
   try {
