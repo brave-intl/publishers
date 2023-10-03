@@ -23,6 +23,11 @@ html {
   box-sizing: inherit;
 }
 
+body {
+  color: var(--leo-color-text-primary);
+  background: var(--leo-color-page-background);
+}
+
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
   margin: 0;
   padding: 0;
@@ -64,8 +69,10 @@ hr {
 
   margin-top: var(--leo-spacing-16);
   margin-bottom: var(--leo-spacing-16);
+
+  opacity: 0.4;
   border: 0;
-  border-top: 1px solid rgb(30 32 41 / 10%);
+  border-top: 1px solid var(--leo-color-text-primary);
 }
 
 [slot='errors'] {

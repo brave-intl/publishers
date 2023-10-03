@@ -4,12 +4,12 @@ import Button from '@brave/leo/react/button';
 import Checkbox from '@brave/leo/react/checkbox';
 import Dialog from '@brave/leo/react/dialog';
 import Input from '@brave/leo/react/input';
+import RadioButton from '@brave/leo/react/radioButton';
 import Toggle from '@brave/leo/react/toggle';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
-import * as React from 'react';
 
 import { apiRequest } from '@/lib/api';
 import UserContext from '@/lib/context/UserContext';
@@ -19,12 +19,19 @@ import { UserType } from '@/lib/propTypes';
 import Card from '@/components/Card';
 
 export default function SettingsPage() {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'auto');
   const { user, updateUser } = useContext(UserContext);
   const [isModalOpen, setModalIsOpen] = useState(false);
   const [settings, setSettings] = useState<Partial<UserType>>(user);
   const [isEditMode, setIsEditMode] = useState(false);
   const { push } = useRouter();
   const t = useTranslations();
+
+  function updateTheme(theme) {
+    setTheme(theme);
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
 
   function updateAccountSettings(newSettings?) {
     apiRequest(`publishers/${user.id}`, 'PUT', {
@@ -56,14 +63,16 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className='main'>
+    <main className='main transition-colors'>
       <Head>
         <title>{t('Settings.title')}</title>
         hello
       </Head>
+
       <section className='content-width'>
         <Card className='mb-3'>
           <h2 className='mb-2'>{t('Settings.index.header')}</h2>
+          <h4 className='mt-2'>Stay Logged-In</h4>
           <div className='flex items-center justify-between'>
             <p>{t('Settings.index.extended_login.intro')}</p>
             <Toggle
@@ -72,6 +81,31 @@ export default function SettingsPage() {
               onChange={(e) => handleToggleChange(e, 'thirty_day_login')}
             />
           </div>
+          {process.env.NODE_ENV === 'development' && (
+            <>
+              <h4 className='mt-2'>Appearance</h4>
+              <div className='mt-1 flex flex-col gap-1 capitalize'>
+                <RadioButton
+                  name='auto'
+                  currentValue={theme}
+                  value='auto'
+                  onChange={() => updateTheme('auto')}
+                />
+                <RadioButton
+                  name='light'
+                  currentValue={theme}
+                  value='light'
+                  onChange={() => updateTheme('light')}
+                />
+                <RadioButton
+                  name='dark'
+                  currentValue={theme}
+                  value='dark'
+                  onChange={() => updateTheme('dark')}
+                />
+              </div>
+            </>
+          )}
         </Card>
 
         <Card className='mb-3'>
