@@ -12,7 +12,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-const nextAllowRoutes = ['_next', 'icons', 'favicon', 'api'];
+const nextAllowRoutes = ['_next', '^icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
   'publishers/settings',
   'publishers/security',
@@ -47,7 +47,7 @@ app
         changeOrigin: true,
         secure: !isDevelopment,
         onProxyReq: (proxyReq, request, response) => {
-          proxyReq.setHeader('origin', pubHost);
+          proxyReq.setHeader('origin', pubHost.origin );
         },
         onProxyRes: (proxyRes, request, response) => {
           const redir = proxyRes.headers['location'];
