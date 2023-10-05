@@ -7,7 +7,7 @@
       .col-small-centered
         = form_tag registrations_path, method: :patch do |f|
           .form-group
-            = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true
+            = email_field_tag :email, nil, autofocus: true, autocomplete: "on", class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true
           - if params[:captcha]
             = hidden_field_tag(:captcha)
           - if @should_throttle

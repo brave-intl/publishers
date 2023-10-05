@@ -17,12 +17,17 @@ export default {
     },
     extend: {
       colors: {
-        green: '#02b999',
+        green: {
+          20: '#B6F0B4',
+          50: '#19721E',
+          base: '#02b999',
+        },
         red: {
           30: 'var(--leo-color-red-30)',
         },
         container: 'var(--leo-color-container-background)',
         main: 'var(--leo-color-page-background)',
+        'text-secondry': '#666D89',
       },
       // TODO: Update when Brave leo has these variables
       spacing: {

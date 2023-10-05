@@ -93,7 +93,7 @@ export default function SecurityPage() {
                 className={clsx(
                   'flex items-start gap-0.5 rounded py-1 text-[18px] font-semibold',
                   {
-                    'text-green': two_factor_enabled,
+                    'text-green-base': two_factor_enabled,
                     'text-red-30': !two_factor_enabled,
                   },
                 )}
@@ -120,7 +120,7 @@ export default function SecurityPage() {
               )}
               {totp_enabled && (
                 <div className='mt-2'>
-                  <span className='text-green font-medium'>
+                  <span className='text-green-base font-medium'>
                     {t('security.index.totp.enabled')}
                   </span>
                   {' | '}
@@ -157,7 +157,7 @@ export default function SecurityPage() {
                   {security.u2f_registrations.map((item) => {
                     return (
                       <div key={item.id} className='mt-1'>
-                        <span className='text-green font-medium'>
+                        <span className='text-green-base font-medium'>
                           {`${item.name} `}
                         </span>
                         <span className='italic'>

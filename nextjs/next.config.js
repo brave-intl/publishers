@@ -15,6 +15,16 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
 
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/publishers',
+  //       destination: '/publishers/home',
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
+
   // TODO: remove this code once Proxy is no longer needed
   images: { unoptimized: process.env.NODE_ENV === 'development' },
 

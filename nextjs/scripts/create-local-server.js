@@ -17,6 +17,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const nextAllowRoutes = ['_next', 'icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
   'publishers/settings',
+  'publishers/home',
   'publishers/security',
   'publishers/totp_registrations/new',
   'publishers/u2f_registrations/new',
@@ -38,7 +39,7 @@ app
     });
 
     const pubHost = `https://${process.env.PUBLISHERS_HOST}`;
-    const nextHost = `https://${process.env.NEXT_HOST}`
+    const nextHost = `https://${process.env.NEXT_HOST}`;
 
     // Proxy over to Rails
     expressApp.use(
@@ -56,9 +57,7 @@ app
           if (redir) {
             const host = parse(redir).host;
             if (`https://${host}` == pubHost) {
-              const newRedirUrlToProxy = `${nextHost}${
-                parse(redir).pathname
-              }`;
+              const newRedirUrlToProxy = `${nextHost}${parse(redir).pathname}`;
               proxyRes.headers['location'] = newRedirUrlToProxy;
             }
           }
