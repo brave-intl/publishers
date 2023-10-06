@@ -23,7 +23,7 @@ module Ratio
     end
 
     def channel_page
-      response = get("/v2/relative/provider/coingecko/eth,sol/usd/live")
+      response = get("/v2/relative/provider/coingecko/eth,sol,bat/usd/live")
       JSON.parse(response.body)
     end
 
