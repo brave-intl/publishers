@@ -12,7 +12,7 @@ module Publishers
     # Fetch URI, following redirects per options
     def fetch(uri:, limit: 10, follow_all_redirects: false, follow_local_redirects: true)
       host = nil
-      response = SsrfFilter.get(uri, max_redirects: limit, http_options: {open_timeout: 8}) do |request|
+      request_proc = proc do |request|
         if host && host != request["host"] && !follow_all_redirects
           if follow_local_redirects
             raise RedirectError.new("non local redirects prohibited")
@@ -20,9 +20,9 @@ module Publishers
             raise RedirectError.new("redirects prohibited")
           end
         end
-
         host = request["host"]
       end
+      response = SsrfFilter.get(uri, max_redirects: limit, request_proc: request_proc, http_options: {open_timeout: 8})
       case response
       when Net::HTTPSuccess
         response

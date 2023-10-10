@@ -139,7 +139,7 @@ gem "sidekiq-throttled", "~> 1.0.0.alpha.1"
 # slim for view templates
 gem "slim-rails", "3.6.2"
 
-gem "ssrf_filter", "1.0.7"
+gem "ssrf_filter", "1.1.2"
 
 gem "strong_migrations"
 
