@@ -26,7 +26,7 @@
       h6= t "publishers.choose_new_channel_type.twitch.heading"
       = t "publishers.choose_new_channel_type.twitch.description"
 
-= link_to(publisher_register_twitter_channel_omniauth_authorize_path, method: :post, class: 'card block-link--card disabled', :"data-piwik-action" => "AddTwitterChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+= link_to(publisher_register_twitter_channel_omniauth_authorize_path, method: :post, class: 'card block-link--card', :"data-piwik-action" => "AddTwitterChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
   .card-body
     .icon-and-text--icon
       = image_tag "choose-channel/twitter.svg", class: "choose-channel--icon"
