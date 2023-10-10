@@ -12,27 +12,4 @@
   .card-body {
     padding: $spacer*1.5 $spacer*4;
   }
-
-  &.disabled {
-    position: relative;
-
-    .card-body {
-      opacity: 0.4;
-    }
-
-    &:hover {
-      border: 1px solid #dbdfe3;
-      box-shadow: none !important;
-    }
-
-    &:after {
-      content: 'Temporarily Unavailable';
-      color: white;
-      background: #a7acb2;;
-      bottom: -16px;
-      position: absolute;
-      border-radius: 16px;
-      padding: 4px 12px;
-    }
-  }
 }
