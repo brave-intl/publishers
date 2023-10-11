@@ -10,7 +10,10 @@ type Props = {
 const Card: FC<Props> = ({ children, width, className }) => {
   return (
     <div
-      className={clsx('shadow rounded bg-white px-4 pb-5 pt-4', className)}
+      className={clsx(
+        'shadow bg-container rounded px-4 pb-5 pt-4 transition-colors',
+        className,
+      )}
       style={{ width: `${width}px` }}
     >
       {children}

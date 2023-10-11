@@ -4,7 +4,7 @@ import * as buffer from "buffer";
 window.Buffer = buffer.Buffer;
 import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
-import * as Web3Utils from "web3-utils";
+import Web3 from "web3";
 import {
   Connection,
   Keypair,
@@ -37,8 +37,8 @@ import {
 } from "./PublicChannelPageStyle.js";
 import ethIcon from "../../../assets/images/eth_icon_larger.png";
 import solIcon from "../../../assets/images/solana_icon_larger.png";
-
-
+import batIcon from "../../../assets/images/bat_icon.png";
+import goerliBatAbi from "./goerliBatAbi.json";
 
 class CryptoPaymentWidget extends React.Component {
   constructor(props) {
@@ -60,6 +60,7 @@ class CryptoPaymentWidget extends React.Component {
         label: intl.formatMessage({ id: 'publicChannelPage.ethereumNetwork' }),
         options: [
           { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereum' }), value: "ETH", icon: ethIcon },
+          { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumBAT' }), value: "BAT", icon: batIcon }
         ]
       })
     }
@@ -109,7 +110,8 @@ class CryptoPaymentWidget extends React.Component {
   };
 
   calculateCryptoPrice() {
-    return this.state.currentAmount / this.state.ratios[this.state.currentChain.toLowerCase()]['usd'];
+    const chain = this.state.currentChain.includes("BAT") ? 'bat' : this.state.currentChain.toLowerCase();
+    return this.state.currentAmount / this.state.ratios[chain]['usd'];
   }
 
   roundCryptoPrice() {
@@ -129,6 +131,8 @@ class CryptoPaymentWidget extends React.Component {
       await this.sendEthPayment();
     } else if (this.state.currentChain === "SOL") {
       this.sendSolPayment();
+    } else if (this.state.currentChain === "BAT") {
+      this.sendEthBatPayment();
     }
   }
 
@@ -143,7 +147,7 @@ class CryptoPaymentWidget extends React.Component {
 
       // While most guides to converting eth to wei multiply the value by 10e18, In javascript e counts 
       // as the 10 and *10e18 results in a value that is an order of mangitude too high.
-      const value = Web3Utils.toHex(Web3Utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17)));
+      const value = Web3.utils.toHex(Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17)));
 
       const params = [{
         from: address,
@@ -170,6 +174,44 @@ class CryptoPaymentWidget extends React.Component {
     } else {
       // set to be designed error state here
       return;
+    }
+  }
+
+  sendEthBatPayment = async () => {
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      const address = accounts[0]
+      if (!address) {
+        // set to be designed error state here
+        return;
+      }
+
+      try {
+        const web3 = new Web3(window.ethereum);
+        // BAT Token contract address (replace with the actual contract address)
+        const batContractAddress = '0x5C8826a45Cfc827D0BdEda3aad0845487C026bCe';
+
+        const contract = new web3.eth.Contract(goerliBatAbi, batContractAddress);
+        const amount = Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17))
+        const encodedAbi = await contract.methods.transfer(this.state.addresses.ETH, amount).encodeABI()
+
+        const results = await web3.eth.sendTransaction({
+                          from: address,
+                          to: batContractAddress,
+                          value: "0",  // note that value is a string
+                          data: encodedAbi,
+                        })
+        
+        if (results.status > 0) {
+          // window.ethereum.disable()
+          const newState = {...this.state};
+          newState.isSuccessView = true;
+          this.setState({...newState });
+        }
+      } catch (e) {
+        // set to be designed error state here
+        return;
+      }
     }
   }
 

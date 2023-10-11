@@ -30,10 +30,10 @@ services:
     build: nextjs/.
     command: npm run dev
     volumes:
+      - /app/node_modules # <-- try adding this!
       - type: bind
         source: ./nextjs
         target: /app
-      - /app/node_modules # <-- try adding this!
       - ./ssl:/ssl
     ports:
       - "5001:5001"

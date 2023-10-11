@@ -1,20 +1,18 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const httpProxy = require('http-proxy');
 const chalk = require('chalk');
-const { parse } = require('url');
 const next = require('next');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const { createServer } = require('https');
-var url = require('url');
 const PORT = 5001;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-const nextAllowRoutes = ['_next', 'icons', 'favicon', 'api'];
+const nextAllowRoutes = ['_next', '^icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
   'publishers/settings',
   'publishers/security',
@@ -37,8 +35,8 @@ app
       return handle(req, res);
     });
 
-    const pubHost = `https://${process.env.PUBLISHERS_HOST}`;
-    const nextHost = `https://${process.env.NEXT_HOST}`
+    const pubHost = new URL(`https://${process.env.PUBLISHERS_HOST}`);
+    const nextHost = `https://${process.env.NEXT_HOST}`;
 
     // Proxy over to Rails
     expressApp.use(
@@ -49,17 +47,19 @@ app
         changeOrigin: true,
         secure: !isDevelopment,
         onProxyReq: (proxyReq, request, response) => {
-          proxyReq.setHeader('origin', pubHost);
+          proxyReq.setHeader('origin', pubHost.origin );
         },
         onProxyRes: (proxyRes, request, response) => {
           const redir = proxyRes.headers['location'];
           if (redir) {
-            const host = parse(redir).host;
-            if (`https://${host}` == pubHost) {
-              const newRedirUrlToProxy = `${nextHost}${
-                parse(redir).pathname
-              }`;
-              proxyRes.headers['location'] = newRedirUrlToProxy;
+            try {
+              const redirUrl = new URL(redir);
+              if (redirUrl.protocol === pubHost.protocol && redirUrl.host === pubHost.host) {
+                const newRedirUrlToProxy = `${nextHost}${redirUrl.pathname}`;
+                proxyRes.headers['location'] = newRedirUrlToProxy;
+              }
+            } catch (e) {
+              if (!e.code || e.code != "ERR_INVALID_URL") throw e;
             }
           }
         },

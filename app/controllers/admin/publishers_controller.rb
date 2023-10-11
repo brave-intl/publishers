@@ -130,7 +130,7 @@ class Admin::PublishersController < AdminController
 
     authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform
 
-    if Rails.configuration.pub_secrets[:next_proxy_url] && Rails.configuration.pub_secrets[:nextjs_enabled]
+    if Rails.configuration.pub_secrets[:next_proxy_url] && Rails.configuration.pub_secrets[:next_proxy_enabled]
       options = {}
       options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
       options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?

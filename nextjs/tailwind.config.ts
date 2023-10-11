@@ -18,6 +18,11 @@ export default {
     extend: {
       colors: {
         green: '#02b999',
+        red: {
+          30: 'var(--leo-color-red-30)',
+        },
+        container: 'var(--leo-color-container-background)',
+        main: 'var(--leo-color-page-background)',
       },
       // TODO: Update when Brave leo has these variables
       spacing: {
