@@ -335,7 +335,7 @@ class Channel < ApplicationRecord
   end
 
   def register_channel_for_promo
-    Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
+    Promo::RegisterChannelForPromoJob.perform_now(id, 0)
   end
 
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)

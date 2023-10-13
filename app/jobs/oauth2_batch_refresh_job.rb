@@ -3,7 +3,7 @@ class Oauth2BatchRefreshJob < ApplicationJob
 
   # https://docs.gemini.com/rest-api/#rate-limits
   # 0.1 requests/second
-  def perform(wait: 0.1, limit: 5000, notify: false, async: true)
+  def perform(wait = 0.1, limit = 5000, notify = false, async = true)
     klass = set_klass
 
     limit = set_limit.present? ? set_limit : limit
@@ -16,9 +16,9 @@ class Oauth2BatchRefreshJob < ApplicationJob
         count += 1
 
         if async
-          Oauth2RefreshJob.perform_later(connection.id, klass.name, notify: notify)
+          Oauth2RefreshJob.perform_later(connection.id, klass.name, notify)
         else
-          Oauth2RefreshJob.new.perform(connection.id, klass.name, notify: notify)
+          Oauth2RefreshJob.new.perform(connection.id, klass.name, notify)
         end
         sleep(wait) if wait
       end

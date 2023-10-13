@@ -64,7 +64,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     new_conn = publisher.reload.uphold_connection
     channel.reload
     job = CreateUpholdChannelCardJob.new
-    job.perform(uphold_connection_id: new_conn.id, channel_id: channel.id)
+    job.perform(new_conn.id, channel.id)
 
     assert_equal publisher.channels.first.uphold_connection_for_channel.length, 1
     assert_equal publisher.channels.first.uphold_connection.uphold_connection_id, publisher.uphold_connection.id
@@ -183,7 +183,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     # verify RegisterChannelForPromoJob is called
     channel.verified = true
     channel.save!
-    Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
+    Promo::RegisterChannelForPromoJob.perform_now(channel.id)
 
     # verify it worked and the channel has a referral code
     channel.reload
@@ -212,7 +212,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     # channel_copy.verified = true
     channel_copy = Channel.new(details: channel_details_copy, verified: true, publisher: publisher)
     channel_copy.save!
-    Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel_copy.id)
+    Promo::RegisterChannelForPromoJob.perform_now(channel_copy.id)
 
     channel_copy.reload
     assert channel_copy.promo_registration.referral_code

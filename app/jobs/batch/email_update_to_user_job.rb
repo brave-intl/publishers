@@ -4,7 +4,7 @@ module Batch
   class EmailUpdateToUserJob < ApplicationJob
     queue_as :low
 
-    def perform(publisher_id:)
+    def perform(publisher_id)
       publisher = Publisher.find(publisher_id)
       return if publisher.suspended?
 

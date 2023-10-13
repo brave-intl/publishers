@@ -234,7 +234,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   def create_uphold_cards
     return unless can_create_uphold_cards? && default_currency.present?
     publisher.channels.each do |channel|
-      CreateUpholdChannelCardJob.perform_later(uphold_connection_id: id, channel_id: channel.id) if !channel.has_valid_uphold_connection?
+      CreateUpholdChannelCardJob.perform_later(id, channel.id) if !channel.has_valid_uphold_connection?
     end
   end
 

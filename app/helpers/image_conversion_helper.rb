@@ -52,7 +52,7 @@ module ImageConversionHelper
         next
       end
     end
-    raise t("banner.upload_too_big")
+    raise I18n.t("banner.upload_too_big")
   end
 
   def generate_filename(source_image_path:)

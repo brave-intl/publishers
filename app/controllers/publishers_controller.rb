@@ -145,7 +145,7 @@ class PublishersController < ApplicationController
   class DestroyPublisher < StepUpAction
     call do |publisher_id|
       current_publisher = Publisher.find(publisher_id)
-      PublisherRemovalJob.perform_later(publisher_id: publisher_id)
+      PublisherRemovalJob.perform_later(publisher_id)
       sign_out(current_publisher)
       redirect_to(root_path)
     end

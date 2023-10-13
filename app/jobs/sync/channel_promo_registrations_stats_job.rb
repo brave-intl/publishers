@@ -4,7 +4,7 @@
 class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper
 
-  def perform(wait: 1, limit: 1000, async: true)
+  def perform(wait = 1, limit = 1000, async = true)
     count = 0
 
     # Limit of 1000 with a batch size of 50 puts us at 20 requests total per run with a 1 second delay

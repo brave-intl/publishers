@@ -3,7 +3,7 @@
 class GenerateReferralReportJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(publisher_id:, referral_codes:, start_date:, end_date:, interval:, break_down_by_country:)
+  def perform(publisher_id, referral_code, start_date, end_date, interval, break_down_by_country)
     report_csv = Promo::RegistrationStatsReportGenerator.new(
       referral_codes: referral_codes,
       start_date: start_date,

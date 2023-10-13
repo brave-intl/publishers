@@ -4,7 +4,7 @@
 class MigrateUpholdAccessParametersJob < ApplicationJob
   queue_as :low
 
-  def perform(publisher_id:, parameters:, default_currency:)
+  def perform(publisher_id, parameters, default_currency)
     connection = UpholdConnection.find_by(publisher_id: publisher_id)
     if connection.present?
 

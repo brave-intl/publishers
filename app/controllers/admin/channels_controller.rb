@@ -41,7 +41,7 @@ module Admin
       )
 
       @channel_id = channel.id
-      DeletePublisherChannelJob.perform_now(channel_id: @channel_id)
+      DeletePublisherChannelJob.perform_now(@channel_id)
     end
 
     def duplicates

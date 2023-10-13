@@ -4,7 +4,7 @@ module Channels
   class ApproveChannelTransferJob < ApplicationJob
     queue_as :low
 
-    def perform(channel_id:)
+    def perform(channel_id)
       channel = Channel.find(channel_id)
 
       ActiveRecord::Base.transaction do

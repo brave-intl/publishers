@@ -79,7 +79,7 @@ class Admin::PublishersController < AdminController
   end
 
   def destroy
-    PublisherRemovalJob.perform_later(publisher_id: @publisher.id)
+    PublisherRemovalJob.perform_later(@publisher.id)
     flash[:alert] = "Deletion job enqueued. This usually takes a few seconds to complete"
     redirect_to admin_publisher_path(@publisher)
   end

@@ -6,7 +6,7 @@ require "send_grid/api_helper"
 class SendGrid::DeleteEmailJob < ApplicationJob
   queue_as :default
 
-  def perform(email:)
+  def perform(email)
     contact_id = SendGrid::ApiHelper.find_contact_by_email(email: email)["id"]
     SendGrid::ApiHelper.delete_contact(contact_id: contact_id) if contact_id.present?
   rescue SendGrid::NotFoundError

@@ -3,7 +3,7 @@
 class CacheUpholdTips < ApplicationJob
   queue_as :scheduler
 
-  def perform(uphold_connection_for_channel_id:)
+  def perform(uphold_connection_for_channel_id)
     upfc = UpholdConnectionForChannel.find(uphold_connection_for_channel_id)
 
     # Let's prematurely stop the pagination if we've already cached the most recent ids
