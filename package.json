@@ -63,6 +63,7 @@
     "@github/webauthn-json": "^2.1.1",
     "@rails/activestorage": "^7.0.6",
     "@rails/ujs": "^7.0.6",
+    "@solana/spl-token": "^0.3.8",
     "@solana/web3.js": "^1.78.4",
     "axios": "^1.4",
     "babel-loader": "9.1.3",
