@@ -1,5 +1,3 @@
-# typed: false
-
 require "net/http"
 require "ssrf_filter"
 
@@ -14,7 +12,6 @@ module Publishers
     # Fetch URI, following redirects per options
     def fetch(uri:, limit: 10, follow_all_redirects: false, follow_local_redirects: true)
       host = nil
-
       request_proc = proc do |request|
         if host && host != request["host"] && !follow_all_redirects
           if follow_local_redirects
@@ -23,7 +20,6 @@ module Publishers
             raise RedirectError.new("redirects prohibited")
           end
         end
-
         host = request["host"]
       end
       response = SsrfFilter.get(uri, max_redirects: limit, request_proc: request_proc, http_options: {open_timeout: 8})

@@ -59,6 +59,9 @@ export default {
     cryptoAddresses: {
       index: "/publishers/crypto_addresses",
       delete: "/publishers/crypto_addresses/{id}"
+    },
+    publicChannelPage: {
+      getRatios: "/get_ratios",
     }
   }
 };

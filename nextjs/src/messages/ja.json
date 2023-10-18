@@ -1,0 +1,217 @@
+{
+  "NavDropdown": {
+    "faqs": "FAQ",
+    "help": "ヘルプ",
+    "log_out": "ログアウト",
+    "security": "セキュリティー",
+    "settings": "設定"
+  },
+  "Settings": {
+    "buttons": {
+      "cancel": "キャンセル",
+      "save": "保存"
+    },
+    "index": {
+      "contact": {
+        "edit": "連絡先を編集",
+        "email": "Eメール",
+        "heading": "連絡先",
+        "name": "名前",
+        "update": "編集"
+      },
+      "delete_account": {
+        "button": "アカウントを削除する",
+        "heading": "アカウント削除",
+        "intro": "あなたのチャンネルとすべてのアカウント関情報は、データベースおよびされているバ全に削除されます。これは、元に戻すことはできません。",
+        "prompt": {
+          "confirm": "はい、アカウントを削除してください",
+          "deny": "いいえ、アカウントをそのままにしてください",
+          "final_confirmation": "完全に完了するまで数分かかります。",
+          "header": "アカウントを削除してもよろしいですか？",
+          "warning": "あなたのチャンネルとすべてのアカウント関情報は、データベースおよびされているバ全に削除されます。 これは、元に戻すことはできません."
+        },
+        "warning": "あなたのチャンネルとすべてのアカウント関連情報は、当社のデータベースおよび接続されているプロバイダーから完全に削除されます。\nこれは、元に戻すことはできません。"
+      },
+      "email": {
+        "heading": "メール設定",
+        "marketing_label": "ここにチェックを入れると、新機能やプロモーションについて電子メールで通知されることに同意します"
+      },
+      "extended_login": {
+        "intro": "ログイン状態を30日維持する"
+      },
+      "header": "アカウント設定"
+    },
+    "title": "設定",
+    "update": {
+      "alert": "アカウント設定が更新されました"
+    }
+  },
+  "activerecord": {
+    "shared": {
+      "errors": "リクエストの保存中にエラーが発生しました："
+    },
+    "attributes": {
+      "publisher": {
+        "visible": "はい。Braveのマーケティングチャンネルにサイトを掲載して、認知を広めます",
+        "name": "氏名"
+      },
+      "site_channel_details": {
+        "brave_publisher_id": "Webサイトドメイン",
+        "brave_publisher_id_unnormalized": "Webサイトドメイン"
+      },
+      "u2f_registration": {
+        "name": "セキュリティーキーの名前"
+      }
+    },
+    "errors": {
+      "models": {
+        "invoice": {
+          "attributes": {
+            "date": "パートナーごとに一意である必要があります"
+          }
+        },
+        "site_channel_details": {
+          "attributes": {
+            "brave_publisher_id": {
+              "api_error_cant_normalize": "APIエラーのために正規化できません",
+              "exclusion_list_error": "Brave Publisherの除外リストに含まれていました。 さらにサポートが必要な場合は、<a href=\"https://community.brave.com/c/japanese-support/148\">https://community.brave.com/c/japanese-support/148</a>にお問い合わせください。",
+              "taken": "入力したドメインは既に認証されており、別のアカウントに追加されています。 さらにサポートが必要な場合は、<a href=\"https://community.brave.com/c/japanese-support/148\">https://community.brave.com/c/japanese-support/148</a>にお問い合わせください。",
+              "invalid_uri": "無効なドメインURI"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": {
+    "index": {
+      "enabled_no": "無効",
+      "enabled_yes": "有効",
+      "heading": "二要素認証",
+      "intro": "二要素認証（2FA）とはBrave Paymentにログインする際、メールアドレスとパスワードに加えて、他の形式の情報の入力を必要とすることで、セキュリティを強化する機能です。（アカウント保護の観点で設定を推奨しています)",
+      "setup": "",
+      "totp": {
+        "button": "設定する",
+        "confirm_disable": {
+          "confirm": "いますぐ無効にする",
+          "deny": "無効にしない",
+          "final_confirmation": "本当にAuthenticatorアプリを無効にしますか？\n",
+          "header": "Authenticatorを無効化しますか？",
+          "intro": "残りの二要素認証方法 : ",
+          "no_2fa_warning_html": "Authenticatorアプリを無効化すると、アカウントに設定された\n二要素認証が直ちに無効になります。\n",
+          "no_totp_warning": "Authenticatorアプリは万が一物理的なセキュリティキーを紛失した際の、\n予備の手段として最適です。\n",
+          "none": "なし"
+        },
+        "destroy": "無効化する",
+        "disabled": "二要素認証アプリが未設定",
+        "disabled_without_fallback_html": "推奨: セキュリティリスクを下げるため、必ずAuthenticatorを二要素認証用に設定してください。\n",
+        "enabled": "二要素認証アプリの設定済",
+        "heading": "二要素認証用スマートフォンアプリ",
+        "intro": "二要素認証利用時にログインに必要なコードを生成するスマートフォンアプリです。\n",
+        "name_default": "匿名キー",
+        "reconfigure": "再設定"
+      },
+      "u2f": {
+        "browser": {
+          "content_html": "セキュリティキーを設定するには、最新の Brave 、Google Chrome </ strong>または Opera に更新する必要があります。将来的にはより多くのブラウザがサポートを開始する予定です。今後更新があればお知らせ致します。",
+          "heading": "ブラウザが対応していません。"
+        },
+        "button": "セキュリティキーを追加する",
+        "device": {
+          "content_html": "次の製品はテストされ、動作が確認されています :<br />\n- <a href=\"https://www.yubico.com/products/yubikey-hardware/\" target=\"_blank\">YubiKey</a><br />\n- <a href=\"https://www.ledgerwallet.com/products/ledger-blue\" target=\"_blank\">Ledger Blue</a>\n",
+          "heading": "テスト済みのセキュリティキー",
+          "tooltip": "テスト済みのセキュリティキー"
+        },
+        "disabled": "セキュリティキーが設定されていません",
+        "heading": "物理的なセキュリティキー",
+        "intro": "二要素認証を行える小型のハードウェアデバイスです。\n認証コードを入力する代わりに、コンピューターのUSBに接続し認証を行います。\n(認証標準であるFIDO U2Fに対応している必要があります。)\n",
+        "intro_warning": "現在セキュリティキーはBrave、Chrome、Operaに対応しています。\n"
+      }
+    },
+    "prompt": {
+      "heading": "アカウントのセキュリティを高めましょう",
+      "intro": "自分以外による不正なログインを防止するため、二要素認証の設定を推奨しています",
+      "setup": "二要素認証を設定する",
+      "skip": "スキップ",
+      "subheading": "2要素認証の設定をしてください"
+    }
+  },
+  "shared": {
+    "add_channel": "チャンネルを追加",
+    "app_title": "Brave クリエイター",
+    "app_description": "Webサイトや、YoutubeやTwitchにチャンネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。",
+    "cancel": "キャンセル",
+    "channel_created": "チャンネルを作成しました。24-48時間以内に認証ステータスが表示されます。",
+    "channel_contested": "チャンネルは %{time_until_transfer}以内に現在の所有者から移管されます",
+    "channel_could_not_be_contested": "チャンネルに異議を申し立てることができませんでした。 これが誤っていると思われる場合は、support + publishers @ basicattentiontoken.org までメールでお問い合わせください",
+    "channel_transfer_rejected": "チャンネル移管が却下されました。",
+    "time_until_transfer_fallback": "あと少し",
+    "channel_contested_by": "チャンネルは別のサイト運営者によって検証されており、却下しない限り、%{time_until_transfer}でそのアカウントに移行されます。",
+    "channel_not_found": "チャンネルが見つかりませんでした",
+    "channel_removed": "チャンネルが削除されました",
+    "continue": "続ける",
+    "dashboard": "ダッシュボード",
+    "referrals": "リファラル",
+    "payments": "支払い",
+    "download": "ダウンロード",
+    "existing_account": "既にアカウントをお持ちですか?",
+    "error": "問題が発生しました。サポートにお問い合わせください。",
+    "get_started": "さあ始めましょう",
+    "instant_donation": "チップ受付用バナー",
+    "invalid_totp": "6桁のコードが誤っています。もう一度試してください。",
+    "log_in": "ログイン",
+    "remove": "削除",
+    "terms_of_service": "利用規約",
+    "lost_2fa": "二段階認証に問題がありますか？",
+    "faqs": "FAQ",
+    "ok": "OK",
+    "oh_no": "おや？",
+    "choose_different_verification_method": "別の認証方法を選択する",
+    "support_note_html": "ご質問がある場合は、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。",
+    "warning_note_html": "このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。"
+  },
+  "totp_registrations": {
+    "new": {
+      "cancel": "キャンセル",
+      "heading": "Authenticatorアプリのセットアップ",
+      "password_prompt": "6桁のコード",
+      "step_1": "スマートフォンに認証アプリをインストールします",
+      "step_2": "アプリで以下のQRコードをスキャンします",
+      "step_2_alt": "QRコードをスキャンできない場合は、次のコードを入力してください：",
+      "step_3": "スキャンが完了したら、アプリから6桁のコードを入力します。",
+      "submit_value": "完了",
+      "warning": "再設定すると、既存の認証コードデバイスが無効になります"
+    }
+  },
+  "u2f_registrations": {
+    "new": {
+      "heading": "セキュリティキーを登録する",
+      "name_placeholder": "キーに設定するニックネーム",
+      "submit_value": "追加",
+      "u2f-error": {
+        "bad-request": "Braveによる登録リクエスト時に予期しないエラーが発生しました。\nこのページをリロードして、再度と登録してみてください。\n(BAD_REQUEST)\n",
+        "configuration-unsupported": "クライアント構成がサポートされていません。 (CONFIGURATION_UNSUPPORTED)\n",
+        "device-ineligible": "提示されたセキュリティキーは登録できません。\nトークンが既に登録されている可能性があります。 (DEVICE_INELIGIBLE)\n",
+        "implementation-incomplete": "セキュリティキーを挿入して登録を再試行してください。\n 一部のブラウザは、このプロトコルへの対応が不完全です。\n Brave、Google Chrome、またはOperaの最新版を使用してください。\n(IMPLEMENTATION_INCOMPLETE)\n",
+        "other-error": "There was an unexpected error registering your security key. Re-attempting\nregistration may resolve this issue. (OTHER_ERROR)\n",
+        "timeout": "セキュリティキーが登録要求への応答待機時に、予期しないタイムアウトが発生しました。 \n再度登録を開始し、点滅している間にセキュリティキーを有効にしてください。 (TIMEOUT)\n"
+      },
+      "u2f-unavailable": "お使いのブラウザは、Braveがサポートする二要素認証プラットフォームであるU2Fをサポートしていないようです。YubiKeyなど、U2F互換デバイスを登録するには、Brave、Chrome、またはOperaの最新バージョンを使用してください。\n",
+      "waiting_description": "新しいハードウェアキーをコンピューターに挿入し、点滅しているときにボタンを押してください。\n",
+      "waiting_heading": "セキュリティキーが挿入されるのを待っています..."
+    },
+    "u2f_registration": {
+      "confirm_disable": {
+        "confirm": "いますぐ無効にする",
+        "deny": "無効にしない",
+        "final_confirmation": "本当にAuthenticatorアプリを無効にしますか？",
+        "header": "セキュリティキーを削除しますか？",
+        "intro": "残りの二要素認証手段：",
+        "no_2fa_warning_html": "Authenticatorアプリを無効化すると、アカウントに設定された 二要素認証が直ちに無効になります。\n",
+        "none": "なし",
+        "remaining_totp": "二要素認証用スマートフォンアプリ"
+      },
+      "name_default": "匿名キー"
+    }
+  }
+}

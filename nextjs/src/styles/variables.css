@@ -1,0 +1,48 @@
+:root {
+  /* Brave Leo overrides for variables that use Font-Family */
+  --leo-font-primary-heading-display1: 500 var(--leo-typography-primary-heading-display1-font-size)/var(--leo-typography-primary-heading-display1-line-height) var(--font-poppins);
+  --leo-font-primary-heading-display2: 500 var(--leo-typography-primary-heading-display2-font-size)/var(--leo-typography-primary-heading-display2-line-height) var(--font-poppins);
+  --leo-font-primary-heading-h1: 500 var(--leo-typography-primary-heading-h1-font-size)/var(--leo-typography-primary-heading-h1-line-height) var(--font-poppins);
+  --leo-font-primary-heading-h2: 500 var(--leo-typography-primary-heading-h2-font-size)/var(--leo-typography-primary-heading-h2-line-height) var(--font-poppins);
+  --leo-font-primary-heading-h3: 500 var(--leo-typography-primary-heading-h3-font-size)/var(--leo-typography-primary-heading-h3-line-height) var(--font-poppins);
+  --leo-font-primary-heading-h4: 600 var(--leo-typography-primary-heading-h4-font-size)/var(--leo-typography-primary-heading-h4-line-height) var(--font-poppins);
+  --leo-font-primary-large-regular: 400 var(--leo-typography-primary-large-regular-font-size)/var(--leo-typography-primary-large-regular-line-height) var(--font-poppins);
+  --leo-font-primary-large-semibold: 600 var(--leo-typography-primary-large-semibold-font-size)/var(--leo-typography-primary-large-semibold-line-height) var(--font-poppins);
+  --leo-font-primary-default-regular: 400 var(--leo-typography-primary-default-regular-font-size)/var(--leo-typography-primary-default-regular-line-height) var(--font-poppins);
+  --leo-font-primary-default-semibold: 600 var(--leo-typography-primary-default-semibold-font-size)/var(--leo-typography-primary-default-semibold-line-height) var(--font-poppins);
+  --leo-font-primary-small-regular: 400 var(--leo-typography-primary-small-regular-font-size)/var(--leo-typography-primary-small-regular-line-height) var(--font-poppins);
+  --leo-font-primary-small-semibold: 600 var(--leo-typography-primary-small-semibold-font-size)/var(--leo-typography-primary-small-semibold-line-height) var(--font-poppins);
+  --leo-font-primary-x-small-regular: 400 var(--leo-typography-primary-x-small-regular-font-size)/var(--leo-typography-primary-x-small-regular-line-height) var(--font-poppins);
+  --leo-font-primary-x-small-semibold: 600 var(--leo-typography-primary-x-small-semibold-font-size)/var(--leo-typography-primary-x-small-semibold-line-height) var(--font-poppins);
+  --leo-font-components-label: 600 var(--leo-typography-components-label-font-size)/var(--leo-typography-components-label-line-height) var(--font-poppins);
+  --leo-font-components-tableheader: 500 var(--leo-typography-components-tableheader-font-size)/var(--leo-typography-components-tableheader-line-height) var(--font-poppins);
+  --leo-font-components-navbutton: 600 var(--leo-typography-components-navbutton-font-size)/var(--leo-typography-components-navbutton-line-height) var(--font-poppins);
+  --leo-font-components-button-small: 600 var(--leo-typography-components-button-small-font-size)/var(--leo-typography-components-button-small-line-height) var(--font-poppins);
+  --leo-font-components-button-default: 600 var(--leo-typography-components-button-default-font-size)/var(--leo-typography-components-button-default-line-height) var(--font-poppins);
+  --leo-font-components-button-large: 600 var(--leo-typography-components-button-large-font-size)/var(--leo-typography-components-button-large-line-height) var(--font-poppins);
+  --leo-font-components-button-jumbo: 600 var(--leo-typography-components-button-jumbo-font-size)/var(--leo-typography-components-button-jumbo-line-height) var(--font-poppins);
+
+  /* this needs to be fixed in Leo */
+  --leo-color-text-primary: rgb(13 15 20);
+}
+
+/* this needs to be fixed in Leo */
+[data-theme="light"] {
+  --leo-color-text-primary: rgb(13 15 20);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --leo-color-text-primary: rgb(13 15 20);
+  }
+}
+
+[data-theme="dark"] {
+  --leo-color-text-primary: rgb(246 247 248);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --leo-color-text-primary: rgb(246 247 248);
+  }
+}

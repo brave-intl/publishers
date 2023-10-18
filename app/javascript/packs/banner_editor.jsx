@@ -81,8 +81,6 @@ export default class BannerEditor extends React.Component {
       cover: this.props.values.cover || { url: null, data: null },
       channelIndex: this.props.values.channelIndex || 0,
       channelBanners: this.props.channelBanners,
-      defaultSiteBanner: this.props.defaultSiteBanner,
-      defaultSiteBannerMode: this.props.defaultSiteBannerMode,
       scale: 1,
       linkSelection: false,
       linkOption: "Youtube",
@@ -100,9 +98,6 @@ export default class BannerEditor extends React.Component {
     this.preview = this.preview.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
     this.save = this.save.bind(this);
-    this.toggleDefaultSiteBannerMode = this.toggleDefaultSiteBannerMode.bind(
-      this
-    );
     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
     this.currentPlaceholder = this.currentPlaceholder.bind(this);
@@ -153,7 +148,6 @@ export default class BannerEditor extends React.Component {
     document.getElementsByClassName(
       "modal-panel--close js-deny"
     )[0].style.visibility = "hidden";
-    document.getElementById("banner-toggle").style.cursor = "pointer";
   }
 
   preview() {
@@ -532,50 +526,6 @@ export default class BannerEditor extends React.Component {
           />
         );
         break;
-      case "same":
-        dialogue = (
-          <div>
-            <Opacity />
-            <Dialogue save>
-              <Text dialogueHeader>
-                <FormattedMessage id="siteBanner.oneBannerHeader" />
-              </Text>
-              <Text dialogueSubtext>
-                <FormattedMessage id="siteBanner.oneBannerSubText" />
-              </Text>
-              <div style={{ marginTop: "40px", textAlign: "center" }}>
-                <Button
-                  onClick={() => this.setState({ state: "Editor" })}
-                  style={{ margin: "10px", width: "120px" }}
-                  outline
-                >
-                  <FormattedMessage id="siteBanner.cancel" />
-                </Button>
-                <Button
-                  onClick={async () => {
-                    let toggle = await this.setDefaultSiteBannerMode(true);
-                    this.setState(
-                      {
-                        defaultSiteBannerMode: !this.state
-                          .defaultSiteBannerMode,
-                        state: "Editor",
-                        loading: true
-                      },
-                      () => {
-                        this.fetchBanner();
-                      }
-                    );
-                  }}
-                  style={{ margin: "10px", width: "120px" }}
-                  primary
-                >
-                  <FormattedMessage id="siteBanner.apply" />
-                </Button>
-              </div>
-            </Dialogue>
-          </div>
-        );
-        break;
     }
     return dialogue;
   }
@@ -671,8 +621,8 @@ export default class BannerEditor extends React.Component {
             <YoutubeColorIcon
               className="banner-link-option"
               style={{
-                height: "25px",
-                width: "25px",
+                height: "30px",
+                width: "30px",
                 display: "inline-block",
                 marginBottom: "12px"
               }}
@@ -750,7 +700,7 @@ export default class BannerEditor extends React.Component {
             style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
           >
             <YoutubeColorIcon
-              style={{ height: "25px", width: "25px", margin: "auto" }}
+              style={{ height: "28px", width: "28px", margin: "auto" }}
             />
           </div>
           <div
@@ -885,45 +835,6 @@ export default class BannerEditor extends React.Component {
     );
   }
 
-  async toggleDefaultSiteBannerMode() {
-    if (this.state.defaultSiteBannerMode === true) {
-      let toggle = await this.setDefaultSiteBannerMode(false);
-      this.setState(
-        {
-          defaultSiteBannerMode: !this.state.defaultSiteBannerMode,
-          loading: true,
-          fetch: true
-        },
-        () => {
-          this.fetchBanner();
-        }
-      );
-    } else {
-      this.setState({ state: "same", fetch: true });
-    }
-  }
-
-  async setDefaultSiteBannerMode(value) {
-    let url =
-      "/publishers/" +
-      document.getElementById("publisher_id").value +
-      "/site_banners/set_default_site_banner_mode?dbm=" +
-      value;
-    let options = {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Accept: "text/html",
-        "X-Requested-With": "XMLHttpRequest",
-        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]").content
-      }
-    };
-    let response = await fetch(url, options);
-    if (response.status >= 400) {
-      location.reload();
-    }
-  }
-
   render() {
     const locale = document.body.dataset.locale;
     let localePackage = en;
@@ -940,10 +851,8 @@ export default class BannerEditor extends React.Component {
             defaultSiteBanner={this.props.defaultSiteBanner}
             channelBanners={this.props.channelBanners}
             channelIndex={this.state.channelIndex}
-            defaultSiteBannerMode={this.state.defaultSiteBannerMode}
             incrementChannelIndex={this.incrementChannelIndex}
             decrementChannelIndex={this.decrementChannelIndex}
-            toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode}
             save={this.save}
             close={this.close}
             preview={this.preview}
@@ -1030,8 +939,6 @@ export function renderBannerEditor(
   values,
   preferredCurrency,
   conversionRate,
-  defaultSiteBannerMode,
-  defaultSiteBanner,
   channelBanners,
   mode
 ) {
@@ -1039,8 +946,6 @@ export function renderBannerEditor(
     values: values,
     preferredCurrency: preferredCurrency,
     conversionRate: conversionRate,
-    defaultSiteBannerMode: defaultSiteBannerMode,
-    defaultSiteBanner: defaultSiteBanner,
     channelBanners: channelBanners,
     mode: mode
   };

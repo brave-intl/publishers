@@ -141,9 +141,6 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
       }
       let bannerEditorData = await response.json();
-
-      let defaultSiteBannerMode = bannerEditorData.default_site_banner_mode;
-      let defaultSiteBanner = bannerEditorData.default_site_banner;
       let channelBanners = bannerEditorData.channel_banners;
 
       document.getElementById("open-banner-button").onclick = function() {
@@ -151,8 +148,6 @@ document.addEventListener("DOMContentLoaded", function() {
           {},
           preferredCurrency,
           conversionRate,
-          defaultSiteBannerMode,
-          defaultSiteBanner,
           channelBanners,
           "Editor"
         );
@@ -163,8 +158,6 @@ document.addEventListener("DOMContentLoaded", function() {
           {},
           preferredCurrency,
           conversionRate,
-          defaultSiteBannerMode,
-          defaultSiteBanner,
           channelBanners,
           "Preview"
         );

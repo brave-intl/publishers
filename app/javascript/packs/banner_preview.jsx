@@ -71,7 +71,7 @@ export default class BannerPreview extends React.Component {
     };
     let instantDonationButton = document.getElementById("instant-donation-button");
     instantDonationButton.click();
-    renderBannerEditor(values, this.props.preferredCurrency, this.props.conversionRate, this.props.defaultSiteBannerMode, this.props.defaultSiteBanner, this.props.channelBanners, "Editor-From-Preview");
+    renderBannerEditor(values, this.props.preferredCurrency, this.props.conversionRate, this.props.channelBanners, "Editor-From-Preview");
     setTimeout(function() {
       document.getElementById("preview-container").remove();
     }, 100);

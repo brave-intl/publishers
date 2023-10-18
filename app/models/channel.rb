@@ -33,6 +33,7 @@ class Channel < ApplicationRecord
   has_many :uphold_connection_for_channel, dependent: :destroy
   has_many :gemini_connection_for_channel, dependent: :destroy
   has_many :crypto_address_for_channels, dependent: :destroy
+  has_many :crypto_addresses, through: :crypto_address_for_channels
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: "contested_by_channel_id"
 
@@ -346,8 +347,6 @@ class Channel < ApplicationRecord
     site_banner_lookup.derived_site_banner_info =
       if skip_site_banner_info_lookup
         {}
-      elsif publisher.default_site_banner_mode
-        publisher&.default_site_banner&.non_default_properties || {}
       else
         site_banner&.non_default_properties || {}
       end
@@ -371,6 +370,11 @@ class Channel < ApplicationRecord
     end
 
     self.public_identifier = identifier
+  end
+
+  def set_public_identifier!
+    set_public_identifier
+    save!
   end
 
   private

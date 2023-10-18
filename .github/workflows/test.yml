@@ -32,11 +32,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@52b8784594ec115fd17094752708121dc5dabb47 # v1.154.0
         with:
           ruby-version: 3.0.2
       - name: Setup firefox
-        uses: browser-actions/setup-firefox@v1
+        uses: browser-actions/setup-firefox@0f622aed2a492183149a5a5c347205a593802e10 # v1.3.0
         with:
           firefox-version: "latest-esr"
       - name: Bundle install
@@ -47,7 +47,7 @@ jobs:
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
       - name: Install required Node.js version
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - name: Get Yarn cache directory path

@@ -35,12 +35,8 @@ coverage
 # Ignore compiled TypeScript files
 # /app/javascript/views/**/*.jsx
 
-# Ignore package-lock.json in favor of yarn.lock
-package-lock.json
-
 # Editors
 .idea
-.vscode
 
 .irb_history
 .history

@@ -3,7 +3,7 @@
     div class=("channel-panel channel-#{channel_verification_status(channel)}")
       .channel-panel--intro.mb-1
         .channel-panel--intro-icon
-          img src=(channel_type_icon_url(channel)) width=16 height=16
+          img src=(channel_type_icon_url(channel)) height=25
         .channel-panel--intro-body
           = channel_type(channel).upcase
 
@@ -17,7 +17,7 @@
         div.channel-secondary-information.d-flex.justify-content-between
           - if channel.verified? && current_publisher.feature_flags["p2p_enabled"]
             .bat-channel
-              .crypto-wallet-services data-props={ featureFlags: current_publisher.feature_flags, channel: channel }.to_json
+              .crypto-wallet-services data-channel-id=("#{channel.id}") data-props={ featureFlags: current_publisher.feature_flags, channel: channel }.to_json
                 .spinner
                   .cssload-container
                     .cssload-loading
@@ -76,17 +76,6 @@
         script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
           = render "publishers/remove_channel_modal", channel: channel
         = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-      - if channel.details_type == SiteChannelDetails.to_s
-        = form_for(channel, url: site_channel_path(channel.id), method: :patch) do |f|
-          fieldset
-            = f.fields_for :details, channel.details do |d|
-              .d-flex.flex-wrap
-                label.switch
-                  = d.check_box(:ads_enabled, checked: channel.details.ads_enabled_at.present?, onchange: "this.form.submit()")
-                  span.slider.round.extended
-                .learn-more.extended
-                  span= t("site_channels.new.ads_enable_question")
-                  = link_to(t("site_channels.new.learn_more"), '#', data: { "js-confirm-with-modal": "site-channel-ads-learn-more-modal" }, id: "site-channel-ads-learn-more-button")
 
       - if channel.contested_by_channel
         .channel-contested

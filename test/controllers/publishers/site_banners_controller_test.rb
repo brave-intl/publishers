@@ -11,9 +11,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     get "/publishers/" + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000", headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"}
     site_banner = JSON.parse(response.body)
-    assert_equal("Hello World", site_banner["title"])
+    assert_equal("Ann Bothman", site_banner["title"])
     assert_equal("https://TESTDOMAIN.com/", site_banner["logoUrl"])
-    assert_equal("Lorem Ipsum", site_banner["description"])
+    assert_equal("Hi there! My name is Ann and I am a travel blogger and photographer. I have always had a passion for exploring new places and immersing myself in different cultures.", site_banner["description"])
   end
 
   test "Show method returns nil if site_banner not found" do
