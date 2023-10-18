@@ -4,10 +4,10 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-# rails_version = "7.0.6"
-gem "rails", github: "rails/rails", branch: "main"
+rails_version = "7.1.1"
+gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.0"
-gem "railties", github: "rails/rails", branch: "main" # '7.1.0.alpha' #github: 'rails/rails', branch: 'main'
+gem "railties", rails_version
 
 gem "rack", "3.0.8"
 
@@ -60,7 +60,7 @@ gem "lograge", "~> 0.13.0"
 gem "nokogiri", ">= 1.14.3"
 
 # Open Graph tag
-gem "meta-tags", "~> 2.18.0"
+gem "meta-tags", "~> 2.19.0"
 
 gem "newrelic_rpm", "~> 9.3.1"
 
@@ -84,7 +84,7 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 gem "omniauth-github", "~> 2.0.1"
 
 # Model record auditing
-gem "paper_trail", "~> 14.0.0"
+gem "paper_trail", "~> 15.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -96,7 +96,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.3.0"
+gem "puma", "~> 6.3.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
@@ -131,14 +131,15 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.1.0"
+gem "sidekiq", "~> 7.1.6"
 
-gem "sidekiq-scheduler", "~> 5.0.2"
+gem "sidekiq-scheduler", "~> 5.0.3"
+gem "sidekiq-throttled", "~> 1.0.0.alpha.1"
 
 # slim for view templates
 gem "slim-rails", "3.6.2"
 
-gem "ssrf_filter", github: "mshibuya/ssrf_filter", branch: "fix-body-read-failure"
+gem "ssrf_filter", "1.1.2"
 
 gem "strong_migrations"
 
@@ -149,7 +150,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.2.0"
 
-gem "shakapacker"
+gem "shakapacker", "7.0.3"
 
 # pagination support for models
 gem "will_paginate"
@@ -158,9 +159,9 @@ gem "will_paginate"
 gem "yt", "~> 0.33.0"
 
 gem "zeitwerk", "~> 2.6.6"
-gem "zendesk_api", "= 1.38.0.rc2"
+gem "zendesk_api", "= 3.0.2"
 
-gem "activerecord-nulldb-adapter", "0.9.0"
+gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
 
 gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
 gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
@@ -225,9 +226,8 @@ group :development, :test do
   gem "minitest-retry"
   gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
-  gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test
-  gem "selenium-webdriver", "~> 4.10.0"
+  gem "selenium-webdriver", "~> 4.12"
   gem "solargraph"
   gem "dotenv-rails", "2.8.1"
 end

@@ -384,19 +384,6 @@ export const BrandText = styled.h5`
   user-select: none;
 `;
 
-export const ToggleText = styled.p`
-  margin-bottom: 0px;
-  margin-top: 3.25px;
-  margin-left: auto;
-  margin-right: 10px;
-  font-weight: bold;
-  user-select: none;
-`;
-
-export const ToggleWrapper = styled.div`
-  margin-top: 7px;
-`;
-
 export const Button = styled.div`
   width: 150px;
   text-align: center;

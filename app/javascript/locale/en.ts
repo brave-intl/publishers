@@ -186,7 +186,7 @@ export default {
     cancel: "Cancel",
     closeBanner: "Done",
     defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
-    header: "Tipping Banner",
+    header: "Contribution Banner",
     links: "Links",
     oneBannerHeader: "Use one banner for all channels?",
     oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
@@ -314,7 +314,38 @@ export default {
       },
       title: "Uphold Account"
     },
-    verify: "Continue to Verify"
+    verify: "Continue to Verify",
+    addCryptoWidget: {
+      addWallet: "Add new wallet",
+      solanaConnectError: "Connect a Solana wallet to add an address",
+      ethereumConnectError: "Connect an Ethereum wallet to add an address",
+      widgetTitle: "P2P WALLETS",
+      ethereum: "Ethereum",
+      ethereumBAT: "Basic Attention Token",
+      solana: "Solana",
+      genericError: "An error occurred. Please try again later.",
+      addressConnectFailure: "Connecting new address failed",
+      solanaConnectionFailure: "Solana connection was interrupted",
+      notConnected: "Not Connected",
+      channelPageLink: "View Channel Page",
+    }
+  },
+  publicChannelPage: {
+    privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted.",
+    generateQR: "Generate QR Code",
+    QRModalHeader: "Send from mobile wallets",
+    QRModalText: "You can send by scanning this QR code using a Web3 wallet from your mobile device.",
+    paymentHeading: "Show your love and send a token of your gratitude",
+    paymentSubHeading: "Support your favorite creators",
+    send: "Send",
+    custom: "custom",
+    ethereumNetwork: "Ethereum Network",
+    ethereumBATNetwork: "Basic Attention Token",
+    solanaNetwork: "Solana Network",
+    share: "Share your support",
+    goBack: "Go back",
+    thanks: "Thanks for supporting your favorite creators",
+    hooray: "Hooray! {amount} sent"
   }
 };
 

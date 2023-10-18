@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_04_203533) do
+ActiveRecord::Schema[7.1].define(version: 2023_09_06_202155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
+  enable_extension "citext"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -533,7 +534,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_203533) do
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
-    t.string "email"
+    t.citext "email"
     t.string "pending_email"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at", precision: nil
@@ -563,9 +564,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_203533) do
     t.string "session_salt"
     t.integer "site_channel_limit", default: 2
     t.boolean "blocked_country_exception", default: false
-    t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
+    t.index ["email"], name: "index_publishers_on_email", unique: true
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
     t.index ["selected_wallet_provider_type", "selected_wallet_provider_id"], name: "publishers_wallet_provider_type"
   end

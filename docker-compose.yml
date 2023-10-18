@@ -26,7 +26,29 @@ services:
     ports:
       - "3000:3000"
     env_file: .env.docker.dev
-
+  next:
+    build: nextjs/.
+    command: npm run dev
+    volumes:
+      - /app/node_modules # <-- try adding this!
+      - type: bind
+        source: ./nextjs
+        target: /app
+      - ./ssl:/ssl
+    ports:
+      - "5001:5001"
+      - "9231:9231" # debugger ports
+      - "9232:9232"
+      - "9229:9229"
+      - "9230:9230"
+    environment:
+      NODE_ENV: development
+      PUBLISHERS_HOST: web:3000
+      NEXT_HOST: localhost:5001
+    depends_on:
+      - web
+    networks:
+      - default
   postgres:
     image: postgres:15-alpine
     environment:

@@ -34,7 +34,7 @@ class U2fRegistrationsController < ApplicationController
         logout_everybody_else!(current_publisher)
         handle_redirect_after_2fa_registration
       when BFailure
-        redirect_to new_u2f_registration_path && return
+        (redirect_to new_u2f_registration_path) && return
       else
         raise result
       end

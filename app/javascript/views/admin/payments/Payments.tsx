@@ -3,6 +3,8 @@ import * as React from "react";
 import { Cell, Container, Grid } from "../../../components/grid/Grid";
 import UserNavbar from "../components/userNavbar/UserNavbar";
 import { templateAreas, templateRows } from "./PaymentsStyle";
+import { ThemeProvider } from "brave-ui/theme";
+import Theme from "brave-ui/theme/brave-default";
 
 import Card from "../../../components/card/Card";
 import Statements from "../../statements/Statements";
@@ -78,35 +80,37 @@ export default class Payments extends React.Component<
 
   public render() {
     return (
-      <IntlProvider locale="en" messages={flattenMessages(en)}>
-        <UserNavbar
-          navbarSelection={"Payments"}
-          publisher={this.props.data.publisher}
-        />
-        <Container>
-          <Grid
-            templateAreas={templateAreas}
-            templateRows={templateRows}
-            style={{ marginTop: "30px", marginBottom: "30px" }}
-          >
-            <Cell gridArea={"a"}>
-              <CurrentChart current={this.state.data.current} />
-            </Cell>
-            <Cell gridArea={"b"}>
-              <EarningsChart historic={this.state.data.historic} />
-            </Cell>
-            <Cell gridArea={"c"}>
-              <TotalTable historic={this.state.data.historic} />
-            </Cell>
-            <Cell gridArea={"d"}>
-              <CurrentTable current={this.state.data.current} />
-            </Cell>
-          </Grid>
-          <Card>
-            <Statements publisher_id={this.props.data.publisher.id} />
-          </Card>
-        </Container>
-      </IntlProvider>
+      <ThemeProvider theme={Theme}>
+        <IntlProvider locale="en" messages={flattenMessages(en)}>
+          <UserNavbar
+            navbarSelection={"Payments"}
+            publisher={this.props.data.publisher}
+          />
+          <Container>
+            <Grid
+              templateAreas={templateAreas}
+              templateRows={templateRows}
+              style={{ marginTop: "30px", marginBottom: "30px" }}
+            >
+              <Cell gridArea={"a"}>
+                <CurrentChart current={this.state.data.current} />
+              </Cell>
+              <Cell gridArea={"b"}>
+                <EarningsChart historic={this.state.data.historic} />
+              </Cell>
+              <Cell gridArea={"c"}>
+                <TotalTable historic={this.state.data.historic} />
+              </Cell>
+              <Cell gridArea={"d"}>
+                <CurrentTable current={this.state.data.current} />
+              </Cell>
+            </Grid>
+            <Card>
+              <Statements publisher_id={this.props.data.publisher.id} />
+            </Card>
+          </Container>
+        </IntlProvider>
+      </ThemeProvider>
     );
   }
 }
