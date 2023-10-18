@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Chart from "chart.js";
+import { Chart, ChartType } from "chart.js";
 import Card from "../../../../../components/card/Card";
 
 interface IEarningsChartProps {
@@ -91,15 +91,15 @@ export default class EarningsChart extends React.Component<
           display: false
         },
         scales: {
-          yAxes: [
+          y:
             {
               display: false,
               stacked: true
             }
-          ]
+
         }
       },
-      type: "line"
+      type: "line" as ChartType
     };
 
     const myChart = new Chart(node, referralChartSettings);

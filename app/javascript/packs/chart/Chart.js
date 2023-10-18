@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import Chart from "chart.js";
+import  { Chart } from "chart.js";
 
 export default class ReactChart extends React.Component {
   constructor(props) {
