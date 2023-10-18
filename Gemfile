@@ -4,10 +4,10 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-# rails_version = "7.0.6"
-gem "rails", github: "rails/rails", branch: "main"
+rails_version = "7.1.1"
+gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.0"
-gem "railties", github: "rails/rails", branch: "main" # '7.1.0.alpha' #github: 'rails/rails', branch: 'main'
+gem "railties", rails_version
 
 gem "rack", "3.0.8"
 
@@ -60,7 +60,7 @@ gem "lograge", "~> 0.13.0"
 gem "nokogiri", ">= 1.14.3"
 
 # Open Graph tag
-gem "meta-tags", "~> 2.18.0"
+gem "meta-tags", "~> 2.19.0"
 
 gem "newrelic_rpm", "~> 9.3.1"
 
@@ -131,14 +131,15 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.1.3"
+gem "sidekiq", "~> 7.1.6"
 
-gem "sidekiq-scheduler", "~> 5.0.2"
+gem "sidekiq-scheduler", "~> 5.0.3"
+gem "sidekiq-throttled", "~> 1.0.0.alpha.1"
 
 # slim for view templates
 gem "slim-rails", "3.6.2"
 
-gem "ssrf_filter", "1.0.7"
+gem "ssrf_filter", "1.1.2"
 
 gem "strong_migrations"
 
@@ -160,7 +161,7 @@ gem "yt", "~> 0.33.0"
 gem "zeitwerk", "~> 2.6.6"
 gem "zendesk_api", "= 3.0.2"
 
-gem "activerecord-nulldb-adapter", "0.9.0"
+gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
 
 gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
 gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
@@ -225,9 +226,8 @@ group :development, :test do
   gem "minitest-retry"
   gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
-  gem "webdrivers", "~> 5.0", require: false
   gem "simplecov", require: false, group: :test
-  gem "selenium-webdriver", "~> 4.10.0"
+  gem "selenium-webdriver", "~> 4.12"
   gem "solargraph"
   gem "dotenv-rails", "2.8.1"
 end

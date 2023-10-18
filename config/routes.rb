@@ -165,9 +165,19 @@ Rails.application.routes.draw do
     # /api/v1/
 
     namespace :nextv1, defaults: {format: :json} do
-      namespace :publishers do
-        get :me
-        post :update
+      resources :publishers, only: [:update, :destroy]
+      get "publishers/me", to: "publishers#me"
+      get "publishers/security", to: "publishers#security"
+
+      namespace :totp_registrations do
+        get :new
+        post :create
+        delete :destroy
+      end
+
+      namespace :u2f_registrations do
+        get :new
+        post :create
         delete :destroy
       end
     end

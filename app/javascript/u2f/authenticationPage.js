@@ -52,8 +52,7 @@ async function authenticate(formElement, responseInput, errorManager) {
  */
 document.addEventListener('DOMContentLoaded', function() {
   let formElement = document.querySelector('.js-authenticate-u2f');
-
-  if (formElement && window.u2f) {
+  if (formElement) {
     let responseInput = formElement.querySelector('[name=webauthn_u2f_response]');
     let errorManager = new ErrorManager('authenticate-u2f-error');
     formElement.addEventListener('submit', function(event) {

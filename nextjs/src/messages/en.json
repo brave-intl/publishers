@@ -1,115 +1,183 @@
 {
+  "shared": {
+    "add_channel": "Add Channel",
+    "add_promo_code": "Add Promo Code",
+    "app_title": "Brave Creators",
+    "app_description": "Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!",
+    "cancel": "Cancel",
+    "channel_created": "Channel created. Your verified status will be displayed in the Brave browser within the next 24-48 hours.",
+    "channel_contested": "Channel will be transferred from current owner in %{time_until_transfer}.",
+    "channel_could_not_be_contested": "Channel could not be contested. If you think this is in error, please contact us at https://community.brave.com/",
+    "channel_transfer_rejected": "Channel transfer rejected.",
+    "time_until_transfer_fallback": "a short time",
+    "channel_contested_by": "Channel has been verified by another publisher and will be transferred to their account in %{time_until_transfer} unless you reject.",
+    "channel_not_found": "Channel not found",
+    "channel_quota_exceeded": "We're so popular we exceeded our daily quota of YouTube registrations. Please try again tomorrow.",
+    "channel_removed": "Channel removed.",
+    "continue": "Continue",
+    "date_format": "%b %d, %Y",
+    "dashboard": "Dashboard",
+    "referrals": "Referrals",
+    "payments": "Payments",
+    "download": "Download",
+    "existing_account": "Already have an account?",
+    "error": "Oh no! Something went wrong, please contact support.",
+    "get_started": "Get Started",
+    "instant_donation": "Contribution Banner",
+    "invalid_totp": "Invalid 6-digit code. Please try again.",
+    "log_in": "Log In",
+    "remove": "Remove",
+    "terms_of_service": "Terms of Service",
+    "lost_2fa": "Lost 2fa?",
+    "faqs": "FAQs",
+    "ok": "OK",
+    "oh_no": "Oh no!",
+    "choose_different_verification_method": "Choose Different Verification Method",
+    "support_note_html": "If you have any questions, please contact the Brave Creators team at <a href='https://community.brave.com/'>https://community.brave.com/</a>",
+    "warning_note_html": "This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Creators team at <a href='https://community.brave.com/'>https://community.brave.com/</a>"
+  },
+  "activerecord": {
+    "shared": {
+      "errors": "There were errors saving your request:"
+    },
+    "attributes": {
+      "uphold_connection": {
+        "send_emails": "Receive emails notifying me if I can't receive payments."
+      },
+      "publisher": {
+        "marketing_emails": "By checking here, I consent to be informed of new features and promotions via email.",
+        "name": "Your Name"
+      },
+      "site_channel_details": {
+        "brave_publisher_id": "Website Domain",
+        "brave_publisher_id_unnormalized": "Website Domain"
+      },
+      "u2f_registration": {
+        "name": "Name Security Key"
+      }
+    }
+  },
   "NavDropdown": {
-    "security": "Security",
-    "settings": "Settings",
-    "log_out": "Log Out",
+    "faqs": "FAQs",
     "help": "Help",
-    "faqs": "FAQs"
+    "log_out": "Log Out",
+    "security": "Security",
+    "settings": "Settings"
   },
   "Settings": {
-    "title": "Settings",
     "buttons": {
-      "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "save": "Save"
     },
     "index": {
-      "header": "Account Settings",
-      "extended_login": {
-        "intro": "Keep my login active for 30 days"
+      "contact": {
+        "edit": "Edit Contact",
+        "email": "Email",
+        "heading": "Contact",
+        "name": "Name",
+        "update": "Update"
       },
       "delete_account": {
-        "heading": "Account Deletion",
-        "warning": "Your channels and all accounts related information will be permanently deleted from our database as well as from connected providers. This cannot be undone.",
-        "intro": "Your Brave Creators account and information will be permanently deleted from our database. This action cannot be undone.",
         "button": "Delete My Account",
+        "heading": "Account Deletion",
+        "intro": "Your Brave Creators account and information will be permanently deleted from our database. This action cannot be undone.",
         "prompt": {
-          "header": "Are you sure you want to delete your account?",
-          "warning": "Your Brave Creators account and information will be permanently deleted from our database. This action cannot be undone.",
-          "final_confirmation": "It'll take a few minutes for the purge to complete.",
+          "confirm": "Yes, I'm certain",
           "deny": "No, keep my account active",
-          "confirm": "Yes, I'm certain"
-        }
-      },
-      "contact": {
-        "heading": "Contact",
-        "edit": "Edit Contact",
-        "update": "Update",
-        "name": "Name",
-        "email": "Email"
+          "final_confirmation": "It'll take a few minutes for the purge to complete.",
+          "header": "Are you sure you want to delete your account?",
+          "warning": "Your Brave Creators account and information will be permanently deleted from our database. This action cannot be undone."
+        },
+        "warning": "Your channels and all accounts related information will be permanently deleted from our database as well as from connected providers. This cannot be undone."
       },
       "email": {
         "heading": "Email Settings",
-        "marketing_label": "By checking here, I consent to be informed of newfeatures and promotions via email"
-      }
+        "marketing_label": "Updates on new features and promotions"
+      },
+      "extended_login": {
+        "intro": "Keep my login active for 30 days"
+      },
+      "header": "Account Settings"
     },
+    "title": "Settings",
     "update": {
       "alert": "Account settings updated"
     }
   },
   "security": {
-    "prompt": {
-      "heading": "Protect your account",
-      "subheading": "by enabling two-factor authentication",
-      "intro": "This added security is recommended for making sure it's really you logging in to your account.",
-      "skip": "Skip for now",
-      "setup": "Set Up 2FA"
-    },
     "index": {
-      "setup": "Set Up",
+      "enabled_no": "Not Enabled",
+      "enabled_yes": "Enabled",
       "heading": "Two-factor Authentication",
       "intro": "Two-factor authentication (2FA) is a method of confirming your identity by using two different forms of verification when you access Brave Payments in order to increase security (recommended for protecting your account).",
-      "enabled_yes": "Enabled",
-      "enabled_no": "Not enabled",
+      "setup": "Set Up",
       "totp": {
-        "heading": "App on your phone",
-        "intro": "Use an app on your phone to get an authentication code. You will be asked to type in this code when logging in.",
-        "enabled": "Authenticator app has been set up",
-        "disabled": "Authenticator app has not been set up",
-        "disabled_without_fallback_html": "Recommended: Set up an authenticator as the secondary 2FA in case you run into a problem with the security key.",
-        "reconfigure": "Reconfigure",
         "button": "Set up",
-        "destroy": "Disable",
         "confirm_disable": {
+          "confirm": "Disable it for now",
+          "deny": "Do Not Disable",
+          "final_confirmation": "Are you sure you want to disable authenticator app? ",
           "header": "Disable Authenticator App?",
           "intro": "Your remaining two-factor authentication method:",
-          "none": "None",
-          "no_totp_warning": "Authenticator app provides a good fallback method to log in to your account securely in the case that you lose the hardware security key.",
           "no_2fa_warning_html": "Disabling authenticator app will effectively turn off the two-factor authentication for your account.",
-          "final_confirmation": "Are you sure you want to disable authenticator app? ",
-          "deny": "Do Not Disable",
-          "confirm": "Disable it for now"
+          "no_totp_warning": "Authenticator app provides a good fallback method to log in to your account securely in the case that you lose the hardware security key.",
+          "none": "None"
         },
-        "name_default": "Anonymous Key"
+        "destroy": "Disable",
+        "disabled": "Authenticator app has not been set up",
+        "disabled_without_fallback_html": "Recommended: Set up an authenticator as the secondary 2FA in case you run into a problem with the security key.",
+        "enabled": "Authenticator app has been set up",
+        "heading": "App on your phone",
+        "intro": "Use an app on your phone to get an authentication code. You will be asked to type in this code when logging in.",
+        "name_default": "Anonymous Key",
+        "reconfigure": "Reconfigure"
       },
       "u2f": {
-        "heading": "Hardware security keys",
-        "intro": "Security key is a small device that connects to your computer via a USB port and works with FIDO Universal 2nd Factor (U2F). You will be asked to insert and press the key instead of typing in a code.",
-        "intro_warning": "Currently, security key is supported by Brave, Google Chrome, and Opera.",
         "browser": {
-          "heading": "Limited Browser Support",
-          "content_html": "This means you will need to update to the latest Brave, Google Chrome or Opera in order to set up and log in using security keys. More browsers will start supporting the security key in the near future. We will inform you on the changes."
+          "content_html": "This means you will need to update to the latest Brave, Google Chrome or Opera in order to set up and log in using security keys. More browsers will start supporting the security key in the near future. We will inform you on the changes.",
+          "heading": "Limited Browser Support"
         },
+        "button": "Add Key",
         "device": {
-          "tooltip": "A list of security keys that have been tested",
+          "content_html": "The following products have been tested and proven to work with our system:<br /> - <a href=\"https://www.yubico.com/products/yubikey-hardware/\" target=\"_blank\">YubiKey</a><br /> - <a href=\"https://www.ledgerwallet.com/products/ledger-blue\" target=\"_blank\">Ledger Blue</a> ",
           "heading": "Tested Security Keys",
-          "content_html": "The following products have been tested and proven to work with our system:<br /> - <a href=\"https://www.yubico.com/products/yubikey-hardware/\" target=\"_blank\">YubiKey</a><br /> - <a href=\"https://www.ledgerwallet.com/products/ledger-blue\" target=\"_blank\">Ledger Blue</a> "
+          "tooltip": "A list of security keys that have been tested"
         },
         "disabled": "No keys have been added",
-        "button": "Add Key"
+        "heading": "Hardware security keys",
+        "intro": "Security key is a small device that connects to your computer via a USB port and works with FIDO Universal 2nd Factor (U2F). You will be asked to insert and press the key instead of typing in a code.",
+        "intro_warning": "Currently, security key is supported by Brave, Google Chrome, and Opera."
       }
+    },
+    "prompt": {
+      "heading": "Protect your account",
+      "intro": "This added security is recommended for making sure it's really you logging in to your account.",
+      "setup": "Set Up 2FA",
+      "skip": "Skip for now",
+      "subheading": "by enabling two-factor authentication"
+    },
+    "confirm_disable": {
+      "header": "Disable Authenticator App?",
+      "intro": "Your remaining two-factor authentication method:",
+      "none": "None",
+      "no_totp_warning": "Authenticator app provides a good fallback method to log\nin to your account securely in the case that you lose the\nhardware security key.\n",
+      "no_2fa_warning_html": "Disabling authenticator app will effectively\n<strong>turn off the two-factor authentication</strong>\nfor your account.\n",
+      "final_confirmation": "Are you sure you want to disable authenticator app?\n",
+      "deny": "Do Not Disable",
+      "confirm": "Disable it for now"
     }
   },
   "totp_registrations": {
     "new": {
+      "cancel": "Cancel",
       "heading": "Set Up Authenticator App",
-      "warning": "Reconfiguring will invalidate your existing authentication code devices.",
+      "password_prompt": "6-digit code",
       "step_1": "Install an authenticator app on your mobile phone.",
       "step_2": "Scan the QR code below with your app.",
       "step_2_alt": "If you can't scan the QR code, enter this code:",
       "step_3": "Enter the 6-digit code from the app once the scan is complete.",
-      "password_prompt": "6-digit code",
       "submit_value": "Complete",
-      "cancel": "Cancel"
+      "warning": "Reconfiguring will invalidate your existing authentication code devices."
     }
   },
   "u2f_registrations": {
@@ -117,30 +185,30 @@
       "heading": "Register Security Key",
       "name_placeholder": "Enter a nickname for the key",
       "submit_value": "Add",
-      "waiting_heading": "Waiting for your security key...",
-      "waiting_description": "Insert the new hardware key into your computer and press the button when\nit's blinking.\n",
-      "u2f-unavailable": "Your browser doesn't look like it supports U2F, the two factor auth\nplatform supported by Brave. Please use the latest version of Brave, Chrome\nor Opera to register your U2F-compatible device, for example a YubiKey.\n",
       "u2f-error": {
         "bad-request": "There was an unexpected error in the registration request made by\nBrave. Please reload this page and re-attempt registration.\n(BAD_REQUEST)\n",
         "configuration-unsupported": "Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)\n",
         "device-ineligible": "The presented security key is not eligible for registration. This may mean\nthat the token is already registered. (DEVICE_INELIGIBLE)\n",
+        "implementation-incomplete": "Please insert your security key and re-attempt registration. Some\nbrowsers have an incomplete implementation of this\nprotocol. Please use a current release of Brave, Google Chrome or Opera.\n(IMPLEMENTATION_INCOMPLETE)\n",
         "other-error": "There was an unexpected error registering your security key. Re-attempting\nregistration may resolve this issue. (OTHER_ERROR)\n",
-        "timeout": "There was an unexpected timeout waiting for your security key to respond to\nthe registration request. Please re-attempt registration and activate\nthe security key when it is blinking. (TIMEOUT)\n",
-        "implementation-incomplete": "Please insert your security key and re-attempt registration. Some\nbrowsers have an incomplete implementation of this\nprotocol. Please use a current release of Brave, Google Chrome or Opera.\n(IMPLEMENTATION_INCOMPLETE)\n"
-      }
+        "timeout": "There was an unexpected timeout waiting for your security key to respond to\nthe registration request. Please re-attempt registration and activate\nthe security key when it is blinking. (TIMEOUT)\n"
+      },
+      "u2f-unavailable": "Your browser doesn't look like it supports U2F, the two factor auth\nplatform supported by Brave. Please use the latest version of Brave, Chrome\nor Opera to register your U2F-compatible device, for example a YubiKey.\n",
+      "waiting_description": "Insert the new hardware key into your computer and press the button when it's blinking.",
+      "waiting_heading": "Waiting for your security key..."
     },
     "u2f_registration": {
-      "name_default": "Anonymous Key",
       "confirm_disable": {
+        "confirm": "Remove Security Key",
+        "deny": "Do Not Remove",
+        "final_confirmation": "Are you sure you want to remove this security key?",
         "header": "Remove Security Key?",
         "intro": "Your remaining two-factor authentication method:",
-        "remaining_totp": "Authenticator app on your phone",
-        "none": "None",
         "no_2fa_warning_html": "Removing this security key will effectively\nturn off the two-factor authentication\nfor your account.\n",
-        "final_confirmation": "Are you sure you want to remove this security key?",
-        "deny": "Do Not Remove",
-        "confirm": "Remove Security Key"
-      }
+        "none": "None",
+        "remaining_totp": "Authenticator app on your phone"
+      },
+      "name_default": "Anonymous Key"
     }
   }
 }

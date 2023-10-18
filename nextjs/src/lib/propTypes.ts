@@ -11,4 +11,6 @@ export type UserType = {
   avatar: string;
   thirty_day_login: boolean;
   subscribed_to_marketing_emails: boolean;
+  two_factor_enabled: boolean;
+  u2f_registrations: Array<{ name: string; created_at: string; id: string }>;
 };

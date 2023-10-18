@@ -15,4 +15,7 @@ if Rails.configuration.pub_secrets[:redis_url].present?
   # https://github.com/mperham/sidekiq/wiki/Monitoring#sessions-being-lost
   require "sidekiq/web"
   require "sidekiq-scheduler/web"
+
+  require "sidekiq/throttled"
+  Sidekiq::Throttled.setup!
 end

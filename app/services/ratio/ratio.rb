@@ -5,6 +5,7 @@ module Ratio
   class Ratio < BaseApiClient
     PATH = "/v2/"
     RATES_CACHE_KEY = "rates_cache"
+    RATES_CHANNEL_CACHE_KEY = "rates_channel_cache"
 
     def relative
       # https://ratios.rewards.brave.com/v2/relative/provider/coingecko/bat/usd,eur/1d
@@ -22,12 +23,12 @@ module Ratio
     end
 
     def channel_page
-      response = get("/v2/relative/provider/coingecko/eth,sol/usd/live")
+      response = get("/v2/relative/provider/coingecko/eth,sol,bat/usd/live")
       JSON.parse(response.body)
     end
 
     def self.channel_page_cached
-      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.minute) do
+      Rails.cache.fetch(RATES_CHANNEL_CACHE_KEY, expires_in: 1.minute) do
         Ratio.new.channel_page
       end
     end

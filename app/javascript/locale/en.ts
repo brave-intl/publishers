@@ -321,11 +321,13 @@ export default {
       ethereumConnectError: "Connect an Ethereum wallet to add an address",
       widgetTitle: "P2P WALLETS",
       ethereum: "Ethereum",
+      ethereumBAT: "Basic Attention Token",
       solana: "Solana",
       genericError: "An error occurred. Please try again later.",
       addressConnectFailure: "Connecting new address failed",
       solanaConnectionFailure: "Solana connection was interrupted",
       notConnected: "Not Connected",
+      channelPageLink: "View Channel Page",
     }
   },
   publicChannelPage: {
@@ -338,6 +340,7 @@ export default {
     send: "Send",
     custom: "custom",
     ethereumNetwork: "Ethereum Network",
+    ethereumBATNetwork: "Basic Attention Token",
     solanaNetwork: "Solana Network",
     share: "Share your support",
     goBack: "Go back",

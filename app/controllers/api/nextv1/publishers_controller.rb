@@ -4,7 +4,22 @@ class Api::Nextv1::PublishersController < Api::Nextv1::BaseController
   include ActionController::MimeResponds
 
   def me
-    render(json: current_publisher.to_json, status: 200)
+    publisher_hash = JSON.parse(current_publisher.to_json)
+    response_data = {
+      **publisher_hash,
+      two_factor_enabled: two_factor_enabled?(current_publisher)
+    }
+    render(json: response_data.to_json, status: 200)
+  end
+
+  def security
+    response_data = {
+      u2f_enabled: u2f_enabled?(current_publisher),
+      totp_enabled: totp_enabled?(current_publisher),
+      u2f_registrations: current_publisher.u2f_registrations
+    }
+
+    render(json: response_data.to_json, status: 200)
   end
 
   def update
