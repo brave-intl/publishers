@@ -322,6 +322,7 @@ export default {
       widgetTitle: "P2P WALLETS",
       ethereum: "Ethereum",
       ethereumBAT: "Basic Attention Token",
+      solanaBAT: "Basic Attention Token",
       solana: "Solana",
       genericError: "An error occurred. Please try again later.",
       addressConnectFailure: "Connecting new address failed",
