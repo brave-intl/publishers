@@ -7,12 +7,14 @@ module Publishers
     def show
       wallet = current_publisher.wallet
       head 404 and return if wallet.blank?
+      regions = Rewards::Parameters.new.fetch_allowed_regions
 
       wallet_data = {
         wallet: wallet,
         uphold_connection: uphold_wallet,
         gemini_connection: gemini_wallet,
-        bitflyer_connection: bitflyer_wallet
+        bitflyer_connection: bitflyer_wallet,
+        allowed_regions: regions
       }
 
       render(json: wallet_data)
