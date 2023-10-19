@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Chart from "chart.js";
+import { Chart, ChartType } from "chart.js"
 import Card from "../../../../../components/card/Card";
 
 interface ICurrentChartProps {
@@ -44,7 +44,7 @@ export default class CurrentChart extends React.Component<
         legend: { display: false },
         responsive: false
       },
-      type: "doughnut"
+      type: "doughnut" as ChartType
     };
 
     const myChart = new Chart(node, currentChartSettings);

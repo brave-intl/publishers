@@ -1,4 +1,4 @@
-import Chart from 'chart.js';
+import { Chart } from 'chart.js';
 
 let colors = [
   '255, 99, 132',
