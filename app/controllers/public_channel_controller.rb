@@ -14,7 +14,7 @@ class PublicChannelController < ApplicationController
     }
 
     # Handle the case when the resource is not found
-    if channel.nil? || @crypto_addresses.empty? || current_publisher != channel.publisher || !current_publisher.feature_flags["p2p_enabled"]
+    if channel.nil? || @crypto_addresses.empty? || !current_publisher.feature_flags["p2p_enabled"]
       redirect_to root_path, alert: "Channel not found"
     end
   end
