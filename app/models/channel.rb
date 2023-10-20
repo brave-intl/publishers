@@ -363,9 +363,9 @@ class Channel < ApplicationRecord
   end
 
   def set_public_identifier
-    return if public_identifier.present?
+    # return if public_identifier.present?
     identifier = loop do
-      id = SecureRandom.hex(10)
+      id = SecureRandom.alphanumeric(10)
       break id unless Channel.where(public_identifier: id).exists?
     end
 
