@@ -5,7 +5,7 @@ import { FlexWrapper } from "../../style";
 import BitflyerIcon from "./bitflyerConnection/BitflyerIcon";
 import GeminiIcon from "./geminiConnection/GeminiIcon";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 
 // This shows the Connect Buttons for the different Wallet Providers
 const NotConnected = (props) => (
@@ -51,12 +51,11 @@ class UpholdConnectButton extends React.Component<any, any> {
   public render() {
     return (
       <>
-        <ReactTooltip 
+        <Tooltip
           id='uphold-regions'
-          effect='solid'
           place='right'
-          getContent={(dataTip) => `Supported regions for Uphold: ${dataTip}`}>
-        </ReactTooltip>
+          render={(dataTip) => `Supported regions for Uphold: ${dataTip}`}>
+        </Tooltip>
         <a
           className="btn btn-secondary font-weight-bold mb-2"
           data-piwik-action="UpholdConnectClicked"
@@ -65,8 +64,8 @@ class UpholdConnectButton extends React.Component<any, any> {
           rel="nofollow"
           data-method="post"
           href={routes.publishers.uphold.connect}
-          data-tip={this.state.allowedRegions}
-          data-for='uphold-regions'
+          data-tooltip-content={this.state.allowedRegions}
+          data-tooltip-id='uphold-regions'
         >
           <FlexWrapper className="align-items-center">
             <FormattedMessage id="walletServices.uphold.connect" />
@@ -90,12 +89,11 @@ class GeminiConnectButton extends React.Component<any, any> {
   public render() {
     return (
       <>
-        <ReactTooltip 
+        <Tooltip
           id='gemini-regions'
-          effect='solid'
           place='right'
-          getContent={(dataTip) => `Supported regions for Gemini: ${dataTip}`}>
-        </ReactTooltip>
+          render={(dataTip) => `Supported regions for Gemini: ${dataTip}`}>
+        </Tooltip>
         <a
           className="btn btn-secondary font-weight-bold mb-2"
           data-piwik-action="GeminiConnectClicked"
@@ -104,8 +102,8 @@ class GeminiConnectButton extends React.Component<any, any> {
           rel="nofollow"
           data-method="post"
           href={routes.publishers.gemini.connect}
-          data-tip={this.state.allowedRegions}
-          data-for='gemini-regions'
+          data-tooltip-content={this.state.allowedRegions}
+          data-tooltip-id='gemini-regions'
         >
           <FlexWrapper className="align-items-center">
             <FormattedMessage id="walletServices.gemini.connect" />
