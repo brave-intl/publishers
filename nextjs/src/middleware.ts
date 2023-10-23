@@ -10,7 +10,7 @@ export function middleware(request) {
   const locale = request.nextUrl.searchParams.get('locale');
   if (locale === 'ja') {
     return NextResponse.redirect(
-      new URL(`/${locale}/${pathname}`, request.url),
+      new URL(`/ja/${pathname}`, request.url),
     );
   }
 

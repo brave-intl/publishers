@@ -5,6 +5,7 @@ import { FlexWrapper } from "../../style";
 import BitflyerIcon from "./bitflyerConnection/BitflyerIcon";
 import GeminiIcon from "./geminiConnection/GeminiIcon";
 import UpholdIcon from "./upholdConnection/UpholdIcon";
+import { Tooltip } from "react-tooltip";
 
 // This shows the Connect Buttons for the different Wallet Providers
 const NotConnected = (props) => (
@@ -16,9 +17,10 @@ const NotConnected = (props) => (
       <FormattedMessage id="walletServices.brave.description" />
     </div>
     <div className="col-6 d-flex flex-column justify-content-center align-items-end">
-      {props.featureFlags.gemini_enabled && props.locale !== 'ja' && <GeminiConnectButton />}
-      {props.locale !== 'ja' && <UpholdConnectButton />}
+      {props.featureFlags.gemini_enabled && props.locale !== 'ja' && <GeminiConnectButton allowedRegions={props.allowedRegions} />}
+      {props.locale !== 'ja' && <UpholdConnectButton allowedRegions={props.allowedRegions} />}
       {props.locale === 'ja' && <BitflyerConnectButton />}
+      {props.locale !== 'ja' && <div><a href='https://support.brave.com/hc/en-us/articles/6539887971469'>See list of supported regions for each custodian</a></div>}
     </div>
     <div className="col-11 alert alert-warning m-3 justify-content-center">
       <FormattedMessage id={"walletServices.brave.nonKycWarning"} values={{
@@ -37,39 +39,81 @@ const NotConnected = (props) => (
 // The data-method is a built-in Rails method that will use rails-ujs to submit a "patch" request to the backend
 // The backend updates the state token and then redirects to Uphold to have the user fill out their login details.
 // Afterwards this redirects the user to the UpholdController/#create action.
-const UpholdConnectButton = () => (
-  <a
-    className="btn btn-secondary font-weight-bold mb-2"
-    data-piwik-action="UpholdConnectClicked"
-    data-piwik-name="Clicked"
-    data-piwik-value="Dashboard"
-    rel="nofollow"
-    data-method="post"
-    href={routes.publishers.uphold.connect}
-  >
-    <FlexWrapper className="align-items-center">
-      <FormattedMessage id="walletServices.uphold.connect" />
-      <UpholdIcon />
-    </FlexWrapper>
-  </a>
-);
+class UpholdConnectButton extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
 
-const GeminiConnectButton = () => (
-  <a
-    className="btn btn-secondary font-weight-bold mb-2"
-    data-piwik-action="GeminiConnectClicked"
-    data-piwik-name="Clicked"
-    data-piwik-value="Dashboard"
-    rel="nofollow"
-    data-method="post"
-    href={routes.publishers.gemini.connect}
-  >
-    <FlexWrapper className="align-items-center">
-      <FormattedMessage id="walletServices.gemini.connect" />
-      <GeminiIcon />
-    </FlexWrapper>
-  </a>
-);
+    this.state = {
+      allowedRegions: props.allowedRegions.uphold.allow.join(', ')
+    }
+  }
+
+  public render() {
+    return (
+      <>
+        <Tooltip
+          id='uphold-regions'
+          place='right'
+          render={(dataTip) => `Supported regions for Uphold: ${dataTip}`}>
+        </Tooltip>
+        <a
+          className="btn btn-secondary font-weight-bold mb-2"
+          data-piwik-action="UpholdConnectClicked"
+          data-piwik-name="Clicked"
+          data-piwik-value="Dashboard"
+          rel="nofollow"
+          data-method="post"
+          href={routes.publishers.uphold.connect}
+          data-tooltip-content={this.state.allowedRegions}
+          data-tooltip-id='uphold-regions'
+        >
+          <FlexWrapper className="align-items-center">
+            <FormattedMessage id="walletServices.uphold.connect" />
+            <UpholdIcon />
+          </FlexWrapper>
+        </a>
+      </>
+    );
+  }
+}
+
+class GeminiConnectButton extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      allowedRegions: props.allowedRegions.gemini.allow.join(', ')
+    }
+  }
+
+  public render() {
+    return (
+      <>
+        <Tooltip
+          id='gemini-regions'
+          place='right'
+          render={(dataTip) => `Supported regions for Gemini: ${dataTip}`}>
+        </Tooltip>
+        <a
+          className="btn btn-secondary font-weight-bold mb-2"
+          data-piwik-action="GeminiConnectClicked"
+          data-piwik-name="Clicked"
+          data-piwik-value="Dashboard"
+          rel="nofollow"
+          data-method="post"
+          href={routes.publishers.gemini.connect}
+          data-tooltip-content={this.state.allowedRegions}
+          data-tooltip-id='gemini-regions'
+        >
+          <FlexWrapper className="align-items-center">
+            <FormattedMessage id="walletServices.gemini.connect" />
+            <GeminiIcon />
+          </FlexWrapper>
+        </a>
+      </>
+    );
+  }
+}
 
 const BitflyerConnectButton = () => (
   <a

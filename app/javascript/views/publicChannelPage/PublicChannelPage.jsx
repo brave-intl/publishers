@@ -32,6 +32,7 @@ class PublicChannelPage extends React.Component {
     this.description = props.siteBanner && props.siteBanner.description;
     this.socialLinks = props.siteBanner && props.siteBanner.socialLinks || [];
     this.cryptoAddresses = props.cryptoAddresses;
+    this.cryptoConstants = props.cryptoConstants;
 
     this.socialIcons = { youtube, twitter, twitch };
   }
@@ -69,7 +70,7 @@ class PublicChannelPage extends React.Component {
               </div>
             </DescriptionContainer>
             <CryptoPaymentContainer className='col-xs-12 col-lg-6'>
-              <CryptoPaymentWidget cryptoAddresses={this.cryptoAddresses} />
+              <CryptoPaymentWidget cryptoAddresses={this.cryptoAddresses} cryptoConstants={this.cryptoConstants} />
               <PrivacyDisclaimer>
                 <FormattedMessage id="publicChannelPage.privacyDisclaimer" />
               </PrivacyDisclaimer>

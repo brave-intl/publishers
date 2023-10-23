@@ -5,7 +5,7 @@ import {
   FormattedNumber,
   injectIntl,
 } from "react-intl";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 
 import { DownloadIcon } from "brave-ui/components/icons";
 
@@ -85,7 +85,7 @@ export const DepositBreakdown = (props) => {
         {props.children}
       </span>
 
-      <ReactTooltip id={id}>
+      <Tooltip id={id}>
         <table className="table text-light m-0">
           <tbody>
             {Object.keys(props.results).map((type) => (
@@ -101,7 +101,7 @@ export const DepositBreakdown = (props) => {
             ))}
           </tbody>
         </table>
-      </ReactTooltip>
+      </Tooltip>
     </React.Fragment>
   );
 };

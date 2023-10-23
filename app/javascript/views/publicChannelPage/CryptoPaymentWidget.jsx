@@ -12,7 +12,13 @@ import {
   LAMPORTS_PER_SOL,
   Transaction,
   sendAndConfirmTransaction,
+  PublicKey,
 } from "@solana/web3.js";
+import {
+  getAssociatedTokenAddress,
+  createAssociatedTokenAccountInstruction,
+  createTransferInstruction,
+} from "@solana/spl-token";
 import axios from "axios";
 import Select from 'react-select';
 import routes from "../routes";
@@ -70,6 +76,7 @@ class CryptoPaymentWidget extends React.Component {
         label: intl.formatMessage({ id: 'publicChannelPage.solanaNetwork' }),
         options: [
           { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.solana' }), value: "SOL", icon: solIcon },
+          { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaBAT' }), value: "splBAT", icon: batIcon }
         ]
       })
     }
@@ -77,6 +84,10 @@ class CryptoPaymentWidget extends React.Component {
     const currentChain = ethAddress ? 'ETH' : 'SOL';
 
     this.state = {
+      ethBatAddress: props.cryptoConstants.eth_bat_address,
+      solanaBatAddress: props.cryptoConstants.solana_bat_address,
+      solanaMainUrl: props.cryptoConstants.solana_main_url,
+      solanaTestUrl: props.cryptoConstants.solana_test_url,
       placeholder,
       isLoading: true,
       currentAmount: 5,
@@ -85,6 +96,7 @@ class CryptoPaymentWidget extends React.Component {
       // the channel must have at least one crypto address for this page to be navigable,
       // and right now the options are only sol and eth
       currentChain,
+      displayChain: currentChain,
       defaultAmounts: [1,5,10],
       isModalOpen: false,
       ratios: {},
@@ -110,8 +122,7 @@ class CryptoPaymentWidget extends React.Component {
   };
 
   calculateCryptoPrice() {
-    const chain = this.state.currentChain.includes("BAT") ? 'bat' : this.state.currentChain.toLowerCase();
-    return this.state.currentAmount / this.state.ratios[chain]['usd'];
+    return this.state.currentAmount / this.state.ratios[this.state.displayChain.toLowerCase()]['usd'];
   }
 
   roundCryptoPrice() {
@@ -133,6 +144,8 @@ class CryptoPaymentWidget extends React.Component {
       this.sendSolPayment();
     } else if (this.state.currentChain === "BAT") {
       this.sendEthBatPayment();
+    } else if (this.state.currentChain === "splBAT") {
+      this.sendSolBatPayment();
     }
   }
 
@@ -188,8 +201,7 @@ class CryptoPaymentWidget extends React.Component {
 
       try {
         const web3 = new Web3(window.ethereum);
-        // BAT Token contract address (replace with the actual contract address)
-        const batContractAddress = '0x5C8826a45Cfc827D0BdEda3aad0845487C026bCe';
+        const batContractAddress = this.state.ethBatAddress;
 
         const contract = new web3.eth.Contract(goerliBatAbi, batContractAddress);
         const amount = Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17))
@@ -224,9 +236,7 @@ class CryptoPaymentWidget extends React.Component {
     const provider = await window.solana.connect();
     if (provider.publicKey) {
       const pub_key = provider.publicKey
-      
-      const NETWORK = 'https://api.testnet.solana.com/';
-      const connection = new Connection(NETWORK);
+      const connection = new Connection(this.state.solanaTestUrl);
       const amount = Math.round(this.calculateCryptoPrice() * LAMPORTS_PER_SOL)
       
       const transaction = new Transaction().add(
@@ -237,7 +247,7 @@ class CryptoPaymentWidget extends React.Component {
         })
       );
       transaction.feePayer = pub_key;
-      let blockhashObj = await connection.getRecentBlockhash();
+      const blockhashObj = await connection.getRecentBlockhash();
       transaction.recentBlockhash = await blockhashObj.blockhash;
 
       try {
@@ -259,10 +269,95 @@ class CryptoPaymentWidget extends React.Component {
     }
   }
 
+  sendSolBatPayment = async () => {
+    if (!window.solana) {
+      // set to be designed error state here
+      return false;
+    }
+    const provider = await window.solana.connect();
+    
+    if (provider.publicKey) {
+      try {
+        // This is the account address of the user who is sending bat
+        const sourceAccountOwner = provider.publicKey
+        // this is the address of the BAT program on the solana chain
+        const batAddress = new PublicKey(this.state.solanaBatAddress);
+        // multiply the number of bat tokens to the power of the decimals in the token program 
+        const amount = Math.round(this.calculateCryptoPrice() * Math.pow(10, 8));
+        // this is the account address that will receive bat
+        const destinationAccountOwner = new PublicKey(this.state.addresses.SOL)
+        
+        const connection = new Connection(this.state.solanaMainUrl)
+
+        // Check to see if the sender has an associated token account
+        const senderAccount = await connection.getParsedTokenAccountsByOwner(sourceAccountOwner, {
+          mint: batAddress,
+        });
+
+        if (senderAccount.value.length > 0) {
+          const senderTokenAddress = senderAccount.value[0].pubkey;
+
+          // get receiver associated token account
+          const destinationAccount = await connection.getParsedTokenAccountsByOwner(destinationAccountOwner, {
+            mint: batAddress,
+          });
+          // Does the receiver token account already exist?
+          const hasDestinationAccount = destinationAccount.value.length > 0;
+
+          // Get the receiver token address, whether it exists or not
+          const destinationTokenAddress = hasDestinationAccount ? destinationAccount.value[0].pubkey : await getAssociatedTokenAddress(batAddress, destinationAccountOwner);
+
+          const tx = new Transaction();
+          
+          // if the token accout has not been created, add an instruction to create it
+          if (!hasDestinationAccount) {
+            tx.add(createAssociatedTokenAccountInstruction(
+              sourceAccountOwner,
+              destinationTokenAddress,
+              destinationAccountOwner,
+              batAddress,
+            ))
+          }
+          // Add the instruction to transfer the tokens
+          tx.add(createTransferInstruction(
+            senderTokenAddress,
+            destinationTokenAddress,
+            sourceAccountOwner,
+            amount
+          ));
+
+          const latestBlockHash = await connection.getLatestBlockhash('confirmed');
+          tx.recentBlockhash = await latestBlockHash.blockhash;
+          tx.feePayer = sourceAccountOwner;
+          
+          const signature = await window.solana.signAndSendTransaction(tx);
+          if ( signature.signature ) {
+            window.solana.disconnect();
+            const newState = {...this.state};
+            newState.isSuccessView = true;
+            this.setState({...newState });
+          }
+        } else {
+          console.log('there is no BAT to send')
+          // set to be designed error state here
+          window.solana.disconnect()
+        }
+      } catch (e) {
+        console.log(e)
+        // set to be designed error state here
+        window.solana.disconnect()
+      }
+    } else {
+      // set to be designed error state here
+      return;
+    }
+  }
+
   changeChain(optionVal){
     const newState = {...this.state};
     newState.currentChain = optionVal.value;
     newState.selectValue = optionVal;
+    newState.displayChain = optionVal.value.includes("BAT") ? 'BAT' : optionVal.value;
     this.setState({...newState });
   }
 
@@ -351,14 +446,14 @@ class CryptoPaymentWidget extends React.Component {
               <div className="col-xs-12 col-md-5 text-right align-top">
                 <LargeCurrencyDisplay>
                   {this.state.toggle === 'crypto' ? (
-                      <span>{this.roundCryptoPrice()} <span className="currency align-middle">{this.state.currentChain}</span></span>
+                      <span>{this.roundCryptoPrice()} <span className="currency align-middle">{this.state.displayChain}</span></span>
                     ) : (
                       <span>${this.state.currentAmount} <span className="currency align-middle">USD</span></span>
                     )}
                 </LargeCurrencyDisplay>
                 <SmallCurrencyDisplay>
                   {this.state.toggle === 'fiat' ? (
-                      <span>{this.roundCryptoPrice()} {this.state.currentChain}</span>
+                      <span>{this.roundCryptoPrice()} {this.state.displayChain}</span>
                     ) : (
                       <span>${this.state.currentAmount} USD</span>
                     )}
