@@ -120,6 +120,21 @@ class CryptoPaymentWidget extends React.Component {
 
   componentDidMount() {
     this.loadData();
+
+    // Set up a setInterval to fetch new price data every 5 minutes (300,000 milliseconds)
+    this.intervalId = setInterval(this.backgroundLoadData.bind(this), 300000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  backgroundLoadData() {
+    axios.get(routes.publishers.publicChannelPage.getRatios).then((response) => {
+      const newState = { ...this.state }
+      newState.ratios = response.data;
+      this.setState({ ...newState });
+    });
   }
 
   loadData = () => {
