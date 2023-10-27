@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Chart, ChartType } from "chart.js"
+import { Chart, ChartType, registerables } from "chart.js"
 import Card from "../../../../../components/card/Card";
 
 interface ICurrentChartProps {
@@ -14,6 +14,7 @@ export default class CurrentChart extends React.Component<
   private node;
   constructor(props) {
     super(props);
+    Chart.register(...registerables);
   }
 
   public componentDidUpdate() {
