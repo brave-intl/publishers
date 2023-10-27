@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
-import BatsBackground from "../../../assets/images/bg_bats.svg";
-import HeartsBackground from "../../../assets/images/bg_hearts.svg";
+import DefaultBg from "../../../assets/images/default_banner_bg.jpg"
 import CryptoWidgetBackground from "../../../assets/images/crypto_widget_bg.png";
 import CryptoWidgetSuccess from "../../../assets/images/crypto_widget_success.png";
 import Exchange from "../../../assets/images/exchange.svg";
+
+export const PublicChannelContainer = styled.div`
+  font-family: 'poppins', sans-serif;
+`;
 
 export const Logo = styled.div`
   border-radius: 50%;
@@ -37,13 +40,16 @@ export const Cover = styled.div`
     url &&
     `
     background-size: cover;
+    background-repeat: no-repeat;
     background-image: url(${url})
   `}
 
   ${({ url }) =>
     url === null &&
     `
-    background: url(${BatsBackground}) left bottom no-repeat, url(${HeartsBackground}) right top no-repeat, rgb(158, 159, 171);
+    background-image: url(${DefaultBg});
+    background-repeat: no-repeat;
+    background-size: cover;
   `}
 `;
 
@@ -53,7 +59,7 @@ export const ImageContainer = styled.div`
 `;
 
 export const DescriptionContainer = styled.div`
-  font-family: 'Poppins-Regular', sans-serif;
+  font-family: 'Inter', sans-serif;
   z-index: 100;
   margin-bottom: 2rem;
 `;
@@ -95,7 +101,7 @@ export const CreatorTitle = styled.div`
 export const PrivacyDisclaimer = styled.div`
   text-align: center;
   font-size: .8rem;
-  font-family: 'Poppins-Regular', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #3F4855;
   margin: 1rem;
 `;
@@ -116,11 +122,20 @@ export const QRTitle = styled.div`
   padding-bottom: 50px;
 `;
 
+export const QRSubTitle = styled.div`
+  font-size: 0.9rem;
+  max-width: calc(100% - 50px);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  margin-bottom: -20px;
+`;
+
 export const QRText = styled.div`
   font-size: 0.9rem;
   padding-top: 50px;
   white-space: nowrap;
   max-width: calc(100% - 50px);
+  font-family: 'Inter', sans-serif;
 `;
 
 export const QRTextItem = styled.div`
@@ -142,6 +157,7 @@ export const QRLink = styled.button`
   font-weight: 600;
   color: #3F39E8;
   font-size: 0.9em;
+  font-family: poppins, sans-serif;
   width: 100%;
   padding: 14px 20px 14px 20px;
   border: none;
@@ -153,6 +169,7 @@ export const WidgetHeading = styled.div`
   font-size: 1.6em;
   margin-top: 12px;
   color: #0D0F14;
+  font-family: poppins, sans-serif;
 `;
 
 export const WidgetSubHeading = styled.div`
@@ -174,6 +191,7 @@ export const SendButton = styled.button`
   border: none;
   color: #ffffff;
   font-weight: 600;
+  font-family: poppins, sans-serif;
   font-size 0.9em;
 `;
 
@@ -184,12 +202,13 @@ export const PaymentButtons = styled.div`
 export const PaymentOptions = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 32px;
+  padding: 20px 32px 32px 32px;
 `;
 
 export const SmallCurrencyDisplay = styled.div`
   display: inline-block;
   color: #3F4855;
+  font-family: 'Inter', sans-serif;
 `;
 
 export const LargeCurrencyDisplay = styled.div`
@@ -198,6 +217,7 @@ export const LargeCurrencyDisplay = styled.div`
   line-height: 1.1em;
 
   .currency {
+    font-family: 'Inter', sans-serif;
     font-size: 0.5em;
   }
 `;
@@ -215,7 +235,7 @@ export const ExchangeIcon = styled.div`
 
 export const CryptoOption = styled.div`
   text-align: left;
-  padding: 26px;
+  padding: 20px 26px;
   font-weight: 600;
 
   img {
@@ -228,6 +248,7 @@ export const CryptoOption = styled.div`
 export const AmountButton = styled.button`
   background-color: #FFFFFF;
   border: 1px solid #A1ABBA;
+  font-size: 13px;
   padding: 5px 14px;
   &.selected {
     background-color: #EDEEF1;
@@ -252,6 +273,7 @@ export const AmountInput = styled.input`
   padding: 5px 14px;
   width: 86px;
   color: #3F4855;
+  font-size: 13px;
 
   &::-webkit-inner-spin-button,
   &::-webkit-outer-spin-button {
@@ -292,4 +314,23 @@ export const SuccessThank = styled.div`
 export const SuccessAmount = styled.div`
   color: #2ABA32;
   font-weight: 600;
+  font-family: 'Inter', sans-serif;
+`;
+
+export const ShareButton = styled.a`
+  width: 100%;
+  padding: 14px 20px 14px 20px;
+  border-radius: 26px;
+  background: rgba(63, 57, 232, 1);
+  color: #ffffff;
+  font-weight: 600;
+  font-family: poppins, sans-serif;
+  font-size 0.9em;
+  display: block;
+  cursor: pointer;
+
+  &:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
 `;

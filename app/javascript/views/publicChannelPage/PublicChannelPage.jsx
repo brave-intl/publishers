@@ -14,6 +14,7 @@ import {
   PrivacyDisclaimer,
   CryptoPaymentContainer,
   SocialLink,
+  PublicChannelContainer,
 } from "./PublicChannelPageStyle.js";
 
 import twitch from "../../../assets/images/social-twitch.png";
@@ -44,7 +45,7 @@ class PublicChannelPage extends React.Component {
   
   render() {
     return (
-      <>
+      <PublicChannelContainer>
         <ImageContainer>
           <Cover url={this.coverUrl}/>
         </ImageContainer>
@@ -70,14 +71,14 @@ class PublicChannelPage extends React.Component {
               </div>
             </DescriptionContainer>
             <CryptoPaymentContainer className='col-xs-12 col-lg-6'>
-              <CryptoPaymentWidget cryptoAddresses={this.cryptoAddresses} cryptoConstants={this.cryptoConstants} />
+              <CryptoPaymentWidget title={this.title} cryptoAddresses={this.cryptoAddresses} cryptoConstants={this.cryptoConstants} />
               <PrivacyDisclaimer>
                 <FormattedMessage id="publicChannelPage.privacyDisclaimer" />
               </PrivacyDisclaimer>
             </CryptoPaymentContainer>
           </div>
         </div>
-      </>
+      </PublicChannelContainer>
     )
   }
 }
