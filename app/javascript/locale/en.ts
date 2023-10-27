@@ -348,7 +348,13 @@ export default {
     thanks: "Thanks for supporting your favorite creators",
     hooray: "Hooray! {amount} sent",
     successTweet: "I just sent some {symbol} to {name} via their Brave contribution page {url}! Want to receive {symbol} too? Sign up at https://creators.brave.com!",
-    QRBatText: "Scanning this QR code will give you the creator’s BAT address on {chain}."
+    QRBatText: "Scanning this QR code will give you the creator’s BAT address on {chain}.",
+    ErrorTitle: "There was a problem sending your contribution",
+    ErrorMsg: "Please try again.",
+    noEthTitle: "No Ethereum wallet detected",
+    noEthMsg: "Connect an Ethereum wallet to send to this creator",
+    noSolTitle: "No Solana wallet detected",
+    noSolMsg: "Connect a Solana wallet to send to this creator",
   }
 };
 

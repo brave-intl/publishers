@@ -74,7 +74,6 @@ export const CryptoWidgetWrapper = styled.div`
   background-image: url(${CryptoWidgetBackground});
   border-radius: 12px;
   width: 520px;
-  height: 542px;
   box-shadow: 0px 3px 10px -1px rgba(0, 0, 0, 0.05);
   margin: 0 auto;
   padding: 32px 16px;
@@ -202,7 +201,7 @@ export const PaymentButtons = styled.div`
 export const PaymentOptions = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 20px 32px 32px 32px;
+  padding: 20px 32px 32px;
 `;
 
 export const SmallCurrencyDisplay = styled.div`
@@ -240,8 +239,8 @@ export const CryptoOption = styled.div`
 
   img {
     margin-right: 16px;
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
   }
 `;
 
@@ -249,7 +248,7 @@ export const AmountButton = styled.button`
   background-color: #FFFFFF;
   border: 1px solid #A1ABBA;
   font-size: 13px;
-  padding: 5px 14px;
+  padding: 12px 16px;
   &.selected {
     background-color: #EDEEF1;
   }
@@ -270,7 +269,7 @@ export const AmountInput = styled.input`
   border-left: none;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
-  padding: 5px 14px;
+  padding: 12px 16px;
   width: 86px;
   color: #3F4855;
   font-size: 13px;
@@ -333,4 +332,41 @@ export const ShareButton = styled.a`
     color: #ffffff;
     text-decoration: none;
   }
+`;
+
+export const ErrorSection = styled.div`
+  background-color: #FFE8E7;
+  border-radius: 8px;
+  width: 100%;
+  padding: 24px;
+  margin: 0px, 8px, 8px, 8px;
+  text-align: left;
+`;
+
+export const ErrorIcon = styled.div`
+  display: inline-block;
+  vertical-align: top;
+  img {
+    height: 28px;
+    width: 28px;
+  }
+`;
+
+export const ErrorText = styled.div`
+  display: inline-block;
+  padding-left: 18px;
+`;
+
+export const ErrorTitle = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #89001E;
+  margin-bottom: 5px;
+`;
+
+export const ErrorMessage = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #89001E;
 `;
