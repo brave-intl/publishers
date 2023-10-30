@@ -322,7 +322,7 @@ export default {
       widgetTitle: "P2P WALLETS",
       ethereum: "Ethereum",
       ethereumBAT: "Basic Attention Token",
-      solanaBAT: "Basic Attention Token",
+      solanaBAT: "Basic Attention Token (Portal)",
       solana: "Solana",
       genericError: "An error occurred. Please try again later.",
       addressConnectFailure: "Connecting new address failed",
@@ -335,7 +335,7 @@ export default {
     privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted.",
     generateQR: "Generate QR Code",
     QRModalHeader: "Send from mobile wallets",
-    QRModalText: "You can send by scanning this QR code using a Web3 wallet from your mobile device.",
+    QRModalText: "Scanning this QR code will give you the creator’s {chain} address.",
     paymentHeading: "Show your love and send a token of your gratitude",
     paymentSubHeading: "Support your favorite creators",
     send: "Send",
@@ -346,7 +346,9 @@ export default {
     share: "Share your support",
     goBack: "Go back",
     thanks: "Thanks for supporting your favorite creators",
-    hooray: "Hooray! {amount} sent"
+    hooray: "Hooray! {amount} sent",
+    successTweet: "I just sent some {symbol} to {name} via their Brave contribution page {url}! Want to receive {symbol} too? Sign up at https://creators.brave.com!",
+    QRBatText: "Scanning this QR code will give you the creator’s BAT address on {chain}."
   }
 };
 

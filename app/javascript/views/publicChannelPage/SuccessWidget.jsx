@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { 
   SuccessWrapper,
-  SendButton,
+  ShareButton,
   PaymentButtons,
   QRLink,
   SuccessMessageWrapper,
@@ -14,15 +14,18 @@ class SuccessWidget extends React.Component {
   constructor(props) {
     super(props);
 
+    const intl = props.intl;
+    const tweetText = intl.formatMessage(
+      {id: 'publicChannelPage.successTweet'},
+      {url: window.location.href, name: this.props.name, symbol: this.props.chain}
+    );
+
     this.state = {
       setStateToStart: props.setStateToStart,
       amount: props.amount,
       chain: props.chain,
+      tweetText,
     }
-  }
-
-  shareSupport(){
-    // ????
   }
   
   render() {
@@ -37,12 +40,9 @@ class SuccessWidget extends React.Component {
           </SuccessThank>
         </SuccessMessageWrapper>
         <PaymentButtons>
-          <SendButton onClick={(event) => {
-            event.preventDefault();
-            this.shareSupport();
-          }}>
+          <ShareButton href={`https://twitter.com/intent/tweet?text=${this.state.tweetText}`} target="_blank" rel="noopener noreferrer">
             <FormattedMessage id="publicChannelPage.share" />
-          </SendButton>
+          </ShareButton>
           
           <QRLink onClick={(event) => {
             event.preventDefault();

@@ -59,6 +59,8 @@ class CryptoPaymentWidget extends React.Component {
 
     const addresses = { SOL: solAddress && solAddress[0], ETH: ethAddress && ethAddress[0] };
 
+    this.iconOptions = { SOL: solIcon, ETH: ethIcon, BAT: batIcon };
+
     const dropdownOptions = []
 
     if (ethAddress) {
@@ -104,6 +106,7 @@ class CryptoPaymentWidget extends React.Component {
       toggle: 'crypto',
       selectValue: dropdownOptions.flatMap(opt => opt.options).filter(opt => opt.value === currentChain)[0],
       isSuccessView: false,
+      title: this.props.title,
     }
   }
 
@@ -127,6 +130,14 @@ class CryptoPaymentWidget extends React.Component {
 
   roundCryptoPrice() {
     return Math.round(this.calculateCryptoPrice() * 100000) / 100000;
+  }
+
+  baseChain() {
+    if (this.state.currentChain.includes('BAT')) {
+      return this.state.currentChain === 'BAT' ? 'ETH' : 'SOL';
+    } else {
+      return this.state.currentChain;
+    }
   }
 
   closeModal = () => {
@@ -368,7 +379,7 @@ class CryptoPaymentWidget extends React.Component {
   };
   
   handleInputChange = (event) => {
-    const customValue = parseFloat(event.target.value);
+    const customValue = parseFloat(event.target.value || 0);
     const newState = {...this.state};
     newState.customAmount = customValue;
     newState.currentAmount = customValue;
@@ -391,7 +402,7 @@ class CryptoPaymentWidget extends React.Component {
     if (this.state.isLoading) {
       return (<CryptoWidgetWrapper></ CryptoWidgetWrapper>)
     } else if (this.state.isSuccessView) {
-      return ( <SuccessWidget setStateToStart={this.setStateToStart.bind(this)} amount={this.roundCryptoPrice()} chain={this.state.currentChain} /> )
+      return ( <SuccessWidget setStateToStart={this.setStateToStart.bind(this)} amount={this.roundCryptoPrice()} chain={this.state.displayChain} name={this.state.title} /> )
     } else {
       return (
         <CryptoWidgetWrapper>
@@ -412,13 +423,25 @@ class CryptoPaymentWidget extends React.Component {
                 }}
                 value={this.state.selectValue}
                 styles={{
-                  IndicatorSeparator: (base) => ({ ...base, background: '#ffffff' }),
-                  Control: (base) => ({ ...base, border: 'none' }),
-                  ValueContainer: (base) => ({
+                  control: (base) => ({ ...base, border: 'none', boxShadow: 'none' }),
+                  groupHeading: (base) => ({...base, textAlign: 'left', marginLeft: '16px'}),
+                  indicatorSeparator: (base) => ({...base, display: 'none'}),
+                  input: (base) => ({...base, caretColor: 'transparent' }),
+                  valueContainer: (base) => ({
                     ...base,
                     textAlign: 'left',
-                    padding: '26px',
+                    padding: '16px',
                     fontWeight: '600',
+                    paddingLeft: '50px',
+                    backgroundImage: `url(${this.iconOptions[this.state.displayChain]})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'left',
+                  }),
+                  menu: (base) => ({
+                    ...base,
+                    marginTop: '0px',
+                    paddingTop: '30px',
+                    borderRadius: '0px 0px 8px 8px',
                   }),
                 }}
               />
@@ -483,10 +506,9 @@ class CryptoPaymentWidget extends React.Component {
             handleClose={() => this.closeModal()}
           >
             <QRCodeModal
-              address={this.state.addresses[this.state.currentChain]}
-              chain={this.state.currentChain}
-              amount={this.state.currentAmount}
-              ratios={this.state.ratios}
+              address={this.state.addresses[this.baseChain()]}
+              chain={this.baseChain()}
+              displayChain={this.state.displayChain}
             />
           </Modal>
         </CryptoWidgetWrapper>
