@@ -20,7 +20,7 @@
   "dependencies": {
     "@brave/leo": "github:brave/leo#80f2230bcfb7d2a87e7025a4e26c502d900fd938",
     "@github/webauthn-json": "^2.1.1",
-    "axios": "^1.5.0",
+    "axios": "^1.6.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
     "next": "^13.5.4",
