@@ -65,7 +65,7 @@
     "@rails/ujs": "^7.0.6",
     "@solana/spl-token": "^0.3.8",
     "@solana/web3.js": "^1.78.4",
-    "axios": "^1.4",
+    "axios": "^1.6",
     "babel-loader": "9.1.3",
     "brave-ui": "git+https://github.com/brave/brave-ui#11019732ef5fc09a75bae371c3f3ffece651d97c",
     "bs58": "5.0.0",
