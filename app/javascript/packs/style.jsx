@@ -270,6 +270,11 @@ export const Links = styled.div`
   padding-top: 80px;
 `;
 
+export const LinkError = styled.div`
+  font-size: .8em;
+  color: rgba(137, 0, 30, 1);
+`;
+
 export const Caret = styled.div`
   display: inline;
   font-size: 20px;

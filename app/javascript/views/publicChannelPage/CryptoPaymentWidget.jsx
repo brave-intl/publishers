@@ -483,6 +483,7 @@ class CryptoPaymentWidget extends React.Component {
                     backgroundImage: `url(${this.iconOptions[this.state.displayChain]})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'left',
+                    backgroundSize: "40px",
                   }),
                   menu: (base) => ({
                     ...base,
