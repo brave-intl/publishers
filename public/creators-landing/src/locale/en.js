@@ -106,18 +106,18 @@ var en = {
   },
   summary: {
     heading: "How does Brave Creators work?",
-    oneTitle: "Brave Browser users earn tokens by surfing the web",
+    oneTitle: "Brave browser users earn tokens for seeing private ads in Brave",
     oneDesc:
-      "Brave Creators is built on the Basic Attention Token (BAT). People who use the Brave Browser can earn tokens by viewing privacy-respecting ads.",
-    twoTitle: "They tip tokens to you, their favorite content creator",
+      "Brave Creators is powered by Basic Attention Token (BAT). People who use the Brave browser can earn BAT for seeing privacy-respecting ads in Brave.",
+    twoTitle: "They contribute BAT to you, their favorite content creator",
     twoDesc:
-      "Your subscribers, followers, or readers can automatically tip a set amount to you each month, or give one-time tips in an amount of their choice.",
+      "Your subscribers, followers, or readers can automatically contribute a set amount to you each month, or make on-demand BAT contributions to you in an amount of their choice.",
     threeTitle: "You sign up as a verified content creator on Brave Creators",
     threeDesc:
-      "Signing up as a verified content creator gives you access to the Creators dashboard, where you can manage all your tips. It will also give you access to your referral link, which you can use to earn more tokens.",
-    fourTitle: "Collect your tips in the Creators dashboard",
+      "Signing up for Brave Creators gives you access to your own Brave Creators dashboard, letting you register your sites and channels to begin receiving BAT.",
+    fourTitle: "Register your sites and channels, and begin receiving BAT",
     fourDesc:
-      "Once you’ve signed up and logged into the dashboard, you can use our partner Uphold to automatically convert the tokens you earned into a currency of your choosing.",
+      "Once you've registered your sites and channels, you can connect an account from one of our partners to your Brave Creators account, giving us and your audience a place to send you your BAT. On-demand contributions go instantly from the user to you. Any other contributions from users or Brave to you are paid once a month.",
     fourLink_href: "https://basicattentiontoken.org/",
     fourLink: "Learn more about tokens.",
     cardBusiness: "Business inquiries",
