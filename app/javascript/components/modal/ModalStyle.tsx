@@ -32,7 +32,8 @@ enum ModalSize {
   Small,
   Medium,
   Large,
-  Auto
+  Auto,
+  ExtraExtraSmall
 }
 
 interface IContainerProps {
@@ -47,6 +48,12 @@ export const Container = styled.div`
   border-radius: 6px;
   padding: 50px;
   z-index: 2;
+`;
+
+export const ExtraExtraSmallContainer = styled(Container)`
+  max-width: 420px;
+  width: 33%;
+  border-radius: 16px;
 `;
 
 export const ExtraSmallContainer = styled(Container)`

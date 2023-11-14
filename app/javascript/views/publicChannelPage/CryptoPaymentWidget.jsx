@@ -24,6 +24,7 @@ import Select from 'react-select';
 import routes from "../routes";
 import Modal, { ModalSize } from "../../components/modal/Modal";
 import QRCodeModal from "./QRCodeModal";
+import TryBraveModal from "./TryBraveModal";
 import CryptoPaymentOption from "./CryptoPaymentOption";
 import SuccessWidget from "./SuccessWidget";
 import {
@@ -107,6 +108,7 @@ class CryptoPaymentWidget extends React.Component {
       displayChain: currentChain,
       defaultAmounts: [1,5,10],
       isModalOpen: false,
+      isTryBraveModalOpen: false,
       ratios: {},
       customAmount: null,
       toggle: 'crypto',
@@ -171,6 +173,14 @@ class CryptoPaymentWidget extends React.Component {
     this.setState({ isModalOpen: true });
   }
 
+  closeTryBraveModal = () => {
+    this.setState({ isTryBraveModalOpen: false });
+  }
+
+  launchTryBraveModal() {
+    this.setState({ isTryBraveModalOpen: true });
+  }
+
   sendPayment = async () => {
     if (this.state.currentChain === "ETH") {
       await this.sendEthPayment();
@@ -230,6 +240,7 @@ class CryptoPaymentWidget extends React.Component {
           this.setGenericError();
         });
     } else {
+      launchTryBraveModal();
       this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg')
       return;
     }
@@ -269,6 +280,7 @@ class CryptoPaymentWidget extends React.Component {
         return;
       }
     } else {
+      launchTryBraveModal();
       this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg');
       return;
     }
@@ -276,6 +288,7 @@ class CryptoPaymentWidget extends React.Component {
 
   sendSolPayment = async () => {
     if (!window.solana) {
+      launchTryBraveModal();
       this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     }
@@ -317,6 +330,7 @@ class CryptoPaymentWidget extends React.Component {
 
   sendSolBatPayment = async () => {
     if (!window.solana) {
+      launchTryBraveModal();
       this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     }
@@ -552,6 +566,14 @@ class CryptoPaymentWidget extends React.Component {
               chain={this.baseChain()}
               displayChain={this.state.displayChain}
             />
+          </Modal>
+          <Modal
+            show={this.state.isTryBraveModalOpen}
+            size={ModalSize.ExtraExtraSmall}
+            padding={false}
+            handleClose={() => this.closeTryBraveModal()}
+          >
+            <TryBraveModal />
           </Modal>
         </CryptoWidgetWrapper>
       )
