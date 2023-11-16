@@ -14,10 +14,11 @@ import qr_logo from "../../../assets/images/qr_logo.png";
 class QRCodeModal extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
+
     this.paymentUrl = props.address;
     this.chain = props.chain;
     this.displayChain = props.displayChain;
+    this.fullChain = props.intl.formatMessage({id: `publicChannelPage.${this.chain}`});
   }
 
   componentDidMount() {
@@ -55,8 +56,10 @@ class QRCodeModal extends React.Component {
         <QRTitle>
           <FormattedMessage id="publicChannelPage.QRModalHeader" />
             {this.displayChain.includes('BAT') ? (
-              <QRSubTitle><FormattedMessage id="publicChannelPage.QRBatText" values={{chain: this.chain}}/></QRSubTitle>
-            ) : null}
+              <QRSubTitle><FormattedMessage id="publicChannelPage.QRBatText" values={{chain: this.fullChain}}/></QRSubTitle>
+            ) : (
+              <QRSubTitle><FormattedMessage id="publicChannelPage.QRStandardText" values={{chain: this.chain}}/></QRSubTitle>
+            )}
         </QRTitle>
         <QRBox id="qr-wrapper" className="text-center" />
         <QRText>
@@ -64,7 +67,7 @@ class QRCodeModal extends React.Component {
             <img src={icon} className="pr-2"/>
           </QRTextItem>
           <QRTextItem>
-            <FormattedMessage id="publicChannelPage.QRModalText" values={{chain: this.chain}}/>
+            <FormattedMessage id="publicChannelPage.QRModalText" />
           </QRTextItem>
         </QRText>
       </div>

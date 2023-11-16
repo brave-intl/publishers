@@ -6,6 +6,7 @@ import {
   Background,
   CloseIcon,
   Container,
+  ExtraExtraSmallContainer,
   ExtraSmallContainer,
   LargeContainer,
   MediumContainer,
@@ -16,6 +17,7 @@ import {
 } from "./ModalStyle";
 
 export enum ModalSize {
+  ExtraExtraSmall,
   ExtraSmall,
   Small,
   Medium,
@@ -76,6 +78,10 @@ export default class Modal extends React.Component<IModalProps> {
 
     let container = <Container>{childElements}</Container>;
     switch (this.props.size) {
+      case ModalSize.ExtraExtraSmall: {
+        container = <ExtraExtraSmallContainer>{childElements}</ExtraExtraSmallContainer>;
+        break;
+      }
       case ModalSize.ExtraSmall: {
         container = <ExtraSmallContainer>{childElements}</ExtraSmallContainer>;
         break;

@@ -335,7 +335,7 @@ export default {
     privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted.",
     generateQR: "Generate QR Code",
     QRModalHeader: "Send from mobile wallets",
-    QRModalText: "Scanning this QR code will give you the creator’s {chain} address.",
+    QRModalText: "You can send by scanning this QR code using a Web3 wallet from your mobile device.",
     paymentHeading: "Show your love and send a token of your gratitude",
     paymentSubHeading: "Support your favorite creators",
     send: "Send",
@@ -348,7 +348,22 @@ export default {
     thanks: "Thanks for supporting your favorite creators",
     hooray: "Hooray! {amount} sent",
     successTweet: "I just sent some {symbol} to {name} via their Brave contribution page {url}! Want to receive {symbol} too? Sign up at https://creators.brave.com!",
-    QRBatText: "Scanning this QR code will give you the creator’s BAT address on {chain}."
+    QRBatText: "Scanning this QR code will give you the creator’s BAT address on {chain}.",
+    QRStandardText: "Scanning this QR code will give you the creator’s {chain} address.",
+    ErrorTitle: "There was a problem sending your contribution",
+    ErrorMsg: "Please try again.",
+    noEthTitle: "No Ethereum wallet detected",
+    noEthMsg: "Connect an Ethereum wallet to send to this creator",
+    noSolTitle: "No Solana wallet detected",
+    noSolMsg: "Connect a Solana wallet to send to this creator",
+    ETH: 'Ethereum',
+    SOL: 'Solana',
+    tryBraveHeader: "Try Brave Wallet",
+    tryBraveSubheader: "Available only on Brave browser",
+    tryBraveButton: "Try it out!",
+    tryBraveBullet1: "Browser-native, inherently secure",
+    tryBraveBullet2: "Native NFT support",
+    tryBraveBullet3: "Multi-chain support",
   }
 };
 

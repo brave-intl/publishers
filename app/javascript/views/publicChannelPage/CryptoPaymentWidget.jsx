@@ -24,6 +24,7 @@ import Select from 'react-select';
 import routes from "../routes";
 import Modal, { ModalSize } from "../../components/modal/Modal";
 import QRCodeModal from "./QRCodeModal";
+import TryBraveModal from "./TryBraveModal";
 import CryptoPaymentOption from "./CryptoPaymentOption";
 import SuccessWidget from "./SuccessWidget";
 import {
@@ -40,18 +41,24 @@ import {
   ExchangeIcon,
   AmountButton,
   AmountInput,
+  ErrorSection,
+  ErrorIcon,
+  ErrorText,
+  ErrorMessage,
+  ErrorTitle,
 } from "./PublicChannelPageStyle.js";
 import ethIcon from "../../../assets/images/eth_icon_larger.png";
 import solIcon from "../../../assets/images/solana_icon_larger.png";
 import batIcon from "../../../assets/images/bat_icon.png";
+import warningIcon from "../../../assets/images/warning-circle-filled.png";
 import goerliBatAbi from "./goerliBatAbi.json";
 
 class CryptoPaymentWidget extends React.Component {
   constructor(props) {
     super(props);
 
-    const intl = props.intl;
-    const placeholder = intl.formatMessage({id: 'publicChannelPage.custom'});
+    this.intl = props.intl;
+    const placeholder = this.intl.formatMessage({id: 'publicChannelPage.custom'});
     const cryptoAddresses = props.cryptoAddresses;
     // There shouldn't be more than one of each, but just in case
     const solAddress = cryptoAddresses.filter(address => address.includes('SOL'))[0];
@@ -65,20 +72,20 @@ class CryptoPaymentWidget extends React.Component {
 
     if (ethAddress) {
       dropdownOptions.push({
-        label: intl.formatMessage({ id: 'publicChannelPage.ethereumNetwork' }),
+        label: this.intl.formatMessage({ id: 'publicChannelPage.ethereumNetwork' }),
         options: [
-          { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereum' }), value: "ETH", icon: ethIcon },
-          { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumBAT' }), value: "BAT", icon: batIcon }
+          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereum' }), value: "ETH", icon: ethIcon },
+          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumBAT' }), value: "BAT", icon: batIcon }
         ]
       })
     }
 
     if (solAddress) {
       dropdownOptions.push({
-        label: intl.formatMessage({ id: 'publicChannelPage.solanaNetwork' }),
+        label: this.intl.formatMessage({ id: 'publicChannelPage.solanaNetwork' }),
         options: [
-          { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.solana' }), value: "SOL", icon: solIcon },
-          { label: intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaBAT' }), value: "splBAT", icon: batIcon }
+          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solana' }), value: "SOL", icon: solIcon },
+          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaBAT' }), value: "splBAT", icon: batIcon }
         ]
       })
     }
@@ -101,17 +108,35 @@ class CryptoPaymentWidget extends React.Component {
       displayChain: currentChain,
       defaultAmounts: [1,5,10],
       isModalOpen: false,
+      isTryBraveModalOpen: false,
       ratios: {},
       customAmount: null,
       toggle: 'crypto',
       selectValue: dropdownOptions.flatMap(opt => opt.options).filter(opt => opt.value === currentChain)[0],
       isSuccessView: false,
       title: this.props.title,
+      errorTitle: null,
+      errorMsg: null,
     }
   }
 
   componentDidMount() {
     this.loadData();
+
+    // Set up a setInterval to fetch new price data every 5 minutes (300,000 milliseconds)
+    this.intervalId = setInterval(this.backgroundLoadData.bind(this), 300000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  backgroundLoadData() {
+    axios.get(routes.publishers.publicChannelPage.getRatios).then((response) => {
+      const newState = { ...this.state }
+      newState.ratios = response.data;
+      this.setState({ ...newState });
+    });
   }
 
   loadData = () => {
@@ -148,6 +173,14 @@ class CryptoPaymentWidget extends React.Component {
     this.setState({ isModalOpen: true });
   }
 
+  closeTryBraveModal = () => {
+    this.setState({ isTryBraveModalOpen: false });
+  }
+
+  launchTryBraveModal() {
+    this.setState({ isTryBraveModalOpen: true });
+  }
+
   sendPayment = async () => {
     if (this.state.currentChain === "ETH") {
       await this.sendEthPayment();
@@ -160,12 +193,26 @@ class CryptoPaymentWidget extends React.Component {
     }
   }
 
+  setGenericError() {
+    const newState = {...this.state};
+    newState.errorTitle = this.intl.formatMessage({id: 'publicChannelPage.ErrorTitle'});
+    newState.errorMsg = this.intl.formatMessage({id: 'publicChannelPage.ErrorMsg'});
+    this.setState({...newState });
+  }
+
+  setError(titleId, msgId) {
+    const newState = {...this.state};
+    newState.errorTitle = this.intl.formatMessage({id: titleId});
+    newState.errorMsg = this.intl.formatMessage({id: msgId});
+    this.setState({...newState });
+  }
+
   sendEthPayment = async () => {
     if (window.ethereum) {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const address = accounts[0]
       if (!address) {
-        // set to be designed error state here
+        this.setGenericError();
         return;
       }
 
@@ -185,18 +232,16 @@ class CryptoPaymentWidget extends React.Component {
           params,
         })
         .then((result) => {
-          // window.ethereum.disable()
           const newState = {...this.state};
           newState.isSuccessView = true;
           this.setState({...newState });
         })
         .catch((error) => {
-          console.log(error)
-          // window.ethereum.disable()
-          // set to be designed error state here
+          this.setGenericError();
         });
     } else {
-      // set to be designed error state here
+      launchTryBraveModal();
+      this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg')
       return;
     }
   }
@@ -206,7 +251,7 @@ class CryptoPaymentWidget extends React.Component {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const address = accounts[0]
       if (!address) {
-        // set to be designed error state here
+        this.setGenericError();
         return;
       }
 
@@ -226,22 +271,26 @@ class CryptoPaymentWidget extends React.Component {
                         })
         
         if (results.status > 0) {
-          // window.ethereum.disable()
           const newState = {...this.state};
           newState.isSuccessView = true;
           this.setState({...newState });
         }
       } catch (e) {
-        // set to be designed error state here
+        this.setGenericError();
         return;
       }
+    } else {
+      launchTryBraveModal();
+      this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg');
+      return;
     }
   }
 
   sendSolPayment = async () => {
     if (!window.solana) {
-      // set to be designed error state here
-      return false;
+      launchTryBraveModal();
+      this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
+      return;
     }
 
     const provider = await window.solana.connect();
@@ -270,20 +319,20 @@ class CryptoPaymentWidget extends React.Component {
           this.setState({...newState });
         }
       } catch (e) {
-        console.log(e)
-        // set to be designed error state here
+        this.setGenericError();
         window.solana.disconnect()
       }
     } else {
-      // set to be designed error state here
+      this.setGenericError();
       return;
     }
   }
 
   sendSolBatPayment = async () => {
     if (!window.solana) {
-      // set to be designed error state here
-      return false;
+      launchTryBraveModal();
+      this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
+      return;
     }
     const provider = await window.solana.connect();
     
@@ -349,17 +398,15 @@ class CryptoPaymentWidget extends React.Component {
             this.setState({...newState });
           }
         } else {
-          console.log('there is no BAT to send')
-          // set to be designed error state here
+          this.setGenericError();
           window.solana.disconnect()
         }
       } catch (e) {
-        console.log(e)
-        // set to be designed error state here
+        this.setGenericError();
         window.solana.disconnect()
       }
     } else {
-      // set to be designed error state here
+      this.setGenericError();
       return;
     }
   }
@@ -445,7 +492,7 @@ class CryptoPaymentWidget extends React.Component {
                   }),
                 }}
               />
-            <div className="row no-gutters pt-4">
+            <div className="row no-gutters pb-4 pt-4">
               <div className="col-xs-12 col-md-7 text-left">
                 {this.state.defaultAmounts.map( amount => {
                   return(
@@ -484,6 +531,15 @@ class CryptoPaymentWidget extends React.Component {
                 <ExchangeIcon onClick={this.toggleCurrency.bind(this)} />
               </div>
             </div>
+            {this.state.errorTitle && (
+              <ErrorSection>
+                <ErrorIcon><img src={warningIcon}/></ErrorIcon>
+                <ErrorText>
+                  <ErrorTitle>{this.state.errorTitle}</ErrorTitle>
+                  <ErrorMessage>{this.state.errorMsg}</ErrorMessage>
+                </ErrorText>
+              </ErrorSection>
+            )}
           </PaymentOptions>
           <PaymentButtons>
             <SendButton onClick={(event) => {
@@ -510,6 +566,14 @@ class CryptoPaymentWidget extends React.Component {
               chain={this.baseChain()}
               displayChain={this.state.displayChain}
             />
+          </Modal>
+          <Modal
+            show={this.state.isTryBraveModalOpen}
+            size={ModalSize.ExtraExtraSmall}
+            padding={false}
+            handleClose={() => this.closeTryBraveModal()}
+          >
+            <TryBraveModal />
           </Modal>
         </CryptoWidgetWrapper>
       )

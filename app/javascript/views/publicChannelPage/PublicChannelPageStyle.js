@@ -4,6 +4,9 @@ import DefaultBg from "../../../assets/images/default_banner_bg.jpg"
 import CryptoWidgetBackground from "../../../assets/images/crypto_widget_bg.png";
 import CryptoWidgetSuccess from "../../../assets/images/crypto_widget_success.png";
 import Exchange from "../../../assets/images/exchange.svg";
+import TryWalletBackground from "../../../assets/images/try_wallet_modal_gradient.png";
+import OrangeCheckmark from "../../../assets/images/orange_checkmark.png";
+
 
 export const PublicChannelContainer = styled.div`
   font-family: 'poppins', sans-serif;
@@ -74,7 +77,6 @@ export const CryptoWidgetWrapper = styled.div`
   background-image: url(${CryptoWidgetBackground});
   border-radius: 12px;
   width: 520px;
-  height: 542px;
   box-shadow: 0px 3px 10px -1px rgba(0, 0, 0, 0.05);
   margin: 0 auto;
   padding: 32px 16px;
@@ -202,7 +204,7 @@ export const PaymentButtons = styled.div`
 export const PaymentOptions = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 20px 32px 32px 32px;
+  padding: 20px 32px 32px;
 `;
 
 export const SmallCurrencyDisplay = styled.div`
@@ -240,8 +242,8 @@ export const CryptoOption = styled.div`
 
   img {
     margin-right: 16px;
-    height: 32px;
-    width: 32px;
+    height: 28px;
+    width: 28px;
   }
 `;
 
@@ -249,7 +251,7 @@ export const AmountButton = styled.button`
   background-color: #FFFFFF;
   border: 1px solid #A1ABBA;
   font-size: 13px;
-  padding: 5px 14px;
+  padding: 12px 16px;
   &.selected {
     background-color: #EDEEF1;
   }
@@ -270,7 +272,7 @@ export const AmountInput = styled.input`
   border-left: none;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
-  padding: 5px 14px;
+  padding: 12px 16px;
   width: 86px;
   color: #3F4855;
   font-size: 13px;
@@ -328,6 +330,125 @@ export const ShareButton = styled.a`
   font-size 0.9em;
   display: block;
   cursor: pointer;
+
+  &:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
+`;
+
+export const ErrorSection = styled.div`
+  background-color: #FFE8E7;
+  border-radius: 8px;
+  width: 100%;
+  padding: 24px;
+  margin: 0px, 8px, 8px, 8px;
+  text-align: left;
+`;
+
+export const ErrorIcon = styled.div`
+  display: inline-block;
+  vertical-align: top;
+  img {
+    height: 28px;
+    width: 28px;
+  }
+`;
+
+export const ErrorText = styled.div`
+  display: inline-block;
+  padding-left: 18px;
+`;
+
+export const ErrorTitle = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #89001E;
+  margin-bottom: 5px;
+`;
+
+export const ErrorMessage = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #89001E;
+`;
+
+export const TryBraveBackground = styled.div`
+  background-size: cover;
+  background-image: url(${TryWalletBackground});
+  padding: 15px;
+  border-radius: 16px;
+
+  @media only screen and (min-width: 768px) {
+    padding: 50px;
+  }
+`;
+
+export const TryBraveHeaderSection = styled.div`
+  text-align: left;
+  padding-bottom: 36px;
+  > div {
+    display: inline-block;
+  }
+`;
+
+export const TryBraveIcon = styled.div`
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(161, 171, 186, 0.4);
+  padding: 9px;
+  border-radius: 8px;
+  width: 48px;
+  vertical-align: text-bottom;
+  margin-right: 16px;
+  background-color: white;
+
+  img {
+    max-height:100%;
+    max-width:100%;
+  }
+`;
+
+export const TryBraveHeader = styled.div`
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+`;
+
+export const TryBraveSubHeader = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.10000000149011612px;
+`;
+
+export const TryBraveBullet = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding-bottom: 20px;
+
+  img {
+    vertical-align: text-top;
+    max-height: 14px;
+    padding-right: 16px;
+  }
+`;
+
+export const TryBraveButton = styled.a`
+  text-align: center;
+  width: 100%;
+  padding: 14px 20px 14px 20px;
+  border-radius: 26px;
+  background: linear-gradient(174.36deg, #FF5500 2.32%, #F5002D 93.33%);
+  color: #ffffff;
+  font-weight: 600;
+  font-family: poppins, sans-serif;
+  font-size 0.9em;
+  display: block;
+  cursor: pointer;
+  margin-top: 16px;
 
   &:hover {
     color: #ffffff;
