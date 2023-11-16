@@ -22,6 +22,7 @@ module Payout
       # only payout contributions on channels. To support referrals, we'd need to
       # create a deposit_id on each connection, not just the channels
       publisher.channels.verified.each do |channel|
+        next unless channel.deposit_id.present?
         potential_payments << PotentialPayment.new(
           payout_report_id: payout_report&.id,
           name: channel.publication_title.to_s,
