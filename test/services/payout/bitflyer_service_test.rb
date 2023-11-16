@@ -46,7 +46,17 @@ class BitflyerServiceTest < ActiveSupport::TestCase
     end
 
     it "the address is not empty" do
+      refute @results.blank?
       assert @results.all? { |potential_payment| publisher.channels.verified.where(deposit_id: potential_payment.address).present? }
+    end
+
+    it "the address is not empty even with an empty deposit_id" do
+      publisher.channels.all.each{|c| c.update!(deposit_id: nil)}
+      @results = Payout::BitflyerService.new(
+        payout_utils_class: Payout::Service
+      ).perform(payout_report: payout_report,
+                publisher: publisher)
+      assert @results.blank?
     end
 
     it "sends the display_name unique BF identifier" do
