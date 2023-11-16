@@ -51,11 +51,11 @@ class BitflyerServiceTest < ActiveSupport::TestCase
     end
 
     it "the address is not empty even with an empty deposit_id" do
-      publisher.channels.all.each{|c| c.update!(deposit_id: nil)}
+      publisher.channels.all.each { |c| c.update!(deposit_id: nil) }
       @results = Payout::BitflyerService.new(
         payout_utils_class: Payout::Service
       ).perform(payout_report: payout_report,
-                publisher: publisher)
+        publisher: publisher)
       assert @results.blank?
     end
 
