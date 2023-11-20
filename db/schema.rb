@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_09_06_202155) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_17_155810) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -460,6 +460,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_09_06_202155) do
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
+  end
+
+  create_table "previously_suspended_channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "channel_identifier", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_identifier"], name: "index_previously_suspended_channels_on_channel_identifier", unique: true
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
