@@ -35,26 +35,10 @@ export default class BannerPreview extends React.Component {
   }
 
   getSocial() {
-    let social = [];
-    if (this.props.youtube) {
-      social.push({
-        type: "youtube",
-        url: this.props.youtube
+    return Object.keys(this.props.socialLinks).filter(link => this.props.socialLinks[link])
+      .map( link => {
+        return { type: link, url: this.props.socialLinks[link] };
       });
-    }
-    if (this.props.twitter) {
-      social.push({
-        type: "twitter",
-        url: this.props.twitter
-      });
-    }
-    if (this.props.twitch) {
-      social.push({
-        type: "twitch",
-        url: this.props.twitch
-      });
-    }
-    return social;
   }
 
   handleClose() {
@@ -63,9 +47,6 @@ export default class BannerPreview extends React.Component {
       description: this.props.description,
       logo: this.props.logo,
       cover: this.props.cover,
-      youtube: this.props.youtube,
-      twitter: this.props.twitter,
-      twitch: this.props.twitch,
       donationAmounts: this.props.donationAmounts,
       channelIndex: this.props.channelIndex
     };

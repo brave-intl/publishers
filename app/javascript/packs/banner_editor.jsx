@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
+import { FormattedMessage, IntlProvider } from "react-intl";
 import AvatarEditor from "react-avatar-editor";
 
 import "babel-polyfill";
@@ -35,7 +35,8 @@ import {
   TextArea,
   Button,
   Opacity,
-  Dialogue
+  Dialogue,
+  LinkError,
 } from "../packs/style.jsx";
 
 import DonationJar from "../../assets/images/icn-donation-jar@1x.png";
@@ -50,11 +51,12 @@ import {
   YoutubeColorIcon,
   TwitterColorIcon,
   TwitchColorIcon,
+  VimeoColorIcon,
+  GitHubColorIcon,
+  RedditColorIcon,
   LoaderIcon
 } from "brave-ui/components/icons";
-import Select from "brave-ui/components/formControls/select";
-import Checkbox from "brave-ui/components/formControls/checkbox";
-import Toggle from "brave-ui/components/formControls/toggle";
+import Select from 'react-select';
 
 import "../../assets/stylesheets/components/banner-editor.scss";
 import "../../assets/stylesheets/components/spinner.scss";
@@ -73,6 +75,7 @@ export default class BannerEditor extends React.Component {
     if (locale === "ja") {
       localePackage = ja;
     }
+
     this.state = {
       loading: true,
       title: this.props.values.title || DEFAULT_TITLE,
@@ -82,30 +85,31 @@ export default class BannerEditor extends React.Component {
       channelIndex: this.props.values.channelIndex || 0,
       channelBanners: this.props.channelBanners,
       scale: 1,
-      linkSelection: false,
-      linkOption: "Youtube",
-      currentUsername: "",
-      youtube: this.props.values.youtube || "",
-      twitter: this.props.values.twitter || "",
-      twitch: this.props.values.twitch || "",
+      socialLinks: {},
+      selectedSocial: "",
+      linkErrorText: false,
       conversionRate: this.props.conversionRate,
       preferredCurrency: "USD",
       mode: "Edit",
       view: "editor-view",
       state: "editor"
     };
+    // this data is from the publisher and applies to all channels, will not change once modal is loaded
+    this.socialMediaOptions = this.props.channelBanners.filter( channel => channel.type !== 'SiteChannelDetails' )
+                                .map( channel => { 
+                                  return {value: channel.url, type: channel.type, label: channel.url.replace(/^https?:\/\/(www\.)?/, '')}
+                                });
+    
     this.updateTitle = this.updateTitle.bind(this);
     this.preview = this.preview.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
     this.save = this.save.bind(this);
     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
-    this.currentPlaceholder = this.currentPlaceholder.bind(this);
-    this.updateCurrentUsername = this.updateCurrentUsername.bind(this);
-    this.updateYoutube = this.updateYoutube.bind(this);
-    this.updateTwitter = this.updateTwitter.bind(this);
-    this.updateTwitch = this.updateTwitch.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.selectSocial = this.selectSocial.bind(this);
+    this.handleLinkDelete = this.handleLinkDelete.bind(this);
+    this.addSocialLink = this.addSocialLink.bind(this);
   }
 
   componentWillMount() {
@@ -240,7 +244,6 @@ export default class BannerEditor extends React.Component {
 
   async fetchBanner() {
     let that = this;
-
     if (this.props.mode === "Editor-From-Preview" && !this.state.fetch) {
       that.setState({ loading: false });
     } else {
@@ -272,13 +275,12 @@ export default class BannerEditor extends React.Component {
       //500ms timeout prevents quick flash when load times are fast.
       setTimeout(async () => {
         if (banner) {
-          banner.socialLinks = banner.socialLinks || {};
+          console.log(banner)
           that.setState({
             title: banner.title || DEFAULT_TITLE,
             description: banner.description || DEFAULT_DESCRIPTION,
-            youtube: banner.socialLinks.youtube || "",
-            twitter: banner.socialLinks.twitter || "",
-            twitch: banner.socialLinks.twitch || "",
+            // TODO update state here as well
+            socialLinks: banner.socialLinks || {},
             logo: { url: banner.logoUrl || null, data: null },
             cover: { url: banner.backgroundUrl || null, data: null },
             loading: false,
@@ -294,75 +296,10 @@ export default class BannerEditor extends React.Component {
     }
   }
 
-  handleLinkSelection(e) {
-    let toggle = document.getElementById("toggle");
-    if (e.target === toggle) {
-      this.setState({ linkSelection: !this.state.linkSelection });
-    } else {
-      this.setState({ linkSelection: false });
-    }
-  }
-
-  addLink() {
-    switch (this.state.linkOption) {
-      case "Youtube":
-        this.setState({
-          youtube: "https://www.youtube.com/" + this.state.currentUsername
-        });
-        break;
-      case "Twitter":
-        this.setState({
-          twitter: "https://www.twitter.com/" + this.state.currentUsername
-        });
-        break;
-      case "Twitch":
-        this.setState({
-          twitch: "https://www.twitch.tv/" + this.state.currentUsername
-        });
-        break;
-    }
-    this.setState({ currentUsername: "" });
-  }
-
-  currentPlaceholder() {
-    const locale = document.body.dataset.locale;
-    let localePackage = en;
-    if (locale === "ja") {
-      localePackage = ja;
-    }
-    switch (this.state.linkOption) {
-      case "Youtube":
-        return localePackage.siteBanner.youtubeHint;
-      case "Twitter":
-        return localePackage.siteBanner.twitterHint;
-      case "Twitch":
-        return localePackage.siteBanner.twitchHint;
-    }
-    return "";
-  }
-
   handleLinkDelete(option) {
-    switch (option) {
-      case "Youtube":
-        this.setState({ youtube: "" });
-        break;
-      case "Twitter":
-        this.setState({ twitter: "" });
-        break;
-      case "Twitch":
-        this.setState({ twitch: "" });
-        break;
-    }
-  }
-
-  handleLinkOption(value) {
-    this.setState({ linkOption: value });
-  }
-
-  updateCurrentUsername(event) {
-    this.setState({
-      currentUsername: event.target.value.replace("/^a-zA-Z0-9._/g", "")
-    });
+    const oldLinks = { ...this.state.socialLinks };
+    delete oldLinks[option];
+    this.setState({ socialLinks: { ...oldLinks } });
   }
 
   updateTitle(event) {
@@ -371,18 +308,6 @@ export default class BannerEditor extends React.Component {
 
   updateDescription(event) {
     this.setState({ description: event.target.value });
-  }
-
-  updateYoutube(event) {
-    this.setState({ youtube: event.target.value });
-  }
-
-  updateTwitter(event) {
-    this.setState({ twitter: event.target.value });
-  }
-
-  updateTwitch(event) {
-    this.setState({ twitch: event.target.value });
   }
 
   setEditMode = () => {
@@ -530,14 +455,6 @@ export default class BannerEditor extends React.Component {
     return dialogue;
   }
 
-  renderLinkInput() {
-    return (
-      this.state.youtube === "" ||
-      this.state.twitter === "" ||
-      this.state.twitch === ""
-    );
-  }
-
   renderLoadingScreen() {
     let visibility = "hidden";
     if (this.state.loading === true) {
@@ -572,157 +489,61 @@ export default class BannerEditor extends React.Component {
     );
   }
 
-  renderIcon(option) {
-    switch (option) {
-      case "Youtube":
-        return (
-          <YoutubeColorIcon
-            style={{
-              height: "30px",
-              width: "30px",
-              display: "inline",
-              marginBottom: "4px",
-              cursor: "pointer"
-            }}
-          />
-        );
-      case "Twitter":
-        return (
-          <TwitterColorIcon
-            style={{
-              height: "30px",
-              width: "30px",
-              display: "inline",
-              marginBottom: "4px",
-              cursor: "pointer"
-            }}
-          />
-        );
-      case "Twitch":
-        return (
-          <TwitchColorIcon
-            style={{
-              height: "30px",
-              width: "30px",
-              display: "inline",
-              marginBottom: "4px",
-              cursor: "pointer"
-            }}
-          />
-        );
-    }
-  }
-
   renderLinks() {
-    return (
-      <div>
-        {this.state.youtube !== "" && (
-          <Link>
-            <YoutubeColorIcon
-              className="banner-link-option"
-              style={{
-                height: "30px",
-                width: "30px",
-                display: "inline-block",
-                marginBottom: "12px"
-              }}
-            />
-            <Channel>
-              <Delete onClick={() => this.handleLinkDelete("Youtube")}>
-                (X)
-              </Delete>
-              {this.state.youtube}
-            </Channel>
-          </Link>
-        )}
-        {this.state.twitter !== "" && (
-          <Link>
-            <TwitterColorIcon
-              className="banner-link-option"
-              style={{
-                height: "25px",
-                width: "25px",
-                display: "inline-block",
-                marginBottom: "12px"
-              }}
-            />
-            <Channel>
-              <Delete onClick={() => this.handleLinkDelete("Twitter")}>
-                (X)
-              </Delete>
-              {this.state.twitter}
-            </Channel>
-          </Link>
-        )}
-        {this.state.twitch !== "" && (
-          <Link>
-            <TwitchColorIcon
-              className="banner-link-option"
-              style={{
-                height: "25px",
-                width: "25px",
-                display: "inline-block",
-                marginBottom: "12px"
-              }}
-            />
-            <Channel>
-              <Delete onClick={() => this.handleLinkDelete("Twitch")}>
-                (X)
-              </Delete>
-              {this.state.twitch}
-            </Channel>
-          </Link>
-        )}
-      </div>
-    );
+    const components = {
+      youtube: YoutubeColorIcon,
+      twitter: TwitterColorIcon,
+      twitch: TwitchColorIcon,
+      github: GitHubColorIcon,
+      reddit: RedditColorIcon,
+      vimeo: VimeoColorIcon,
+    };
+
+    return Object.keys(this.state.socialLinks).map((link) => {
+      if ( !this.state.socialLinks[link] ) {
+        return null;
+      }
+
+      const IconComponent = components[link];
+      return (<Link key={link}>
+        <IconComponent
+          className="banner-link-option"
+          style={{
+            height: "30px",
+            width: "30px",
+            display: "inline-block",
+            marginBottom: "12px"
+          }}
+        />
+        <Channel>
+          <Delete onClick={() => this.handleLinkDelete(link)}>
+            (X)
+          </Delete>
+          {this.state.socialLinks[link].replace(/^https?:\/\/(www\.)?/, '')}
+        </Channel>
+      </Link>)
+    });
   }
 
-  renderDropdown() {
-    if (this.state.linkSelection) {
-      return (
-        <div
-          style={{
-            position: "absolute",
-            backgroundColor: "white",
-            height: "100px",
-            width: "55px",
-            borderRadius: "4px",
-            marginLeft: "11px",
-            paddingTop: "5px",
-            marginTop: "5px",
-            border: "1px solid lightGray",
-            boxShadow: "0 3px 4px rgba(0,0,0,0.16), 0 3px 4px rgba(0,0,0,0.23)"
-          }}
-        >
-          <div
-            onClick={() => this.handleLinkOption("Youtube")}
-            className="banner-link-option"
-            style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
-          >
-            <YoutubeColorIcon
-              style={{ height: "28px", width: "28px", margin: "auto" }}
-            />
-          </div>
-          <div
-            onClick={() => this.handleLinkOption("Twitter")}
-            className="banner-link-option"
-            style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
-          >
-            <TwitterColorIcon
-              style={{ height: "25px", width: "25px", margin: "auto" }}
-            />
-          </div>
-          <div
-            onClick={() => this.handleLinkOption("Twitch")}
-            className="banner-link-option"
-            style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
-          >
-            <TwitchColorIcon
-              style={{ height: "25px", width: "25px", margin: "auto" }}
-            />
-          </div>
-        </div>
-      );
+  selectSocial(optionVal) {
+    this.setState({selectedSocial: optionVal});
+  }
+
+  addSocialLink() {
+    if (this.state.selectedSocial && Object.keys(this.state.selectedSocial).length === 0) {
+      return;
+    }
+    // reset error state
+    this.setState({linkErrorText: false});
+    // only allow one link to each platform
+    const socialType = this.state.selectedSocial.type.toLowerCase().replace('channeldetails', '');
+
+    if (this.state.socialLinks[socialType]) {
+      this.setState({linkErrorText: true});
+    } else {
+      const oldLinks = { ...this.state.socialLinks };
+      oldLinks[socialType] = this.state.selectedSocial.value;
+      this.setState({ socialLinks: { ...oldLinks } });
     }
   }
 
@@ -742,13 +563,11 @@ export default class BannerEditor extends React.Component {
     let body = new FormData();
     body.append("title", this.state.title);
     body.append("description", this.state.description);
+    
+    // TODO UPDATE
     body.append(
       "social_links",
-      JSON.stringify({
-        youtube: this.state.youtube,
-        twitter: this.state.twitter,
-        twitch: this.state.twitch
-      })
+      JSON.stringify(this.state.socialLinks)
     );
 
     if (this.state.logo.data) {
@@ -843,7 +662,7 @@ export default class BannerEditor extends React.Component {
     }
     return (
       <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
-        <Editor onClick={e => this.handleLinkSelection(e)}>
+        <Editor>
           {this.renderLoadingScreen()}
           {this.renderDialogue()}
 
@@ -884,31 +703,30 @@ export default class BannerEditor extends React.Component {
                 <Text links>
                   <FormattedMessage id="siteBanner.links" />
                 </Text>
-
                 {this.renderLinks()}
-
-                {this.renderLinkInput() && (
-                  <LinkInputWrapper>
-                    <DropdownToggle>
-                      {this.renderIcon(this.state.linkOption)}
-                      <Caret onClick={e => this.toggleDropdown(e)} id="toggle">
-                        &#9662;
-                      </Caret>
-                    </DropdownToggle>
-                    <TextInput
-                      link
-                      placeholder={this.currentPlaceholder()}
-                      placeholderTextColor="#707070"
-                      onChange={this.updateCurrentUsername}
-                      value={this.state.currentUsername}
-                      maxLength={80}
+                <FormattedMessage id="siteBanner.linksPlaceholder">
+                  {placeholder =>  
+                    <Select
+                      options={this.socialMediaOptions}
+                      onChange={this.selectSocial}
+                      value={this.state.selectedSocial}
+                      placeholder={placeholder}
+                      isSearchable={false}
                     />
-                    {this.renderDropdown()}
-                    <Text add onClick={() => this.addLink()}>
-                      <FormattedMessage id="siteBanner.addChannel" />
-                    </Text>
-                  </LinkInputWrapper>
+                  }
+                </FormattedMessage>
+                {this.state.linkErrorText && (
+                  <LinkError>
+                    <FormattedMessage id="siteBanner.linkErrorText" />
+                  </LinkError>
                 )}
+                <Button
+                  onClick={this.addSocialLink}
+                  style={{ margin: "10px 0px", width: "140px" }}
+                  primary
+                >
+                  <FormattedMessage id="siteBanner.addSocialLink" />
+                </Button>
               </Links>
 
               <ExplanatoryText>
