@@ -47,7 +47,6 @@ class PublisherTest < ActiveSupport::TestCase
 
       before do
         publishers(:verified).suspend!
-        publishers(:verified).suspend!
         UpholdConnection.update_all(uphold_id: uphold_id)
       end
 

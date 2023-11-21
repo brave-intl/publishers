@@ -55,6 +55,23 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     refute_content "Cancel"
   end
 
+  test "Cant register a previously suspended channel" do
+    Channel.delete_all
+    publisher = publishers(:default)
+    sign_in publisher
+
+    visit new_site_channel_path
+    assert_content "Cancel"
+
+    fill_in "channel_details_attributes_brave_publisher_id_unnormalized", with: "example.com"
+
+    ::PreviouslySuspendedChannel.create!(channel_identifier: "example.com")
+
+    click_button("Continue")
+    assert_content "Unable to register this channel"
+    assert_equal publisher.channels.count, 0
+  end
+
   # Note: I don't like this but there's very little I can do here. I am unable to run the capybara tests
   # and the reason this test is failing now is because of fixture data
   #

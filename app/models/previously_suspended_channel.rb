@@ -1,0 +1,2 @@
+class PreviouslySuspendedChannel < ApplicationRecord
+end
