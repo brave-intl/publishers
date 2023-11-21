@@ -188,6 +188,9 @@ export default {
     defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
     header: "Contribution Banner",
     links: "Links",
+    linksPlaceholder: "Select a social media link",
+    addSocialLink: "Add Social Link",
+    linkErrorText: "Only one link to a platform is allowed",
     oneBannerHeader: "Use one banner for all channels?",
     oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
     previewButton: "Preview",
@@ -333,6 +336,7 @@ export default {
   },
   publicChannelPage: {
     privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted.",
+    trustWarning: "Make sure you trust this creator. Contributions made via this page go to ",
     generateQR: "Generate QR Code",
     QRModalHeader: "Send from mobile wallets",
     QRModalText: "You can send by scanning this QR code using a Web3 wallet from your mobile device.",

@@ -17,15 +17,18 @@ import {
   PublicChannelContainer,
 } from "./PublicChannelPageStyle.js";
 
-import twitch from "../../../assets/images/social-twitch.png";
-import youtube from "../../../assets/images/social-youtube.png";
-import twitter from "../../../assets/images/social-twitter.png";
+import twitter from "../../../assets/images/social-x.svg";
+import vimeo from "../../../assets/images/social-vimeo.svg";
+import github from "../../../assets/images/social-github.svg";
+import twitch from "../../../assets/images/social-twitch.svg";
+import reddit from "../../../assets/images/social-reddit.svg";
+import youtube from "../../../assets/images/social-youtube.svg";
 import verified from "../../../assets/images/purple_verified.png";
-
 
 class PublicChannelPage extends React.Component {
   constructor(props) {
     super(props);
+
 
     this.coverUrl = this.replaceBlankUrl(this.props.siteBanner, "backgroundUrl");
     this.logoUrl = this.replaceBlankUrl(this.props.siteBanner, "logoUrl")
@@ -34,8 +37,9 @@ class PublicChannelPage extends React.Component {
     this.socialLinks = props.siteBanner && props.siteBanner.socialLinks || [];
     this.cryptoAddresses = props.cryptoAddresses;
     this.cryptoConstants = props.cryptoConstants;
+    this.url = props.url
 
-    this.socialIcons = { youtube, twitter, twitch };
+    this.socialIcons = { youtube, twitter, twitch, github, reddit, vimeo };
   }
 
   replaceBlankUrl(siteBanner, propName) {
@@ -72,6 +76,10 @@ class PublicChannelPage extends React.Component {
             </DescriptionContainer>
             <CryptoPaymentContainer className='col-xs-12 col-lg-6'>
               <CryptoPaymentWidget title={this.title} cryptoAddresses={this.cryptoAddresses} cryptoConstants={this.cryptoConstants} />
+              <PrivacyDisclaimer>
+                <FormattedMessage id="publicChannelPage.trustWarning" />
+                <a href={this.url} target="_blank" >{this.url}</a>
+              </PrivacyDisclaimer>
               <PrivacyDisclaimer>
                 <FormattedMessage id="publicChannelPage.privacyDisclaimer" />
               </PrivacyDisclaimer>

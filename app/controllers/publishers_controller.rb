@@ -204,7 +204,8 @@ class PublishersController < ApplicationController
       {
         id: site_banners_channel_to_id[channel.id],
         name: channel.publication_title,
-        type: channel.details_type
+        type: channel.details_type,
+        url: channel.details.url
       }
     end
     data = {channel_banners: channel_banners}

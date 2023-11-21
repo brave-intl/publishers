@@ -114,6 +114,7 @@ export const SocialLink = styled.a`
     img {
       height: 18px;
       width: 18px;
+      filter: invert(45%) sepia(10%) saturate(683%) hue-rotate(176deg) brightness(95%) contrast(88%);
     }
 `;
 
