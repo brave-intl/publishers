@@ -40,9 +40,11 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
     fill_in "channel_details_attributes_brave_publisher_id_unnormalized", with: "example.com"
 
+    assert_equal ::PreviouslySuspendedChannel.count, 0
     click_button("Continue")
 
     assert_content "Cancel"
+    assert_content "I'll use a trusted file"
     channel = publisher.channels.order("created_at").last
     assert_current_path verification_choose_method_site_channel_path(channel, locale: :en)
 
