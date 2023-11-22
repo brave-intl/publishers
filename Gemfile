@@ -134,7 +134,7 @@ gem "terser"
 gem "sidekiq", "~> 7.1.6"
 
 gem "sidekiq-scheduler", "~> 5.0.3"
-gem "sidekiq-throttled", "~> 1.0.0.alpha.1"
+gem "sidekiq-throttled", "~> 1.1.0"
 
 # slim for view templates
 gem "slim-rails", "3.6.2"
