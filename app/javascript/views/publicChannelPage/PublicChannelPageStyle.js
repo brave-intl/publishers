@@ -243,9 +243,22 @@ export const CryptoOption = styled.div`
 
   img {
     margin-right: 16px;
-    height: 28px;
-    width: 28px;
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    vertical-align: middle;
   }
+`;
+
+export const CryptoOptionText = styled.div`
+  display: inline-block;
+  font-size: 14px;
+`;
+
+export const CryptoOptionSubheading = styled.div`
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
 `;
 
 export const AmountButton = styled.button`

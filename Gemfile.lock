@@ -588,7 +588,8 @@ GEM
       rufus-scheduler (~> 3.2)
       sidekiq (>= 6, < 8)
       tilt (>= 1.4.0)
-    sidekiq-throttled (1.0.0.alpha.1)
+    sidekiq-throttled (1.1.0)
+      concurrent-ruby (>= 1.2.0)
       redis-prescription (~> 2.2)
       sidekiq (>= 6.5)
     simplecov (0.22.0)
@@ -798,7 +799,7 @@ DEPENDENCIES
   shakapacker (= 7.0.3)
   sidekiq (~> 7.1.6)
   sidekiq-scheduler (~> 5.0.3)
-  sidekiq-throttled (~> 1.0.0.alpha.1)
+  sidekiq-throttled (~> 1.1.0)
   simplecov
   slim-rails (= 3.6.2)
   solargraph

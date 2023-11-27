@@ -20,7 +20,7 @@ import {
   createTransferInstruction,
 } from "@solana/spl-token";
 import axios from "axios";
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import routes from "../routes";
 import Modal, { ModalSize } from "../../components/modal/Modal";
 import QRCodeModal from "./QRCodeModal";
@@ -46,6 +46,7 @@ import {
   ErrorText,
   ErrorMessage,
   ErrorTitle,
+  CryptoOptionSubheading,
 } from "./PublicChannelPageStyle.js";
 import ethIcon from "../../../assets/images/eth_icon_larger.png";
 import solIcon from "../../../assets/images/solana_icon_larger.png";
@@ -74,8 +75,18 @@ class CryptoPaymentWidget extends React.Component {
       dropdownOptions.push({
         label: this.intl.formatMessage({ id: 'publicChannelPage.ethereumNetwork' }),
         options: [
-          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereum' }), value: "ETH", icon: ethIcon },
-          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumBAT' }), value: "BAT", icon: batIcon }
+          {
+            label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereum' }),
+            subheading: this.intl.formatMessage({id: 'publicChannelPage.ethSubheading'}),
+            value: "ETH", 
+            icon: ethIcon
+          },
+          {
+            label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumBAT' }),
+            subheading: this.intl.formatMessage({id: 'publicChannelPage.ethBatSubheading'}),
+            value: "BAT",
+            icon: batIcon
+          }
         ]
       })
     }
@@ -84,8 +95,18 @@ class CryptoPaymentWidget extends React.Component {
       dropdownOptions.push({
         label: this.intl.formatMessage({ id: 'publicChannelPage.solanaNetwork' }),
         options: [
-          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solana' }), value: "SOL", icon: solIcon },
-          { label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaBAT' }), value: "splBAT", icon: batIcon }
+          {
+            label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solana' }),
+            subheading: this.intl.formatMessage({id: 'publicChannelPage.solSubheading'}),
+            value: "SOL",
+            icon: solIcon
+          },
+          {
+            label: this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaBAT' }),
+            subheading: this.intl.formatMessage({id: 'publicChannelPage.solBatSubheading'}),
+            value: "splBAT",
+            icon: batIcon
+          }
         ]
       })
     }
@@ -466,16 +487,23 @@ class CryptoPaymentWidget extends React.Component {
                 options={this.state.dropdownOptions}
                 onChange={this.changeChain.bind(this)}
                 components={{
-                  Option: CryptoPaymentOption,
+                  SingleValue: ({ children, ...rest }) => (
+                    <components.SingleValue {...rest}>
+                      {children}
+                      <CryptoOptionSubheading>{rest.data.subheading}</CryptoOptionSubheading>
+                    </components.SingleValue>
+                  ),
+                  Option: CryptoPaymentOption
                 }}
                 value={this.state.selectValue}
                 styles={{
                   control: (base) => ({ ...base, border: 'none', boxShadow: 'none' }),
-                  groupHeading: (base) => ({...base, textAlign: 'left', marginLeft: '16px'}),
+                  groupHeading: (base) => ({...base, textAlign: 'left', marginLeft: '16px', fontSize: '11px'}),
                   indicatorSeparator: (base) => ({...base, display: 'none'}),
                   input: (base) => ({...base, caretColor: 'transparent' }),
                   valueContainer: (base) => ({
                     ...base,
+                    display: 'flex',
                     textAlign: 'left',
                     padding: '16px',
                     fontWeight: '600',

@@ -32,7 +32,7 @@ class CryptoWalletServices extends React.Component {
   formatOptionData(response, chain) {
     const options = response.data.filter( address => address.chain === chain)
                       .map( address => { return { value: address, label: address.address}})
-    options.push({label: 'Add new wallet', value: {newAddress: chain}});
+    options.push({label: this.intl.formatMessage({id: 'walletServices.addCryptoWidget.addWallet'}), value: {newAddress: chain}});
     return options;
   }
 

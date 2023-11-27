@@ -1,15 +1,17 @@
 import * as React from "react";
 import { injectIntl } from "react-intl";
-import { CryptoOption } from "./PublicChannelPageStyle.js";
+import { CryptoOption, CryptoOptionSubheading, CryptoOptionText } from "./PublicChannelPageStyle.js";
 
 class CryptoPaymentOption extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       label: this.props.label,
       value: this.props.value,
       innerProps: this.props.innerProps,
       icon: this.props.data.icon,
+      subheading: this.props.data.subheading,
     };
   }
   
@@ -18,7 +20,10 @@ class CryptoPaymentOption extends React.Component {
       <CryptoOption {...this.state.innerProps} >
         <span>
           <img src={this.state.icon} />
-          <span>{this.state.label}</span>
+          <CryptoOptionText>
+            <span>{this.state.label}</span>
+            <CryptoOptionSubheading>{this.state.subheading}</CryptoOptionSubheading>
+          </ CryptoOptionText>
         </span>
       </CryptoOption>
     )
