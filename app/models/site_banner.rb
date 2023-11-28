@@ -112,7 +112,7 @@ class SiteBanner < ApplicationRecord
     properties.delete(:title) if properties[:title].eql?(DEFAULT_TITLE)
     properties[:socialLinks]&.delete_if { |k, v| v.blank? }
 
-    properties.delete_if { |k, v| v.blank? && !(k == :backgroundUrl || k == :logoUrl)}
+    properties.delete_if { |k, v| v.blank? && !(k == :backgroundUrl || k == :logoUrl) }
 
     properties
   end
