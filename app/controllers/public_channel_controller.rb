@@ -1,11 +1,15 @@
 class PublicChannelController < ApplicationController
-  before_action :authenticate_publisher!
-
   def show
     channel = Channel.includes(:site_banner).find_by(public_identifier: params[:public_identifier])
-    @url = channel.details.url
+    channel_owner = channel&.publisher
+    @crypto_addresses = channel&.crypto_addresses&.pluck(:address, :chain)
+
+    # Handle the case when the resource is not found
+    if channel.nil? || @crypto_addresses.empty? || !channel_owner.feature_flags["p2p_enabled"]
+      redirect_to root_path, alert: "Channel not found"
+    end
+    @url = channel.details&.url
     @site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(current_publisher.id, channel.id)
-    @crypto_addresses = channel.crypto_addresses.pluck(:address, :chain)
 
     @crypto_constants = {
       solana_test_url: ENV["SOLANA_TEST_URL"],
@@ -13,11 +17,6 @@ class PublicChannelController < ApplicationController
       solana_bat_address: ENV["SOLANA_BAT_ADDRESS"],
       eth_bat_address: ENV["ETH_GOERLI_BAT_ADDRESS"]
     }
-
-    # Handle the case when the resource is not found
-    if channel.nil? || @crypto_addresses.empty? || !current_publisher.feature_flags["p2p_enabled"]
-      redirect_to root_path, alert: "Channel not found"
-    end
   end
 
   def get_ratios

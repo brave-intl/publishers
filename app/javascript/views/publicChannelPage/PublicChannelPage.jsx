@@ -78,7 +78,7 @@ class PublicChannelPage extends React.Component {
               <CryptoPaymentWidget title={this.title} cryptoAddresses={this.cryptoAddresses} cryptoConstants={this.cryptoConstants} />
               <PrivacyDisclaimer>
                 <FormattedMessage id="publicChannelPage.trustWarning" />
-                <a href={this.url} target="_blank" >{this.url}</a>
+                <a href={this.url} target="_blank" rel="noopener noreferrer">{this.url}</a>
               </PrivacyDisclaimer>
               <PrivacyDisclaimer>
                 <FormattedMessage id="publicChannelPage.privacyDisclaimer" />
