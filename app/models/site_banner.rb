@@ -98,7 +98,11 @@ class SiteBanner < ApplicationRecord
   end
 
   def pcdn_public_image_url(image)
-    "#{Rails.configuration.pub_secrets[:s3_rewards_public_domain]}/#{image&.blob&.key}"
+    if image&.blob&.key
+      "#{Rails.configuration.pub_secrets[:s3_rewards_public_domain]}/#{image&.blob&.key}"
+    else
+      ""
+    end
   end
 
   def non_default_properties
@@ -108,7 +112,7 @@ class SiteBanner < ApplicationRecord
     properties.delete(:title) if properties[:title].eql?(DEFAULT_TITLE)
     properties[:socialLinks]&.delete_if { |k, v| v.blank? }
 
-    properties.delete_if { |k, v| v.blank? }
+    properties.delete_if { |k, v| v.blank? && !(k == :backgroundUrl || k == :logoUrl)}
 
     properties
   end

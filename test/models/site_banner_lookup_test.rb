@@ -9,6 +9,15 @@ class SiteBannerLookupTest < ActionDispatch::IntegrationTest
     assert_equal channel.site_banner_lookup.channel_identifier, channel.details.channel_identifier
   end
 
+  test "logo url is blank if no attachment" do
+    channel = channels(:verified)
+    channel.send(:update_site_banner_lookup!)
+    refute channel.reload.site_banner.logo_blob
+    assert_equal channel.reload.site_banner_lookup.derived_site_banner_info["backgroundUrl"], ""
+    assert_equal channel.reload.site_banner_lookup.derived_site_banner_info["logoUrl"], ""
+    assert_equal channel.site_banner_lookup.channel_identifier, channel.details.channel_identifier
+  end
+
   test "make sure site_banner_lookup has the right wallet status" do
     uphold_connection = uphold_connections(:verified_connection)
     uphold_connection.update(is_member: false)
