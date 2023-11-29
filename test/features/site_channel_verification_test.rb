@@ -32,6 +32,7 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
   test "Cancel and Choose Different Verification Method buttons only appear in appropriate places" do
     Channel.delete_all
+    ::PreviouslySuspendedChannel.delete_all
     publisher = publishers(:default)
     sign_in publisher
 
