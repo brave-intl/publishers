@@ -10,11 +10,11 @@ namespace :database_updates do
     puts "#{no_bgs_count} no_bgs_count"
 
     no_logos.find_each do |site_banner|
-      Channels::UpdateSiteBannerLookupJob.perform_later(site_banner.channel_id)
+      Channels::UpdateSiteBannerLookupJob.perform_later(channel_id: site_banner.channel_id)
     end
 
     no_bgs.find_each do |site_banner|
-      Channels::UpdateSiteBannerLookupJob.perform_later(site_banner.channel_id)
+      Channels::UpdateSiteBannerLookupJob.perform_later(channel_id: site_banner.channel_id)
     end
 
     puts "Done"
