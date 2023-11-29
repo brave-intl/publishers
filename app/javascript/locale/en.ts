@@ -332,6 +332,10 @@ export default {
       solanaConnectionFailure: "Solana connection was interrupted",
       notConnected: "Not Connected",
       channelPageLink: "View Channel Page",
+      privacyHeader: "Privacy reminder",
+      privacyNotification: "Using the same crypto address for multiple channels will allow others to know that those channels all belong to you. If you don't want others to know, use a different crypto address for each of your channels.",
+      privacyQuit: "Cancel",
+      privacyContinue: "I understand and would like to continue",
     }
   },
   publicChannelPage: {

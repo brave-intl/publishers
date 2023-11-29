@@ -1,11 +1,13 @@
 import * as React from "react";
 import { FormattedMessage, injectIntl } from "react-intl";
 import ErrorBoundary from "../../components/errorBoundary/ErrorBoundary";
-import CryptoWalletOption from './CryptoWalletOption'
-import Select from 'react-select'
+import CryptoWalletOption from './CryptoWalletOption';
+import CryptoPrivacyModal from './CryptoPrivacyModal';
+import Select from 'react-select';
 import axios from "axios";
 import routes from "../routes";
-import bs58 from 'bs58'
+import bs58 from 'bs58';
+import Modal, { ModalSize } from "../../components/modal/Modal";
 
 class CryptoWalletServices extends React.Component {
   constructor(props) {
@@ -13,14 +15,18 @@ class CryptoWalletServices extends React.Component {
 
     this.channel = props.channel;
     this.intl = props.intl;
-    
+    this.store = props.store;
+
     this.state = {
+      addressesInUse: this.store.getState().addressesInUse,
       solOptions: [],
       ethOptions: [],
       currentSolAddress: null,
       currentEthAddress: null,
       isLoading: true,
       errorText: null,
+      isModalOpen: false,
+      pendingAddress: null,
     };
   }
 
@@ -53,6 +59,21 @@ class CryptoWalletServices extends React.Component {
   // setup the dropdowns
   loadData = () => {
     this.setState({ isLoading: true });
+
+    // clear out old addresses before adding them back to the store
+    if (this.state.currentEthAddress) {
+      this.store.dispatch({
+        type: "REMOVE_ADDRESS",
+        payload: { removedAddress: this.state.currentEthAddress.value.id }
+      });
+    }
+    if (this.state.currentSolAddress) {
+      this.store.dispatch({
+        type: "REMOVE_ADDRESS",
+        payload: { removedAddress: this.state.currentSolAddress.value.id }
+      });
+    }
+    
     axios.get(routes.publishers.cryptoAddresses.index).then((response) => {
       const newState = {
         isLoading: false,
@@ -64,6 +85,19 @@ class CryptoWalletServices extends React.Component {
       axios.get(routes.publishers.cryptoAddressForChannels.index.replace('{channel_id}', this.channel.id)).then((channelResponse) => {
         newState.currentSolAddress = this.findCurrentAddress('SOL', channelResponse, response)
         newState.currentEthAddress = this.findCurrentAddress('ETH', channelResponse, response)
+        
+        if (newState.currentSolAddress) {
+          this.store.dispatch({
+            type: "ADD_ADDRESS",
+            payload: { newAddress: newState.currentSolAddress.value }
+          });
+        }
+        if (newState.currentEthAddress) {
+          this.store.dispatch({
+            type: "ADD_ADDRESS",
+            payload: { newAddress: newState.currentEthAddress.value }
+          });
+        }
 
         this.setState({ ...newState });
       });
@@ -191,10 +225,14 @@ class CryptoWalletServices extends React.Component {
     } else if (address.newAddress === 'ETH') {
       await this.connectEthereumAddress();
     } else if (address.chain && address.address) {
-      await this.updateAddress(address);
+      if (this.state.addressesInUse.filter(usedAddress => usedAddress.id === address.id).length > 0) {
+        this.launchPrivacyModal(address);
+      } else {
+        await this.updateAddress(address);
+      }
     }
   }
-
+ 
   async updateAddress(address) {
     axios({
         method: 'post',
@@ -212,6 +250,14 @@ class CryptoWalletServices extends React.Component {
       }).then((response) => {
         this.handleConnectionResponse(response)
       });
+  }
+
+  launchPrivacyModal(pendingAddress) {
+    this.setState({ isModalOpen: true, pendingAddress });
+  }
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false, pendingAddress: null });
   }
 
   render() {
@@ -263,6 +309,17 @@ class CryptoWalletServices extends React.Component {
           {(this.state.currentSolAddress || this.state.currentEthAddress) && (
             <a href={`/c/${this.channel.public_identifier}`}><FormattedMessage id="walletServices.addCryptoWidget.channelPageLink" /></a>
           )}
+          <Modal
+            show={this.state.isModalOpen}
+            size={ModalSize.ExtraSmall}
+            handleClose={() => this.closeModal()}
+          >
+            <CryptoPrivacyModal
+              close={this.closeModal}
+              updateAddress={this.updateAddress.bind(this)}
+              address={this.state.pendingAddress}
+            />
+          </Modal>
         </ErrorBoundary>
       </div>
     );
