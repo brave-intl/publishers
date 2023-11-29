@@ -16,8 +16,12 @@ Rails.application.configure do
     "Access-Control-Request-Method" => "GET",
     "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept, Authorization",
     "Access-Control-Allow-Methods" => "GET",
-    "Permissions-Policy" => "interest-cohort=()",
-    "X-Frame-Options" => "deny"
+    "X-Frame-Options" => "DENY",
+    "X-Content-Type-Options" => "nosniff",
+    "Referrer-Policy" => "same-origin",
+    "Strict-Transport-Security" => "max-age=31536000; includeSubDomains; preload",
+    "Cross-Origin-Opener-Policy" => "same-origin",
+    "Cross-Origin-Resource-Policy" => "same-origin"
   }
 
   # Compress JavaScripts and CSS.

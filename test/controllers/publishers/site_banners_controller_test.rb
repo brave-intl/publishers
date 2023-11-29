@@ -8,11 +8,20 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "Show method retrieves a site_banner by uuid" do
     publisher = publishers(:default)
-    sign_in publisher
-    get "/publishers/" + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000", headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"}
+    new_site_banner = publisher.channels.verified.last.site_banner
+    new_site_banner.logo.attach(
+      {
+        io: File.open("#{Rails.root}/test/fixtures/1x1.png"),
+        filename: "test.jpg",
+        content_type: "image/jpg"
+      }
+    )
+    new_site_banner.save!
+    sign_in publisher.reload
+    get "/publishers/" + publisher.id + "/site_banners/#{new_site_banner.id}", headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"}
     site_banner = JSON.parse(response.body)
     assert_equal("Ann Bothman", site_banner["title"])
-    assert_equal("https://TESTDOMAIN.com/", site_banner["logoUrl"])
+    assert_equal("https://TESTDOMAIN.com/#{new_site_banner.logo.blob.key}", site_banner["logoUrl"])
     assert_equal("Hi there! My name is Ann and I am a travel blogger and photographer. I have always had a passion for exploring new places and immersing myself in different cultures.", site_banner["description"])
   end
 
