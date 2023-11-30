@@ -44,7 +44,7 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.7.10"
+gem "faraday", "2.7.12"
 gem "faraday-retry", "2.2.0"
 
 gem "ffi"

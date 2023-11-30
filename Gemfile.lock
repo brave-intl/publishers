@@ -260,7 +260,8 @@ GEM
       rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
     execjs (2.9.1)
-    faraday (2.7.10)
+    faraday (2.7.12)
+      base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-multipart (1.0.4)
@@ -747,7 +748,7 @@ DEPENDENCIES
   domain_name
   dotenv-rails (= 2.8.1)
   eth (~> 0.4)
-  faraday (= 2.7.10)
+  faraday (= 2.7.12)
   faraday-retry (= 2.2.0)
   fastimage (~> 2.2.5)
   ffi
