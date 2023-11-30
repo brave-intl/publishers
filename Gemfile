@@ -62,7 +62,7 @@ gem "nokogiri", ">= 1.15.4"
 # Open Graph tag
 gem "meta-tags", "~> 2.19.0"
 
-gem "newrelic_rpm", "~> 9.3.1"
+gem "newrelic_rpm", "~> 9.6.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
@@ -84,7 +84,7 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 gem "omniauth-github", "~> 2.0.1"
 
 # Model record auditing
-gem "paper_trail", "~> 15.0.0"
+gem "paper_trail", "~> 15.1.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -131,13 +131,13 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.1.6"
+gem "sidekiq", "~> 7.2.0"
 
 gem "sidekiq-scheduler", "~> 5.0.3"
 gem "sidekiq-throttled", "~> 1.1.0"
 
 # slim for view templates
-gem "slim-rails", "3.6.2"
+gem "slim-rails", "3.6.3"
 
 gem "ssrf_filter", "1.1.2"
 
@@ -148,9 +148,9 @@ gem "u2f", "~> 1.0"
 gem "webauthn"
 
 # One-time passwords for 2fa
-gem "rotp", "~> 6.2.0"
+gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "7.0.3"
+gem "shakapacker", "7.1.0"
 
 # pagination support for models
 gem "will_paginate"
@@ -159,7 +159,7 @@ gem "will_paginate"
 gem "yt", "~> 0.33.0"
 
 gem "zeitwerk", "~> 2.6.6"
-gem "zendesk_api", "= 3.0.2"
+gem "zendesk_api", "~> 3.0.5"
 
 gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
 
@@ -170,7 +170,7 @@ gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.4.2"
-gem "sprockets", "4.2.0"
+gem "sprockets", "4.2.1"
 
 gem "eth", "~> 0.4"
 gem "rbnacl"

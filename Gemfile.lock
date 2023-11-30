@@ -364,7 +364,8 @@ GEM
       timeout
     net-smtp (0.4.0)
       net-protocol
-    newrelic_rpm (9.3.1)
+    newrelic_rpm (9.6.0)
+      base64
     nio4r (2.6.1)
     nokogiri (1.15.5-aarch64-linux)
       racc (~> 1.4)
@@ -408,7 +409,7 @@ GEM
     openssl-signature_algorithm (1.3.0)
       openssl (> 2.0)
     orm_adapter (0.5.0)
-    paper_trail (15.0.0)
+    paper_trail (15.1.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.23.0)
@@ -525,7 +526,7 @@ GEM
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.6)
-    rotp (6.2.2)
+    rotp (6.3.0)
     rouge (4.2.0)
     rqrcode (2.2.0)
       chunky_png (~> 1.0)
@@ -574,12 +575,12 @@ GEM
     semantic_range (3.0.0)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
-    shakapacker (7.0.3)
+    shakapacker (7.1.0)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    sidekiq (7.1.6)
+    sidekiq (7.2.0)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
@@ -603,7 +604,7 @@ GEM
     slim (5.2.0)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
-    slim-rails (3.6.2)
+    slim-rails (3.6.3)
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (>= 3.0, < 6.0, != 5.0.0)
@@ -627,7 +628,7 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    sprockets (4.2.0)
+    sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
     sprockets-rails (3.4.2)
@@ -707,7 +708,7 @@ GEM
     yt (0.33.4)
       activesupport
     zeitwerk (2.6.12)
-    zendesk_api (3.0.2)
+    zendesk_api (3.0.5)
       faraday (> 2.0.0)
       faraday-multipart
       hashie (>= 3.5.2, < 6.0.0)
@@ -761,7 +762,7 @@ DEPENDENCIES
   minitest-rails!
   minitest-retry
   mocha
-  newrelic_rpm (~> 9.3.1)
+  newrelic_rpm (~> 9.6.0)
   nokogiri (>= 1.15.4)
   omniauth-github (~> 2.0.1)
   omniauth-google-oauth2 (~> 1.1.1)
@@ -770,7 +771,7 @@ DEPENDENCIES
   omniauth-twitch (~> 1.2.0)
   omniauth-twitter2
   omniauth-vimeo!
-  paper_trail (~> 15.0.0)
+  paper_trail (~> 15.1.0)
   pg (>= 0.18, < 2.0)
   premailer-rails (~> 1.12.0)
   pry
@@ -791,19 +792,19 @@ DEPENDENCIES
   redis-session-store
   render_async (~> 2.1.8)
   rexml
-  rotp (~> 6.2.0)
+  rotp (~> 6.3.0)
   rqrcode (~> 2.2.0)
   sass-rails (>= 6)
   selenium-webdriver (~> 4.12)
   sendgrid-ruby (~> 6.6.2)
-  shakapacker (= 7.0.3)
-  sidekiq (~> 7.1.6)
+  shakapacker (= 7.1.0)
+  sidekiq (~> 7.2.0)
   sidekiq-scheduler (~> 5.0.3)
   sidekiq-throttled (~> 1.1.0)
   simplecov
-  slim-rails (= 3.6.2)
+  slim-rails (= 3.6.3)
   solargraph
-  sprockets (= 4.2.0)
+  sprockets (= 4.2.1)
   sprockets-rails (= 3.4.2)
   ssrf_filter (= 1.1.2)
   standard
@@ -821,7 +822,7 @@ DEPENDENCIES
   will_paginate
   yt (~> 0.33.0)
   zeitwerk (~> 2.6.6)
-  zendesk_api (= 3.0.2)
+  zendesk_api (~> 3.0.5)
 
 RUBY VERSION
    ruby 3.0.2p107
