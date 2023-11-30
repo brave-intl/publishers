@@ -18,7 +18,7 @@ gem "countries"
 gem "active_model_serializers", "~> 0.10.0"
 
 # For bulk updates/imports
-gem "activerecord-import", "1.4.1"
+gem "activerecord-import", "~> 1.5.1"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
@@ -26,7 +26,7 @@ gem "addressable", "~> 2.8"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.132.0"
+gem "aws-sdk-s3", "~> 1.141.0"
 
 gem "bootstrap", "4.6.2"
 
@@ -51,10 +51,10 @@ gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
-gem "google-protobuf", "~> 3.23.4"
+gem "google-protobuf", "~> 3.25.1"
 
 # Make logs less mad verbose
-gem "lograge", "~> 0.13.0"
+gem "lograge", "~> 0.14.0"
 
 # Dependency for rails
 gem "nokogiri", ">= 1.15.4"
@@ -96,7 +96,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.3.1"
+gem "puma", "~> 6.4.0"
 
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
@@ -104,7 +104,7 @@ gem "rack-attack", github: "rack/rack-attack", branch: "main"
 gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
-gem "recaptcha", "~> 5.14.0", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.16.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.0.6"
