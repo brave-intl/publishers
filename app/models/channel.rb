@@ -157,7 +157,7 @@ class Channel < ApplicationRecord
   end
 
   def details_not_changed?
-    unless details_id_was.nil? || (details_id == details_id_was && details_type == details_type_was)
+    if !(details_id_was.nil? || (details_id == details_id_was && details_type == details_type_was))
       errors.add(:details, "can't be changed")
     end
   end
