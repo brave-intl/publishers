@@ -246,7 +246,7 @@ export const CryptoOption = styled.div`
     height: 32px;
     width: 32px;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
   }
 `;
 
