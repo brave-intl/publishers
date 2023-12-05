@@ -74,7 +74,7 @@ class TwoFactorAuthenticationRemovalJobTest < ActiveJob::TestCase
     # First try channels are removed
     Channel.create!(details: channel_details, verified: true, publisher: publisher)
     TwoFactorAuthenticationRemovalJob.perform_now
-    assert_empty(publisher.channels)
+    assert_empty(publisher.reload.channels)
 
     # Subsequent tries, channels are not removed
     Channel.create!(details: channel_details, verified: true, publisher: publisher)
