@@ -398,7 +398,7 @@ class Channel < ApplicationRecord
 
   def create_gemini_channel_card
     return if !publisher&.gemini_connection&.recipient_id
-    publisher&.gemini_connection.create_recipient_ids
+    publisher&.gemini_connection&.create_recipient_ids
   end
 
   def create_uphold_channel_card
