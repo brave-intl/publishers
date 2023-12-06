@@ -267,6 +267,18 @@ class GeminiConnectionTest < SidekiqTestCase
         end
         assert_enqueued_jobs 1
       end
+
+      it "relies on country_code if no validatedDocuments" do
+        Gemini::GetValidationService.stubs(:perform).returns(nil)
+        conn = GeminiConnection.create_new_connection!(publisher, access_token_response)
+        assert_equal conn.reload.country, "US"
+      end
+
+      it "relies on validated country if validatedDocuments exists" do
+        Gemini::GetValidationService.stubs(:perform).returns("PR")
+        conn = GeminiConnection.create_new_connection!(publisher, access_token_response)
+        assert_equal conn.reload.country, "PR"
+      end
     end
   end
 

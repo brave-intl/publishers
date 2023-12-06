@@ -134,7 +134,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   end
 
   def verify_through_gemini
-    users = Gemini::Account.find(token: access_token).users
+    account = Gemini::Account.find(token: access_token)
+    users = account.users
     user = users.find { |u| u.is_verified && u.status == "Active" }
 
     if !user
@@ -147,10 +148,12 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     end
 
     return if !user.present?
+
+    validated_country = Gemini::GetValidationService.perform(self, account.account["verificationToken"])
     update!(
       display_name: user.name,
       status: user.status,
-      country: user.country_code,
+      country: validated_country.present? ? validated_country : user.country_code,
       is_verified: user.is_verified
     )
   end
@@ -215,6 +218,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
         conn.verify_through_gemini
         publisher.update!(selected_wallet_provider: conn)
+        conn
       end
     end
 
