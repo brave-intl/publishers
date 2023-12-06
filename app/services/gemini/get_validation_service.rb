@@ -9,7 +9,7 @@ module Gemini
       result = perform_get(gemini_connection, verification_token)
       if result["validDocuments"].present?
         valid_documents = result["validDocuments"]
-        valid_documents.sort_by { |vd| DOCUMENT_PRIORITY.index(vd["type"]) }.first["issuingCountry"]
+        valid_documents.min_by { |vd| DOCUMENT_PRIORITY.index(vd["type"]) }["issuingCountry"]
       elsif result["countryCode"].present?
         result["countryCode"]
       end
