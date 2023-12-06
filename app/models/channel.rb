@@ -398,12 +398,12 @@ class Channel < ApplicationRecord
 
   def create_gemini_channel_card
     return if !publisher&.gemini_connection&.recipient_id
-    CreateGeminiRecipientIdsJob.perform_later(publisher.gemini_connection&.id)
+    publisher&.gemini_connection&.create_recipient_ids
   end
 
   def create_uphold_channel_card
     return if !publisher&.uphold_connection&.uphold_id && !publisher&.uphold_connection&.can_create_uphold_cards?
-    CreateUpholdChannelCardJob.perform_later(uphold_connection_id: publisher.uphold_connection&.id, channel_id: id)
+    publisher&.uphold_connection&.create_uphold_cards
   end
 
   def notify_slack
