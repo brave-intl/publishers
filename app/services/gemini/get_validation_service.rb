@@ -18,7 +18,7 @@ module Gemini
     def self.perform_get(gemini_connection, verification_token)
       params = {"token" => verification_token, "recipient_id" => gemini_connection.recipient_id}
 
-      uri = URI("#{Gemini.api_base_uri}v1/account/validate")
+      uri = URI("#{Gemini.api_base_uri}/v1/account/validate")
       uri.query = URI.encode_www_form(params)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
