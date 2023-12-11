@@ -4,7 +4,7 @@ ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "7.1.1"
+rails_version = "7.1.2"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.0"
 gem "railties", rails_version
@@ -18,7 +18,7 @@ gem "countries"
 gem "active_model_serializers", "~> 0.10.0"
 
 # For bulk updates/imports
-gem "activerecord-import", "1.4.1"
+gem "activerecord-import", "~> 1.5.1"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
@@ -26,7 +26,7 @@ gem "addressable", "~> 2.8"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.132.0"
+gem "aws-sdk-s3", "~> 1.141.0"
 
 gem "bootstrap", "4.6.2"
 
@@ -44,17 +44,17 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.7.10"
+gem "faraday", "2.7.12"
 gem "faraday-retry", "2.2.0"
 
 gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
-gem "google-protobuf", "~> 3.23.4"
+gem "google-protobuf", "~> 3.25.1"
 
 # Make logs less mad verbose
-gem "lograge", "~> 0.13.0"
+gem "lograge", "~> 0.14.0"
 
 # Dependency for rails
 gem "nokogiri", ">= 1.15.4"
@@ -62,7 +62,7 @@ gem "nokogiri", ">= 1.15.4"
 # Open Graph tag
 gem "meta-tags", "~> 2.19.0"
 
-gem "newrelic_rpm", "~> 9.3.1"
+gem "newrelic_rpm", "~> 9.6.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
@@ -84,7 +84,7 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 gem "omniauth-github", "~> 2.0.1"
 
 # Model record auditing
-gem "paper_trail", "~> 15.0.0"
+gem "paper_trail", "~> 15.1.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -96,7 +96,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.3.1"
+gem "puma", "~> 6.4.0"
 
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
@@ -104,7 +104,7 @@ gem "rack-attack", github: "rack/rack-attack", branch: "main"
 gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
-gem "recaptcha", "~> 5.14.0", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.16.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.0.6"
@@ -131,13 +131,13 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.1.6"
+gem "sidekiq", "~> 7.2.0"
 
 gem "sidekiq-scheduler", "~> 5.0.3"
 gem "sidekiq-throttled", "~> 1.1.0"
 
 # slim for view templates
-gem "slim-rails", "3.6.2"
+gem "slim-rails", "3.6.3"
 
 gem "ssrf_filter", "1.1.2"
 
@@ -148,9 +148,9 @@ gem "u2f", "~> 1.0"
 gem "webauthn"
 
 # One-time passwords for 2fa
-gem "rotp", "~> 6.2.0"
+gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "7.0.3"
+gem "shakapacker", "7.1.0"
 
 # pagination support for models
 gem "will_paginate"
@@ -159,7 +159,7 @@ gem "will_paginate"
 gem "yt", "~> 0.33.0"
 
 gem "zeitwerk", "~> 2.6.6"
-gem "zendesk_api", "= 3.0.2"
+gem "zendesk_api", "~> 3.0.5"
 
 gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
 
@@ -170,7 +170,7 @@ gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.4.2"
-gem "sprockets", "4.2.0"
+gem "sprockets", "4.2.1"
 
 gem "eth", "~> 0.4"
 gem "rbnacl"

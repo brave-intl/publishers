@@ -64,3 +64,25 @@
     padding-bottom: 3px;
   }
 }
+
+// Privacy reminder modal
+
+.privacy-header {
+  font-family: 'poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: 0em;
+}
+
+.privacy-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: -0.20000000298023224px;
+}
+
+.privacy-button-container {
+  text-align: center;
+}
