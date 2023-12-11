@@ -52,7 +52,7 @@ import ethIcon from "../../../assets/images/eth_icon_larger.png";
 import solIcon from "../../../assets/images/solana_icon_larger.png";
 import batIcon from "../../../assets/images/bat_icon.png";
 import warningIcon from "../../../assets/images/warning-circle-filled.png";
-import goerliBatAbi from "./goerliBatAbi.json";
+import batAbi from "./batAbi.json";
 
 class CryptoPaymentWidget extends React.Component {
   constructor(props) {
@@ -117,7 +117,6 @@ class CryptoPaymentWidget extends React.Component {
       ethBatAddress: props.cryptoConstants.eth_bat_address,
       solanaBatAddress: props.cryptoConstants.solana_bat_address,
       solanaMainUrl: props.cryptoConstants.solana_main_url,
-      solanaTestUrl: props.cryptoConstants.solana_test_url,
       placeholder,
       isLoading: true,
       currentAmount: 5,
@@ -280,7 +279,7 @@ class CryptoPaymentWidget extends React.Component {
         const web3 = new Web3(window.ethereum);
         const batContractAddress = this.state.ethBatAddress;
 
-        const contract = new web3.eth.Contract(goerliBatAbi, batContractAddress);
+        const contract = new web3.eth.Contract(batAbi, batContractAddress);
         const amount = Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17))
         const encodedAbi = await contract.methods.transfer(this.state.addresses.ETH, amount).encodeABI()
 
@@ -317,7 +316,7 @@ class CryptoPaymentWidget extends React.Component {
     const provider = await window.solana.connect();
     if (provider.publicKey) {
       const pub_key = provider.publicKey
-      const connection = new Connection(this.state.solanaTestUrl);
+      const connection = new Connection(this.state.solanaMainUrl);
       const amount = Math.round(this.calculateCryptoPrice() * LAMPORTS_PER_SOL)
       
       const transaction = new Transaction().add(
