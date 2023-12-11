@@ -12,10 +12,9 @@ class PublicChannelController < ApplicationController
     @site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(current_publisher.id, channel.id)
 
     @crypto_constants = {
-      solana_test_url: ENV["SOLANA_TEST_URL"],
       solana_main_url: ENV["SOLANA_MAIN_URL"],
       solana_bat_address: ENV["SOLANA_BAT_ADDRESS"],
-      eth_bat_address: ENV["ETH_GOERLI_BAT_ADDRESS"]
+      eth_bat_address: ENV["ETH_BAT_ADDRESS"]
     }
   end
 
