@@ -24,6 +24,16 @@ class Api::V1::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal(404, response.status)
   end
 
+  test "/api/v1/publishers/:publisher_id/publisher_status_updates will update with note" do
+    old_count = PreviouslySuspendedChannel.count
+    publisher = publishers(:verified)
+    post "/api/v1/publishers/" + publisher.id + "/publisher_status_updates", headers: {"HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token"}, params: {status: "suspended", note: "yolt", admin: "hello@brave.com"}
+    status = publisher.last_status_update.status
+    assert_equal("suspended", status)
+    assert_equal(200, response.status)
+    assert_equal old_count + 1, PreviouslySuspendedChannel.count
+  end
+
   test "/api/v1/publishers/:publisher_id/publisher_status_updates does not suspend publishers with an enabled whitelist" do
     publisher = publishers(:created)
 
