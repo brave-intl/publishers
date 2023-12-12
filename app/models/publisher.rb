@@ -338,7 +338,6 @@ class Publisher < ApplicationRecord
 
   def suspend!
     PublisherStatusUpdate.create!(publisher_id: id, status: PublisherStatusUpdate::SUSPENDED)
-    channels.verified.each { |c| ::PreviouslySuspendedChannel.where(channel_identifier: c&.details&.channel_identifier).first_or_create }
     self
   end
 
