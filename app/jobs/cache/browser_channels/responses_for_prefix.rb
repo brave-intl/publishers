@@ -163,7 +163,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
     public_id = site_banner_lookup.channel.public_identifier
     include_web3 = (site_banner_lookup.channel.crypto_address_for_channels.length > 0) && public_id
-    details.web3_url = include_web3 ? "#{ENV["CREATORS_HOST"]}/c/#{public_id}" : ""
+    details.web3_url = include_web3 ? "https://#{ENV["CREATORS_HOST"]}/c/#{public_id}" : ""
 
     if site_banner_lookup.derived_site_banner_info["socialLinks"].present?
       social_links_pb = nil
