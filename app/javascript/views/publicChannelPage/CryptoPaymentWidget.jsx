@@ -327,7 +327,7 @@ class CryptoPaymentWidget extends React.Component {
         })
       );
       transaction.feePayer = pub_key;
-      const blockhashObj = await connection.connection.getLatestBlockhash('confirmed');
+      const blockhashObj = await connection.getLatestBlockhash('confirmed');
       transaction.recentBlockhash = await blockhashObj.blockhash;
 
       try {
