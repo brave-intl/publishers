@@ -358,10 +358,10 @@ class PublisherMailer < ApplicationMailer
 
   private
 
-  def mail_if_destination_exists(*args, **keyword_args)
+  def mail_if_destination_exists(*, **keyword_args)
     # Sometimes a job gets queued for a deleted user
     if keyword_args[:to].present?
-      mail(*args, **keyword_args)
+      mail(*, **keyword_args)
     else
       LogException.perform(
         StandardError.new("Tried to mail a deleted user.")

@@ -13,7 +13,7 @@ class UpholdRefreshJobTest < ActiveJob::TestCase
     end
 
     describe "without limit" do
-      let(:result) { described_class.perform_now(0, nil, false ,false) }
+      let(:result) { described_class.perform_now(0, nil, false, false) }
 
       before do
         result
