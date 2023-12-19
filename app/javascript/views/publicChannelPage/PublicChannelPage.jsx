@@ -23,7 +23,7 @@ import github from "../../../assets/images/social-github.svg";
 import twitch from "../../../assets/images/social-twitch.svg";
 import reddit from "../../../assets/images/social-reddit.svg";
 import youtube from "../../../assets/images/social-youtube.svg";
-import verified from "../../../assets/images/purple_verified.png";
+import verified from "../../../assets/images/purple_verified.svg";
 
 class PublicChannelPage extends React.Component {
   constructor(props) {
