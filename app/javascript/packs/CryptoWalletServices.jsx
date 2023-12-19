@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const initialState = {
-    addressesInUse: []
+    addressesInUse: [],
+    currentResponseData: {},
   };
 
   const reducer = async (state = initialState, action) => {
@@ -45,8 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
       state.addressesInUse.push(action.payload.newAddress);
       return state;
     } else if (action.type === "REMOVE_ADDRESS") {
-      const idx = state.addressesInUse.findIndex(address => address.id === action.payload.addressId);
-      return idx > -1 ? { addressesInUse: state.addressesInUse.splice(idx, 1) } : state;
+      const idx = state.addressesInUse.findIndex(address => address.id === action.payload.removedAddress);
+      const newState = { ...state };
+      
+      if (idx > -1) {
+        newState.addressesInUse.splice(idx,1);
+      }
+      return newState;
+    } else if (action.type = "UPDATE_RESPONSE_DATA") {
+      state.currentResponseData = action.payload;
+      return state;
     }
   }
 

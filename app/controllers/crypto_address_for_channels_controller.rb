@@ -64,7 +64,10 @@ class CryptoAddressForChannelsController < ApplicationController
     account_address = params[:address]
     chain = params[:chain]
     current_channel = current_publisher.channels.find(params[:channel_id])
-
+    p "* "*200
+    p account_address
+    p chain
+    p current_channel
     success = replace_crypto_address_for_channel(account_address, chain, current_channel)
 
     respond_to do |format|
@@ -73,6 +76,26 @@ class CryptoAddressForChannelsController < ApplicationController
           render(json: {crypto_address_for_channel: success}, status: 200)
         else
           render(json: {errors: "address could not be updated"}, status: 400)
+        end
+      }
+    end
+  end
+
+  def delete
+    chain = params[:chain]
+    current_channel = current_publisher.channels.find(params[:channel_id])
+
+    existing_address = CryptoAddressForChannel.where(chain: chain, channel: channel)
+    if existing_address.length > 0
+      existing_address.first.destroy!
+    end
+
+    respond_to do |format|
+      format.json {
+        if success
+          render(json: {crypto_address_for_channel: success}, status: 200)
+        else
+          render(json: {errors: "address could not be deleted"}, status: 400)
         end
       }
     end
