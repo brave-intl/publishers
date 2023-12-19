@@ -202,6 +202,7 @@ class CryptoPaymentWidget extends React.Component {
   }
 
   sendPayment = async () => {
+    this.clearError();
     if (this.state.currentChain === "ETH") {
       await this.sendEthPayment();
     } else if (this.state.currentChain === "SOL") {
@@ -224,6 +225,13 @@ class CryptoPaymentWidget extends React.Component {
     const newState = {...this.state};
     newState.errorTitle = this.intl.formatMessage({id: titleId});
     newState.errorMsg = this.intl.formatMessage({id: msgId});
+    this.setState({...newState });
+  }
+
+  clearError() {
+    const newState = {...this.state};
+    newState.errorTitle = null;
+    newState.errorMsg = null;
     this.setState({...newState });
   }
 
@@ -418,8 +426,9 @@ class CryptoPaymentWidget extends React.Component {
             this.setState({...newState });
           }
         } else {
-          this.setGenericError();
-          window.solana.disconnect()
+          this.setError('publicChannelPage.ErrorTitle', 'publicChannelPage.insufficientBalance');
+          window.solana.disconnect();
+          return;
         }
       } catch (e) {
         this.setGenericError();
@@ -446,7 +455,7 @@ class CryptoPaymentWidget extends React.Component {
   };
   
   handleInputChange = (event) => {
-    const customValue = parseFloat(event.target.value || 0);
+    const customValue = event.target.value ? parseFloat(event.target.value) : null;
     const newState = {...this.state};
     newState.customAmount = customValue;
     newState.currentAmount = customValue;
