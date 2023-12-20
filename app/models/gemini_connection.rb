@@ -184,6 +184,11 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     end
   end
 
+  def allowed_countries
+    # hard code just the US for now
+    ["US"]
+  end
+
   class << self
     def provider_name
       "Gemini"
@@ -236,9 +241,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
 
     # Needs to be a class method and not an instance method to allow use in scope queries
     def allowed_countries
-      # fetch cached regions
-      allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
-      allowed_regions[:gemini][:allow]
+      # hard code just the US for now
+      ["US"]
     end
   end
 end
