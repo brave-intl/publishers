@@ -42,7 +42,6 @@ const NotConnected = (props) => (
 class UpholdConnectButton extends React.Component<any, any> {
   constructor(props) {
     super(props);
-
     this.state = {
       allowedRegions: props.allowedRegions.uphold.allow.join(', ')
     }
@@ -54,7 +53,7 @@ class UpholdConnectButton extends React.Component<any, any> {
         <Tooltip
           id='uphold-regions'
           place='right'
-          render={(dataTip) => `Supported regions for Uphold: ${dataTip}`}>
+          render={({content}) => `Supported regions for Uphold: ${content}`}>
         </Tooltip>
         <a
           className="btn btn-secondary font-weight-bold mb-2"
@@ -82,7 +81,7 @@ class GeminiConnectButton extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      allowedRegions: props.allowedRegions.gemini.allow.join(', ')
+      allowedRegions: 'US'
     }
   }
 
@@ -92,7 +91,7 @@ class GeminiConnectButton extends React.Component<any, any> {
         <Tooltip
           id='gemini-regions'
           place='right'
-          render={(dataTip) => `Supported regions for Gemini: ${dataTip}`}>
+          render={({content}) => `Supported regions for Gemini: ${content}`}>
         </Tooltip>
         <a
           className="btn btn-secondary font-weight-bold mb-2"

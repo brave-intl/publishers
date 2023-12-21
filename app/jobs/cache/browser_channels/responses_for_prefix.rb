@@ -26,8 +26,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
 
-    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions
-
     @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
@@ -41,7 +39,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.uphold_connection
           uphold_wallet.wallet_state = get_uphold_wallet_state(uphold_connection: connection)
 
-          if connection.country && allowed_regions[:uphold][:allow].include?(connection.country.upcase)
+          if connection.valid_country?
             uphold_address = site_banner_lookup.channel&.uphold_connection&.address || ""
             print site_banner_lookup.channel_identifier
             uphold_wallet.address = payable ? uphold_address : ""
@@ -69,7 +67,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           connection = site_banner_lookup.publisher.gemini_connection
           gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
 
-          if connection.country && allowed_regions[:gemini][:allow].include?(connection.country.upcase)
+          if connection.valid_country?
             gemini_address = site_banner_lookup.channel&.gemini_connection&.recipient_id || ""
             gemini_wallet.address = payable ? gemini_address : ""
           end
