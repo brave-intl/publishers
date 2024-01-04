@@ -527,6 +527,10 @@ class CryptoPaymentWidget extends React.Component {
                     paddingTop: '30px',
                     borderRadius: '0px 0px 8px 8px',
                   }),
+                  menuList: (base) => ({
+                    ...base,
+                    maxHeight: '500px',
+                  }),
                 }}
               />
             <div className="row no-gutters pb-4 pt-4">
@@ -580,9 +584,11 @@ class CryptoPaymentWidget extends React.Component {
           </PaymentOptions>
           <PaymentButtons>
             <SendButton onClick={(event) => {
-              event.preventDefault();
-              this.sendPayment();
-            }}>
+                event.preventDefault();
+                this.sendPayment();
+              }}
+              disabled={this.state.currentAmount <= 0}
+            >
               <FormattedMessage id="publicChannelPage.send" />
             </SendButton>
             

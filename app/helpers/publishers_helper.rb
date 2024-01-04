@@ -25,6 +25,20 @@ module PublishersHelper
     }
   end
 
+  def public_meta_tags
+    {
+      title: t("shared.public_page_title"),
+      charset: "utf-8",
+      og: {
+        title: :title,
+        image: image_url("open-graph-preview.png"),
+        description: t("shared.app_description"),
+        url: request.url,
+        type: "website"
+      }
+    }
+  end
+
   def new_publisher?(publisher)
     is_new = if publisher.bitflyer_locale?(I18n.locale)
       publisher.bitflyer_connection.blank?

@@ -1,4 +1,6 @@
 class PublicChannelController < ApplicationController
+  layout "public"
+
   def show
     channel = Channel.includes(:site_banner).find_by(public_identifier: params[:public_identifier])
     channel_owner = channel&.publisher
