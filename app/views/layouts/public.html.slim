@@ -1,0 +1,77 @@
+doctype html
+html
+  head data-piwik-host=piwik_domain
+    = csrf_meta_tags
+    meta http-equiv="X-UA-Compatible" content="IE=edge"
+    meta name="viewport" content=("width=device-width, initial-scale=#{if local_assigns[:viewport_initial_scale] then viewport_initial_scale else '0.6' end}")
+    - set_meta_tags(public_meta_tags)
+    = display_meta_tags
+    - if content_for?(:head_style_tags)
+      = yield(:head_style_tags)
+    - else
+      = stylesheet_link_tag('application', media: 'all')
+
+    = javascript_importmap_tags
+
+    - if content_for?(:head_js_tags)
+      = yield(:head_js_tags)
+    - else
+      = javascript_pack_tag('application')
+
+    link rel="icon" type="image/png" href=image_path("favicon.ico")
+
+    #main
+      - unless request.path.starts_with?("/partners") ||  request.path.starts_with?("/browser_user")
+        - if content_for?(:nav)
+          = yield(:nav)
+        - else
+          = render("nav")
+
+      -if content_for?(:headless)
+        = yield(:headless)
+      - else
+        .main-content#main-content
+          = content_for?(:content) ? yield(:content) : yield
+
+
+      = render("footer")
+
+    / This block of HTML is used by modal_shared.js to trigger modal
+    / boxes. See that JavaScript file for more details.
+    .js-shared-modal
+      .modal-container data-test-modal-container=""
+        .modal-panel
+          .modal-panel--content
+          = link_to "#", class: "modal-panel--close js-deny"
+            = render "application/icon_x"
+      .modal-overlay
+
+    #modal-root
+    / ## Using flash modals in Brave Publishers ##
+    /
+    / In addition to using flash to pass a message, you can use flash to
+    / cause a modal to open on the page. Do this with the :modal_partial
+    / flash name. For example:
+    /
+    /     flash[:modal_partial] = 'some_partial_name'
+    /
+    / This would cause the modal to be opened with content equivilent to:
+    /
+    /     <%= render 'model_partials/some_partial_name' %>
+    /
+    / Which would be the file path:
+    /
+    /     app/views/model_partials/_some_partial_name.html.erb
+    /
+    / This system leverages the modal system documented in
+    / app/javascript/modal.js.
+    /
+    / To offer a button do close the modal use the class `js-deny` on a
+    / button. For example:
+    /
+    /     <%= link_to "Close", "#", class: "js-deny btn btn-primary" %>
+    /
+    - if flash[:modal_partial]
+      script#js-open-modal-on-load type="text/html"
+        = render "modal_partials/#{flash[:modal_partial]}"
+    = content_for :render_async
