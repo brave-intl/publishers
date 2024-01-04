@@ -99,7 +99,11 @@ class SiteBanner < ApplicationRecord
 
   def pcdn_public_image_url(image)
     if image&.blob&.key
-      "#{Rails.configuration.pub_secrets[:s3_rewards_public_domain]}/#{image&.blob&.key}"
+      if image&.blob&.filename.to_s.end_with?("padded")
+        "#{Rails.configuration.pub_secrets[:s3_rewards_public_domain]}/#{image&.blob&.key}.jpg.pad"
+      else
+        "#{Rails.configuration.pub_secrets[:s3_rewards_public_domain]}/#{image&.blob&.key}"
+      end
     else
       ""
     end

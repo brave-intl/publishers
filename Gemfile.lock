@@ -23,15 +23,6 @@ GIT
       omniauth-oauth2 (~> 1.1)
 
 GIT
-  remote: https://github.com/brave-intl/wasm-thumbnail.git
-  revision: 340b7a8dd0768d87a9e0d94662cfa8b27c5bcf2c
-  tag: 0.0.5
-  glob: wasm-thumbnail-rb/*.gemspec
-  specs:
-    wasm-thumbnail-rb (0.1.0)
-      wasmer (~> 1.0)
-
-GIT
   remote: https://github.com/ghiculescu/nulldb.git
   revision: ba23c8ae50905ba34c8c370cc8051e4f21a9f3e7
   branch: rails-7-1
@@ -46,13 +37,6 @@ GIT
   specs:
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
-
-GIT
-  remote: https://github.com/wasmerio/wasmer-ruby.git
-  revision: dab7d537748ce410c660c3fe683df4a2af369f82
-  ref: dab7d537748ce410c660c3fe683df4a2af369f82
-  specs:
-    wasmer (1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -814,8 +798,6 @@ DEPENDENCIES
   tzinfo-data
   u2f (~> 1.0)
   vcr
-  wasm-thumbnail-rb!
-  wasmer!
   web-console
   webauthn
   webmock (~> 3.0)

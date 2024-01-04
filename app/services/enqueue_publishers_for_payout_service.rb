@@ -3,8 +3,7 @@ class EnqueuePublishersForPayoutService
     final = true,
     manual = false,
     publisher_ids = [],
-    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions,
-    args = [])
+    allowed_regions = Rewards::Parameters.new.fetch_allowed_regions)
     unless payout_report.is_a?(PayoutReport)
       raise ArgumentError.new("Invalid argument type. Must be PayoutReport")
     end
