@@ -197,6 +197,10 @@ export const SendButton = styled.button`
   font-weight: 600;
   font-family: poppins, sans-serif;
   font-size 0.9em;
+
+  &:disabled {
+    background: rgba(63, 57, 232, 0.5);
+  }
 `;
 
 export const PaymentButtons = styled.div`
