@@ -64,10 +64,7 @@ class CryptoAddressForChannelsController < ApplicationController
     account_address = params[:address]
     chain = params[:chain]
     current_channel = current_publisher.channels.find(params[:channel_id])
-    p "* "*200
-    p account_address
-    p chain
-    p current_channel
+
     success = replace_crypto_address_for_channel(account_address, chain, current_channel)
 
     respond_to do |format|
@@ -85,7 +82,7 @@ class CryptoAddressForChannelsController < ApplicationController
     chain = params[:chain]
     current_channel = current_publisher.channels.find(params[:channel_id])
 
-    existing_address = CryptoAddressForChannel.where(chain: chain, channel: channel)
+    existing_address = CryptoAddressForChannel.where(chain: chain, channel: current_channel)
     if existing_address.length > 0
       existing_address.first.destroy!
     end
