@@ -320,6 +320,7 @@ export default {
     verify: "Continue to Verify",
     addCryptoWidget: {
       addWallet: "Add new crypto address",
+      clearWallet: "Clear address",
       solanaConnectError: "Connect a Solana wallet to add an address",
       ethereumConnectError: "Connect an Ethereum wallet to add an address",
       widgetTitle: "Crypto addresses",

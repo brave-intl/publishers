@@ -78,6 +78,23 @@ class CryptoAddressForChannelsController < ApplicationController
     end
   end
 
+  def delete
+    chain = params[:chain]
+    current_channel = current_publisher.channels.find(params[:channel_id])
+
+    success = CryptoAddressForChannel.where(chain: chain, channel: current_channel).first&.destroy!
+
+    respond_to do |format|
+      format.json {
+        if success
+          render(json: {crypto_address_for_channel: success}, status: 200)
+        else
+          render(json: {errors: "address could not be deleted"}, status: 400)
+        end
+      }
+    end
+  end
+
   def verify_solana_address(signature, address, message)
     verify_key = RbNaCl::VerifyKey.new(Base58.base58_to_binary(address, :bitcoin))
     verify_key.verify(Base58.base58_to_binary(signature, :bitcoin), message)
