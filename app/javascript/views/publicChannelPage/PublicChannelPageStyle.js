@@ -210,7 +210,7 @@ export const PaymentButtons = styled.div`
 export const PaymentOptions = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 20px 32px 32px;
+  padding: 16px;
 `;
 
 export const SmallCurrencyDisplay = styled.div`
@@ -243,8 +243,10 @@ export const ExchangeIcon = styled.div`
 
 export const CryptoOption = styled.div`
   text-align: left;
-  padding: 20px 26px;
+  padding: 16px;
   font-weight: 600;
+  border-radius: 4px;
+  margin: 4px;
 
   img {
     margin-right: 16px;
@@ -252,6 +254,11 @@ export const CryptoOption = styled.div`
     width: 32px;
     display: inline-block;
     vertical-align: top;
+    margin-top: 3px;
+  }
+
+  &:hover {
+    background-color: rgba(233, 238, 255, 1);
   }
 `;
 
