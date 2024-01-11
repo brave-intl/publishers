@@ -30,9 +30,9 @@ module PublishersHelper
       title: t("shared.public_page_title"),
       charset: "utf-8",
       og: {
-        title: :title,
+        title: t("shared.public_share_title"),
         image: image_url("open-graph-preview.png"),
-        description: t("shared.app_description"),
+        description: t("shared.public_share_description", channel: @channel_title),
         url: request.url,
         type: "website"
       }
