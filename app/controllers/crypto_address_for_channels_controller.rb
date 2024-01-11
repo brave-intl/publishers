@@ -82,10 +82,7 @@ class CryptoAddressForChannelsController < ApplicationController
     chain = params[:chain]
     current_channel = current_publisher.channels.find(params[:channel_id])
 
-    existing_address = CryptoAddressForChannel.where(chain: chain, channel: current_channel)
-    if existing_address.length > 0
-      existing_address.first.destroy!
-    end
+    success = CryptoAddressForChannel.where(chain: chain, channel: current_channel).first&.destroy!
 
     respond_to do |format|
       format.json {
