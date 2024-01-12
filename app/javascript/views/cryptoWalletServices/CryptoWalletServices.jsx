@@ -17,6 +17,8 @@ class CryptoWalletServices extends React.Component {
     this.intl = props.intl;
     this.store = props.store;
 
+    this.store.subscribe(this.updateOptionsFromStore.bind(this))
+
     this.state = {
       addressesInUse: this.store.getState().addressesInUse,
       solOptions: [],
@@ -34,11 +36,30 @@ class CryptoWalletServices extends React.Component {
     this.loadData();
   }
 
+  updateOptionsFromStore(action) {
+    if (action.type === 'UPDATE_RESPONSE_DATA') {
+      const newEthOptions = this.formatOptionData(action.payload, this.state.currentEthAddress, 'ETH');
+      const newSolOptions = this.formatOptionData(action.payload, this.state.currentSolAddress, 'SOL');
+      
+      this.setState({ ethOptions: newEthOptions });
+      this.setState({ solOptions: newSolOptions });
+
+      if (this.state.currentSolAddress && newSolOptions.filter(sol => sol.value.address === this.state.currentSolAddress.value.address).length < 1) {
+        this.setState({currentSolAddress: null});
+      }
+      if (this.state.currentEthAddress && newEthOptions.filter(eth => eth.value.address === this.state.currentEthAddress.value.address).length < 1) {
+        this.setState({currentEthAddress: null});
+      }
+    }
+  }
+
   // Helper functions
-  formatOptionData(response, chain) {
+  formatOptionData(response, currentAddress, chain) {
     const options = response.data.filter( address => address.chain === chain)
                       .map( address => { return { value: address, label: address.address}})
+    
     options.push({label: this.intl.formatMessage({id: 'walletServices.addCryptoWidget.addWallet'}), value: {newAddress: chain}});
+    options.push({label: this.intl.formatMessage({id: 'walletServices.addCryptoWidget.clearWallet'}), value: {clearAddress: chain, deletedAddress: currentAddress }});
     return options;
   }
 
@@ -76,22 +97,22 @@ class CryptoWalletServices extends React.Component {
     
     axios.get(routes.publishers.cryptoAddresses.index).then((response) => {
       const newState = {
+        addressesInUse: this.store.getState().addressesInUse,
         isLoading: false,
         errorText: null,
       };
-      newState.solOptions = this.formatOptionData(response, 'SOL')
-      newState.ethOptions = this.formatOptionData(response, 'ETH')
       
       axios.get(routes.publishers.cryptoAddressForChannels.index.replace('{channel_id}', this.channel.id)).then((channelResponse) => {
         newState.currentSolAddress = this.findCurrentAddress('SOL', channelResponse, response)
         newState.currentEthAddress = this.findCurrentAddress('ETH', channelResponse, response)
-        
+
         if (newState.currentSolAddress) {
           this.store.dispatch({
             type: "ADD_ADDRESS",
             payload: { newAddress: newState.currentSolAddress.value }
           });
         }
+
         if (newState.currentEthAddress) {
           this.store.dispatch({
             type: "ADD_ADDRESS",
@@ -99,13 +120,20 @@ class CryptoWalletServices extends React.Component {
           });
         }
 
+        this.store.dispatch({
+          type: "UPDATE_RESPONSE_DATA",
+          payload: response,
+        })
+
+        newState.ethOptions = this.formatOptionData(response, newState.currentEthAddress, 'ETH');
+        newState.solOptions = this.formatOptionData(response, newState.currentSolAddress, 'SOL');
+
         this.setState({ ...newState });
       });
     });
   };
 
   // crypto connection functions
-
   getNonce = async () => {
     return axios.get(routes.publishers.cryptoAddressForChannels.generateNonce.replace('{channel_id}', this.channel.id)).then((response) => {
       return response.data.nonce;
@@ -124,7 +152,11 @@ class CryptoWalletServices extends React.Component {
 
       const possibleMatch = this.state.solOptions.filter(sol => sol.value.address === pub_key);
       if (possibleMatch.length > 0) {
-        this.updateAddress(possibleMatch[0]);
+        if (this.state.addressesInUse.filter(usedAddress => usedAddress.address === pub_key).length > 0) {
+          this.launchPrivacyModal(possibleMatch[0].value);
+        } else {
+          await this.updateAddress(possibleMatch[0].value);
+        }
         return;
       }
 
@@ -169,7 +201,11 @@ class CryptoWalletServices extends React.Component {
 
       const possibleMatch = this.state.ethOptions.filter(eth => eth.value.address && eth.value.address.toLowerCase() === address.toLowerCase());
       if (possibleMatch.length > 0) {
-        this.updateAddress(possibleMatch[0]);
+        if (this.state.addressesInUse.filter(usedAddress => usedAddress.address === address).length > 0) {
+          this.launchPrivacyModal(possibleMatch[0].value);
+        } else {
+          await this.updateAddress(possibleMatch[0].value);
+        }
         return;
       }
 
@@ -224,6 +260,8 @@ class CryptoWalletServices extends React.Component {
       await this.connectSolanaAddress();
     } else if (address.newAddress === 'ETH') {
       await this.connectEthereumAddress();
+    } else if (address.clearAddress) {
+      await this.deleteAddress(address.deletedAddress.value);
     } else if (address.chain && address.address) {
       if (this.state.addressesInUse.filter(usedAddress => usedAddress.id === address.id).length > 0) {
         this.launchPrivacyModal(address);
@@ -243,7 +281,7 @@ class CryptoWalletServices extends React.Component {
       });
   }
 
-  deleteAddress(address, e) {
+  deleteAddress(address) {
     axios({
         method: 'delete',
         url: routes.publishers.cryptoAddresses.delete.replace('{id}', address.id),

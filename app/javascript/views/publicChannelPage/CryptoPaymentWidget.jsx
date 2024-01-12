@@ -505,12 +505,26 @@ class CryptoPaymentWidget extends React.Component {
                 }}
                 value={this.state.selectValue}
                 styles={{
-                  control: (base) => ({ ...base, border: 'none', boxShadow: 'none' }),
-                  groupHeading: (base) => ({...base, textAlign: 'left', marginLeft: '16px', fontSize: '11px'}),
+                  control: (base) => ({ ...base,
+                    boxShadow: 'none',
+                    borderColor: 'rgba(161, 178, 186, 0.4)',
+                    padding: '0px 16px',
+                    borderRadius: '8px'
+                  }),
+                  groupHeading: (base) => ({...base,
+                    textAlign: 'left',
+                    fontSize: '11px',
+                    backgroundColor: 'rgba(243, 245, 247, 1)',
+                    padding: '12px 16px',
+                  }),
+                  group: (base) => ({...base, padding: '0px'}),
                   indicatorSeparator: (base) => ({...base, display: 'none'}),
+                  dropdownIndicator: (base) => ({...base,
+                    padding: '0px',
+                    color: 'rgba(98, 117, 126, 1)',
+                  }),
                   input: (base) => ({...base, caretColor: 'transparent' }),
-                  valueContainer: (base) => ({
-                    ...base,
+                  valueContainer: (base) => ({ ...base,
                     display: 'flex',
                     textAlign: 'left',
                     padding: '16px',
@@ -524,12 +538,14 @@ class CryptoPaymentWidget extends React.Component {
                   menu: (base) => ({
                     ...base,
                     marginTop: '0px',
-                    paddingTop: '30px',
-                    borderRadius: '0px 0px 8px 8px',
+                    borderRadius: '8px',
+                    boxShadow: '0px 4px 16px -2px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(0, 0, 0, 0.05)',
+                    overflow: 'hidden',
                   }),
                   menuList: (base) => ({
                     ...base,
                     maxHeight: '500px',
+                    paddingTop: '0px',
                   }),
                 }}
               />
