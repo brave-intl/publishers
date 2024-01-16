@@ -15,7 +15,7 @@
 
         / Options for connecting a crypto wallet
         div.channel-secondary-information.d-flex.justify-content-between
-          - if channel.verified? && current_publisher.feature_flags["p2p_enabled"]
+          - if channel.verified?
             .bat-channel
               .crypto-wallet-services data-channel-id=("#{channel.id}") data-props={ featureFlags: current_publisher.feature_flags, channel: channel }.to_json
                 .spinner
