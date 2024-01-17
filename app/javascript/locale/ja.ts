@@ -90,6 +90,35 @@ export default {
     trouble: "接続に失敗しました",
     uphold: {
       depositCurrency: "支払い通貨：BAT"
+    },
+    addCryptoWidget: {
+      addWallet: "新しいウォレットを追加してください",
+      solanaConnectError: "アドレスを追加するためSolanaウォレットを接続してください",
+      ethereumConnectError: "アドレスを追加するためEthereumウォレットを接続してください",
+      widgetTitle: "P2Pウォレット",
+      ethereum: "Ethereum",
+      solana: "Solana",
+      genericError: "エラーが発生しました。時間をおいて再度試してください。",
+      addressConnectFailure: "新しいアドレスの接続に失敗しました",
+      solanaConnectionFailure: "Solana接続が中断されました",
+      notConnected: "未接続",
+      privacyQuit: "キャンセル",
     }
+  },
+  publicChannelPage: {
+    privacyDisclaimer: "コントリビューションはブロックチェーンネットワークで履歴として一般に公開され、削除することはできませんのであらかじめご注意ください。",
+    generateQR: "QRコードを生成する",
+    QRModalHeader: "モバイルウォレットから送信する",
+    QRModalText: "QRコードを読み込んでモバイル端末のWeb3ウォレットを使用して送信できます。",
+    paymentHeading: "感謝の気持ちをこめてトークンを送信しましょう",
+    paymentSubHeading: "お気に入りのクリエイターをサポートしましょう",
+    send: "送信",
+    custom: "カスタム",
+    ethereumNetwork: "Ethereumネットワーク",
+    solanaNetwork: "Solanaネットワーク",
+    share: "サポートをシェア",
+    goBack: "戻る",
+    thanks: "お気に入りのクリエイターをサポートしてくれてありがとうございます",
+    hooray: "やったね！ {amount} が送信されました"
   }
 }
