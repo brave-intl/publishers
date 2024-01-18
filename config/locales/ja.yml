@@ -40,6 +40,9 @@ ja:
     payments: 支払い
     download: ダウンロード
     payments: 支払い
+    public_page_title: Web3ウォレットで寄付を送信 | Brave Creators
+    public_share_title: クリプトで私をサポートできます！
+    public_share_description: サポートの気持ちとして %{channel} にクリプトを送信することができます！そして Brave Creators にサインアップして自分の支援受付ページを作成しましょう。
     existing_account: 既にアカウントをお持ちですか?
     error: 問題が発生しました。サポートにお問い合わせください。
     get_started: さあ始めましょう

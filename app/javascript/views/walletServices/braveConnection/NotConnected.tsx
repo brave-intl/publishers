@@ -25,7 +25,7 @@ const NotConnected = (props) => (
     <div className="col-11 alert alert-warning m-3 justify-content-center">
       <FormattedMessage id={"walletServices.brave.nonKycWarning"} values={{
         custodial_support_link: msg => (
-          <a target='_blank' href='https://support.brave.com/hc/en-us/articles/9884338155149'>
+          <a target='_blank' href={props.locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597'}>
             <strong>{msg}</strong>
           </a>
         ),
