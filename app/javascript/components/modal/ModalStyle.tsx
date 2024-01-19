@@ -33,7 +33,8 @@ enum ModalSize {
   Medium,
   Large,
   Auto,
-  ExtraExtraSmall
+  ExtraExtraSmall,
+  QrCustom
 }
 
 interface IContainerProps {
@@ -48,6 +49,12 @@ export const Container = styled.div`
   border-radius: 6px;
   padding: 50px;
   z-index: 2;
+`;
+
+export const QrCustomContainer = styled(Container)`
+  width: 40%;
+  min-width: 30rem;
+  border-radius: 16px;
 `;
 
 export const ExtraExtraSmallContainer = styled(Container)`

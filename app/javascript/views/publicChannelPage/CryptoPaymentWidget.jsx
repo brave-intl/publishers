@@ -111,7 +111,7 @@ class CryptoPaymentWidget extends React.Component {
       })
     }
 
-    const currentChain = ethAddress ? 'ETH' : 'SOL';
+    const currentChain = ethAddress ? 'BAT' : 'splBAT';
 
     this.state = {
       ethBatAddress: props.cryptoConstants.eth_bat_address,
@@ -617,7 +617,7 @@ class CryptoPaymentWidget extends React.Component {
           </PaymentButtons>
           <Modal
             show={this.state.isModalOpen}
-            size={ModalSize.ExtraSmall}
+            size={ModalSize.QrCustom}
             handleClose={() => this.closeModal()}
           >
             <QRCodeModal
