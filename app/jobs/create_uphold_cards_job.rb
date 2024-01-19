@@ -6,7 +6,7 @@ class CreateUpholdCardsJob < ApplicationJob
 
   queue_as :default
 
-  def perform(uphold_connection_id:)
+  def perform(uphold_connection_id)
     conn = UpholdConnection.find(uphold_connection_id)
     card = conn.find_or_create_uphold_card!
     return conn if card&.id == conn.address

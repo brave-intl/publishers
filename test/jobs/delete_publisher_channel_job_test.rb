@@ -18,7 +18,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
         .with(headers: {"Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "User-Agent" => "Faraday v0.9.2"})
         .to_return(status: 200, body: nil, headers: {})
 
-      DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+      DeletePublisherChannelJob.perform_now(channel.id)
 
       # assert something
     ensure
@@ -32,22 +32,22 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
 
     # enable the promo
     post promo_registrations_path
-    Promo::RegisterChannelForPromoJob.perform_now(channel_id: publisher.channels.first.id)
+    Promo::RegisterChannelForPromoJob.perform_now(publisher.channels.first.id)
     assert_not_nil publisher.channels.first.promo_registration.referral_code
     assert_nothing_raised do
-      DeletePublisherChannelJob.perform_now(channel_id: publisher.channels.first.id)
+      DeletePublisherChannelJob.perform_now(publisher.channels.first.id)
     end
   end
 
   test "deletes unverifed channel" do
     channel = channels(:default)
-    DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+    DeletePublisherChannelJob.perform_now(channel.id)
     assert Channel.where(id: channel.id).empty?
   end
 
   test "deletes verified channel" do
     channel = channels(:verified)
-    DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+    DeletePublisherChannelJob.perform_now(channel.id)
     assert Channel.where(id: channel.id).empty?
   end
 
@@ -58,7 +58,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
 
     # delete the verified channel in contention
-    DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+    DeletePublisherChannelJob.perform_now(channel.id)
 
     # ensure the original channel is gone
     assert Channel.where(id: channel.id).empty?
@@ -76,7 +76,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
     # contest channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
 
-    refute DeletePublisherChannelJob.perform_now(channel_id: contested_by_channel.id)
+    refute DeletePublisherChannelJob.perform_now(contested_by_channel.id)
 
     # ensure the unverified channle is gone
     assert Channel.where(id: contested_by_channel.id).present?

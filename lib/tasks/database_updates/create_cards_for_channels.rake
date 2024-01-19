@@ -7,7 +7,7 @@ namespace :database_updates do
       next unless connection.can_create_uphold_cards?
 
       connection.publisher.channels.each do |channel|
-        CreateUpholdChannelCardJob.perform_later(uphold_connection_id: connection.id, channel_id: channel.id)
+        CreateUpholdChannelCardJob.perform_later(connection.id, channel.id)
       end
     end
     puts "Done!"

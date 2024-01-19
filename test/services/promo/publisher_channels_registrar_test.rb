@@ -87,7 +87,7 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
     assert_difference "PromoRegistration.count", 0 do
       publisher.channels.find_each do |channel|
         Promo::AssignPromoToChannelService.new(channel: channel).perform
-        assert_enqueued_with(job: Promo::RegisterChannelForPromoJob, args: [{channel_id: channel.id, attempt_count: 1}])
+        assert_enqueued_with(job: Promo::RegisterChannelForPromoJob, args: [channel.id, 1])
       end
     end
 

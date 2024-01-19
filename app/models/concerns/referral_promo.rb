@@ -50,6 +50,6 @@ module ReferralPromo
   def update_promo_status!
     return unless may_register_promo?
 
-    Promo::UpdateStatus.perform_later(id: id, status: PublisherStatusUpdate::ACTIVE)
+    Promo::UpdateStatus.perform_later(id, PublisherStatusUpdate::ACTIVE)
   end
 end

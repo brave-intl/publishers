@@ -7,7 +7,7 @@ class PublisherRemovalJobTest < ActiveJob::TestCase
     publisher = publishers(:google_verified)
     publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
     assert_not_equal 0, publisher.channels.count
-    PublisherRemovalJob.perform_now(publisher_id: publisher.id)
+    PublisherRemovalJob.perform_now(publisher.id)
     publisher.reload
     assert_nil publisher.email
     assert_nil publisher.pending_email
@@ -23,7 +23,7 @@ class PublisherRemovalJobTest < ActiveJob::TestCase
     publisher = publishers(:google_verified)
     publisher.status_updates.create(status: PublisherStatusUpdate::NO_GRANTS)
     assert_not_equal 0, publisher.channels.count
-    PublisherRemovalJob.perform_now(publisher_id: publisher.id)
+    PublisherRemovalJob.perform_now(publisher.id)
     publisher.reload
     assert_nil publisher.email
     assert_nil publisher.pending_email

@@ -32,9 +32,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Set up Ruby
-        uses: ruby/setup-ruby@52b8784594ec115fd17094752708121dc5dabb47 # v1.154.0
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0.2
+          ruby-version: 3.3.0
       - name: Setup firefox
         uses: browser-actions/setup-firefox@0f622aed2a492183149a5a5c347205a593802e10 # v1.3.0
         with:

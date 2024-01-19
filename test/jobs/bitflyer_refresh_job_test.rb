@@ -11,7 +11,7 @@ class BitflyerRefreshJobTest < ActiveJob::TestCase
     end
 
     describe "with args" do
-      let(:result) { BitflyerRefreshJob.perform_now(wait: 0.01, limit: limit, async: false) }
+      let(:result) { BitflyerRefreshJob.perform_now(0.01, limit, false, false) }
 
       before do
         result

@@ -33,7 +33,7 @@ class Sync::Bitflyer::UpdateMissingDepositsJobTest < SidekiqTestCase
     end
 
     it "should update all missing deposit_ids" do
-      Sync::Bitflyer::UpdateMissingDepositsJob.new.perform(async: false)
+      Sync::Bitflyer::UpdateMissingDepositsJob.new.perform(false)
       assert_equal 0, Channel.using_active_bitflyer_connection.where(deposit_id: nil).count
     end
   end

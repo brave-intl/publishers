@@ -7,7 +7,7 @@ module Channels
 
     def perform
       Channel.contested_channels_ready_to_transfer.each do |channel|
-        Channels::ApproveChannelTransferJob.perform_later(channel_id: channel.id)
+        Channels::ApproveChannelTransferJob.perform_later(channel.id)
       end
     end
   end

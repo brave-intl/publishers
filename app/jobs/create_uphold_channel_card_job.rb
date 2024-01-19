@@ -3,7 +3,7 @@
 class CreateUpholdChannelCardJob < ApplicationJob
   sidekiq_options queue: :default
 
-  def perform(uphold_connection_id:, channel_id:)
+  def perform(uphold_connection_id, channel_id)
     uphold_connection = UpholdConnection.find(uphold_connection_id)
     channel = Channel.find(channel_id)
     return unless uphold_connection&.is_member? &&

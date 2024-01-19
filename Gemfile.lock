@@ -23,15 +23,6 @@ GIT
       omniauth-oauth2 (~> 1.1)
 
 GIT
-  remote: https://github.com/brave-intl/wasm-thumbnail.git
-  revision: 340b7a8dd0768d87a9e0d94662cfa8b27c5bcf2c
-  tag: 0.0.5
-  glob: wasm-thumbnail-rb/*.gemspec
-  specs:
-    wasm-thumbnail-rb (0.1.0)
-      wasmer (~> 1.0)
-
-GIT
   remote: https://github.com/ghiculescu/nulldb.git
   revision: ba23c8ae50905ba34c8c370cc8051e4f21a9f3e7
   branch: rails-7-1
@@ -41,22 +32,16 @@ GIT
 
 GIT
   remote: https://github.com/rack/rack-attack.git
-  revision: d3b3da44c4e966a1ede0f114fe0b4a1fd54dd3af
+  revision: c4c51637fd946fb01ce07f07e152c371ef9b362f
   branch: main
   specs:
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
 
-GIT
-  remote: https://github.com/wasmerio/wasmer-ruby.git
-  revision: dab7d537748ce410c660c3fe683df4a2af369f82
-  ref: dab7d537748ce410c660c3fe683df4a2af369f82
-  specs:
-    wasmer (1.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
+    abbrev (0.1.2)
     actioncable (7.1.2)
       actionpack (= 7.1.2)
       activesupport (= 7.1.2)
@@ -141,7 +126,7 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
-    addressable (2.8.5)
+    addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     android_key_attestation (0.3.0)
     ast (2.4.2)
@@ -149,13 +134,13 @@ GEM
       execjs (~> 2)
     awrence (1.2.1)
     aws-eventstream (1.3.0)
-    aws-partitions (1.862.0)
-    aws-sdk-core (3.190.0)
+    aws-partitions (1.882.0)
+    aws-sdk-core (3.190.3)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.8)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.74.0)
+    aws-sdk-kms (1.76.0)
       aws-sdk-core (~> 3, >= 3.188.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.141.0)
@@ -180,7 +165,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.1.4)
+    bigdecimal (3.1.6)
     bindata (2.4.15)
     bindex (0.8.1)
     binding_of_caller (1.0.0)
@@ -189,7 +174,8 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.16.1, < 2)
       sassc-rails (>= 2.0.0)
-    brakeman (6.0.1)
+    brakeman (6.1.1)
+      racc
     brotli (0.4.0)
     builder (3.2.4)
     bundler-audit (0.9.1)
@@ -208,15 +194,15 @@ GEM
       xpath (~> 3.2)
     case_transform (0.2)
       activesupport
-    cbor (0.5.9.6)
+    cbor (0.5.9.8)
     chunky_png (1.4.0)
     coderay (1.1.3)
-    concurrent-ruby (1.2.2)
+    concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     cose (1.3.0)
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
-    countries (5.7.0)
+    countries (5.7.1)
       unaccent (~> 0.3)
     crack (0.4.5)
       rexml
@@ -230,7 +216,7 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.4)
-    debug_inspector (1.1.0)
+    debug_inspector (1.2.0)
     devise (4.9.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -241,7 +227,7 @@ GEM
     dnsruby (1.70.0)
       simpleidn (~> 0.2.1)
     docile (1.4.0)
-    domain_name (0.6.20231109)
+    domain_name (0.6.20240107)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -282,13 +268,11 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.1-aarch64-linux)
-    google-protobuf (3.25.1-arm64-darwin)
-    google-protobuf (3.25.1-x86_64-darwin)
-    google-protobuf (3.25.1-x86_64-linux)
-    hashdiff (1.0.1)
+    google-protobuf (3.25.2)
+    hashdiff (1.1.0)
     hashie (5.0.0)
-    highline (2.1.0)
+    highline (3.0.0)
+      abbrev
     htmlentities (4.3.4)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
@@ -308,13 +292,13 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     inflection (1.0.0)
-    io-console (0.6.0)
-    irb (1.9.1)
+    io-console (0.7.2)
+    irb (1.11.1)
       rdoc
-      reline (>= 0.3.8)
+      reline (>= 0.4.2)
     jaro_winkler (1.5.6)
     jmespath (1.6.2)
-    json (2.6.3)
+    json (2.7.1)
     jsonapi-renderer (0.2.2)
     jwt (2.7.1)
     keccak (1.3.1)
@@ -348,7 +332,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
-    minitest (5.20.0)
+    minitest (5.21.2)
     minitest-retry (0.2.2)
       minitest (>= 5.0)
     mocha (2.1.0)
@@ -356,25 +340,24 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.3.0)
     mutex_m (0.2.0)
-    net-imap (0.4.7)
+    net-imap (0.4.9.1)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.4.0)
+    net-smtp (0.4.0.1)
       net-protocol
     newrelic_rpm (9.6.0)
       base64
     nio4r (2.7.0)
-    nokogiri (1.15.5-aarch64-linux)
+    nokogiri (1.16.0)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.15.5-arm64-darwin)
+    nokogiri (1.16.0-arm-linux)
       racc (~> 1.4)
-    nokogiri (1.15.5-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.16.0-x86_64-darwin)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -383,7 +366,7 @@ GEM
       rack (>= 1.2, < 4)
       snaky_hash (~> 2.0)
       version_gem (~> 1.1)
-    omniauth (2.1.1)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -413,14 +396,14 @@ GEM
     paper_trail (15.1.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
-    parallel (1.23.0)
-    parser (3.2.2.4)
+    parallel (1.24.0)
+    parser (3.3.0.4)
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
     pkg-config (1.5.6)
     popper_js (1.16.1)
-    premailer (1.21.0)
+    premailer (1.22.0)
       addressable
       css_parser (>= 1.12.0)
       htmlentities (>= 4.0.0)
@@ -437,7 +420,7 @@ GEM
     pry-stack_explorer (0.6.1)
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
-    psych (5.1.1.1)
+    psych (5.1.2)
       stringio
     public_suffix (5.0.4)
     puma (6.4.2)
@@ -445,8 +428,9 @@ GEM
     raabro (1.4.0)
     racc (1.7.3)
     rack (3.0.8)
-    rack-protection (3.0.6)
-      rack
+    rack-protection (4.0.0)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0, < 4)
     rack-proxy (0.7.7)
       rack
     rack-session (2.0.0)
@@ -504,19 +488,19 @@ GEM
       mini_portile2 (~> 2.8)
       pkg-config (~> 1.5)
       rubyzip (~> 2.3)
-    rdoc (6.6.0)
+    rdoc (6.6.2)
       psych (>= 4.0.0)
     recaptcha (5.16.0)
     redis (5.0.8)
       redis-client (>= 0.17.0)
-    redis-client (0.18.0)
+    redis-client (0.19.1)
       connection_pool
     redis-prescription (2.6.0)
     redis-session-store (0.11.5)
       actionpack (>= 6, < 8)
       redis (>= 3, < 6)
-    regexp_parser (2.8.2)
-    reline (0.4.1)
+    regexp_parser (2.9.0)
+    reline (0.4.2)
       io-console (~> 0.5)
     render_async (2.1.11)
     request_store (1.5.1)
@@ -533,7 +517,7 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
-    rubocop (1.57.2)
+    rubocop (1.59.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -541,14 +525,14 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.19.1)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
+    rubocop-performance (1.20.2)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     ruby_http_client (3.5.5)
@@ -569,7 +553,7 @@ GEM
       tilt
     scrypt (3.0.7)
       ffi-compiler (>= 1.0, < 2.0)
-    selenium-webdriver (4.15.0)
+    selenium-webdriver (4.16.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -613,7 +597,7 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
-    solargraph (0.49.0)
+    solargraph (0.50.0)
       backport (~> 1.2)
       benchmark
       bundler (~> 2.0)
@@ -637,20 +621,20 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     ssrf_filter (1.1.2)
-    standard (1.32.0)
+    standard (1.33.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
-      rubocop (~> 1.57.2)
+      rubocop (~> 1.59.0)
       standard-custom (~> 1.0.0)
-      standard-performance (~> 1.2)
+      standard-performance (~> 1.3)
     standard-custom (1.0.2)
       lint_roller (~> 1.0)
       rubocop (~> 1.50)
-    standard-performance (1.2.1)
+    standard-performance (1.3.1)
       lint_roller (~> 1.1)
-      rubocop-performance (~> 1.19.1)
+      rubocop-performance (~> 1.20.2)
     stringio (3.1.0)
-    strong_migrations (1.6.4)
+    strong_migrations (1.7.0)
       activerecord (>= 5.2)
     temping (4.1.1)
       activerecord (>= 6.0, < 7.2)
@@ -684,7 +668,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webauthn (3.0.0)
+    webauthn (3.1.0)
       android_key_attestation (~> 0.3.0)
       awrence (~> 1.1)
       bindata (~> 2.4)
@@ -718,10 +702,9 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
-  aarch64-linux
-  arm64-darwin-21
-  x86_64-darwin-22
-  x86_64-linux
+  arm-linux
+  ruby
+  x86_64-darwin-23
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
@@ -815,8 +798,6 @@ DEPENDENCIES
   tzinfo-data
   u2f (~> 1.0)
   vcr
-  wasm-thumbnail-rb!
-  wasmer!
   web-console
   webauthn
   webmock (~> 3.0)
@@ -826,7 +807,7 @@ DEPENDENCIES
   zendesk_api (~> 3.0.5)
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.3.0p0
 
 BUNDLED WITH
-   2.4.13
+   2.5.3
