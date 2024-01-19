@@ -19,9 +19,9 @@ namespace :database_updates do
           # must do this programmatically because thats how encryption happens.
           # We can't shortcut this via a db command, but bulk inserting speeds things up
           columns.each do |column|
-            old_value = u.send("#{column}_2")
+            old_value = u.send(:"#{column}_2")
             puts "For #{klass} #{u.id}: Setting #{column} to #{old_value}"
-            u.send("#{column}=", u.send("#{column}_2"))
+            u.send(:"#{column}=", u.send(:"#{column}_2"))
             puts "For #{klass} #{u.id}: Set #{column} to #{u.send(column)}}"
             raise "Values don't match!" if old_value != u.send(column)
           end

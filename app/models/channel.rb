@@ -126,7 +126,7 @@ class Channel < ApplicationRecord
 
   def self.statistical_totals
     properties = {}
-    PROPERTIES.each { |p| properties[p] = Channel.verified.send("#{p}_channels").count }
+    PROPERTIES.each { |p| properties[p] = Channel.verified.send(:"#{p}_channels").count }
 
     properties.merge({
       all_channels: Channel.verified.count,
@@ -139,7 +139,7 @@ class Channel < ApplicationRecord
 
     entries = PROPERTIES.map do |channel|
       channel_id = ActiveRecord::Base.sanitize_sql("#{channel}_channel_id")
-      public_send("#{channel}_channels").verified.select(channel_id).group(channel_id)
+      public_send(:"#{channel}_channels").verified.select(channel_id).group(channel_id)
     end
 
     entries.map do |entry|
@@ -171,7 +171,7 @@ class Channel < ApplicationRecord
     when "TwitchChannelDetails"
       details.name
     else
-      details.send("#{type_display.downcase}_channel_id")
+      details.send(:"#{type_display.downcase}_channel_id")
     end
   end
 
@@ -186,7 +186,7 @@ class Channel < ApplicationRecord
     if name == "twitch"
       Channel.twitch_channels.verified.where("twitch_channel_details.name": value).first
     elsif PROPERTIES.include?(name)
-      public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
+      public_send(:"#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
     else
       visible_site_channels.where("site_channel_details.brave_publisher_id": identifier).first
     end
@@ -199,7 +199,7 @@ class Channel < ApplicationRecord
     if name == "twitch"
       Channel.twitch_channels.verified.where("twitch_channel_details.name": value).first
     elsif PROPERTIES.include?(name)
-      public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
+      public_send(:"#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
     else
       visible_site_channels_fully_verified.where("site_channel_details.brave_publisher_id": identifier).first
     end
@@ -453,7 +453,7 @@ class Channel < ApplicationRecord
   def verified_duplicate_channels_must_be_contested
     name = type_display.downcase
     if PROPERTIES.include?(name)
-      duplicate_verified_channels = Channel.send("other_verified_#{name}_channels", id: id).where("#{name}_channel_details": {"#{name}_channel_id": details.send("#{name}_channel_id")})
+      duplicate_verified_channels = Channel.send(:"other_verified_#{name}_channels", id: id).where("#{name}_channel_details": {"#{name}_channel_id": details.send(:"#{name}_channel_id")})
     elsif details_type == "SiteChannelDetails"
       duplicate_verified_channels = Channel.other_verified_site_channels(id: id).where(site_channel_details: {brave_publisher_id: details.brave_publisher_id})
     end

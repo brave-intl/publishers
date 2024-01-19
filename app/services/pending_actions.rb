@@ -113,7 +113,7 @@ module PendingActions
           "Trying to execute #{self.class} on Publisher #{current_publisher.id} instead of #{context.current_publisher.id}"
         )
       end
-      super context
+      super(context)
     end
 
     # Either executes in place the action or, saves the action and redirects to the two_factor_authentication controller

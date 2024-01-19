@@ -16,8 +16,8 @@ task rekey: :environment do
           Rails.logger.debug("Rekeying #{model} #{field} #{record.id}")
 
           # Get the old value for later comparison
-          field_name_encrypted = record.send("encrypted_#{field}")
-          old_field_name_iv = record.send("encrypted_#{field}_iv")
+          field_name_encrypted = record.send(:"encrypted_#{field}")
+          old_field_name_iv = record.send(:"encrypted_#{field}_iv")
 
           if field_name_encrypted.blank? || old_field_name_iv.blank?
             Rails.logger.debug("Skipping #{model} #{field} #{record.id} due to this field being nil")
@@ -68,7 +68,7 @@ def perform_sql_update(records:, field:)
                 encrypted_#{field}_iv = c.encrypted_field_iv,
                 updated_at = '#{Time.zone.now}'
               FROM (values
-                  #{records.map { |r| "(  '#{r.id}'::UUID, '#{r.send("encrypted_#{field}")}', '#{r.send("encrypted_#{field}_iv")}'  )" }.join(",\n")}
+                  #{records.map { |r| "(  '#{r.id}'::UUID, '#{r.send(:"encrypted_#{field}")}', '#{r.send(:"encrypted_#{field}_iv")}'  )" }.join(",\n")}
               ) as c(id, encrypted_field, encrypted_field_iv)
               where c.id = t.id
               "
