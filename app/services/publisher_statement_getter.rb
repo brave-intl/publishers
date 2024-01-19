@@ -79,7 +79,7 @@ class PublisherStatementGetter < BaseApiClient
 
     publisher.uphold_connection&.uphold_connection_for_channels&.each do |card_connection|
       # Refresh the cache, should only request the most recent page
-      CacheUpholdTips.perform_now(uphold_connection_for_channel_id: card_connection.id)
+      CacheUpholdTips.perform_now(card_connection.id)
 
       card_connection.cached_uphold_tips.find_each do |cached_tip|
         uphold << cached_tip.to_statement

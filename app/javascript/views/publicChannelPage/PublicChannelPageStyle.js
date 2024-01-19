@@ -6,6 +6,7 @@ import CryptoWidgetSuccess from "../../../assets/images/crypto_widget_success.pn
 import Exchange from "../../../assets/images/exchange.svg";
 import TryWalletBackground from "../../../assets/images/try_wallet_modal_gradient.png";
 import OrangeCheckmark from "../../../assets/images/orange_checkmark.png";
+import DollarSign from "../../../assets/images/dollar_sign.svg";
 
 
 export const PublicChannelContainer = styled.div`
@@ -27,8 +28,8 @@ export const Logo = styled.div`
   ${({ url }) =>
     url === null &&
     `
-    border: 6px solid white;
-    background-color: #4C54D2;
+    border: 6px solid rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
   `}
 `;
 
@@ -196,6 +197,10 @@ export const SendButton = styled.button`
   font-weight: 600;
   font-family: poppins, sans-serif;
   font-size 0.9em;
+
+  &:disabled {
+    background: rgba(63, 57, 232, 0.5);
+  }
 `;
 
 export const PaymentButtons = styled.div`
@@ -205,7 +210,7 @@ export const PaymentButtons = styled.div`
 export const PaymentOptions = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 20px 32px 32px;
+  padding: 16px;
 `;
 
 export const SmallCurrencyDisplay = styled.div`
@@ -238,8 +243,10 @@ export const ExchangeIcon = styled.div`
 
 export const CryptoOption = styled.div`
   text-align: left;
-  padding: 20px 26px;
+  padding: 16px;
   font-weight: 600;
+  border-radius: 4px;
+  margin: 4px;
 
   img {
     margin-right: 16px;
@@ -247,6 +254,11 @@ export const CryptoOption = styled.div`
     width: 32px;
     display: inline-block;
     vertical-align: top;
+    margin-top: 3px;
+  }
+
+  &:hover {
+    background-color: rgba(233, 238, 255, 1);
   }
 `;
 
@@ -266,6 +278,7 @@ export const AmountButton = styled.button`
   border: 1px solid #A1ABBA;
   font-size: 13px;
   padding: 12px 16px;
+  color: rgb(63, 72, 85);
   &.selected {
     background-color: #EDEEF1;
   }
@@ -288,7 +301,7 @@ export const AmountInput = styled.input`
   border-bottom-right-radius: 8px;
   padding: 12px 16px;
   width: 86px;
-  color: #3F4855;
+  color: rgb(63, 72, 85);
   font-size: 13px;
 
   &::-webkit-inner-spin-button,
@@ -299,6 +312,13 @@ export const AmountInput = styled.input`
 
   &::placeholder {
     color: #3F4855;
+  }
+
+  &:not(:placeholder-shown) {
+    background-image: url(${DollarSign});
+    background-size: 6.8px;
+    background-repeat: no-repeat;
+    background-position: 8px center;
   }
 `;
 

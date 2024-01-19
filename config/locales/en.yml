@@ -43,6 +43,9 @@ en:
     payments: Payments
     download: Download
     payments: Payments
+    public_page_title: Send Contribution with Web3 Wallet | Brave Creators
+    public_share_title: You can support me with crypto!
+    public_share_description: You can send %{channel} some crypto to show them your support! Get your own crypto contribution page too by signing up with Brave Creators.
     existing_account: Already have an account?
     error: Oh no! Something went wrong, please contact support.
     get_started: Get Started

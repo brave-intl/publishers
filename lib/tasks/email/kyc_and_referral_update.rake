@@ -10,7 +10,7 @@ namespace :email do
       begin
         next if user.email.blank? && user.pending_email.blank?
 
-        Batch::EmailUpdateToUserJob.perform_later(publisher_id: user.id)
+        Batch::EmailUpdateToUserJob.perform_later(user.id)
 
         print "." if index % 1000 == 0
       rescue => ex

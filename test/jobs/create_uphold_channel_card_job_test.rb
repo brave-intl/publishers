@@ -12,7 +12,7 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
     let(:channel) { channels(:uphold_connected_details) }
     let(:card_id) { "123e4567-e89b-12d3-a456-426655440000" }
 
-    subject { CreateUpholdChannelCardJob.perform_now(uphold_connection_id: uphold_connection.id, channel_id: channel.id) }
+    subject { CreateUpholdChannelCardJob.perform_now(uphold_connection.id, channel.id) }
 
     before do
       stub_request(:get, /cards/).to_return(body: [].to_json)
@@ -42,7 +42,7 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
   end
 
   describe "when a user calls create uphold cards again" do
-    subject { CreateUpholdChannelCardJob.perform_now(uphold_connection_id: uphold_connection.id, channel_id: channel.id) }
+    subject { CreateUpholdChannelCardJob.perform_now(uphold_connection.id, channel.id) }
 
     let(:uphold_connection) { uphold_connections(:details_connection) }
     let(:connection_for_channel) do

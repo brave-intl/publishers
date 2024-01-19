@@ -27,7 +27,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       it "returns conn" do
         connection.update!(address: id)
         refute connection.address.nil?
-        result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+        result = CreateUpholdCardsJob.perform_now(connection.id)
         assert_equal result.address, id
       end
     end
@@ -48,7 +48,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
           it "returns conn" do
             connection.update!(address: id)
             refute connection.address.nil?
-            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            result = CreateUpholdCardsJob.perform_now(connection.id)
             assert_equal result.address, id
           end
         end
@@ -63,7 +63,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
           it "returns conn" do
             connection.update!(address: id)
             refute connection.address.nil?
-            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            result = CreateUpholdCardsJob.perform_now(connection.id)
             assert_equal result.address, id
           end
         end
@@ -81,7 +81,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
           it "returns conn" do
             connection.update!(address: nil)
             assert connection.address.nil?
-            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            result = CreateUpholdCardsJob.perform_now(connection.id)
             assert_equal result.address, id
             connection.reload
             assert_equal connection.id, result.id
@@ -101,7 +101,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
           it "returns conn" do
             connection.update!(address: nil)
             assert connection.address.nil?
-            result = CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+            result = CreateUpholdCardsJob.perform_now(connection.id)
             assert_equal result.address, id
             connection.reload
             assert_equal connection.id, result.id

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "~> 3.0.2"
+ruby "~> 3.3.0"
 
 source "https://rubygems.org"
 
@@ -96,7 +96,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.4.0"
+gem "puma", "~> 6.4.2"
 
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
@@ -162,9 +162,6 @@ gem "zeitwerk", "~> 2.6.6"
 gem "zendesk_api", "~> 3.0.5"
 
 gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
-
-gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
-gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]

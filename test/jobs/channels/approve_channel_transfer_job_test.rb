@@ -11,7 +11,7 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
 
     # contest the channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
-    Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
+    Channels::ApproveChannelTransferJob.perform_now(channel.id)
     contested_by_channel.reload
     assert_equal 1, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
 
@@ -42,7 +42,7 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     contested_by_channel.publisher.suspend!
 
     assert_raises do
-      Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
+      Channels::ApproveChannelTransferJob.perform_now(channel.id)
     end
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
@@ -66,7 +66,7 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     channel.publisher.suspend!
 
     assert_raises do
-      Channels::ApproveChannelTransferJob.perform_now(channel_id: channel.id)
+      Channels::ApproveChannelTransferJob.perform_now(channel.id)
     end
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size

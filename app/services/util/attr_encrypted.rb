@@ -6,8 +6,8 @@ class Util::AttrEncrypted
   # This does not SAVE the user data - do a save afterwards if you want that!
   # This will raise an exception if the old key doesn't work.
   def self.rekey(object:, field:, old_key:, new_key:, field_value:)
-    field_name_encrypted = object.send("encrypted_#{field}")
-    field_name_iv = object.send("encrypted_#{field}_iv")
+    field_name_encrypted = object.send(:"encrypted_#{field}")
+    field_name_iv = object.send(:"encrypted_#{field}_iv")
 
     return if field_name_iv.blank? || field_name_encrypted.blank?
 
@@ -15,8 +15,8 @@ class Util::AttrEncrypted
     # and recalculates the blind index using the current blind index key.
     # This deals with a quirk of attr_encrypted: You have to set the
     # old encrypted_mail value to nil before you can force a re-encrypt.
-    object.send("encrypted_#{field}=", nil)
-    object.send("#{field}=", field_value)
+    object.send(:"encrypted_#{field}=", nil)
+    object.send(:"#{field}=", field_value)
     object
   end
 
@@ -41,11 +41,11 @@ class Util::AttrEncrypted
   end
 
   def self.get_value_using_key(record:, field:, key:)
-    field_name_iv = record.send("encrypted_#{field}_iv")
+    field_name_iv = record.send(:"encrypted_#{field}_iv")
     return nil unless field_name_iv
-    field_name_encrypted = record.send("encrypted_#{field}")
+    field_name_encrypted = record.send(:"encrypted_#{field}")
     iv = Base64.decode64(field_name_iv)
-    record.class.send("decrypt_#{field}",
+    record.class.send(:"decrypt_#{field}",
       field_name_encrypted,
       iv: iv,
       key: record.class.encryption_key(key: key))

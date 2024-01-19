@@ -11,7 +11,7 @@ class ChannelsController < ApplicationController
   attr_reader :current_channel
 
   def destroy
-    success = DeletePublisherChannelJob.perform_now(channel_id: current_channel.id)
+    success = DeletePublisherChannelJob.perform_now(current_channel.id)
 
     respond_to do |format|
       format.json {

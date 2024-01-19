@@ -114,7 +114,7 @@ Rails.application.routes.draw do
   devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
 
   resources :channels, only: %i[destroy] do
-    resources :crypto_address_for_channels, only: %i[index create] do
+    resources :crypto_address_for_channels, only: %i[index create delete] do
       collection do
         post :change_address
         get :generate_nonce

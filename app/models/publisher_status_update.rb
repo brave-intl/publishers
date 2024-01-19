@@ -37,11 +37,13 @@ class PublisherStatusUpdate < ApplicationRecord
   # After a user creates a new status then we should check to see the previous staus and call backing server
   after_create :update_services, if: :should_update?
 
+  after_create :make_previously_suspended_channels
+
   # Queues a job to call the promo server to update the owner state for the publisher based on the status
   #
   # @return [nil]
   def update_services
-    Promo::UpdateStatus.perform_later(id: publisher_id, status: status)
+    Promo::UpdateStatus.perform_later(publisher_id, status)
   end
 
   def should_update?
@@ -50,6 +52,12 @@ class PublisherStatusUpdate < ApplicationRecord
 
     # If we transition from one of these statuses to another we need to update the Promo Server
     valid_transitions.include?(previous_status) && valid_transitions.include?(status)
+  end
+
+  def make_previously_suspended_channels
+    if status.to_s == SUSPENDED
+      publisher.channels.verified.each { |c| ::PreviouslySuspendedChannel.where(channel_identifier: c&.details&.channel_identifier).first_or_create }
+    end
   end
 
   def to_s

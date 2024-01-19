@@ -5,7 +5,7 @@ module Promo
   class UpdateStatus < ApplicationJob
     queue_as :default
 
-    def perform(id:, status:)
+    def perform(id, status)
       # Remove previous states, this prevents from any unique index constraints from being violated
       states = PromoClient.owner_state.find(id: id)
       states.each do |state|

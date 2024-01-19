@@ -30,12 +30,12 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def create
-    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?, manual: params[:manual].present?)
+    EnqueuePublishersForPayoutJob.perform_later(params[:final].present?, params[:manual].present?)
     redirect_to admin_payout_reports_path, flash: {notice: "Your payout report is being generated, check back soon."}
   end
 
   def notify
-    EnqueuePublishersForPayoutJob.perform_later(args: [EnqueuePublishersForPayoutJob::SEND_NOTIFICATIONS])
+    EnqueuePublishersForPayoutJob.perform_later(true, false, [EnqueuePublishersForPayoutJob::SEND_NOTIFICATIONS])
     redirect_to admin_payout_reports_path, flash: {notice: "Sending notifications to publishers with disconnected wallets."}
   end
 

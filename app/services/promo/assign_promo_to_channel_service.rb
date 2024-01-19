@@ -18,7 +18,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
     return if !channel.verified? || channel.promo_registration.present?
     result = register_channel(channel)
     if result.nil? && @attempt_count < MAX_ATTEMPTS
-      Promo::RegisterChannelForPromoJob.set(wait: 30.minutes).perform_later(channel_id: @channel.id, attempt_count: @attempt_count + 1) and return
+      Promo::RegisterChannelForPromoJob.set(wait: 30.minutes).perform_later(@channel.id, @attempt_count + 1) and return
     elsif result.nil? && @attempt_count >= MAX_ATTEMPTS
       return
     end
