@@ -3,7 +3,7 @@ import * as React from "react";
 import OutsideAlerter from "../outsideAlerter/OutsideAlerter";
 
 import { CaratDownIcon } from "brave-ui/components/icons";
-import CreatorsLogo from "../../../assets/images/logo_br_creators.png";
+import CreatorsLogo from "../../../assets/images/logo_br_creators.svg";
 import locale from "../../locale/en";
 import routes from "../../routes/routes";
 
