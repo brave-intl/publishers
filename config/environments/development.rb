@@ -33,12 +33,8 @@ Rails.application.configure do
 
     config.middleware.use(Rack::Attack)
     config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "https" }
-    # Mailcatcher
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-       port: Rails.configuration.pub_secrets[:smtp_server_port] || 1025,
-       address: Rails.configuration.pub_secrets[:smtp_server_address] || "127.0.0.1"
-    }
+    config.action_mailer.delivery_method = :letter_opener
+    config.action_mailer.perform_deliveries = true
 
     config.i18n.load_path += Dir["#{Rails.root}/config/locales/**/*.{rb,yml}"]
     config.i18n.default_locale = :en
