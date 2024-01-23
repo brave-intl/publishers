@@ -70,4 +70,17 @@ class PublisherMailerTest < ActionMailer::TestCase
     refute_match "%{", email.body.encoded
     refute_match "％{", email.body.encoded
   end
+
+  test "channel contested" do
+    channel = channels(:gemini_completed_website)
+    publisher = channel.publisher
+    email = PublisherMailer.channel_contested(channel)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal ["brave-publishers@localhost.local"], email.from
+    assert_equal [publisher.email], email.to
+  end
 end
