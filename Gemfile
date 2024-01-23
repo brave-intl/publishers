@@ -24,7 +24,7 @@ gem "activerecord-import", "~> 1.5.1"
 gem "addressable", "~> 2.8"
 
 # For analytics
-gem 'active_analytics'
+gem "active_analytics"
 
 gem "activerecord-postgres_enum"
 
@@ -219,6 +219,8 @@ group :development, :test do
 
   # Get rid of mailcatcher
   gem "letter_opener"
+  gem 'letter_opener_web', '~> 2.0'
+
 
   # Static security vulnerability scanner
   gem "brakeman"

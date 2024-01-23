@@ -155,6 +155,7 @@ Rails.application.routes.draw do
   get "/get_ratios", to: "public_channel#get_ratios"
 
   mount ActiveAnalytics::Engine, at: "analytics"  # http://localhost:3000/analytics
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   resources :faqs, only: [:index]
 
