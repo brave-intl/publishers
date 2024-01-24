@@ -19,10 +19,6 @@ class ApplicationController < ActionController::Base
 
   newrelic_ignore_enduser
 
-  rescue_from Ability::AdminNotOnIPWhitelistError do |e|
-    render "admin/errors/whitelist", layout: false
-  end
-
   around_action :switch_locale
 
   def switch_locale(&action)

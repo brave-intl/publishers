@@ -23,6 +23,9 @@ gem "activerecord-import", "~> 1.5.1"
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
 
+# For analytics
+gem "active_analytics"
+
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
@@ -213,6 +216,10 @@ group :development, :test do
 
   # Code formatting
   gem "standard"
+
+  # Get rid of mailcatcher
+  gem "letter_opener"
+  gem "letter_opener_web", "~> 2.0"
 
   # Static security vulnerability scanner
   gem "brakeman"
