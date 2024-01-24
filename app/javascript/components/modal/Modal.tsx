@@ -14,6 +14,7 @@ import {
   PaddingContainer,
   Section,
   SmallContainer,
+  QrCustomContainer,
 } from "./ModalStyle";
 
 export enum ModalSize {
@@ -22,7 +23,8 @@ export enum ModalSize {
   Small,
   Medium,
   Large,
-  Auto
+  Auto,
+  QrCustom
 }
 
 interface IModalProps {
@@ -96,6 +98,10 @@ export default class Modal extends React.Component<IModalProps> {
       }
       case ModalSize.Large: {
         container = <LargeContainer>{childElements}</LargeContainer>;
+        break;
+      }
+      case ModalSize.QrCustom: {
+        container = <QrCustomContainer>{childElements}</QrCustomContainer>;
         break;
       }
     }

@@ -64,6 +64,20 @@ export const PaddingContainer = styled.div`
   `}
 `;
 
+export const QrCustomContainer = styled(Container)`
+  border-radius: 16px;
+  width: 95%;
+  min-width: 20rem;
+
+  @media only screen and (min-width: 600px) {
+    min-width: 30rem;
+  }
+  @media only screen and (min-width: 768px) {
+    min-width: 33rem;
+    width: 40%;
+  }
+`;
+
 export const ExtraExtraSmallContainer = styled(Container)`
   width: 95%;
   min-width: 420px;
