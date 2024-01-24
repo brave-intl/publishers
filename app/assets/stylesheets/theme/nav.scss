@@ -3,6 +3,10 @@
   z-index: 1;
   padding: 0;
 
+  .brave-logo {
+    margin-left: 12px;
+  }
+
   @media screen and (max-width: 460px) {
     .brave-logo {
       position: absolute;

@@ -122,14 +122,16 @@ export const SocialLink = styled.a`
 export const QRTitle = styled.div`
   color: #0D0F14;
   font-weight: 500;
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   padding-bottom: 50px;
+  font-family: poppins, sans-serif;
 `;
 
 export const QRSubTitle = styled.div`
   font-size: 0.9rem;
   max-width: calc(100% - 50px);
   font-family: 'Inter', sans-serif;
+  color: rgba(63, 78, 85, 1);
   font-weight: 400;
   margin-bottom: -20px;
 `;
@@ -138,8 +140,9 @@ export const QRText = styled.div`
   font-size: 0.9rem;
   padding-top: 50px;
   white-space: nowrap;
-  max-width: calc(100% - 50px);
+  max-width: calc(100% - 65px);
   font-family: 'Inter', sans-serif;
+  color: rgba(63, 78, 85, 1);
 `;
 
 export const QRTextItem = styled.div`
@@ -152,7 +155,7 @@ export const QRBox = styled.div`
   canvas {
     padding: 24px;
     border-radius: 8px;
-    box-shadow: 0px 3px 10px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 4px 8px -1px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(219, 222, 226, 1)
   }
 `;
