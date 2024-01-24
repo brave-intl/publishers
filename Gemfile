@@ -102,7 +102,7 @@ gem "puma", "~> 6.4.2"
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
 
 # Sanitize bad inputs coming in
-gem 'rack-utf8_sanitizer'
+gem "rack-utf8_sanitizer"
 
 gem "rails-i18n", "~> 7.0.6"
 
