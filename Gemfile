@@ -101,6 +101,9 @@ gem "puma", "~> 6.4.2"
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
 
+# Sanitize bad inputs coming in
+gem 'rack-utf8_sanitizer'
+
 gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
