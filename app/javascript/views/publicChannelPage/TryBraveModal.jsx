@@ -8,6 +8,7 @@ import {
   TryBraveBullet,
   TryBraveHeaderSection,
   TryBraveIcon,
+  TryBraveText,
 } from "./PublicChannelPageStyle.js";
 import icon from "../../../assets/images/wallet_icon_color.png";
 import orangeCheckmark from "../../../assets/images/orange_checkmark.png";
@@ -34,6 +35,9 @@ class TryBraveModal extends React.Component {
             </TryBraveSubHeader>
           </div>
         </TryBraveHeaderSection>
+        <TryBraveText>
+          <FormattedMessage id="publicChannelPage.tryBraveText" />
+        </TryBraveText>
         <TryBraveBullet>
           <img src={orangeCheckmark}/>
           <FormattedMessage id="publicChannelPage.tryBraveBullet1" />

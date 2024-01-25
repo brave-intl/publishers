@@ -367,9 +367,9 @@ export default {
     ErrorMsg: "Please try again.",
     insufficientBalance: "Insufficient balance",
     noEthTitle: "No Ethereum wallet detected",
-    noEthMsg: "Connect an Ethereum wallet to send to this creator",
+    noEthMsg: "Connect an Ethereum wallet to send your contribution",
     noSolTitle: "No Solana wallet detected",
-    noSolMsg: "Connect a Solana wallet to send to this creator",
+    noSolMsg: "Connect a Solana wallet to send your contribution",
     ETH: 'Ethereum',
     SOL: 'Solana',
     tryBraveHeader: "Try Brave Wallet",
@@ -378,6 +378,7 @@ export default {
     tryBraveBullet1: "Browser-native, inherently secure",
     tryBraveBullet2: "Native NFT support",
     tryBraveBullet3: "Multi-chain support",
+    tryBraveText: "It looks like you don't have an Ethereum or Solana wallet installed yet. You'll need one to create and manage your crypto addresses.",
   }
 };
 

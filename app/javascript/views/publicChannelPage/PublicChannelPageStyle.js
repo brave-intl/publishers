@@ -424,7 +424,7 @@ export const TryBraveBackground = styled.div`
 
 export const TryBraveHeaderSection = styled.div`
   text-align: left;
-  padding-bottom: 36px;
+  padding-bottom: 18px;
   > div {
     display: inline-block;
   }
@@ -458,6 +458,15 @@ export const TryBraveSubHeader = styled.div`
   font-weight: 400;
   line-height: 22px;
   letter-spacing: -0.10000000149011612px;
+`;
+
+export const TryBraveText = styled.div`
+  padding-bottom: 18px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.1px;
 `;
 
 export const TryBraveBullet = styled.div`
