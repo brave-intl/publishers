@@ -125,7 +125,7 @@ class CryptoPaymentWidget extends React.Component {
       // the channel must have at least one crypto address for this page to be navigable,
       // and right now the options are only sol and eth
       currentChain,
-      displayChain: currentChain,
+      displayChain: 'BAT',
       defaultAmounts: [1,5,10],
       isModalOpen: false,
       isTryBraveModalOpen: false,
@@ -171,11 +171,11 @@ class CryptoPaymentWidget extends React.Component {
 
   calculateCryptoPrice() {
     return this.state.currentAmount / this.state.ratios[this.state.displayChain.toLowerCase()]['usd'];
-  }
+  };
 
   roundCryptoPrice() {
     return Math.round(this.calculateCryptoPrice() * 100000) / 100000;
-  }
+  };
 
   baseChain() {
     if (this.state.currentChain.includes('BAT')) {
@@ -183,23 +183,25 @@ class CryptoPaymentWidget extends React.Component {
     } else {
       return this.state.currentChain;
     }
-  }
+  };
 
   closeModal = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
 
   launchQRModal() {
     this.setState({ isModalOpen: true });
-  }
+  };
 
   closeTryBraveModal = () => {
     this.setState({ isTryBraveModalOpen: false });
-  }
+  };
 
-  launchTryBraveModal() {
-    this.setState({ isTryBraveModalOpen: true });
-  }
+  launchTryBraveModal = async () => {
+    const newState = {...this.state};
+    newState.isTryBraveModalOpen = true;
+    this.setState({...newState });
+  };
 
   sendPayment = async () => {
     this.clearError();
@@ -212,14 +214,14 @@ class CryptoPaymentWidget extends React.Component {
     } else if (this.state.currentChain === "splBAT") {
       this.sendSolBatPayment();
     }
-  }
+  };
 
   setGenericError() {
     const newState = {...this.state};
     newState.errorTitle = this.intl.formatMessage({id: 'publicChannelPage.ErrorTitle'});
     newState.errorMsg = this.intl.formatMessage({id: 'publicChannelPage.ErrorMsg'});
     this.setState({...newState });
-  }
+  };
 
   setError(titleId, msgId) {
     const newState = {...this.state};
@@ -268,7 +270,7 @@ class CryptoPaymentWidget extends React.Component {
           this.setGenericError();
         });
     } else {
-      launchTryBraveModal();
+      await this.launchTryBraveModal();
       this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg')
       return;
     }
@@ -308,7 +310,7 @@ class CryptoPaymentWidget extends React.Component {
         return;
       }
     } else {
-      launchTryBraveModal();
+      await this.launchTryBraveModal();
       this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg');
       return;
     }
@@ -316,7 +318,7 @@ class CryptoPaymentWidget extends React.Component {
 
   sendSolPayment = async () => {
     if (!window.solana) {
-      launchTryBraveModal();
+      await this.launchTryBraveModal();
       this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     }
@@ -358,7 +360,7 @@ class CryptoPaymentWidget extends React.Component {
 
   sendSolBatPayment = async () => {
     if (!window.solana) {
-      launchTryBraveModal();
+      await this.launchTryBraveModal();
       this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     }
@@ -445,6 +447,8 @@ class CryptoPaymentWidget extends React.Component {
     newState.currentChain = optionVal.value;
     newState.selectValue = optionVal;
     newState.displayChain = optionVal.value.includes("BAT") ? 'BAT' : optionVal.value;
+    newState.errorTitle = null;
+    newState.errorMsg = null;
     this.setState({...newState });
   }
 

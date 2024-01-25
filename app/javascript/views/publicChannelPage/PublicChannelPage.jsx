@@ -43,7 +43,7 @@ class PublicChannelPage extends React.Component {
   }
 
   replaceBlankUrl(siteBanner, propName) {
-    const url = siteBanner && siteBanner[propName];
+    const url = siteBanner && siteBanner[propName] || '';
     return url.length > 1 ? url : null;
   }
   
