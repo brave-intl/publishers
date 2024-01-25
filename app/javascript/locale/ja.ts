@@ -152,5 +152,6 @@ export default {
     tryBraveBullet1: "ブラウザネイティブ故の高い安全性",
     tryBraveBullet2: "ネイティブNFTサポート",
     tryBraveBullet3: "マルチチェーンサポート",
+    tryBraveText: "It looks like you don't have an Ethereum or Solana wallet installed yet. You'll need one to create and manage your crypto addresses.",
   }
 }
