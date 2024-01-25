@@ -22,7 +22,7 @@ class GeminiRefreshJobTest < ActiveJob::TestCase
 
     describe "witht args" do
       test "it should return limit" do
-        result = GeminiRefreshJob.perform_now(wait: 0.01, limit: limit)
+        result = GeminiRefreshJob.new.perform(0.01, limit)
         # 10/23 UpholdConnection + 6/6 GeminiConnection + 3/3 Bitflyer Connection
         # based on existing fixtures.
         assert result == GeminiConnection.count - 1

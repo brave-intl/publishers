@@ -1,13 +1,9 @@
 # typed: ignore
 
 class AdminController < ApplicationController
-  before_action :protect
   helper_method :sort_column, :sort_direction
   include PublishersHelper
-
-  rescue_from CanCan::AccessDenied do |e|
-    render "admin/errors/not_authorized", layout: false
-  end
+  include RequirePubAdmin
 
   # Override this value to specify the number of elements to display at a time
   # on index pages. Defaults to 20.
@@ -16,10 +12,6 @@ class AdminController < ApplicationController
   end
 
   private
-
-  def protect
-    authorize! :access, :admin
-  end
 
   # (Albert Wang): Done by subclass. Google `sortable table columns rails` for more details
   def sortable_columns

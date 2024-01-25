@@ -17,6 +17,7 @@ module Publishers
     # Raise error when a before_action's only/except options reference missing actions
     config.action_controller.raise_on_missing_callback_actions = false
 
+    config.middleware.insert 0, Rack::UTF8Sanitizer
     config.middleware.use HttpHeaderMiddleware
     config.middleware.use Rack::Deflater
 

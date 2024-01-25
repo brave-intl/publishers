@@ -72,4 +72,10 @@ class SignUpTest < Capybara::Rails::TestCase
     #   click_link('try again')
     # end
   end
+
+  test "malformed input doesn't blow up" do
+    visit "/publishers/sign_up?locale=%E0%80%A2%E0%80%A7%E0%80%A2b155b3be"
+
+    assert_content "Join Brave Creators"
+  end
 end

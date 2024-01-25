@@ -51,12 +51,12 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     start_date, end_date = parse_report_dates
 
     GenerateReferralReportJob.perform_later(
-      publisher_id: current_user.id,
-      referral_codes: referral_codes,
-      start_date: start_date,
-      end_date: end_date,
-      interval: params[:reporting_interval],
-      break_down_by_country: break_down_by_country
+      current_user.id,
+      referral_codes,
+      start_date,
+      end_date,
+      params[:reporting_interval],
+      break_down_by_country
     )
 
     redirect_to admin_unattached_promo_registrations_path(filter: [params[:filter]]),

@@ -25,7 +25,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
       describe "when deleted" do
         before do
-          PublisherRemovalJob.perform_now(publisher_id: other.id)
+          PublisherRemovalJob.perform_now(other.id)
           other.reload
         end
 

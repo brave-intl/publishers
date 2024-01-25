@@ -8,7 +8,7 @@ import {
   QRSubTitle,
 } from "./PublicChannelPageStyle.js";
 import QRCodeStyling from "qr-code-styling";
-import icon from "../../../assets/images/smartphone-laptop.png";
+import icon from "../../../assets/images/smartphone-laptop.svg";
 import qr_logo from "../../../assets/images/qr_logo.png";
 
 class QRCodeModal extends React.Component {
@@ -27,8 +27,8 @@ class QRCodeModal extends React.Component {
 
   createQRCode() {
     const qrCode = new QRCodeStyling({
-      width: 300,
-      height: 300,
+      width: 270,
+      height: 270,
       data: this.paymentUrl,
       image: qr_logo,
       dotsOptions: {
@@ -64,7 +64,7 @@ class QRCodeModal extends React.Component {
         <QRBox id="qr-wrapper" className="text-center" />
         <QRText>
           <QRTextItem>
-            <img src={icon} className="pr-2"/>
+            <img src={icon} className="pr-3"/>
           </QRTextItem>
           <QRTextItem>
             <FormattedMessage id="publicChannelPage.QRModalText" />

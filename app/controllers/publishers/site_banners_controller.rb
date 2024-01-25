@@ -1,7 +1,6 @@
 # typed: ignore
 
 class Publishers::SiteBannersController < ApplicationController
-  include ImageConversionHelper
   include ActiveStorage::SetCurrent
   before_action :authenticate_publisher!
 
@@ -80,17 +79,17 @@ class Publishers::SiteBannersController < ApplicationController
 
     original_image_path = temp_file.path
     temp_file.rewind
-    padded_resized_jpg_path = resize_to_dimensions_and_convert_to_jpg(
-      source_image_path: original_image_path,
-      attachment_type: attachment_type,
-      filename: filename
-    )
-
-    new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
+    new_filename = generate_filename(source_image_path: original_image_path)
     {
-      io: File.open(padded_resized_jpg_path),
-      filename: new_filename + ".jpg",
-      content_type: "image/jpg"
+      io: File.open(original_image_path),
+      filename: new_filename + extension + ".padded",
+      content_type: "image/#{extension}"
     }
+  end
+
+  def generate_filename(source_image_path:)
+    File.open(source_image_path, "r") do |f|
+      Digest::SHA256.hexdigest f.read
+    end
   end
 end

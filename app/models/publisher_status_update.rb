@@ -43,7 +43,7 @@ class PublisherStatusUpdate < ApplicationRecord
   #
   # @return [nil]
   def update_services
-    Promo::UpdateStatus.perform_later(id: publisher_id, status: status)
+    Promo::UpdateStatus.perform_later(publisher_id, status)
   end
 
   def should_update?

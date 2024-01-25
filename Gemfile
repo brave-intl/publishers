@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "~> 3.0.2"
+ruby "~> 3.3.0"
 
 source "https://rubygems.org"
 
@@ -22,6 +22,9 @@ gem "activerecord-import", "~> 1.5.1"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
+
+# For analytics
+gem "active_analytics"
 
 gem "activerecord-postgres_enum"
 
@@ -101,6 +104,9 @@ gem "puma", "~> 6.4.2"
 # Make cracking a little bit harder
 gem "rack-attack", github: "rack/rack-attack", branch: "main"
 
+# Sanitize bad inputs coming in
+gem "rack-utf8_sanitizer"
+
 gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
@@ -163,9 +169,6 @@ gem "zendesk_api", "~> 3.0.5"
 
 gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
 
-gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
-gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -216,6 +219,10 @@ group :development, :test do
 
   # Code formatting
   gem "standard"
+
+  # Get rid of mailcatcher
+  gem "letter_opener"
+  gem "letter_opener_web", "~> 2.0"
 
   # Static security vulnerability scanner
   gem "brakeman"

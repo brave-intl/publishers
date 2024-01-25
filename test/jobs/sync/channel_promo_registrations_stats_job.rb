@@ -9,19 +9,19 @@ class SyncChannelPromoRegistrationStatsJobTest < ActiveJob::TestCase
         let(:promos) { Promos.pluck(:id) }
 
         it "should return a count" do
-          result = described_class.new.perform(async: false, wait: 0)
+          result = described_class.new.perform(0, 1000, false)
           assert_instance_of(Integer, result)
           assert result
         end
 
         it "should wait" do
-          result = described_class.new.perform(async: false, wait: 0.01)
+          result = described_class.new.perform(0.01, 1000, false)
           assert_instance_of(Integer, result)
           assert result
         end
 
         it "should async" do
-          result = described_class.new.perform(async: true, wait: 0)
+          result = described_class.new.perform(0, 1000, true)
           assert_instance_of(Integer, result)
           assert result
         end

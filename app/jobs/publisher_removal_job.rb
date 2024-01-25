@@ -3,9 +3,9 @@
 class PublisherRemovalJob < ApplicationJob
   queue_as :default
 
-  def perform(publisher_id:)
+  def perform(publisher_id)
     publisher = Publisher.find_by(id: publisher_id)
-    SendGrid::DeleteEmailJob.perform_later(email: publisher.email)
+    SendGrid::DeleteEmailJob.perform_later(publisher.email)
 
     if publisher.last_status_update.status.in?([PublisherStatusUpdate::CREATED, PublisherStatusUpdate::ONBOARDING, PublisherStatusUpdate::ACTIVE])
       delete_for_normal_publishers(publisher: publisher)
@@ -29,7 +29,7 @@ class PublisherRemovalJob < ApplicationJob
     end
 
     publisher.channels.pluck(:id).each do |channel_id|
-      DeletePublisherChannelJob.perform_now(channel_id: channel_id)
+      DeletePublisherChannelJob.perform_now(channel_id)
     end
 
     # Paper trail retains all records: we destroy all historical PII and non-PII

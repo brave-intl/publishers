@@ -32,7 +32,7 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
 
       describe "when notify" do
         test "refreshes the token and is success" do
-          assert_instance_of(BSuccess, Oauth2RefreshJob.perform_now(connection.id, klass, notify: true))
+          assert_instance_of(BSuccess, Oauth2RefreshJob.perform_now(connection.id, klass, true))
         end
       end
     end
@@ -50,7 +50,7 @@ class Oauth2RefreshJobTest < ActiveJob::TestCase
       end
 
       test "returns an explicit type notify" do
-        result = Oauth2RefreshJob.perform_now(connection.id, klass, notify: true)
+        result = Oauth2RefreshJob.perform_now(connection.id, klass, true)
         assert_instance_of(FailedWithNotification, result)
         assert ActionMailer::Base.deliveries.count == 1
         connection.reload

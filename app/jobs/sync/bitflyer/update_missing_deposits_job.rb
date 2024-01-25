@@ -8,7 +8,7 @@ class Sync::Bitflyer::UpdateMissingDepositsJob
   # executed the service because the wrong id value was being passed to the job and it succeeded and eventually hit a 429.
 
   # I manually execute this job and everyone of the pending tasks resolves so I'm setting this to be very very slow.
-  def perform(async: true, wait: 0.5)
+  def perform(async = true, wait = 0.5)
     Channel.missing_deposit_id.using_active_bitflyer_connection.select(:id).find_in_batches do |batch|
       batch.each do |channel|
         # FML
