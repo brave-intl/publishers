@@ -125,7 +125,7 @@ class CryptoPaymentWidget extends React.Component {
       // the channel must have at least one crypto address for this page to be navigable,
       // and right now the options are only sol and eth
       currentChain,
-      displayChain: currentChain,
+      displayChain: 'BAT',
       defaultAmounts: [1,5,10],
       isModalOpen: false,
       isTryBraveModalOpen: false,
