@@ -8,6 +8,7 @@ import axios from "axios";
 import routes from "../routes";
 import bs58 from 'bs58';
 import Modal, { ModalSize } from "../../components/modal/Modal";
+import TryBraveModal from "../publicChannelPage/TryBraveModal";
 
 class CryptoWalletServices extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class CryptoWalletServices extends React.Component {
       isLoading: true,
       errorText: null,
       isModalOpen: false,
+      isTryBraveModalOpen: false,
       pendingAddress: null,
     };
   }
@@ -35,6 +37,17 @@ class CryptoWalletServices extends React.Component {
   componentDidMount() {
     this.loadData();
   }
+
+
+  closeTryBraveModal = () => {
+    this.setState({ isTryBraveModalOpen: false });
+  };
+
+  launchTryBraveModal = async () => {
+    const newState = {...this.state};
+    newState.isTryBraveModalOpen = true;
+    this.setState({...newState });
+  };
 
   updateOptionsFromStore(action) {
     if (action.type === 'UPDATE_RESPONSE_DATA') {
@@ -142,7 +155,8 @@ class CryptoWalletServices extends React.Component {
 
   connectSolanaAddress = async () => {
     if (!window.solana) {
-      this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.solanaConnectError'));
+      await this.launchTryBraveModal();
+      this.setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaConnectError' }));
       return false;
     }
 
@@ -162,7 +176,7 @@ class CryptoWalletServices extends React.Component {
 
       const nonce = await this.getNonce();
       if (!nonce) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.genericError'))
+        this.setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.genericError' }))
         return;
       }
       const encodedMessage = new TextEncoder().encode(nonce)
@@ -171,7 +185,7 @@ class CryptoWalletServices extends React.Component {
       try {
         signedMessage = await window.solana.signMessage(encodedMessage, "utf8")
       } catch (err) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.solanaConnectionFailure'))
+        this.setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.solanaConnectionFailure' }))
         return;
       }
 
@@ -195,7 +209,7 @@ class CryptoWalletServices extends React.Component {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const address = accounts[0]
       if (!address) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.ethereumConnectError'));
+        this.setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumConnectError' }));
         return;
       }
 
@@ -211,7 +225,7 @@ class CryptoWalletServices extends React.Component {
 
       const nonce = await this.getNonce();
       if (!nonce) {
-        this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.genericError'))
+        this.setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.genericError' }))
         return;
       }
 
@@ -233,7 +247,8 @@ class CryptoWalletServices extends React.Component {
         this.handleConnectionResponse(response)
       });
     } else {
-      this.setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.ethereumConnectError'));
+      await this.launchTryBraveModal();
+      this.setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.ethereumConnectError' }));
       return;
     }
   }
@@ -243,7 +258,7 @@ class CryptoWalletServices extends React.Component {
     if (response.status < 300) {
       this.loadData();
     } else {
-      setErrorText(this.intl.formatMessage('walletServices.addCryptoWidget.addressConnectFailure'))
+      setErrorText(this.intl.formatMessage({ id: 'walletServices.addCryptoWidget.addressConnectFailure' }))
     }
   }
 
@@ -357,6 +372,14 @@ class CryptoWalletServices extends React.Component {
               updateAddress={this.updateAddress.bind(this)}
               address={this.state.pendingAddress}
             />
+          </Modal>
+          <Modal
+            show={this.state.isTryBraveModalOpen}
+            size={ModalSize.ExtraExtraSmall}
+            padding={false}
+            handleClose={() => this.closeTryBraveModal()}
+          >
+            <TryBraveModal />
           </Modal>
         </ErrorBoundary>
       </div>
