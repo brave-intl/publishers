@@ -11,8 +11,8 @@ module Channels
         contested_by = channel.contested_by_channel
         original_owner = channel.publisher
 
-        raise StandardError("Contested by is not active!") unless contested_by.publisher.active?
-        raise StandardError("Original owner is not active!") unless original_owner.active?
+        raise StandardError.new("Contested by is not active!") unless contested_by.publisher.active?
+        raise StandardError.new("Original owner is not active!") unless original_owner.active?
 
         # New deposit ids will be created async via scheduled job if
         # the wallet provider is valid
