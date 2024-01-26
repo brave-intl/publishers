@@ -8,6 +8,7 @@ module ErrorHandler
   included do
     include ActiveSupport::Rescuable
     rescue_from StandardError, with: :handle_standard_error
+    rescue_from ActionController::InvalidAuthenticityToken, with: :redirect_to_referer_or_home
   end
 
   def handle_known_exceptions
@@ -33,6 +34,11 @@ module ErrorHandler
     # re-raise the exception now that it's been captured by New Relic or logged
     # so that the standard rails error flow can happen
     raise exception
+  end
+
+  def redirect_to_referer_or_home
+    flash[:notice] = "Invalid attempt, please try again."
+    redirect_to request&.referer || root_path
   end
 
   def introspect_publisher
