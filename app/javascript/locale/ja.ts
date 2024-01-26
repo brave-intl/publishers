@@ -141,9 +141,9 @@ export default {
     ErrorMsg: "もう一度お試しください",
     insufficientBalance: "残高が足りません",
     noEthTitle: "Ethereumウォレットが見つかりません",
-    noEthMsg: "このクリエイターに寄付を送信するためにEthereumウォレットを接続してください",
+    noEthMsg: "寄付を送るにはEthereumウォレットを接続してください",
     noSolTitle: "Solanaウォレットが見つかりません",
-    noSolMsg: "このクリエイターに寄付を送信するためにSolanaウォレットを接続してください",
+    noSolMsg: "寄付を送るにはにSolanaウォレットを接続してください",
     ETH: 'Ethereum',
     SOL: 'Solana',
     tryBraveHeader: "Brave Walletを使いませんか",
@@ -152,6 +152,6 @@ export default {
     tryBraveBullet1: "ブラウザネイティブ故の高い安全性",
     tryBraveBullet2: "ネイティブNFTサポート",
     tryBraveBullet3: "マルチチェーンサポート",
-    tryBraveText: "It looks like you don't have an Ethereum or Solana wallet installed yet. You'll need one to create and manage your crypto addresses.",
+    tryBraveText: "まだEthereumやSolanaのウォレットがインストールされていないようです。まずあなたが使用するクリプトアドレスを作成しましょう。",
   }
 }
