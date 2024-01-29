@@ -5,8 +5,6 @@ module ActiveAnalyticsConcern
     after_action :record_page_view
   end
 
-  private
-
   def record_page_view
     # This is a basic example, you might need to customize some conditions.
     # For most sites, it makes no sense to record anything other than HTML.
