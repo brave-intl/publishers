@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   require "error_handler"
   include ErrorHandler
 
+  after_action :record_page_view
+
   if Rails.configuration.pub_secrets[:basic_auth_user] && Rails.configuration.pub_secrets[:basic_auth_password]
     http_basic_authenticate_with(
       name: Rails.configuration.pub_secrets[:basic_auth_user],
