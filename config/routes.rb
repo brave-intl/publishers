@@ -286,7 +286,7 @@ Rails.application.routes.draw do
         patch :refresh
       end
     end
-    resources :publishers do
+    resources :publishers, except: [:create] do
       get :wallet_info
       resources :invoices, module: "publishers" do
         post :upload

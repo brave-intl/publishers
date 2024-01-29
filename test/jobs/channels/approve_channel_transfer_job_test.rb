@@ -41,9 +41,10 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     # after this the from gets suspended
     contested_by_channel.publisher.suspend!
 
-    assert_raises do
+    exc = assert_raises do
       Channels::ApproveChannelTransferJob.perform_now(channel.id)
     end
+    assert_equal exc.message, "Contested by is not active!"
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
 
@@ -65,9 +66,10 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     # after this the from gets suspended
     channel.publisher.suspend!
 
-    assert_raises do
+    exc = assert_raises do
       Channels::ApproveChannelTransferJob.perform_now(channel.id)
     end
+    assert_equal exc.message, "Original owner is not active!"
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
 

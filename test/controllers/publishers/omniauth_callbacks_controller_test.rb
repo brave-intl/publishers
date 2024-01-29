@@ -28,11 +28,11 @@ module Publishers
     test "should not accept YoutTube POST requests with invalid CSRF tokens to OmniAuth endpoint" do
       ActionController::Base.allow_forgery_protection = true
       OmniAuth.config.test_mode = false
-      assert_raises ActionController::InvalidAuthenticityToken do
-        post publisher_register_youtube_channel_omniauth_authorize_url
-      end
+      post publisher_register_youtube_channel_omniauth_authorize_url
       ActionController::Base.allow_forgery_protection = false
       OmniAuth.config.test_mode = true
+      assert_equal flash[:notice], "Invalid attempt, please try again."
+      assert_redirected_to root_path(locale: "en")
     end
 
     test "should not accept Twitter GET requests to OmniAuth endpoint" do
@@ -47,11 +47,11 @@ module Publishers
     test "should not accept Twitter POST requests with invalid CSRF tokens to OmniAuth endpoint" do
       ActionController::Base.allow_forgery_protection = true
       OmniAuth.config.test_mode = false
-      assert_raises ActionController::InvalidAuthenticityToken do
-        post publisher_register_twitter_channel_omniauth_authorize_url
-      end
+      post publisher_register_twitter_channel_omniauth_authorize_url
       ActionController::Base.allow_forgery_protection = false
       OmniAuth.config.test_mode = true
+      assert_equal flash[:notice], "Invalid attempt, please try again."
+      assert_redirected_to root_path(locale: "en")
     end
 
     def request_login_email(publisher:)
