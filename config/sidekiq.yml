@@ -61,7 +61,7 @@
       queue: scheduler
     EnqueuePublishersForPayoutJobMonthly:
       class: EnqueuePublishersForPayoutJob
-      cron: "0 0 1 * *"
+      every: "2 hours"
       description: "Generates the list of unsettled transactions on the first of every month"
       queue: scheduler
     SetPayoutsInProgressJob:
