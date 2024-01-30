@@ -9,7 +9,7 @@
         small.text-muted TITLE
         .d-flex
           h5.m-0.font-weight-bold
-            img src=(channel_type_icon_url(channel)) width=16 height=16 class="mr-3"
+            = image_tag(channel_type_icon_url(channel), class: "mr-3", height: 16, width: 16)
             = link_to(channel.publication_title, channel.details.url, target: '_blank')
 
           - if channel.details.is_a?(SiteChannelDetails)
