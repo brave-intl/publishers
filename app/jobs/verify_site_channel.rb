@@ -9,7 +9,7 @@ class VerifySiteChannel < ApplicationJob
     Rails.logger.warn("SiteChannelVerifier 404; publisher might not exist in eyeshade.")
   end
 
-  def perform(channel_id:)
+  def perform(channel_id)
     channel = Channel.find(channel_id)
     SiteChannelVerifier.new(channel: channel).perform
   end
