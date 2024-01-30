@@ -373,9 +373,9 @@ module PublishersHelper
   def channel_type_icon_url(channel)
     case channel&.details
     when SiteChannelDetails
-      asset_url("publishers-home/website-icon_32x32.png")
+      "publishers-home/website-icon_32x32.png"
     else
-      asset_url("publishers-home/#{channel.type_display.downcase}-icon_32x32.png")
+      "publishers-home/#{channel.type_display.downcase}-icon_32x32.png"
     end
   end
 

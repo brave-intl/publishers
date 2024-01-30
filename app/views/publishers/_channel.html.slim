@@ -3,7 +3,7 @@
     div class=("channel-panel channel-#{channel_verification_status(channel)}")
       .channel-panel--intro.mb-1
         .channel-panel--intro-icon
-          img src=(channel_type_icon_url(channel)) height=25
+          = image_tag(channel_type_icon_url(channel), class: "", height: 25)
         .channel-panel--intro-body
           = channel_type(channel).upcase
 
