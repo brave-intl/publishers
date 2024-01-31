@@ -46,7 +46,11 @@ module Uphold
 
         query = "currency:" + (currency || uphold_connection.default_currency)
 
-        response = get(PATH, {q: query}, authorization(uphold_connection))
+        begin
+          response = get(PATH, {q: query}, authorization(uphold_connection))
+        rescue Faraday::UnauthorizedError
+          return nil
+        end
 
         cards = []
         if response.headers["Content-Encoding"].eql?("gzip")

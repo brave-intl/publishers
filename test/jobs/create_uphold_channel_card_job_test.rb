@@ -14,13 +14,15 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
 
     subject { CreateUpholdChannelCardJob.perform_now(uphold_connection.id, channel.id) }
 
-    before do
+    def stub_uphold
       stub_request(:get, /cards/).to_return(body: [].to_json)
       stub_request(:post, /cards/).to_return(body: {id: card_id}.to_json)
       stub_rewards_parameters
     end
 
     it "does not have an existing uphold connection" do
+      stub_uphold
+
       refute UpholdConnectionForChannel.find_by(
         uphold_connection: uphold_connection,
         currency: uphold_connection.default_currency,
@@ -29,9 +31,25 @@ class CreateUpholdChannelCardTest < ActiveJob::TestCase
     end
 
     it "creates an uphold card" do
+      stub_uphold
+
       subject
 
       assert UpholdConnectionForChannel.find_by(
+        uphold_connection: uphold_connection,
+        currency: uphold_connection.default_currency,
+        channel_identifier: channel.details.channel_identifier,
+        uphold_id: uphold_connection.uphold_id,
+        card_id: card_id
+      )
+    end
+
+    it "does not create an uphold card when Uphold returns 401" do
+      stub_request(:get, /cards/).to_raise(Faraday::UnauthorizedError)
+
+      subject
+
+      refute UpholdConnectionForChannel.find_by(
         uphold_connection: uphold_connection,
         currency: uphold_connection.default_currency,
         channel_identifier: channel.details.channel_identifier,
