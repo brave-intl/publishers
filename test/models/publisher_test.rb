@@ -430,6 +430,14 @@ class PublisherTest < ActiveSupport::TestCase
     )
   end
 
+  test "can have apostrophe in name" do
+    pub = publishers(:verified)
+    pub.name = "Rich O'Shannigan"
+    pub.save
+    refute pub.valid?
+    assert_equal pub.errors.first.message, "contains html sequences"
+  end
+
   describe "#sync_wallet_connections" do
     describe "when the publisher has a selected_wallet_provider" do
       let(:publisher) { publishers(:gemini_completed) }
