@@ -30,6 +30,9 @@ class CreateUpholdChannelCardJob < ApplicationJob
     uphold_connection.refresh_authorization!
     card_id = find_or_create_card(uphold_connection, channel, upfc)
 
+    LogException.perform("Failed to create Uphold Channel Card", expected: true)
+    return unless card_id.present?
+
     # If the channel was deleted and then recreated we should update this to be the new channel id
     upfc.update(
       address: get_address(uphold_connection, card_id),
