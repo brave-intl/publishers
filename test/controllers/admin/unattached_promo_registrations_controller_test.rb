@@ -30,6 +30,16 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     assert_equal PromoRegistration.order("created_at").last.kind, "unattached"
   end
 
+  test "#report creates a report" do
+    Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194" # Turn on external requests
+    admin = publishers(:admin)
+    sign_in admin
+
+    get(report_admin_unattached_promo_registrations_path, params: {start_date: {year: 2022, month: 12, day: 25}, end_date: {year: 2022, month: 12, day: 25}})
+
+    assert_equal flash[:notice], "Generating the report, we'll email hello@brave.com when it's done"
+  end
+
   test "#update_statuses updates the status of codes" do
     Rails.configuration.pub_secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     admin = publishers(:admin)
