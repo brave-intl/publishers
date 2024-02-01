@@ -35,7 +35,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     admin = publishers(:admin)
     sign_in admin
 
-    get(report_admin_unattached_promo_registrations_path, params: {start_date: {'year': 2022, 'month': 12, 'day': 25}, end_date: {'year': 2022, 'month': 12, 'day': 25}})
+    get(report_admin_unattached_promo_registrations_path, params: {start_date: {year: 2022, month: 12, day: 25}, end_date: {year: 2022, month: 12, day: 25}})
 
     assert_equal flash[:notice], "Generating the report, we'll email hello@brave.com when it's done"
   end
