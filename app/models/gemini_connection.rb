@@ -141,8 +141,10 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     if !user
       user = users.find { |u| u.is_verified }
       if !user
+        LogException.perform(I18n.t(".publishers.gemini_connections.new.no_kyc"), expected: true)
         raise InvalidUserError.new(I18n.t(".publishers.gemini_connections.new.no_kyc"))
       else
+        LogException.perform(I18n.t(".publishers.gemini_connections.new.limited_functionality"), expected: true)
         raise CapabilityError.new(I18n.t(".publishers.gemini_connections.new.limited_functionality"))
       end
     end
@@ -207,6 +209,7 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
         GeminiConnection.where(publisher_id: publisher.id).delete_all
 
         if GeminiConnection.in_use?(recipient.recipient_id)
+          LogException.perform("#{wallet} is not a valid wallet type", expected: true)
           raise DuplicateConnectionError.new("Could not establish Gemini connection. It looks like your Gemini account is already connected to another Brave Creators account. Your Gemini account can only be connected to one Brave Creators account at a time.")
         end
 
