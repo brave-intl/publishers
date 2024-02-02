@@ -40,6 +40,7 @@ module Gemini
         parsed_result
       end
     rescue Faraday::UnauthorizedError
+      LogException.perform("Could not find validation information for this connection.", expected: true)
       {"error" => "Could not find validation information for this connection."}
     end
   end
