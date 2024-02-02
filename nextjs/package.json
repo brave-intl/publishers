@@ -11,7 +11,7 @@
     "lint:fix": "eslint src --fix && npm run format",
     "lint:strict": "eslint --max-warnings=0 src",
     "postinstall": "patch-package",
-    "start": "next start -p 3001",
+    "start": "node ./scripts/create-local-server.js",
     "stylelint": "stylelint \"**/*.css\"",
     "test": "jest",
     "test:watch": "jest --watch",
