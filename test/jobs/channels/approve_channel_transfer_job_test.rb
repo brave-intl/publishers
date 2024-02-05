@@ -41,10 +41,9 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     # after this the from gets suspended
     contested_by_channel.publisher.suspend!
 
-    exc = assert_raises do
-      Channels::ApproveChannelTransferJob.perform_now(channel.id)
-    end
-    assert_equal exc.message, "Contested by is not active!"
+    LogException.expects(:perform)
+    refute Channels::ApproveChannelTransferJob.perform_now(channel.id)
+
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
 
@@ -56,7 +55,7 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     refute Channel.where(id: channel.id).empty?
   end
 
-  test "raises if the to is suspended" do
+  test "return false if the to is suspended" do
     channel = channels(:fraudulently_verified_site)
     contested_by_channel = channels(:locked_out_site)
 
@@ -66,10 +65,9 @@ class Channels::ApproveChannelTransferJobTest < SidekiqTestCase
     # after this the from gets suspended
     channel.publisher.suspend!
 
-    exc = assert_raises do
-      Channels::ApproveChannelTransferJob.perform_now(channel.id)
-    end
-    assert_equal exc.message, "Original owner is not active!"
+    LogException.expects(:perform)
+    refute Channels::ApproveChannelTransferJob.perform_now(channel.id)
+
     contested_by_channel.reload
     assert_equal 0, Cache::BrowserChannels::ResponsesForPrefix.jobs.size
 
