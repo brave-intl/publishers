@@ -134,7 +134,7 @@ module Publishers
       end
 
       it "redirects on bad user" do
-        get(expired_authentication_token_publishers_path, params: {id: 'blahblahblacksheep'})
+        get(expired_authentication_token_publishers_path, params: {id: "blahblahblacksheep"})
         assert_redirected_to root_path + "?locale=en"
       end
     end
