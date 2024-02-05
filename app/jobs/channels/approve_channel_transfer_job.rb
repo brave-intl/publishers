@@ -1,6 +1,6 @@
 # typed: ignore
 
-class ApproveChannelError < StandardError; end;
+class ApproveChannelError < StandardError; end
 
 module Channels
   class ApproveChannelTransferJob < ApplicationJob
