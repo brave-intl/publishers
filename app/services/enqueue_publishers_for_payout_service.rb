@@ -101,7 +101,7 @@ class EnqueuePublishersForPayoutService
     # CALL POTENTIAL PAYMENT OBJECT CREATION
     @payout_report.update!(status: "Enqueued")
 
-    publishers.find_in_batches(batch_size: 10000) do |group|
+    publishers.find_in_batches(batch_size: 1000) do |group|
       potential_payments = []
 
       group.each do |publisher|
