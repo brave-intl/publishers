@@ -127,14 +127,15 @@ module Publishers
 
     describe "#expired_authentication_token" do
       let(:id) { publishers(:default).id }
-      let(:subject) { post(resend_authentication_email_publishers_path, params: {id: id}) }
-
-      before do
-        subject
-      end
 
       it "renders properly" do
+        get(expired_authentication_token_publishers_path, params: {id: id})
         assert_response :success
+      end
+
+      it "redirects on bad user" do
+        get(expired_authentication_token_publishers_path, params: {id: "blahblahblacksheep"})
+        assert_redirected_to root_path + "?locale=en"
       end
     end
 

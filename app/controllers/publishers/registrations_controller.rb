@@ -73,7 +73,11 @@ module Publishers
     end
 
     def expired_authentication_token
-      @publisher = Publisher.find(params[:id])
+      @publisher = Publisher.where(id: params[:id]).first
+      if @publisher.blank?
+        flash[:notice] = "Problem processing your request, please try again."
+        redirect_to root_path
+      end
     end
 
     # Used by emailed_authentication_token.html.slim to send a new sign up or log in access email
