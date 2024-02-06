@@ -52,6 +52,17 @@ const nextConfig = {
 
     return config;
   },
+
+  async rewrites() {
+    return {
+      fallback: [
+        {
+          source: "/:path*",
+          destination: `creators-api.bsg.brave.software/:path*`,
+        },
+      ],
+    };
+  },
 };
 
 module.exports = withNextIntl(nextConfig);
