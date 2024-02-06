@@ -6,6 +6,7 @@ function secureUrl(url: string): string {
 }
 
 export function middleware(request) {
+  console.log("middleware execution");
   const pathname = request.nextUrl.pathname;
   const locale = request.nextUrl.searchParams.get('locale');
   if (locale === 'ja') {
@@ -26,6 +27,7 @@ export function middleware(request) {
   // NextJS will pre-compile middleware routes in HTTP. To use SSL, we need to set all rewrites to
   // the appropriate url scheme
   if (process.env.NODE_ENV === 'development') {
+    console.log("middleware execution dev");
     const rewriteUrl = response.headers.get('x-middleware-rewrite');
     const locationUrl = response.headers.get('location');
 
