@@ -58,7 +58,7 @@ const nextConfig = {
       fallback: [
         {
           source: "/:path*",
-          destination: `creators-api.bsg.brave.software/:path*`,
+          destination: `https://creators-api.bsg.brave.software/:path*`,
         },
       ],
     };
