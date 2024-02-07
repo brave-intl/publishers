@@ -60,7 +60,7 @@ Rails.application.routes.draw do
           get :rate_card, on: :collection
         end
 
-        resource :two_factor_authentications_removal
+        resource :two_factor_authentications_removal, except: [:show]
 
         resource :wallet do
           get :latest
@@ -132,7 +132,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :site_channels, only: %i[create update new show] do
+  resources :site_channels, only: %i[create update new] do
     member do
       patch :update_unverified
       patch :check_for_https
