@@ -51,9 +51,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     describe "when token" do
       let(:token) { "token" }
 
-      before do
-      end
-
       it "should redirect" do
         PublisherTokenAuthenticator.any_instance.stubs(:perform).returns(true)
         publisher = publishers(:completed)
@@ -62,6 +59,23 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         get "/publishers/#{publisher.id}/ensure_email", params: {token: token}
 
         assert_response 200
+      end
+    end
+
+    describe "when stepup throws" do
+      let(:token) { "token" }
+
+      it "should redirect" do
+        PublisherTokenAuthenticator.any_instance.stubs(:perform).returns(true)
+        ::PublishersController::SignIn.expects(:new).raises(SecurityError)
+
+        publisher = publishers(:completed)
+        sign_in publisher
+
+        get "/publishers/#{publisher.id}", params: {token: token}
+
+        assert_response 302
+        assert_equal "Invalid attempt, please try again.", flash[:notice]
       end
     end
   end
