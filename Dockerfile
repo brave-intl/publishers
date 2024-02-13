@@ -1,61 +1,53 @@
-FROM ruby:3.3-slim
+# Make sure it matches the Ruby version in .ruby-version and Gemfile
+ARG RUBY_VERSION=3.3.0
+FROM ruby:$RUBY_VERSION
 
-RUN apt-get update -qq && apt-get install -y build-essential
+# Install JavaScript dependencies and libvips for Active Storage
+ARG NODE_MAJOR_VERSION=20
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash -
+RUN apt-get update -qq && \
+    apt-get install -y build-essential libvips nodejs libsodium23 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man && \
+    npm install -g yarn
 
-RUN apt-get install -y nodejs \
-  libpq-dev \
-  git \
-  curl \
-  libjemalloc2 \
-  python3 \
-  libtool \
-  automake \
-  libsodium23
+# Rails app lives here
+WORKDIR /rails
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.70.0
+# Set production environment
+ENV RAILS_LOG_TO_STDOUT="1" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_ENV="production" \
+    BUNDLE_WITHOUT="development:test"
 
+# Install application gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
 
-RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
-# ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
-
-SHELL [ "/bin/bash", "-l", "-c" ]
-
-ENV PATH="/root/.cargo/bin:${PATH}"
-RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-RUN gem install bundler
-
-RUN NODE_ENV=production
-RUN RAILS_ENV=production
-# Note we only use for compiling assets, no services
-RUN NODE_OPTIONS=--openssl-legacy-provider
-
-WORKDIR /var/www/
-
-# We are copying the Gemfile first, so we can install
-# all the dependencies without any issues
-# Rails will be installed once you load it from the Gemfile
-# This will also ensure that gems are cached and only updated when they change.
-COPY Gemfile ./
-COPY Gemfile.lock ./
-COPY package.json yarn.lock .nvmrc ./
-
-# Install the dependencies.
-RUN nvm install && nvm use
-RUN bundle check || PATH="/root/.cargo/bin:${PATH}" bundle install --without test development --jobs 20 --retry 5
-RUN node --version
+# Now for Node/Yarn
+COPY package.json yarn.lock ./
 RUN npm install -g yarn
 RUN yarn install --frozen-lockfile
 
-# We copy all the files from the current directory to our
-# /app directory
-# Pay close attention to the dot (.)
-# The first one will select ALL The files of the current directory,
-# The second dot will copy it to the WORKDIR!
+# Copy application code
 COPY . .
-RUN cd public/creators-landing && yarn install && yarn build
 
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile DB_ADAPTER=nulldb DATABASE_URL='nulldb://nohost'
 
+# Now compile the homepage
+RUN cd public/creators-landing && yarn install && yarn build
+
+# Now for the NextJS frontend
+WORKDIR /rails/nextjs
+RUN npm i
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build
+
+WORKDIR /rails
+
+# Entrypoint prepares database and starts app on 0.0.0.0:3000 by default,
+# but can also take a rails command, like "console" or "runner" to start instead.
 EXPOSE 3000
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "-e","${RACK_ENV:-development}"]

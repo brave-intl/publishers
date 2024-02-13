@@ -67,5 +67,14 @@ RUN yarn install --verbose
 COPY . .
 RUN cd public/creators-landing && yarn install && yarn build
 
+# Now for the NextJS frontend
+WORKDIR /var/www//nextjs
+RUN npm i
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build
+
+WORKDIR /var/www/
+
+
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]
