@@ -1,71 +1,39 @@
-FROM debian:bullseye-slim as base
+# Make sure it matches the Ruby version in .ruby-version and Gemfile
+ARG RUBY_VERSION=3.3.0
+FROM ruby:$RUBY_VERSION
 
+# Install JavaScript dependencies and libvips for Active Storage
+ARG NODE_MAJOR_VERSION=20
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash -
+RUN apt-get update -qq && \
+    apt-get install -y build-essential libvips nodejs libsodium23 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man && \
+    npm install -g yarn
 
+# Rails app lives here
+WORKDIR /rails
 
-RUN apt-get update -qq && apt-get install -y build-essential software-properties-common
-RUN apt-get update -qq
-RUN apt-get install -y nodejs \
-  libpq-dev \
-  git \
-  curl \
-  libjemalloc2 \
-  wget \
-  firefox-esr \
-  libtool \
-  automake \
-  libsodium23
+# Set production environment
+ENV RAILS_LOG_TO_STDOUT="1" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_ENV="development"
 
-RUN apt update && apt install -y build-essential wget autoconf
-RUN wget https://github.com/postmodern/ruby-install/releases/download/v0.9.3/ruby-install-0.9.3.tar.gz \
-  && tar -xzvf ruby-install-0.9.3.tar.gz \
-  && cd ruby-install-0.9.3/ \
-  && make install
-RUN ruby-install -p https://github.com/ruby/ruby/pull/9371.diff ruby 3.3.0
-ENV PATH="/opt/rubies/ruby-3.3.0/bin:${PATH}"
+# Install application gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
 
-RUN gem install bundler
-
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.70.0
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-WORKDIR /var/www/
-
-# We are copying the Gemfile first, so we can install
-# all the dependencies without any issues
-# Rails will be installed once you load it from the Gemfile
-# This will also ensure that gems are cached and only updated when they change.
-COPY Gemfile ./
-COPY Gemfile.lock ./
-COPY package.json yarn.lock .nvmrc ./
-
-RUN NODE_ENV=development
-RUN RAILS_ENV=development
-
-
-# Install the gems.
-RUN gem install nokogiri
-RUN bundle install --jobs 20
-
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 18.15.0
-ENV NODE_OPTIONS=--openssl-legacy-provider
-ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-RUN mkdir $NVM_DIR
-RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash \
-  && . $NVM_DIR/nvm.sh \
-  && nvm install $NODE_VERSION \
-  && nvm alias default $NODE_VERSION \
-  && nvm use default
-
-RUN apt-get install -y python3
+# Now for Node/Yarn
+COPY package.json yarn.lock ./
 RUN npm install -g yarn
-RUN yarn cache clean
-RUN yarn install --verbose
+RUN yarn install --frozen-lockfile
 
+# Copy application code
 COPY . .
+
 RUN cd public/creators-landing && yarn install && yarn build
 
+# Entrypoint prepares database and starts app on 0.0.0.0:3000 by default,
+# but can also take a rails command, like "console" or "runner" to start instead.
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]
