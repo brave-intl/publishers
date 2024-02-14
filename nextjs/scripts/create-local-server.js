@@ -45,7 +45,7 @@ app
         logger: console,
         target: pubHost,
         changeOrigin: true,
-        secure: !isDevelopment,
+        secure: !dev,
         onProxyReq: (proxyReq, request, response) => {
           proxyReq.setHeader('origin', pubHost.origin );
         },
@@ -66,17 +66,15 @@ app
       }),
     );
 
-    const server = createServer(
-      {
-        key: fs.readFileSync(
-          path.join(__dirname, '..', '..', 'ssl', 'server.key'),
-        ),
-        cert: fs.readFileSync(
-          path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
-        ),
-      },
-      expressApp,
-    );
+    const createServerOpts = dev ? {
+      key: fs.readFileSync(
+        path.join(__dirname, '..', '..', 'ssl', 'server.key'),
+      ),
+      cert: fs.readFileSync(
+        path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
+      ),
+    } : {};
+    const server = createServer(createServerOpts, expressApp);
 
     return server.listen(PORT, (err) => {
       if (err) throw err;
