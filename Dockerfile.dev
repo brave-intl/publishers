@@ -71,7 +71,7 @@ RUN cd public/creators-landing && yarn install && yarn build
 WORKDIR /var/www//nextjs
 RUN npm i
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN npm run build
+RUN node scripts/copyLeoIcons.js && npm run build
 
 WORKDIR /var/www/
 
