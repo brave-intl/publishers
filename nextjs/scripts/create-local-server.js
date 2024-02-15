@@ -7,10 +7,9 @@ const fs = require('fs');
 const express = require('express');
 const { createServer } = require('https');
 const PORT = 5001;
-const dev = process.env.NODE_ENV !== 'production';
+const dev = process.env.NODE_ENV == 'development';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const nextAllowRoutes = ['_next', '^icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
