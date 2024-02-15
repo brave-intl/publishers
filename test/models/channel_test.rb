@@ -106,16 +106,16 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal "has already been taken", channel_2.errors.messages[:public_name][0]
   end
 
-  # test "public_identifier is added on create and must be unique" do
-  #   details = SiteChannelDetails.new()
-  #   channel = Channel.create(publisher: publishers(:completed), details: details)
-  #   existing_channel = channels(:google_verified)
+  test "public_identifier is added on create and must be unique" do
+    details = SiteChannelDetails.new()
+    channel = Channel.create(publisher: publishers(:completed), details: details)
+    existing_channel = channels(:google_verified)
 
-  #   channel.public_identifier = existing_channel.public_identifier
-  #   assert_raises do
-  #     channel.save!
-  #   end
-  # end
+    channel.public_identifier = existing_channel.public_identifier
+    assert_raises do
+      channel.save!
+    end
+  end
 
   test "publication_title is the site domain for site publishers" do
     channel = channels(:verified)
@@ -531,7 +531,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
       describe "#using_active_bitflyer_connection" do
         before do
           # I don't know why we create 79 channels on the fixture
-          assert Channel.count == 79
+          assert Channel.count == 80
         end
 
         test "count should eq 5" do
@@ -551,11 +551,11 @@ class ChannelTest < ActionDispatch::IntegrationTest
 
       describe "#missing_deposit_id" do
         before do
-          assert Channel.count == 79
+          assert Channel.count == 80
         end
 
         test "count should eq 73" do
-          assert Channel.missing_deposit_id.count == 74
+          assert Channel.missing_deposit_id.count == 75
         end
       end
     end

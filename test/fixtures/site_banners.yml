@@ -17,6 +17,26 @@ default_channel: &default_channel
   default_donation: 5
   social_links: {youtube: "", twitter: "https://twitter.com/annbothman", twitch: "https://www.twitch.tv/annbothman"}
 
+default_channel: &default_channel
+  id: "00000000-0120-0000-0000-000056000000"
+  publisher: default
+  channel: alice_default_twitter_ii
+  title: "Ann Bothman"
+  description: "Hi there! My name is Ann and I am a travel blogger and photographer. I have always had a passion for exploring new places and immersing myself in different cultures."
+  donation_amounts: [1, 10, 100]
+  default_donation: 5
+  social_links: {youtube: "", twitter: "https://twitter.com/annbothman", twitch: "https://www.twitch.tv/annbothman"}
+
+default_channel: &default_channel
+  id: "00789000-0120-0000-0000-000056000000"
+  publisher: default
+  channel: default_verified
+  title: "Ann Bothman"
+  description: "Hi there! My name is Ann and I am a travel blogger and photographer. I have always had a passion for exploring new places and immersing myself in different cultures."
+  donation_amounts: [1, 10, 100]
+  default_donation: 5
+  social_links: {youtube: "", twitter: "https://twitter.com/annbothman", twitch: "https://www.twitch.tv/annbothman"}
+
 verified_default_banner: &verified_default_banner
   id: "00000000-0000-0000-0000-000000000005"
   publisher: verified

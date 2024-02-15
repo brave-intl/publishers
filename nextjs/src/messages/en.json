@@ -3,6 +3,7 @@
     "add_channel": "Add Channel",
     "add_promo_code": "Add Promo Code",
     "app_title": "Brave Creators",
+    "nav_header": "creators",
     "app_description": "Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!",
     "cancel": "Cancel",
     "channel_created": "Channel created. Your verified status will be displayed in the Brave browser within the next 24-48 hours.",
@@ -27,6 +28,7 @@
     "invalid_totp": "Invalid 6-digit code. Please try again.",
     "log_in": "Log In",
     "remove": "Remove",
+    "customize": "Customize",
     "terms_of_service": "Terms of Service",
     "lost_2fa": "Lost 2fa?",
     "faqs": "FAQs",
@@ -34,7 +36,22 @@
     "oh_no": "Oh no!",
     "choose_different_verification_method": "Choose Different Verification Method",
     "support_note_html": "If you have any questions, please contact the Brave Creators team at <a href='https://community.brave.com/'>https://community.brave.com/</a>",
-    "warning_note_html": "This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Creators team at <a href='https://community.brave.com/'>https://community.brave.com/</a>"
+    "warning_note_html": "This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Creators team at <a href='https://community.brave.com/'>https://community.brave.com/</a>",
+    "basic_attention_token": "Basic Attention Token",
+    "open": "Open",
+    "disconnect": "Disconnect",
+    "uphold": "Uphold",
+    "gemini": "Gemini",
+    "dismiss": "Dismiss",
+    "learn_more": "Learn more",
+    "channel_names": {
+      "site": "Website",
+      "twitter": "X",
+      "reddit": "Reddit",
+      "vimeo": "Vimeo",
+      "youtube": "Youtube",
+      "twitch": "Twitch"
+    }
   },
   "activerecord": {
     "shared": {
@@ -62,7 +79,70 @@
     "help": "Help",
     "log_out": "Log Out",
     "security": "Security",
-    "settings": "Settings"
+    "settings": "Settings",
+    "support": "Support",
+    "crypto_contributions_header": "Receive crypto contributions",
+    "crypto_contributions_text": "Connect your favorite Ethereum and Solana wallets for each of your channels and receive contributions from your fans",
+    "contribution_banners": "Contribution banners"
+  },
+  "Home": {
+    "headings": {
+      "account_details": "Account details",
+      "channels": "Sites and channels"
+    },
+    "account": {
+      "monthly_payouts": "Monthly payouts",
+      "last_deposit": "Last Deposit:",
+      "last_deposit_date": "Last deposit date:",
+      "next_deposit_date": "Next deposit date:",
+      "custodial_accounts": "Payout account",
+      "connected_account": "Connected account:",
+      "deposit_currency": "You receive:",
+      "country_label": "Select your country",
+      "country_placeholder": "Select one",
+      "connect_prompt": "Connect an account to receive BAT contributions and monthly payouts. Select your country to see a list of available account providers. ",
+      "country_disclaimer": "You won’t be eligible for monthly payouts until you connect a custodial account. ",
+      "custodial_select_heading": "Available custodial account providers",
+      "gemini_connect": "Connect Gemini",
+      "uphold_connect": "Connect Uphold",
+      "wrong_region": "Uphold accounts registered in {region}  are not supported at this time. However, you can connect anyway, and you'll become eligible if your {region} is supported in the future."
+    },
+    "channels": {
+      "verified": "Appears as Verified",
+      "not_verified": "Not verified",
+      "incomplete": "INCOMPLETE",
+      "add_channel": "Add channel",
+      "add_channel_prompt": "Let's start with choosing where you're publishing your content:",
+      "website_prompt": "I have my own website and have access to the domain directory.",
+      "youtube_prompt": "I own or manage a YouTube channel.",
+      "twitch_prompt": "I'm the primary owner of a Twitch channel.",
+      "x_prompt": "I own or manage an X account.",
+      "vimeo_prompt": "I own or manage a Vimeo channel.",
+      "reddit_prompt": "I own a Reddit account.",
+      "add_first_channel": "Add your first channel",
+      "add_channel_prompt": "Channels are accounts, sites or other properties on the Web that you own, like a YouTube channel, a Reddit account, your own website, etc.",
+      "add_channel_title": "What are channels?"
+    },
+    "addCryptoWidget": {
+      "addWallet": "Add new crypto address",
+      "clearWallet": "Clear address",
+      "solanaConnectError": "Connect a Solana wallet to add an address",
+      "ethereumConnectError": "Connect an Ethereum wallet to add an address",
+      "widgetTitle": "CRYPTO ADDRESSES",
+      "ethereum": "Ethereum",
+      "ethereumBAT": "Basic Attention Token",
+      "solanaBAT": "Basic Attention Token (Wormhole)",
+      "solana": "Solana",
+      "genericError": "An error occurred. Please try again later.",
+      "addressConnectFailure": "Connecting new address failed",
+      "solanaConnectionFailure": "Solana connection was interrupted",
+      "notConnected": "Not Connected",
+      "channelPageLink": "View Channel Page",
+      "privacyHeader": "Privacy reminder",
+      "privacyNotification": "Using the same crypto address for multiple channels will allow others to know that those channels all belong to you. If you don't want others to know, use a different crypto address for each of your channels.",
+      "privacyQuit": "Cancel",
+      "privacyContinue": "I understand and would like to continue"
+    }
   },
   "Settings": {
     "buttons": {
