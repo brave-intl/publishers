@@ -1,22 +1,18 @@
 import { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
 // import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
+import {unstable_setRequestLocale} from 'next-intl/server';
 import * as React from 'react';
+import '@fontsource/poppins';
+import '@fontsource/inter';
+import '@fontsource/dm-mono';
 
 import '@/styles/globals.css';
 
 import { siteConfig } from '@/constant/config';
 
 import App from './app';
-
-const poppins = Poppins({
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-poppins',
-  subsets: ['latin'],
-});
 
 export function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ja' }];
@@ -63,8 +59,11 @@ export default async function RootLayout({
   } catch (error) {
     notFound();
   }
+
+  unstable_setRequestLocale(locale);
+
   return (
-    <html className={poppins.variable}>
+    <html>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <App>{children}</App>

@@ -1,0 +1,92 @@
+.crypto-wallet-for-channel {
+  min-width: 300px;
+
+  .crypto-wallet-group {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+
+  .crypto-wallet-dropdown {
+    border: none;
+    padding-left: 30px;
+    background-color: #F0F1F4;
+    border-radius: 8px;
+    background-repeat: no-repeat;
+    background-position: bottom 10px left 10px;
+    background-size: 6.5%;
+  }
+
+  .crypto-wallet-dropdown-eth {
+    background-image: url('../../public/icons/eth-color.svg');
+  }
+
+  .crypto-wallet-dropdown-sol {
+    background-image: url('../../public/icons/sol-color.svg');
+  }
+
+  .menu {
+    padding: 5px;
+  }
+
+  .address-option {
+    padding: 10px;
+  }
+
+  .dropdown-indicator {
+    color: #666D89;
+  }
+
+  .indicator-separator {
+    display: none;
+  }
+
+  .new-wallet-button {
+    border-top: 1px solid #E8E9EE;
+    text-align: center;
+    padding: 10px;
+    padding-top: 15px;
+    color: #423EEE;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: pointer;
+  }
+
+  .trash-icon {
+    height: 18px;
+    width: 18px;
+    float: right;
+    margin-top: 4px;
+  }
+}
+
+
+.privacy-header {
+  font-family: var(--font-poppins);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: 0;
+}
+
+.privacy-text {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+}
+
+.privacy-button-container {
+  text-align: center;
+}
+
+.add-channel-card {
+  border-radius: var(--leo-radius-xl);
+  border: 1px solid var(--leo-color-divider-subtle);
+  padding: var(--leo-spacing-xl);
+}
+
+.add-channel-card:hover {
+  border-color: var(--leo-color-primitive-primary-30);
+  box-shadow: 4px 4px 0 0 rgba(124 145 255 / 100%);
+}
