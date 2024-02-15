@@ -87,15 +87,19 @@ hr {
 }
 
 .main {
-  @apply py-4 px-2;
-
   display: flex;
   justify-content: center;
 
   height: 100%;
   min-height: calc(100vh - 80px);
+  width: 100%;
 
+  background: var(--leo-color-white);
+}
+
+.content-background {
   background: var(--leo-color-page-background);
+  width: 100%;
 }
 
 .content-width {
@@ -107,7 +111,11 @@ hr {
 }
 
 .animate-dash {
-  animation: dash 1.5s ease-in-out infinite
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+.shadow {
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
 }
 
 @keyframes dash {

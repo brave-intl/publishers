@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#80f2230bcfb7d2a87e7025a4e26c502d900fd938",
+    "@brave/leo": "github:brave/leo#af5d08e36a67a930dd0d4671fd90676e7b275e69",
     "@github/webauthn-json": "^2.1.1",
     "axios": "^1.6.0",
     "clsx": "^2.0.0",
@@ -28,7 +28,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-responsive": "^9.0.2",
-    "express-basic-auth": "1.2.1"
+    "express-basic-auth": "1.2.1",
+    "bs58": "5.0.0",
+    "react-select": "^5.7.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
