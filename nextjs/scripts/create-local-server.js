@@ -5,9 +5,9 @@ const next = require('next');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const { createServer } = require('https');
-const PORT = 5001;
 const dev = process.env.NODE_ENV == 'development';
+const { createServer } = dev ? require('https') : require('http');
+const PORT = 5001;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -81,7 +81,7 @@ app
       console.log(
         chalk.green(
           `> Server started on ${chalk.bold.green(
-            `https://localhost:${PORT}`,
+            `http://localhost:${PORT}`,
           )}`,
         ),
       );
