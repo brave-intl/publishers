@@ -3,6 +3,7 @@ require_relative "boot"
 require "rails/all"
 
 require_relative "middlewares/http_header_middleware"
+require_relative "../lib/custom_exceptions_app_wrapper"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -25,7 +26,7 @@ module Publishers
 
     config.eager_load_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/app/jobs/payout/concerns/]
 
-    config.exceptions_app = routes
+    config.exceptions_app = CustomExceptionsAppWrapper.new(exceptions_app: routes)
 
     config.log_level = if Rails.configuration.pub_secrets[:log_verbose].present?
       :debug
