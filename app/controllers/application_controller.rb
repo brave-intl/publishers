@@ -5,13 +5,6 @@ class ApplicationController < ActionController::Base
   include ErrorHandler
   include ActiveAnalyticsConcern
 
-  if Rails.configuration.pub_secrets[:basic_auth_user] && Rails.configuration.pub_secrets[:basic_auth_password]
-    http_basic_authenticate_with(
-      name: Rails.configuration.pub_secrets[:basic_auth_user],
-      password: Rails.configuration.pub_secrets[:basic_auth_password]
-    )
-  end
-
   protect_from_forgery prepend: true, with: :exception
 
   before_action :set_paper_trail_whodunnit
