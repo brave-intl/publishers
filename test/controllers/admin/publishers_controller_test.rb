@@ -154,6 +154,24 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_template "admin/errors/whitelist"
   end
 
+  test "renders whitelist unless admin is on admin whitelist original ip" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    get admin_publishers_path, headers: {"REMOTE_ADDR" => "1.2.3.4", "HTTP_ORIGINALIP" => "1.2.3.4,4.5.6.7"} # not on whitelist
+
+    assert_template "admin/errors/whitelist"
+  end
+
+  test "renders success if original ip allowed" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    get admin_publishers_path, headers: {"REMOTE_ADDR" => "1.2.3.4", "HTTP_ORIGINALIP" => "127.0.0.1"}
+
+    assert_template "admin/publishers/index"
+  end
+
   test "admins can approve channels waiting for admin approval" do
     Rails.configuration.pub_secrets[:host_inspector_offline] = false
     admin = publishers(:admin)

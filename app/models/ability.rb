@@ -15,7 +15,7 @@ class Ability
     @publisher = publisher || Publisher.new
     @ip = ip
     # Might come in as "HTTP_ORIGINALIP"=>"1.3.1.13, 13.45.54.81",
-    @forwarded_ip = forwarded_ip.split(",").map(&:strip!)
+    @forwarded_ip = forwarded_ip.split(",").map(&:strip)
 
     alias_action :create, :read, :update, :destroy, to: :crud
     alias_action :read, :create, to: :cr
