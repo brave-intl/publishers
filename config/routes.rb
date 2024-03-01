@@ -239,6 +239,9 @@ Rails.application.routes.draw do
         namespace :channels, defaults: {format: :json} do
           get "total_verified"
         end
+        namespace :ofac, defaults: {format: :json} do
+          get "banned_lists"
+        end
       end
       namespace :channels, defaults: {format: :json} do
         # This is effectively a get request, but our channel_identifiers are not in
