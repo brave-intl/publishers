@@ -1,3 +1,2 @@
 class OfacAddress < ApplicationRecord
-
 end
