@@ -29,6 +29,8 @@ app
   .then(() => {
     const expressApp = express();
 
+    // use the express app to serve static assets, necessary for Nala icons to work
+    expressApp.use(express.static('public'));
     // Paths next will handle, route them explicitly, everything else goes to rails
     expressApp.get(routeMatch, (req, res) => {
       return handle(req, res);
