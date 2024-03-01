@@ -30,6 +30,9 @@ app
   .then(() => {
     const expressApp = express();
 
+    // use the express app to serve static assets, necessary for Nala icons to work
+    expressApp.use(express.static('public'));
+
     const pubHost = new URL(`https://${process.env.PUBLISHERS_HOST}`);
     const nextHost = `https://${process.env.NEXT_HOST}`;
 
