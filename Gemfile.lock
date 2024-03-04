@@ -135,7 +135,7 @@ GEM
       execjs (~> 2)
     awrence (1.2.1)
     aws-eventstream (1.3.0)
-    aws-partitions (1.894.0)
+    aws-partitions (1.895.0)
     aws-sdk-core (3.191.3)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
@@ -144,8 +144,8 @@ GEM
     aws-sdk-kms (1.77.0)
       aws-sdk-core (~> 3, >= 3.191.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.141.0)
-      aws-sdk-core (~> 3, >= 3.189.0)
+    aws-sdk-s3 (1.143.0)
+      aws-sdk-core (~> 3, >= 3.191.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.8)
     aws-sigv4 (1.8.0)
@@ -177,7 +177,7 @@ GEM
       sassc-rails (>= 2.0.0)
     brakeman (6.1.2)
       racc
-    brotli (0.4.0)
+    brotli (0.5.0)
     builder (3.2.4)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
@@ -230,12 +230,11 @@ GEM
       simpleidn (~> 0.2.1)
     docile (1.4.0)
     domain_name (0.6.20240107)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
-    drb (2.2.0)
-      ruby2_keywords
+    dotenv (3.1.0)
+    dotenv-rails (3.1.0)
+      dotenv (= 3.1.0)
+      railties (>= 6.1)
+    drb (2.2.1)
     e2mmap (0.1.0)
     erubi (1.12.0)
     et-orbi (1.2.7)
@@ -248,16 +247,15 @@ GEM
       rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
     execjs (2.9.1)
-    faraday (2.7.12)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (3.0.2)
+    faraday-net_http (3.1.0)
+      net-http
     faraday-retry (2.2.0)
       faraday (~> 2.0)
-    fastimage (2.2.7)
+    fastimage (2.3.0)
     ffi (1.16.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -265,13 +263,17 @@ GEM
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
     forwardable (1.3.3)
-    fugit (1.10.0)
+    fugit (1.10.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-protobuf (3.25.3)
+    google-protobuf (3.25.3-aarch64-linux)
+    google-protobuf (3.25.3-arm64-darwin)
+    google-protobuf (3.25.3-x86-linux)
     google-protobuf (3.25.3-x86_64-darwin)
+    google-protobuf (3.25.3-x86_64-linux)
     hashdiff (1.1.0)
     hashie (5.0.0)
     highline (3.0.1)
@@ -289,7 +291,7 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
-    importmap-rails (1.2.3)
+    importmap-rails (2.0.1)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
@@ -302,7 +304,7 @@ GEM
     jmespath (1.6.2)
     json (2.7.1)
     jsonapi-renderer (0.2.2)
-    jwt (2.8.0)
+    jwt (2.8.1)
       base64
     keccak (1.3.1)
     konstructor (1.0.2)
@@ -337,10 +339,10 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.2)
+    marcel (1.0.4)
     matrix (0.4.2)
-    meta-tags (2.19.0)
-      actionpack (>= 3.2.0, < 7.2)
+    meta-tags (2.20.0)
+      actionpack (>= 6.0.0, < 7.2)
     method_source (1.0.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
@@ -352,6 +354,8 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.4.0)
     mutex_m (0.2.0)
+    net-http (0.4.1)
+      uri
     net-imap (0.4.10)
       date
       net-protocol
@@ -361,15 +365,22 @@ GEM
       timeout
     net-smtp (0.4.0.1)
       net-protocol
-    newrelic_rpm (9.6.0)
-      base64
+    newrelic_rpm (9.7.1)
     nio4r (2.7.0)
     nokogiri (1.16.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    nokogiri (1.16.2-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.16.2-arm-linux)
       racc (~> 1.4)
+    nokogiri (1.16.2-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.2-x86-linux)
+      racc (~> 1.4)
     nokogiri (1.16.2-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -405,6 +416,7 @@ GEM
     openssl-signature_algorithm (1.3.0)
       openssl (> 2.0)
     orm_adapter (0.5.0)
+    package_json (0.1.0)
     paper_trail (15.1.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
@@ -412,7 +424,7 @@ GEM
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
-    pg (1.5.5)
+    pg (1.5.6)
     pkg-config (1.5.6)
     popper_js (1.16.1)
     premailer (1.22.0)
@@ -505,9 +517,9 @@ GEM
     rdoc (6.6.2)
       psych (>= 4.0.0)
     recaptcha (5.16.0)
-    redis (5.0.8)
+    redis (5.1.0)
       redis-client (>= 0.17.0)
-    redis-client (0.20.0)
+    redis-client (0.21.0)
       connection_pool
     redis-prescription (2.6.0)
     redis-session-store (0.11.5)
@@ -531,7 +543,7 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
-    rubocop (1.60.2)
+    rubocop (1.61.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -542,8 +554,8 @@ GEM
       rubocop-ast (>= 1.30.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.30.0)
-      parser (>= 3.2.1.0)
+    rubocop-ast (1.31.1)
+      parser (>= 3.3.0.4)
     rubocop-performance (1.20.2)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
@@ -573,10 +585,11 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    sendgrid-ruby (6.6.2)
+    sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
-    shakapacker (7.1.0)
+    shakapacker (7.2.2)
       activesupport (>= 5.2)
+      package_json
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
@@ -589,7 +602,7 @@ GEM
       rufus-scheduler (~> 3.2)
       sidekiq (>= 6, < 8)
       tilt (>= 1.4.0)
-    sidekiq-throttled (1.1.0)
+    sidekiq-throttled (1.3.0)
       concurrent-ruby (>= 1.2.0)
       redis-prescription (~> 2.2)
       sidekiq (>= 6.5)
@@ -674,6 +687,7 @@ GEM
       unf_ext
     unf_ext (0.0.9.1)
     unicode-display_width (2.5.0)
+    uri (0.13.0)
     vcr (6.2.0)
     version_gem (1.1.3)
     warden (1.2.9)
@@ -704,7 +718,7 @@ GEM
     will_paginate (4.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.35)
+    yard (0.9.36)
     yt (0.33.4)
       activesupport
     zeitwerk (2.6.13)
@@ -717,24 +731,28 @@ GEM
       multipart-post (~> 2.0)
 
 PLATFORMS
+  aarch64-linux
   arm-linux
+  arm64-darwin
   ruby
-  x86_64-darwin-23
+  x86-linux
+  x86_64-darwin
+  x86_64-linux
 
 DEPENDENCIES
   active_analytics
-  active_model_serializers (~> 0.10.0)
+  active_model_serializers (~> 0.10)
   activerecord-import (~> 1.5.1)
   activerecord-nulldb-adapter!
   activerecord-postgres_enum
   addressable (~> 2.8)
-  aws-sdk-s3 (~> 1.141.0)
+  aws-sdk-s3 (~> 1.143.0)
   base58
   better_errors
   binding_of_caller
   bootstrap (= 4.6.2)
   brakeman
-  brotli (~> 0.4.0)
+  brotli (~> 0.5.0)
   bundler-audit
   byebug
   cancancan (~> 3.5.0)
@@ -742,30 +760,30 @@ DEPENDENCIES
   connection_pool (~> 2.4)
   countries
   database_cleaner
-  devise (~> 4.9.2)
+  devise (~> 4.9)
   dnsruby (~> 1.70)
   domain_name
-  dotenv-rails (= 2.8.1)
-  eth (~> 0.4)
-  faraday (= 2.7.12)
+  dotenv-rails (= 3.1.0)
+  eth (~> 0.5)
+  faraday (= 2.9)
   faraday-retry (= 2.2.0)
-  fastimage (~> 2.2.5)
+  fastimage (~> 2.3.0)
   ffi
-  font-awesome-rails (~> 4.7.0.4)
-  google-protobuf (~> 3.25.1)
-  i18n-tasks (~> 1.0.12)
-  importmap-rails (~> 1.1)
+  font-awesome-rails (~> 4.7.0)
+  google-protobuf (~> 3.25)
+  i18n-tasks (~> 1.0.13)
+  importmap-rails (~> 2.0)
   letter_opener
   letter_opener_web (~> 2.0)
-  listen (~> 3.5)
+  listen (~> 3.9)
   lograge (~> 0.14.0)
-  meta-tags (~> 2.19.0)
+  meta-tags (~> 2.20)
   minitest
   minitest-rails!
   minitest-retry
   mocha
-  newrelic_rpm (~> 9.6.0)
-  nokogiri (>= 1.15.4)
+  newrelic_rpm (~> 9.7)
+  nokogiri (>= 1.16)
   omniauth-github (~> 2.0.1)
   omniauth-google-oauth2 (~> 1.1.1)
   omniauth-rails_csrf_protection (~> 1.0.1)
@@ -779,7 +797,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-stack_explorer (~> 0.6.1)
-  public_suffix (~> 5.0.1)
+  public_suffix (~> 5.0)
   puma (~> 6.4.2)
   rack (= 3.0.9.1)
   rack-attack!
@@ -787,23 +805,23 @@ DEPENDENCIES
   rails (= 7.1.3.2)
   rails-controller-testing
   rails-html-sanitizer (= 1.6.0)
-  rails-i18n (~> 7.0.6)
+  rails-i18n (~> 7.0)
   railties (= 7.1.3.2)
   rbnacl
   recaptcha (~> 5.16.0)
-  redis (~> 5.0.6)
+  redis (~> 5.1)
   redis-session-store
-  render_async (~> 2.1.8)
+  render_async (~> 2.1)
   rexml
   rotp (~> 6.3.0)
   rqrcode (~> 2.2.0)
   sass-rails (>= 6)
   selenium-webdriver (~> 4.12)
-  sendgrid-ruby (~> 6.6.2)
-  shakapacker (= 7.1.0)
-  sidekiq (~> 7.2.0)
+  sendgrid-ruby (~> 6.7)
+  shakapacker (= 7.2.2)
+  sidekiq (~> 7.2)
   sidekiq-scheduler (~> 5.0.3)
-  sidekiq-throttled (~> 1.1.0)
+  sidekiq-throttled (~> 1.3.0)
   simplecov
   slim-rails (= 3.6.3)
   solargraph
@@ -821,8 +839,8 @@ DEPENDENCIES
   webauthn
   webmock (~> 3.0)
   will_paginate
-  yt (~> 0.33.0)
-  zeitwerk (~> 2.6.6)
+  yt (~> 0.33)
+  zeitwerk (~> 2.6)
   zendesk_api (~> 3.0.5)
 
 RUBY VERSION
