@@ -152,7 +152,7 @@ export default function SecurityPage() {
             <div className='md:w-[80%]'>
               <h3 className='mb-2'>{t('security.index.u2f.heading')}</h3>
               <div className='md:order-2'>{t('security.index.u2f.intro')}</div>
-              {!!u2f_registrations.length && (
+              {!!security.u2f_registrations.length && (
                 <div className='mt-2'>
                   {security.u2f_registrations.map((item) => {
                     return (
