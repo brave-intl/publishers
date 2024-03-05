@@ -35,7 +35,7 @@ export default function SecurityPage() {
   }, []);
 
   async function fetchsecurity() {
-    const res = await apiRequest(`/publishers/security`);
+    const res = await apiRequest(`/publishers/secdata`);
     setIsLoading(false);
     setSecurity(res);
   }
