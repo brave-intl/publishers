@@ -33,7 +33,7 @@ app
     const basicAuthUser = process.env.BASIC_AUTH_USER;
     const basicAuthPass = process.env.BASIC_AUTH_PASSWORD;
     if (basicAuthUser && basicAuthPass) {
-      expressApp.use(basicAuth({
+      expressApp.use(/^\/(?!health-check\/?$)/,basicAuth({
         users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
         challenge: true
       }))
@@ -54,7 +54,7 @@ app
         logger: console,
         target: pubHost,
         changeOrigin: true,
-        secure: true,
+        secure: !dev,
         onProxyReq: (proxyReq, request, response) => {
           const ip = (request.headers['x-forwarded-for'] || request.socket.remoteAddress).split(':').pop()
           proxyReq.setHeader('originalIP', ip );
