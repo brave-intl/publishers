@@ -54,7 +54,7 @@ app
         logger: console,
         target: pubHost,
         changeOrigin: true,
-        secure: true,
+        secure: !dev,
         onProxyReq: (proxyReq, request, response) => {
           const ip = (request.headers['x-forwarded-for'] || request.socket.remoteAddress).split(':').pop()
           proxyReq.setHeader('originalIP', ip );
