@@ -5,11 +5,12 @@ const next = require('next');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const dev = process.env.NODE_ENV == 'development';
+const dev = process.env.NODE_ENV === 'development';
 const { createServer } = dev ? require('https') : require('http');
 const PORT = 5001;
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const basicAuth = require('express-basic-auth')
 
 const nextAllowRoutes = ['_next', '^icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
@@ -29,6 +30,15 @@ app
   .then(() => {
     const expressApp = express();
 
+    const basicAuthUser = process.env.BASIC_AUTH_USER;
+    const basicAuthPass = process.env.BASIC_AUTH_PASSWORD;
+    if (basicAuthUser && basicAuthPass) {
+      expressApp.use(basicAuth({
+        users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
+        challenge: true
+      }))
+    }
+
     // Paths next will handle, route them explicitly, everything else goes to rails
     expressApp.get(routeMatch, (req, res) => {
       return handle(req, res);
@@ -44,7 +54,7 @@ app
         logger: console,
         target: pubHost,
         changeOrigin: true,
-        secure: !dev,
+        secure: true,
         onProxyReq: (proxyReq, request, response) => {
           const ip = (request.headers['x-forwarded-for'] || request.socket.remoteAddress).split(':').pop()
           proxyReq.setHeader('originalIP', ip );
@@ -67,15 +77,25 @@ app
       }),
     );
 
-    const createServerOpts = dev ? {
-      key: fs.readFileSync(
-        path.join(__dirname, '..', '..', 'ssl', 'server.key'),
-      ),
-      cert: fs.readFileSync(
-        path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
-      ),
-    } : {};
-    const server = createServer(createServerOpts, expressApp);
+    let server;
+    if (dev) {
+      server = createServer(
+        {
+          key: fs.readFileSync(
+            path.join(__dirname, '..', '..', 'ssl', 'server.key'),
+          ),
+          cert: fs.readFileSync(
+            path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
+          ),
+        },
+        expressApp,
+      );
+    } else {
+      server = createServer(
+        {},
+        expressApp,
+      );
+    }
 
     return server.listen(PORT, (err) => {
       if (err) throw err;
@@ -83,7 +103,7 @@ app
       console.log(
         chalk.green(
           `> Server started on ${chalk.bold.green(
-            `http://localhost:${PORT}`,
+            `https://localhost:${PORT}`,
           )}`,
         ),
       );
