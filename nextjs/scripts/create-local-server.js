@@ -12,7 +12,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const basicAuth = require('express-basic-auth')
 
-const nextAllowRoutes = ['_next', '^icons', 'favicon', 'api'];
+const nextAllowRoutes = ['images', '_next', '^icons', 'favicon', 'api'];
 const nextAllowPageRoutes = [
   'publishers/settings',
   'publishers/security',
