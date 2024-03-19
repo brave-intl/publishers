@@ -7,6 +7,8 @@ import { useTranslations } from 'next-intl';
 import { useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 
+import styles from '@/styles/ChannelCard.module.css';
+
 import { apiRequest } from '@/lib/api';
 import UserContext from '@/lib/context/UserContext';
 
@@ -14,7 +16,6 @@ import { CryptoAddressContext } from '@/components/CryptoAddressProvider';
 
 import CryptoPrivacyModal from './CryptoPrivacyModal';
 import CryptoWalletOption from './CryptoWalletOption';
-import styles from '@/styles/ChannelCard.module.css';
 
 export default function ChannelCryptoEditor({ channel }) {
   const t = useTranslations();
@@ -367,10 +368,10 @@ export default function ChannelCryptoEditor({ channel }) {
             formatCryptoAddress={formatCryptoAddress}
             classNames={{
               control: () =>
-                'crypto-wallet-dropdown crypto-wallet-dropdown-eth',
-              dropdownIndicator: () => 'dropdown-indicator',
-              indicatorSeparator: () => 'indicator-separator',
-              menu: () => 'menu',
+                `${styles['crypto-wallet-dropdown']} ${styles['crypto-wallet-dropdown-eth']}`,
+              dropdownIndicator: () => `${styles['dropdown-indicator']}`,
+              indicatorSeparator: () => `${styles['indicator-separator']}`,
+              menu: () => `${styles['menu']}`,
             }}
           />
         </div>
@@ -388,10 +389,10 @@ export default function ChannelCryptoEditor({ channel }) {
             formatCryptoAddress={formatCryptoAddress}
             classNames={{
               control: () =>
-                'crypto-wallet-dropdown crypto-wallet-dropdown-sol',
-              dropdownIndicator: () => 'dropdown-indicator',
-              indicatorSeparator: () => 'indicator-separator',
-              menu: () => 'menu',
+                `${styles['crypto-wallet-dropdown']} ${styles['crypto-wallet-dropdown-sol']}`,
+              dropdownIndicator: () => `${styles['dropdown-indicator']}`,
+              indicatorSeparator: () => `${styles['indicator-separator']}`,
+              menu: () => `${styles['menu']}`,
             }}
           />
         </div>

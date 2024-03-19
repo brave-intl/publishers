@@ -1,16 +1,16 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
-import Icon from '@brave/leo/react/icon';
-import Link from '@brave/leo/react/link';
 import Hr from '@brave/leo/react/hr';
+import Icon from '@brave/leo/react/icon';
 import { useTranslations } from 'next-intl';
 import { useContext,useEffect,useState } from 'react';
 
 import styles from '@/styles/ChannelCard.module.css';
 
+import { apiRequest } from '@/lib/api';
+
 import Card from '@/components/Card';
-import Container from '@/components/Container';
 
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
@@ -22,6 +22,11 @@ export default function ChannelCard({ channel, publisherPayable }) {
   useEffect(() => {
     console.log(channel);
   }, []);
+
+  async function removeChannel() {
+    const response = await apiRequest(`channels/${channel.id}`, 'DELETE');
+    console.log(response);
+  }
 
   function channelType() {
     return channel.details_type.split('ChannelDetails').join('').toLowerCase();
@@ -91,7 +96,9 @@ export default function ChannelCard({ channel, publisherPayable }) {
       </section>
       <Hr />
       <section>
-        <Button kind='plain'>{t('shared.remove')}</Button>
+        <Button kind='plain' onClick={removeChannel}>
+          {t('shared.remove')}
+        </Button>
         <Button kind='outline'>{t('shared.customize')}</Button>
       </section>
     </Card>

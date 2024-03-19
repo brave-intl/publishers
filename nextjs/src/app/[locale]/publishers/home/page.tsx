@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
+import Dialog from '@brave/leo/react/dialog';
 import ProgressRing from '@brave/leo/react/progressRing';
 import * as moment from 'moment';
 import { useTranslations } from 'next-intl';
@@ -12,6 +13,7 @@ import Card from '@/components/Card';
 import Container from '@/components/Container';
 import CryptoAddressProvider from '@/components/CryptoAddressProvider';
 
+import AddChannelModal from './channels/AddChannelModal';
 import ChannelCard from './channels/ChannelCard';
 import CustodianServiceWidget from './custodianServices/CustodianServiceWidget';
 
@@ -23,6 +25,7 @@ export default function HomePage() {
   const [channels, setChannels] = useState([]);
   const [publisherPayable, setPublisherPayable] = useState(false);
   const [walletData, setWalletData] = useState({});
+  const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
   const t = useTranslations();
 
   useEffect(() => {
@@ -93,9 +96,17 @@ export default function HomePage() {
                 })}
               </section>
             </CryptoAddressProvider>
-            <Button>Add Channel</Button>
+            <Button onClick={() => setIsAddChannelModalOpen(true)}>
+              {t('Home.channels.add_channel')}
+            </Button>
           </div>
         </Container>
+        <Dialog
+          isOpen={isAddChannelModalOpen}
+          onClose={() => setIsAddChannelModalOpen(false)}
+        >
+          <AddChannelModal />
+        </Dialog>
       </main>
     );
   }

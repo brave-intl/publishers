@@ -297,5 +297,9 @@ module Publishers
         redirect_to(home_publishers_path)
       end
     end
+
+    def redirect_options
+      { allow_other_host: true }
+    end
   end
 end
