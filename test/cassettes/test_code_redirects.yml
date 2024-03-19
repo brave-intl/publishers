@@ -1040,4 +1040,140 @@ http_interactions:
         stroke-linecap=\"round\" stroke-linejoin=\"round\"></path> </g> </g> </g>
         </svg> </div>\n<div style=\"display:none\">\n\t::CLOUDFLARE_ERROR_500S_BOX::\n</div>\n</body></html>"
   recorded_at: Wed, 22 Feb 2023 18:17:55 GMT
-recorded_with: VCR 6.1.0
+- request:
+    method: post
+    uri: https://api-sandbox.uphold.com/oauth2/token
+    body:
+      encoding: US-ASCII
+      string: code=123&client_id=test_client_id&client_secret=test_client_secret&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%2F%2Fpublishers%2Fuphold_verified
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api-sandbox.uphold.com
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Date:
+      - Tue, 19 Mar 2024 21:15:22 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '66'
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 86707a398d52c48b-SEA
+      Cf-Cache-Status:
+      - DYNAMIC
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      Content-Security-Policy:
+      - 'default-src "none";base-uri ''self'';font-src ''self'' https: data:;form-action
+        ''self'';frame-ancestors ''self'';img-src ''self'' data:;object-src ''none'';script-src
+        ''self'';script-src-attr ''none'';style-src ''self'' https: ''unsafe-inline'';upgrade-insecure-requests'
+      Expect-Ct:
+      - max-age=0
+      Expect-Staple:
+      - max-age=0
+      Rate-Limit-Remaining:
+      - '99997'
+      Rate-Limit-Reset:
+      - '1710883222'
+      Rate-Limit-Total:
+      - '100000'
+      Request-Id:
+      - 86707a3a276ec48b-SEA
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - '0'
+      Server:
+      - cloudflare
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: UTF-8
+      string: '{"error":"invalid_client","error_description":"Client is invalid"}'
+  recorded_at: Tue, 19 Mar 2024 21:15:22 GMT
+- request:
+    method: post
+    uri: https://api-sandbox.uphold.com/oauth2/token
+    body:
+      encoding: US-ASCII
+      string: code=123&client_id=test_client_id&client_secret=test_client_secret&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%2Fpublishers%2Fuphold_verified
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api-sandbox.uphold.com
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Date:
+      - Tue, 19 Mar 2024 21:21:02 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '66'
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 867082823972c399-SEA
+      Cf-Cache-Status:
+      - DYNAMIC
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      Content-Security-Policy:
+      - 'default-src "none";base-uri ''self'';font-src ''self'' https: data:;form-action
+        ''self'';frame-ancestors ''self'';img-src ''self'' data:;object-src ''none'';script-src
+        ''self'';script-src-attr ''none'';style-src ''self'' https: ''unsafe-inline'';upgrade-insecure-requests'
+      Expect-Ct:
+      - max-age=0
+      Expect-Staple:
+      - max-age=0
+      Rate-Limit-Remaining:
+      - '99997'
+      Rate-Limit-Reset:
+      - '1710883562'
+      Rate-Limit-Total:
+      - '100000'
+      Request-Id:
+      - 86708283121ac399-SEA
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - '0'
+      Server:
+      - cloudflare
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: UTF-8
+      string: '{"error":"invalid_client","error_description":"Client is invalid"}'
+  recorded_at: Tue, 19 Mar 2024 21:21:01 GMT
+recorded_with: VCR 6.2.0
