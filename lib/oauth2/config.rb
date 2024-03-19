@@ -49,7 +49,7 @@ module Oauth2::Config
         when "staging"
           "https://publishers-staging.basicattentiontoken.org"
         else
-          "https://localhost:3000"
+          Rails.configuration.pub_secrets[:creators_full_host]
         end
 
         URI(uri)

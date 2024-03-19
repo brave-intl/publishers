@@ -10,6 +10,7 @@ services:
       RAILS_ENV: development
       REDIS_URL: redis://redis:6379/0
       DATABASE_URL: postgres://postgres@postgres:5432/brave_publishers_dev
+      CREATORS_FULL_HOST: https://localhost
       DATABASE_URL_TEST: postgres://postgres@postgres:5432/brave_publishers_test
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
@@ -39,6 +40,7 @@ services:
         target: /app
       - ./ssl:/ssl
     ports:
+      - "443:5001"
       - "5001:5001"
       - "9231:9231" # debugger ports
       - "9232:9232"
@@ -47,7 +49,7 @@ services:
     environment:
       NODE_ENV: development
       PUBLISHERS_HOST: web:3000
-      NEXT_HOST: localhost:5001
+      NEXT_HOST: localhost
     depends_on:
       - web
     networks:
