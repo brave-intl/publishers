@@ -63,14 +63,14 @@ app
     expressApp.use('/health-check', middlewareToRouteToRails);
 
     // Then add http auth to everything else
-    const basicAuthUser = process.env.BASIC_AUTH_USER;
-    const basicAuthPass = process.env.BASIC_AUTH_PASSWORD;
-    if (basicAuthUser && basicAuthPass) {
-      expressApp.use(basicAuth({
-        users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
-        challenge: true
-      }))
-    }
+    // const basicAuthUser = process.env.BASIC_AUTH_USER;
+    // const basicAuthPass = process.env.BASIC_AUTH_PASSWORD;
+    // if (basicAuthUser && basicAuthPass) {
+    //   expressApp.use(basicAuth({
+    //     users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
+    //     challenge: true
+    //   }))
+    // }
 
     // Then handle the next specific routes
     // Paths next will handle, route them explicitly, everything else goes to rails
