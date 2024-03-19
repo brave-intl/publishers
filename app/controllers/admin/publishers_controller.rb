@@ -137,7 +137,7 @@ class Admin::PublishersController < AdminController
       base = root_url(options).gsub("/?locale=en", "")
       login_url = base + "/publishers/" + @publisher.id + "?token=" + authentication_token
     else
-      login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
+      login_url = Rails.configuration.pub_secrets[:creators_full_host] + "/publishers/" + @publisher.id + "?token=" + authentication_token
     end
 
     if @publisher.totp_registration.present?
