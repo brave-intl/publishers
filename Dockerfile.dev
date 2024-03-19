@@ -1,4 +1,6 @@
-FROM ruby:3.3.0-slim
+FROM debian:bullseye-slim as base
+
+
 
 RUN apt-get update -qq && apt-get install -y build-essential software-properties-common
 RUN apt-get update -qq
@@ -12,6 +14,14 @@ RUN apt-get install -y nodejs \
   libtool \
   automake \
   libsodium23
+
+RUN apt update && apt install -y build-essential wget autoconf
+RUN wget https://github.com/postmodern/ruby-install/releases/download/v0.9.3/ruby-install-0.9.3.tar.gz \
+  && tar -xzvf ruby-install-0.9.3.tar.gz \
+  && cd ruby-install-0.9.3/ \
+  && make install
+RUN ruby-install -p https://github.com/ruby/ruby/pull/9371.diff ruby 3.3.0
+ENV PATH="/opt/rubies/ruby-3.3.0/bin:${PATH}"
 
 RUN gem install bundler
 
@@ -56,6 +66,15 @@ RUN yarn install --verbose
 
 COPY . .
 RUN cd public/creators-landing && yarn install && yarn build
+
+# Now for the NextJS frontend
+WORKDIR /var/www//nextjs
+RUN npm i
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN node scripts/copyLeoIcons.js && npm run build
+
+WORKDIR /var/www/
+
 
 EXPOSE 3000
 CMD ["bundle", "exec", "rails","server","-b","0.0.0.0","-p","3000"]

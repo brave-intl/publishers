@@ -170,7 +170,7 @@ Rails.application.routes.draw do
     namespace :nextv1, defaults: {format: :json} do
       resources :publishers, only: [:update, :destroy]
       get "publishers/me", to: "publishers#me"
-      get "publishers/security", to: "publishers#security"
+      get "publishers/secdata", to: "publishers#secdata"
 
       namespace :totp_registrations do
         get :new
@@ -236,9 +236,11 @@ Rails.application.routes.draw do
     # /api/v3/
     namespace :v3, defaults: {format: :json} do
       namespace :public, defaults: {format: :json} do
-        get "channels", controller: "channels"
         namespace :channels, defaults: {format: :json} do
           get "total_verified"
+        end
+        namespace :ofac, defaults: {format: :json} do
+          get "banned_lists"
         end
       end
       namespace :channels, defaults: {format: :json} do

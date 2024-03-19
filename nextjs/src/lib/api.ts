@@ -11,7 +11,7 @@ export async function apiRequest(
     const response = await axios({ method, url, data });
 
     // verify request had 2xx status code
-    if (response.statusText !== 'OK') {
+    if (response.status !== 200) {
       // Imperatively navigate to Unauthorized page on 403
       if (response.status === 403) {
         // TODO: This path doesn't exist yet

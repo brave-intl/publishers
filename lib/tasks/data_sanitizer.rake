@@ -7,12 +7,9 @@ namespace :data_sanitizer do
 
     PublisherStatement.update_all source_url: "https://redacted-source-url.local"
     Publisher.find_each do |publisher|
-      email_digest = publisher.email \
-        && Digest::SHA2.hexdigest(publisher.email)[0..32]
-      auth_user_id = publisher.auth_user_id \
-        && Digest::SHA2.hexdigest(publisher.auth_user_id)[0..32]
-      auth_email_digest = publisher.auth_email \
-        && Digest::SHA2.hexdigest(publisher.auth_email)[0..32]
+      email_digest = publisher.email && Digest::SHA2.hexdigest(publisher.email)[0..32]
+      auth_user_id = publisher.auth_user_id && Digest::SHA2.hexdigest(publisher.auth_user_id)[0..32]
+      auth_email_digest = publisher.auth_email && Digest::SHA2.hexdigest(publisher.auth_email)[0..32]
       publisher.update_columns(
         encrypted_authentication_token: nil,
         encrypted_authentication_token_iv: nil,

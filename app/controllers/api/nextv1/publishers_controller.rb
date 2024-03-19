@@ -12,7 +12,7 @@ class Api::Nextv1::PublishersController < Api::Nextv1::BaseController
     render(json: response_data.to_json, status: 200)
   end
 
-  def security
+  def secdata
     response_data = {
       u2f_enabled: u2f_enabled?(current_publisher),
       totp_enabled: totp_enabled?(current_publisher),

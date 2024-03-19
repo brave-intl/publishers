@@ -1,8 +1,8 @@
 # typed: true
 
 module ApplicationHelper
-  def popover_menu(&block)
-    render(layout: "popover", &block)
+  def popover_menu(&)
+    render(layout: "popover", &)
   end
 
   def piwik_domain

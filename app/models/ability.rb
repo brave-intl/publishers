@@ -11,9 +11,11 @@ class Ability
     [].freeze
   end
 
-  def initialize(publisher, ip)
+  def initialize(publisher, ip, forwarded_ip = "")
     @publisher = publisher || Publisher.new
     @ip = ip
+    # Might come in as "HTTP_ORIGINALIP"=>"1.3.1.13, 13.45.54.81",
+    @forwarded_ip = forwarded_ip.split(",").map(&:strip)
 
     alias_action :create, :read, :update, :destroy, to: :crud
     alias_action :read, :create, to: :cr
@@ -44,7 +46,7 @@ class Ability
 
   def admin_ip_whitelisted?
     return true if ADMIN_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
-    ADMIN_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(@ip) }
+    ADMIN_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(@ip) || (!@forwarded_ip.blank? && @forwarded_ip.any? { |fip| ip_addr.include?(fip) }) }
   end
 
   class U2fDisabledError < RuntimeError
