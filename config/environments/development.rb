@@ -31,7 +31,6 @@ Rails.application.configure do
        key_prefix: 'publishers:session:'
     }
 
-    config.middleware.use(Rack::Attack)
     config.action_mailer.default_url_options = { host: "localhost", port: 3000, protocol: "https" }
     config.action_mailer.delivery_method = :letter_opener_web
     config.action_mailer.perform_deliveries = true
