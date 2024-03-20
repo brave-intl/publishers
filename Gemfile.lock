@@ -30,14 +30,6 @@ GIT
     activerecord-nulldb-adapter (0.9.0)
       activerecord (>= 5.2.0, < 7.2)
 
-GIT
-  remote: https://github.com/rack/rack-attack.git
-  revision: 429fb7fecca66a640fe98e1aea75c477c2f62f32
-  branch: main
-  specs:
-    rack-attack (6.7.0)
-      rack (>= 1.0, < 4)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -800,7 +792,6 @@ DEPENDENCIES
   public_suffix (~> 5.0)
   puma (~> 6.4.2)
   rack (= 3.0.9.1)
-  rack-attack!
   rack-utf8_sanitizer
   rails (= 7.1.3.2)
   rails-controller-testing
