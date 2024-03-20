@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_23_163948) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_01_140330) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -392,6 +392,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_23_163948) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "ofac_addresses", id: false, force: :cascade do |t|
+    t.string "address", null: false
   end
 
   create_table "organization_permissions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
