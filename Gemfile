@@ -15,7 +15,7 @@ gem "rack", "3.0.9.1"
 gem "countries"
 
 # Serialize models for JSON APIs
-gem "active_model_serializers", "~> 0.10.0"
+gem "active_model_serializers", "~> 0.10"
 
 # For bulk updates/imports
 gem "activerecord-import", "~> 1.5.1"
@@ -29,11 +29,11 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.141.0"
+gem "aws-sdk-s3", "~> 1.143.0"
 
 gem "bootstrap", "4.6.2"
 
-gem "brotli", "~> 0.4.0"
+gem "brotli", "~> 0.5.0"
 
 # Authorization
 gem "cancancan", "~> 3.5.0"
@@ -41,31 +41,31 @@ gem "cancancan", "~> 3.5.0"
 gem "connection_pool", "~> 2.4"
 
 # Authentication
-gem "devise", "~> 4.9.2"
+gem "devise", "~> 4.9"
 
 gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.7.12"
+gem "faraday", "2.9"
 gem "faraday-retry", "2.2.0"
 
 gem "ffi"
 
-gem "font-awesome-rails", "~> 4.7.0.4"
+gem "font-awesome-rails", "~> 4.7.0"
 
-gem "google-protobuf", "~> 3.25.1"
+gem "google-protobuf", "~> 3.25"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.14.0"
 
 # Dependency for rails
-gem "nokogiri", ">= 1.15.4"
+gem "nokogiri", ">= 1.16"
 
 # Open Graph tag
-gem "meta-tags", "~> 2.19.0"
+gem "meta-tags", "~> 2.20"
 
-gem "newrelic_rpm", "~> 9.6.0"
+gem "newrelic_rpm", "~> 9.7"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
@@ -96,27 +96,24 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "premailer-rails", "~> 1.12.0", require: false
 
 # Implementation of PublicSuffix
-gem "public_suffix", "~> 5.0.1"
+gem "public_suffix", "~> 5.0"
 
 # Puma as app server
 gem "puma", "~> 6.4.2"
 
-# Make cracking a little bit harder
-gem "rack-attack", github: "rack/rack-attack", branch: "main"
-
 # Sanitize bad inputs coming in
 gem "rack-utf8_sanitizer"
 
-gem "rails-i18n", "~> 7.0.6"
+gem "rails-i18n", "~> 7.0"
 
 # I love captchas
 gem "recaptcha", "~> 5.16.0", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis", "~> 5.0.6"
+gem "redis", "~> 5.1"
 gem "redis-session-store"
 
-gem "render_async", "~> 2.1.8"
+gem "render_async", "~> 2.1"
 
 # For ruby 3
 gem "rexml"
@@ -128,7 +125,7 @@ gem "rqrcode", "~> 2.2.0"
 gem "sass-rails", ">= 6"
 
 # Sendgrid mail service
-gem "sendgrid-ruby", "~> 6.6.2"
+gem "sendgrid-ruby", "~> 6.7"
 
 gem "terser"
 
@@ -137,10 +134,10 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.2.0"
+gem "sidekiq", "~> 7.2"
 
 gem "sidekiq-scheduler", "~> 5.0.3"
-gem "sidekiq-throttled", "~> 1.1.0"
+gem "sidekiq-throttled", "~> 1.3.0"
 
 # slim for view templates
 gem "slim-rails", "3.6.3"
@@ -156,15 +153,15 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "7.1.0"
+gem "shakapacker", "7.2.2"
 
 # pagination support for models
 gem "will_paginate"
 
 # YouTube API client
-gem "yt", "~> 0.33.0"
+gem "yt", "~> 0.33"
 
-gem "zeitwerk", "~> 2.6.6"
+gem "zeitwerk", "~> 2.6"
 gem "zendesk_api", "~> 3.0.5"
 
 gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
@@ -175,14 +172,14 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "sprockets-rails", "3.4.2"
 gem "sprockets", "4.2.1"
 
-gem "eth", "~> 0.4"
+gem "eth", "~> 0.5"
 gem "rbnacl"
 gem "base58"
 
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  gem "listen", "~> 3.5"
+  gem "listen", "~> 3.9"
 
   # TODO add this back in after rails 7.1 officially drops
   # gem "bullet"
@@ -194,7 +191,7 @@ group :development do
   # gem "spring-watcher-listen", "~> 2.0.0"
 
   # i18n-tasks helps you find and manage missing and unused translations.
-  gem "i18n-tasks", "~> 1.0.12"
+  gem "i18n-tasks", "~> 1.0.13"
 end
 
 group :test do
@@ -206,7 +203,7 @@ group :test do
   gem "rails-controller-testing"
 
   # Image information library
-  gem "fastimage", "~> 2.2.5"
+  gem "fastimage", "~> 2.3.0"
 end
 
 group :development, :test do
@@ -236,7 +233,7 @@ group :development, :test do
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.12"
   gem "solargraph"
-  gem "dotenv-rails", "2.8.1"
+  gem "dotenv-rails", "3.1.0"
 end
 
-gem "importmap-rails", "~> 1.1"
+gem "importmap-rails", "~>2.0"

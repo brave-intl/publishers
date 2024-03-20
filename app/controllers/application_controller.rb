@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
   end
 
   def u2f
-    @u2f ||= U2F::U2F.new(request.base_url)
+    @u2f ||= U2F::U2F.new(Rails.configuration.pub_secrets[:creators_full_host])
   end
 
   def japanese_http_header?

@@ -4,9 +4,6 @@ require "newrelic_rpm"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Rate limiting
-  config.middleware.use(Rack::Attack)
-
   # Verifies that versions and hashed value of the package contents in the project's package.json
   # config.webpacker.check_yarn_integrity = false
 

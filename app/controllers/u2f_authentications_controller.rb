@@ -8,11 +8,7 @@ class U2fAuthenticationsController < ApplicationController
   def create
     pending_action = saved_pending_action
     publisher = pending_action.publisher
-    domain = if Rails.configuration.pub_secrets[:next_proxy_url] && Rails.configuration.pub_secrets[:next_proxy_enabled]
-      Rails.configuration.pub_secrets[:next_proxy_url]
-    else
-      request.base_url
-    end
+    domain = Rails.configuration.pub_secrets[:creators_full_host]
     result = TwoFactorAuth::WebauthnVerifyService.build.call(publisher: publisher,
       webauthn_u2f_response: params[:webauthn_u2f_response],
       domain:  domain,

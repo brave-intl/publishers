@@ -13,7 +13,7 @@ class TwoFactorAuthenticationsController < ApplicationController
 
     if !params[:request_totp] && @u2f_enabled
       get_options = WebAuthn::Credential.options_for_get(allow: pending_2fa_current_publisher.u2f_registrations.map(&:key_handle),
-        extensions: {appid: request.base_url})
+        extensions: {appid: Rails.configuration.pub_secrets[:creators_full_host]})
       session[:current_authentication] = {challenge: get_options.challenge, username: pending_2fa_current_publisher.email}
       @webauthn_u2f_backwards_compat_authentication_attempt = get_options
     end
