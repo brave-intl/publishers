@@ -28,11 +28,8 @@ services:
       - "3000:3000"
     env_file: .env.docker.dev
   next:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    entrypoint: ./scripts/entrypoint-nextjs.sh
-    command: sh -c "cd nextjs && npm run dev"
+    build: nextjs/.
+    command: npm run dev
     volumes:
       - /app/node_modules # <-- try adding this!
       - type: bind
