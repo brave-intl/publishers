@@ -26,13 +26,11 @@ class ApplicationController < ActionController::Base
       # Append locale=ja when it isn't given
       if japanese_locale_specified? && params[:locale].blank?
         new_url = if URI(request.original_url).query.present?
-          request.original_url + "&locale=#{preferred_japanese_locale}"
+          Rails.configuration.pub_secrets[:creators_full_host] + URI(request.original_url).path + URI(request.original_url).query + "&locale=#{preferred_japanese_locale}"
         else
-          # Addresses a codeql complaint about 'Polynomial regular expression used on uncontrolled data'
-          # 2000 characters is a de facto limit on url sizes
-          request.original_url[0..2000].sub(/\/*$/, "/") + "?locale=#{preferred_japanese_locale}"
+          Rails.configuration.pub_secrets[:creators_full_host] + URI(request.original_url).path + "?locale=#{preferred_japanese_locale}"
         end
-        redirect_to(new_url) and return
+        redirect_to(new_url, allow_other_host: true) and return
       else
         I18n.with_locale(preferred_japanese_locale, &action) and return
       end
