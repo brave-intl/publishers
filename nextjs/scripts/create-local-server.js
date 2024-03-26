@@ -52,7 +52,7 @@ app
           try {
             const redirUrl = new URL(redir);
             if (redirUrl.protocol === pubHost.protocol && redirUrl.host === pubHost.host) {
-              const newRedirUrlToProxy = `${nextHost}${redirUrl.pathname}`;
+              const newRedirUrlToProxy = `${nextHost}${redirUrl.pathname}${redirUrl.search}`;
               proxyRes.headers['location'] = newRedirUrlToProxy;
             }
           } catch (e) {
