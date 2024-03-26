@@ -4,8 +4,6 @@ import UserProvider from '@/components/UserProvider';
 
 import NavDropdown from './NavDropdown';
 
-import profilePic from '~/images/brave_creators_logo.png';
-
 export default function NavigationLayout({
   children,
 }: {
@@ -15,7 +13,7 @@ export default function NavigationLayout({
     <UserProvider>
       <div className='bg-container relative flex items-center justify-between px-2 transition-colors'>
         <Image
-          src={profilePic}
+          src='/brave_creators_logo.png'
           alt='Brave Creators Logo'
           height={80}
           priority={true}
