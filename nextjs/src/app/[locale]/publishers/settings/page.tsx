@@ -47,7 +47,7 @@ export default function SettingsPage() {
   }
 
   function deleteAccount() {
-    apiRequest(`publishers`, 'DELETE');
+    apiRequest('publishers', 'DELETE');
     push('/');
   }
 
