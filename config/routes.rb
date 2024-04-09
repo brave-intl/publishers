@@ -168,7 +168,8 @@ Rails.application.routes.draw do
     # /api/v1/
 
     namespace :nextv1, defaults: {format: :json} do
-      resources :publishers, only: [:update, :destroy]
+      resources :publishers, only: [:update]
+      delete "publishers", to: "publishers#destroy"
       get "publishers/me", to: "publishers#me"
       get "publishers/secdata", to: "publishers#secdata"
 
