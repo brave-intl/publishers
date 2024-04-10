@@ -8,6 +8,9 @@ const customConfig = {
     alias: {
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src')
     },
+    fallback: {
+      "crypto": require.resolve("crypto-browserify")
+    },
     extensions: ['.css']
   }
 }
