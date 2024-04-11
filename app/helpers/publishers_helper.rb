@@ -56,7 +56,7 @@ module PublishersHelper
 
   def next_deposit_date(today: DateTime.now)
     today += 1.month if today.day > 13
-    today.strftime("%B 13th")
+    today.strftime("%B 13, %Y")
   end
 
   def has_balance?(publisher)
@@ -259,10 +259,6 @@ module PublishersHelper
     token = publisher.authentication_token
     options = {token: token}
     options[:confirm_email] = confirm_email if confirm_email
-    if Rails.configuration.pub_secrets[:next_proxy_url] && Rails.configuration.pub_secrets[:next_proxy_enabled]
-      options[:host] = Rails.configuration.pub_secrets[:next_proxy_url]
-      options[:port] = Rails.configuration.pub_secrets[:next_proxy_port] if Rails.configuration.pub_secrets[:next_proxy_port].present?
-    end
     publisher_url(publisher, options)
   end
 

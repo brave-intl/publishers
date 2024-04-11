@@ -37,6 +37,8 @@
     "GHSA-m95q-7qp3-xv42",
     "GHSA-7fh5-64p2-3v2j",
     "GHSA-78xj-cgh5-2h22",
-    "GHSA-c429-5p7v-vgjp"
+    "GHSA-c429-5p7v-vgjp",
+    "GHSA-cxjh-pqwp-8mfp|react-scripts>webpack-dev-server>http-proxy-middleware>http-proxy>follow-redirects",
+    "GHSA-67hx-6x53-jw92"
   ]
 }

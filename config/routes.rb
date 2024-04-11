@@ -168,9 +168,33 @@ Rails.application.routes.draw do
     # /api/v1/
 
     namespace :nextv1, defaults: {format: :json} do
-      resources :publishers, only: [:update, :destroy]
+
+      resources :publishers, only: [:update] do
+        resources :crypto_addresses, only: %i[index destroy]
+      end
+      
+      delete "publishers", to: "publishers#destroy"
       get "publishers/me", to: "publishers#me"
+      get "publishers/secdata", to: "publishers#secdata"
       get "publishers/security", to: "publishers#security"
+      get "home/dashboard", to: "home#dashboard"
+
+      resources :channels, only: %i[destroy] do
+        resources :crypto_address_for_channels, only: %i[index create destroy] do
+          collection do
+            post :change_address
+            get :generate_nonce
+          end
+        end
+
+        member do
+          get :verification_status
+          delete :destroy
+          resources :tokens, only: %() do
+            get :reject_transfer, to: "channel_transfer#reject_transfer"
+          end
+        end
+      end
 
       namespace :totp_registrations do
         get :new
@@ -182,6 +206,12 @@ Rails.application.routes.draw do
         get :new
         post :create
         delete :destroy
+      end
+
+      namespace :connection do
+        resource :gemini_connection
+        resource :bitflyer_connection
+        resource :uphold_connection, except: [:new]
       end
     end
 
@@ -236,9 +266,11 @@ Rails.application.routes.draw do
     # /api/v3/
     namespace :v3, defaults: {format: :json} do
       namespace :public, defaults: {format: :json} do
-        get "channels", controller: "channels"
         namespace :channels, defaults: {format: :json} do
           get "total_verified"
+        end
+        namespace :ofac, defaults: {format: :json} do
+          get "banned_lists"
         end
       end
       namespace :channels, defaults: {format: :json} do

@@ -1,5 +1,0 @@
-name: "CodeQL config"
-paths-ignore:
-  - tests
-  - node_modules
-  - public/static/js/

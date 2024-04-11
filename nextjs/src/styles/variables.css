@@ -1,29 +1,48 @@
 :root {
   /* Brave Leo overrides for variables that use Font-Family */
-  --leo-font-primary-heading-display1: 500 var(--leo-typography-primary-heading-display1-font-size)/var(--leo-typography-primary-heading-display1-line-height) var(--font-poppins);
-  --leo-font-primary-heading-display2: 500 var(--leo-typography-primary-heading-display2-font-size)/var(--leo-typography-primary-heading-display2-line-height) var(--font-poppins);
-  --leo-font-primary-heading-h1: 500 var(--leo-typography-primary-heading-h1-font-size)/var(--leo-typography-primary-heading-h1-line-height) var(--font-poppins);
-  --leo-font-primary-heading-h2: 500 var(--leo-typography-primary-heading-h2-font-size)/var(--leo-typography-primary-heading-h2-line-height) var(--font-poppins);
-  --leo-font-primary-heading-h3: 500 var(--leo-typography-primary-heading-h3-font-size)/var(--leo-typography-primary-heading-h3-line-height) var(--font-poppins);
-  --leo-font-primary-heading-h4: 600 var(--leo-typography-primary-heading-h4-font-size)/var(--leo-typography-primary-heading-h4-line-height) var(--font-poppins);
-  --leo-font-primary-large-regular: 400 var(--leo-typography-primary-large-regular-font-size)/var(--leo-typography-primary-large-regular-line-height) var(--font-poppins);
-  --leo-font-primary-large-semibold: 600 var(--leo-typography-primary-large-semibold-font-size)/var(--leo-typography-primary-large-semibold-line-height) var(--font-poppins);
-  --leo-font-primary-default-regular: 400 var(--leo-typography-primary-default-regular-font-size)/var(--leo-typography-primary-default-regular-line-height) var(--font-poppins);
-  --leo-font-primary-default-semibold: 600 var(--leo-typography-primary-default-semibold-font-size)/var(--leo-typography-primary-default-semibold-line-height) var(--font-poppins);
-  --leo-font-primary-small-regular: 400 var(--leo-typography-primary-small-regular-font-size)/var(--leo-typography-primary-small-regular-line-height) var(--font-poppins);
-  --leo-font-primary-small-semibold: 600 var(--leo-typography-primary-small-semibold-font-size)/var(--leo-typography-primary-small-semibold-line-height) var(--font-poppins);
-  --leo-font-primary-x-small-regular: 400 var(--leo-typography-primary-x-small-regular-font-size)/var(--leo-typography-primary-x-small-regular-line-height) var(--font-poppins);
-  --leo-font-primary-x-small-semibold: 600 var(--leo-typography-primary-x-small-semibold-font-size)/var(--leo-typography-primary-x-small-semibold-line-height) var(--font-poppins);
-  --leo-font-components-label: 600 var(--leo-typography-components-label-font-size)/var(--leo-typography-components-label-line-height) var(--font-poppins);
-  --leo-font-components-tableheader: 500 var(--leo-typography-components-tableheader-font-size)/var(--leo-typography-components-tableheader-line-height) var(--font-poppins);
-  --leo-font-components-navbutton: 600 var(--leo-typography-components-navbutton-font-size)/var(--leo-typography-components-navbutton-line-height) var(--font-poppins);
-  --leo-font-components-button-small: 600 var(--leo-typography-components-button-small-font-size)/var(--leo-typography-components-button-small-line-height) var(--font-poppins);
-  --leo-font-components-button-default: 600 var(--leo-typography-components-button-default-font-size)/var(--leo-typography-components-button-default-line-height) var(--font-poppins);
-  --leo-font-components-button-large: 600 var(--leo-typography-components-button-large-font-size)/var(--leo-typography-components-button-large-line-height) var(--font-poppins);
-  --leo-font-components-button-jumbo: 600 var(--leo-typography-components-button-jumbo-font-size)/var(--leo-typography-components-button-jumbo-line-height) var(--font-poppins);
+  --font-poppins: 'Poppins', -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --leo-font-primary-heading-display1: var(--leo-font-heading-display1);
+  --leo-font-primary-heading-display2: var(--leo-font-heading-display2);
+  --leo-font-primary-heading-h1: var(--leo-font-heading-h1);
+  --leo-font-primary-heading-h2: var(--leo-font-heading-h2);
+  --leo-font-primary-heading-h3: var(--leo-font-heading-h3);
+  --leo-font-primary-heading-h4: var(--leo-font-heading-h4);
+  --leo-font-primary-large-regular: var(--leo-font-browser-large-regular);
+  --leo-font-primary-large-semibold: var(--leo-font-browser-large-semibold);
+  --leo-font-primary-default-regular: var(--leo-font-browser-default-regular);
+  --leo-font-primary-default-semibold: var(--leo-font-browser-default-semibold);
+  --leo-font-primary-small-regular: var(--leo-font-browser-small-regular);
+  --leo-font-primary-small-semibold: var(--leo-font-browser-small-semibold);
+  --leo-font-primary-x-small-regular: var(--leo-font-browser-x-small-regular);
+  --leo-font-primary-x-small-semibold: var(--leo-font-browser-x-small-semibold);
+  --leo-font-browser-x-small-semibold: 600 12px/14.4px 'Inter';
+  --leo-font-browser-x-small-regular: 400 12px/14.4px 'Inter';
+  --leo-font-browser-small-semibold: 600 13px/15.6px 'Inter';
+  --leo-font-browser-small-regular: 400 13px/15.6px 'Inter';
+  --leo-font-browser-default-semibold: 600 14px/16.8px 'Inter';
+  --leo-font-browser-default-regular: 400 14px/16.8px 'Inter';
+  --leo-font-browser-large-semibold: 600 16px/19.2px 'Inter';
+  --leo-font-browser-large-regular: 400 16px/19.2px 'Inter';
+  --leo-font-x-small-link: 400 11px/18px 'Inter';
+  --leo-font-x-small-semibold: 600 11px/18px 'Inter';
+  --leo-font-x-small-regular: 400 11px/18px 'Inter';
+  --leo-font-small-link: 400 12px/20px 'Inter';
+  --leo-font-small-semibold: 600 12px/20px 'Inter';
+  --leo-font-small-regular: 400 12px/20px 'Inter';
+  --leo-font-default-link: 400 14px/22px 'Inter';
+  --leo-font-default-semibold: 600 14px/22px 'Inter';
+  --leo-font-default-regular: 400 14px/22px 'Inter';
+  --leo-font-large-link: 400 16px/26px 'Inter';
+  --leo-font-large-semibold: 600 16px/26px 'Inter';
+  --leo-font-large-regular: 400 16px/26px 'Inter';
+  --leo-font-components-tableheader: 500 13px/15.6px 'Inter';
+  --leo-font-components-label: 700 10px/12px 'Inter';
 
   /* this needs to be fixed in Leo */
   --leo-color-text-primary: rgb(13 15 20);
+  --leo-button-radius: 12px;
+  --leo-control-radius: 12px;
+  --radius: 12px;
 }
 
 /* this needs to be fixed in Leo */

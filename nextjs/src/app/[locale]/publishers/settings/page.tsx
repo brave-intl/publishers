@@ -47,7 +47,7 @@ export default function SettingsPage() {
   }
 
   function deleteAccount() {
-    apiRequest('publishers', null, 'DELETE');
+    apiRequest('publishers', 'DELETE');
     push('/');
   }
 
@@ -151,12 +151,11 @@ export default function SettingsPage() {
               </label>
               <div className='mb-2 sm:w-[400px]'>
                 {isEditMode ? (
-                  1
-                  // <Input
-                  //   value={settings.name}
-                  //   onInput={(e) => handleInputChange(e, 'name')}
-                  //   name='name'
-                  // />
+                  <Input
+                    value={settings.name}
+                    onInput={(e) => handleInputChange(e, 'name')}
+                    name='name'
+                  />
                 ) : (
                   user.name
                 )}
