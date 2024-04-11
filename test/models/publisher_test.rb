@@ -496,6 +496,16 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
+  describe "brave_payable" do
+    it "should return falsey if excluded_from_payout" do
+      p = publishers(:default)
+      assert p.brave_payable?
+      p.excluded_from_payout = true
+      p.save!
+      refute p.brave_payable?
+    end
+  end
+
   describe "#history" do
     describe "when the publisher has notes" do
       it "shows just the notes" do
