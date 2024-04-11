@@ -469,7 +469,7 @@ class Publisher < ApplicationRecord
   end
 
   def brave_payable?
-    active? && !only_user_funds?
+    active? && !only_user_funds? && !excluded_from_payout?
   end
 
   def country
