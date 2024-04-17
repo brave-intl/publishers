@@ -43,7 +43,15 @@ class Api::BaseController < ActionController::API
 
   def authenticate_ip
     return true if API_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
-    API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(request.remote_ip) }
+
+    direct_remote_ip = request.remote_ip
+    passed_from_next = request&.headers&.fetch("HTTP_ORIGINALIP", "")
+
+    authenticated = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(direct_remote_ip) }
+    if !authenticated && passed_from_next.present?
+      authenticated = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(passed_from_next) }
+    end
+    authenticated
   end
 
   def authenticate_token

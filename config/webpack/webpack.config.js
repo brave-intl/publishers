@@ -9,7 +9,8 @@ const customConfig = {
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src')
     },
     fallback: {
-      "crypto": require.resolve("crypto-browserify")
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify"),
     },
     extensions: ['.css']
   }
