@@ -7,7 +7,7 @@ Rails.application.reloader.to_prepare do
     end
 
     def current_ability
-      @current_ability ||= Ability.new(current_user, request.remote_ip)
+      @current_ability ||= Ability.new(current_user, request.remote_ip, request&.headers&.fetch("HTTP_ORIGINALIP", ""))
     end
   end
 end
