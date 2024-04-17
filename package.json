@@ -92,7 +92,6 @@
     "sass": "^1.64.1",
     "sass-loader": "^13.3.2",
     "shakapacker": "7.2.2",
-    "stream": "^0.0.2",
     "style-loader": "^3.3.3",
     "styled-components": "5.3.11",
     "terser-webpack-plugin": "5.3.9",
