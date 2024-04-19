@@ -394,7 +394,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_140330) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "ofac_addresses", id: false, force: :cascade do |t|
+  create_table "ofac_addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "address", null: false
   end
 

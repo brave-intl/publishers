@@ -145,6 +145,13 @@ class GeminiConnectionTest < SidekiqTestCase
       it "is valid" do
         assert gemini_connection.valid?
       end
+
+      it "is invalid when using a restricted address" do
+        gemini_connection.recipient_id = OfacAddress.last.address
+        gemini_connection.save
+        refute gemini_connection.valid?
+        assert gemini_connection.errors.full_messages.first == "Recipient can't be a banned address"
+      end
     end
   end
 
