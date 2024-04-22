@@ -32,8 +32,8 @@ class ParseOfacListService
   def self.fetch_github_repo_top_level_files(repo_owner:, repo_name:, branch:)
     github_token = Rails.configuration.pub_secrets[:github_ofac_token]
     github_headers = {
-      "Accept": "application/vnd.github.v3+json",
-      "Authorization": "token #{github_token}"
+      Accept: "application/vnd.github.v3+json",
+      Authorization: "token #{github_token}"
     }
 
     uri = URI("https://api.github.com/repos/#{repo_owner}/#{repo_name}/git/trees/#{branch}?recursive=1")
