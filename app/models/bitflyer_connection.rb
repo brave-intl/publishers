@@ -16,6 +16,7 @@ class BitflyerConnection < Oauth2::AuthorizationCodeBase
 
   validates :recipient_id, uniqueness: true, allow_blank: true
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true
+  validates :recipient_id, banned_address: true
 
   # FIXME: This should be reused
   scope :with_expired_tokens, -> {

@@ -18,8 +18,8 @@ class ParseOfacListService
     https.use_ssl = true
 
     request = Net::HTTP::Get.new(uri)
-    request.add_field("Authorization", github_headers["Authorization"])
-    request.add_field("User-Agent", github_headers["User-Agent"])
+    request.add_field("Authorization", github_headers[:Authorization])
+    request.add_field("Accept", github_headers[:Accept])
 
     response = https.request(request)
     content_data = JSON.parse(response.body)
@@ -30,7 +30,7 @@ class ParseOfacListService
   end
 
   def self.fetch_github_repo_top_level_files(repo_owner:, repo_name:, branch:)
-    github_token = Rails.configuration.pub_secrets[:api_auth_token_github]
+    github_token = Rails.configuration.pub_secrets[:github_ofac_token]
     github_headers = {
       Accept: "application/vnd.github.v3+json",
       Authorization: "token #{github_token}"

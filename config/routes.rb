@@ -242,6 +242,7 @@ Rails.application.routes.draw do
         end
         namespace :ofac, defaults: {format: :json} do
           get "banned_lists"
+          get "banned_lists_fresh"
         end
       end
       namespace :channels, defaults: {format: :json} do
