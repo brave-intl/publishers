@@ -18,4 +18,11 @@ describe CryptoAddress do
     assert_equal "can't be changed", address.errors.messages[:address][0]
     assert_equal "can't be changed", address.errors.messages[:chain][0]
   end
+
+  it "is invalid when using a restricted address" do
+    address = crypto_addresses(:banned_sol_address)
+    refute address.valid?
+
+    assert address.errors.full_messages.first == "Address can't be a banned address"
+  end
 end

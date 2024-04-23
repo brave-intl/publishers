@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 sol_address:
-  address: '9VoNhsLUhXVTzmqTE4iRPTTmACREYrKR11HG4J4BKyfp'
+  address: '9VoNhsLUhXVTzmqTE4iRPTTmACREYrKR11HG4J4BKyfeeep'
   verified: true
   chain: 'SOL'
   publisher: verified
@@ -35,3 +35,9 @@ other_default_eth_address:
   verified: true
   chain: 'ETH'
   publisher: default
+
+banned_sol_address:
+  address: 'BwG1C3hDdNq2rTDHvcMFwuokefdQvUQUXRQ123321gwjJL86XM'
+  verified: true
+  chain: 'SOL'
+  publisher: verified
