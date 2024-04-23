@@ -16,7 +16,7 @@
       decription: "For Site Channels created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
       queue: scheduler
     CleanStaleUpholdDataJob:
-      cron: "0 42 * * *"
+      cron: "0 4 * * *"
       description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
       queue: scheduler
     UpdateOfacListJob:
