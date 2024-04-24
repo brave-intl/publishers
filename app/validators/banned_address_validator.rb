@@ -3,7 +3,9 @@ class BannedAddressValidator < ActiveModel::EachValidator
     banned_addresses = OfacAddress.pluck(:address)
 
     banned_addresses.each do |banned_address|
-      if !banned_address.blank? && value.to_s.strip.downcase.include?(banned_address.to_s.strip.downcase)
+      stripped_ba = banned_address.to_s.strip.downcase
+      stripped_val = value.to_s.strip.downcase
+      if (stripped_ba.present? && stripped_val.present?) && (stripped_val.include?(stripped_ba) || stripped_ba.include?(stripped_val))
         record.errors.add attribute.to_sym, "can't be a banned address"
       end
     end

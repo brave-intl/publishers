@@ -7,6 +7,8 @@ class CryptoAddress < ApplicationRecord
   validate :chain_not_changed?
   validate :address_not_changed?
 
+  validates :address, banned_address: true
+
   scope :sol_addresses, -> { where(chain: "SOL") }
   scope :eth_addresses, -> { where(chain: "ETH") }
 
