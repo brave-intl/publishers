@@ -60,6 +60,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   JAPAN = "JP"
 
   validates :default_currency, inclusion: {in: SUPPORTED_CURRENCIES}, allow_nil: true, if: :default_currency_changed?
+  validates :address, banned_address: true
 
   #################
   # Associations

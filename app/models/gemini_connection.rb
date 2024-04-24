@@ -20,6 +20,8 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
   belongs_to :publisher
   has_many :gemini_connection_for_channels, dependent: :destroy
 
+  validates :recipient_id, banned_address: true
+
   encrypts :access_token
   encrypts :refresh_token
   # GeminiConnections do not have a default currency field, it is always assumed to be BAT

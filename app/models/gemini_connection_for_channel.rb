@@ -6,4 +6,5 @@ class GeminiConnectionForChannel < ApplicationRecord
   belongs_to :channel
 
   validates :channel_identifier, uniqueness: {scope: [:gemini_connection_id, :channel_identifier]}
+  validates :recipient_id, banned_address: true
 end
