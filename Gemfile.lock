@@ -809,7 +809,7 @@ DEPENDENCIES
   rotp (~> 6.3.0)
   rqrcode (~> 2.2.0)
   sass-rails (>= 6)
-  selenium-webdriver (~> 4.12)
+  selenium-webdriver (~> 4.4)
   sendgrid-ruby (~> 6.7)
   shakapacker (= 7.2.2)
   sidekiq (~> 7.2)
@@ -830,7 +830,7 @@ DEPENDENCIES
   vcr
   web-console
   webauthn
-  webmock (~> 3.0)
+  webmock (~> 3.23)
   will_paginate
   yt (~> 0.33)
   zeitwerk (~> 2.6)

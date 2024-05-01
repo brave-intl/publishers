@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://ratios.rewards.bravesoftware.com/v2/relative/provider/coingecko/eth,sol,bat/usd/live
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.9.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '200'
+      Connection:
+      - keep-alive
+      Date:
+      - Mon, 20 May 2024 06:13:29 GMT
+      Cache-Control:
+      - max-age=899
+      Request-Id:
+      - cp5ek2cqbpn9baab4ir0
+      X-Request-Id:
+      - C38pMaXKzRDytQNE
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 efe54e8b68e074d39b2ecd249f85100a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - HIO50-C1
+      X-Amz-Cf-Id:
+      - Ijo233Y2LHb43XZA87gBtdv3-64CT6ANXBlvsNvVaJE1xj-wGdG4Ow==
+    body:
+      encoding: UTF-8
+      string: '{"payload":{"bat":{"usd":0.2395,"usd_timeframe_change":0},"eth":{"usd":3110.28,"usd_timeframe_change":0},"sol":{"usd":177.31,"usd_timeframe_change":0}},"lastUpdated":"2024-05-20T06:13:29.552704258Z"}
+
+        '
+  recorded_at: Mon, 20 May 2024 06:13:36 GMT
+recorded_with: VCR 6.2.0
