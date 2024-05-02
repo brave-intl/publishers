@@ -4,10 +4,5 @@
         "app/javascript/locale",
         "nextjs/src/messages",
         "public/creators-landing/src/locale"
-    ],
-      "workbench.colorCustomizations": {
-      "activityBar.background": "#340e05",
-      "titleBar.activeBackground": "#FB542B",
-      "titleBar.activeForeground": "#FDFBF6"
-  },
+    ]
 }
