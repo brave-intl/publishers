@@ -71,7 +71,7 @@ module PublishersHelper
   def publisher_overall_bat_balance_amount(publisher)
     amount = 0.0
     error_catcher do
-      amount = if publisher.only_user_funds?
+      amount = if publisher.only_user_funds? || !publisher.allowed_to_create_referrals?
         publisher.wallet&.contribution_balance&.amount_bat
       elsif publisher.no_grants?
         (publisher.wallet&.overall_balance&.amount_bat || 0) - (publisher.wallet&.contribution_balance&.amount_bat || 0)
