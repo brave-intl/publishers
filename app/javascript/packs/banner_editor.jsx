@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { FormattedMessage, IntlProvider } from "react-intl";
 import AvatarEditor from "react-avatar-editor";
 
-import "babel-polyfill";
+import "core-js/stable";
 
 import BannerPreview from "../packs/banner_preview.jsx";
 import Navbar from "../packs/navbar.jsx";

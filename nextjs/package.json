@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#80f2230bcfb7d2a87e7025a4e26c502d900fd938",
+    "@brave/leo": "github:brave/leo#895c0a25d197ed0567ddf3ebbd0c8a01fa02fc83",
     "@github/webauthn-json": "^2.1.1",
     "axios": "^1.6.0",
     "clsx": "^2.0.0",

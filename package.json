@@ -105,7 +105,7 @@
     "webpack-merge": "5.9"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-transform-class-properties": "^7.24.1",
     "@babel/preset-react": "^7.24.1",
     "@types/jest": "^29.5.3",
     "@types/react": "^16.4.7",
@@ -116,10 +116,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-plugin-styled-components": "2.1.4",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-react": "^6.24.1",
     "cssnano": "6.0.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.8",
