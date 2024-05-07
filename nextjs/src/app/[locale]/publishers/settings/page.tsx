@@ -51,8 +51,8 @@ export default function SettingsPage() {
     push('/');
   }
 
-  function handleToggleChange(e: CustomEvent, name: string) {
-    const newSettings = { ...settings, [name]: e.detail.checked };
+  function handleToggleChange(e, name: string) {
+    const newSettings = { ...settings, [name]: e.checked };
 
     setSettings(newSettings);
     updateAccountSettings(newSettings);
