@@ -32,7 +32,6 @@
         label
           strong= t('publishers.cases.shared.evidence')
 
-        #fileUploadSection
         = f.file_field :files, multiple: true, class: 'd-none'
         .row
           - @case.files.each do |file|
@@ -50,5 +49,3 @@
             .badge.badge-light =t('publishers.cases.shared.saving')
           h5.fade#saved
             .badge.badge-success =t('publishers.cases.shared.saved')
-
-=append_javascript_pack_tag 'case'
