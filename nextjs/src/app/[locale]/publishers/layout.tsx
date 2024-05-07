@@ -13,9 +13,10 @@ export default function NavigationLayout({
     <UserProvider>
       <div className='bg-container relative flex items-center justify-between px-2 transition-colors'>
         <Image
-          src='/brave_creators_logo.png'
+          src='/images/brave_creators_logo.png'
           alt='Brave Creators Logo'
           height={80}
+          width={250}
           priority={true}
         />
         <NavDropdown />
