@@ -19,10 +19,7 @@ module.exports = function (api) {
     plugins: [
       "syntax-dynamic-import",
       "babel-plugin-styled-components",
-      "transform-object-rest-spread",
-      [
-        "@babel/plugin-proposal-class-properties"
-      ]
+      "transform-object-rest-spread"
     ].filter(Boolean),
   }
 

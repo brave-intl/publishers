@@ -1,5 +1,4 @@
 import { fetchAfterDelay, submitForm } from "../utils/request";
-import "core-js/stable";
 import fetch from "../utils/fetchPolyfill";
 import flash from "../utils/flash";
 import { Wallet } from "../wallet";
