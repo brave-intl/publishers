@@ -4,18 +4,19 @@
   "private": true,
   "dependencies": {
     "ansi-html": "https://registry.npmjs.org/ansi-html-community/-/ansi-html-community-0.0.8.tgz",
-    "grommet": "^2.29.1",
+    "grommet": "^2.37.0",
     "kind-of": "^6.0.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-dom-confetti": "^0.2.0",
-    "react-intl": "^6.2.8",
-    "react-router-dom": "^6.8.1",
+    "react-intl": "^6.6.5",
+    "react-router-dom": "^6.23.0",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@babel/helper-call-delegate": "^7.12.13",
-    "prettier": "3.0.1",
+    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
+    "prettier": "3.2.5",
     "react-scripts": "5.0.1"
   },
   "scripts": {
