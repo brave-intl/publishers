@@ -212,6 +212,7 @@ class PublishersHelperTest < ActionView::TestCase
     def publisher.only_user_funds?
       false
     end
+
     def publisher.allowed_to_create_referrals?
       true
     end
