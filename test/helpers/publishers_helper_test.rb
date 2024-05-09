@@ -208,6 +208,13 @@ class PublishersHelperTest < ActionView::TestCase
     )
     assert_not_nil publisher.wallet
     assert_equal "~ 9.66 USD", publisher_converted_overall_balance(publisher)
+    assert_equal "0.00", publisher_overall_bat_balance(publisher)
+    def publisher.only_user_funds?
+      false
+    end
+    def publisher.allowed_to_create_referrals?
+      true
+    end
     assert_equal "58.22", publisher_overall_bat_balance(publisher)
 
     publisher = FakePublisher.new(
