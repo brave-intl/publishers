@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import createIntlMiddleware from 'next-intl/middleware';
+import createMiddleware from 'next-intl/middleware';
 
 function secureUrl(url: string): string {
   return url.replace(/http:\/\//g, 'https://');
@@ -16,7 +16,7 @@ export function middleware(request) {
 
   // next-intl middleware
   const defaultLocale = request.headers.get('x-default-locale') || 'en';
-  const handleI18nRouting = createIntlMiddleware({
+  const handleI18nRouting = createMiddleware({
     locales: ['en', 'ja'],
     defaultLocale: 'en',
   });
