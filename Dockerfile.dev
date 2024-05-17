@@ -47,7 +47,7 @@ RUN gem install nokogiri
 RUN bundle install --jobs 20
 
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 18.15.0
+ENV NODE_VERSION 18.17.0
 ENV NODE_OPTIONS=--openssl-legacy-provider
 ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
