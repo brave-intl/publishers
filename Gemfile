@@ -199,7 +199,7 @@ group :test do
   gem "database_cleaner"
   # API recording and playback
   gem "vcr"
-  gem "webmock", "~> 3.0"
+  gem "webmock", "~> 3.23"
   gem "rails-controller-testing"
 
   # Image information library
@@ -231,7 +231,7 @@ group :development, :test do
   gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
   gem "simplecov", require: false, group: :test
-  gem "selenium-webdriver", "~> 4.12"
+  gem "selenium-webdriver", "~> 4.4"
   gem "solargraph"
   gem "dotenv-rails", "3.1.0"
 end
