@@ -11,7 +11,6 @@ import {
   SystemProgram,
   LAMPORTS_PER_SOL,
   Transaction,
-  sendAndConfirmTransaction,
   PublicKey,
 } from "@solana/web3.js";
 import {
@@ -225,7 +224,6 @@ class CryptoPaymentWidget extends React.Component {
 
   sendPayment = async () => {
     this.clearError();
-
     switch(this.state.currentChain) {
       case 'ETH':
         await this.sendEthPayment();
@@ -236,7 +234,7 @@ class CryptoPaymentWidget extends React.Component {
       case 'BAT': 
         this.sendEthBatPayment();
         break;
-      case 'splBat':
+      case 'splBAT':
         this.sendSolBatPayment();
         break;
       case 'USDC':
@@ -411,7 +409,7 @@ class CryptoPaymentWidget extends React.Component {
       return;
     }
     const provider = await window.solana.connect();
-    
+
     if (provider.publicKey) {
       try {
         // This is the account address of the user who is sending bat
@@ -420,10 +418,11 @@ class CryptoPaymentWidget extends React.Component {
         const amount = Math.round(this.calculateCryptoPrice() * Math.pow(10, decimal));
         // this is the account address that will receive bat
         const destinationAccountOwner = new PublicKey(this.state.addresses.SOL)
-        const connection = new Connection('https://publishers.basicattentiontoken.org/rpc')
+        const connection = new Connection(this.state.solanaMainUrl)
+        const contract = new PublicKey(contractAddress)
         // Check to see if the sender has an associated token account
         const senderAccount = await connection.getParsedTokenAccountsByOwner(sourceAccountOwner, {
-          mint: new PublicKey(contractAddress),
+          mint: contract,
         });
 
         if (senderAccount.value.length > 0) {
@@ -431,22 +430,21 @@ class CryptoPaymentWidget extends React.Component {
           // get receiver associated token account
 
           const destinationAccount = await connection.getParsedTokenAccountsByOwner(destinationAccountOwner, {
-            mint: new PublicKey(contractAddress),
+            mint: contract,
           });
           // Does the receiver token account already exist?
           const hasDestinationAccount = destinationAccount.value.length > 0;
-
           // Get the receiver token address, whether it exists or not
-          const destinationTokenAddress = hasDestinationAccount ? destinationAccount.value[0].pubkey : await getAssociatedTokenAddress(contractAddress, destinationAccountOwner);
-          const tx = new Transaction();
+          const destinationTokenAddress = hasDestinationAccount ? destinationAccount.value[0].pubkey : await getAssociatedTokenAddress(contract, destinationAccountOwner);
           
+          const tx = new Transaction();
           // if the token accout has not been created, add an instruction to create it
           if (!hasDestinationAccount) {
             tx.add(createAssociatedTokenAccountInstruction(
               sourceAccountOwner,
               destinationTokenAddress,
               destinationAccountOwner,
-              contractAddress,
+              contract,
             ))
           }
           // Add the instruction to transfer the tokens
@@ -457,11 +455,12 @@ class CryptoPaymentWidget extends React.Component {
             amount
           ));
 
-          const latestBlockHash = await connection.getLatestBlockhash('confirmed');
-          tx.recentBlockhash = await latestBlockHash.blockhash;
           tx.feePayer = sourceAccountOwner;
-          
+          const latestBlockHash = await connection.getLatestBlockhash('confirmed');
+          tx.recentBlockhash = latestBlockHash.blockhash;
+
           const signature = await window.solana.signAndSendTransaction(tx);
+
           if ( signature.signature ) {
             window.solana.disconnect();
             const newState = {...this.state};
@@ -474,7 +473,6 @@ class CryptoPaymentWidget extends React.Component {
           return;
         }
       } catch (e) {
-        console.log(e)
         this.setGenericError();
         window.solana.disconnect()
       }
@@ -496,7 +494,9 @@ class CryptoPaymentWidget extends React.Component {
     const newState = {...this.state};
     newState.currentChain = optionVal.value;
     newState.selectValue = optionVal;
-    newState.displayChain = optionVal.value.includes("BAT") ? 'BAT' : optionVal.value;
+    newState.displayChain = optionVal.value.includes('BAT') ? 'BAT' :
+                        optionVal.value.includes('USDC') ? 'USDC' :
+                        optionVal.value;
     newState.errorTitle = null;
     newState.errorMsg = null;
     this.setState({...newState });
