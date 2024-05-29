@@ -1,6 +1,6 @@
 # typed: true
 
-class DisconnectInvalidP2PAddressService < BuilderBaseService
+class Wallet::DisconnectInvalidP2pAddressService < BuilderBaseService
   def self.build
     new
   end

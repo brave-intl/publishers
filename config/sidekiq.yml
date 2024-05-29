@@ -46,6 +46,9 @@
       cron: "0 1 * * *"
       description: "Syncs zendesk tickets"
       queue: low
+    BannedAddressJob:
+        cron: "0 1 * * *"
+        description: "Scan For Banned Addresses"
     Cache::BrowserChannels::Main:
       cron: "0 */2 * * *"
       description: "Syncs V4 channels list"
