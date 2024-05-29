@@ -14,6 +14,7 @@ describe CryptoAddress do
     address.address = "totally random string"
     address.chain = "ETH"
     refute address.valid?
+    refute address.banned_address?
 
     assert_equal "can't be changed", address.errors.messages[:address][0]
     assert_equal "can't be changed", address.errors.messages[:chain][0]
@@ -23,6 +24,7 @@ describe CryptoAddress do
     address = crypto_addresses(:banned_sol_address)
     refute address.valid?
 
-    assert address.errors.full_messages.first == "Address can't be a banned address"
+    assert address.banned_address?
+    assert address.errors.full_messages.first.include?(BannedAddressValidator::MSG)
   end
 end

@@ -73,6 +73,7 @@ VCR.configure do |config|
   config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = {match_requests_on: %i[method uri body], decode_compressed_response: true}
 end
+
 module ActiveSupport
   class TestCase
     include ServiceClassHelpers

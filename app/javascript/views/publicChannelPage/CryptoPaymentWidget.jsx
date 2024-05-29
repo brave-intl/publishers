@@ -11,7 +11,6 @@ import {
   SystemProgram,
   LAMPORTS_PER_SOL,
   Transaction,
-  sendAndConfirmTransaction,
   PublicKey,
 } from "@solana/web3.js";
 import {
@@ -51,8 +50,10 @@ import {
 import ethIcon from "../../../assets/images/eth_icon_larger.png";
 import solIcon from "../../../assets/images/solana_icon_larger.png";
 import batIcon from "../../../assets/images/bat_icon.png";
+import usdcIcon from "../../../assets/images/usdc_icon.svg";
 import warningIcon from "../../../assets/images/warning-circle-filled.png";
 import batAbi from "./batAbi.json";
+import erc20Abi from "./erc20Abi.json";
 
 class CryptoPaymentWidget extends React.Component {
   constructor(props) {
@@ -67,7 +68,7 @@ class CryptoPaymentWidget extends React.Component {
 
     const addresses = { SOL: solAddress && solAddress[0], ETH: ethAddress && ethAddress[0] };
 
-    this.iconOptions = { SOL: solIcon, ETH: ethIcon, BAT: batIcon };
+    this.iconOptions = { SOL: solIcon, ETH: ethIcon, BAT: batIcon, USDC: usdcIcon };
 
     const dropdownOptions = []
 
@@ -86,6 +87,12 @@ class CryptoPaymentWidget extends React.Component {
             subheading: this.intl.formatMessage({id: 'publicChannelPage.ethBatSubheading'}),
             value: "BAT",
             icon: batIcon
+          },
+          {
+            label: this.intl.formatMessage({ id: 'publicChannelPage.usdc' }),
+            subheading: this.intl.formatMessage({id: 'publicChannelPage.usdcSubheading'}),
+            value: "USDC",
+            icon: usdcIcon
           }
         ]
       })
@@ -106,6 +113,12 @@ class CryptoPaymentWidget extends React.Component {
             subheading: this.intl.formatMessage({id: 'publicChannelPage.solBatSubheading'}),
             value: "splBAT",
             icon: batIcon
+          },
+          {
+            label: this.intl.formatMessage({ id: 'publicChannelPage.solUsdc' }),
+            subheading: this.intl.formatMessage({id: 'publicChannelPage.solUsdcSubheading'}),
+            value: "USDC-SPL",
+            icon: usdcIcon
           }
         ]
       })
@@ -117,6 +130,8 @@ class CryptoPaymentWidget extends React.Component {
       ethBatAddress: props.cryptoConstants.eth_bat_address,
       solanaBatAddress: props.cryptoConstants.solana_bat_address,
       solanaMainUrl: props.cryptoConstants.solana_main_url,
+      ethUsdcAddress: props.cryptoConstants.eth_usdc_address,
+      solUsdcAddress: props.cryptoConstants.solana_usdc_address,
       placeholder,
       isLoading: true,
       currentAmount: 5,
@@ -170,7 +185,11 @@ class CryptoPaymentWidget extends React.Component {
   };
 
   calculateCryptoPrice() {
-    return this.state.currentAmount / this.state.ratios[this.state.displayChain.toLowerCase()]['usd'];
+    if (this.state.displayChain.includes('USDC')) {
+      return this.state.currentAmount;
+    } else {
+      return this.state.currentAmount / this.state.ratios[this.state.displayChain.toLowerCase()]['usd'];
+    }
   };
 
   roundCryptoPrice() {
@@ -178,10 +197,10 @@ class CryptoPaymentWidget extends React.Component {
   };
 
   baseChain() {
-    if (this.state.currentChain.includes('BAT')) {
-      return this.state.currentChain === 'BAT' ? 'ETH' : 'SOL';
+    if (this.state.currentChain.toLowerCase().includes('spl') || this.state.currentChain.includes('SOL')) {
+      return 'SOL';
     } else {
-      return this.state.currentChain;
+      return 'ETH';
     }
   };
 
@@ -205,14 +224,27 @@ class CryptoPaymentWidget extends React.Component {
 
   sendPayment = async () => {
     this.clearError();
-    if (this.state.currentChain === "ETH") {
-      await this.sendEthPayment();
-    } else if (this.state.currentChain === "SOL") {
-      this.sendSolPayment();
-    } else if (this.state.currentChain === "BAT") {
-      this.sendEthBatPayment();
-    } else if (this.state.currentChain === "splBAT") {
-      this.sendSolBatPayment();
+    switch(this.state.currentChain) {
+      case 'ETH':
+        await this.sendEthPayment();
+        break;
+      case 'SOL':
+        this.sendSolPayment();
+        break;
+      case 'BAT': 
+        this.sendEthBatPayment();
+        break;
+      case 'splBAT':
+        this.sendSolBatPayment();
+        break;
+      case 'USDC':
+        this.sendEthUsdcPayment();
+        break;
+      case 'USDC-SPL':
+        this.sendSolUsdcPayment();
+        break;
+      default:
+        this.setGenericError();
     }
   };
 
@@ -276,7 +308,7 @@ class CryptoPaymentWidget extends React.Component {
     }
   }
 
-  sendEthBatPayment = async () => {
+  sendEthTokenPayment = async (contractAddress, amount, abi) => {
     if (window.ethereum) {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const address = accounts[0]
@@ -287,18 +319,19 @@ class CryptoPaymentWidget extends React.Component {
 
       try {
         const web3 = new Web3(window.ethereum);
-        const batContractAddress = this.state.ethBatAddress;
+        const contract = new web3.eth.Contract(abi, contractAddress);
+        const encodedAbi = await contract.methods.transfer(this.state.addresses.ETH, amount).encodeABI();
+        const gasPrice = await web3.eth.getGasPrice();
 
-        const contract = new web3.eth.Contract(batAbi, batContractAddress);
-        const amount = Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17))
-        const encodedAbi = await contract.methods.transfer(this.state.addresses.ETH, amount).encodeABI()
-
-        const results = await web3.eth.sendTransaction({
+        const transaction = {
                           from: address,
-                          to: batContractAddress,
+                          to: contractAddress,
                           value: "0",  // note that value is a string
                           data: encodedAbi,
-                        })
+                          gasPrice
+                        }
+        const gasEstimate = await web3.eth.estimateGas(transaction);
+        const results = await web3.eth.sendTransaction({ ...transaction, gas: gasEstimate + Web3.utils.toBigInt(450000) })
         
         if (results.status > 0) {
           const newState = {...this.state};
@@ -314,6 +347,17 @@ class CryptoPaymentWidget extends React.Component {
       this.setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg');
       return;
     }
+  }
+
+  sendEthBatPayment = async () => {
+    const amount = Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e17));
+    await this.sendEthTokenPayment(this.state.ethBatAddress, amount, batAbi);
+  }
+
+  sendEthUsdcPayment = async () => {
+    // USDC token needs 6 decimal places, not 18
+    const amount = Web3.utils.toBigInt(Math.round(this.calculateCryptoPrice()*10e5));
+    await this.sendEthTokenPayment(this.state.ethUsdcAddress, amount, erc20Abi);
   }
 
   sendSolPayment = async () => {
@@ -358,54 +402,49 @@ class CryptoPaymentWidget extends React.Component {
     }
   }
 
-  sendSolBatPayment = async () => {
+  sendSolTokenPayment = async (contractAddress, decimal) => {
     if (!window.solana) {
       await this.launchTryBraveModal();
       this.setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     }
     const provider = await window.solana.connect();
-    
+
     if (provider.publicKey) {
       try {
         // This is the account address of the user who is sending bat
         const sourceAccountOwner = provider.publicKey
-        // this is the address of the BAT program on the solana chain
-        const batAddress = new PublicKey(this.state.solanaBatAddress);
         // multiply the number of bat tokens to the power of the decimals in the token program 
-        const amount = Math.round(this.calculateCryptoPrice() * Math.pow(10, 8));
+        const amount = Math.round(this.calculateCryptoPrice() * Math.pow(10, decimal));
         // this is the account address that will receive bat
         const destinationAccountOwner = new PublicKey(this.state.addresses.SOL)
-        
         const connection = new Connection(this.state.solanaMainUrl)
-
+        const contract = new PublicKey(contractAddress)
         // Check to see if the sender has an associated token account
         const senderAccount = await connection.getParsedTokenAccountsByOwner(sourceAccountOwner, {
-          mint: batAddress,
+          mint: contract,
         });
 
         if (senderAccount.value.length > 0) {
           const senderTokenAddress = senderAccount.value[0].pubkey;
-
           // get receiver associated token account
+
           const destinationAccount = await connection.getParsedTokenAccountsByOwner(destinationAccountOwner, {
-            mint: batAddress,
+            mint: contract,
           });
           // Does the receiver token account already exist?
           const hasDestinationAccount = destinationAccount.value.length > 0;
-
           // Get the receiver token address, whether it exists or not
-          const destinationTokenAddress = hasDestinationAccount ? destinationAccount.value[0].pubkey : await getAssociatedTokenAddress(batAddress, destinationAccountOwner);
-
-          const tx = new Transaction();
+          const destinationTokenAddress = hasDestinationAccount ? destinationAccount.value[0].pubkey : await getAssociatedTokenAddress(contract, destinationAccountOwner);
           
+          const tx = new Transaction();
           // if the token accout has not been created, add an instruction to create it
           if (!hasDestinationAccount) {
             tx.add(createAssociatedTokenAccountInstruction(
               sourceAccountOwner,
               destinationTokenAddress,
               destinationAccountOwner,
-              batAddress,
+              contract,
             ))
           }
           // Add the instruction to transfer the tokens
@@ -416,11 +455,12 @@ class CryptoPaymentWidget extends React.Component {
             amount
           ));
 
-          const latestBlockHash = await connection.getLatestBlockhash('confirmed');
-          tx.recentBlockhash = await latestBlockHash.blockhash;
           tx.feePayer = sourceAccountOwner;
-          
+          const latestBlockHash = await connection.getLatestBlockhash('confirmed');
+          tx.recentBlockhash = latestBlockHash.blockhash;
+
           const signature = await window.solana.signAndSendTransaction(tx);
+
           if ( signature.signature ) {
             window.solana.disconnect();
             const newState = {...this.state};
@@ -442,11 +482,21 @@ class CryptoPaymentWidget extends React.Component {
     }
   }
 
+  sendSolBatPayment = async () => {
+    await this.sendSolTokenPayment(this.state.solanaBatAddress, 8);
+  }
+
+  sendSolUsdcPayment = async () => {
+    await this.sendSolTokenPayment(this.state.solUsdcAddress, 6);
+  }
+
   changeChain(optionVal){
     const newState = {...this.state};
     newState.currentChain = optionVal.value;
     newState.selectValue = optionVal;
-    newState.displayChain = optionVal.value.includes("BAT") ? 'BAT' : optionVal.value;
+    newState.displayChain = optionVal.value.includes('BAT') ? 'BAT' :
+                        optionVal.value.includes('USDC') ? 'USDC' :
+                        optionVal.value;
     newState.errorTitle = null;
     newState.errorMsg = null;
     this.setState({...newState });
@@ -507,6 +557,7 @@ class CryptoPaymentWidget extends React.Component {
                   ),
                   Option: CryptoPaymentOption
                 }}
+                className='crypto-currency-dropdown'
                 value={this.state.selectValue}
                 styles={{
                   control: (base) => ({ ...base,
