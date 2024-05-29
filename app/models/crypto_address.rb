@@ -18,6 +18,10 @@ class CryptoAddress < ApplicationRecord
     end
   end
 
+  def banned_address?
+    !valid? && errors.full_messages.any? { |err| err.include?(BannedAddressValidator::MSG) }
+  end
+
   def address_not_changed?
     if address_changed? && persisted?
       errors.add(:address, "can't be changed")
