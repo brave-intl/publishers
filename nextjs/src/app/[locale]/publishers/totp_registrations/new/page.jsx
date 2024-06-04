@@ -97,7 +97,8 @@ export default function TOTPNewPage() {
               <Input
                 placeholder='6-digit code'
                 onInput={handleInputChange}
-                showErrors={hasErrors}
+                hasErrors={hasErrors}
+                showErrors
               >
                 <div slot='errors'>{t('shared.invalid_totp')}</div>
               </Input>

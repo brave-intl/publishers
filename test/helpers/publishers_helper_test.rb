@@ -256,12 +256,12 @@ class PublishersHelperTest < ActionView::TestCase
 
   test "#next_deposit_date when it is midnight UTC displays the current month" do
     date = DateTime.parse("2019-05-01T00:00:00+0000")
-    assert_equal next_deposit_date(today: date), "May 13, 2019"
+    assert_equal next_deposit_date(today: date), "May 13th"
   end
 
   test "#next_deposit_date when it is midnight PST displays current month" do
     date = DateTime.parse("2019-05-01T00:00:00-0800")
-    assert_equal next_deposit_date(today: date), "May 13, 2019"
+    assert_equal next_deposit_date(today: date), "May 13th"
   end
 
   test "has_balance yes b/c has referral" do

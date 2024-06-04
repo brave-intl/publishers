@@ -26,7 +26,6 @@ html {
 body {
   color: var(--leo-color-text-primary);
   background: var(--leo-color-page-background);
-  font: var(--leo-font-default-regular);
 }
 
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
@@ -76,75 +75,6 @@ hr {
   border-top: 1px solid var(--leo-color-text-primary);
 }
 
-h1.mobile {
-  font: var(--leo-font-mobile-heading-h1);
-}
-
-h2.mobile {
-  font: var(--leo-font-mobile-heading-h2);
-}
-
-h3.mobile {
-  font: var(--leo-font-mobile-heading-h3);
-}
-
-h4.mobile {
-  font: var(--leo-font-mobile-heading-h4);
-}
-
-.small-regular {
-  font: var(--leo-font-small-regular);
-}
-
-.small-semibold {
-  font: var(--leo-font-small-semibold);
-}
-
-.color-tertiary {
-  color: var(--leo-color-text-tertiary);
-}
-
-.color-interactive {
-  color: var(--leo-color-icon-interactive);
-}
-
-.color-secondary {
-  color: var(--leo-color-text-secondary);
-}
-
-.label-component {
-  color: var(--leo-color-text-secondary);
-  line-height: var(--leo-typography-components-label-line-height);
-  letter-spacing: var(--leo-typography-components-label-letter-spacing);
-  font-weight: var(--leo-typography-components-label-font-weight);
-  font-size: var(--leo-typography-components-label-font-size);
-}
-
-.info-text {
-  color: var(--leo-color-systemfeedback-info-text);
-  background-color: var(--leo-color-systemfeedback-info-background);
-  border-radius: var(--leo-radius-m);
-  padding: var(--leo-spacing-xl);
-}
-
-.error-pill {
-  background-color: var(--leo-color-red-40);
-  border-radius: var(--leo-radius-s);
-  line-height: var(--leo-typography-components-label-line-height);
-  letter-spacing: var(--leo-typography-components-label-letter-spacing);
-  font-weight: var(--leo-typography-components-label-font-weight);
-  font-size: var(--leo-typography-components-label-font-size);
-  color: var(--leo-color-white);
-  padding: var(--leo-spacing-s);
-}
-
-.error-text {
-  background-color: var(--leo-color-systemfeedback-error-background);
-  color: var(--leo-color-systemfeedback-error-icon);
-  border-radius: var(--leo-radius-m);
-  padding: var(--leo-spacing-2xl);
-}
-
 [slot='errors'] {
   display: flex;
   flex-direction: row;
@@ -157,19 +87,15 @@ h4.mobile {
 }
 
 .main {
+  @apply py-4 px-2;
+
   display: flex;
   justify-content: center;
 
   height: 100%;
   min-height: calc(100vh - 80px);
-  width: 100%;
 
-  background: var(--leo-color-white);
-}
-
-.content-background {
   background: var(--leo-color-page-background);
-  width: 100%;
 }
 
 .content-width {
@@ -181,11 +107,7 @@ h4.mobile {
 }
 
 .animate-dash {
-  animation: dash 1.5s ease-in-out infinite;
-}
-
-.shadow {
-  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
+  animation: dash 1.5s ease-in-out infinite
 }
 
 @keyframes dash {
