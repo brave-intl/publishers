@@ -111,7 +111,7 @@ Rails.application.routes.draw do
     resources :site_banners, controller: "publishers/site_banners"
   end
 
-  devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
+  # devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
 
   resources :channels, only: %i[destroy] do
     resources :crypto_address_for_channels, only: %i[index create delete] do
@@ -168,7 +168,10 @@ Rails.application.routes.draw do
     # /api/v1/
 
     namespace :nextv1, defaults: {format: :json} do
-      resources :publishers, only: [:update]
+      resources :publishers, only: [:update] do
+        resources :crypto_addresses, only: %i[index destroy]
+      end
+
       delete "publishers", to: "publishers#destroy"
       get "publishers/me", to: "publishers#me"
       get "publishers/secdata", to: "publishers#secdata"
