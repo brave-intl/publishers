@@ -86,12 +86,6 @@ to_verify_restricted:
   details: to_verify_restricted_details (SiteChannelDetails)
   verified: false
 
-default_verified:
-  publisher: default
-  details: verified_default_details (SiteChannelDetails)
-  verified: true
-  public_identifier: '123456dfg6'
-
 completed:
   publisher: completed
   details: completed_details (SiteChannelDetails)
