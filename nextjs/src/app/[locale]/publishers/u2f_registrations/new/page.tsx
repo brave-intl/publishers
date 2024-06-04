@@ -57,7 +57,7 @@ export default function U2fRegistrations() {
   }, []);
 
   function handleInputChange(e) {
-    setName(e.detail.value);
+    setName(e.value);
   }
 
   async function handleSubmit() {
