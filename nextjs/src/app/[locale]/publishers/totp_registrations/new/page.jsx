@@ -37,7 +37,7 @@ export default function TOTPNewPage() {
   }, []);
 
   function handleInputChange(e) {
-    setCode(e.detail.value);
+    setCode(e.value);
   }
 
   async function handleSubmit() {

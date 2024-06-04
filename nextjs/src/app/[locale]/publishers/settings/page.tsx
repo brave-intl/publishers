@@ -59,7 +59,7 @@ export default function SettingsPage() {
   }
 
   function handleInputChange(e, name) {
-    setSettings({ ...settings, [name]: e.detail.value });
+    setSettings({ ...settings, [name]: e.value });
   }
 
   return (
