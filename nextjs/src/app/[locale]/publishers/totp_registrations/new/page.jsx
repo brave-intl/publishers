@@ -37,7 +37,7 @@ export default function TOTPNewPage() {
   }, []);
 
   function handleInputChange(e) {
-    setCode(e.detail.value);
+    setCode(e.value);
   }
 
   async function handleSubmit() {
@@ -97,8 +97,7 @@ export default function TOTPNewPage() {
               <Input
                 placeholder='6-digit code'
                 onInput={handleInputChange}
-                hasErrors={hasErrors}
-                showErrors
+                showErrors={hasErrors}
               >
                 <div slot='errors'>{t('shared.invalid_totp')}</div>
               </Input>
