@@ -1,4 +1,5 @@
 # typed: strict
+
 # if %w(production staging).include?(Rails.env)
 #   require "raven"
 #   Raven.configure do |config|

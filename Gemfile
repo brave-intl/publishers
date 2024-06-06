@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-ruby "~> 3.3.0"
+ruby "~> 3.3.1"
 
 source "https://rubygems.org"
 
-rails_version = "7.1.3.3"
+rails_version = "7.1.3.4"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.0"
 gem "railties", rails_version
