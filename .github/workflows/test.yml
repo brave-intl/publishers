@@ -34,7 +34,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.0
+          ruby-version: 3.3.1
       - name: Setup firefox
         uses: browser-actions/setup-firefox@0f622aed2a492183149a5a5c347205a593802e10 # v1.3.0
         with:
