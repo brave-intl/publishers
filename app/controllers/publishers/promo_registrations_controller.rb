@@ -30,16 +30,6 @@ class Publishers::PromoRegistrationsController < ApplicationController
     end
   end
 
-  def create
-    return unless Rails.env.development? || Rails.env.test?
-    @publisher = current_publisher
-    current_publisher.channels.find_each do |channel|
-      channel.register_channel_for_promo # Callee does a check
-    end
-    @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-    @publisher_has_verified_channel = @publisher.has_verified_channel?
-  end
-
   def for_referral_code
     promo_registration = user.promo_registrations.find_by(referral_code: params[:referral_code])
 

@@ -75,7 +75,6 @@ class Channel < ApplicationRecord
   # *ChannelDetails get autosaved from above.
   after_save :update_site_banner_lookup!, if: -> { saved_change_to_verified && verified? }
 
-  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo?
   after_commit :create_channel_card, if: -> { saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
@@ -334,10 +333,6 @@ class Channel < ApplicationRecord
     @gemini_connection ||= gemini_connection_for_channel.first
   end
 
-  def register_channel_for_promo
-    Promo::RegisterChannelForPromoJob.perform_now(id, 0)
-  end
-
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
     return unless verified?
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
@@ -378,14 +373,6 @@ class Channel < ApplicationRecord
   end
 
   private
-
-  def should_register_channel_for_promo?
-    publisher.may_create_referrals? &&
-      publisher.may_register_promo? &&
-      saved_change_to_verified? &&
-      verified &&
-      !publisher.only_user_funds?
-  end
 
   def clear_verified_at_if_necessary
     self.verified_at = nil if verified == false && verified_at.present?
