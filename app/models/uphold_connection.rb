@@ -73,7 +73,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   ################
 
   after_save :update_site_banner_lookup!, if: -> { saved_change_to_attribute(:is_member) }
-  after_save :update_promo_status, if: -> { saved_change_to_attribute(:is_member) }
   after_commit :create_uphold_cards, on: :create
 
   #################
@@ -288,13 +287,6 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def update_site_banner_lookup!
     publisher.update_site_banner_lookup!
-  end
-
-  # Internal: If the publisher previously had referral codes and then we will re-activate their referral codes.
-  #
-  # Returns nil
-  def update_promo_status
-    publisher.update_promo_status!
   end
 
   def japanese_account?

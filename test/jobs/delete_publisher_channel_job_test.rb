@@ -26,19 +26,6 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "does not throw error if channel has a promo_regsitration" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    # enable the promo
-    post promo_registrations_path
-    Promo::RegisterChannelForPromoJob.perform_now(publisher.channels.first.id)
-    assert_not_nil publisher.channels.first.promo_registration.referral_code
-    assert_nothing_raised do
-      DeletePublisherChannelJob.perform_now(publisher.channels.first.id)
-    end
-  end
-
   test "deletes unverifed channel" do
     channel = channels(:default)
     DeletePublisherChannelJob.perform_now(channel.id)

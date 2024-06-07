@@ -28,28 +28,4 @@ module ReferralPromo
     return promo_lockout_time < DateTime.now if promo_lockout_time.present?
     false
   end
-
-  # Public: Validates if the user's country is on the excluded list.
-  #
-  # Returns true or false depending on if the country is included.
-  def valid_promo_country?
-    PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
-  end
-
-  def may_register_promo?
-    # If the user doesn't have the referral_kyc_flag on then we can register them still.
-    return true unless referral_kyc_required?
-
-    # Otherwise they must be brave payable and from a valid country
-    brave_payable? && valid_promo_country?
-  end
-
-  # Public: Enqueues a job which allows publishers referrals to work if they are payable and in a valid promo_country
-  #
-  # Returns nil
-  def update_promo_status!
-    return unless may_register_promo?
-
-    Promo::UpdateStatus.perform_later(id, PublisherStatusUpdate::ACTIVE)
-  end
 end
