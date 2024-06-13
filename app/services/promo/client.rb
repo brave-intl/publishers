@@ -6,10 +6,6 @@ module Promo
       @connection = connection
     end
 
-    def owner_state
-      @owner_state ||= Promo::Models::OwnerState.new(connection)
-    end
-
     def reporting
       @reporting ||= Promo::Models::Reporting.new(connection)
     end

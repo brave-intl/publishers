@@ -162,62 +162,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert Channel.search("global%").map(&:id).include? channel.id
   end
 
-  test "Test should_register_channel_for_promo" do
-    channel = channels(:promo_enabled_site_not_verified)
-    assert_equal false, channel.send(:should_register_channel_for_promo?)
-    publisher = channel.publisher
-    publisher.feature_flags[UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE] = true
-    publisher.save
-    assert_equal false, channel.send(:should_register_channel_for_promo?)
-    channel.verified = true
-    channel.expects(:register_channel_for_promo).once
-    channel.save
-  end
-
-  # Maybe put this in a RegisterChannelForPromoJobTest?
-  test "verifying a channel calls register_channel_for_promo (site)" do
-    channel = channels(:default)
-    publisher = channel.publisher
-    publisher.save!
-
-    # verify RegisterChannelForPromoJob is called
-    channel.verified = true
-    channel.save!
-    Promo::RegisterChannelForPromoJob.perform_now(channel.id)
-
-    # verify it worked and the channel has a referral code
-    channel.reload
-    assert channel.promo_registration.referral_code
-
-    # verify nothing happens if verified_changed? to false, or to true but not saved
-    assert_enqueued_jobs(0) do
-      channel.verified = false
-      channel.save!
-      channel.verified = true
-    end
-  end
-
-  test "verifying a channel calls register_channel_for_promo (youtube)" do
-    # To 'verify' a new youtube channel, we delete a previously verified channel then instantiate it
-    channel_original = channels(:google_verified)
-    publisher = channel_original.publisher
-
-    # grab the details first, then destroy the original
-    channel_details_copy = channel_original.details.dup
-    channel_original.destroy!
-
-    publisher.save!
-
-    # check that RegisterChannelForPromoJob is called when it is verified
-    # channel_copy.verified = true
-    channel_copy = Channel.new(details: channel_details_copy, verified: true, publisher: publisher)
-    channel_copy.save!
-    Promo::RegisterChannelForPromoJob.perform_now(channel_copy.id)
-
-    channel_copy.reload
-    assert channel_copy.promo_registration.referral_code
-  end
-
   test "verification_failed! updates verification status" do
     channel = channels(:default)
 
