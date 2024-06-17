@@ -401,6 +401,9 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     omniauth-twitch (1.2.0)
       omniauth-oauth2 (~> 1.6)
     omniauth-twitter2 (0.1.0)
@@ -786,6 +789,7 @@ DEPENDENCIES
   nokogiri (>= 1.16)
   omniauth-github (~> 2.0.1)
   omniauth-google-oauth2 (~> 1.1.1)
+  omniauth-rails_csrf_protection (~> 1.0.1)
   omniauth-reddit!
   omniauth-twitch (~> 1.2.0)
   omniauth-twitter2

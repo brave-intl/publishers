@@ -112,7 +112,7 @@ Rails.application.routes.draw do
     resources :site_banners, controller: "publishers/site_banners"
   end
 
-  # devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
+  devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
 
   resources :channels, only: %i[destroy] do
     resources :crypto_address_for_channels, only: %i[index create delete] do
@@ -209,7 +209,7 @@ Rails.application.routes.draw do
         delete :destroy
       end
 
-       namespace :connection do
+      namespace :connection do
         resource :gemini_connection
         resource :bitflyer_connection
         resource :uphold_connection, except: [:new]

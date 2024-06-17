@@ -14,20 +14,24 @@ export default function AddChannelModal() {
   }
 
   async function addChannel(channel) {
+    axios.defaults.xsrfCookieName = "CSRF-TOKEN";
+    axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+    axios.defaults.withCredentials = true;
+
     if (channel === 'website') {
       window.location.pathname = '/site_channels/new';
     } else if (channel === 'x') {
       const response = await axios({
-        method: 'GET',
-        url: '/api/nextv1/publishers/auth/register_twitter_channel',
+        method: 'POST',
+        url: '/publishers/auth/register_twitter_channel',
       });
-      console.log(response)
+      window.location = response.data.auth_url;
     } else {
       const response = await axios({
-        method: 'GET',
-        url: `/api/nextv1/publishers/auth/register_${channel}_channel`,
+        method: 'POST',
+        url: `/publishers/auth/register_${channel}_channel`,
       });
-      console.log(response)
+      window.location = response.data.auth_url;
     }
   }
 

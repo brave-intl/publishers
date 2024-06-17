@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
     response.headers["Cache-Control"] = "no-cache, no-store"
   end
 
-  def authenticate_publisher!(opts={})
+  def authenticate_publisher!(opts = {})
     opts[:scope] = :publisher
     warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
   end
@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_publisher
-    @current_publisher ||= warden.authenticate(:scope => :publisher)
+    @current_publisher ||= warden.authenticate(scope: :publisher)
   end
 
   def publisher_session

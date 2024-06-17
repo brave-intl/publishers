@@ -12,7 +12,7 @@ import NavigationItem from '@brave/leo/react/navigationItem';
 import NavigationMenu from '@brave/leo/react/navigationMenu';
 import SegmentedControl from '@brave/leo/react/segmentedControl';
 import Image from 'next/image';
-import NavigationOptions from './NavagationOptions';
+import NavigationOptions from './NavigationOptions';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 

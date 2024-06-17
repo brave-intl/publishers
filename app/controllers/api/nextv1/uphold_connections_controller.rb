@@ -42,7 +42,7 @@ class Api::Nextv1::Connection::UpholdConnectionsController < Api::Nextv1::Oauth2
   def destroy
     # You can't remove your connection if you've been banned/suspended.
     # This is how we prevent you from reusing the connection.
-    if !current_publisher.authorized_to_act? #
+    if !current_publisher.authorized_to_act?
       head :unauthorized and return
     end
 
