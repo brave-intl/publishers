@@ -7,11 +7,16 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
   include Devise::Test::IntegrationHelpers
 
   setup do
+    ActionController::Base.allow_forgery_protection = true
     @channel = channels(:verified)
     @crypto_address = crypto_addresses(:eth_address)
     @publisher = publishers(:verified)
     @controller = Api::Nextv1::CryptoAddressForChannelsController.new
     sign_in @publisher
+  end
+
+  def teardown
+    ActionController::Base.allow_forgery_protection = false
   end
 
   test "should get index" do

@@ -6,6 +6,14 @@ require "webmock/minitest"
 class Api::Nextv1::ChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  def setup
+    ActionController::Base.allow_forgery_protection = true
+  end
+
+  def teardown
+    ActionController::Base.allow_forgery_protection = false
+  end
+
   before do
     @publisher = publishers(:default)
     sign_in @publisher
