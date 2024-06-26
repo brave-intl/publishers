@@ -19,8 +19,12 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     ActionController::Base.allow_forgery_protection = false
   end
 
+  before do
+    @csrf_token = get_csrf_token
+  end
+
   test "should get index" do
-    get "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels", headers: {"HTTP_ACCEPT" => "application/json"}
+    get "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels", headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
     assert_response :success
     assert_equal @crypto_address.crypto_address_for_channels.first, assigns(:crypto_addresses_for_channel).find(@crypto_address.id)
   end
@@ -40,7 +44,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
       account_address: account_address,
       chain: chain,
       message: message
-    }, headers: {"HTTP_ACCEPT" => "application/json"}
+    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
 
     assert_response :created
   end
@@ -56,7 +60,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
       account_address: account_address,
       chain: chain,
       message: message
-    }, headers: {"HTTP_ACCEPT" => "application/json"}
+    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
 
     assert_response :bad_request
     assert_equal ["message is invalid"], JSON.parse(response.body)["errors"]
@@ -71,7 +75,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels/change_address", params: {
       address: account_address,
       chain: chain
-    }, headers: {"HTTP_ACCEPT" => "application/json"}
+    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
 
     assert_response :success
   end
@@ -82,7 +86,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels/change_address", params: {
       address: account_address,
       chain: chain
-    }, headers: {"HTTP_ACCEPT" => "application/json"}
+    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
 
     assert_response :bad_request
     assert_equal "address could not be updated", JSON.parse(response.body)["errors"]
@@ -105,5 +109,13 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     Eth::Util.expects(:public_key_to_address).with(address).returns(Eth::Address.new(address))
 
     assert_equal true, @controller.verify_ethereum_address(signature, address, message)
+  end
+
+  private
+
+  def get_csrf_token
+    get api_nextv1_home_dashboard_path
+    assert_response :success
+    @response.body.match(/meta name="csrf-token" content="(.*?)"/)[1]
   end
 end
