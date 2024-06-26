@@ -2,7 +2,7 @@ require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
 require "eth"
-require 'test_helpers/csrf_getter'
+require "test_helpers/csrf_getter"
 
 class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -22,7 +22,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
   end
 
   test "should get index" do
-    get "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels", headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
+    get "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels", headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token}
     assert_response :success
     assert_equal @crypto_address.crypto_address_for_channels.first, assigns(:crypto_addresses_for_channel).find(@crypto_address.id)
   end
@@ -42,7 +42,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
       account_address: account_address,
       chain: chain,
       message: message
-    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
+    }, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token}
 
     assert_response :created
   end
@@ -58,7 +58,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
       account_address: account_address,
       chain: chain,
       message: message
-    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
+    }, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token}
 
     assert_response :bad_request
     assert_equal ["message is invalid"], JSON.parse(response.body)["errors"]
@@ -73,7 +73,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels/change_address", params: {
       address: account_address,
       chain: chain
-    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
+    }, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token}
 
     assert_response :success
   end
@@ -84,7 +84,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels/change_address", params: {
       address: account_address,
       chain: chain
-    }, headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => @csrf_token}
+    }, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token}
 
     assert_response :bad_request
     assert_equal "address could not be updated", JSON.parse(response.body)["errors"]

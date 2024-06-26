@@ -2,7 +2,7 @@
 
 require "test_helper"
 require "webmock/minitest"
-require 'test_helpers/csrf_getter'
+require "test_helpers/csrf_getter"
 
 class Api::Nextv1::ChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -26,10 +26,9 @@ class Api::Nextv1::ChannelsControllerTest < ActionDispatch::IntegrationTest
     details = SiteChannelDetails.new
     channel = Channel.create!(publisher: publisher, details: details)
 
-    delete "/api/nextv1/channels/#{channel.id}", headers: {"HTTP_ACCEPT" => "application/json", 'X-CSRF-Token' => get_csrf_token}
+    delete "/api/nextv1/channels/#{channel.id}", headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => get_csrf_token}
 
     assert_equal(204, response.status)
     assert_nil Channel.find_by(id: channel.id)
   end
-
 end
