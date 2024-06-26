@@ -1,7 +1,3 @@
-require "eth"
-require "rbnacl"
-require "base58"
-
 class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseController
   include PublishersHelper
   include Eth
@@ -38,9 +34,9 @@ class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseControl
     verified = valid_message &&
       case chain
       when "SOL"
-        verify_solana_address(signature, account_address, message)
+        ::Util::CryptoUtils.verify_solana_address(signature, account_address, message, current_publisher)
       when "ETH"
-        verify_ethereum_address(signature, account_address, message)
+        ::Util::CryptoUtils.verify_ethereum_address(signature, account_address, message, current_publisher)
       else
         @errors << "address could not be verified"
         false
@@ -81,24 +77,6 @@ class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseControl
       LogException.perform(e, publisher: current_publisher)
       render(json: {errors: "address could not be deleted"}, status: 400)
     end
-  end
-
-  def verify_solana_address(signature, address, message)
-    verify_key = RbNaCl::VerifyKey.new(Base58.base58_to_binary(address, :bitcoin))
-    verify_key.verify(Base58.base58_to_binary(signature, :bitcoin), message)
-  rescue => e
-    LogException.perform(e, publisher: current_publisher)
-    false
-  end
-
-  def verify_ethereum_address(signature, address, message)
-    signature_pubkey = Eth::Signature.personal_recover message, signature
-    signature_address = Eth::Util.public_key_to_address signature_pubkey
-    # Eth addresses are case insensitive
-    signature_address.address.downcase == address.downcase
-  rescue => e
-    LogException.perform(e, publisher: current_publisher)
-    false
   end
 
   def replace_crypto_address_for_channel(account_address, chain, channel)

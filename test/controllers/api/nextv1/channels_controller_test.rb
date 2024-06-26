@@ -2,9 +2,11 @@
 
 require "test_helper"
 require "webmock/minitest"
+require 'test_helpers/csrf_getter'
 
 class Api::Nextv1::ChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include CsrfGetter
 
   def setup
     ActionController::Base.allow_forgery_protection = true
@@ -30,11 +32,4 @@ class Api::Nextv1::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_nil Channel.find_by(id: channel.id)
   end
 
-  private
-
-  def get_csrf_token
-    get api_nextv1_home_dashboard_path
-    assert_response :success
-    @response.body.match(/meta name="csrf-token" content="(.*?)"/)[1]
-  end
 end
