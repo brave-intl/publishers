@@ -71,6 +71,7 @@ class SiteChannelDetails < BaseChannelDetails
   end
 
   def brave_publisher_id_error_description
+    return if !brave_publisher_id_error_code
     case brave_publisher_id_error_code.to_sym
     when :taken
       I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.taken")
