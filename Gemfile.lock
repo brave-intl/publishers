@@ -7,14 +7,6 @@ GIT
       omniauth-oauth2
 
 GIT
-  remote: https://github.com/brave-intl/minitest-rails.git
-  revision: bb256aef20991da223aed7133bd1bff17b933ce6
-  branch: rails71
-  specs:
-    minitest-rails (7.0.0)
-      minitest (~> 5.18)
-
-GIT
   remote: https://github.com/brave-intl/omniauth-reddit.git
   revision: a9abff8c5a6de217811945dc6f2949d26debfb29
   branch: master
@@ -343,6 +335,9 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
     minitest (5.23.1)
+    minitest-rails (7.1.1)
+      minitest (~> 5.20)
+      railties (>= 7.1.0, < 8.0.0)
     minitest-retry (0.2.2)
       minitest (>= 5.0)
     mocha (2.3.0)
@@ -782,7 +777,7 @@ DEPENDENCIES
   lograge (~> 0.14.0)
   meta-tags (~> 2.20)
   minitest
-  minitest-rails!
+  minitest-rails (~> 7.1.0)
   minitest-retry
   mocha
   newrelic_rpm (~> 9.7)
