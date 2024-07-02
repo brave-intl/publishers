@@ -8,7 +8,7 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
   include Oauth2::Responses
   include Oauth2::Errors
   before_action :set_controller_state
-  # before_action :set_request_state, only: [:create]
+  before_action :set_request_state, only: [:create]
   before_action :set_access_token_response, only: [:callback]
 
   # This is just a convenience wrapper, create is not particularly explicit.
