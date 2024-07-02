@@ -155,7 +155,7 @@ export default class Donate extends React.PureComponent<IProps, IState> {
             </StyledIconFace>
             <StyledFundsText>
               {getLocale("notEnoughTokens")}{" "}
-              <a href={addFundsLink} target={"_blank"}>
+              <a href={addFundsLink} target={"_blank"} rel="noopener noreferrer">
                 {getLocale("addFunds")}
               </a>
               .
