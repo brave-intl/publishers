@@ -13,7 +13,6 @@ class SiteChannelsController < ApplicationController
       verification_dns_record
       verification_github
       verification_public_file
-      verification_background
       verify
       download_verification_file
     ]
@@ -30,7 +29,6 @@ class SiteChannelsController < ApplicationController
     only: %i[
       verification_dns_record
       verification_public_file
-      verification_support_queue
       verification_github
     ]
 
