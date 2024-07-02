@@ -33,10 +33,10 @@ export default function NavigationLayout({ children }) {
     setRoute(window.location.pathname);
   }, []);
 
-  function updateTheme(theme) {
-    setTheme(theme);
-    document.body.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+  function updateTheme(e) {
+    setTheme(e.value);
+    document.body.setAttribute('data-theme', e.value);
+    localStorage.setItem('theme', e.value);
   }
 
   return (
@@ -66,21 +66,20 @@ export default function NavigationLayout({ children }) {
               {t('NavDropdown.crypto_contributions_text')}{' '}
               <Link href=''>{t('shared.learn_more')}</Link>
               {' - '}
-              <Button
-                kind='plain'
+              <Link
                 className='underline font-normal'
                 onClick={() => {
                   setDismissCrypto(true);
                 }}
               >
                 {t('shared.dismiss')}
-              </Button>
+              </Link>
             </p>
           </div>
           <NavigationActions slot='actions'>
-            <div className={styles['theme-switcher']}>
+{/*            <div className={styles['theme-switcher']}>
               <span className={styles.theme}>Theme</span>
-              <SegmentedControl size='tiny' value={theme} onChange={(e)=>{updateTheme(e.detail.value)}}>
+              <SegmentedControl size='tiny' value={theme} onChange={updateTheme}>
                 <ControlItem value='light'>
                   <Icon name='theme-light' />
                 </ControlItem>
@@ -91,16 +90,16 @@ export default function NavigationLayout({ children }) {
                   <Icon name='theme-system' />
                 </ControlItem>
               </SegmentedControl>
-            </div>
+            </div>*/}
             <Hr />
             <div className='action-items'>
-              <NavigationItem
+{/*              <NavigationItem
                 outsideList={true}
                 icon='help-outline'
                 href='/faqs'
               >
                 {t('NavDropdown.faqs')}
-              </NavigationItem>
+              </NavigationItem>*/}
               <NavigationItem
                 outsideList={true}
                 icon='message-bubble-ask'
