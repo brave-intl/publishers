@@ -67,6 +67,11 @@ export default function HomePage() {
     setIsLoading(false);
   }
 
+  function onChannelDelete(channelId) {
+    const newChannels = channels.filter( c => c.id !== channelId);
+    setChannels(newChannels);
+  }
+
   if (isLoading) {
     return <ProgressRing />;
   } else {
@@ -105,6 +110,7 @@ export default function HomePage() {
                           key={channel.id}
                           channel={channel}
                           publisherPayable={publisherPayable}
+                          onChannelDelete={onChannelDelete}
                         />
                       );
                     })}
