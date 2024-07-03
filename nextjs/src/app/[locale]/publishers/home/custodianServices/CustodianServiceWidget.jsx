@@ -4,7 +4,7 @@ import Button from '@brave/leo/react/button';
 import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Link from '@brave/leo/react/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { apiRequest } from '@/lib/api';
@@ -13,12 +13,16 @@ import countryList from './countryList.json';
 
 export default function CustodianServiceWidget({ walletData }) {
   const t = useTranslations();
+  const locale = useLocale();
   const supportedRegions = walletData.allowed_regions;
   const [selectedCountry, setSelectedCountry] = useState(undefined);
   const [unsupportedCountry, setUnsupportedCountry] = useState(false);
   const [upholdConnection, setUpholdConnection] = useState(walletData.uphold_connection);
   const [geminiConnection, setGeminiConnection] = useState(walletData.gemini_connection);
   const [bitflyerConnection, setBitflyerConnection] = useState(walletData.bitflyer_connection);
+
+  const supportUrl = locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597';
+
 
   const providerUpdaters = {
     gemini: setGeminiConnection,
@@ -111,35 +115,37 @@ export default function CustodianServiceWidget({ walletData }) {
     return (
       <section>
         <p className='pb-3'>{t('Home.account.connect_prompt')}</p>
-        <Dropdown
-          size='normal'
-          value={selectedCountry}
-          className='w-full'
-          placeholder={t('Home.account.country_placeholder')}
-          onChange={handleCountryChange}
-        >
-          <div className='small-semibold' slot="label">{t('Home.account.country_label')}</div>
-          {selectedCountry && (
-            <div slot="left-icon">
-              <Icon name={`country-${countryList[selectedCountry].toLowerCase()}`} />
-            </div>
-          )}
-          {Object.keys(countryList).map(function (countryName) {
-            return (
-              <leo-option
-                className='py-0'
-                key={countryList[countryName]}
-                value={countryName}
-              >
-                <Icon
-                  className='inline-block'
-                  name={`country-${countryList[countryName].toLowerCase()}`}
-                />
-                <div className='px-1 inline-block align-top'>{countryName}</div>
-              </leo-option>
-            );
-          })}
-        </Dropdown>
+        {locale !== 'ja' && (
+          <Dropdown
+            size='normal'
+            value={selectedCountry}
+            className='w-full'
+            placeholder={t('Home.account.country_placeholder')}
+            onChange={handleCountryChange}
+          >
+            <div className='small-semibold' slot="label">{t('Home.account.country_label')}</div>
+            {selectedCountry && (
+              <div slot="left-icon">
+                <Icon name={`country-${countryList[selectedCountry].toLowerCase()}`} />
+              </div>
+            )}
+            {Object.keys(countryList).map(function (countryName) {
+              return (
+                <leo-option
+                  className='py-0'
+                  key={countryList[countryName]}
+                  value={countryName}
+                >
+                  <Icon
+                    className='inline-block'
+                    name={`country-${countryList[countryName].toLowerCase()}`}
+                  />
+                  <div className='px-1 inline-block align-top'>{countryName}</div>
+                </leo-option>
+              );
+            })}
+          </Dropdown>
+        )}
         {selectedCountry && (
           <div className='pt-3'>
             <p className='small-semibold mb-0.5'>
@@ -169,10 +175,20 @@ export default function CustodianServiceWidget({ walletData }) {
             )}
           </div>
         )}
+        {locale === 'ja' && (
+          <Button
+            onClick={() => redirectToAuthUrl('bitflyer')}
+            kind='outline'
+          >
+            <Icon name="bitflyer-color" slot="icon-before" />
+            {t('Home.account.bitflyer_connect')}
+            <Icon name="launch" slot="icon-after" />
+          </Button>
+        )}
         <p className='small-regular color-tertiary pt-3'>
           {t('Home.account.country_disclaimer')}
           <a
-            href='https://support.brave.com/hc/en-us/articles/9884338155149'
+            href={supportUrl}
             rel='noopener noreferrer'
             target='_blank'
             className='underline'

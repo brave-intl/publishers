@@ -12,7 +12,7 @@ import Card from '@/components/Card';
 
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
-export default function ChannelCard({ channel, publisherPayable }) {
+export default function ChannelCard({ channel, publisherPayable, onChannelDelete }) {
   const t = useTranslations();
   // TODO: come up with some default name
   const defaultName = '';
@@ -21,6 +21,8 @@ export default function ChannelCard({ channel, publisherPayable }) {
     const response = await apiRequest(`channels/${channel.id}`, 'DELETE');
     if (response.errors) {
       // TODO show error state here
+    } else {
+      onChannelDelete(channel.id);
     }
   }
 
@@ -92,7 +94,7 @@ export default function ChannelCard({ channel, publisherPayable }) {
       </section>
       <Hr />
       <section className='pt-2 text-right '>
-        <Button className='color-secondary mr-0.5' kind='plain' onClick={removeChannel}>
+        <Button className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
           {t('shared.remove')}
         </Button>
         <Button kind='outline'>{t('shared.customize')}</Button>

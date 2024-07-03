@@ -9,11 +9,7 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
   include Oauth2::Errors
   before_action :set_controller_state
   before_action :set_request_state, only: [:create]
-  before_action :set_access_token_response, only: [:callback]
 
-  # This is just a convenience wrapper, create is not particularly explicit.
-  # All a code auth request does is perform a redirect but for the sake
-  # of implementation I'm just keeping the nomenclature the same for now.
   def create
     render json: {authorization_url: authorization_url}
   end
@@ -67,15 +63,6 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
       false
     else
       true
-    end
-  end
-
-  def set_access_token_response
-    # This will be correct in most oauth2 cases, but
-    # I'm keeping open the opportunity to easily override this
-    # when needed.
-    if @access_token_response.nil?
-      @access_token_response = AccessTokenResponse
     end
   end
 
