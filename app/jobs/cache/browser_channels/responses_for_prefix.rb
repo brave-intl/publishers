@@ -42,7 +42,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           if connection.valid_country?
             uphold_address = site_banner_lookup.channel&.uphold_connection&.address || ""
             print site_banner_lookup.channel_identifier
-            uphold_wallet.address = payable ? uphold_address : ""
+            uphold_wallet.address = payable ? (uphold_address || "") : ""
           else
             uphold_wallet.address = ""
             LogException.perform("Wallet outside of allowed. Country: #{connection.country} Id: #{connection.id} Publisher #{site_banner_lookup.publisher.id}", expected: true)
@@ -56,7 +56,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
           bitflyer_wallet = PublishersPb::BitflyerWallet.new
           connection = site_banner_lookup.publisher.bitflyer_connection
           bitflyer_wallet.wallet_state = get_bitflyer_wallet_state(bitflyer_connection: connection)
-          bitflyer_wallet.address = payable ? site_banner_lookup.channel.deposit_id : ""
+          bitflyer_wallet.address = payable ? (site_banner_lookup.channel.deposit_id || "" ) : ""
 
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
@@ -69,7 +69,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
           if connection.valid_country?
             gemini_address = site_banner_lookup.channel&.gemini_connection&.recipient_id || ""
-            gemini_wallet.address = payable ? gemini_address : ""
+            gemini_wallet.address = payable ? (gemini_address || "") : ""
           end
 
           wallet.gemini_wallet = gemini_wallet
