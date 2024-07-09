@@ -18,6 +18,10 @@ class Cache::BrowserChannels::Main
       else
         Time.at(0).to_s
       end
+
+    # Warm the cache to avoid 429/ thundering stampede
+    Rewards::Parameters.new.fetch_allowed_regions
+
     if full_refresh_not_ran_recently?(all_prefixes_run_time: all_prefixes_run_time) && queue_depth_small?
       run_all_prefixes
       Rails.cache.write(LAST_RAN_ALL_KEY, Time.now.to_s)

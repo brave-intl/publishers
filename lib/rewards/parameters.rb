@@ -11,7 +11,7 @@ module Rewards
     end
 
     def get_cached_parameters
-      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 5.minutes) do
+      Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.hour) do
         get_parameters
       end
     end
