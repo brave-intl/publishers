@@ -90,7 +90,8 @@ export default class BannerEditor extends React.Component {
       preferredCurrency: "USD",
       mode: "Edit",
       view: "editor-view",
-      state: "editor"
+      state: "editor",
+      publisherId: this.props.publisherId
     };
     // this data is from the publisher and applies to all channels, will not change once modal is loaded
     this.socialMediaOptions = this.props.channelBanners.filter( channel => channel.type !== 'SiteChannelDetails' )
@@ -247,7 +248,7 @@ export default class BannerEditor extends React.Component {
     } else {
       let url =
         "/publishers/" +
-        document.getElementById("publisher_id").value +
+        this.state.publisherId +
         "/site_banners/";
       this.state.defaultSiteBannerMode
         ? (url += this.props.defaultSiteBanner.id)
@@ -552,7 +553,7 @@ export default class BannerEditor extends React.Component {
 
     let url =
       "/publishers/" +
-      document.getElementById("publisher_id").value +
+      this.state.publisherId +
       "/site_banners/";
     this.state.defaultSiteBannerMode
       ? (url += this.props.defaultSiteBanner.id)
@@ -756,14 +757,16 @@ export function renderBannerEditor(
   preferredCurrency,
   conversionRate,
   channelBanners,
-  mode
+  mode,
+  publisherId
 ) {
   let props = {
     values: values,
     preferredCurrency: preferredCurrency,
     conversionRate: conversionRate,
     channelBanners: channelBanners,
-    mode: mode
+    mode: mode,
+    publisherId: publisherId,
   };
 
   ReactDOM.render(

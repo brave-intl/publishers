@@ -12,12 +12,13 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const basicAuth = require('express-basic-auth')
 
-const nextAllowRoutes = ['_next', '^icons', 'favicon', 'api'];
+const nextAllowRoutes = ['_next', '^icons', 'favicon'];
 const nextAllowPageRoutes = [
   'publishers/settings',
   'publishers/security',
   'publishers/totp_registrations/new',
   'publishers/u2f_registrations/new',
+  'publishers/home',
 ];
 const routeMatch = [
   nextAllowPageRoutes.map((r) => `ja/${r}`).join('|'),

@@ -6,13 +6,8 @@ class PublishersController < ApplicationController
   include PendingActions
 
   VERIFIED_PUBLISHER_ROUTES = [
-    :balance,
-    :disconnect_uphold,
-    :edit_payment_info,
     :show,
     :home,
-    :statement,
-    :statements,
     :update
   ].freeze
 
