@@ -192,9 +192,6 @@ class StatementDetails extends React.Component<IStatementProps, any> {
         {!this.props.showPage && (
           <div className="px-5 py-3">
             <a
-              data-piwik-action="StatementViewMore"
-              data-piwik-name="Clicked"
-              data-piwik-value=""
               href={routes.publishers.statements.show.path.replace(
                 "{period}",
                 this.props.statement.earningPeriod.startDate

@@ -66,7 +66,7 @@
 
           .col-halves
             .col-half
-              = f.submit t(".submit_value"), class: "btn btn-primary", :"data-piwik-action" => "U2FLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Authentication"
+              = f.submit t(".submit_value"), class: "btn btn-primary"
             .col-half.text-right
               = link_to t("shared.cancel"), security_publishers_path, class: "btn btn-link"
 

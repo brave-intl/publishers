@@ -65,7 +65,7 @@
                 = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-wide btn-outline-secondary"
 
           - else
-            p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateTOTPClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
+            p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
           p.icon= render "smartphone_with_code"
 
         .col-left-aligned--content
@@ -96,5 +96,5 @@
               == "&bull; "
               = t ".u2f.disabled"
         .col-left-aligned--action
-          p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateU2FClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
+          p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
           p.icon= render "usb"
