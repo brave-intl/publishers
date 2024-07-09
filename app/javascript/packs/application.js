@@ -1,4 +1,3 @@
-import "analytics";
 import "modal";
 import "copyButton";
 import "userMenu";
