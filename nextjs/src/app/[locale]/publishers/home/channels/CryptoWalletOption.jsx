@@ -40,7 +40,7 @@ export default function CryptoWalletOption({
         <span>
           <span>{formatCryptoAddress(value.address)}</span>
         </span>
-        <span onClick={handleDelete}>
+        <span className={styles['trash-icon']} onClick={handleDelete}>
           <Icon name='trash' />
         </span>
       </div>

@@ -9,6 +9,7 @@ import { useContext,useEffect,useState } from 'react';
 import { apiRequest } from '@/lib/api';
 
 import Card from '@/components/Card';
+import styles from '@/styles/ChannelCard.module.css';
 
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
@@ -36,11 +37,11 @@ export default function ChannelCard({ channel, publisherPayable, onChannelDelete
 
   function channelIconType() {
     if (channelType() === 'site') {
-      return <Icon className='color-interactive' name='globe' />;
+      return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name='globe' />;
     } else if (channelType() === 'twitter') {
-      return <Icon name='social-x' />;
+      return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name='social-x' forceColor='true' />;
     } else {
-      return <Icon name={`social-${channelType()}`} />;
+      return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name={`social-${channelType()}`} forceColor='true' />;
     }
   }
 
@@ -49,12 +50,12 @@ export default function ChannelCard({ channel, publisherPayable, onChannelDelete
   }
 
   function displayVerified() {
-    if (channel.verified && publisherPayable) {
+    if (channel.verified) {
       return (
         <div className='flex items-center'>
-          <span className='pr-1 small-regular'>{t('Home.channels.verified')}</span>
+          <span className='pr-0.5 small-regular'>{t('Home.channels.verified')}</span>
           <span className='inline-block'>
-            <Icon name='verification-filled-color' />
+            <Icon className={`${styles['channel-verification-icon']}`} name='verification-filled-color' />
           </span>
         </div>
       );
@@ -65,7 +66,7 @@ export default function ChannelCard({ channel, publisherPayable, onChannelDelete
         <div className='flex items-center'>
           <span className='pr-0.5 small-regular'>{t('Home.channels.not_verified')}</span>
           <span className='inline-block'>
-            <Icon className='color-tertiary' name='verification-filled-off' />
+            <Icon className={`color-tertiary ${styles['channel-verification-icon']}`} name='verification-filled-off' />
           </span>
         </div>
       );
@@ -93,7 +94,7 @@ export default function ChannelCard({ channel, publisherPayable, onChannelDelete
         )}
       </section>
       <Hr />
-      <section className='pt-2 text-right '>
+      <section className='pt-2 text-right self-end'>
         <Button className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
           {t('shared.remove')}
         </Button>
