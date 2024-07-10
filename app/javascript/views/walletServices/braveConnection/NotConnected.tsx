@@ -75,9 +75,6 @@ class UpholdConnectButton extends React.Component<any, any> {
         </Tooltip>
         <a
           className="btn btn-secondary font-weight-bold mb-2"
-          data-piwik-action="UpholdConnectClicked"
-          data-piwik-name="Clicked"
-          data-piwik-value="Dashboard"
           rel="nofollow"
           data-method="post"
           href={routes.publishers.uphold.connect}
@@ -113,9 +110,6 @@ class GeminiConnectButton extends React.Component<any, any> {
         </Tooltip>
         <a
           className="btn btn-secondary font-weight-bold mb-2"
-          data-piwik-action="GeminiConnectClicked"
-          data-piwik-name="Clicked"
-          data-piwik-value="Dashboard"
           rel="nofollow"
           data-method="post"
           href={routes.publishers.gemini.connect}
@@ -135,9 +129,6 @@ class GeminiConnectButton extends React.Component<any, any> {
 const BitflyerConnectButton = () => (
   <a
     className="btn btn-secondary font-weight-bold mb-2"
-    data-piwik-action="BitflyerConnectClicked"
-    data-piwik-name="Clicked"
-    data-piwik-value="Dashboard"
     rel="nofollow"
     data-method="post"
     href={routes.publishers.bitflyer.connect}

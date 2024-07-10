@@ -17,7 +17,7 @@
             .two-options--subheader.two-options--subheader--recommended= t ".trusted_file.subheading"
             .two-options--image-wrapper
               = image_tag("choose-file@2x.png", class: "two-options--image", width: 234, height: 137)
-            div= link_to(t(".trusted_file.button"), verification_public_file_site_channel_path(current_channel), class: "btn btn-block btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+            div= link_to(t(".trusted_file.button"), verification_public_file_site_channel_path(current_channel), class: "btn btn-block btn-primary")
 
           .two-options--or
             = t ".or"
@@ -27,4 +27,4 @@
             .two-options--subheader= t ".dns.subheading"
             .two-options--image-wrapper
               = image_tag("choose-dns@2x.png", class: "two-options--image", width: 253, height: 96)
-            div= link_to(t(".dns.button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-block btn-outline-primary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+            div= link_to(t(".dns.button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-block btn-outline-primary")
