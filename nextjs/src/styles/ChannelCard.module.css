@@ -8,11 +8,12 @@
 
   .crypto-wallet-dropdown {
     border: 1px solid rgba(199 199 204 100%);
+    padding: 3px;
     padding-left: 30px;
     border-radius: 8px;
     background-repeat: no-repeat;
-    background-position: bottom 10px left 10px;
-    background-size: 6.5%;
+    background-position: bottom 10px left 6px;
+    background-size: 5.5%;
   }
 
   .crypto-wallet-dropdown-eth {
@@ -44,7 +45,7 @@
     text-align: center;
     padding: 10px;
     padding-top: 15px;
-    color: #423EEE;
+    color: var(--leo-color-text-tertiary);
     font-weight: bold;
     font-size: 0.9em;
     cursor: pointer;
@@ -56,6 +57,14 @@
     float: right;
     margin-top: 4px;
   }
+}
+
+.channel-card-icon {
+  --leo-icon-width: 18px;
+}
+
+.channel-verification-icon {
+  --leo-icon-width: 20px;
 }
 
 .privacy-header {

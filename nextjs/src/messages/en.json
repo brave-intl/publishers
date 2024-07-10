@@ -50,7 +50,8 @@
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "Youtube",
-      "twitch": "Twitch"
+      "twitch": "Twitch",
+      "github": "Github"
     }
   },
   "activerecord": {
@@ -124,7 +125,7 @@
       "add_channel_title": "What are channels?"
     },
     "addCryptoWidget": {
-      "addWallet": "Add new crypto address",
+      "addWallet": "Add new address",
       "clearWallet": "Clear address",
       "solanaConnectError": "Connect a Solana wallet to add an address",
       "ethereumConnectError": "Connect an Ethereum wallet to add an address",
