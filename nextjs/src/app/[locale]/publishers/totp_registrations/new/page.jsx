@@ -59,7 +59,7 @@ export default function TOTPNewPage() {
       <Head>
         <title>Setup Authenticator</title>
       </Head>
-      <section className='content-width-sm'>
+      <section className='content-width-sm mt-3 mb-3'>
         <Card>
           <div className='[&>*]:mb-2'>
             {user.two_factor_enabled && (

@@ -69,7 +69,7 @@ export default function SettingsPage() {
         hello
       </Head>
 
-      <section className='content-width'>
+      <section className='content-width mt-3 mb-3'>
         <Card className='mb-3'>
           <h2 className='mb-2'>{t('Settings.index.header')}</h2>
           <h4 className='mt-2'>Stay Logged-In</h4>

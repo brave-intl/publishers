@@ -84,7 +84,7 @@ export default function U2fRegistrations() {
       <Head>
         <title>Register Key</title>
       </Head>
-      <section className='content-width-sm'>
+      <section className='content-width-sm mt-3 mb-3'>
         <Card>
           <h1>{t('u2f_registrations.new.heading')}</h1>
           <div className='mt-2'>
