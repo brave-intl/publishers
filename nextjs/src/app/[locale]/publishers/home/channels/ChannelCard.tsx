@@ -39,9 +39,9 @@ export default function ChannelCard({ channel, publisherPayable, onChannelDelete
     if (channelType() === 'site') {
       return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name='globe' />;
     } else if (channelType() === 'twitter') {
-      return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name='social-x' forceColor='true' />;
+      return <Icon className={`${styles['channel-card-icon']}`} name='social-x' forceColor={true} />;
     } else {
-      return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name={`social-${channelType()}`} forceColor='true' />;
+      return <Icon className={`${styles['channel-card-icon']}`} name={`social-${channelType()}`} forceColor={true} />;
     }
   }
 
