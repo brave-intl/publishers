@@ -81,7 +81,7 @@ export default function SecurityPage() {
       <Head>
         <title>{t('NavDropdown.security')}</title>
       </Head>
-      <section className='content-width'>
+      <section className='content-width mt-3 mb-3'>
         <Card>
           <div className='mb-3 flex flex-col items-start justify-between md:flex-row'>
             <div className='md:w-[80%]'>
