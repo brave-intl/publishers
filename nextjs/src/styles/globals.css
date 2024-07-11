@@ -172,6 +172,12 @@ h4.mobile {
   width: 100%;
 }
 
+@media (width <= 768px) {
+  .content-background, .main {
+    background: var(--leo-color-container-background);
+  }
+}
+
 .content-width {
   width: 800px;
 }

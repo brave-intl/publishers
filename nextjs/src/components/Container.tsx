@@ -10,7 +10,7 @@ const Container: FC<Props> = ({ children, className }) => {
   return (
     <div
       className={clsx(
-        'container content-background rounded p-4 m-1 transition-colors',
+        'container content-background rounded p-0.5 md:p-4 m-1 transition-colors',
         className,
       )}
     >

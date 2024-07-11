@@ -27,6 +27,7 @@ export default function NavigationLayout({ children }) {
   const [theme, setTheme] = useState('auto');
   const [route, setRoute] = useState('');
   const [dismissCrypto, setDismissCrypto] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     setTheme(localStorage.getItem('theme') || 'auto');
@@ -41,9 +42,27 @@ export default function NavigationLayout({ children }) {
 
   return (
     <UserProvider>
+      <div className={`${isNavOpen ? 'hidden' : 'inline-block'} md:hidden grid grid-cols-6 ${styles['nav-mobile']}`}>
+        <Button
+          onClick={() => setIsNavOpen(true)}
+          kind='plain-faint'
+          className='col-span-1'
+        >
+          <Icon name='hamburger-menu'/>
+        </Button>
+        <div className='col-span-5 flex flex-row justify-center items-center'>
+          <Image
+            src={Logo}
+            alt='Brave Creators Logo'
+            priority={true}
+            width={110}
+            className='mr-[16%]'
+          />
+        </div>
+      </div>
       <div className='flex-column flex'>
         <Navigation
-          className={`inline-block max-w-[280px] min-w-[280px] ${styles['nav-background']}`}
+          className={`${isNavOpen ? 'inline-block' : 'hidden'} md:inline-block max-w-[280px] min-w-[280px] ${styles['nav-background']}`}
         >
           <NavigationHeader>
             <Image
@@ -52,6 +71,13 @@ export default function NavigationLayout({ children }) {
               priority={true}
               width={110}
             />
+            <Button 
+              kind='plain-faint'
+              onClick={()=> setIsNavOpen(false)}
+              className='md:hidden'
+            >
+              <Icon name='close' className='absolute right-0 top-1'/>
+            </Button>
           </NavigationHeader>
           <NavigationOptions />
           <div
@@ -117,7 +143,10 @@ export default function NavigationLayout({ children }) {
             </div>
           </NavigationActions>
         </Navigation>
-        {children}
+        <div className={`${isNavOpen ? 'hidden' : 'inline-block'}`}>
+          {children}
+        </div>
+        <div className={`${isNavOpen ? 'inline-block' : 'hidden'} bg-gray-400`}></div>
       </div>
     </UserProvider>
   );

@@ -39,7 +39,7 @@ export default function AddChannelModal() {
     <div>
       <h3 className='pb-5'>{t('Home.channels.add_channel')}</h3>
       <p className='pb-2'>{t('Home.channels.add_channel_prompt')}</p>
-      <section className='grid grid-cols-3 gap-2'>
+      <section className='grid md:grid-cols-3 gap-2'>
         {channels.map(function (channel) {
           return (
             <div className={`text-center ${styles['add-channel-card']}`} key={channel} onClick={() => addChannel(channel)}>

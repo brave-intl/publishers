@@ -73,14 +73,18 @@ export default function HomePage() {
   }
 
   if (isLoading) {
-    return <ProgressRing />;
+    return (
+      <div className="flex items-center mx-auto">
+        <ProgressRing />
+      </div>
+    )
   } else {
     return (
       <main className='main transition-colors'>
         <Container>
           <div className='mx-auto max-w-screen-lg'>
             <h1 className='mb-3'>{t('Home.headings.account_details')}</h1>
-            <Card className='flex items-top'>
+            <Card className='md:flex md:items-top'>
               <section className='inline-block w-full md:w-1/2'>
                 <h3 className='pb-3'>{t('Home.account.monthly_payouts')}</h3>
                 <section className='grid grid-cols-2'>
@@ -103,7 +107,7 @@ export default function HomePage() {
             {channels.length ? (
               <>
                 <CryptoAddressProvider>
-                  <section className='grid grid-cols-2 gap-4'>
+                  <section className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     {channels.map(function (channel) {
                       return (
                         <ChannelCard
