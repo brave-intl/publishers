@@ -13,7 +13,7 @@ import styles from '@/styles/ChannelCard.module.css';
 
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
-export default function ChannelCard({ channel, publisherPayable, onChannelDelete }) {
+export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
   const t = useTranslations();
   // TODO: come up with some default name
   const defaultName = '';
@@ -98,7 +98,7 @@ export default function ChannelCard({ channel, publisherPayable, onChannelDelete
         <Button className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
           {t('shared.remove')}
         </Button>
-        <Button kind='outline'>{t('shared.customize')}</Button>
+        <Button href={`/publishers/${publisherId}/site_banners/new`} kind='outline'>{t('shared.customize')}</Button>
       </section>
     </Card>
   );

@@ -24,8 +24,8 @@ export default function HomePage() {
   const [lastDepositDate, setLastDepositDate] = useState('');
   const [nextDepositDate, setNextDepositDate] = useState('');
   const [channels, setChannels] = useState([]);
-  const [publisherPayable, setPublisherPayable] = useState(false);
   const [walletData, setWalletData] = useState({});
+  const [publisherId, setPublisherId] = useState('')
   const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
   const t = useTranslations();
 
@@ -55,15 +55,11 @@ export default function HomePage() {
       setLastDepositDate('--')
     }
 
+    setPublisherId(res.publisher.id)
+
     setWalletData(wallet);
     setNextDepositDate(wallet.next_deposit_date);
     setChannels(res.channels);
-    setPublisherPayable(
-      res.publisher.payable &&
-        (wallet.bitflyer_connection ||
-          wallet.uphold_connection ||
-          wallet.gemini_connection),
-    );
     setIsLoading(false);
   }
 
@@ -109,7 +105,7 @@ export default function HomePage() {
                         <ChannelCard
                           key={channel.id}
                           channel={channel}
-                          publisherPayable={publisherPayable}
+                          publisherId={publisherId}
                           onChannelDelete={onChannelDelete}
                         />
                       );
