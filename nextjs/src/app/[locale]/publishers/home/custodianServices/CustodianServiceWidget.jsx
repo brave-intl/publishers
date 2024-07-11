@@ -82,7 +82,7 @@ export default function CustodianServiceWidget({ walletData }) {
             <Icon name={`${provider}-color`} />
           </span>
           <span className='px-1'>
-            <strong>{capitalize(provider)}</strong>
+            <strong>{t(`shared.${provider}`)}</strong>
           </span>
           <Link href='' className='color-tertiary pr-1'>
             <Icon name='launch' className='color-tertiary'/>

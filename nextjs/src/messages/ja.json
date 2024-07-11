@@ -4,7 +4,11 @@
     "help": "ヘルプ",
     "log_out": "ログアウト",
     "security": "セキュリティー",
-    "settings": "設定"
+    "settings": "設定",
+    "support": "サポート",
+    "crypto_contributions_header": "クリプトの寄付を受け取る",
+    "crypto_contributions_text": "それぞれのチャンネルでEthereumやSolanaのウォレットを接続し、ファンからの寄付を受け取りましょう",
+    "contribution_banners": "コントリビューション・バナー"
   },
   "Settings": {
     "buttons": {
@@ -53,7 +57,8 @@
     "attributes": {
       "publisher": {
         "visible": "はい。Braveのマーケティングチャンネルにサイトを掲載して、認知を広めます",
-        "name": "氏名"
+        "name": "氏名",
+        "marketing_emails": "ここにチェックを入れると、新機能やプロモーションの情報をEメールで受け取ることに同意することになります。"
       },
       "site_channel_details": {
         "brave_publisher_id": "Webサイトドメイン",
@@ -61,6 +66,9 @@
       },
       "u2f_registration": {
         "name": "セキュリティーキーの名前"
+      },
+      "uphold_connection": {
+        "send_emails": "もしも支払いを受け取れない場合にEメールを受け取る。"
       }
     },
     "errors": {
@@ -134,6 +142,16 @@
       "setup": "二要素認証を設定する",
       "skip": "スキップ",
       "subheading": "2要素認証の設定をしてください"
+    },
+    "confirm_disable": {
+      "header": "認証アプリを無効にしますか？",
+      "intro": "現在残っている2段階認証メソッド：",
+      "none": "なし",
+      "no_totp_warning": "認証アプリは、ハードウェア・セキュリティキーを\n紛失した際に、安全にログインするための\n信頼できる代替手段となります。\n",
+      "no_2fa_warning_html": "認証アプリを無効にすると、\nアカウントの2段階認証が\n<strong>事実上無効になります。</strong>\n",
+      "final_confirmation": "本当に認証アプリを無効にしますか？\n",
+      "deny": "有効のままにする",
+      "confirm": "無効にする"
     }
   },
   "shared": {
@@ -168,7 +186,29 @@
     "oh_no": "おや？",
     "choose_different_verification_method": "別の認証方法を選択する",
     "support_note_html": "ご質問がある場合は、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。",
-    "warning_note_html": "このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。"
+    "warning_note_html": "このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。 <br> <br>ご不明な点がございましたら、<a href='https://community.brave.com/c/japanese-support/148'>https://community.brave.com/c/japanese-support/148</a>のBrave Creatorsチームにお問い合わせください。",
+    "add_promo_code": "プロモコードを追加する",
+    "nav_header": "クリエイターズ",
+    "channel_quota_exceeded": "YouTubeの登録数がとても多く、1日の上限を超えてしまいました。明日以降もう一度お試しください。",
+    "date_format": "%Y/%m/%d",
+    "customize": "カスタマイズ",
+    "basic_attention_token": "Basic Attention Token",
+    "open": "開く",
+    "disconnect": "切断",
+    "uphold": "Uphold",
+    "gemini": "Gemini",
+    "bitflyer": "bitFlyer",
+    "dismiss": "取消",
+    "learn_more": "詳細はこちら",
+    "channel_names": {
+      "site": "Webサイト",
+      "twitter": "X（旧Twitter）",
+      "reddit": "Reddit",
+      "vimeo": "Vimeo",
+      "youtube": "Youtube",
+      "twitch": "Twitch",
+      "github": "Github"
+    }
   },
   "totp_registrations": {
     "new": {
@@ -193,12 +233,12 @@
         "configuration-unsupported": "クライアント構成がサポートされていません。 (CONFIGURATION_UNSUPPORTED)\n",
         "device-ineligible": "提示されたセキュリティキーは登録できません。\nトークンが既に登録されている可能性があります。 (DEVICE_INELIGIBLE)\n",
         "implementation-incomplete": "セキュリティキーを挿入して登録を再試行してください。\n 一部のブラウザは、このプロトコルへの対応が不完全です。\n Brave、Google Chrome、またはOperaの最新版を使用してください。\n(IMPLEMENTATION_INCOMPLETE)\n",
-        "other-error": "There was an unexpected error registering your security key. Re-attempting\nregistration may resolve this issue. (OTHER_ERROR)\n",
+        "other-error": "セキュリティキーの登録で予期せぬエラーが発生しました。\n登録操作を再度お試しください。(OTHER_ERROR)\n",
         "timeout": "セキュリティキーが登録要求への応答待機時に、予期しないタイムアウトが発生しました。 \n再度登録を開始し、点滅している間にセキュリティキーを有効にしてください。 (TIMEOUT)\n"
       },
       "u2f-unavailable": "お使いのブラウザは、Braveがサポートする二要素認証プラットフォームであるU2Fをサポートしていないようです。YubiKeyなど、U2F互換デバイスを登録するには、Brave、Chrome、またはOperaの最新バージョンを使用してください。\n",
       "waiting_description": "新しいハードウェアキーをコンピューターに挿入し、点滅しているときにボタンを押してください。\n",
-      "waiting_heading": "セキュリティキーが挿入されるのを待っています..."
+      "waiting_heading": "セキュリティキーが挿入されるのを待っています.."
     },
     "u2f_registration": {
       "confirm_disable": {
@@ -212,6 +252,65 @@
         "remaining_totp": "二要素認証用スマートフォンアプリ"
       },
       "name_default": "匿名キー"
+    }
+  },
+  "Home": {
+    "headings": {
+      "account_details": "アカウント詳細",
+      "channels": "サイトやチャンネル"
+    },
+    "account": {
+      "monthly_payouts": "月毎の支払い",
+      "last_deposit": "前回の入金：",
+      "last_deposit_date": "前回の入金日：",
+      "next_deposit_date": "次回の入金日：",
+      "custodial_accounts": "支払いアカウント",
+      "connected_account": "接続アカウント：",
+      "deposit_currency": "現在の受取額：",
+      "country_label": "お住まいの国を選択してください",
+      "country_placeholder": "ひとつ選択",
+      "connect_prompt": "アカウントを接続して、BATの寄付を受け取りましょう。国を選択すると、利用可能なアカウント・プロバイダーの一覧が表示されます。",
+      "country_disclaimer": "各月の支払いを受け取るには、カストディアル・アカウントの接続が必要です。",
+      "custodial_select_heading": "接続可能なカストディアル・アカウント",
+      "gemini_connect": "Geminiに接続",
+      "uphold_connect": "Upholdに接続",
+      "bitflyer_connect": "bitFlyerに接続",
+      "wrong_region": "{region}ではUpholdアカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。"
+    },
+    "channels": {
+      "verified": "認証済みと表示",
+      "not_verified": "未認証",
+      "incomplete": "未完了",
+      "add_channel": "チャンネルを追加",
+      "add_channel_prompt": "チャンネルとは、YouTubeチャンネル、Redditアカウント、自分のWebサイトなど、あなたが所有するWeb上のアカウントやサイトなどを指します。",
+      "website_prompt": "私は自分のWebサイトを持っていて、ドメイン・ディレクトリにアクセスできます。",
+      "youtube_prompt": "私はYouTubeチャンネルを所有、または管理しています。",
+      "twitch_prompt": "私はTwitchチャンネルのメインオーナーです。",
+      "x_prompt": "私はXアカウントを所有、または管理しています。",
+      "vimeo_prompt": "私はVimeoチャンネルを所有、または管理しています。",
+      "reddit_prompt": "私はRedditアカウントを所有しています。I own a Reddit account.",
+      "add_first_channel": "最初のチャンネルを追加する",
+      "add_channel_title": "チャンネルとはなんですか？"
+    },
+    "addCryptoWidget": {
+      "addWallet": "新しいウォレットを追加してください",
+      "solanaConnectError": "アドレスを追加するためSolanaウォレットを接続してください",
+      "ethereumConnectError": "アドレスを追加するためEthereumウォレットを接続してください",
+      "widgetTitle": "P2Pウォレット",
+      "ethereum": "Ethereum",
+      "solana": "Solana",
+      "genericError": "エラーが発生しました。時間をおいて再度試してください。",
+      "addressConnectFailure": "新しいアドレスの接続に失敗しました",
+      "solanaConnectionFailure": "Solana接続が中断されました",
+      "notConnected": "未接続",
+      "privacyQuit": "キャンセル",
+      "clearWallet": "アドレスをクリア",
+      "ethereumBAT": "Basic Attention Token",
+      "solanaBAT": "Basic Attention Token (Wormhole)",
+      "channelPageLink": "チャンネルページを表示",
+      "privacyHeader": "プライバシーに関する注意",
+      "privacyNotification": "同一クリプトアドレスを複数のチャンネルに設定すると、別々のチャンネルが同一人物のものと気付かれてしまう場合があります。各チャンネルが同一人物のものであることを知られたくなければ、チャンネル毎に別々のウォレットアドレスを設定してください。",
+      "privacyContinue": "理解しました。このまま設定を続けます",
     }
   }
 }
