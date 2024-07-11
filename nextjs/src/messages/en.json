@@ -42,6 +42,7 @@
     "disconnect": "Disconnect",
     "uphold": "Uphold",
     "gemini": "Gemini",
+    "bitflyer": "bitFlyer",
     "dismiss": "Dismiss",
     "learn_more": "Learn more",
     "channel_names": {
@@ -106,6 +107,7 @@
       "custodial_select_heading": "Available custodial account providers",
       "gemini_connect": "Connect Gemini",
       "uphold_connect": "Connect Uphold",
+      "bitflyer_connect": "Connect bitFlyer",
       "wrong_region": "Uphold accounts registered in {region}  are not supported at this time. However, you can connect anyway, and you'll become eligible if your {region} is supported in the future."
     },
     "channels": {
