@@ -206,7 +206,7 @@ export default function SettingsPage() {
             {t('Settings.index.delete_account.button')}
           </Button>
         </Card>
-        <Dialog isOpen={isModalOpen}>
+        <Dialog isOpen={isModalOpen} onClose={() => setModalIsOpen(false)}>
           <div slot='title'>
             {t('Settings.index.delete_account.prompt.header')}
           </div>
