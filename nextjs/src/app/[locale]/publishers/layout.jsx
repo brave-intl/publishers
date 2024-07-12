@@ -90,7 +90,7 @@ export default function NavigationLayout({ children }) {
             </h4>
             <p className='small-regular leading-relaxed'>
               {t('NavDropdown.crypto_contributions_text')}{' '}
-              <Link href=''>{t('shared.learn_more')}</Link>
+              <Link href='https://brave.com/blog/on-chain-contributions/'>{t('shared.learn_more')}</Link>
               {' - '}
               <Link
                 className='underline font-normal'

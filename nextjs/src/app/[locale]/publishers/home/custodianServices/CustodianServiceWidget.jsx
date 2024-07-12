@@ -30,6 +30,12 @@ export default function CustodianServiceWidget({ walletData }) {
     bitflyer: setBitflyerConnection,
   };
 
+  const providerWebsites = {
+    gemini: 'https://exchange.gemini.com/',
+    uphold: 'https://wallet.uphold.com/',
+    bitflyer: 'https://bitflyer.com/',
+  }
+
   useEffect(() => {
     if (
       supportedRegions.uphold.allow.includes(countryList[selectedCountry]) ||
@@ -84,7 +90,7 @@ export default function CustodianServiceWidget({ walletData }) {
           <span className='px-1'>
             <strong>{t(`shared.${provider}`)}</strong>
           </span>
-          <Link href='' className='color-tertiary pr-1'>
+          <Link href={providerWebsites[provider]} className='color-tertiary pr-1'>
             <Icon name='launch' className='color-tertiary'/>
           </Link>
           |
