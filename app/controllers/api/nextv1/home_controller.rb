@@ -3,7 +3,7 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
 
   def dashboard
     publisher = current_publisher.as_json(only: [:id], methods: [:brave_payable?])
-    channels = current_publisher.channels.visible.as_json(only: [:details_type, :id, :verified, :verification_status, :verification_details],
+    channels = current_publisher.channels.visible.as_json(only: [:details_type, :id, :verified, :verification_status, :verification_details, :public_identifier],
       methods: [:failed_verification_details, :failed_verification_call_to_action],
       include: {
         details: {only: [], methods: [:publication_title]}
