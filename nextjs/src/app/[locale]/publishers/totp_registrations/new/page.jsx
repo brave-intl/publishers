@@ -13,6 +13,7 @@ import { apiRequest } from '@/lib/api';
 import UserContext from '@/lib/context/UserContext';
 
 import Card from '@/components/Card';
+import Container from '@/components/Container';
 import NextImage from '@/components/NextImage';
 
 export default function TOTPNewPage() {
@@ -59,64 +60,66 @@ export default function TOTPNewPage() {
       <Head>
         <title>Setup Authenticator</title>
       </Head>
-      <section className='content-width-sm mt-3 mb-3'>
+      <Container>
         <Card>
-          <div className='[&>*]:mb-2'>
-            {user.two_factor_enabled && (
-              <Alert type='warning'>
-                {t('totp_registrations.new.warning')}
-              </Alert>
-            )}
-            <h1>{t('totp_registrations.new.heading')}</h1>
-            <div>1. {t('totp_registrations.new.step_1')}</div>
-            <div>
-              2. {t('totp_registrations.new.step_2')}
-              <Alert className='mt-2' type='info'>
-                <div className='italic'>
-                  {t('totp_registrations.new.step_2_alt')}
-                </div>
-                <span className='font-semibold text-blue-40'>{` ${formattedCode}`}</span>
-              </Alert>
-            </div>
-            <div>
-              {totp.qr_code_svg && (
-                <NextImage
-                  className='border-primary box-content rounded-2 bg-white p-2'
-                  useSkeleton
-                  width='200'
-                  height='200'
-                  alt='qr_code'
-                  src={`data:image/svg+xml;utf8,${encodeURIComponent(
-                    totp?.qr_code_svg,
-                  )}`}
-                />
+          <div className='max-w-screen-md'>
+            <div className='[&>*]:mb-2'>
+              {user.two_factor_enabled && (
+                <Alert type='warning'>
+                  {t('totp_registrations.new.warning')}
+                </Alert>
               )}
+              <h1>{t('totp_registrations.new.heading')}</h1>
+              <div>1. {t('totp_registrations.new.step_1')}</div>
+              <div>
+                2. {t('totp_registrations.new.step_2')}
+                <Alert className='mt-2' type='info'>
+                  <div className='italic'>
+                    {t('totp_registrations.new.step_2_alt')}
+                  </div>
+                  <span className='font-semibold text-blue-40'>{` ${formattedCode}`}</span>
+                </Alert>
+              </div>
+              <div>
+                {totp.qr_code_svg && (
+                  <NextImage
+                    className='border-primary box-content rounded-2 bg-white p-2'
+                    useSkeleton
+                    width='200'
+                    height='200'
+                    alt='qr_code'
+                    src={`data:image/svg+xml;utf8,${encodeURIComponent(
+                      totp?.qr_code_svg,
+                    )}`}
+                  />
+                )}
+              </div>
+              <div>3. {t('totp_registrations.new.step_3')}</div>
+              <div className='sm:w-[300px]'>
+                <Input
+                  placeholder='6-digit code'
+                  onInput={handleInputChange}
+                  showErrors={hasErrors}
+                >
+                  <div slot='errors'>{t('shared.invalid_totp')}</div>
+                </Input>
+              </div>
             </div>
-            <div>3. {t('totp_registrations.new.step_3')}</div>
-            <div className='sm:w-[300px]'>
-              <Input
-                placeholder='6-digit code'
-                onInput={handleInputChange}
-                showErrors={hasErrors}
-              >
-                <div slot='errors'>{t('shared.invalid_totp')}</div>
-              </Input>
+            <div className='mt-4 flex justify-between'>
+              <div className='flex w-[120px]'>
+                <Button onClick={handleSubmit} isDisabled={code.length !== 6}>
+                  {t('totp_registrations.new.submit_value')}
+                </Button>
+              </div>
+              <span className='px-1'>
+                <Link href='../security'>
+                  <Button kind='plain'>{t('Settings.buttons.cancel')}</Button>
+                </Link>
+              </span>
             </div>
-          </div>
-          <div className='mt-4 flex justify-between'>
-            <div className='flex w-[120px]'>
-              <Button onClick={handleSubmit} isDisabled={code.length !== 6}>
-                {t('totp_registrations.new.submit_value')}
-              </Button>
-            </div>
-            <span className='px-1'>
-              <Link href='../security'>
-                <Button kind='plain'>{t('Settings.buttons.cancel')}</Button>
-              </Link>
-            </span>
           </div>
         </Card>
-      </section>
+      </Container>
     </main>
   );
 }

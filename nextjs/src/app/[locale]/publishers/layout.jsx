@@ -60,9 +60,9 @@ export default function NavigationLayout({ children }) {
           />
         </div>
       </div>
-      <div className='flex-column flex'>
+      <div className='flex-row flex min-h-screen'>
         <Navigation
-          className={`${isNavOpen ? 'inline-block' : 'hidden'} md:inline-block max-w-[280px] min-w-[280px] ${styles['nav-background']}`}
+          className={`${isNavOpen ? 'flex' : 'hidden'} md:flex max-w-[280px] min-w-[280px] ${styles['nav-background']}`}
         >
           <NavigationHeader>
             <Image
@@ -143,10 +143,10 @@ export default function NavigationLayout({ children }) {
             </div>
           </NavigationActions>
         </Navigation>
-        <div className={`${isNavOpen ? 'hidden' : 'inline-block'}`}>
+        <div className={`${isNavOpen ? 'hidden' : 'flex basis-full'}`}>
           {children}
         </div>
-        <div className={`${isNavOpen ? 'inline-block' : 'hidden'} bg-gray-400`}></div>
+        <div className={`${isNavOpen ? 'flex' : 'hidden'} bg-gray-400`}></div>
       </div>
     </UserProvider>
   );

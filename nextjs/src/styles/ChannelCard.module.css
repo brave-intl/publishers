@@ -12,8 +12,8 @@
     padding-left: 30px;
     border-radius: 8px;
     background-repeat: no-repeat;
-    background-position: bottom 10px left 6px;
-    background-size: 5.5%;
+    background-position: bottom 12px left 10px;
+    background-size: 20px;
   }
 
   .crypto-wallet-dropdown-eth {
@@ -29,7 +29,7 @@
   }
 
   .address-option {
-    padding: 10px;
+    padding: 12px;
   }
 
   .dropdown-indicator {
@@ -52,10 +52,10 @@
   }
 
   .trash-icon {
-    height: 18px;
+    height: 24px;
     width: 18px;
     float: right;
-    margin-top: 4px;
+    margin-top: -2px;
   }
 }
 
