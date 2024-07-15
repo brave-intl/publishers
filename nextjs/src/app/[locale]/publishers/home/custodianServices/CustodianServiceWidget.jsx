@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
 
 import countryList from './countryList.json';
+import styles from '@/styles/Dashboard.module.css';
 
 export default function CustodianServiceWidget({ walletData }) {
   const t = useTranslations();
@@ -81,9 +82,9 @@ export default function CustodianServiceWidget({ walletData }) {
 
   function showConnected(provider) {
     return (
-      <section className='grid grid-cols-2'>
-        <div className='pb-2'>{t('Home.account.connected_account')}</div>
-        <div className='flex items-start'>
+      <section className='grid xl:grid-cols-2'>
+        <div className='xl:pb-2'>{t('Home.account.connected_account')}</div>
+        <div className='pb-2 xl:pb-0 flex items-start'>
           <span className='inline-block'>
             <Icon name={`${provider}-color`} />
           </span>
@@ -95,7 +96,7 @@ export default function CustodianServiceWidget({ walletData }) {
           </Link>
           |
           <Link
-            className='pl-1 color-tertiary'
+            className={`pl-1 ${styles['disconnect-btn']}`}
             onClick={() => {
               disconnectProvider(provider);
             }}
@@ -103,8 +104,8 @@ export default function CustodianServiceWidget({ walletData }) {
             Disconnect
           </Link>
         </div>
-        <div className='pb-2'>{t('Home.account.deposit_currency')}</div>
-        <div className='flex items-start'>
+        <div className='xl:pb-2'>{t('Home.account.deposit_currency')}</div>
+        <div className='pb-2 xl:pb-0 flex items-start'>
           <span className='inline-block'>
             <Icon name='bat-color' />
           </span>

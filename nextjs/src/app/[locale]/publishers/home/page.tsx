@@ -70,7 +70,7 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center mx-auto">
+      <div className="flex basis-full grow items-center justify-center">
         <ProgressRing />
       </div>
     )
@@ -80,21 +80,21 @@ export default function HomePage() {
         <Container>
           <div className='mx-auto max-w-screen-lg'>
             <h1 className='mb-3'>{t('Home.headings.account_details')}</h1>
-            <Card className='md:flex md:items-top'>
-              <section className='inline-block w-full md:w-1/2'>
+            <Card className='lg:flex lg:items-top'>
+              <section className='inline-block w-full lg:w-1/2'>
                 <h3 className='pb-3'>{t('Home.account.monthly_payouts')}</h3>
-                <section className='grid grid-cols-2'>
-                  <div className='pb-2'>{t('Home.account.last_deposit')}</div>
-                  <div>
+                <section className='grid sm:grid-cols-2'>
+                  <div className='pb-0 sm:pb-2'>{t('Home.account.last_deposit')}</div>
+                  <div className='pb-2 sm:pb-0'>
                     <strong>{lastDeposit} BAT</strong>
                   </div>
-                  <div className='pb-2'>{t('Home.account.last_deposit_date')}</div>
-                  <div>{lastDepositDate}</div>
-                  <div className='pb-2'>{t('Home.account.next_deposit_date')}</div>
-                  <div>{nextDepositDate}</div>
+                  <div className='pb-0 sm:pb-2'>{t('Home.account.last_deposit_date')}</div>
+                  <div className='pb-2 sm:pb-0'>{lastDepositDate}</div>
+                  <div className='pb-0 sm:pb-2'>{t('Home.account.next_deposit_date')}</div>
+                  <div className='pb-2 sm:pb-0'>{nextDepositDate}</div>
                 </section>
               </section>
-              <section className='inline-block w-full md:w-1/2'>
+              <section className='inline-block w-full lg:w-1/2 pt-2 lg:pt-0'>
                 <h3 className='pb-3'>{t('Home.account.custodial_accounts')}</h3>
                 <CustodianServiceWidget walletData={walletData} />
               </section>
@@ -103,7 +103,7 @@ export default function HomePage() {
             {channels.length ? (
               <>
                 <CryptoAddressProvider>
-                  <section className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <section className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                     {channels.map(function (channel) {
                       return (
                         <ChannelCard
@@ -128,6 +128,7 @@ export default function HomePage() {
         <Dialog
           isOpen={isAddChannelModalOpen}
           onClose={() => setIsAddChannelModalOpen(false)}
+          showClose={true}
         >
           <AddChannelModal />
         </Dialog>
