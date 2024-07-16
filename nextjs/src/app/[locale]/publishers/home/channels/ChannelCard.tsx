@@ -82,7 +82,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
         </div>
         <div>{displayVerified()}</div>
       </section>
-      <h3 className='pb-3'>{channel.details.publication_title || defaultName}</h3>
+      <h3 className='pb-3 break-words'>{channel.details.publication_title || defaultName}</h3>
       <section className='pb-1'>
         {isUnverifiedChannel() ? (
           <div className='error-text mt-3'>

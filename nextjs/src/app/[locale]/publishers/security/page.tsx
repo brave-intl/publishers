@@ -108,9 +108,9 @@ export default function SecurityPage() {
                 </div>
               </div>
             </div>
-
-            <hr className='my-4' />
-
+          </div>
+          <hr className='my-4' />
+          <div className='max-w-screen-md'>
             <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row '>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.totp.heading')}</h3>
@@ -147,9 +147,9 @@ export default function SecurityPage() {
                 <PhoneOutline className='mt-3 hidden h-[70px] w-[40px] md:block' />
               </div>
             </div>
-
-            <hr className='my-4' />
-
+          </div>
+          <hr className='my-4' />
+          <div className='max-w-screen-md'>
             <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.u2f.heading')}</h3>
