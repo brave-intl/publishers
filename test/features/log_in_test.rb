@@ -22,7 +22,7 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "can navigate to log in from landing page" do
     visit root_path
-    assert_content page, "Earn more for content you publish to the web"
+    assert_content page, "Earn for your online content"
     click_link("log in")
     assert_content page, "Log in"
   end

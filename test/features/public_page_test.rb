@@ -18,7 +18,7 @@ class PublicPageTest < Capybara::Rails::TestCase
 
   test "redirects to home page if channel identifier not found" do
     visit public_channel_path(public_identifier: "107zsxjfg6")
-    assert_content page, "Earn more for content you publish to the web"
+    assert_content page, "Earn for your online content"
   end
 
   test "can display description and title" do

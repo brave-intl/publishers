@@ -11,13 +11,13 @@ var en = {
   },
   main: {
     home: {
-      headline: "Earn more for content you publish to the web",
+      headline: "Earn for your online content",
       subhead:
-        "Your viewers who use the Brave Browser may have contributed money to you while surfing the web through Brave Creators. Simply sign up as a verified content creator on Brave Creators to start collecting your contributions.",
+        "Join Brave Creators and monetize your online presence today. Receive contributions from the millions of users on the Brave Browser, and add your crypto address to start receiving crypto contributions from your supporters all across the Web.",
       examples: {
-        headline: "Earn more through...",
+        headline: "Get started with:",
         website: "Your own website",
-        publication: "Your own publication",
+        publication: "Your social media account (X, Reddit, etc.)",
         youtube: "YouTube",
         Twitch: "Twitch"
       },
