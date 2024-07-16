@@ -86,9 +86,6 @@ class GeminiConnection extends React.Component<any, any> {
             <FlexWrapper>
               <a
                 className="btn btn-link p-0"
-                data-piwik-action="GeminiDisconnectClicked"
-                data-piwik-name="Clicked"
-                data-piwik-value="Dashboard"
                 rel="nofollow"
                 data-method="delete"
                 href={routes.publishers.gemini.destroy}

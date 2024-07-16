@@ -16,7 +16,7 @@ module Promo
       end
 
       def initialize(connection, params = {})
-        super(connection, params)
+        super
       end
 
       # Finds the current state of the owner on the promo server

@@ -14,6 +14,23 @@ class Api::Nextv1::BaseController < ActionController::API
 
   before_action :set_csrf_cookie
 
+  def authenticate_publisher!(opts = {})
+    opts[:scope] = :publisher
+    warden.authenticate!(opts) if !devise_controller? || opts.delete(:force)
+  end
+
+  def publisher_signed_in?
+    !!current_publisher
+  end
+
+  def current_publisher
+    @current_publisher ||= warden.authenticate(scope: :publisher)
+  end
+
+  def publisher_session
+    current_publisher && warden.session(:publisher)
+  end
+
   private
 
   def set_csrf_cookie

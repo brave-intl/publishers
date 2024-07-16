@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
 
 import Card from '@/components/Card';
+import Container from '@/components/Container';
 
 export default function U2fRegistrations() {
   const t = useTranslations();
@@ -84,40 +85,42 @@ export default function U2fRegistrations() {
       <Head>
         <title>Register Key</title>
       </Head>
-      <section className='content-width-sm'>
+      <Container>
         <Card>
-          <h1>{t('u2f_registrations.new.heading')}</h1>
-          <div className='mt-2'>
-            <Input
-              onInput={handleInputChange}
-              placeholder='Enter a nickname for the security key'
-            >
-              {t('activerecord.attributes.u2f_registration.name')}
-            </Input>
-          </div>
+          <div className='max-w-screen-md'>
+            <h1>{t('u2f_registrations.new.heading')}</h1>
+            <div className='mt-2'>
+              <Input
+                onInput={handleInputChange}
+                placeholder='Enter a nickname for the security key'
+              >
+                {t('activerecord.attributes.u2f_registration.name')}
+              </Input>
+            </div>
 
-          <div className='mt-3 flex justify-between'>
-            <div className='flex w-[120px]'>
-              <Button onClick={handleSubmit}>
-                {t('u2f_registrations.new.submit_value')}
-              </Button>
-            </div>
-            <div className='px-1'>
-              <Link href='../security'>
-                <Button kind='plain'>
-                  {t('totp_registrations.new.cancel')}
+            <div className='mt-3 flex justify-between'>
+              <div className='flex w-[120px]'>
+                <Button onClick={handleSubmit}>
+                  {t('u2f_registrations.new.submit_value')}
                 </Button>
-              </Link>
+              </div>
+              <div className='px-1'>
+                <Link href='../security'>
+                  <Button kind='plain'>
+                    {t('totp_registrations.new.cancel')}
+                  </Button>
+                </Link>
+              </div>
             </div>
+            {isWaitingForKey && (
+              <div className='mt-3'>
+                <h3>{t('u2f_registrations.new.waiting_heading')}</h3>
+                <div>{t('u2f_registrations.new.waiting_description')}</div>
+              </div>
+            )}
           </div>
-          {isWaitingForKey && (
-            <div className='mt-3'>
-              <h3>{t('u2f_registrations.new.waiting_heading')}</h3>
-              <div>{t('u2f_registrations.new.waiting_description')}</div>
-            </div>
-          )}
         </Card>
-      </section>
+      </Container>
     </main>
   );
 }

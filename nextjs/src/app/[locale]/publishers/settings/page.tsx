@@ -17,6 +17,7 @@ import { pick } from '@/lib/helper';
 import { UserType } from '@/lib/propTypes';
 
 import Card from '@/components/Card';
+import Container from '@/components/Container';
 
 export default function SettingsPage() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'auto');
@@ -69,144 +70,152 @@ export default function SettingsPage() {
         hello
       </Head>
 
-      <section className='content-width'>
+      <Container>
         <Card className='mb-3'>
-          <h2 className='mb-2'>{t('Settings.index.header')}</h2>
-          <h4 className='mt-2'>Stay Logged-In</h4>
-          <div className='flex items-center justify-between'>
-            <p>{t('Settings.index.extended_login.intro')}</p>
-            <Toggle
-              size='small'
-              checked={settings.thirty_day_login}
-              onChange={(e) => handleToggleChange(e, 'thirty_day_login')}
-            />
+          <div className='max-w-screen-md'>
+            <h2 className='mb-2'>{t('Settings.index.header')}</h2>
+            <h4 className='mt-2'>Stay Logged-In</h4>
+            <div className='flex items-center justify-between'>
+              <p>{t('Settings.index.extended_login.intro')}</p>
+              <Toggle
+                size='small'
+                checked={settings.thirty_day_login}
+                onChange={(e) => handleToggleChange(e, 'thirty_day_login')}
+              />
+            </div>
+            {process.env.NODE_ENV === 'development' && (
+              <>
+                <h4 className='mt-2'>Appearance</h4>
+                <div className='mt-1 flex flex-col gap-1 capitalize'>
+                  <RadioButton
+                    name='auto'
+                    currentValue={theme}
+                    value='auto'
+                    onChange={() => updateTheme('auto')}
+                  />
+                  <RadioButton
+                    name='light'
+                    currentValue={theme}
+                    value='light'
+                    onChange={() => updateTheme('light')}
+                  />
+                  <RadioButton
+                    name='dark'
+                    currentValue={theme}
+                    value='dark'
+                    onChange={() => updateTheme('dark')}
+                  />
+                </div>
+              </>
+            )}
           </div>
-          {process.env.NODE_ENV === 'development' && (
-            <>
-              <h4 className='mt-2'>Appearance</h4>
-              <div className='mt-1 flex flex-col gap-1 capitalize'>
-                <RadioButton
-                  name='auto'
-                  currentValue={theme}
-                  value='auto'
-                  onChange={() => updateTheme('auto')}
-                />
-                <RadioButton
-                  name='light'
-                  currentValue={theme}
-                  value='light'
-                  onChange={() => updateTheme('light')}
-                />
-                <RadioButton
-                  name='dark'
-                  currentValue={theme}
-                  value='dark'
-                  onChange={() => updateTheme('dark')}
-                />
-              </div>
-            </>
-          )}
         </Card>
 
         <Card className='mb-3'>
-          <div className='mb-2 flex items-center justify-between'>
-            <h2>{t('Settings.index.contact.heading')}</h2>
-            <div>
-              {isEditMode ? (
-                <div>
-                  <Button
-                    className='mr-1'
-                    onClick={() => {
-                      updateAccountSettings();
-                      setIsEditMode(false);
-                    }}
-                    kind='filled'
-                  >
-                    {t('Settings.buttons.save')}
-                  </Button>
+          <div className='max-w-screen-md'>
+            <div className='mb-2 flex items-center justify-between'>
+              <h2>{t('Settings.index.contact.heading')}</h2>
+              <div>
+                {isEditMode ? (
+                  <div>
+                    <Button
+                      className='mr-1'
+                      onClick={() => {
+                        updateAccountSettings();
+                        setIsEditMode(false);
+                      }}
+                      kind='filled'
+                    >
+                      {t('Settings.buttons.save')}
+                    </Button>
+                    <Button
+                      kind='plain'
+                      size='large'
+                      onClick={() => setIsEditMode(false)}
+                    >
+                      {t('Settings.buttons.cancel')}
+                    </Button>
+                  </div>
+                ) : (
                   <Button
                     kind='plain'
                     size='large'
-                    onClick={() => setIsEditMode(false)}
+                    onClick={() => setIsEditMode(true)}
                   >
-                    {t('Settings.buttons.cancel')}
+                    {t('Settings.index.contact.edit')}
                   </Button>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <label className='font-semibold'>
+                  {t('Settings.index.contact.name')}
+                </label>
+                <div className='mb-2 sm:w-[400px]'>
+                  {isEditMode ? (
+                    <Input
+                      value={settings.name}
+                      onInput={(e) => handleInputChange(e, 'name')}
+                      name='name'
+                    />
+                  ) : (
+                    user.name
+                  )}
                 </div>
-              ) : (
-                <Button
-                  kind='plain'
-                  size='large'
-                  onClick={() => setIsEditMode(true)}
-                >
-                  {t('Settings.index.contact.edit')}
-                </Button>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <div>
-              <label className='font-semibold'>
-                {t('Settings.index.contact.name')}
-              </label>
-              <div className='mb-2 sm:w-[400px]'>
-                {isEditMode ? (
-                  <Input
-                    value={settings.name}
-                    onInput={(e) => handleInputChange(e, 'name')}
-                    name='name'
-                  />
-                ) : (
-                  user.name
-                )}
               </div>
-            </div>
-            <div>
-              <label className='font-semibold'>
-                {t('Settings.index.contact.email')}
-              </label>
-              <div className='sm:w-[400px]'>
-                {isEditMode ? (
-                  <Input
-                    value={settings.email}
-                    onInput={(e) => handleInputChange(e, 'email')}
-                    name='email'
-                  />
-                ) : (
-                  user.email
-                )}
+              <div>
+                <label className='font-semibold'>
+                  {t('Settings.index.contact.email')}
+                </label>
+                <div className='sm:w-[400px]'>
+                  {isEditMode ? (
+                    <Input
+                      value={settings.email}
+                      onInput={(e) => handleInputChange(e, 'email')}
+                      name='email'
+                    />
+                  ) : (
+                    user.email
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </Card>
 
         <Card className='mb-3'>
-          <h2 className='mb-2'>{t('Settings.index.email.heading')}</h2>
-          <h4>Notifications</h4>
-          <div className='mt-1'>
-            <Checkbox
-              checked={settings.subscribed_to_marketing_emails}
-              onChange={(e) =>
-                handleToggleChange(e, 'subscribed_to_marketing_emails')
-              }
+          <div className='max-w-screen-md'>
+            <h2 className='mb-2'>{t('Settings.index.email.heading')}</h2>
+            <h4>Notifications</h4>
+            <div className='mt-1'>
+              <Checkbox
+                checked={settings.subscribed_to_marketing_emails}
+                onChange={(e) =>
+                  handleToggleChange(e, 'subscribed_to_marketing_emails')
+                }
+              >
+                {t('Settings.index.email.marketing_label')}
+              </Checkbox>
+            </div>
+          </div>
+        </Card>
+
+        <Card className='mb-3'>
+          <div className='max-w-screen-md'>
+            <h2 className='mb-2'>{t('Settings.index.delete_account.heading')}</h2>
+            <div>{t('Settings.index.delete_account.warning')}</div>
+            <Button
+              className='mt-4'
+              kind='outline'
+              onClick={() => setModalIsOpen(!isModalOpen)}
             >
-              {t('Settings.index.email.marketing_label')}
-            </Checkbox>
+              {t('Settings.index.delete_account.button')}
+            </Button>
           </div>
         </Card>
-
-        <Card className='mb-3'>
-          <h2 className='mb-2'>{t('Settings.index.delete_account.heading')}</h2>
-          <div>{t('Settings.index.delete_account.warning')}</div>
-          <Button
-            className='mt-4'
-            kind='outline'
-            onClick={() => setModalIsOpen(!isModalOpen)}
-          >
-            {t('Settings.index.delete_account.button')}
-          </Button>
-        </Card>
-        <Dialog isOpen={isModalOpen}>
+        <Dialog isOpen={isModalOpen} onClose={() => setModalIsOpen(false)}>
           <div slot='title'>
             {t('Settings.index.delete_account.prompt.header')}
           </div>
@@ -220,7 +229,7 @@ export default function SettingsPage() {
             </Button>
           </div>
         </Dialog>
-      </section>
+      </Container>
     </main>
   );
 }

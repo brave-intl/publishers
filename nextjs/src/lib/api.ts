@@ -18,8 +18,10 @@ export async function apiRequest(
   } catch (err) {
     // all response codes that aren't 200s or 300s get sent here
     // Imperatively navigate to Unauthorized page on 403
-    if (err.response.status === 403 || err.response.status === 422) {
+    if (err.response && err.response.status === 403 || err.response.status === 422) {
       window.location.replace('/log-in');
+    } else {
+      console.log(err);
     }
 
     return { errors: [err] };

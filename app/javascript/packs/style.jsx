@@ -67,6 +67,7 @@ export const Opacity = styled.div`
 
 export const Editor = styled.div`
   width: 1300px;
+  margin 0 auto;
 `;
 
 export const Template = styled.div``;

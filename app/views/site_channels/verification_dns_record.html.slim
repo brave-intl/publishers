@@ -56,12 +56,9 @@ script type="text/html" id="verification_failed_modal_wrapper" data-open-verific
           ) do |f|
             = f.submit( \
               t(".button"), \
-              class: "btn btn-wide btn-primary", \
-              "data-piwik-action": "DNSVerificationClicked", \
-              "data-piwik-name": "Clicked", \
-              "data-piwik-value": "DNSFlow" \
+              class: "btn btn-wide btn-primary" \
             )
-            = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later", :"data-piwik-action" => "DNSFinishLaterClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
+            = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later")
           a href="#" data-js-confirm-with-modal="dns-services"
             span.icon= render "icon_help"
 

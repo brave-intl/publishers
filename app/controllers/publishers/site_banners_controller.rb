@@ -3,6 +3,7 @@
 class Publishers::SiteBannersController < ApplicationController
   include ActiveStorage::SetCurrent
   before_action :authenticate_publisher!
+  layout "publishers"
 
   MAX_IMAGE_SIZE = 10_000_000
 

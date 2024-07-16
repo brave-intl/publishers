@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       end
 
       post :log_out
+      get :log_out
       get :home
       get :home_balances
       get :uphold_wallet_panel
@@ -168,7 +169,30 @@ Rails.application.routes.draw do
     # /api/v1/
 
     namespace :nextv1, defaults: {format: :json} do
-      resources :publishers, only: [:update]
+      resources :publishers, only: [:update] do
+        resources :crypto_addresses, only: %i[index destroy]
+      end
+
+      get "publishers/security", to: "publishers#security"
+      get "home/dashboard", to: "home#dashboard"
+
+      resources :channels, only: %i[destroy] do
+        resources :crypto_address_for_channels, only: %i[index create destroy] do
+          collection do
+            post :change_address
+            get :generate_nonce
+          end
+        end
+
+        member do
+          get :verification_status
+          delete :destroy
+          resources :tokens, only: %() do
+            get :reject_transfer, to: "channel_transfer#reject_transfer"
+          end
+        end
+      end
+
       delete "publishers", to: "publishers#destroy"
       get "publishers/me", to: "publishers#me"
       get "publishers/secdata", to: "publishers#secdata"
@@ -183,6 +207,12 @@ Rails.application.routes.draw do
         get :new
         post :create
         delete :destroy
+      end
+
+      namespace :connection do
+        resource :gemini_connection
+        resource :bitflyer_connection
+        resource :uphold_connection, except: [:new]
       end
     end
 

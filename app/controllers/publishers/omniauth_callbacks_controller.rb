@@ -123,7 +123,6 @@ module Publishers
 
     def after_omniauth_failure_path_for(scope)
       publisher = current_publisher
-
       if publisher
         email_verified_publishers_path
       else
