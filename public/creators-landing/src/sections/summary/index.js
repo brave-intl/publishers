@@ -156,11 +156,6 @@ export const Summary = () => {
             icon={<HelpIcon />}
             title={<FormattedMessage id="summary.cardHelp"/>}
           />
-          <CardButton
-            href={locale.summary.cardGenHref}
-            icon={<HelpIcon />}
-            title={<FormattedMessage id="summary.cardGen"/>}
-          />
         </Box>
       </Container>
       <Box className="summary-spacer" />

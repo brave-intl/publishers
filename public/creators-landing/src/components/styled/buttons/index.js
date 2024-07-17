@@ -64,4 +64,5 @@ export const CardButtonContainer = styled(Box)`
 
 export const CardButtonAnchor = styled(Anchor)`
   flex-grow: 1;
+  justify-content: center;
 `

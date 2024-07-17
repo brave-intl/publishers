@@ -14,7 +14,7 @@ class SignUpTest < Capybara::Rails::TestCase
 
   test "can navigate to sign up from landing page" do
     visit root_path
-    assert_content page, "Earn more for content you publish to the web"
+    assert_content page, "Earn for your online content"
     click_link("sign up")
     assert_content page, "Create account"
   end
