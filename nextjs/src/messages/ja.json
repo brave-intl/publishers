@@ -157,7 +157,7 @@
   "shared": {
     "add_channel": "チャンネルを追加",
     "app_title": "Brave クリエイター",
-    "app_description": "Webサイトや、YoutubeやTwitchにチャンネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。",
+    "app_description": "Webサイトや、YouTubeやTwitchにチャンネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。",
     "cancel": "キャンセル",
     "channel_created": "チャンネルを作成しました。24-48時間以内に認証ステータスが表示されます。",
     "channel_contested": "チャンネルは %{time_until_transfer}以内に現在の所有者から移管されます",
@@ -200,14 +200,18 @@
     "bitflyer": "bitFlyer",
     "dismiss": "取消",
     "learn_more": "詳細はこちら",
+    "brave_copyright": "2024 © Brave Software, Inc.",
+    "terms_of_use": "利用規約",
+    "privacy_policy": "プライバシーポリシー",
+    "security_issue": "セキュリティに関する問題を報告",
     "channel_names": {
       "site": "Webサイト",
       "twitter": "X（旧Twitter）",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
-      "youtube": "Youtube",
+      "youtube": "YouTube",
       "twitch": "Twitch",
-      "github": "Github"
+      "github": "GitHub"
     }
   },
   "totp_registrations": {

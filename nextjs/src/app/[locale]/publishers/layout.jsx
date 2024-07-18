@@ -148,6 +148,15 @@ export default function NavigationLayout({ children }) {
         </div>
         <div className={`${isNavOpen ? 'flex' : 'hidden'} bg-gray-400`}></div>
       </div>
+      <div className={`${styles['footer']} text-center small-regular color-subtle`}>
+        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://brave.com/'>{t('shared.brave_copyright')}</a>
+        <span className={`${styles['footer-divider']}`}>|</span>
+        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://basicattentiontoken.org/publisher-terms-of-service/'>{t('shared.terms_of_use')}</a>
+        <span className={`${styles['footer-divider']}`}>|</span>
+        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://brave.com/privacy/publishers-creators/'>{t('shared.privacy_policy')}</a>
+        <span className={`${styles['footer-divider']}`}>|</span>
+        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://hackerone.com/brave?type=team'>{t('shared.security_issue')}</a>
+      </div>
     </UserProvider>
   );
 }

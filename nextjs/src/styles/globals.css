@@ -25,7 +25,7 @@ html {
 
 body {
   color: var(--leo-color-text-primary);
-  background: var(--leo-color-page-background);
+  background: var(--leo-color-container-background);
   font: var(--leo-font-default-regular);
 }
 
@@ -112,6 +112,10 @@ h4.mobile {
   color: var(--leo-color-text-secondary);
 }
 
+.color-subtle {
+  color: var(--leo-color-divider-subtle);
+}
+
 .label-component {
   color: var(--leo-color-text-secondary);
   line-height: var(--leo-typography-components-label-line-height);
@@ -163,17 +167,19 @@ h4.mobile {
   height: 100%;
   min-height: calc(100vh - 80px);
 
-  background: var(--leo-color-page-background);
   width: 100%;
 }
 
 .content-background {
   background: var(--leo-color-page-background);
+  padding: var(--leo-spacing-4xl);
   width: 100%;
+  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
 }
 
 @media (width <= 768px) {
   .content-background, .main {
+    padding: 5px;
     background: var(--leo-color-container-background);
   }
 }
