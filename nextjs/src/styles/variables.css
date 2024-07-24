@@ -46,6 +46,14 @@
   --leo-control-radius: 12px;
   --radius: 12px;
   --leo-dialog-width: 720px;
+  --padding: var(--leo-control-padding, 10px 7px);
+  --color: var(--leo-color-text-primary);
+  --foreground: var(--leo-color-text-primary);
+  --base: var(--leo-color-container-background);
+  --primary: var(--leo-control-color, var(--base));
+  --background: var(--primary);
+  --border-color: color-mix(in srgb, var(--primary), var(--foreground) 25%);
+  --border-color-hover: color-mix(in srgb, var(--primary), var(--foreground) 40%);
 }
 
 /* this needs to be fixed in Leo */

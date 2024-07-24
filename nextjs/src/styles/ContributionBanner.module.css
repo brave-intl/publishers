@@ -1,0 +1,115 @@
+.bio-textarea {
+  cursor: pointer;
+  resize: none;
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+  justify-content: space-between;
+
+	width: 100%;
+  padding: var(--padding);
+
+  color: var(--color);
+
+  background: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.logo-upload-container {
+	position: absolute;
+  bottom: 24px;
+  left: 24px;
+}
+
+.logo-container {
+  width: 120px;
+  height: 120px;
+
+  background-color: rgba(0 0 0/ 0%);
+  background-image: var(--logo-url);
+  background-size: cover;
+  border: var(--logo-url,6px) solid rgba(0 0 0/ 0%);
+	border-radius: 50%;
+}
+
+.logo-container-mobile {
+  width: 100px;
+  height: 100px;
+	margin-right: 10px;
+
+  background-color: rgba(0 0 0/ 0%);
+  background-image: var(--logo-url);
+  background-size: cover;
+  border: var(--logo-url,6px) solid rgba(0 0 0/ 0%);
+	border-radius: 50%;
+}
+
+.logo-upload-btn {
+	--leo-icon-width: 20px;
+	--bg: rgba(255 255 255/ 0%);
+	--mixed-primary-color: rgba(255 255 255/ 0%);
+	--leo-color-button-background: rgba(255 255 255/ 0%);
+	--padding-x: 5px;
+
+	display: inline-block;
+
+	width: 44px;
+	padding: var(--leo-spacing-l);
+
+	color: white;
+	vertical-align: bottom;
+
+	background-color: var(--leo-color-material-ultrathin);
+	border-radius: var(--leo-radius-l);
+}
+
+.logo-edit-container {
+	position: absolute;
+	bottom: 0;
+	left: 105px;
+	width: 150px;
+}
+
+.cover-container {
+  z-index: 1;
+
+  width: 100%;
+	height: 300px;
+
+  background-image: var(--cover-url), url('../../public/images/default_banner_bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 8px;
+}
+
+.cover-container-mobile {
+  width: 100%;
+	height: 120px;
+  margin-bottom: 10px;
+
+  background-image: var(--cover-url), url('../../public/images/default_banner_bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 4px;
+}
+
+.cover-edit-container {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+}
+
+.social-link-wrapper {
+	line-height: 0;
+}
+
+.preview-modal {
+	--leo-dialog-width: fit-content;
+	--leo-dialog-padding: 0px;
+
+	max-width: 1280px;
+}

@@ -7,13 +7,14 @@
   }
 
   .crypto-wallet-dropdown {
-    border: 1px solid rgba(199 199 204 100%);
     padding: 3px;
     padding-left: 30px;
-    border-radius: 8px;
+
     background-repeat: no-repeat;
     background-position: bottom 12px left 10px;
     background-size: 20px;
+    border: 1px solid rgba(199 199 204 100%);
+    border-radius: 8px;
   }
 
   .crypto-wallet-dropdown-eth {
@@ -41,20 +42,23 @@
   }
 
   .new-wallet-button {
-    border-top: 1px solid #E8E9EE;
-    text-align: center;
+    cursor: pointer;
+
     padding: 10px;
     padding-top: 15px;
-    color: var(--leo-color-text-tertiary);
-    font-weight: bold;
+
     font-size: 0.9em;
-    cursor: pointer;
+    font-weight: bold;
+    color: var(--leo-color-text-tertiary);
+    text-align: center;
+
+    border-top: 1px solid #E8E9EE;
   }
 
   .trash-icon {
-    height: 24px;
-    width: 18px;
     float: right;
+    width: 18px;
+    height: 24px;
     margin-top: -2px;
   }
 }
@@ -88,9 +92,9 @@
 }
 
 .add-channel-card {
-  border-radius: var(--leo-radius-xl);
-  border: 1px solid var(--leo-color-divider-subtle);
   padding: var(--leo-spacing-xl);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-xl);
 }
 
 .add-channel-card:hover {

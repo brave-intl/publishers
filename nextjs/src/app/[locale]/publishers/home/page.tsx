@@ -5,6 +5,7 @@ import Dialog from '@brave/leo/react/dialog';
 import ProgressRing from '@brave/leo/react/progressRing';
 import * as moment from 'moment';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 
 import { apiRequest } from '@/lib/api';
@@ -27,6 +28,8 @@ export default function HomePage() {
   const [walletData, setWalletData] = useState({});
   const [publisherId, setPublisherId] = useState('')
   const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const startWithModalOpen = searchParams.get('addChannelModal')
   const t = useTranslations();
 
   useEffect(() => {
@@ -61,6 +64,9 @@ export default function HomePage() {
     setNextDepositDate(wallet.next_deposit_date);
     setChannels(res.channels);
     setIsLoading(false);
+    if (startWithModalOpen) {
+      setIsAddChannelModalOpen(true);
+    }
   }
 
   function onChannelDelete(channelId) {

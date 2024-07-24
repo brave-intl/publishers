@@ -176,6 +176,12 @@ Rails.application.routes.draw do
       get "publishers/security", to: "publishers#security"
       get "home/dashboard", to: "home#dashboard"
 
+      resources :contribution_page, only: %i[index show update] do
+        member do
+          delete :destroy_attachment
+        end
+      end
+
       resources :channels, only: %i[destroy] do
         resources :crypto_address_for_channels, only: %i[index create destroy] do
           collection do
@@ -214,6 +220,9 @@ Rails.application.routes.draw do
         resource :bitflyer_connection
         resource :uphold_connection, except: [:new]
       end
+
+      get "c/:public_identifier", to: "public_channel#show", as: :public_channel
+      get "/get_ratios", to: "public_channel#get_ratios"
     end
 
     namespace :v1, defaults: {format: :json} do
