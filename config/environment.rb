@@ -9,3 +9,5 @@ if Rails.configuration.pub_secrets[:api_eyeshade_base_uri].present?
 else
   ENV["API_EYESHADE_OFFLINE"] = "1"
 end
+
+Publishers::Application.default_url_options = Publishers::Application.config.action_mailer.default_url_options

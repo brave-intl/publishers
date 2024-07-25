@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const dev = process.env.NODE_ENV === 'development';
+const testMode = process.env.TEST_MODE === 'true';
 const { createServer } = dev ? require('https') : require('http');
 const PORT = 5001;
 const app = next({ dev });
@@ -34,14 +35,20 @@ app
     // use the express app to serve static assets, necessary for Nala icons to work
     expressApp.use(express.static('public'));
 
-    const pubHost = new URL(`https://${process.env.PUBLISHERS_HOST}`);
-    const nextHost = `https://${process.env.NEXT_HOST}`;
+    let pubHost, nextHost;
+    if (testMode) {
+      pubHost = new URL(`http://${process.env.TEST_MODE_PUBLISHERS_HOST}`);
+      nextHost = `https://${process.env.TEST_MODE_NEXT_HOST}`;
+    } else {
+      pubHost = new URL(`https://${process.env.PUBLISHERS_HOST}`);
+      nextHost = `https://${process.env.NEXT_HOST}`;
+    }
 
     const middlewareToRouteToRails = createProxyMiddleware('**', {
       logger: console,
       target: pubHost,
       changeOrigin: true,
-      secure: !dev,
+      secure: testMode ? false : !dev,
       onProxyReq: (proxyReq, request, response) => {
         const ip = (request.headers['x-forwarded-for'] || request.socket.remoteAddress).split(':').pop()
         proxyReq.setHeader('originalIP', ip );

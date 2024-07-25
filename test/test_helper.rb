@@ -16,6 +16,7 @@ require "test_helpers/mock_gemini_responses"
 require "test_helpers/mock_oauth2_responses"
 require "test_helpers/mock_bitflyer_responses"
 require "test_helpers/mock_rewards_responses"
+require "test_helpers/sign_in_helpers"
 require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
@@ -33,10 +34,16 @@ Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 
+# Hit the Next App to test the UI
+raise "no NEXT_HOST env var" unless ENV["NEXT_HOST"].present?
+Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
+Capybara.server_port = 4000
+
 Capybara.register_driver :firefox do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
   opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
   opts.args << "--headless"
+  opts.args << '--ignore-certificate-errors'
   Capybara::Selenium::Driver.new(
     app,
     browser: :firefox,
@@ -49,6 +56,7 @@ Capybara.register_driver :firefox_ja do |app|
   profile["intl.accept_languages"] = "ja-JP"
   opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
   opts.args << "--headless"
+  opts.args << '--ignore-certificate-errors'
   Capybara::Selenium::Driver.new(
     app,
     browser: :firefox,
@@ -108,6 +116,7 @@ module Capybara
       include ServiceClassHelpers
       include MockUpholdResponses
       include MockOauth2Responses
+      include SignInHelpers
       self.use_transactional_tests = false
       # Make the Capybara DSL available in all integration tests
       include Capybara::DSL
@@ -143,6 +152,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
+    include SignInHelpers
     include Devise::Test::IntegrationHelpers
     self.use_transactional_tests = true
     # We should not stub methods here,
@@ -167,6 +177,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
+    include SignInHelpers
     self.use_transactional_tests = true
     setup do
       stub_get_user
