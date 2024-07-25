@@ -279,7 +279,7 @@
       "gemini_connect": "Geminiに接続",
       "uphold_connect": "Upholdに接続",
       "bitflyer_connect": "bitFlyerに接続",
-      "wrong_region": "{region}ではUpholdアカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。"
+      "wrong_region": "{region}では{provider}アカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。"
     },
     "channels": {
       "verified": "認証済みと表示",
