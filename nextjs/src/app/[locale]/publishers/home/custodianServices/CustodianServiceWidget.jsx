@@ -21,6 +21,7 @@ export default function CustodianServiceWidget({ walletData }) {
   const [upholdConnection, setUpholdConnection] = useState(walletData.uphold_connection);
   const [geminiConnection, setGeminiConnection] = useState(walletData.gemini_connection);
   const [bitflyerConnection, setBitflyerConnection] = useState(walletData.bitflyer_connection);
+  const [unsupportedCountryMsg, setUnsupportedCountryMsg] = useState('');
 
   const supportUrl = locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597';
 
@@ -37,15 +38,23 @@ export default function CustodianServiceWidget({ walletData }) {
     bitflyer: 'https://bitflyer.com/',
   }
 
+// Since japanese accounts are limited to bitflyer, translation isn't a concern here. If we add other languages, we might need to revisit this.
   useEffect(() => {
-    if (
-      supportedRegions.uphold.allow.includes(countryList[selectedCountry]) ||
-      supportedRegions.gemini.allow.includes(countryList[selectedCountry]) ||
-      supportedRegions.bitflyer.allow.includes(countryList[selectedCountry])
+    const unsupportedProvider = [];
+    if (supportedRegions.uphold.allow.includes(countryList[selectedCountry]) &&
+      supportedRegions.gemini.allow.includes(countryList[selectedCountry])
     ) {
       setUnsupportedCountry(false);
     } else {
       setUnsupportedCountry(true);
+      !supportedRegions.uphold.allow.includes(countryList[selectedCountry]) && unsupportedProvider.push('Uphold');
+      !supportedRegions.gemini.allow.includes(countryList[selectedCountry]) && unsupportedProvider.push('Gemini');
+
+      setUnsupportedCountryMsg(
+        t('Home.account.wrong_region',
+          { provider: unsupportedProvider.join(' and '), region: selectedCountry }
+        )
+      );
     }
   }, [selectedCountry]);
 
@@ -177,7 +186,7 @@ export default function CustodianServiceWidget({ walletData }) {
             </Button>
             {unsupportedCountry && (
               <div className='info-text mt-3'>
-                {t('Home.account.wrong_region', { region: selectedCountry })}
+                {unsupportedCountryMsg}
               </div>
             )}
           </div>
