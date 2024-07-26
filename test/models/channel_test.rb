@@ -94,28 +94,95 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal "can't be changed", channel.errors.messages[:details][0]
   end
 
-  test "public_name must be unique" do
-    channel = channels(:google_verified)
-    channel.public_name = "test_value"
-    channel.save!
+  test "public_identifier is added on create and must be unique" do
+    details = SiteChannelDetails.new
+    channel = Channel.create(publisher: publishers(:completed), details: details)
+    existing_channel = channels(:google_verified)
 
-    channel_2 = channels(:new_site)
-    channel_2.public_name = channel.public_name
-    refute channel_2.valid?
-
-    assert_equal "has already been taken", channel_2.errors.messages[:public_name][0]
+    channel.public_identifier = existing_channel.public_identifier
+    assert_raises do
+      channel.save!
+    end
   end
+    
+  describe "validations for public_name uniqueness" do
+    test "should validate uniqueness of public_name" do
+      channel = channels(:google_verified)
+      channel.public_name = "test_value"
+      channel.save!
 
-  # test "public_identifier is added on create and must be unique" do
-  #   details = SiteChannelDetails.new()
-  #   channel = Channel.create(publisher: publishers(:completed), details: details)
-  #   existing_channel = channels(:google_verified)
+      channel_2 = channels(:new_site)
+      channel_2.public_name = channel.public_name
+      refute channel_2.valid?
 
-  #   channel.public_identifier = existing_channel.public_identifier
-  #   assert_raises do
-  #     channel.save!
-  #   end
-  # end
+      assert_equal "has already been taken", channel_2.errors.messages[:public_name][0]
+    end
+
+    test "should validate uniqueness and presence of public_identifier" do
+      details = SiteChannelDetails.new
+      channel = Channel.create(publisher: publishers(:completed), details: details)
+      existing_channel = channels(:google_verified)
+
+      channel.public_identifier = existing_channel.public_identifier
+      assert_not channel.valid?
+      assert_includes channel.errors[:public_identifier], "has already been taken"
+
+      existing_channel.public_identifier = nil
+      assert_not existing_channel.valid?
+      assert_includes existing_channel.errors[:public_identifier], "can't be blank"
+    end
+
+    test "should validate public_name uniqueness across both public_name and public_identifier" do
+      channel = channels(:google_verified)
+      conflicting_channel = Channel.new(public_name: channel.public_identifier)
+      assert_not conflicting_channel.valid?
+      assert_includes conflicting_channel.errors[:public_name], "must be unique across both public_name and public_identifier"
+    end
+
+    test "should strip whitespace from public_name before validation" do
+      channel = Channel.new(public_name: "example_name", public_identifier: "example_id")
+      channel.public_name = " example name "
+      channel.valid?
+      assert_equal "examplename", channel.public_name
+    end
+
+    test "should save old public_name to ReservedPublicName after update" do
+      channel = channels(:google_verified)
+      channel.public_name = "old_name"
+      channel.save!
+      old_name = channel.public_name
+      new_name = "new_name"
+      channel.update(public_name: new_name)
+
+      reserved = ReservedPublicName.find_by(public_name: old_name)
+      assert_not_nil reserved
+      assert_equal old_name, reserved.public_name
+    end
+
+    test "should validate public_name format and reserved name status" do
+      channel = channels(:google_verified)
+      invalid_name = "invalid name!"
+      channel.public_name = invalid_name
+      assert_not channel.valid?
+      assert_includes channel.errors[:public_name], "must only contain letters, numbers, dashes, and underscores"
+
+      too_short_name = "a"
+      channel.public_name = too_short_name
+      assert_not channel.valid?
+      assert_includes channel.errors[:public_name], "must be between 3 and 32 characters in length"
+
+      too_long_name = "a" * 33
+      channel.public_name = too_long_name
+      assert_not channel.valid?
+      assert_includes channel.errors[:public_name], "must be between 3 and 32 characters in length"
+
+      # Reserved name logic
+      reserved_name = ReservedPublicName.create(public_name: "reserved", created_at: 6.months.ago, permanent: true)
+      channel.public_name = reserved_name.public_name
+      assert_not channel.valid?
+      assert_includes channel.errors[:public_name], "already under use"
+    end
+  end
 
   test "publication_title is the site domain for site publishers" do
     channel = channels(:verified)
@@ -344,6 +411,14 @@ class ChannelTest < ActionDispatch::IntegrationTest
     duplicate_channel.details = SiteChannelDetails.new(brave_publisher_id: channel.details.brave_publisher_id,
       verification_method: "dns")
     refute duplicate_channel.valid?
+  end
+
+  test "channel can't have a public name set to an existing public identifier" do
+    channel = channels(:default)
+    malicious_channel = channels(:verified)
+    malicious_channel.public_name = channel.public_identifier
+
+    refute malicious_channel.valid?
   end
 
   test "find_by_channel_identifier finds youtube channels" do
