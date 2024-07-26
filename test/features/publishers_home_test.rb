@@ -46,16 +46,16 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
   test "website channel type can be chosen" do
     publisher = publishers(:completed)
-    sign_in publisher
+    sign_in_through_link publisher
     visit home_publishers_path
 
-    click_link("+ Add Channel", match: :first)
+    page.find("#add-channel").click
 
-    assert_content page, "Add Channel"
+    assert_content page, "Channels are accounts"
     assert_content page, "Website"
     assert_content page, "YouTube"
 
-    find("[data-test-choose-channel-website]").click
+    page.find("#add-website").click
 
     assert_current_path(/site_channels\/new/)
   end
@@ -63,7 +63,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   test "dashboard can still load even when publisher's wallet cannot be fetched from eyeshade" do
     Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)
-    sign_in publisher
+    sign_in_through_link publisher
 
     wallet = {"wallet" => {"authorized" => false}}
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
@@ -76,7 +76,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     prev_api_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
     Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
-    sign_in publisher
+    sign_in_through_link publisher
 
     wallet = {"wallet" => {"authorized" => false}}
     balances = "go away\nUser-agent: *\nDisallow:"
@@ -86,7 +86,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     visit home_publishers_path
 
     refute publisher.wallet.present?
-    assert_content page, "unavailable"
+    assert_content page, "0 BAT"
   ensure
     Rails.configuration.pub_secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
   end

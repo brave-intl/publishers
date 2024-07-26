@@ -39,35 +39,25 @@ raise "no NEXT_HOST env var" unless ENV["NEXT_HOST"].present?
 Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
 Capybara.server_port = 4000
 
-Capybara.register_driver :firefox do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
-  opts.args << "--headless"
-  opts.args << '--ignore-certificate-errors'
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :firefox,
-    options: opts
-  )
+Capybara.register_driver :chromium do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--ignore-certificate-errors')
+  options.add_argument('--headless')
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
-Capybara.register_driver :firefox_ja do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile["intl.accept_languages"] = "ja-JP"
-  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
-  opts.args << "--headless"
-  opts.args << '--ignore-certificate-errors'
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :firefox,
-    options: opts
-  )
+Capybara.register_driver :chromium_ja do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--ignore-certificate-errors')
+  options.add_argument('--lang=ja-JP')
+  options.add_argument('--headless')
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
 Capybara.register_driver :rack_test_jp do |app|
   Capybara::RackTest::Driver.new(app, headers: {"HTTP_ACCEPT_LANGUAGE" => "ja-JP"})
 end
-Capybara.default_driver = :firefox
+Capybara.default_driver = :chromium
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock

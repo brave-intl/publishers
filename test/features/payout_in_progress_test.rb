@@ -84,7 +84,7 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
     # This test requires forgery protection in FF
     ActionController::Base.allow_forgery_protection = true
 
-    Capybara.using_driver(:firefox_ja) do
+    Capybara.using_driver(:chromium_ja) do
       publisher = publishers(:top_referrer_bitflyer)
 
       sign_in publisher
