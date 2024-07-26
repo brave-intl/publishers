@@ -2,9 +2,7 @@ class PublicChannelController < ApplicationController
   layout "public"
 
   def show
-    channel = Channel.includes(:site_banner).find_by(public_identifier: params[:public_identifier])
-    # channel_title is used in the meta tags
-    @channel_title = channel&.publication_title
+    channel = Channel.includes(:site_banner).find_by(public_identifier: params[:public_identifier]) || Channel.includes(:site_banner).find_by(public_name: params[:public_identifier])
     @crypto_addresses = channel&.crypto_addresses&.pluck(:address, :chain)
 
     # Handle the case when the resource is not found
@@ -12,6 +10,9 @@ class PublicChannelController < ApplicationController
       redirect_to root_path, alert: "Channel not found"
       return
     end
+
+    # channel_title is used in the meta tags
+    @channel_title = channel&.publication_title
     @url = channel.details&.url
     @site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(current_publisher.id, channel.id)
 

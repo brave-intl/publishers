@@ -95,6 +95,9 @@ export default function PublicChannelPage({publicIdentifier, previewMode}) {
               <div className={`${styles['privacy-disclaimer']}`}>
                 {t('publicChannelPage.privacyDisclaimer')}
               </div>
+              <div className={`${styles['privacy-disclaimer']}`}>
+                {t('publicChannelPage.report_sus_urls')}<a target="_blank" rel="noopener noreferrer" href="https://support.brave.com/hc/en-us/requests/new">https://support.brave.com/hc/en-us/requests/new</a>
+              </div>
             </div>
           </div>
         </div>

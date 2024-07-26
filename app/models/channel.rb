@@ -60,15 +60,18 @@ class Channel < ApplicationRecord
   }, allow_nil: true
 
   validates :public_name, uniqueness: true, allow_nil: true
-  # validates :public_identifier, uniqueness: true, presence: true
+  validates :public_identifier, uniqueness: true, presence: true
+  validate :validate_public_url_unique
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == "SiteChannelDetails" }
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
-  before_create :set_public_identifier
+  after_initialize :set_public_identifier, if: -> { public_identifier.nil? }
+  before_validation :strip_public_name_whitespace
 
   after_save :notify_slack, if: -> { saved_change_to_verified? && verified? }
+  after_save :notify_slack_for_public_name, if: -> { saved_change_to_public_name? && public_name? }
 
   before_save :set_derived_brave_publisher_id, if: -> { derived_brave_publisher_id.nil? }
 
@@ -78,6 +81,8 @@ class Channel < ApplicationRecord
   after_commit :create_channel_card, if: -> { saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
+
+  after_update :save_old_public_name, if: :saved_change_to_public_name?
 
   before_destroy :preserve_contested_by_channels
 
@@ -361,7 +366,8 @@ class Channel < ApplicationRecord
     return if public_identifier.present?
     identifier = loop do
       id = SecureRandom.alphanumeric(10)
-      break id unless Channel.where(public_identifier: id).exists?
+      # Check if the value of public_identifier already exists in either column (case insensitive)
+      break id unless self.class.where('LOWER(public_name) = :value OR LOWER(public_identifier) = :value', value: id.downcase).exists?
     end
 
     self.public_identifier = identifier
@@ -465,6 +471,15 @@ class Channel < ApplicationRecord
     ).perform
   end
 
+  def notify_slack_for_public_name
+    return unless public_name?
+
+    SlackMessenger.new(
+      channel: "publishers-bot",
+      message: "*#{details.publication_title}* added new vanity contribution url: #{public_name}; id=#{details.channel_identifier}"
+    ).perform
+  end
+
   def set_derived_brave_publisher_id
     self.derived_brave_publisher_id = details.channel_identifier
   end
@@ -507,5 +522,36 @@ class Channel < ApplicationRecord
         errors.add(:base, "contesting channel does not match")
       end
     end
+  end
+
+  def validate_public_url_unique
+    return unless public_name
+    # Check if the value of public_name already exists in either column (case insensitive)
+    if self.class.where('LOWER(public_name) = :value OR LOWER(public_identifier) = :value', value: public_name.downcase).exists?
+      errors.add(:public_name, 'must be unique across both public_name and public_identifier')
+    end
+    
+    unless public_name.length.between?(3, 32)
+      errors.add(:public_name, 'must be between 3 and 32 characters in length')
+    end
+
+    # make sure that only letters, numbers, dashes and underscores are allowed
+    unless /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/.match?(public_name)
+      errors.add(:public_name, 'must only contain letters, numbers, dashes, and underscores')
+    end
+
+    reserved = ReservedPublicName.find_by(public_name: public_name)
+    # names previously in use are released after 1 year
+    if reserved && (reserved.permanent || reserved.created_at >= 1.year.ago)
+      errors.add(:public_name, 'already under use')
+    end
+  end
+
+  def save_old_public_name
+    ReservedPublicName.create(public_name: saved_change_to_public_name[0]) if saved_change_to_public_name[0]
+  end
+
+  def strip_public_name_whitespace
+    self.public_name = public_name.gsub(/\s+/, "") unless public_name.nil?
   end
 end
