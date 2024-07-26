@@ -34,14 +34,12 @@ Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 
-# Hit the Next App to test the UI
-raise "no NEXT_HOST env var" unless ENV["NEXT_HOST"].present?
-Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
-Capybara.server_port = 4000
-
 Capybara.register_driver :chromium do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--ignore-certificate-errors')
+  options.add_argument('--window-size=1680,1050')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-gpu')
   options.add_argument('--headless')
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
@@ -49,8 +47,11 @@ end
 Capybara.register_driver :chromium_ja do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--ignore-certificate-errors')
-  options.add_argument('--lang=ja-JP')
+  options.add_argument('--window-size=1680,1050')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-gpu')
   options.add_argument('--headless')
+  options.add_argument('--accept-lang=ja-JP')
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
@@ -113,11 +114,30 @@ module Capybara
       # Make `assert_*` methods behave like Minitest assertions
       include Capybara::Minitest::Assertions
       setup do
+        # NextJS configuration
+        if self.class.const_defined?(:USE_NEXTJS) && self.class::USE_NEXTJS
+          @original_app_host = Capybara.app_host
+          @original_server_port = Capybara.server_port
+          @original_default_url_options = Rails.application.config.action_mailer.default_url_options
+
+          raise "no NEXT_HOST env var" unless ENV["NEXT_HOST"].present?
+          Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
+          Capybara.server_port = 4000
+          Rails.application.config.action_mailer.default_url_options = { host: "https://#{ENV['NEXT_HOST']}" }
+        end
+
         stub_get_user
       end
       teardown do
         Capybara.reset_sessions!
         Capybara.use_default_driver
+
+        # Restore Capybara config if it was changed
+        if @original_app_host && @original_server_port && @original_default_url_options
+          Capybara.app_host = @original_app_host
+          Capybara.server_port = @original_server_port
+          Rails.application.config.action_mailer.default_url_options = @original_default_url_options
+        end
       end
 
       def js_logs

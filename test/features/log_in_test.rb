@@ -23,7 +23,7 @@ class LogInTest < Capybara::Rails::TestCase
   test "can navigate to log in from landing page" do
     visit root_path
     assert_content page, "Earn for your online content"
-    click_link("log in")
+    click_button("log in")
     assert_content page, "Log in"
   end
 
@@ -64,10 +64,6 @@ class LogInTest < Capybara::Rails::TestCase
     assert_enqueued_emails(1) do
       # Firefox headless wonkiness, needs to click this twice where it just worked in Chrome
       click_link("try again")
-
-      if assert_no_emails
-        click_link("try again")
-      end
     end
   end
 

@@ -4,6 +4,8 @@ require "test_helper"
 require "webmock/minitest"
 
 class PublishersHomeTest < Capybara::Rails::TestCase
+  # USE_NEXTJS = true
+
   include Devise::Test::IntegrationHelpers
   include EyeshadeHelper
   include Rails.application.routes.url_helpers
