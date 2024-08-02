@@ -16,7 +16,7 @@ class LocaleTest < Capybara::Rails::TestCase
 
   test "login with EN accept language and no locale shows english" do
     visit home_publishers_path
-    assert_content page, "Add Channel"
+    assert_content page, "Add channel"
   end
 
   test "login with EN accept language and JA locale shows Japanese" do
