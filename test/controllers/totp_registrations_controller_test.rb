@@ -125,6 +125,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     refute @request.flash[:modal_partial]
 
     another_session.get "/publishers/security"
-    another_session.assert_redirected_to root_path # logout redirects to root
+    assert root_path.end_with?("?locale=en")
+    another_session.assert_redirected_to "/" # logout redirects to root
   end
 end

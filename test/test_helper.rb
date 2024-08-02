@@ -17,6 +17,7 @@ require "test_helpers/mock_oauth2_responses"
 require "test_helpers/mock_bitflyer_responses"
 require "test_helpers/mock_rewards_responses"
 require "test_helpers/sign_in_helpers"
+require "test_helpers/next_js_helpers"
 require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
@@ -33,6 +34,9 @@ end
 Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
+
+# To not interere with the usual port 3000 dev and to set a fixed port for the NEXTJS server to hit
+Capybara.server_port = 4000
 
 Capybara.register_driver :chromium do |app|
   options = Selenium::WebDriver::Chrome::Options.new
@@ -81,6 +85,8 @@ module ActiveSupport
     self.use_transactional_tests = true
     @once = false
     setup do
+      @old_url_options = Publishers::Application.default_url_options
+      Publishers::Application.default_url_options = Publishers::Application.config.action_mailer.default_url_options
       Rails.cache.clear
       unless @once
         default_resolver = SsrfFilter::DEFAULT_RESOLVER
@@ -93,6 +99,9 @@ module ActiveSupport
       end
     end
     # Add more helper methods to be used by all tests here...
+    teardown do
+      Publishers::Application.default_url_options = @old_url_options
+    end
   end
 
   # I'm creating an independent class because
@@ -114,30 +123,12 @@ module Capybara
       # Make `assert_*` methods behave like Minitest assertions
       include Capybara::Minitest::Assertions
       setup do
-        # NextJS configuration
-        if self.class.const_defined?(:USE_NEXTJS) && self.class::USE_NEXTJS
-          @original_app_host = Capybara.app_host
-          @original_server_port = Capybara.server_port
-          @original_default_url_options = Rails.application.config.action_mailer.default_url_options
-
-          raise "no NEXT_HOST env var" unless ENV["NEXT_HOST"].present?
-          Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
-          Capybara.server_port = 4000
-          Rails.application.config.action_mailer.default_url_options = { host: "https://#{ENV['NEXT_HOST']}" }
-        end
-
         stub_get_user
       end
+
       teardown do
         Capybara.reset_sessions!
         Capybara.use_default_driver
-
-        # Restore Capybara config if it was changed
-        if @original_app_host && @original_server_port && @original_default_url_options
-          Capybara.app_host = @original_app_host
-          Capybara.server_port = @original_server_port
-          Rails.application.config.action_mailer.default_url_options = @original_default_url_options
-        end
       end
 
       def js_logs

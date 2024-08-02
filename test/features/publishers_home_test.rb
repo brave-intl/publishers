@@ -4,12 +4,13 @@ require "test_helper"
 require "webmock/minitest"
 
 class PublishersHomeTest < Capybara::Rails::TestCase
-  # USE_NEXTJS = true
+  USE_NEXTJS = true
 
   include Devise::Test::IntegrationHelpers
   include EyeshadeHelper
   include Rails.application.routes.url_helpers
   include MockRewardsResponses
+  include NextJsHelpers
 
   let(:uphold_url) { Rails.configuration.pub_secrets[:uphold_api_uri] + "/v0/me" }
   before do
@@ -21,10 +22,12 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
     stub_request(:post, /cards/).to_return(body: {id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"}.to_json)
     stub_request(:get, /address/).to_return(body: [{formats: [{format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1"}], type: "anonymous"}].to_json)
+    nextjs_pre
   end
 
   after do
     Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+    nextjs_post
   end
 
   test "verified channel can be removed after confirmation" do
