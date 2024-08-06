@@ -60,6 +60,10 @@ jobs:
         run: cd public/creators-landing && yarn install && yarn build 
         env: 
           process.env.CI : false
+      - name: NPM install New UI
+        run: cd nextjs && npm install
+        env:
+          process.env.CI: false
       - name: Prepare database
         run: PREPARING_DATABASE=1 RAILS_ENV=test bundle exec rails db:prepare
         env:
