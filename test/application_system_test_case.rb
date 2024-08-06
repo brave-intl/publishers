@@ -7,22 +7,22 @@ Capybara.server_port = 4000
 
 Capybara.register_driver :chromium do |app|
   options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--ignore-certificate-errors')
-  options.add_argument('--window-size=1680,1050')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-gpu')
-  options.add_argument('--headless')
+  options.add_argument("--ignore-certificate-errors")
+  options.add_argument("--window-size=1680,1050")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--headless")
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
 Capybara.register_driver :chromium_ja do |app|
   options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--ignore-certificate-errors')
-  options.add_argument('--window-size=1680,1050')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-gpu')
-  options.add_argument('--headless')
-  options.add_argument('--accept-lang=ja-JP')
+  options.add_argument("--ignore-certificate-errors")
+  options.add_argument("--window-size=1680,1050")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--headless")
+  options.add_argument("--accept-lang=ja-JP")
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
@@ -40,10 +40,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   self.use_transactional_tests = false
 
   driven_by :selenium, using: :headless_chrome do |driver_option|
-    driver_option.add_argument('--ignore-certificate-errors')
-    driver_option.add_argument('--window-size=1680,1050')
-    driver_option.add_argument('--no-sandbox')
-    driver_option.add_argument('--disable-gpu')
+    driver_option.add_argument("--ignore-certificate-errors")
+    driver_option.add_argument("--window-size=1680,1050")
+    driver_option.add_argument("--no-sandbox")
+    driver_option.add_argument("--disable-gpu")
   end
 
   def js_logs

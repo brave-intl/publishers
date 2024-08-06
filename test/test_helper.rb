@@ -33,7 +33,6 @@ Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 
-
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock

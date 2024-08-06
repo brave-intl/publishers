@@ -35,10 +35,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.1
-      - name: Setup firefox
-        uses: browser-actions/setup-firefox@0f622aed2a492183149a5a5c347205a593802e10 # v1.3.0
-        with:
-          firefox-version: "latest-esr"
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
@@ -69,7 +65,7 @@ jobs:
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
       - name: Run tests
-        run: USE_MINITEST_RETRY=1 NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=test bundle exec rails test
+        run: USE_MINITEST_RETRY=1 NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=test ./bin/run_tests.sh
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
           BAT_RATIOS_URL: https://ratios.rewards.bravesoftware.com
