@@ -1,4 +1,6 @@
 require "test_helper"
+require "capybara/rails"
+require "capybara/minitest"
 
 # To not interfere with the usual port 3000 dev and to set a fixed port for the NEXTJS server to hit
 Capybara.server_port = 4000
