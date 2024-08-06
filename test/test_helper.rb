@@ -17,7 +17,6 @@ require "test_helpers/mock_oauth2_responses"
 require "test_helpers/mock_bitflyer_responses"
 require "test_helpers/mock_rewards_responses"
 require "test_helpers/sign_in_helpers"
-require "test_helpers/next_js_helpers"
 require "minitest/rails"
 require "minitest/retry"
 
@@ -68,13 +67,6 @@ module ActiveSupport
         @once = true
       end
     end
-
-
-    # def nextui_tests
-    #   Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
-    #   ::Rails.application.config.action_mailer.default_url_options = { host: "https://#{ENV['NEXT_HOST']}" }
-    #   Publishers::Application.default_url_options = Publishers::Application.config.action_mailer.default_url_options
-    # end
   end
 end
 

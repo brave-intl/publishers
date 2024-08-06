@@ -39,16 +39,13 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   self.use_transactional_tests = false
 
-  driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
+  driven_by :selenium, using: :headless_chrome do |driver_option|
+    driver_option.add_argument('--ignore-certificate-errors')
+    driver_option.add_argument('--window-size=1680,1050')
+    driver_option.add_argument('--no-sandbox')
+    driver_option.add_argument('--disable-gpu')
+  end
 
-  # setup do
-  #   stub_get_user
-  # end
-  #
-  # teardown do
-  #   Capybara.reset_sessions!
-  #   Capybara.use_default_driver
-  # end
   def js_logs
     page.driver.browser.manage.logs.get(:browser)
   end
