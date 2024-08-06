@@ -1,8 +1,6 @@
-# typed: false
+require "application_system_test_case"
 
-require "test_helper"
-
-class LocaleTest < Capybara::Rails::TestCase
+class LocaleTest < ApplicationSystemTestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
@@ -16,7 +14,7 @@ class LocaleTest < Capybara::Rails::TestCase
 
   test "login with EN accept language and no locale shows english" do
     visit home_publishers_path
-    assert_content page, "Add channel"
+    assert_content page, "Add Channel"
   end
 
   test "login with EN accept language and JA locale shows Japanese" do

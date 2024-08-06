@@ -1,8 +1,6 @@
-# typed: false
+require "application_system_test_case"
 
-require "test_helper"
-
-class LogInTest < Capybara::Rails::TestCase
+class LogInTest < ApplicationSystemTestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers

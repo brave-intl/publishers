@@ -1,8 +1,6 @@
-# typed: false
+require "application_system_test_case"
 
-require "test_helper"
-
-class AdminFeatureTest < Capybara::Rails::TestCase
+class AdminFeatureTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
   include MockRewardsResponses

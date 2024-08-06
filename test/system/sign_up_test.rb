@@ -1,8 +1,6 @@
-# typed: false
+require "application_system_test_case"
 
-require "test_helper"
-
-class SignUpTest < Capybara::Rails::TestCase
+class SignUpTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
   include Rails.application.routes.url_helpers

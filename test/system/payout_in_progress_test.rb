@@ -1,10 +1,7 @@
-# typed: false
-
-require "test_helper"
+require "application_system_test_case"
 require "webmock/minitest"
-# require "mocha/test_unit"
 
-class PayoutInProgressTest < Capybara::Rails::TestCase
+class PayoutInProgressTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
   include MockRewardsResponses

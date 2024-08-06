@@ -22,6 +22,8 @@ require "capybara/rails"
 require "capybara/minitest"
 require "minitest/rails"
 require "minitest/retry"
+require 'minispec-metadata'
+
 if ENV["USE_MINITEST_RETRY"]
   Minitest::Retry.use!(
     retry_count: 3, # The number of times to retry. The default is 3.
@@ -35,34 +37,7 @@ Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 
-# To not interere with the usual port 3000 dev and to set a fixed port for the NEXTJS server to hit
-Capybara.server_port = 4000
 
-Capybara.register_driver :chromium do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--ignore-certificate-errors')
-  options.add_argument('--window-size=1680,1050')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-gpu')
-  options.add_argument('--headless')
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-end
-
-Capybara.register_driver :chromium_ja do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--ignore-certificate-errors')
-  options.add_argument('--window-size=1680,1050')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-gpu')
-  options.add_argument('--headless')
-  options.add_argument('--accept-lang=ja-JP')
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-end
-
-Capybara.register_driver :rack_test_jp do |app|
-  Capybara::RackTest::Driver.new(app, headers: {"HTTP_ACCEPT_LANGUAGE" => "ja-JP"})
-end
-Capybara.default_driver = :chromium
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
@@ -85,8 +60,6 @@ module ActiveSupport
     self.use_transactional_tests = true
     @once = false
     setup do
-      @old_url_options = Publishers::Application.default_url_options
-      Publishers::Application.default_url_options = Publishers::Application.config.action_mailer.default_url_options
       Rails.cache.clear
       unless @once
         default_resolver = SsrfFilter::DEFAULT_RESOLVER
@@ -98,50 +71,12 @@ module ActiveSupport
         @once = true
       end
     end
-    # Add more helper methods to be used by all tests here...
-    teardown do
-      Publishers::Application.default_url_options = @old_url_options
-    end
-  end
 
-  # I'm creating an independent class because
-  # all of the other cases I've handled are just out of preserving
-  # existing specs. I don't think it is actually a good idea
-  # to blanketly stub requests in a test setup.
-end
 
-module Capybara
-  module Rails
-    class TestCase < ::ActiveSupport::TestCase
-      include ServiceClassHelpers
-      include MockUpholdResponses
-      include MockOauth2Responses
-      include SignInHelpers
-      self.use_transactional_tests = false
-      # Make the Capybara DSL available in all integration tests
-      include Capybara::DSL
-      # Make `assert_*` methods behave like Minitest assertions
-      include Capybara::Minitest::Assertions
-      setup do
-        stub_get_user
-      end
-
-      teardown do
-        Capybara.reset_sessions!
-        Capybara.use_default_driver
-      end
-
-      def js_logs
-        page.driver.browser.manage.logs.get(:browser)
-      end
-
-      def wait_until
-        require "timeout"
-        Timeout.timeout(Capybara.default_max_wait_time) do
-          sleep(0.1) until (value = yield)
-          value
-        end
-      end
+    def nextui_tests
+      Capybara.app_host = "https://#{ENV['NEXT_HOST']}"
+      ::Rails.application.config.action_mailer.default_url_options = { host: "https://#{ENV['NEXT_HOST']}" }
+      Publishers::Application.default_url_options = Publishers::Application.config.action_mailer.default_url_options
     end
   end
 end
