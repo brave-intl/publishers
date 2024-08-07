@@ -44,6 +44,9 @@ app
       nextHost = `https://${process.env.NEXT_HOST}`;
     }
 
+    console.log('pubHost', pubHost);
+    console.log('nextHost', nextHost);
+
     const middlewareToRouteToRails = createProxyMiddleware('**', {
       logger: console,
       target: pubHost,
@@ -122,7 +125,7 @@ app
       console.log(
         chalk.green(
           `> Server started on ${chalk.bold.green(
-            `https://localhost:${PORT}`,
+            `${nextHost}`,
           )}`,
         ),
       );
