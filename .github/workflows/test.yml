@@ -60,8 +60,12 @@ jobs:
         run: cd public/creators-landing && yarn install && yarn build 
         env: 
           process.env.CI : false
-      - name: NPM install New UI
+      - name: NewUI install
         run: cd nextjs && npm install
+        env:
+          process.env.CI: false
+      - name: NewUI build
+        run: cd nextjs && node scripts/copyLeoIcons.js && npm run build
         env:
           process.env.CI: false
       - name: Prepare database
