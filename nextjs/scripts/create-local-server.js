@@ -12,6 +12,7 @@ const PORT = 5001;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const basicAuth = require('express-basic-auth')
+const selfsigned = require('selfsigned')
 
 const nextAllowRoutes = ['_next', '^icons', 'favicon'];
 const nextAllowPageRoutes = [
@@ -101,15 +102,16 @@ app
 
     let server;
     if (dev) {
+      // Generate a self-signed certificate and key
+      const attrs = [{ name: 'commonName', value: 'localhost' }];
+      const pems = selfsigned.generate(attrs, { days: 365 });
+
+      const serverOptions = {
+        key: pems.private,
+        cert: pems.cert,
+      };
       server = createServer(
-        {
-          key: fs.readFileSync(
-            path.join(__dirname, '..', '..', 'ssl', 'server.key'),
-          ),
-          cert: fs.readFileSync(
-            path.join(__dirname, '..', '..', 'ssl', 'server.crt'),
-          ),
-        },
+        serverOptions,
         expressApp,
       );
     } else {
