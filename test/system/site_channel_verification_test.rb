@@ -1,8 +1,6 @@
-# typed: false
+require "application_system_test_case"
 
-require "test_helper"
-
-class SiteChannelVerificationTest < Capybara::Rails::TestCase
+class SiteChannelVerificationTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
   include MockRewardsResponses

@@ -5,9 +5,10 @@ type Props = {
   children: React.ReactNode;
   width?: number;
   className?: string;
+  id?: string; // make id optional
 };
 
-const Card: FC<Props> = ({ children, width, className }) => {
+const Card: FC<Props> = ({ children, width, className, id }) => {
   return (
     <div
       className={clsx(
@@ -15,6 +16,7 @@ const Card: FC<Props> = ({ children, width, className }) => {
         className,
       )}
       style={{ width: `${width}px` }}
+      id={id ? `channel_row_${id}` : ''}
     >
       {children}
     </div>

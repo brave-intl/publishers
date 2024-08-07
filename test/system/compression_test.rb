@@ -1,6 +1,4 @@
-# typed: false
-
-require "test_helper"
+require "application_system_test_case"
 
 class CompressionTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers

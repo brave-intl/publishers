@@ -74,7 +74,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
   }
 
   return (
-    <Card>
+    <Card id={channel.id} >
       <section className='flex justify-between pb-1'>
         <div className='flex items-center'>
           <span className='inline-block'>{channelIconType()}</span>
@@ -95,7 +95,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
       </section>
       <Hr />
       <section className='pt-2 text-right self-end'>
-        <Button className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
+        <Button id={`channel_row_delete_button_${channel.id}`} className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
           {t('shared.remove')}
         </Button>
         <Button href={`/publishers/${publisherId}/site_banners/new`} kind='outline'>{t('shared.customize')}</Button>

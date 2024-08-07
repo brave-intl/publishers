@@ -42,7 +42,7 @@ export default function AddChannelModal() {
       <section className='grid md:grid-cols-3 gap-2'>
         {channels.map(function (channel) {
           return (
-            <div className={`text-center ${styles['add-channel-card']}`} key={channel} onClick={() => addChannel(channel)}>
+            <div id={`add-${channel}`} className={`text-center ${styles['add-channel-card']}`} key={channel} onClick={() => addChannel(channel)}>
               <Icon
                 className='mx-auto mb-2 inline-block'
                 forceColor={true}
