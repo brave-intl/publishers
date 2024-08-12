@@ -116,7 +116,7 @@ export default function HomePage() {
                     })}
                   </section>
                 </CryptoAddressProvider>
-                <Button className='pt-3' onClick={() => setIsAddChannelModalOpen(true)}>
+                <Button id ="add-channel" className='pt-3' onClick={() => setIsAddChannelModalOpen(true)}>
                   {t('Home.channels.add_channel')}
                 </Button>
               </>

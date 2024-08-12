@@ -1,10 +1,8 @@
-# typed: false
-
-require "test_helper"
+require "application_system_test_case"
 require "webmock/minitest"
 require "vcr"
 
-class PublicPageTest < Capybara::Rails::TestCase
+class PublicPageTest < ApplicationSystemTestCase
   include ActionMailer::TestHelper
   include Rails.application.routes.url_helpers
 

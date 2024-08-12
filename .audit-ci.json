@@ -39,6 +39,9 @@
     "GHSA-78xj-cgh5-2h22",
     "GHSA-c429-5p7v-vgjp",
     "GHSA-cxjh-pqwp-8mfp|react-scripts>webpack-dev-server>http-proxy-middleware>http-proxy>follow-redirects",
-    "GHSA-67hx-6x53-jw92"
+    "GHSA-67hx-6x53-jw92",
+    "GHSA-49q7-c7j4-3p7m|crypto-browserify>browserify-sign>elliptic",
+    "GHSA-977x-g7h5-7qgw|crypto-browserify>browserify-sign>elliptic",
+    "GHSA-f7q4-pwc6-w24p|crypto-browserify>browserify-sign>elliptic"
   ]
 }

@@ -1,10 +1,7 @@
-# typed: false
-
-require "test_helper"
+require "application_system_test_case"
 require "webmock/minitest"
-# require "mocha/test_unit"
 
-class PayoutInProgressTest < Capybara::Rails::TestCase
+class PayoutInProgressTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
   include MockRewardsResponses
@@ -84,7 +81,7 @@ class PayoutInProgressTest < Capybara::Rails::TestCase
     # This test requires forgery protection in FF
     ActionController::Base.allow_forgery_protection = true
 
-    Capybara.using_driver(:firefox_ja) do
+    Capybara.using_driver(:chromium_ja) do
       publisher = publishers(:top_referrer_bitflyer)
 
       sign_in publisher
