@@ -31,7 +31,7 @@ gem "activerecord-postgres_enum"
 # Use AWS gem for s3 uploads
 gem "aws-sdk-s3", "~> 1.143.0"
 
-gem "bootstrap", "4.6.2"
+gem "bootstrap", "5.3.3"
 
 gem "brotli", "~> 0.5.0"
 
