@@ -46,7 +46,7 @@ Rails.application.configure do
                        key:  "_publishers_session",
                        redis: {
                          client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
-                         expire_after: 120.minutes,
+                         expire_after: 30.days,
                          key_prefix: 'publishers:session:'
                        }
 
