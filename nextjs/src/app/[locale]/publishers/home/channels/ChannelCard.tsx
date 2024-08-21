@@ -98,7 +98,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
         <Button id={`channel_row_delete_button_${channel.id}`} className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
           {t('shared.remove')}
         </Button>
-        <Button href={`/publishers/${publisherId}/site_banners/new`} kind='outline'>{t('shared.customize')}</Button>
+        <Button href={`/publishers/contribution_page?channel=${channel.id}`} kind='outline'>{t('shared.customize')}</Button>
       </section>
     </Card>
   );

@@ -26,8 +26,8 @@ export default function NavigationOptions() {
       </NavigationItem>
       <NavigationItem
         icon='window-settings'
-        href={`/publishers/${user.id}/site_banners/new`}
-        isCurrent={route.includes(`/publishers/${user.id}/site_banners/new`)}
+        href={`/publishers/contribution_page`}
+        isCurrent={route.includes(`/publishers/contribution_page`)}
       >
         {t('NavDropdown.contribution_banners')}
       </NavigationItem>

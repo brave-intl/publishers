@@ -1,0 +1,25 @@
+.toast {
+	position: fixed;
+  z-index: 1000;
+  top: 20px;
+  right: 20px;
+
+  width: 260px;
+  padding: var(--leo-spacing-xl);
+
+  color: var(--leo-color-systemfeedback-info-text);
+
+  background-color: var(--leo-color-primitive-blue-20);
+  border-radius: var(--leo-radius-m);
+  box-shadow: var(--leo-effect-elevation-04);
+}
+
+.toast-progress {
+	--leo-progressring-color: var(--leo-color-systemfeedback-info-text);
+	--leo-progressring-size: 24px;
+
+	display: inline-block;
+  margin-right: var(--leo-spacing-xl);
+	color: var(--leo-color-systemfeedback-info-text);
+  vertical-align: middle;
+}

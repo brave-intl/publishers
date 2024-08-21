@@ -21,6 +21,7 @@ const nextAllowPageRoutes = [
   'publishers/totp_registrations/new',
   'publishers/u2f_registrations/new',
   'publishers/home',
+  'publishers/contribution_page'
 ];
 const routeMatch = [
   nextAllowPageRoutes.map((r) => `ja/${r}`).join('|'),
