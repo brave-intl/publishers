@@ -22,7 +22,7 @@ export default function PublicChannelPage({publicIdentifier, previewMode}) {
   const [url, setUrl] = useState('');
 
   async function fetchChannelData() {
-    const channelData = await apiRequest(`c/${publicIdentifier}`);
+    const channelData = await apiRequest(`public_channel/${publicIdentifier}`);
 
     const siteBannerData = channelData.site_banner;
     setTitle(siteBannerData.title);
@@ -64,12 +64,12 @@ export default function PublicChannelPage({publicIdentifier, previewMode}) {
         <div className={`${styles['image-container']}`}>
           <div style={{ '--cover-url': `url('${coverUrl}')` }} className={`${styles['cover']}`}></div>
         </div>
-        <div className='container'>
+        <div className='container mx-auto'>
           <div className='grid grid-cols-1 lg:grid-cols-2'>
             <div className={`${styles['description-container']} px-4`}>
               <div className={`${styles['logo']}`} style={{ '--logo-url': `url('${logoUrl}')` }}></div>
-              <div className={`${styles['creator-title']}`}>{title} <Icon name='verification-filled-color' className='inline-block' /></div>
-              <div className={`${styles['creator-description']}`}>{description}</div>
+              <h1 className={`${styles['creator-title']}`}>{title} <Icon name='verification-filled-color' className='inline-block' /></h1>
+              <div className={`${styles['creator-description']} large-regular`}>{description}</div>
               <div>
                 {Object.keys(socialLinks).map((key) => {
                   if (socialLinks[key].length) {

@@ -1,26 +1,15 @@
 'use client';
 
-import Input from '@brave/leo/react/input';
-import { useEffect, useState } from 'react';
-
-import { apiRequest } from '@/lib/api';
-
-import Card from '@/components/Card';
-import Container from '@/components/Container';
+import { useParams } from 'next/navigation';
+import PublicChannelPage from "./PublicChannelPage";
 
 export default function PublicChannelPageContainer() {
-
-  async function fetchChannelData() {
-    
-  }
-
-  useEffect(() => {
-    fetchChannelData();
-  }, []);
+  const params = useParams();
+  const publicIdentifier = params['public_identifier'];
 
   return (
-    <div className='max-w-screen-md'>
-      test
+    <div>
+      <PublicChannelPage publicIdentifier={publicIdentifier} previewMode={false} />
     </div>
   );
 }

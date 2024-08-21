@@ -46,17 +46,17 @@ export default function QRCodeModal({address, chain, displayChain}) {
   return (
     <div>
       <div className={`${styles['qr-title']}`}>
-        {t('publicChannelPage.QRModalHeader')}
+        <h2>{t('publicChannelPage.QRModalHeader')}</h2>
           {displayChain.includes('BAT') ? (
-            <div className={`${styles['qr-subtitle']}`}>{t('publicChannelPage.QRBatText', {chain: t(`publicChannelPage.${chain}`)})}</div>
+            <div className={`${styles['qr-subtitle']} default-regular`}>{t('publicChannelPage.QRBatText', {chain: t(`publicChannelPage.${chain}`)})}</div>
           ) : (
-            <div className={`${styles['qr-subtitle']}`}>{t('publicChannelPage.QRStandardText', {chain})}</div>
+            <div className={`${styles['qr-subtitle']} default-regular`}>{t('publicChannelPage.QRStandardText', {chain})}</div>
           )}
       </div>
-      <div id="qr-wrapper" ref={ref} className={`text-center ${styles['crypto-option']}`}></div>
+      <div id="qr-wrapper" ref={ref} className={`text-center ${styles['qr-box']}`}></div>
       <div className={`${styles['qr-text']}`}>
         <div className={`${styles['qr-text-item']}`}>
-          <Icon name='smartphone-laptop' className="pr-3"/>
+          <Icon name='smartphone-laptop' className={`${styles['qr-text-icon']} pr-3 color-interactive`} />
         </div>
         <div className={`${styles['qr-text-item']}`}>
           {t('publicChannelPage.QRModalText')}

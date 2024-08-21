@@ -96,6 +96,14 @@ h4.mobile {
   font: var(--leo-font-small-regular);
 }
 
+.default-regular {
+  font: var(--leo-font-default-regular);
+}
+
+.large-regular {
+  font: var(--leo-font-large-regular);
+}
+
 .small-semibold {
   font: var(--leo-font-small-semibold);
 }

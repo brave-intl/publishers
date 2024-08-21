@@ -443,12 +443,12 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     return (
       <div className={`${styles['crypto-widget-wrapper']}`}>
         <div className={`${styles['heading-wrapper']}`}>
-          <div className={`${styles['widget-subheading']}`}>
+          <div className='default-regular'>
             {t("publicChannelPage.paymentSubHeading")}
           </div>
-          <div className={`${styles['widget-heading']}`}>
+          <h3 className={`${styles['widget-heading']}`}>
             {t("publicChannelPage.paymentHeading")}
-          </div>
+          </h3>
         </div>
         <div className={`${styles['payment-options']}`}>
           <Select
@@ -531,13 +531,13 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
               />
             </div>
             <div className="col-span-12 md:col-span-5 text-right align-top">
-              <div className={`${styles['large-currency-display']}`}>
+              <h2 className={`${styles['large-currency-display']}`}>
                 {toggle === 'crypto' ? (
                     <span>{roundCryptoPrice()} <span className={`${styles['currency']} align-middle`}>{displayChain}</span></span>
                   ) : (
                     <span>${currentAmount} <span className={`${styles['currency']} align-middle`}>USD</span></span>
                   )}
-              </div>
+              </h2>
               <div className={`${styles['small-currency-display']}`}>
                 {toggle === 'fiat' ? (
                     <span>{roundCryptoPrice()} {displayChain}</span>
@@ -582,6 +582,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
           isOpen={isModalOpen}
           showClose={true}
           onClose={() => setIsModalOpen(false)}
+          className={`${styles['qr-modal']}`}
         >
           <QRCodeModal
             address={addresses[baseChain()]}
@@ -593,6 +594,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
           isOpen={isTryBraveModalOpen}
           showClose={true}
           onClose={() => isTryBraveModalOpen(false)}
+          className={`${styles['try-brave-modal']}`}
         >
           <TryBraveModal />
         </Dialog>
