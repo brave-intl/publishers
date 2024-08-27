@@ -12,7 +12,7 @@ const Card: FC<Props> = ({ children, width, className, id }) => {
   return (
     <div
       className={clsx(
-        'shadow bg-container rounded px-2 md:px-4 pb-5 pt-4 transition-colors',
+        'shadow rounded bg-container px-2 pb-5 pt-4 transition-colors md:px-4',
         className,
       )}
       style={{ width: `${width}px` }}

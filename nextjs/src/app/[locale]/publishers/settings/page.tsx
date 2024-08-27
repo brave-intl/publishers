@@ -204,7 +204,9 @@ export default function SettingsPage() {
 
         <Card className='mb-3'>
           <div className='max-w-screen-md'>
-            <h2 className='mb-2'>{t('Settings.index.delete_account.heading')}</h2>
+            <h2 className='mb-2'>
+              {t('Settings.index.delete_account.heading')}
+            </h2>
             <div>{t('Settings.index.delete_account.warning')}</div>
             <Button
               className='mt-4'

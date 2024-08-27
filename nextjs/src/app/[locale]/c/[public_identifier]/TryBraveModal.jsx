@@ -13,7 +13,7 @@ export default function TryBraveModal() {
     <div className={`${styles['try-brave-background']}`}>
       <div className={`${styles['try-brave-header-section']}`}>
         <div className={`inline-block ${styles['try-brave-icon']}`}>
-          <img className={`${styles['try-brave-image']}`} src={wallet}/>
+          <img className={`${styles['try-brave-image']}`} src={wallet.src}/>
         </div>
         <div className='inline-block'>
           <div className={`${styles['try-brave-header']}`}>

@@ -11,26 +11,27 @@ import Card from '@/components/Card';
 import Container from '@/components/Container';
 import PublicChannelPage from '../../../c/[public_identifier]/PublicChannelPage'
 
-export default function Preview({channel}) {
+export default function Preview({ isOpen, channel}) {
   const t = useTranslations();
   const [isBannerFormat, setIsBannerFormat] = useState(true);
+  const [isRendered, setIsRendered] = useState(false)
   const title = channel.details.publication_title
   const social = t(`contribution_pages.channel_names.${channel.details_type.split('ChannelDetails').join('').toLowerCase()}`);
 
-  async function fetchChannelData() {
-    const channelId = channel.id;
-    console.log(channel)
-    
-  }
-
   useEffect(() => {
-    fetchChannelData();
-  }, []);
+    if (isOpen) {
+      // Render the modal content when opened
+      setIsRendered(true);
+    } else {
+      // Reset the render state when the modal is closed
+      setIsRendered(false);
+    }
+  }, [isOpen]);
 
-  return (
+  return isRendered ?  (
     <div className='mx-auto container py-4'>
       <h3 className='mb-4 pl-4'>{t('contribution_pages.preview_title', {social, title})}</h3>
       <PublicChannelPage publicIdentifier={channel.public_identifier} previewMode={true} />
     </div>
-  );
+  ) : null;
 }

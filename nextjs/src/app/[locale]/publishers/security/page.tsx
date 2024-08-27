@@ -114,7 +114,9 @@ export default function SecurityPage() {
             <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row '>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.totp.heading')}</h3>
-                <div className='md:order-2'>{t('security.index.totp.intro')}</div>
+                <div className='md:order-2'>
+                  {t('security.index.totp.intro')}
+                </div>
                 {!totp_enabled && (
                   <Alert type='info' className='mt-2'>
                     {t('security.index.totp.disabled_without_fallback_html')}
@@ -122,7 +124,7 @@ export default function SecurityPage() {
                 )}
                 {totp_enabled && (
                   <div className='mt-2'>
-                    <span className='text-green font-medium'>
+                    <span className='font-medium text-green'>
                       {t('security.index.totp.enabled')}
                     </span>
                     {' | '}
@@ -153,13 +155,15 @@ export default function SecurityPage() {
             <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.u2f.heading')}</h3>
-                <div className='md:order-2'>{t('security.index.u2f.intro')}</div>
+                <div className='md:order-2'>
+                  {t('security.index.u2f.intro')}
+                </div>
                 {!!security.u2f_registrations.length && (
                   <div className='mt-2'>
                     {security.u2f_registrations.map((item) => {
                       return (
                         <div key={item.id} className='mt-1'>
-                          <span className='text-green font-medium'>
+                          <span className='font-medium text-green'>
                             {`${item.name} `}
                           </span>
                           <span className='italic'>

@@ -5,22 +5,12 @@ import { useTranslations } from 'next-intl';
 import styles from '@/styles/PublicChannelPage.module.css';
 import Icon from '@brave/leo/react/icon';
 import qr_logo from "~/images/qr_logo.png";
+import QRCodeStyling from "qr-code-styling";
 
-export default function QRCodeModal({address, chain, displayChain}) {
-  const t = useTranslations();
-
-  useEffect(() => {
-    createQRCode();
-  }, []);
-
-  function createQRCode() {
-    if(typeof window !== 'undefined') {
-      import('qr-code-styling').then(( QRCodeStyling ) => {
-        const qrCode = QRCodeStyling({
+const qrCode = new QRCodeStyling({
           width: 270,
           height: 270,
-          data: address,
-          image: qr_logo,
+          image: qr_logo.src,
           dotsOptions: {
             color: "#000000",
             type: "dots"
@@ -37,10 +27,20 @@ export default function QRCodeModal({address, chain, displayChain}) {
           }
         });
 
-        qrCode.append(window.document.getElementById('qr-wrapper'));
-      });
+export default function QRCodeModal({address, chain, displayChain}) {
+  const t = useTranslations();
+
+  useEffect(() => {
+    if(typeof window !== 'undefined') {
+      qrCode.append(window.document.getElementById('qr-wrapper'));
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    qrCode.update({
+      data: address
+    });
+  }, [address]);
   
   return (
     <div>
