@@ -5,6 +5,12 @@ import * as buffer from "buffer";
 if (typeof window !== 'undefined') {
   window.Buffer = buffer.Buffer;
 }
+// one of the libraries that the QR code modal depends on references the dom, so
+// it needs to be loaded with ssr set to false
+import dynamic from 'next/dynamic';
+const QRCodeModal = dynamic(() => import('./QRCodeModal'), {
+  ssr: false
+});
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Web3 from "web3";
@@ -26,7 +32,6 @@ import Icon from '@brave/leo/react/icon';
 import Select, { components } from 'react-select';
 import Dialog from '@brave/leo/react/dialog';
 import Button from '@brave/leo/react/button';
-import QRCodeModal from "./QRCodeModal";
 import TryBraveModal from "./TryBraveModal";
 import CryptoPaymentOption from "./CryptoPaymentOption";
 import SuccessWidget from "./SuccessWidget";
