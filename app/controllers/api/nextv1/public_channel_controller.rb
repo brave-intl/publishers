@@ -1,4 +1,6 @@
 class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
+  skip_before_action :authenticate_publisher!
+
   def show
     channel = Channel.includes(:site_banner).find_by(public_identifier: params[:public_identifier])
     channel_title = channel&.publication_title

@@ -61,10 +61,6 @@
 .creator-title {
   margin-top: 2rem;
   margin-bottom: 2rem;
-
-  font-size: 2rem;
-  font-weight: 500;
-  color: #0D0F14;
 }
 
 .privacy-disclaimer {
@@ -80,23 +76,18 @@
   padding-right: 20px;
 }
 
+.qr-modal {
+  --leo-dialog-width: fit-content;
+  max-width: 500px;
+}
+
 .qr-title {
   padding-bottom: 50px;
-
-  font-family: poppins, sans-serif;
-  font-size: 1.75rem;
-  font-weight: 500;
-  color: #0D0F14;
 }
 
 .qr-sub-title {
   max-width: calc(100% - 50px);
   margin-bottom: -20px;
-
-  font-family: Inter, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: rgb(63 78 85 / 100%);
 }
 
 .qr-text {
@@ -115,13 +106,18 @@
   vertical-align: middle;
 }
 
-.qr-box {
-  canvas.test {
-    padding: 24px;
-    border: 1px solid rgb(219 222 226 / 100%);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px -1px rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
-  }
+.qr-text-icon {
+  --leo-icon-width: 40px;
+  --leo-icon-size: 40px;
+  --leo-icon-height: 40px;
+}
+
+.qr-box canvas {
+  margin: 0 auto;
+  padding: 24px;
+  border: 1px solid rgb(219 222 226 / 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px -1px rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
 }
 
 .qr-link {
@@ -129,7 +125,7 @@
   padding: 14px 20px;
 
   font-family: poppins, sans-serif;
-  font-size: 0.9em;
+  font-size: 1.1em;
   font-weight: 600;
   color: #3F39E8;
 
@@ -139,16 +135,6 @@
 
 .widget-heading {
   margin-top: 12px;
-
-  font-family: poppins, sans-serif;
-  font-size: 1.6em;
-  font-weight: 500;
-  color: #0D0F14;
-}
-
-.widget-sub-heading {
-  font-size: 0.9em;
-  font-weight: 400;
 }
 
 .heading-wrapper {
@@ -160,7 +146,7 @@
   width: 100%;
 
   font-family: poppins, sans-serif;
-  font-size: 0.9em;
+  font-size: 1.1em;
   font-weight: 600;
   color: #fff;
 
@@ -189,10 +175,6 @@
 }
 
 .large-currency-display {
-  font-size: 1.8em;
-  font-weight: 500;
-  line-height: 1.1em;
-
   .currency {
     font-family: Inter, sans-serif;
     font-size: 0.5em;
@@ -401,6 +383,13 @@
   color: #89001E;
 }
 
+.try-brave-modal {
+  --leo-dialog-width: 500px;
+  --leo-dialog-padding: 0px;
+
+  max-width: 500px;
+}
+
 .try-brave-background {
   padding: 15px;
   background-image: url('../../public/images/try_wallet_modal_gradient.png');
@@ -435,30 +424,6 @@
   }
 }
 
-.try-brave-header {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 28px;
-}
-
-.try-brave-sub-header {
-  font-family: Inter, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.1000px;
-}
-
-.try-brave-text {
-  padding-bottom: 18px;
-
-  font-family: Inter, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.1px;
-}
-
 .try-brave-bullet {
   padding-bottom: 20px;
   font-family: Inter, sans-serif;
@@ -477,7 +442,7 @@
 
   display: block;
 
-  width: 100%;
+  width: calc(100% - 50px );
   margin-top: 16px;
   padding: 14px 20px;
 
