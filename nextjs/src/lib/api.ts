@@ -6,9 +6,8 @@ export async function apiRequest(
   data?: unknown,
   apiVersion: string = 'v1',
 ) {
-
-  axios.defaults.xsrfCookieName = "CSRF-TOKEN";
-  axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+  axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
+  axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
   axios.defaults.withCredentials = true;
 
   try {
@@ -18,7 +17,10 @@ export async function apiRequest(
   } catch (err) {
     // all response codes that aren't 200s or 300s get sent here
     // Imperatively navigate to Unauthorized page on 403
-    if (err.response && err.response.status === 403 || err.response.status === 422) {
+    if (
+      (err.response && err.response.status === 403) ||
+      err.response.status === 422
+    ) {
       window.location.replace('/log-in');
     } else {
       console.log(err);

@@ -10,7 +10,8 @@ import Hr from '@brave/leo/react/hr';
 import Dialog from '@brave/leo/react/dialog';
 
 import { useTranslations } from 'next-intl';
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { apiRequest } from '@/lib/api';
@@ -19,6 +20,7 @@ import Card from '@/components/Card';
 import Container from '@/components/Container';
 import Toast from '@/components/Toast';
 import Preview from './preview/preview';
+import EmptyChannelCard from '../home/channels/EmptyChannelCard';
 import styles from '@/styles/ContributionBanner.module.css';
 
 export default function ContributionPage() {
@@ -32,11 +34,13 @@ export default function ContributionPage() {
   const [coverUrl, setCoverUrl] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [noChannels, setNoChannels] = useState(false);
 
-  const channelCategories = ['twitter', 'youtube', 'twitch', 'github', 'reddit', 'vimeo']
+  const channelCategories = ['twitter', 'youtube', 'twitch', 'github', 'reddit', 'vimeo'];
   const searchParams = useSearchParams();
-  const channelId = searchParams.get('channel')
+  const channelId = searchParams.get('channel');
   const t = useTranslations();
+  const router = useRouter();
 
   useEffect(() => {
     fetchChannelList();
@@ -45,7 +49,12 @@ export default function ContributionPage() {
   async function fetchChannelList() {
     const res = await apiRequest(`contribution_page`);
     setChannelList(res);
-    await fetchChannelData({value: channelId || res[0].id});
+    if (res.length > 0) {
+      await fetchChannelData({value: channelId || res[0].id});
+    } else {
+      setNoChannels(true);
+      setIsLoading(false);
+    }
   }
 
   async function fetchChannelData({value}) {
@@ -86,7 +95,6 @@ export default function ContributionPage() {
   async function updateAttribute(body) {
     setToastMessage(t('contribution_pages.saving_toast'))
     const res = await apiRequest(`contribution_page/${channel.id}`, 'PATCH', body);
-    console.log(res)
     setChannel(res);
     await updateChannelAttributes(res);
   }
@@ -137,7 +145,7 @@ export default function ContributionPage() {
     const noOptions = options.length === 0;
     
     return (
-      <div className={`${styles['social-link-wrapper']}`}>
+      <div className={`${styles['social-link-wrapper']}`} key={category}>
         <div className='small-semibold pl-0.5 inline'>{channelDisplay(category)}</div>
         {noOptions && (
           <Link className='small-semibold pl-0.5 inline' href={`/publishers/home?addChannelModal=true`}>{t('contribution_pages.add_account')}</Link>
@@ -149,22 +157,23 @@ export default function ContributionPage() {
           value={socialLinks[category] || undefined}
           onChange={({value}) => updateSocial(category, value)}
           className='w-full'
+          size='normal'
         >
           <div slot='left-icon'>
             {channelIconType(category, !(noOptions || !socialLinks[category]))}
           </div>
           <div slot='value'>
-            {socialLinks[category].replace('https://','')}
+            {socialLinks[category] && socialLinks[category].replace('https://','') || ''}
           </div>
           {options.map((opt) => {
             return(
               <leo-option key={opt.id} value={opt.details.url}>
-                <div>{opt.details.url.replace('https://','')}</div>
+                <div className='py-2'>{opt.details.url.replace('https://','')}</div>
               </leo-option>
             )
           })}
           <leo-option key={'clear'} value={''}>
-            <div>{t('contribution_pages.clear_social')}</div>
+            <div className='py-2'>{t('contribution_pages.clear_social')}</div>
           </leo-option>
         </Dropdown>
       </div>
@@ -184,7 +193,17 @@ export default function ContributionPage() {
           </div>
         </Container>
       </main>
-    )
+    );
+  } else if (noChannels) {
+    return (
+      <main className='main transition-colors'>
+        <Container>
+          <div className='mx-auto max-w-screen-lg'>
+            <EmptyChannelCard addChannel={() => router.push('/publishers/home?addChannelModal=true')}/>
+          </div>
+        </Container>
+      </main>
+    );
   } else {
     return (
       <main className='main transition-colors'>
@@ -322,7 +341,7 @@ export default function ContributionPage() {
           showClose={true}
           className={`${styles['preview-modal']}`}
         >
-          <Preview channel={channel}/>
+          <Preview channel={channel} isOpen={previewModalOpen} />
         </Dialog>
       </main>
     );

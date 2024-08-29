@@ -9,9 +9,7 @@ export function middleware(request) {
   const pathname = request.nextUrl.pathname;
   const locale = request.nextUrl.searchParams.get('locale');
   if (locale === 'ja') {
-    return NextResponse.redirect(
-      new URL(`/ja/${pathname}`, request.url),
-    );
+    return NextResponse.redirect(new URL(`/ja/${pathname}`, request.url));
   }
 
   // next-intl middleware

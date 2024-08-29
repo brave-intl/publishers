@@ -116,7 +116,7 @@ gem "redis-session-store"
 gem "render_async", "~> 2.1"
 
 # For ruby 3
-gem "rexml"
+gem "rexml", ">= 3.3.6"
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 2.2.0"
