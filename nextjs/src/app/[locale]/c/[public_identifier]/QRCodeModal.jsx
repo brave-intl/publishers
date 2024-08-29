@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import styles from '@/styles/PublicChannelPage.module.css';
 import Icon from '@brave/leo/react/icon';
@@ -29,10 +29,11 @@ const qrCode = new QRCodeStyling({
 
 export default function QRCodeModal({address, chain, displayChain}) {
   const t = useTranslations();
+  const ref = useRef(null);
 
   useEffect(() => {
     if(typeof window !== 'undefined') {
-      qrCode.append(window.document.getElementById('qr-wrapper'));
+      qrCode.append(ref.current);
     }
   }, []);
 
@@ -52,7 +53,7 @@ export default function QRCodeModal({address, chain, displayChain}) {
             <div className={`${styles['qr-subtitle']}`}>{t('publicChannelPage.QRStandardText', {chain})}</div>
           )}
       </div>
-      <div id="qr-wrapper" className={`text-center ${styles['crypto-option']}`}></div>
+      <div id="qr-wrapper" ref={ref} className={`text-center ${styles['crypto-option']}`}></div>
       <div className={`${styles['qr-text']}`}>
         <div className={`${styles['qr-text-item']}`}>
           <Icon name='smartphone-laptop' className="pr-3"/>
