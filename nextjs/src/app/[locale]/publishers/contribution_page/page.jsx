@@ -28,6 +28,7 @@ export default function ContributionPage() {
   const [channel, setChannel] = useState({});
   const [channelList, setChannelList] = useState([]);
   const [title, setTitle] = useState('');
+  const [publicIdentifier, setPublicIdentifier] = useState('');
   const [description, setDescription] = useState('');
   const [socialLinks, setSocialLinks] = useState({});
   const [logoUrl, setLogoUrl] = useState('');
@@ -39,11 +40,13 @@ export default function ContributionPage() {
   const channelCategories = ['twitter', 'youtube', 'twitch', 'github', 'reddit', 'vimeo'];
   const searchParams = useSearchParams();
   const channelId = searchParams.get('channel');
+  const [currentDomain, setCurrentDomain] = useState('');
   const t = useTranslations();
   const router = useRouter();
 
   useEffect(() => {
     fetchChannelList();
+    setCurrentDomain(window.location.origin)
   }, []);
 
   async function fetchChannelList() {
@@ -68,6 +71,7 @@ export default function ContributionPage() {
   async function updateChannelAttributes(channelData) {
     const bannerDetails = channelData.site_banner.read_only_react_property;
     setTitle(bannerDetails.title);
+    setPublicIdentifier(channelData.public_identifier);
     setDescription(bannerDetails.description);
     setSocialLinks(bannerDetails.socialLinks);
     setLogoUrl(bannerDetails.logoUrl);
@@ -82,13 +86,13 @@ export default function ContributionPage() {
     return t(`contribution_pages.channel_names.${type}`);
   }
 
-  function channelIconType(channelType, color = true) {
+  function channelIconType(channelType) {
     if (channelType === 'site') {
-      return <Icon className='color-interactive inline-block align-top' name='globe' forceColor={color}/>;
+      return <Icon className='color-interactive inline-block align-top' name='globe' forceColor={true}/>;
     } else if (channelType === 'twitter') {
-      return <Icon className='inline-block align-top' name='social-x' forceColor={color} />;
+      return <Icon className='inline-block align-top' name='social-x' forceColor={true} />;
     } else {
-      return <Icon className='inline-block align-top' name={`social-${channelType}`} forceColor={color} />;
+      return <Icon className='inline-block align-top' name={`social-${channelType}`} forceColor={true} />;
     }
   }
 
@@ -104,7 +108,9 @@ export default function ContributionPage() {
   }
 
   async function saveDescription(e) {
-    await updateAttribute({ description: e.target.value });
+    if (e.target.value !== description) {
+      await updateAttribute({ description: e.target.value });
+    }
   }
 
   async function updateSocial(category, value) {
@@ -135,9 +141,12 @@ export default function ContributionPage() {
   }
 
   async function deleteImage(type) {
-    const res  = await apiRequest(`contribution_page/${channel.id}/destroy_attachment`, 'DELETE', {[type]: true});
-    setChannel(res)
-    await updateChannelAttributes(res);
+    if((type === 'logo' && logoUrl.length) || (type === 'cover' && coverUrl.length)) {
+      setToastMessage(t('contribution_pages.saving_toast'))
+      const res = await apiRequest(`contribution_page/${channel.id}/destroy_attachment`, 'DELETE', {[type]: true});
+      setChannel(res)
+      await updateChannelAttributes(res);
+    }
   }
 
   function renderSocialLinks(category, socialLinks) {
@@ -151,7 +160,6 @@ export default function ContributionPage() {
           <Link className='small-semibold pl-0.5 inline' href={`/publishers/home?addChannelModal=true`}>{t('contribution_pages.add_account')}</Link>
         )}
         <Dropdown
-          key={category}
           placeholder={noOptions ? t('contribution_pages.add_account_msg', { social: channelDisplay(category) }) : t('contribution_pages.select_account')}
           disabled={noOptions}
           value={socialLinks[category] || undefined}
@@ -159,7 +167,7 @@ export default function ContributionPage() {
           className='w-full'
           size='normal'
         >
-          <div slot='left-icon'>
+          <div slot='left-icon' className={`${noOptions ? styles['social-link-icon'] : ''}`}>
             {channelIconType(category, !(noOptions || !socialLinks[category]))}
           </div>
           <div slot='value'>
@@ -168,12 +176,12 @@ export default function ContributionPage() {
           {options.map((opt) => {
             return(
               <leo-option key={opt.id} value={opt.details.url}>
-                <div className='py-2'>{opt.details.url.replace('https://','')}</div>
+                <div className='py-1'>{opt.details.url.replace('https://','')}</div>
               </leo-option>
             )
           })}
           <leo-option key={'clear'} value={''}>
-            <div className='py-2'>{t('contribution_pages.clear_social')}</div>
+            <div className='py-1'>{t('contribution_pages.clear_social')}</div>
           </leo-option>
         </Dropdown>
       </div>
@@ -241,16 +249,13 @@ export default function ContributionPage() {
               </Dropdown>
 
               <h2 className='pb-2'>{t('contribution_pages.channel_header')}</h2>
-             {/* <Dropdown
+              <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.sharable_url')}</div>
+              <Input
                 size='normal'
-                value={channel.details.public_name}
-                className='w-full md:w-1/2'
-                
-              >
-                <div slot="label">
-                  {t('contribution_pages.sharable_url')}
-                </div>
-              </Dropdown>*/}
+                value={`${currentDomain}/c/${publicIdentifier}`}
+                className='w-full md:w-1/2 inline-block pb-3'
+                disabled={true}
+              />
 
               <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.avatar_cover_image')}</div>
               <div className='hidden md:block relative mb-3'>
@@ -260,9 +265,9 @@ export default function ContributionPage() {
                     <Icon name='camera' />
                   </label>
                   <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp"  id='cover-upload' onChange={addCover}/>
-                  <Button fab className={`ml-1 ${styles['logo-upload-btn']}`} onClick={()=> deleteImage('cover')}>
+                  <div className={`ml-1 ${styles['logo-upload-btn']}`} onClick={()=> deleteImage('cover')}>
                     <Icon name='close' />
-                  </Button>
+                  </div>
                 </div>
                 <div className={`${styles['logo-upload-container']}`}>
                   <div style={{ '--logo-url': `url('${logoUrl}')` }} className={`${styles['logo-container']}`}></div>
@@ -271,19 +276,20 @@ export default function ContributionPage() {
                       <Icon name='camera' />
                     </label>
                     <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp"  id='logo-upload' onChange={addLogo}/>
-                    <Button fab className={`ml-1 ${styles['logo-upload-btn']}`} onClick={()=> deleteImage('logo')}>
+                    <div className={`ml-1 ${styles['logo-upload-btn']}`} onClick={()=> deleteImage('logo')}>
                       <Icon name='close' />
-                    </Button>
+                    </div>
                   </div>
                 </div>
               </div>
               
-              <div className='small-semibold pl-0.5'>{t('contribution_pages.channel_name')}</div>
+              <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.channel_name')}</div>
               <Input
                 value={title}
                 onChange={saveTitle}
+                className='w-full md:w-1/2 inline-block'
               />
-              <div className='small-semibold pl-0.5 mt-3'>{t('contribution_pages.bio')}</div>
+              <div className='small-semibold pb-0.5 pl-0.5 mt-3'>{t('contribution_pages.bio')}</div>
               <div className='flex mb-5'>
                 <textarea
                   name='description'

@@ -13,7 +13,6 @@
 
   color: var(--color);
 
-  background: var(--background);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -29,8 +28,8 @@
   width: 120px;
   height: 120px;
 
-  background-color: rgba(0 0 0/ 0%);
-  background-image: var(--logo-url);
+  background-color: rgba(255 255 255/ 80%);
+  background-image: var(--logo-url), url('../../public/images/user_avatar.svg');
   background-size: cover;
   border: var(--logo-url,6px) solid rgba(0 0 0/ 0%);
 	border-radius: 50%;
@@ -42,18 +41,16 @@
 	margin-right: 10px;
 
   background-color: rgba(0 0 0/ 0%);
-  background-image: var(--logo-url);
+  background-image: var(--logo-url), url('../../public/images/user_avatar.svg');
   background-size: cover;
-  border: var(--logo-url,6px) solid rgba(0 0 0/ 0%);
+  border: var(--logo-url,6px) solid rgba(0 0 0/ 80%);
 	border-radius: 50%;
 }
 
 .logo-upload-btn {
 	--leo-icon-width: 20px;
-	--bg: rgba(255 255 255/ 0%);
-	--mixed-primary-color: rgba(255 255 255/ 0%);
-	--leo-color-button-background: rgba(255 255 255/ 0%);
-	--padding-x: 5px;
+
+	cursor: pointer;
 
 	display: inline-block;
 
@@ -105,6 +102,10 @@
 
 .social-link-wrapper {
 	line-height: 0;
+}
+
+.social-link-icon {
+	filter: brightness(0.4) contrast(400%) grayscale(100%) opacity(0.5);
 }
 
 .preview-modal {

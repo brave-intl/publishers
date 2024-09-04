@@ -35,7 +35,7 @@ export default {
         '5': '40px',
       },
       boxShadow: {
-        shadow: 'var(--leo-effect-elevation-dark-01)',
+        shadow: 'var(--leo-effect-elevation-01)',
       },
       keyframes: {
         flicker: {

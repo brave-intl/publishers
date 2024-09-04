@@ -3,8 +3,8 @@
 }
 
 .footer {
-  background-color: black;
   padding: 40px 24px;
+  background-color: black;
 }
 
 .footer-link {
@@ -12,6 +12,6 @@
 }
 
 .footer-divider {
-  color: rgba(218 223 225/ 100%);
   padding: 0 4px;
+  color: rgba(218 223 225/ 100%);
 }

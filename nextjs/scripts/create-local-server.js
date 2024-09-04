@@ -22,7 +22,7 @@ const nextAllowPageRoutes = [
   'publishers/u2f_registrations/new',
   'publishers/home',
   'publishers/contribution_page',
-  'c/*'
+  '/c/*'
 ];
 const routeMatch = [
   nextAllowPageRoutes.map((r) => `ja/${r}`).join('|'),

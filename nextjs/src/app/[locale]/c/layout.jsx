@@ -13,10 +13,7 @@ export default function PublicChannelLayout({ children }) {
   const t = useTranslations();
 
   return (
-    <div>
-      <Head>
-        <title>test</title>
-      </Head>
+    <div className='flex flex-col h-screen'>
       <div className={`${styles['header']}`}>
         <div className='container mx-auto'>
           <Image
@@ -27,7 +24,9 @@ export default function PublicChannelLayout({ children }) {
           />
         </div>
       </div>
-      {children}
+      <div className='flex-grow'>
+        {children}
+      </div>
       <div className={`${styles['footer']} small-regular`}>
         <div className='container mx-auto flex justify-between'>
           <div className='flex'>
