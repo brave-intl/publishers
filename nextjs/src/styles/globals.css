@@ -10,7 +10,7 @@
 html {
   box-sizing: border-box;
   font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: var(--leo-typography-primary-default-regular-font-size);
+  font-size: var(--leo-typography-default-regular-font-size);
 
   -webkit-font-smoothing: antialiased;
 }
@@ -28,6 +28,8 @@ body {
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
   margin: 0;
   padding: 0;
+
+  -webkit-font-smoothing: antialiased;
 }
 
 ol, ul {
@@ -64,28 +66,12 @@ h4 {
 hr {
   @apply my-2;
 
-  margin-top: var(--leo-spacing-16);
-  margin-bottom: var(--leo-spacing-16);
+  margin-top: var(--leo-spacing-xl);
+  margin-bottom: var(--leo-spacing-xl);
 
   opacity: 0.4;
   border: 0;
   border-top: 1px solid var(--leo-color-text-primary);
-}
-
-h1.mobile {
-  font: var(--leo-font-mobile-heading-h1);
-}
-
-h2.mobile {
-  font: var(--leo-font-mobile-heading-h2);
-}
-
-h3.mobile {
-  font: var(--leo-font-mobile-heading-h3);
-}
-
-h4.mobile {
-  font: var(--leo-font-mobile-heading-h4);
 }
 
 .headings-display-2 {

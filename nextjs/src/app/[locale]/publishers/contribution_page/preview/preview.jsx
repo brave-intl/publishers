@@ -23,13 +23,13 @@ export default function Preview({ isOpen, channel}) {
       // Render the modal content when opened
       setIsRendered(true);
     } else {
-      // Reset the render state when the modal is closed
+      // Reset the render state when the modal is closed (to force the modal to show fresh data)
       setIsRendered(false);
     }
   }, [isOpen]);
 
   return isRendered ?  (
-    <div className='mx-auto container py-4'>
+    <div className='mx-auto w-full min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px] min-h-[880px] container py-4'>
       <h3 className='mb-4 pl-4'>{t('contribution_pages.preview_title', {social, title})}</h3>
       <PublicChannelPage publicIdentifier={channel.public_identifier} previewMode={true} />
     </div>

@@ -78,6 +78,7 @@
 
 .qr-modal {
   --leo-dialog-width: fit-content;
+
   max-width: 500px;
 }
 
@@ -115,6 +116,7 @@
 .qr-box canvas {
   margin: 0 auto;
   padding: 24px;
+
   border: 1px solid rgb(219 222 226 / 100%);
   border-radius: 8px;
   box-shadow: 0 4px 8px -1px rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);

@@ -7,22 +7,14 @@
   --leo-font-primary-heading-h2: var(--leo-font-heading-h2);
   --leo-font-primary-heading-h3: var(--leo-font-heading-h3);
   --leo-font-primary-heading-h4: var(--leo-font-heading-h4);
-  --leo-font-primary-large-regular: var(--leo-font-browser-large-regular);
-  --leo-font-primary-large-semibold: var(--leo-font-browser-large-semibold);
-  --leo-font-primary-default-regular: var(--leo-font-browser-default-regular);
-  --leo-font-primary-default-semibold: var(--leo-font-browser-default-semibold);
-  --leo-font-primary-small-regular: var(--leo-font-browser-small-regular);
-  --leo-font-primary-small-semibold: var(--leo-font-browser-small-semibold);
-  --leo-font-primary-x-small-regular: var(--leo-font-browser-x-small-regular);
-  --leo-font-primary-x-small-semibold: var(--leo-font-browser-x-small-semibold);
-  --leo-font-browser-x-small-semibold: 600 12px/14.4px 'Inter';
-  --leo-font-browser-x-small-regular: 400 12px/14.4px 'Inter';
-  --leo-font-browser-small-semibold: 600 13px/15.6px 'Inter';
-  --leo-font-browser-small-regular: 400 13px/15.6px 'Inter';
-  --leo-font-browser-default-semibold: 600 14px/16.8px 'Inter';
-  --leo-font-browser-default-regular: 400 14px/16.8px 'Inter';
-  --leo-font-browser-large-semibold: 600 16px/19.2px 'Inter';
-  --leo-font-browser-large-regular: 400 16px/19.2px 'Inter';
+  --leo-font-primary-large-regular: var(--leo-font-large-regular);
+  --leo-font-primary-large-semibold: var(--leo-font-large-semibold);
+  --leo-font-primary-default-regular: var(--leo-font-default-regular);
+  --leo-font-primary-default-semibold: var(--leo-font-default-semibold);
+  --leo-font-primary-small-regular: var(--leo-font-small-regular);
+  --leo-font-primary-small-semibold: var(--leo-font-small-semibold);
+  --leo-font-primary-x-small-regular: var(--leo-font-x-small-regular);
+  --leo-font-primary-x-small-semibold: var(--leo-font-x-small-semibold);
   --leo-font-x-small-link: 400 11px/18px 'Inter';
   --leo-font-x-small-semibold: 600 11px/18px 'Inter';
   --leo-font-x-small-regular: 400 11px/18px 'Inter';
@@ -68,11 +60,11 @@
 }
 
 [data-theme="dark"] {
-  --leo-color-text-primary: rgb(246 247 248);
+/*  --leo-color-text-primary: rgb(246 247 248); */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --leo-color-text-primary: rgb(246 247 248);
+/*    --leo-color-text-primary: rgb(246 247 248); */
   }
 }
