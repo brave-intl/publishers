@@ -12,7 +12,7 @@ import Dialog from '@brave/leo/react/dialog';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { apiRequest } from '@/lib/api';
 
@@ -36,6 +36,8 @@ export default function ContributionPage() {
   const [toastMessage, setToastMessage] = useState('');
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [noChannels, setNoChannels] = useState(false);
+  const logoInputRef = useRef(null);
+  const coverInputRef = useRef(null);
 
   const channelCategories = ['twitter', 'youtube', 'twitch', 'github', 'reddit', 'vimeo'];
   const searchParams = useSearchParams();
@@ -135,10 +137,18 @@ export default function ContributionPage() {
     await updateAttribute({logo: logoData});
   }
 
+  const triggerLogoInput = () => {
+    logoInputRef.current.click();  // Trigger the hidden file input on mobile
+  };
+
   async function addCover(e) {
     const coverData = await readData(event.target)
     await updateAttribute({cover: coverData});
   }
+
+  const triggerCoverInput = () => {
+    coverInputRef.current.click();
+  };
 
   async function deleteImage(type) {
     if((type === 'logo' && logoUrl.length) || (type === 'cover' && coverUrl.length)) {
@@ -164,7 +174,7 @@ export default function ContributionPage() {
           disabled={noOptions}
           value={socialLinks[category] || undefined}
           onChange={({value}) => updateSocial(category, value)}
-          className='w-full'
+          className='w-full mt-1'
           size='normal'
         >
           <div slot='left-icon' className={`${noOptions ? styles['social-link-icon'] : ''}`}>
@@ -180,9 +190,11 @@ export default function ContributionPage() {
               </leo-option>
             )
           })}
-          <leo-option key={'clear'} value={''}>
-            <div className='py-1'>{t('contribution_pages.clear_social')}</div>
-          </leo-option>
+          {socialLinks[category] && (
+            <leo-option key={'clear'} value={''}>
+              <div className='py-1'>{t('contribution_pages.clear_social')}</div>
+            </leo-option>
+          )}
         </Dropdown>
       </div>
     )
@@ -302,29 +314,25 @@ export default function ContributionPage() {
 
               <div className="md:hidden">
                 <div className='small-semibold pl-0.5 mt-3 pb-0.5'>{t('contribution_pages.profile')}</div>
-                <div className='flex justify-start items-center'>
+                <div className='flex justify-normal justify-items-start items-center'>
                   <div style={{ '--logo-url': `url('${logoUrl}')` }} className={`${styles['logo-container-mobile']}`}></div>
-                  <label htmlFor='logo-upload' className={``}>
-                    <Button kind='outline'>{t('shared.change')}</Button>
-                  </label>
-                  <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp"  id='logo-upload' onChange={addLogo}/>
-                  <Button kind='plain-faint' className={`ml-1`} onClick={()=> deleteImage('logo')}>
+                  <Button kind='outline' className='grow-0' onClick={triggerLogoInput}>{t('shared.change')}</Button>
+                  <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp" ref={logoInputRef} onChange={addLogo}/>
+                  <Button kind='plain-faint' className={`ml-1 grow-0`} onClick={()=> deleteImage('logo')}>
                     {t('shared.remove')}
                   </Button>
                 </div>
                 <div className='small-semibold pl-0.5 mt-3 pb-0.5'>{t('contribution_pages.cover')}</div>
                 <div style={{ '--cover-url': `url('${coverUrl}')` }} className={`${styles['cover-container-mobile']}`}></div>
-                <label htmlFor='cover-upload' className={``}>
-                 <Button kind='outline'>{t('shared.change')}</Button>
-                </label>
-                <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp"  id='cover-upload' onChange={addCover}/>
+                <Button onClick={triggerCoverInput} kind='outline'>{t('shared.change')}</Button>
+                <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp" ref={coverInputRef} onChange={addCover}/>
                 <Button kind='plain-faint' className={`ml-1`} onClick={()=> deleteImage('cover')}>
                   {t('shared.remove')}
                 </Button>
               </div>
 
               <h2 className='pt-5 mb-3'>{t('contribution_pages.show_social_links')}</h2>
-              <div className='grid grid-cols-1 lg:grid-cols-2 gap-2'>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 items-start'>
                 {channelCategories.map((category) => renderSocialLinks(category, socialLinks))}
               </div>
               <div className='py-3 color-tertiary'>
