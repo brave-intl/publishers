@@ -3,6 +3,7 @@
 import Icon from '@brave/leo/react/icon';
 import axios from 'axios';
 import { useTranslations } from 'next-intl';
+
 import styles from '@/styles/ChannelCard.module.css';
 
 export default function AddChannelModal() {
@@ -14,8 +15,8 @@ export default function AddChannelModal() {
   }
 
   async function addChannel(channel) {
-    axios.defaults.xsrfCookieName = "CSRF-TOKEN";
-    axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+    axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
+    axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
     axios.defaults.withCredentials = true;
 
     if (channel === 'website') {
@@ -39,17 +40,24 @@ export default function AddChannelModal() {
     <div>
       <h3 className='pb-5'>{t('Home.channels.add_channel')}</h3>
       <p className='pb-2'>{t('Home.channels.add_channel_prompt')}</p>
-      <section className='grid md:grid-cols-3 gap-2'>
+      <section className='grid gap-2 md:grid-cols-3'>
         {channels.map(function (channel) {
           return (
-            <div className={`text-center ${styles['add-channel-card']}`} key={channel} onClick={() => addChannel(channel)}>
+            <div
+              id={`add-${channel}`}
+              className={`text-center ${styles['add-channel-card']}`}
+              key={channel}
+              onClick={() => addChannel(channel)}
+            >
               <Icon
                 className='mx-auto mb-2 inline-block'
                 forceColor={true}
                 name={channel === 'website' ? 'globe' : `social-${channel}`}
               />
               <h4 className='pb-1'>{capitalizeFirstLetter(channel)}</h4>
-              <p className='color-tertiary small-regular'>{t(`Home.channels.${channel}_prompt`)}</p>
+              <p className='color-tertiary small-regular'>
+                {t(`Home.channels.${channel}_prompt`)}
+              </p>
             </div>
           );
         })}

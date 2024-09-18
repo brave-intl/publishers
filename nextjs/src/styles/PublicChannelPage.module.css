@@ -1,0 +1,464 @@
+.public-channel-container {
+  font-family: poppins, sans-serif;
+}
+
+.logo {
+  width: 160px;
+  height: 160px;
+
+  background-color: rgba(0 0 0/ 0%);
+  background-image: var(--logo-url);
+  background-size: cover;
+  border: var(--logo-url,6px) solid rgba(0 0 0/ 0%);
+  border-radius: 50%;
+}
+
+.cover {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+
+  width: 100%;
+  height: 234px;
+
+  background-image: var(--cover-url), url('../../public/images/default_banner_bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.image-container {
+  position: relative;
+  min-height: 117px;
+}
+
+.description-container {
+  z-index: 100;
+  margin-bottom: 2rem;
+  font-family: Inter, sans-serif;
+}
+
+.crypto-payment-container {
+  z-index: 100;
+  text-align: center;
+}
+
+.crypto-widget-wrapper {
+  width: 520px;
+  margin: 0 auto;
+  padding: 32px 16px;
+
+  background-image: url('../../public/images/crypto_widget_bg.png');
+  background-size: cover;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
+}
+
+.creator-description {
+  margin-bottom: 2rem;
+  color: #3F4855;
+}
+
+.creator-title {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.privacy-disclaimer {
+  margin: 1rem;
+
+  font-family: Inter, sans-serif;
+  font-size: .8rem;
+  color: #3F4855;
+  text-align: center;
+}
+
+.social-link {
+  padding-right: 20px;
+}
+
+.qr-modal {
+  --leo-dialog-width: fit-content;
+
+  max-width: 500px;
+}
+
+.qr-title {
+  padding-bottom: 50px;
+}
+
+.qr-sub-title {
+  max-width: calc(100% - 50px);
+  margin-bottom: -20px;
+}
+
+.qr-text {
+  max-width: calc(100% - 65px);
+  padding-top: 50px;
+
+  font-family: Inter, sans-serif;
+  font-size: 0.9rem;
+  color: rgb(63 78 85 / 100%);
+  white-space: nowrap;
+}
+
+.qr-text-item {
+  display: inline-block;
+  white-space: normal;
+  vertical-align: middle;
+}
+
+.qr-text-icon {
+  --leo-icon-width: 40px;
+  --leo-icon-size: 40px;
+  --leo-icon-height: 40px;
+}
+
+.qr-box canvas {
+  margin: 0 auto;
+  padding: 24px;
+
+  border: 1px solid rgb(219 222 226 / 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px -1px rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
+}
+
+.qr-link {
+  width: 100%;
+  padding: 14px 20px;
+
+  font-family: poppins, sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #3F39E8;
+
+  background: none;
+  border: none;
+}
+
+.widget-heading {
+  margin-top: 12px;
+}
+
+.heading-wrapper {
+  padding: 10px 150px 40px 16px;
+  text-align: left;
+}
+
+.send-button {
+  width: 100%;
+
+  font-family: poppins, sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #fff;
+
+  border: none;
+  border-radius: 26px;
+
+  &:disabled {
+    background: rgb(63 57 232 / 50%);
+  }
+}
+
+.payment-buttons {
+  padding: 24px 16px;
+}
+
+.payment-options {
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.small-currency-display {
+  display: inline-block;
+  font-family: Inter, sans-serif;
+  color: #3F4855;
+}
+
+.large-currency-display {
+  .currency {
+    font-family: Inter, sans-serif;
+    font-size: 0.5em;
+  }
+}
+
+.exchange-icon {
+  display: inline-block;
+
+  width: 14px;
+  height: 14px;
+  margin-left: 5px;
+
+  color: #3F4855;
+
+  background-image: url('../../public/images/exchange.svg');
+  background-repeat: no-repeat;
+  background-size: 14px;
+}
+
+.value-icon-image {
+  --leo-icon-size: 40px;
+
+  display: inline-block;
+  margin-top: 3px;
+  vertical-align: top;
+}
+
+.crypto-option {
+  margin: 4px;
+  padding: 16px;
+
+  font-weight: 600;
+  text-align: left;
+
+  border-radius: 4px;
+
+  .icon-image {
+    --leo-icon-size: 32px;
+
+    display: inline-block;
+    margin-top: 3px;
+    margin-right: 16px;
+    vertical-align: top;
+  }
+
+  &:hover {
+    background-color: rgb(233 238 255 / 100%);
+  }
+}
+
+.crypto-option-text {
+  display: inline-block;
+  font-size: 14px;
+}
+
+.crypto-option-subheading {
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.amount-button {
+  padding: 12px 16px;
+
+  font-size: 13px;
+  color: rgb(63 72 85);
+
+  background-color: #FFF;
+  border: 1px solid #A1ABBA;
+
+  &.selected {
+    background-color: #EDEEF1;
+  }
+
+  &:first-of-type {
+    border-right: none;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  &:nth-of-type(2) {
+    border-right: none;
+  }
+}
+
+.amount-input {
+  width: 86px;
+  padding: 12px 16px;
+
+  font-size: 13px;
+  color: rgb(63 72 85);
+
+  border: 1px solid #A1ABBA;
+  border-left: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button { 
+    margin: 0;
+    appearance: none;
+  }
+
+  &::placeholder {
+    color: #3F4855;
+  }
+
+  &:not(:placeholder-shown) {
+    background-image: url('../../public/images/dollar_sign.svg');
+    background-repeat: no-repeat;
+    background-position: 8px center;
+    background-size: 6.8px;
+  }
+}
+
+.success-wrapper {
+  width: 520px;
+  height: 542px;
+  margin: 0 auto;
+  padding: 32px 16px;
+
+  background-image: url('../../public/images/crypto_widget_success.png');
+  background-size: cover;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
+}
+
+.success-message-wrapper {
+  padding: 205px 50px 50px;
+}
+
+.success-thank {
+  padding-top: 10px;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #3F39E8;
+}
+
+.success-amount {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  color: #2ABA32;
+}
+
+.share-button {
+  cursor: pointer;
+
+  display: block;
+
+  width: 100%;
+  padding: 14px 20px;
+
+  font-family: poppins, sans-serif;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #fff;
+
+  background: rgb(63 57 232 / 100%);
+  border-radius: 26px;
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.error-section {
+  width: 100%;
+  margin: 0 8px 8px;
+  padding: 24px;
+
+  text-align: left;
+
+  background-color: #FFE8E7;
+  border-radius: 8px;
+}
+
+.error-icon {
+  display: inline-block;
+  vertical-align: top;
+
+  img.error-image {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.error-text {
+  display: inline-block;
+  padding-left: 18px;
+}
+
+.error-title {
+  margin-bottom: 5px;
+
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #89001E;
+}
+
+.error-message {
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  color: #89001E;
+}
+
+.try-brave-modal {
+  --leo-dialog-width: 500px;
+  --leo-dialog-padding: 0px;
+
+  max-width: 500px;
+}
+
+.try-brave-background {
+  padding: 15px;
+  background-image: url('../../public/images/try_wallet_modal_gradient.png');
+  background-size: cover;
+  border-radius: 16px;
+
+  @media only screen and (width >= 768px) {
+    padding: 50px;
+  }
+}
+
+.try-brave-header-section {
+  padding-bottom: 18px;
+  text-align: left;
+}
+
+.try-brave-icon {
+  width: 48px;
+  margin-right: 16px;
+  padding: 9px;
+
+  vertical-align: text-bottom;
+
+  background-color: white;
+  border: 1px solid rgb(161 171 186 / 40%);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 7%);
+
+  img.try-brave-image {
+    max-width:100%;
+    max-height:100%;
+  }
+}
+
+.try-brave-bullet {
+  padding-bottom: 20px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+
+  img.bullet-image {
+    max-height: 14px;
+    padding-right: 16px;
+    vertical-align: text-top;
+  }
+}
+
+.try-brave-button {
+  cursor: pointer;
+
+  display: block;
+
+  width: calc(100% - 50px );
+  margin-top: 16px;
+  padding: 14px 20px;
+
+  font-family: poppins, sans-serif;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+
+  background: linear-gradient(174.36deg, #F50 2.32%, #F5002D 93.33%);
+  border-radius: 26px;
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}

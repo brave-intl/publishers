@@ -5,16 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .border-primary {
-    @apply border border-gray-20
-  }
-}
+
 
 html {
   box-sizing: border-box;
   font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: var(--leo-typography-primary-default-regular-font-size);
+  font-size: var(--leo-typography-default-regular-font-size);
 
   -webkit-font-smoothing: antialiased;
 }
@@ -24,14 +20,16 @@ html {
 }
 
 body {
+  font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   background: var(--leo-color-container-background);
-  font: var(--leo-font-default-regular);
 }
 
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
   margin: 0;
   padding: 0;
+
+  -webkit-font-smoothing: antialiased;
 }
 
 ol, ul {
@@ -68,32 +66,28 @@ h4 {
 hr {
   @apply my-2;
 
-  margin-top: var(--leo-spacing-16);
-  margin-bottom: var(--leo-spacing-16);
+  margin-top: var(--leo-spacing-xl);
+  margin-bottom: var(--leo-spacing-xl);
 
   opacity: 0.4;
   border: 0;
   border-top: 1px solid var(--leo-color-text-primary);
 }
 
-h1.mobile {
-  font: var(--leo-font-mobile-heading-h1);
-}
-
-h2.mobile {
-  font: var(--leo-font-mobile-heading-h2);
-}
-
-h3.mobile {
-  font: var(--leo-font-mobile-heading-h3);
-}
-
-h4.mobile {
-  font: var(--leo-font-mobile-heading-h4);
+.headings-display-2 {
+  font: var(--leo-font-heading-display2);
 }
 
 .small-regular {
   font: var(--leo-font-small-regular);
+}
+
+.default-regular {
+  font: var(--leo-font-default-regular);
+}
+
+.large-regular {
+  font: var(--leo-font-large-regular);
 }
 
 .small-semibold {
@@ -116,37 +110,40 @@ h4.mobile {
   color: var(--leo-color-divider-subtle);
 }
 
+
 .label-component {
-  color: var(--leo-color-text-secondary);
-  line-height: var(--leo-typography-components-label-line-height);
-  letter-spacing: var(--leo-typography-components-label-letter-spacing);
-  font-weight: var(--leo-typography-components-label-font-weight);
   font-size: var(--leo-typography-components-label-font-size);
+  font-weight: var(--leo-typography-components-label-font-weight);
+  line-height: var(--leo-typography-components-label-line-height);
+  color: var(--leo-color-text-secondary);
+  letter-spacing: var(--leo-typography-components-label-letter-spacing);
 }
 
 .info-text {
+  padding: var(--leo-spacing-xl);
   color: var(--leo-color-systemfeedback-info-text);
   background-color: var(--leo-color-systemfeedback-info-background);
   border-radius: var(--leo-radius-m);
-  padding: var(--leo-spacing-xl);
 }
 
 .error-pill {
+  padding: var(--leo-spacing-s);
+
+  font-size: var(--leo-typography-components-label-font-size);
+  font-weight: var(--leo-typography-components-label-font-weight);
+  line-height: var(--leo-typography-components-label-line-height);
+  color: var(--leo-color-white);
+  letter-spacing: var(--leo-typography-components-label-letter-spacing);
+
   background-color: var(--leo-color-red-40);
   border-radius: var(--leo-radius-s);
-  line-height: var(--leo-typography-components-label-line-height);
-  letter-spacing: var(--leo-typography-components-label-letter-spacing);
-  font-weight: var(--leo-typography-components-label-font-weight);
-  font-size: var(--leo-typography-components-label-font-size);
-  color: var(--leo-color-white);
-  padding: var(--leo-spacing-s);
 }
 
 .error-text {
-  background-color: var(--leo-color-systemfeedback-error-background);
-  color: var(--leo-color-systemfeedback-error-icon);
-  border-radius: var(--leo-radius-m);
   padding: var(--leo-spacing-2xl);
+  color: var(--leo-color-systemfeedback-error-icon);
+  background-color: var(--leo-color-systemfeedback-error-background);
+  border-radius: var(--leo-radius-m);
 }
 
 [slot='errors'] {
@@ -164,22 +161,29 @@ h4.mobile {
   display: flex;
   justify-content: center;
 
+  width: 100%;
   height: 100%;
   min-height: calc(100vh - 80px);
-
-  width: 100%;
 }
 
 .content-background {
-  background: var(--leo-color-page-background);
-  padding: var(--leo-spacing-4xl);
   width: 100%;
+  padding: var(--leo-spacing-4xl);
+  background: var(--leo-color-page-background);
   border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
 }
 
 @media (width <= 768px) {
   .content-background, .main {
     padding: 5px;
+    background: var(--leo-color-container-background);
+  }
+}
+
+@media (width <= 468px) {
+  .content-background, .main {
+    margin:0;
+    padding: 0;
     background: var(--leo-color-container-background);
   }
 }

@@ -4,12 +4,12 @@ import Button from '@brave/leo/react/button';
 import Hr from '@brave/leo/react/hr';
 import Icon from '@brave/leo/react/icon';
 import { useTranslations } from 'next-intl';
-import { useContext,useEffect,useState } from 'react';
+
+import styles from '@/styles/ChannelCard.module.css';
 
 import { apiRequest } from '@/lib/api';
 
 import Card from '@/components/Card';
-import styles from '@/styles/ChannelCard.module.css';
 
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
@@ -37,11 +37,28 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
 
   function channelIconType() {
     if (channelType() === 'site') {
-      return <Icon className={`color-interactive ${styles['channel-card-icon']}`} name='globe' />;
+      return (
+        <Icon
+          className={`color-interactive ${styles['channel-card-icon']}`}
+          name='globe'
+        />
+      );
     } else if (channelType() === 'twitter') {
-      return <Icon className={`${styles['channel-card-icon']}`} name='social-x' forceColor={true} />;
+      return (
+        <Icon
+          className={`${styles['channel-card-icon']}`}
+          name='social-x'
+          forceColor={true}
+        />
+      );
     } else {
-      return <Icon className={`${styles['channel-card-icon']}`} name={`social-${channelType()}`} forceColor={true} />;
+      return (
+        <Icon
+          className={`${styles['channel-card-icon']}`}
+          name={`social-${channelType()}`}
+          forceColor={true}
+        />
+      );
     }
   }
 
@@ -53,9 +70,14 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
     if (channel.verified) {
       return (
         <div className='flex items-center'>
-          <span className='pr-0.5 small-regular'>{t('Home.channels.verified')}</span>
+          <span className='small-regular pr-0.5'>
+            {t('Home.channels.verified')}
+          </span>
           <span className='inline-block'>
-            <Icon className={`${styles['channel-verification-icon']}`} name='verification-filled-color' />
+            <Icon
+              className={`${styles['channel-verification-icon']}`}
+              name='verification-filled-color'
+            />
           </span>
         </div>
       );
@@ -64,9 +86,14 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
     } else {
       return (
         <div className='flex items-center'>
-          <span className='pr-0.5 small-regular'>{t('Home.channels.not_verified')}</span>
+          <span className='small-regular pr-0.5'>
+            {t('Home.channels.not_verified')}
+          </span>
           <span className='inline-block'>
-            <Icon className={`color-tertiary ${styles['channel-verification-icon']}`} name='verification-filled-off' />
+            <Icon
+              className={`color-tertiary ${styles['channel-verification-icon']}`}
+              name='verification-filled-off'
+            />
           </span>
         </div>
       );
@@ -74,7 +101,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
   }
 
   return (
-    <Card>
+    <Card id={channel.id}>
       <section className='flex justify-between pb-1'>
         <div className='flex items-center'>
           <span className='inline-block'>{channelIconType()}</span>
@@ -82,7 +109,9 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
         </div>
         <div>{displayVerified()}</div>
       </section>
-      <h3 className='pb-3 break-words'>{channel.details.publication_title || defaultName}</h3>
+      <h3 className='break-words pb-3'>
+        {channel.details.publication_title || defaultName}
+      </h3>
       <section className='pb-1'>
         {isUnverifiedChannel() ? (
           <div className='error-text mt-3'>
@@ -94,11 +123,21 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
         )}
       </section>
       <Hr />
-      <section className='pt-2 text-right self-end'>
-        <Button className='color-secondary mr-0.5' kind='plain-faint' onClick={removeChannel}>
+      <section className='self-end pt-2 text-right'>
+        <Button
+          id={`channel_row_delete_button_${channel.id}`}
+          className='color-secondary mr-0.5'
+          kind='plain-faint'
+          onClick={removeChannel}
+        >
           {t('shared.remove')}
         </Button>
-        <Button href={`/publishers/${publisherId}/site_banners/new`} kind='outline'>{t('shared.customize')}</Button>
+        <Button
+          href={`/publishers/contribution_page?channel=${channel.id}`}
+          kind='outline'
+        >
+          {t('shared.customize')}
+        </Button>
       </section>
     </Card>
   );

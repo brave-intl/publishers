@@ -31,7 +31,7 @@ gem "activerecord-postgres_enum"
 # Use AWS gem for s3 uploads
 gem "aws-sdk-s3", "~> 1.143.0"
 
-gem "bootstrap", "4.6.2"
+gem "bootstrap", "5.3.3"
 
 gem "brotli", "~> 0.5.0"
 
@@ -116,7 +116,7 @@ gem "redis-session-store"
 gem "render_async", "~> 2.1"
 
 # For ruby 3
-gem "rexml"
+gem "rexml", ">= 3.3.6"
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 2.2.0"

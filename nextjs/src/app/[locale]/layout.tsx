@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 // import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import {unstable_setRequestLocale} from 'next-intl/server';
+import { unstable_setRequestLocale } from 'next-intl/server';
 import * as React from 'react';
 import '@fontsource/poppins';
 import '@fontsource/inter';
@@ -61,7 +61,7 @@ export default async function RootLayout({
   }
 
   unstable_setRequestLocale(locale);
-  
+
   return (
     <html>
       <body>

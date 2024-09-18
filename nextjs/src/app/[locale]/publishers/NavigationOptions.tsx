@@ -4,6 +4,7 @@ import NavigationItem from '@brave/leo/react/navigationItem';
 import NavigationMenu from '@brave/leo/react/navigationMenu';
 import { useTranslations } from 'next-intl';
 import { useContext, useEffect, useState } from 'react';
+
 import UserContext from '@/lib/context/UserContext';
 
 export default function NavigationOptions() {
@@ -26,8 +27,8 @@ export default function NavigationOptions() {
       </NavigationItem>
       <NavigationItem
         icon='window-settings'
-        href={`/publishers/${user.id}/site_banners/new`}
-        isCurrent={route.includes(`/publishers/${user.id}/site_banners/new`)}
+        href='/publishers/contribution_page'
+        isCurrent={route.includes(`/publishers/contribution_page`)}
       >
         {t('NavDropdown.contribution_banners')}
       </NavigationItem>

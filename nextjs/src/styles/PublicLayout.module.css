@@ -1,0 +1,17 @@
+.header {
+  padding: 13px 26px;
+}
+
+.footer {
+  padding: 40px 24px;
+  background-color: black;
+}
+
+.footer-link {
+  color: rgba(218 223 225/ 100%);
+}
+
+.footer-divider {
+  padding: 0 4px;
+  color: rgba(218 223 225/ 100%);
+}

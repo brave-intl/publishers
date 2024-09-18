@@ -1,16 +1,18 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
-import { useTranslations } from 'next-intl';
-import Card from '@/components/Card';
-import Graphic from '~/images/channels_graphic.png';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
-export default function EmptyChannelCard({ setIsAddChannelModalOpen }) {
+import Card from '@/components/Card';
+
+import Graphic from '~/images/channels_graphic.png';
+
+export default function EmptyChannelCard({ addChannel }) {
   const t = useTranslations();
 
   return (
-    <Card className='text-center max-w-[364px]'>
+    <Card className='max-w-[364px] text-center'>
       <Image
         src={Graphic}
         alt='Channel Options'
@@ -18,9 +20,11 @@ export default function EmptyChannelCard({ setIsAddChannelModalOpen }) {
         width={148}
         className='mx-auto'
       />
-      <h3 className='pt-3 pb-1'>{t('Home.channels.add_channel_title')}</h3>
+      <h3 className='pb-1 pt-3'>{t('Home.channels.add_channel_title')}</h3>
       <p>{t('Home.channels.add_channel_prompt')}</p>
-      <Button onClick={()=>setIsAddChannelModalOpen(true)} className='mt-3'>{t('Home.channels.add_first_channel')}</Button>
+      <Button onClick={() => addChannel(true)} className='mt-3'>
+        {t('Home.channels.add_first_channel')}
+      </Button>
     </Card>
   );
 }

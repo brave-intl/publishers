@@ -16,10 +16,10 @@ require "test_helpers/mock_gemini_responses"
 require "test_helpers/mock_oauth2_responses"
 require "test_helpers/mock_bitflyer_responses"
 require "test_helpers/mock_rewards_responses"
-require "capybara/rails"
-require "capybara/minitest"
+require "test_helpers/sign_in_helpers"
 require "minitest/rails"
 require "minitest/retry"
+
 if ENV["USE_MINITEST_RETRY"]
   Minitest::Retry.use!(
     retry_count: 3, # The number of times to retry. The default is 3.
@@ -33,33 +33,6 @@ Shakapacker.compile
 Sidekiq::Testing.fake!
 WebMock.allow_net_connect!
 
-Capybara.register_driver :firefox do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
-  opts.args << "--headless"
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :firefox,
-    options: opts
-  )
-end
-
-Capybara.register_driver :firefox_ja do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile["intl.accept_languages"] = "ja-JP"
-  opts = Selenium::WebDriver::Firefox::Options.new(profile: profile)
-  opts.args << "--headless"
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :firefox,
-    options: opts
-  )
-end
-
-Capybara.register_driver :rack_test_jp do |app|
-  Capybara::RackTest::Driver.new(app, headers: {"HTTP_ACCEPT_LANGUAGE" => "ja-JP"})
-end
-Capybara.default_driver = :firefox
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
@@ -93,46 +66,6 @@ module ActiveSupport
         @once = true
       end
     end
-    # Add more helper methods to be used by all tests here...
-  end
-
-  # I'm creating an independent class because
-  # all of the other cases I've handled are just out of preserving
-  # existing specs. I don't think it is actually a good idea
-  # to blanketly stub requests in a test setup.
-end
-
-module Capybara
-  module Rails
-    class TestCase < ::ActiveSupport::TestCase
-      include ServiceClassHelpers
-      include MockUpholdResponses
-      include MockOauth2Responses
-      self.use_transactional_tests = false
-      # Make the Capybara DSL available in all integration tests
-      include Capybara::DSL
-      # Make `assert_*` methods behave like Minitest assertions
-      include Capybara::Minitest::Assertions
-      setup do
-        stub_get_user
-      end
-      teardown do
-        Capybara.reset_sessions!
-        Capybara.use_default_driver
-      end
-
-      def js_logs
-        page.driver.browser.manage.logs.get(:browser)
-      end
-
-      def wait_until
-        require "timeout"
-        Timeout.timeout(Capybara.default_max_wait_time) do
-          sleep(0.1) until (value = yield)
-          value
-        end
-      end
-    end
   end
 end
 
@@ -143,6 +76,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
+    include SignInHelpers
     include Devise::Test::IntegrationHelpers
     self.use_transactional_tests = true
     # We should not stub methods here,
@@ -167,6 +101,7 @@ module ActionDispatch
     include MockBitflyerResponses
     include MockGeminiResponses
     include MockOauth2Responses
+    include SignInHelpers
     self.use_transactional_tests = true
     setup do
       stub_get_user

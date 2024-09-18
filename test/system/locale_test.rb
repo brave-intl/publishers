@@ -1,8 +1,6 @@
-# typed: false
+require "application_system_test_case"
 
-require "test_helper"
-
-class LocaleTest < Capybara::Rails::TestCase
+class LocaleTest < ApplicationSystemTestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers

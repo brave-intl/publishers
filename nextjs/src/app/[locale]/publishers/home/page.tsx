@@ -4,6 +4,7 @@ import Button from '@brave/leo/react/button';
 import Dialog from '@brave/leo/react/dialog';
 import ProgressRing from '@brave/leo/react/progressRing';
 import * as moment from 'moment';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -25,8 +26,10 @@ export default function HomePage() {
   const [nextDepositDate, setNextDepositDate] = useState('');
   const [channels, setChannels] = useState([]);
   const [walletData, setWalletData] = useState({});
-  const [publisherId, setPublisherId] = useState('')
+  const [publisherId, setPublisherId] = useState('');
   const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const startWithModalOpen = searchParams.get('addChannelModal');
   const t = useTranslations();
 
   useEffect(() => {
@@ -41,60 +44,67 @@ export default function HomePage() {
         Math.round(wallet.wallet.last_settlement_balance.amount_bat) || 0,
       );
 
-      wallet.wallet.last_settlement_balance.timestamp ? (
-        setLastDepositDate(
-          moment
-            .unix(wallet.wallet.last_settlement_balance.timestamp)
-            .format('MMM D, YYYY - h:mm a'),
-        )
-      ) : (
-        setLastDepositDate('--')
-      )
+      wallet.wallet.last_settlement_balance.timestamp
+        ? setLastDepositDate(
+            moment
+              .unix(wallet.wallet.last_settlement_balance.timestamp)
+              .format('MMM D, YYYY - h:mm a'),
+          )
+        : setLastDepositDate('--');
     } else {
       setLastDeposit(0);
-      setLastDepositDate('--')
+      setLastDepositDate('--');
     }
 
-    setPublisherId(res.publisher.id)
+    setPublisherId(res.publisher.id);
 
     setWalletData(wallet);
     setNextDepositDate(wallet.next_deposit_date);
     setChannels(res.channels);
     setIsLoading(false);
+    if (startWithModalOpen) {
+      setIsAddChannelModalOpen(true);
+    }
   }
 
   function onChannelDelete(channelId) {
-    const newChannels = channels.filter( c => c.id !== channelId);
+    const newChannels = channels.filter((c) => c.id !== channelId);
     setChannels(newChannels);
   }
 
   if (isLoading) {
     return (
-      <div className="flex basis-full grow items-center justify-center">
+      <div className='flex grow basis-full items-center justify-center'>
         <ProgressRing />
       </div>
-    )
+    );
   } else {
     return (
       <main className='main transition-colors'>
         <Container>
           <div className='mx-auto max-w-screen-lg'>
             <h1 className='mb-3'>{t('Home.headings.account_details')}</h1>
-            <Card className='lg:flex lg:items-top'>
+            <Card className='lg:items-top lg:flex'>
               <section className='inline-block w-full lg:w-1/2'>
                 <h3 className='pb-3'>{t('Home.account.monthly_payouts')}</h3>
                 <section className='grid sm:grid-cols-2'>
-                  <div className='pb-0 sm:pb-2'>{t('Home.account.last_deposit')}</div>
+                  <div className='pb-0 sm:pb-2'>
+                    {t('Home.account.last_deposit')}
+                  </div>
                   <div className='pb-2 sm:pb-0'>
                     <strong>{lastDeposit} BAT</strong>
                   </div>
-                  <div className='pb-0 sm:pb-2'>{t('Home.account.last_deposit_date')}</div>
+                  <div className='pb-0 sm:pb-2'>
+                    {t('Home.account.last_deposit_date')}
+                  </div>
                   <div className='pb-2 sm:pb-0'>{lastDepositDate}</div>
-                  <div className='pb-0 sm:pb-2'>{t('Home.account.next_deposit_date')}</div>
+                  <div className='pb-0 sm:pb-2'>
+                    {t('Home.account.next_deposit_date')}
+                  </div>
                   <div className='pb-2 sm:pb-0'>{nextDepositDate}</div>
                 </section>
               </section>
-              <section className='inline-block w-full lg:w-1/2 pt-2 lg:pt-0'>
+              <section className='inline-block w-full pt-2 lg:w-1/2 lg:pt-0'>
                 <h3 className='pb-3'>{t('Home.account.custodial_accounts')}</h3>
                 <CustodianServiceWidget walletData={walletData} />
               </section>
@@ -103,7 +113,7 @@ export default function HomePage() {
             {channels.length ? (
               <>
                 <CryptoAddressProvider>
-                  <section className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+                  <section className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
                     {channels.map(function (channel) {
                       return (
                         <ChannelCard
@@ -116,13 +126,17 @@ export default function HomePage() {
                     })}
                   </section>
                 </CryptoAddressProvider>
-                <Button className='pt-3' onClick={() => setIsAddChannelModalOpen(true)}>
+                <Button
+                  id='add-channel'
+                  className='pt-3'
+                  onClick={() => setIsAddChannelModalOpen(true)}
+                >
                   {t('Home.channels.add_channel')}
                 </Button>
               </>
-              ) : (
-                <EmptyChannelCard setIsAddChannelModalOpen={setIsAddChannelModalOpen} />
-              )}
+            ) : (
+              <EmptyChannelCard addChannel={setIsAddChannelModalOpen} />
+            )}
           </div>
         </Container>
         <Dialog

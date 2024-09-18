@@ -79,12 +79,14 @@ class Publishers::SiteBannersController < ApplicationController
     end
 
     original_image_path = temp_file.path
+
     temp_file.rewind
     new_filename = generate_filename(source_image_path: original_image_path)
     {
       io: File.open(original_image_path),
-      filename: new_filename + extension + ".padded",
-      content_type: "image/#{extension}"
+      filename: new_filename + extension,
+      # remove period from beginning of extension type
+      content_type: "image/#{extension.tr(".", "")}"
     }
   end
 

@@ -4,6 +4,7 @@ import Button from '@brave/leo/react/button';
 import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Link from '@brave/leo/react/link';
+import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -89,13 +90,21 @@ export default function CustodianServiceWidget({ walletData }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  function providerIcon(provider) {
+    if (provider === 'gemini') {
+      return <Icon><Image src="/images/gemini-color.svg" width="24" height="24" /></Icon>;
+    } else {
+      return <Icon name={`${provider}-color`} />;
+    }
+  }
+
   function showConnected(provider) {
     return (
       <section className='grid xl:grid-cols-2'>
         <div className='xl:pb-2'>{t('Home.account.connected_account')}</div>
         <div className='pb-2 xl:pb-0 flex items-start'>
           <span className='inline-block'>
-            <Icon name={`${provider}-color`} />
+            {providerIcon(provider)}
           </span>
           <span className='px-1'>
             <strong>{t(`shared.${provider}`)}</strong>
@@ -180,7 +189,7 @@ export default function CustodianServiceWidget({ walletData }) {
               onClick={() => redirectToAuthUrl('gemini')}
               kind='outline'
             >
-              <Icon name="gemini-color" slot="icon-before" />
+              <Icon slot="icon-before"><Image src="/images/gemini-color.svg" width="24" height="24" /></Icon>
               {t('Home.account.gemini_connect')}
               <Icon name="launch" slot="icon-after" />
             </Button>

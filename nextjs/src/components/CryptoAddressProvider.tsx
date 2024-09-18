@@ -28,9 +28,9 @@ function reducer(state, action) {
 export const CryptoAddressContext = createContext({
   addressesInUse: [],
   currentResponseData: [],
-  addAddressInUse: ({}) => {},
-  removeAddressInUse: ({}) => {},
-  updateResponseData: ({}) => {},
+  addAddressInUse: () => {},
+  removeAddressInUse: () => {},
+  updateResponseData: () => {},
 });
 
 export default function CryptoAddressProvider({
