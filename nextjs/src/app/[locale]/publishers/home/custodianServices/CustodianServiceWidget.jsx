@@ -189,7 +189,7 @@ export default function CustodianServiceWidget({ walletData }) {
               onClick={() => redirectToAuthUrl('gemini')}
               kind='outline'
             >
-              <Icon name="gemini-color" slot="icon-before" />
+              <Icon slot="icon-before"><Image src="/images/gemini-color.svg" width="24" height="24" /></Icon>
               {t('Home.account.gemini_connect')}
               <Icon name="launch" slot="icon-after" />
             </Button>
