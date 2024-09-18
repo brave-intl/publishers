@@ -165,16 +165,18 @@ export default function ContributionPage() {
     
     return (
       <div className={`${styles['social-link-wrapper']}`} key={category}>
-        <div className='small-semibold pl-0.5 inline'>{channelDisplay(category)}</div>
-        {noOptions && (
-          <Link className='small-semibold pl-0.5 inline' href={`/publishers/home?addChannelModal=true`}>{t('contribution_pages.add_account')}</Link>
-        )}
+        <div>
+          <div className='small-semibold pl-0.5 inline'>{channelDisplay(category)}</div>
+          {noOptions && (
+            <Link className='small-semibold pl-0.5 inline' href={`/publishers/home?addChannelModal=true`}>{t('contribution_pages.add_account')}</Link>
+          )}
+        </div>
         <Dropdown
           placeholder={noOptions ? t('contribution_pages.add_account_msg', { social: channelDisplay(category) }) : t('contribution_pages.select_account')}
           disabled={noOptions}
           value={socialLinks[category] || undefined}
           onChange={({value}) => updateSocial(category, value)}
-          className='w-full mt-1'
+          className='w-full mt-0.5'
           size='normal'
         >
           <div slot='left-icon' className={`${noOptions ? styles['social-link-icon'] : ''}`}>
@@ -191,9 +193,13 @@ export default function ContributionPage() {
             )
           })}
           {socialLinks[category] && (
-            <leo-option key={'clear'} value={''}>
+            <leo-option key='clear' value=''>
               <div className='py-1'>{t('contribution_pages.clear_social')}</div>
             </leo-option>
+          )}
+          {/* When there are no options, nala dropdowns are about 4 pixels shorter, which looks weird */}
+          {noOptions && (
+            <leo-option key='placeholder' value=''></leo-option>
           )}
         </Dropdown>
       </div>
