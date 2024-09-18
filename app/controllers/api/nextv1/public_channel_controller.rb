@@ -13,7 +13,7 @@ class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
 
     begin
       url = channel.details&.url
-      site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(current_publisher.id, channel.id)
+      site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(current_publisher.id, channel.id).read_only_react_property
 
       crypto_constants = {
         solana_main_url: ENV["SOLANA_MAIN_URL"],

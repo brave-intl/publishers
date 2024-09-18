@@ -317,7 +317,36 @@
       "privacyContinue": "理解しました。このまま設定を続けます"
     }
   },
-    "walletServices": {
+  "contribution_pages": {
+    "page_header": "コントリビューションページ",
+    "channel_header": "基本情報",
+    "sharable_url": "共有可能なURL",
+    "avatar_cover_image": "アバターとカバーイメージ",
+    "channel_name": "チャンネル名",
+    "bio": "自己紹介",
+    "show_social_links": "ソーシャルメディアリンクの表示",
+    "twitter": "X（旧Twitter）",
+    "add_account": "アカウントを追加",
+    "clear_social": "アカウントを削除",
+    "select_account": "表示するアカウントを選択",
+    "add_account_msg": "このフィールドを有効化するには {social} アカウントを追加してください",
+    "social_link_note": "注：Brave Creatorsに登録されているチャンネルがこのセクションで選択可能になります。",
+    "preview_btn": "変更を確認する",
+    "saving_toast": "変更を保存する",
+    "preview_title": "プレビュー - {social}: {title}",
+    "profile": "プロフィールピクチャー",
+    "cover": "カバーイメージ",
+    "channel_names": {
+      "site": "Webサイト",
+      "twitter": "X（旧Twitter）",
+      "reddit": "Reddit",
+      "vimeo": "Vimeo",
+      "youtube": "YouTube",
+      "twitch": "Twitch",
+      "github": "GitHub"
+    }
+  },
+  "walletServices": {
     "bitflyer": {
       "connect": "bitFlyerに接続",
       "disconnect": "接続を切る",
