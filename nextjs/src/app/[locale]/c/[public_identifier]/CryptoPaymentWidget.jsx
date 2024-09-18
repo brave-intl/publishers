@@ -563,7 +563,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
               event.preventDefault();
               sendPayment();
             }}
-            disabled={currentAmount <= 0 || previewMode}
+            isDisabled={currentAmount <= 0 || previewMode}
             className={`mb-3 ${styles['send-button']}`}
           >
             {t("publicChannelPage.send")}
