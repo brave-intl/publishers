@@ -7,26 +7,26 @@ var ja = {
     login: "ログイン",
     loginHref: "/log-in",
     logoAlt: "Brave Creators Creator Logo",
-    batPillAlt: "Built with BAT"
+    batPillAlt: "Built with BAT",
   },
   main: {
     home: {
       headline: "あなたのコンテンツを収益化しませんか？",
       subhead:
-        "コンテンツ閲覧者がBraveブラウザを利用していると、Brave Creatorsを通じて支援を受けることが可能です。認証済みクリエイターに登録し、コンテンツからの収益化をはじめてみませんか？",
+        "Brave Creatorsに登録して、ファンやサポーターからの支援を受け取り始めましょう。ウェブサイトやソーシャルメディアアカウントを今すぐ登録して、支払いや支援の受け取りを開始しましょう。Brave Creatorsでより多くの収益を得ることができます。",
       examples: {
         headline: "以下のようなサービスを登録できます",
         website: "あなたのWebサイト",
         publication: "ブログ",
         youtube: "YouTube",
-        Twitch: "Twitch"
+        Twitch: "Twitch",
       },
       btn: {
         signup: "登録",
         signupHref: "/sign-up",
         login: "ログイン",
-        loginHref: "/log-in"
-      }
+        loginHref: "/log-in",
+      },
     },
     signin: {
       heading: "Brave Creatorsにログインする",
@@ -37,7 +37,7 @@ var ja = {
       tinyOne: "新規登録",
       tinyOneHref: "/sign-up",
       tinyTwo: "(旧) YouTube Loginをご利用の方",
-      tinyTwoHref: "/publishers/auth/youtube_login"
+      tinyTwoHref: "/publishers/auth/youtube_login",
     },
     signup: {
       heading: "クリエイター登録をする",
@@ -45,7 +45,7 @@ var ja = {
       inputPlaceholder: "メールアドレス",
       btn: "新規登録",
       tinyOne: "以前ご登録の方はこちら",
-      tinyOneHref: "/log-in"
+      tinyOneHref: "/log-in",
     },
     footerOne: "利用規約",
     footerOneHref:
@@ -54,15 +54,18 @@ var ja = {
     footerTwoHref: "https://support.brave.com/hc/en-us",
     termsOfService: {
       agree: "Braveの利用規約に同意します",
-      description: "Braveは<a>あなたのメールアドレス</a>をアカウントに関するご連絡やサービスに変更等に使用いたします。設定ページからメール通知の変更が可能です",
-      invalid: "アカウントを作成するには、Braveの利用規約に同意する必要があります"
+      description:
+        "Braveは<a>あなたのメールアドレス</a>をアカウントに関するご連絡やサービスに変更等に使用いたします。設定ページからメール通知の変更が可能です",
+      invalid:
+        "アカウントを作成するには、Braveの利用規約に同意する必要があります",
     },
-    validEmail: "メールアドレスを入力したことを確認してください。"
+    validEmail: "メールアドレスを入力したことを確認してください。",
   },
   signoff: {
     btn: "新規登録",
     btnHref: "/sign-up",
-    headline: "すでに{count}以上のコンテンツクリエイターや出版社がBrave Creatorsに参加し、収益を上げ始めています"
+    headline:
+      "すでに{count}以上のコンテンツクリエイターや出版社がBrave Creatorsに参加し、収益を上げ始めています",
   },
   sign: {
     sentAgain:
@@ -83,7 +86,7 @@ var ja = {
     iconHelpTitle: "ヘルプセンター",
     iconMessageTitle: "お問い合わせ",
     iconRedditTitle: "BAT Subreddit",
-    iconCommunityTitle: "BAT Community"
+    iconCommunityTitle: "BAT Community",
   },
   spotlight: {
     heading: "あなたのコンテンツをBrave Creatorsで収益化できます",
@@ -102,21 +105,24 @@ var ja = {
     scottyAlt: "Scotty Allen Strange Parts",
     scottyCredit: "- Scotty Allen",
     scottyHref: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw",
-    scottyQuote: "\"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます\"",
+    scottyQuote:
+      '"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます"',
   },
   summary: {
     heading: "Brave Creatorsの仕組み",
     oneTitle: "Braveブラウザを使っているとを獲得できます",
     oneDesc:
       "Brave CreatorsはBATを基盤に作られています。Braveのプライバシーを重視した広告を見るとポイントを獲得することができます。",
-    twoTitle: "そういったユーザがあなたのようなクリエイターやその作品に対してをチップとして送ります",
+    twoTitle:
+      "そういったユーザがあなたのようなクリエイターやその作品に対してをチップとして送ります",
     twoDesc:
       "定期購読者、フォロワー、読者は毎月決まった金額分のチップを自動的に送ることや、都度任意の金額を送ることができます",
     threeTitle: "Brave Creatorsの認証済みコンテンツクリエイターになる",
     threeDesc:
       "認証済みコンテンツクリエイターになると、クリエイター向けダッシュボードにアクセスすることが可能になります。ダッシュボードでは受け取ったチップを確認できる他、紹介用のURLを取得することが可能です。Braveを紹介することによってより多くのを獲得することができます。",
     fourTitle: "クリエイターダッシュボードでチップを回収する",
-    fourDesc: "登録・ログイン後のダッシュボードでは明細書と残高を確認することが可能です。",
+    fourDesc:
+      "登録・ログイン後のダッシュボードでは明細書と残高を確認することが可能です。",
     fourLink_href: "https://basicattentiontoken.org/",
     fourLink: "BATについて、より詳しく",
     cardBusiness: "ビジネスに関するお問い合わせ",
@@ -124,7 +130,7 @@ var ja = {
     cardHelp: "ヘルプセンター",
     cardHelpHref: "https://support.brave.com/hc/en-us",
     cardGen: "一般的なお問い合わせ",
-    cardGenHref: "mailto:publishers@basicattentiontoken.org"
+    cardGenHref: "mailto:publishers@basicattentiontoken.org",
   },
   footer: {
     one: "© Brave Software",
@@ -133,8 +139,8 @@ var ja = {
     twoHref: "https://brave.com/publishers-creators-privacy",
     three: "利用規約",
     threeHref: "https://basicattentiontoken.org/publisher-terms-of-service/",
-    fourHref: "https://basicattentiontoken.org"
-  }
+    fourHref: "https://basicattentiontoken.org",
+  },
 };
 
 export default ja;

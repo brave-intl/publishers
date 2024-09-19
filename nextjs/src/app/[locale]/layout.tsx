@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 // import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
 import * as React from 'react';
 import '@fontsource/poppins';
 import '@fontsource/inter';
@@ -19,31 +19,35 @@ export function generateStaticParams() {
 }
 
 // Look at @/constant/config to change them
-export const metadata: Metadata = {
-  title: {
-    default: siteConfig.title,
-    template: `%s | ${siteConfig.title}`,
-  },
-  description: siteConfig.description,
-  robots: { index: true, follow: true },
-  icons: {
-    icon: '/favicon/favicon.ico',
-  },
-  manifest: `/favicon/site.webmanifest`,
-  openGraph: {
-    url: siteConfig.url,
-    title: siteConfig.title,
-    description: siteConfig.description,
-    siteName: siteConfig.title,
-    type: 'website',
-    locale: 'en_US',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
-  },
-};
+export async function generateMetadata({ params: { locale }}) {
+  const t = await getTranslations({ locale, namespace: 'metadata'});
+ 
+  return {
+    title: {
+      default: t("title"),
+      template: `%s | ${t("title")}`,
+    },
+    description: t("description"),
+    robots: { index: true, follow: true },
+    icons: {
+      icon: '/favicon/favicon.ico',
+    },
+    manifest: `/favicon/site.webmanifest`,
+    openGraph: {
+      url: siteConfig.url,
+      title: t("title"),
+      description: t("description"),
+      siteName: t("title"),
+      type: 'website',
+      locale: 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t("title"),
+      description: t("description"),
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
