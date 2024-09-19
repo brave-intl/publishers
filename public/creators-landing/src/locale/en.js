@@ -7,7 +7,7 @@ var en = {
     login: "log in",
     loginHref: "/log-in",
     logoAlt: "Brave Creator Logo",
-    batPillAlt: "Built with BAT"
+    batPillAlt: "Built with BAT",
   },
   main: {
     home: {
@@ -19,14 +19,14 @@ var en = {
         website: "Your own website",
         publication: "Your social media account (X, Reddit, etc.)",
         youtube: "YouTube",
-        Twitch: "Twitch"
+        Twitch: "Twitch",
       },
       btn: {
         signup: "Sign up",
         signupHref: "/sign-up",
         login: "Log in",
-        loginHref: "/log-in"
-      }
+        loginHref: "/log-in",
+      },
     },
     signin: {
       heading: "Log in to your account",
@@ -37,7 +37,7 @@ var en = {
       tinyOne: "Don't have an account? Sign up",
       tinyOneHref: "/sign-up",
       tinyTwo: "Legacy YouTube Login",
-      tinyTwoHref: "/publishers/auth/youtube_login"
+      tinyTwoHref: "/publishers/auth/youtube_login",
     },
     signup: {
       heading: "Become a Creator",
@@ -45,7 +45,7 @@ var en = {
       inputPlaceholder: "Enter your email",
       btn: "Create account",
       tinyOne: "Already have an account? Log in",
-      tinyOneHref: "/log-in"
+      tinyOneHref: "/log-in",
     },
     footerOne: "Terms of Service",
     footerOneHref:
@@ -54,15 +54,18 @@ var en = {
     footerTwoHref: "https://support.brave.com/hc/en-us",
     termsOfService: {
       agree: "I agree to Brave's terms & conditions",
-      description: "Brave will <a>use your email</a> to contact you about your account and to update you about the service. Your settings page includes options for changing email notification permissions.",
-      invalid: "You must agree to Brave's terms & conditions to create an account"
+      description:
+        "Brave will <a>use your email</a> to contact you about your account and to update you about the service. Your settings page includes options for changing email notification permissions.",
+      invalid:
+        "You must agree to Brave's terms & conditions to create an account",
     },
-    validEmail: "Please enter a valid email."
+    validEmail: "Please enter a valid email.",
   },
   signoff: {
     btn: "Sign up now",
     btnHref: "/sign-up",
-    headline: "Join over {count} content creators and publishers earning more from Brave Creators"
+    headline:
+      "Join over {count} content creators and publishers earning more from Brave Creators",
   },
   sign: {
     sentAgain:
@@ -83,12 +86,12 @@ var en = {
     iconHelpTitle: "Help Center",
     iconMessageTitle: "Email Us",
     iconRedditTitle: "BAT Subreddit",
-    iconCommunityTitle: "BAT Community"
+    iconCommunityTitle: "BAT Community",
   },
   spotlight: {
     heading: "You create content and we get you paid.",
     subhead:
-      "Brave Creators helps you earn more for doing what you do best and get back some of that revenue lost for when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.",
+      "Sign up with Brave Creators to begin receiving contributions from your fans and supporters. Register your website or social media accounts now to begin receiving payouts and contributions. Earn more with Brave Creators.",
     bakerAlt: "Bart Baker Brave Creators",
     bakerCredit: "- Bart Baker",
     bakerHref: "https://www.youtube.com/BartBaKer",
@@ -102,7 +105,8 @@ var en = {
     scottyAlt: "Scotty Allen Strange Parts",
     scottyCredit: "- Scotty Allen",
     scottyHref: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw",
-    scottyQuote: "\"Brave is a great frictionless way for fans to support the creators they watch.\"",
+    scottyQuote:
+      '"Brave is a great frictionless way for fans to support the creators they watch."',
   },
   summary: {
     heading: "How does Brave Creators work?",
@@ -125,7 +129,7 @@ var en = {
     cardHelp: "Help Center",
     cardHelpHref: "https://support.brave.com/hc/en-us",
     cardGen: "General inquiries",
-    cardGenHref: "mailto:publishers@basicattentiontoken.org"
+    cardGenHref: "mailto:publishers@basicattentiontoken.org",
   },
   footer: {
     one: "© Brave Software",
@@ -134,8 +138,8 @@ var en = {
     twoHref: "https://brave.com/publishers-creators-privacy",
     three: "Terms of Use",
     threeHref: "https://basicattentiontoken.org/publisher-terms-of-service/",
-    fourHref: "https://basicattentiontoken.org"
-  }
+    fourHref: "https://basicattentiontoken.org",
+  },
 };
 
 export default en;

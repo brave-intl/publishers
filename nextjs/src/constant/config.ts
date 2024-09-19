@@ -1,7 +1,7 @@
 export const siteConfig = {
   title: 'Brave Creators',
   description:
-    'Brave Creators helps you earn more for doing what you do best and get back some of that revenue lost for when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.',
+    'Sign up with Brave Creators to begin receiving contributions from your fans and supporters. Register your website or social media accounts now to begin receiving payouts and contributions. Earn more with Brave Creators.',
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
   url: 'https://creators.brave.com/',
 };
