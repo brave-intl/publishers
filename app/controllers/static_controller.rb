@@ -9,10 +9,6 @@ class StaticController < ApplicationController
   def index
   end
 
-  def no_js
-    render(layout: "layouts/no_js")
-  end
-
   private
 
   def redirect_if_current_publisher
