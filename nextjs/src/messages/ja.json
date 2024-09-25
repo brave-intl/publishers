@@ -372,6 +372,11 @@
     "uphold": {
       "depositCurrency": "支払い通貨：BAT"
     },
+    "disconnectModal": {
+      "title": "Confirm Disconnection",
+      "text": "Are you sure you would like to disconnect your {provider} account from your Brave Creators account? Your sites and channels will no longer be able to receive contributions through {provider}./n/nYou will be able to connect an account again after disconnecting.",
+      "confirmDisconnect": "Confirm disconnect"
+    },
     "addCryptoWidget": {
       "addWallet": "新しいウォレットを追加してください",
       "solanaConnectError": "アドレスを追加するためSolanaウォレットを接続してください",
