@@ -77,7 +77,7 @@ export default function ContributionPage() {
     setDescription(bannerDetails.description);
     setSocialLinks(bannerDetails.socialLinks);
     setLogoUrl(bannerDetails.logoUrl);
-    setCoverUrl(bannerDetails.coverUrl);
+    setCoverUrl(bannerDetails.backgroundUrl);
   }
 
   function channelType(channelObj) {
