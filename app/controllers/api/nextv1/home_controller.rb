@@ -1,6 +1,8 @@
 class Api::Nextv1::HomeController < Api::Nextv1::BaseController
   include PublishersHelper
 
+  before_action :prompt_for_two_factor_setup, only: %i[dashboard]
+
   def dashboard
     publisher = current_publisher.as_json(only: [:id], methods: [:brave_payable?])
     channels = current_publisher.channels.visible.as_json(only: [:details_type, :id, :verified, :verification_status, :verification_details, :public_identifier],
@@ -43,6 +45,12 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
     ).perform
 
     render json: {lastSettlement: wallet.last_settlement_balance}
+  end
+
+  def prompt_for_two_factor_setup
+    return if current_publisher.two_factor_prompted_at.present? || two_factor_enabled?(current_publisher)
+    current_publisher.update! two_factor_prompted_at: Time.now
+    render(json: {location: prompt_security_publishers_path}, status: 302)
   end
 
   private
