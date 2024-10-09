@@ -972,19 +972,6 @@ en:
       alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
       success: Channel verified!
       awaiting_admin_approval: Verification is almost complete! We've notified an admin who will review and finalize your channel.
-  static:
-    no_js:
-      welcome: Welcome to
-      header: Brave Creators
-      body_html: |
-        <p class="leadin">Are you a social media creator interested in monetizing
-          your content? Verify your site and unlock your contributions!</p>
-        <p>Brave Creators lets Brave users contribute tokens to you. Simply follow the steps to register with us.</p>
-      new:
-        header: New to Brave Creators?
-        body: Start verification by entering your email.
-      login:
-        body: Log in to your dashboard.
   two_factor_authentications:
     totp:
       heading: Two-factor Authentication
