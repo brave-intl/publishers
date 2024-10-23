@@ -4,7 +4,7 @@ ruby "~> 3.3.1"
 
 source "https://rubygems.org"
 
-rails_version = "7.1.3.4"
+rails_version = "7.2.1.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.0"
 gem "railties", rails_version
@@ -164,7 +164,7 @@ gem "yt", "~> 0.33"
 gem "zeitwerk", "~> 2.6"
 gem "zendesk_api", "~> 3.0.5"
 
-gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
+gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb", branch: "fix/activerecord72-register-adapter"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
