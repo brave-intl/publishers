@@ -373,9 +373,10 @@
       "depositCurrency": "支払い通貨：BAT"
     },
     "disconnectModal": {
-      "title": "Confirm Disconnection",
-      "text": "Are you sure you would like to disconnect your {provider} account from your Brave Creators account? Your sites and channels will no longer be able to receive contributions through {provider}./n/nYou will be able to connect an account again after disconnecting.",
-      "confirmDisconnect": "Confirm disconnect"
+      "title": "切断確認",
+      "text": "Brave Creatorsアカウントから {provider} アカウントを切断して本当によろしいですか? {provider} を通じてサイトやチャンネルでのコントリビューションが受け取れなくなります。",
+      "textLine2": "切断後に改めてアカウントを接続することは可能です。",
+      "confirmDisconnect": "切断する"
     },
     "addCryptoWidget": {
       "addWallet": "新しいウォレットを追加してください",

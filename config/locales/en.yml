@@ -113,7 +113,7 @@ en:
       verification_failure_what_happened: What happened
       verification_failure: Your channel could not be verified!
       verification_failure_explanation:
-        domain_not_found: "we could not find your domain."
+        domain_not_found: "We could not find your domain."
         connection_failed: |
           we could not find the public file at https://%{domain}/.well-known/brave-rewards-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
