@@ -372,6 +372,12 @@
     "uphold": {
       "depositCurrency": "支払い通貨：BAT"
     },
+    "disconnectModal": {
+      "title": "切断確認",
+      "text": "Brave Creatorsアカウントから {provider} アカウントを切断して本当によろしいですか? {provider} を通じてサイトやチャンネルでのコントリビューションが受け取れなくなります。",
+      "textLine2": "切断後に改めてアカウントを接続することは可能です。",
+      "confirmDisconnect": "切断する"
+    },
     "addCryptoWidget": {
       "addWallet": "新しいウォレットを追加してください",
       "solanaConnectError": "アドレスを追加するためSolanaウォレットを接続してください",

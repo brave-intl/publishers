@@ -361,6 +361,12 @@
       "title": "Gemini Account",
       "duplicateAccount": "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
     },
+    "disconnectModal": {
+      "title": "Confirm Disconnection",
+      "text": "Are you sure you would like to disconnect your {provider} account from your Brave Creators account? Your sites and channels will no longer be able to receive contributions through {provider}.",
+      "textLine2": "You will be able to connect an account again after disconnecting.",
+      "confirmDisconnect": "Confirm disconnect"
+    },
     "lastDeposit": "Last Deposit: <span>{value}</span>",
     "lastDepositDate": "Last Deposit Date: <span>{value}</span>",
     "title": "Account Services",

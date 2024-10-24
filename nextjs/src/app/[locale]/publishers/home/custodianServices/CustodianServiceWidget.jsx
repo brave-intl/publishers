@@ -4,6 +4,7 @@ import Button from '@brave/leo/react/button';
 import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Link from '@brave/leo/react/link';
+import Dialog from '@brave/leo/react/dialog';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -12,6 +13,7 @@ import { apiRequest } from '@/lib/api';
 
 import countryList from './countryList.json';
 import styles from '@/styles/Dashboard.module.css';
+import DisconnectConfirmationModal from './DisconnectConfirmationModal';
 
 export default function CustodianServiceWidget({ walletData }) {
   const t = useTranslations();
@@ -23,6 +25,7 @@ export default function CustodianServiceWidget({ walletData }) {
   const [geminiConnection, setGeminiConnection] = useState(walletData.gemini_connection);
   const [bitflyerConnection, setBitflyerConnection] = useState(walletData.bitflyer_connection);
   const [unsupportedCountryMsg, setUnsupportedCountryMsg] = useState('');
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const supportUrl = locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597';
 
@@ -116,7 +119,7 @@ export default function CustodianServiceWidget({ walletData }) {
           <Link
             className={`pl-1 ${styles['disconnect-btn']}`}
             onClick={() => {
-              disconnectProvider(provider);
+              setIsConfirmationModalOpen(true);
             }}
           >
             Disconnect
@@ -132,6 +135,13 @@ export default function CustodianServiceWidget({ walletData }) {
           </span>
           <span>{t('shared.basic_attention_token')}</span>
         </div>
+        <Dialog
+          isOpen={isConfirmationModalOpen}
+          onClose={() => setIsConfirmationModalOpen(false)}
+          showClose={true}
+        >
+          <DisconnectConfirmationModal close={disconnectProvider} provider={provider} />
+        </Dialog>
       </section>
     );
   }
