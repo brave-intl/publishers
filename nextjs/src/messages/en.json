@@ -109,7 +109,7 @@
       "custodial_accounts": "Payout account",
       "connected_account": "Connected account:",
       "deposit_currency": "You receive:",
-      "country_label": "Select your country",
+      "country_label": "Select your region",
       "country_placeholder": "Select one",
       "connect_prompt": "Connect an account to receive BAT contributions and monthly payouts. Select your country to see a list of available account providers. ",
       "country_disclaimer": "You won’t be eligible for monthly payouts until you connect a custodial account. ",
