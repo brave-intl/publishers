@@ -25,7 +25,7 @@ export async function generateMetadata({ params: { locale }}) {
   return {
     title: {
       default: t("title"),
-      template: `%s | ${t("title")}`,
+      template: `${t("title")} - %s`,
     },
     description: t("description"),
     robots: { index: true, follow: true },
