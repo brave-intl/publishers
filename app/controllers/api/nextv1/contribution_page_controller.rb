@@ -123,7 +123,7 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
     new_filename = generate_filename(source_image_path: original_image_path)
     {
       io: File.open(original_image_path),
-      filename: new_filename + extension + ".padded",
+      filename: new_filename + extension,
       # remove period from beginning of extension type
       content_type: "image/#{extension.tr(".", "")}"
     }
