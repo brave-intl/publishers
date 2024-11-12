@@ -58,6 +58,7 @@
     "channel_names": {
       "site": "Website",
       "twitter": "X",
+      "x": "X",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "YouTube",
@@ -126,7 +127,7 @@
       "incomplete": "INCOMPLETE",
       "add_channel": "Add channel",
       "add_channel_prompt": "Let's start with choosing where you're publishing your content:",
-      "website_prompt": "I have my own website and have access to the domain directory.",
+      "site_prompt": "I have my own website and have access to the domain directory.",
       "youtube_prompt": "I own or manage a YouTube channel.",
       "twitch_prompt": "I'm the primary owner of a Twitch channel.",
       "x_prompt": "I own or manage an X account.",
