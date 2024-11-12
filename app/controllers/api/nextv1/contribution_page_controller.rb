@@ -116,11 +116,15 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
     filename = Time.now.to_s.tr!(" ", "_").tr!(":", "_") + current_publisher.id
 
     temp_file = Tempfile.new([filename, extension])
-    File.binwrite(temp_file.path, Base64.decode64(data))
+    File.open(temp_file.path, "wb") do |f|
+      f.write(Base64.decode64(data.split(",")[1]))
+    end
 
     original_image_path = temp_file.path
+
     temp_file.rewind
     new_filename = generate_filename(source_image_path: original_image_path)
+
     {
       io: File.open(original_image_path),
       filename: new_filename + extension,
