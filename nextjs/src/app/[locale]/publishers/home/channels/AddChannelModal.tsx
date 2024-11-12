@@ -15,7 +15,7 @@ export default function AddChannelModal() {
     axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
     axios.defaults.withCredentials = true;
 
-    if (channel === 'website') {
+    if (channel === 'site') {
       window.location.pathname = '/site_channels/new';
     } else if (channel === 'x') {
       const response = await axios({
