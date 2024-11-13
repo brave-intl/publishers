@@ -31,26 +31,21 @@ import RateCardStatements from "./statementDetails/RateCardStatements";
 
 import routes from "../../routes";
 
-interface IStatementProps {
-  statement: IStatementOverview;
-  showPage?: boolean;
-}
-
-class StatementDetails extends React.Component<IStatementProps, any> {
+class StatementDetails extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { rateCardStatement: [] };
+    this.state = { rateCardStatement };
   }
 
-  public componentDidMount() {
+  componentDidMount() {
     if (this.props.statement.showRateCards) {
       this.setState({ isLoading: true });
       this.loadGroups();
     }
   }
 
-  public async loadGroups() {
+  async loadGroups() {
     await fetch(
       routes.publishers.statements.rate_card.path +
         `?start_date=${this.props.statement.earningPeriod.startDate}&end_date=${
@@ -65,7 +60,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
           "X-Requested-With": "XMLHttpRequest",
         },
         method: "GET",
-      }
+      },
     ).then((response) => {
       response.json().then((json) => {
         this.setState({
@@ -76,7 +71,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
     });
   }
 
-  public render() {
+  render() {
     return (
       <Details>
         <div className="mx-5 ">
@@ -115,7 +110,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                       name={name}
                       results={GetParameterCaseInsensitive(
                         this.props.statement.depositedTypes,
-                        name
+                        name,
                       )}
                     >
                       <Amount>
@@ -194,7 +189,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
             <a
               href={routes.publishers.statements.show.path.replace(
                 "{period}",
-                this.props.statement.earningPeriod.startDate
+                this.props.statement.earningPeriod.startDate,
               )}
             >
               <FormattedMessage id="statements.overview.viewMore" />
@@ -266,7 +261,7 @@ export const SettlementDestinationLink = (props) => {
       <a
         href={intl.formatMessage(
           { id: "statements.overview.upholdCardLink" },
-          { cardId: props.settlementDestination }
+          { cardId: props.settlementDestination },
         )}
       >
         {props.children}

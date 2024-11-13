@@ -56,7 +56,7 @@ class PublishersHomeTest < ApplicationSystemTestCase
     assert_content page, "Website"
     assert_content page, "YouTube"
 
-    page.find("#add-website").click
+    page.find("#add-site").click
 
     assert_current_path(/site_channels\/new/)
   end

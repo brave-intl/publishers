@@ -4,13 +4,14 @@ import Button from '@brave/leo/react/button';
 import { useTranslations } from 'next-intl';
 import styles from '@/styles/ChannelCard.module.css';
 
-export default function CryptoPrivacyModal({ close, updateAddress, address }) {
+export default function DisconnectConfirmationModal({ close, provider }) {
   const t = useTranslations();
 
   return (
     <div>
-      <h1 className={styles['privacy-header']}>{t('Home.addCryptoWidget.privacyHeader')}</h1>
-      <p className={styles['privacy-text']}>{t('Home.addCryptoWidget.privacyNotification')}</p>
+      <h1 className={styles['privacy-header']}>{t('walletServices.disconnectModal.title')}</h1>
+      <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.text', { provider: provider })}</p>
+      <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.textLine2')}</p>
       <div className="text-right">
         <div className={styles['privacy-button-container']}>
           <Button
@@ -18,16 +19,16 @@ export default function CryptoPrivacyModal({ close, updateAddress, address }) {
             style={{ margin: '10px 0px', width: '320px' }}
             kind='outline'
           >
-            {t('Home.addCryptoWidget.privacyQuit')}
+            {t('shared.cancel')}
           </Button>
         </div>
         <div className={styles['privacy-button-container']}>
           <Button
-            onClick={() => {updateAddress(address); close()}}
+            onClick={() => {close(provider)}}
             style={{ margin: '10px 0px', width: '320px' }}
             kind='filled'
           >
-            {t('Home.addCryptoWidget.privacyContinue')}
+            {t('walletServices.disconnectModal.confirmDisconnect')}
           </Button>
         </div>
       </div>

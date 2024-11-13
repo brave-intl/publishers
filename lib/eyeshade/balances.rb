@@ -18,7 +18,7 @@ module Eyeshade
       @default_currency = default_currency
       @amount_probi = 0
       @fees_probi = 0
-      @zero = BigDecimal("0")
+      @zero = BigDecimal(0)
 
       @accounts.each do |account|
         type = account.account_type

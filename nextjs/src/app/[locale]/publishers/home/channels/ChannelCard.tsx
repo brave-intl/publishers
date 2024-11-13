@@ -132,12 +132,14 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
         >
           {t('shared.remove')}
         </Button>
-        <Button
-          href={`/publishers/contribution_page?channel=${channel.id}`}
-          kind='outline'
-        >
-          {t('shared.customize')}
-        </Button>
+        {!isUnverifiedChannel() && (
+          <Button
+            href={`/publishers/contribution_page?channel=${channel.id}`}
+            kind='outline'
+          >
+            {t('shared.customize')}
+          </Button>
+        )}
       </section>
     </Card>
   );

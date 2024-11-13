@@ -1,6 +1,7 @@
 {
   "metadata": {
     "title": "Brave Creators",
+    "dashboard": "Dashboard",
     "description": "Sign up with Brave Creators to begin receiving contributions from your fans and supporters. Register your website or social media accounts now to begin receiving payouts and contributions. Earn more with Brave Creators."
   },
   "shared": {
@@ -57,6 +58,7 @@
     "channel_names": {
       "site": "Website",
       "twitter": "X",
+      "x": "X",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "YouTube",
@@ -109,7 +111,7 @@
       "custodial_accounts": "Payout account",
       "connected_account": "Connected account:",
       "deposit_currency": "You receive:",
-      "country_label": "Select your country",
+      "country_label": "Select your region",
       "country_placeholder": "Select one",
       "connect_prompt": "Connect an account to receive BAT contributions and monthly payouts. Select your country to see a list of available account providers. ",
       "country_disclaimer": "You won’t be eligible for monthly payouts until you connect a custodial account. ",
@@ -125,7 +127,7 @@
       "incomplete": "INCOMPLETE",
       "add_channel": "Add channel",
       "add_channel_prompt": "Let's start with choosing where you're publishing your content:",
-      "website_prompt": "I have my own website and have access to the domain directory.",
+      "site_prompt": "I have my own website and have access to the domain directory.",
       "youtube_prompt": "I own or manage a YouTube channel.",
       "twitch_prompt": "I'm the primary owner of a Twitch channel.",
       "x_prompt": "I own or manage an X account.",
@@ -153,7 +155,7 @@
       "privacyHeader": "Privacy reminder",
       "privacyNotification": "Using the same crypto address for multiple channels will allow others to know that those channels all belong to you. If you don't want others to know, use a different crypto address for each of your channels.",
       "privacyQuit": "Cancel",
-      "privacyContinue": "I understand and would like to continue"
+      "privacyContinue": "I understand"
     }
   },
   "Settings": {
@@ -360,6 +362,12 @@
       "blocked_country": "It looks like you’re in an unsupported country for Brave Creators with Gemini, so your channels won’t appear as verified. However, once your country is supported, you’ll automatically become verified and be eligible to receive payouts to your Gemini account. <blocked_country_link>Learn more</blocked_country_link>.",
       "title": "Gemini Account",
       "duplicateAccount": "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
+    },
+    "disconnectModal": {
+      "title": "Confirm Disconnection",
+      "text": "Are you sure you would like to disconnect your {provider} account from your Brave Creators account? Your sites and channels will no longer be able to receive contributions through {provider}.",
+      "textLine2": "You will be able to connect an account again after disconnecting.",
+      "confirmDisconnect": "Confirm disconnect"
     },
     "lastDeposit": "Last Deposit: <span>{value}</span>",
     "lastDepositDate": "Last Deposit Date: <span>{value}</span>",

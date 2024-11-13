@@ -113,7 +113,7 @@ en:
       verification_failure_what_happened: What happened
       verification_failure: Your channel could not be verified!
       verification_failure_explanation:
-        domain_not_found: "we could not find your domain."
+        domain_not_found: "We could not find your domain."
         connection_failed: |
           we could not find the public file at https://%{domain}/.well-known/brave-rewards-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
@@ -688,11 +688,11 @@ en:
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
       note: Please note, for your security, we require a <strong>2 day waiting period</strong> for the 2-factor authentication removal to complete
       removals: >
-        <ul>
+        <ol>
           <li>The account channels will need to be re-verified.</li>
           <li>The account wallet will need to be re-verified.</li>
           <li>There will be a 30-day waiting period on payments.</li>
-        </ul>
+        </ol>
 
       reminder_body_html: >
         This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:
@@ -972,19 +972,6 @@ en:
       alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
       success: Channel verified!
       awaiting_admin_approval: Verification is almost complete! We've notified an admin who will review and finalize your channel.
-  static:
-    no_js:
-      welcome: Welcome to
-      header: Brave Creators
-      body_html: |
-        <p class="leadin">Are you a social media creator interested in monetizing
-          your content? Verify your site and unlock your contributions!</p>
-        <p>Brave Creators lets Brave users contribute tokens to you. Simply follow the steps to register with us.</p>
-      new:
-        header: New to Brave Creators?
-        body: Start verification by entering your email.
-      login:
-        body: Log in to your dashboard.
   two_factor_authentications:
     totp:
       heading: Two-factor Authentication

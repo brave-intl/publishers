@@ -3,6 +3,14 @@ $brave-panels-borderRadius: 8px;
 .panels-container {
   padding: 0 15px;
 }
+// bootstrap replacements
+.my-3 {
+  margin-top: 1rem !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
 
 .single-panel {
   &--wrapper {
@@ -69,6 +77,7 @@ $brave-panels-borderRadius: 8px;
     text-align: center;
     justify-content: center;
     flex: 1;
+    font-family: $font-family-base;
 
     &--platforms {
       padding-top: $spacer * 2;
