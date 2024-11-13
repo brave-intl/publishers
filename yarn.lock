@@ -2400,9 +2400,10 @@ braces@^3.0.3, braces@~3.0.2:
   dependencies:
     fill-range "^7.1.1"
 
-"brave-ui@git+https://github.com/brave/brave-ui#11019732ef5fc09a75bae371c3f3ffece651d97c":
-  version "0.39.0"
-  resolved "git+https://github.com/brave/brave-ui#11019732ef5fc09a75bae371c3f3ffece651d97c"
+"brave-ui@git+https://github.com/brave/brave-ui#4a76f0153255278d5a792bd9e9d1056ef0c602d0":
+  version "0.40.6"
+  uid "4a76f0153255278d5a792bd9e9d1056ef0c602d0"
+  resolved "git+https://github.com/brave/brave-ui#4a76f0153255278d5a792bd9e9d1056ef0c602d0"
   dependencies:
     "@ctrl/tinycolor" "^2.2.1"
     emptykit.css "^1.0.1"

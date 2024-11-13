@@ -65,7 +65,7 @@
     "@rails/ujs": "^7.0.6",
     "axios": "1.7.4",
     "babel-loader": "9.1.3",
-    "brave-ui": "git+https://github.com/brave/brave-ui#11019732ef5fc09a75bae371c3f3ffece651d97c",
+    "brave-ui": "git+https://github.com/brave/brave-ui#4a76f0153255278d5a792bd9e9d1056ef0c602d0",
     "chart.js": "4.4.0",
     "clipboard": "^2.0.11",
     "compression-webpack-plugin": "10",
