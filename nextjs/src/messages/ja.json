@@ -1,6 +1,7 @@
 {
   "metadata": {
     "title": "Brave クリエイター",
+    "dashboard": "ダッシュボード",
     "description": "Brave Creatorsに登録して、ファンやサポーターからの支援を受け取り始めましょう。ウェブサイトやソーシャルメディアアカウントを今すぐ登録して、支払いや支援の受け取りを開始しましょう。Brave Creatorsでより多くの収益を得ることができます。"
   },
   "NavDropdown": {
@@ -211,6 +212,7 @@
     "channel_names": {
       "site": "Webサイト",
       "twitter": "X（旧Twitter）",
+      "x": "X（旧Twitter）",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "YouTube",
@@ -291,7 +293,7 @@
       "incomplete": "未完了",
       "add_channel": "チャンネルを追加",
       "add_channel_prompt": "チャンネルとは、YouTubeチャンネル、Redditアカウント、自分のWebサイトなど、あなたが所有するWeb上のアカウントやサイトなどを指します。",
-      "website_prompt": "私は自分のWebサイトを持っていて、ドメイン・ディレクトリにアクセスできます。",
+      "site_prompt": "私は自分のWebサイトを持っていて、ドメイン・ディレクトリにアクセスできます。",
       "youtube_prompt": "私はYouTubeチャンネルを所有、または管理しています。",
       "twitch_prompt": "私はTwitchチャンネルのメインオーナーです。",
       "x_prompt": "私はXアカウントを所有、または管理しています。",

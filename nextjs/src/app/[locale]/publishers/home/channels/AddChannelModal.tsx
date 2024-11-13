@@ -8,18 +8,14 @@ import styles from '@/styles/ChannelCard.module.css';
 
 export default function AddChannelModal() {
   const t = useTranslations();
-  const channels = ['website', 'youtube', 'twitch', 'x', 'vimeo', 'reddit'];
-
-  function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
+  const channels = ['site', 'youtube', 'twitch', 'x', 'vimeo', 'reddit'];
 
   async function addChannel(channel) {
     axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
     axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
     axios.defaults.withCredentials = true;
 
-    if (channel === 'website') {
+    if (channel === 'site') {
       window.location.pathname = '/site_channels/new';
     } else if (channel === 'x') {
       const response = await axios({
@@ -52,9 +48,9 @@ export default function AddChannelModal() {
               <Icon
                 className='mx-auto mb-2 inline-block'
                 forceColor={true}
-                name={channel === 'website' ? 'globe' : `social-${channel}`}
+                name={channel === 'site' ? 'globe' : `social-${channel}`}
               />
-              <h4 className='pb-1'>{capitalizeFirstLetter(channel)}</h4>
+              <h4 className='pb-1'>{t(`shared.channel_names.${channel}`)}</h4>
               <p className='color-tertiary small-regular'>
                 {t(`Home.channels.${channel}_prompt`)}
               </p>

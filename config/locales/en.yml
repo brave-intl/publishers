@@ -688,11 +688,11 @@ en:
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
       note: Please note, for your security, we require a <strong>2 day waiting period</strong> for the 2-factor authentication removal to complete
       removals: >
-        <ul>
+        <ol>
           <li>The account channels will need to be re-verified.</li>
           <li>The account wallet will need to be re-verified.</li>
           <li>There will be a 30-day waiting period on payments.</li>
-        </ul>
+        </ol>
 
       reminder_body_html: >
         This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:
