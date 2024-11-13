@@ -116,7 +116,8 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
     filename = Time.now.to_s.tr!(" ", "_").tr!(":", "_") + current_publisher.id
 
     temp_file = Tempfile.new([filename, extension])
-    File.open(temp_file.path, "wb") do |f|
+    # standardrb replaces file.write with File.binwrite, which are not equivalent
+    File.open(temp_file.path, "wb") do |f| # standard:disable Style/FileWrite
       f.write(Base64.decode64(data.split(",")[1]))
     end
 
