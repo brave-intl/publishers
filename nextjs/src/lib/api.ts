@@ -22,6 +22,8 @@ export async function apiRequest(
       err.response.status === 422
     ) {
       window.location.replace('/log-in');
+    } else if ( err.response && err.response.status === 404 ) {
+      window.location.replace('/404');
     } else if ( err.response && err.response.status === 302 ){
       err.response.data && err.response.data.location && window.location.replace(err.response.data.location);
     } else {

@@ -56,7 +56,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   const ethUsdcAddress = cryptoConstants.eth_usdc_address;
   const solUsdcAddress = cryptoConstants.solana_usdc_address;
 
-  const dropdownOptions = []
+  const dropdownOptions = [];
   if (ethAddress) {
     dropdownOptions.push({
       label: t('publicChannelPage.ethereumNetwork'),
@@ -120,7 +120,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   const [currentAmount, setCurrentAmount] = useState(5);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [toggle, setToggle] = useState('crypto');
+  const [displayCrypto, setDisplayCrypto] = useState(true);
   const [isSuccessView, setIsSuccessView] = useState(false);
   const [selectValue, setSelectValue] = useState(dropdownOptions.flatMap(opt => opt.options).filter(opt => opt.value === currentChain)[0])
 
@@ -145,16 +145,24 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     setIsLoading(false);
   };
 
-  function calculateCryptoPrice() {
+  function calculateUSDPrice() {
     if (displayChain.includes('USDC')) {
       return currentAmount;
     } else {
-      return currentAmount / ratios[displayChain.toLowerCase()]['usd'];
+      return Math.round(currentAmount * ratios[displayChain.toLowerCase()]['usd'] * 100) / 100;
     }
   };
 
+  function calculateCryptoPrice(usd) {
+    if (displayChain.includes('USDC')) {
+      return currentAmount;
+    } else {
+      return usd / ratios[displayChain.toLowerCase()]['usd'];
+    }
+  }
+
   function roundCryptoPrice() {
-    return Math.round(calculateCryptoPrice() * 100000) / 100000;
+    return Math.round(currentAmount * 100000) / 100000;
   };
 
   function baseChain() {
@@ -217,7 +225,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
 
       // While most guides to converting eth to wei multiply the value by 10e18, In javascript e counts 
       // as the 10 and *10e18 results in a value that is an order of mangitude too high.
-      const value = Web3.utils.toHex(Web3.utils.toBigInt(Math.round(calculateCryptoPrice()*10e17)));
+      const value = Web3.utils.toHex(Web3.utils.toBigInt(Math.round(currentAmount*10e17)));
 
       const params = [{
         from: address,
@@ -283,13 +291,13 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   }
 
   async function sendEthBatPayment() {
-    const amount = Web3.utils.toBigInt(Math.round(calculateCryptoPrice()*10e17));
+    const amount = Web3.utils.toBigInt(Math.round(currentAmount*10e17));
     await sendEthTokenPayment(ethBatAddress, amount, batAbi);
   }
 
   async function sendEthUsdcPayment() {
     // USDC token needs 6 decimal places, not 18
-    const amount = Web3.utils.toBigInt(Math.round(calculateCryptoPrice()*10e5));
+    const amount = Web3.utils.toBigInt(Math.round(currentAmount*10e5));
     await sendEthTokenPayment(ethUsdcAddress, amount, erc20Abi);
   }
 
@@ -303,7 +311,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
       if (provider.publicKey) {
         const pub_key = provider.publicKey
         const connection = new Connection(solanaMainUrl);
-        const amount = Math.round(calculateCryptoPrice() * LAMPORTS_PER_SOL)
+        const amount = Math.round(setCurrentAmount * LAMPORTS_PER_SOL)
         
         const transaction = new Transaction().add(
           SystemProgram.transfer({
@@ -346,7 +354,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
           // This is the account address of the user who is sending bat
           const sourceAccountOwner = provider.publicKey
           // multiply the number of bat tokens to the power of the decimals in the token program 
-          const amount = Math.round(calculateCryptoPrice() * Math.pow(10, decimal));
+          const amount = Math.round(currentAmount * Math.pow(10, decimal));
           // this is the account address that will receive bat
           const destinationAccountOwner = new PublicKey(addresses.SOL)
           const connection = new Connection(solanaMainUrl)
@@ -417,7 +425,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   }
 
   async function sendSolUsdcPayment () {
-    await sendSolTokenPayment(state.solUsdcAddress, 6);
+    await sendSolTokenPayment(solUsdcAddress, 6);
   }
 
   function changeChain(optionVal) {
@@ -429,10 +437,22 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     clearError();
   }
   
+  function updateAmount(amount) {
+    if (!displayCrypto) {
+      setCurrentAmount(calculateCryptoPrice(amount));
+    } else {
+      setCurrentAmount(amount);
+    }
+  }
+
   function handleInputChange(event) {
     const customValue = event.target.value ? parseFloat(event.target.value) : null;
     setCustomAmount(customValue);
-    setCurrentAmount(customValue);
+    if (!displayCrypto) {
+      setCurrentAmount(calculateCryptoPrice(customValue));
+    } else {
+      setCurrentAmount(customValue);
+    }
   };
   
   if (isLoading) {
@@ -516,9 +536,9 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
                   <button
                     key={amount}
                     className={`${currentAmount === amount ? 'selected' : ''} ${styles['amount-button']}`}
-                    onClick={() => setCurrentAmount(amount)}
-                  >
-                    ${amount}
+                    onClick={() => updateAmount(amount)}
+                  > 
+                    {!displayCrypto && '$'} {amount}
                   </button>
                 )
               })}
@@ -532,20 +552,20 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
             </div>
             <div className="col-span-12 md:col-span-5 text-right align-top">
               <h2 className={`${styles['large-currency-display']}`}>
-                {toggle === 'crypto' ? (
+                {displayCrypto ? (
                     <span>{roundCryptoPrice()} <span className={`${styles['currency']} align-middle`}>{displayChain}</span></span>
                   ) : (
-                    <span>${currentAmount} <span className={`${styles['currency']} align-middle`}>USD</span></span>
+                    <span>${calculateUSDPrice()} <span className={`${styles['currency']} align-middle`}>USD</span></span>
                   )}
               </h2>
               <div className={`${styles['small-currency-display']}`}>
-                {toggle === 'fiat' ? (
+                {!displayCrypto ? (
                     <span>{roundCryptoPrice()} {displayChain}</span>
                   ) : (
-                    <span>${currentAmount} USD</span>
+                    <span>${calculateUSDPrice()} USD</span>
                   )}
               </div>
-              <div onClick={() => setToggle(toggle === 'crypto' ? 'fiat' : 'crypto')} className={`${styles['exchange-icon']}`}></div>
+              <div onClick={() => setDisplayCrypto(!displayCrypto)} className={`${styles['exchange-icon']}`}></div>
             </div>
           </div>
           {errorTitle && (
