@@ -3441,9 +3441,9 @@ cosmiconfig@^7.0.0:
     yaml "^1.10.0"
 
 cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
-  integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.6.tgz#8a58fe78f00dcd70c370451759dfbfaf03e8ee9f"
+  integrity "sha1-ilj+ePANzXDDcEUXWd+/rwPo7p8= sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
@@ -9425,7 +9425,7 @@ webpack-dev-server@^4.6.0:
     express "^4.17.3"
     graceful-fs "^4.2.6"
     html-entities "^2.3.2"
-    http-proxy-middleware "^2.0.7"
+    http-proxy-middleware "^2.0.3"
     ipaddr.js "^2.0.1"
     launch-editor "^2.6.0"
     open "^8.0.9"
