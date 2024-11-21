@@ -120,7 +120,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   const [currentAmount, setCurrentAmount] = useState(5);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [displayCrypto, setDisplayCrypto] = useState(true);
+  const [displayCrypto, setDisplayCrypto] = useState(false);
   const [isSuccessView, setIsSuccessView] = useState(false);
   const [selectValue, setSelectValue] = useState(dropdownOptions.flatMap(opt => opt.options).filter(opt => opt.value === currentChain)[0])
 
@@ -147,7 +147,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
 
   function calculateUSDPrice() {
     if (displayChain.includes('USDC')) {
-      return currentAmount;
+      return Math.round(currentAmount * 100) / 100;
     } else {
       return Math.round(currentAmount * ratios[displayChain.toLowerCase()]['usd'] * 100) / 100;
     }
@@ -155,7 +155,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
 
   function calculateCryptoPrice(usd) {
     if (displayChain.includes('USDC')) {
-      return currentAmount;
+      return usd;
     } else {
       return usd / ratios[displayChain.toLowerCase()]['usd'];
     }
@@ -253,8 +253,8 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
 
   async function sendEthTokenPayment(contractAddress, amount, abi) {
     if (typeof window !== 'undefined' && window.ethereum) {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const address = accounts[0]
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const address = accounts[0];
       if (!address) {
         setGenericError();
         return;
@@ -311,7 +311,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
       if (provider.publicKey) {
         const pub_key = provider.publicKey
         const connection = new Connection(solanaMainUrl);
-        const amount = Math.round(setCurrentAmount * LAMPORTS_PER_SOL)
+        const amount = Math.round(currentAmount * LAMPORTS_PER_SOL)
         
         const transaction = new Transaction().add(
           SystemProgram.transfer({
@@ -453,7 +453,12 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     } else {
       setCurrentAmount(customValue);
     }
-  };
+  }
+
+  function handleDisplayCryptoChange() {
+    setDisplayCrypto(!displayCrypto);
+    displayCrypto ? setCustomAmount(calculateUSDPrice()) : setCustomAmount(currentAmount);
+  }
   
   if (isLoading) {
     return (<div className={`${styles['crypto-widget-wrapper']}`}></div>)
@@ -531,21 +536,21 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
             />
           <div className="grid grid grid-cols-12 pb-4 pt-4">
             <div className="col-span-12 md:col-span-7 text-left">
-              {defaultAmounts.map( amount => {
+              {!displayCrypto && defaultAmounts.map( amount => {
                 return(
                   <button
                     key={amount}
-                    className={`${currentAmount === amount ? 'selected' : ''} ${styles['amount-button']}`}
+                    className={`${calculateUSDPrice() === amount ? styles['selected'] : ''} ${styles['amount-button']}`}
                     onClick={() => updateAmount(amount)}
                   > 
-                    {!displayCrypto && '$'} {amount}
+                    $ {amount}
                   </button>
                 )
               })}
               <input
                 type="number"
                 onChange={handleInputChange}
-                className={`${currentAmount === customAmount ? 'selected' : ''} ${styles['amount-input']}`}
+                className={`${currentAmount === customAmount ? styles['selected'] : ''} ${displayCrypto ? styles['amount-full-width'] : ''} ${styles['amount-input']}`}
                 placeholder={placeholder}
                 value={customAmount}
               />
@@ -565,7 +570,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
                     <span>${calculateUSDPrice()} USD</span>
                   )}
               </div>
-              <div onClick={() => setDisplayCrypto(!displayCrypto)} className={`${styles['exchange-icon']}`}></div>
+              <div onClick={() => handleDisplayCryptoChange()} className={`${styles['exchange-icon']}`}></div>
             </div>
           </div>
           {errorTitle && (
