@@ -7,13 +7,13 @@ class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
     crypto_addresses = channel&.crypto_addresses&.pluck(:address, :chain)
 
     # Handle the case when the resource is not found
-    if channel.nil? || @crypto_addresses&.empty?
+    if channel.nil? || crypto_addresses&.empty?
       return render json: {}, status: 404
     end
 
     begin
       url = channel.details&.url
-      site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(current_publisher.id, channel.id).read_only_react_property
+      site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(channel.publisher.id, channel.id).read_only_react_property
 
       crypto_constants = {
         solana_main_url: ENV["SOLANA_MAIN_URL"],

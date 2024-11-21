@@ -247,6 +247,7 @@
 
   background-color: #FFF;
   border: 1px solid #A1ABBA;
+  min-width: 58px;
 
   &.selected {
     background-color: #EDEEF1;
@@ -291,6 +292,12 @@
     background-position: 8px center;
     background-size: 6.8px;
   }
+}
+
+.amount-input.amount-full-width {
+  width: 260px;
+  border-left: 1px solid #A1ABBA;
+  border-radius: 8px;
 }
 
 .success-wrapper {
