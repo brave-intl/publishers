@@ -227,7 +227,7 @@ GEM
       multipart-post (~> 2)
     faraday-net_http (3.1.1)
       net-http
-    faraday-retry (2.2.0)
+    faraday-retry (2.2.1)
       faraday (~> 2.0)
     fastimage (2.3.1)
     ffi (1.17.0)
@@ -763,7 +763,7 @@ DEPENDENCIES
   dotenv-rails (= 3.1.0)
   eth (~> 0.5)
   faraday (= 2.9)
-  faraday-retry (= 2.2.0)
+  faraday-retry (= 2.2.1)
   fastimage (~> 2.3.0)
   ffi
   font-awesome-rails (~> 4.7.0)
