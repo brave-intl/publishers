@@ -48,7 +48,7 @@ gem "domain_name"
 
 # HTTP library wrapper
 gem "faraday", "2.9"
-gem "faraday-retry", "2.2.0"
+gem "faraday-retry", "2.2.1"
 
 gem "ffi"
 
