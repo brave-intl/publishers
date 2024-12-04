@@ -285,13 +285,6 @@
   &::placeholder {
     color: #3F4855;
   }
-
-  &:not(:placeholder-shown) {
-    background-image: url('../../public/images/dollar_sign.svg');
-    background-repeat: no-repeat;
-    background-position: 8px center;
-    background-size: 6.8px;
-  }
 }
 
 .amount-input.amount-full-width {

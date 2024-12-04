@@ -6,7 +6,7 @@ source "https://rubygems.org"
 
 rails_version = "7.2.1.1"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.6.0"
+gem "rails-html-sanitizer", "1.6.1"
 gem "railties", rails_version
 
 gem "rack", "3.0.9.1"
@@ -48,7 +48,7 @@ gem "domain_name"
 
 # HTTP library wrapper
 gem "faraday", "2.9"
-gem "faraday-retry", "2.2.0"
+gem "faraday-retry", "2.2.1"
 
 gem "ffi"
 
@@ -233,7 +233,7 @@ group :development, :test do
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
   gem "solargraph"
-  gem "dotenv-rails", "3.1.0"
+  gem "dotenv-rails", "3.1.4"
 end
 
 gem "importmap-rails", "~>2.0"
