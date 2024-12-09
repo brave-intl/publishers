@@ -106,16 +106,16 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal "has already been taken", channel_2.errors.messages[:public_name][0]
   end
 
-  # test "public_identifier is added on create and must be unique" do
-  #   details = SiteChannelDetails.new()
-  #   channel = Channel.create(publisher: publishers(:completed), details: details)
-  #   existing_channel = channels(:google_verified)
+  test "public_identifier is added on create and must be unique" do
+    details = SiteChannelDetails.new
+    channel = Channel.create(publisher: publishers(:completed), details: details)
+    existing_channel = channels(:google_verified)
 
-  #   channel.public_identifier = existing_channel.public_identifier
-  #   assert_raises do
-  #     channel.save!
-  #   end
-  # end
+    channel.public_identifier = existing_channel.public_identifier
+    assert_raises do
+      channel.save!
+    end
+  end
 
   test "publication_title is the site domain for site publishers" do
     channel = channels(:verified)
@@ -344,6 +344,14 @@ class ChannelTest < ActionDispatch::IntegrationTest
     duplicate_channel.details = SiteChannelDetails.new(brave_publisher_id: channel.details.brave_publisher_id,
       verification_method: "dns")
     refute duplicate_channel.valid?
+  end
+
+  test "channel can't have a public name set to an existing public identifier" do
+    channel = channels(:default)
+    malicious_channel = channels(:verified)
+    malicious_channel.public_name = channel.public_identifier
+
+    refute malicious_channel.valid?
   end
 
   test "find_by_channel_identifier finds youtube channels" do

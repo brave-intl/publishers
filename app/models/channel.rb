@@ -60,13 +60,15 @@ class Channel < ApplicationRecord
   }, allow_nil: true
 
   validates :public_name, uniqueness: true, allow_nil: true
-  # validates :public_identifier, uniqueness: true, presence: true
+  validates :public_identifier, uniqueness: true, presence: true
+  validate :validate_public_url_unique
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == "SiteChannelDetails" }
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
-  before_create :set_public_identifier
+  after_initialize :set_public_identifier, if: -> { public_identifier.nil? }
+  before_validation :strip_public_name_whitespace
 
   after_save :notify_slack, if: -> { saved_change_to_verified? && verified? }
 
@@ -361,7 +363,7 @@ class Channel < ApplicationRecord
     return if public_identifier.present?
     identifier = loop do
       id = SecureRandom.alphanumeric(10)
-      break id unless Channel.where(public_identifier: id).exists?
+      break id unless Channel.where(public_identifier: id).exists? || Channel.where(public_name: id).exists?
     end
 
     self.public_identifier = identifier
@@ -507,5 +509,18 @@ class Channel < ApplicationRecord
         errors.add(:base, "contesting channel does not match")
       end
     end
+  end
+
+  def validate_public_url_unique
+    public_name_exists = Channel.where(public_name: public_identifier).exists?
+    public_identifier_exists = Channel.where(public_identifier: public_name).exists?
+
+    if public_name_exists || public_identifier_exists
+      errors.add(:base, "must be unique across both public_name and public_identifier")
+    end
+  end
+
+  def strip_public_name_whitespace
+    self.public_name = public_name.gsub(/\s+/, "") unless public_name.nil?
   end
 end
