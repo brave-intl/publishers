@@ -1,39 +1,36 @@
 # frozen_string_literal: true
 
-ruby "~> 3.3.1"
+ruby "~> 3.0.2"
 
 source "https://rubygems.org"
 
-rails_version = "7.2.1.1"
+rails_version = "7.1.1"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.6.1"
+gem "rails-html-sanitizer", "1.6.0"
 gem "railties", rails_version
 
-gem "rack", "3.0.9.1"
+gem "rack", "3.0.8"
 
 # All things countries
 gem "countries"
 
 # Serialize models for JSON APIs
-gem "active_model_serializers", "~> 0.10"
+gem "active_model_serializers", "~> 0.10.0"
 
 # For bulk updates/imports
-gem "activerecord-import", "~> 1.5.1"
+gem "activerecord-import", "1.4.1"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
 
-# For analytics
-gem "active_analytics"
-
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.143.0"
+gem "aws-sdk-s3", "~> 1.132.0"
 
-gem "bootstrap", "5.3.3"
+gem "bootstrap", "4.6.2"
 
-gem "brotli", "~> 0.5.0"
+gem "brotli", "~> 0.4.0"
 
 # Authorization
 gem "cancancan", "~> 3.5.0"
@@ -41,31 +38,31 @@ gem "cancancan", "~> 3.5.0"
 gem "connection_pool", "~> 2.4"
 
 # Authentication
-gem "devise", "~> 4.9"
+gem "devise", "~> 4.9.2"
 
 gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.9"
-gem "faraday-retry", "2.2.1"
+gem "faraday", "2.7.10"
+gem "faraday-retry", "2.2.0"
 
 gem "ffi"
 
-gem "font-awesome-rails", "~> 4.7.0"
+gem "font-awesome-rails", "~> 4.7.0.4"
 
-gem "google-protobuf", "~> 3.25"
+gem "google-protobuf", "~> 3.23.4"
 
 # Make logs less mad verbose
-gem "lograge", "~> 0.14.0"
+gem "lograge", "~> 0.13.0"
 
 # Dependency for rails
-gem "nokogiri", ">= 1.16"
+gem "nokogiri", ">= 1.14.3"
 
 # Open Graph tag
-gem "meta-tags", "~> 2.20"
+gem "meta-tags", "~> 2.19.0"
 
-gem "newrelic_rpm", "~> 9.7"
+gem "newrelic_rpm", "~> 9.3.1"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
@@ -87,7 +84,7 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 gem "omniauth-github", "~> 2.0.1"
 
 # Model record auditing
-gem "paper_trail", "~> 15.1.0"
+gem "paper_trail", "~> 15.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -96,27 +93,27 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "premailer-rails", "~> 1.12.0", require: false
 
 # Implementation of PublicSuffix
-gem "public_suffix", "~> 5.0"
+gem "public_suffix", "~> 5.0.1"
 
 # Puma as app server
-gem "puma", "~> 6.4.3"
+gem "puma", "~> 6.3.1"
 
-# Sanitize bad inputs coming in
-gem "rack-utf8_sanitizer"
+# Make cracking a little bit harder
+gem "rack-attack", github: "rack/rack-attack", branch: "main"
 
-gem "rails-i18n", "~> 7.0"
+gem "rails-i18n", "~> 7.0.6"
 
 # I love captchas
-gem "recaptcha", "~> 5.16.0", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.14.0", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis", "~> 5.1"
+gem "redis", "~> 5.0.6"
 gem "redis-session-store"
 
-gem "render_async", "~> 2.1"
+gem "render_async", "~> 2.1.8"
 
 # For ruby 3
-gem "rexml", ">= 3.3.6"
+gem "rexml"
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 2.2.0"
@@ -125,7 +122,7 @@ gem "rqrcode", "~> 2.2.0"
 gem "sass-rails", ">= 6"
 
 # Sendgrid mail service
-gem "sendgrid-ruby", "~> 6.7"
+gem "sendgrid-ruby", "~> 6.6.2"
 
 gem "terser"
 
@@ -134,13 +131,13 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 7.1.6"
 
 gem "sidekiq-scheduler", "~> 5.0.3"
-gem "sidekiq-throttled", "~> 1.3.0"
+gem "sidekiq-throttled", "~> 1.0.0.alpha.1"
 
 # slim for view templates
-gem "slim-rails", "3.6.3"
+gem "slim-rails", "3.6.2"
 
 gem "ssrf_filter", "1.1.2"
 
@@ -151,35 +148,38 @@ gem "u2f", "~> 1.0"
 gem "webauthn"
 
 # One-time passwords for 2fa
-gem "rotp", "~> 6.3.0"
+gem "rotp", "~> 6.2.0"
 
-gem "shakapacker", "7.2.2"
+gem "shakapacker", "7.0.3"
 
 # pagination support for models
 gem "will_paginate"
 
 # YouTube API client
-gem "yt", "~> 0.33"
+gem "yt", "~> 0.33.0"
 
-gem "zeitwerk", "~> 2.6"
-gem "zendesk_api", "~> 3.0.5"
+gem "zeitwerk", "~> 2.6.6"
+gem "zendesk_api", "= 3.0.2"
 
-gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb", branch: "fix/activerecord72-register-adapter"
+gem "activerecord-nulldb-adapter", github: "ghiculescu/nulldb", branch: "rails-7-1"
+
+gem "wasm-thumbnail-rb", git: "https://github.com/brave-intl/wasm-thumbnail.git", tag: "0.0.5", glob: "wasm-thumbnail-rb/*.gemspec"
+gem "wasmer", git: "https://github.com/wasmerio/wasmer-ruby.git", ref: "dab7d537748ce410c660c3fe683df4a2af369f82"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.4.2"
-gem "sprockets", "4.2.1"
+gem "sprockets", "4.2.0"
 
-gem "eth", "~> 0.5"
+gem "eth", "~> 0.4"
 gem "rbnacl"
 gem "base58"
 
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  gem "listen", "~> 3.9"
+  gem "listen", "~> 3.5"
 
   # TODO add this back in after rails 7.1 officially drops
   # gem "bullet"
@@ -191,7 +191,7 @@ group :development do
   # gem "spring-watcher-listen", "~> 2.0.0"
 
   # i18n-tasks helps you find and manage missing and unused translations.
-  gem "i18n-tasks", "~> 1.0.13"
+  gem "i18n-tasks", "~> 1.0.12"
 end
 
 group :test do
@@ -199,11 +199,11 @@ group :test do
   gem "database_cleaner"
   # API recording and playback
   gem "vcr"
-  gem "webmock", "~> 3.23"
+  gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
 
   # Image information library
-  gem "fastimage", "~> 2.3.0"
+  gem "fastimage", "~> 2.2.5"
 end
 
 group :development, :test do
@@ -217,10 +217,6 @@ group :development, :test do
   # Code formatting
   gem "standard"
 
-  # Get rid of mailcatcher
-  gem "letter_opener"
-  gem "letter_opener_web", "~> 2.0"
-
   # Static security vulnerability scanner
   gem "brakeman"
   # Vulnerabilities
@@ -228,12 +224,12 @@ group :development, :test do
   gem "capybara"
   gem "minitest"
   gem "minitest-retry"
-  gem "minitest-rails", "~> 7.1.0"
+  gem "minitest-rails", github: "brave-intl/minitest-rails", branch: "rails71"
   gem "mocha", require: false
   gem "simplecov", require: false, group: :test
-  gem "selenium-webdriver", "~> 4.4"
+  gem "selenium-webdriver", "~> 4.12"
   gem "solargraph"
-  gem "dotenv-rails", "3.1.4"
+  gem "dotenv-rails", "2.8.1"
 end
 
-gem "importmap-rails", "~>2.0"
+gem "importmap-rails", "~> 1.1"
