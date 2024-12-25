@@ -6,7 +6,7 @@ source "https://rubygems.org"
 
 rails_version = "7.2.1.1"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.6.1"
+gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
 gem "rack", "3.0.9.1"
