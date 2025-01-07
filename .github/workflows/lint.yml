@@ -24,7 +24,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
         with:
           path: vendor/bundle
