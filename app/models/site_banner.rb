@@ -70,10 +70,11 @@ class SiteBanner < ApplicationRecord
   #####################################################
 
   def self.new_helper(publisher_id, channel_id)
+    channel = Channel.find(channel_id)
     SiteBanner.create(
       publisher_id: publisher_id,
       channel_id: channel_id,
-      title: DEFAULT_TITLE,
+      title: channel.publication_title,
       description: DEFAULT_DESCRIPTION,
       social_links: {youtube: "", twitter: "", twitch: "", github: "", reddit: "", vimeo: ""}
     )
