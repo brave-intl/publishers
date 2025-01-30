@@ -29,6 +29,7 @@ import {
 } from "@solana/spl-token";
 
 import Icon from '@brave/leo/react/icon';
+import Input from '@brave/leo/react/input';
 import Select, { components } from 'react-select';
 import Dialog from '@brave/leo/react/dialog';
 import Button from '@brave/leo/react/button';
@@ -548,12 +549,15 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
                 )
               })}
               <input
-                type="number"
+                inputmode='numeric'
+                type='number'
+                min={0}
                 onChange={handleInputChange}
                 className={`${currentAmount === customAmount ? styles['selected'] : ''} ${displayCrypto ? styles['amount-full-width'] : ''} ${styles['amount-input']}`}
                 placeholder={placeholder}
                 value={customAmount}
               />
+              <span className={`${styles['amount-input-denomination']}`}>{displayCrypto && displayChain}</span>
             </div>
             <div className="col-span-12 md:col-span-5 text-right align-top">
               <h2 className={`${styles['large-currency-display']}`}>

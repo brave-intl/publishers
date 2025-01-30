@@ -293,6 +293,15 @@
   border-radius: 8px;
 }
 
+.amount-input-denomination {
+  position: relative;
+  top: -35px;
+  font-size: 13px;
+  color: rgb(63 72 85);
+  float: right;
+  padding-right: 15px;
+}
+
 .success-wrapper {
   width: 520px;
   height: 542px;

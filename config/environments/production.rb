@@ -102,6 +102,9 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
+  # allow display of full model in rails console
+  config.active_record.attributes_for_inspect = :all
+
   config.after_initialize do
     # Enable this if rotating keys for encrypted fields
     # Util::AttrEncrypted.monkey_patch_old_key_fallback

@@ -4,9 +4,9 @@ ruby "~> 3.3.1"
 
 source "https://rubygems.org"
 
-rails_version = "7.2.1.1"
+rails_version = "7.2.2.1"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.6.1"
+gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
 gem "rack", "3.0.9.1"
@@ -78,7 +78,7 @@ gem "omniauth-twitch", "~> 1.2.0"
 gem "omniauth-twitter2"
 
 # OAuth client for Vimeo
-gem "omniauth-vimeo", github: "beanieboi/omniauth-vimeo", ref: "0f855fd3437061fa2d343c1b6036bd9472c0edd1"
+gem "omniauth-vimeo", github: "beanieboi/omniauth-vimeo", ref: "1177a816ef65688f5e4b94d7ad3932cbc5ac04d4"
 
 # OAuth client for Reddit
 gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git", branch: "master"
@@ -233,7 +233,7 @@ group :development, :test do
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
   gem "solargraph"
-  gem "dotenv-rails", "3.1.4"
+  gem "dotenv-rails", "3.1.7"
 end
 
 gem "importmap-rails", "~>2.0"
