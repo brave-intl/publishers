@@ -359,7 +359,7 @@ class Channel < ApplicationRecord
   end
 
   def has_valid_uphold_connection?
-    uphold_connection && (publisher.uphold_connection&.id == uphold_connection&.uphold_connection_id) && uphold_connection&.address && uphold_connection&.card_id
+    uphold_connection && (publisher.uphold_connection&.id == uphold_connection&.uphold_connection_id) && uphold_connection&.address && uphold_connection.card_id
   end
 
   def set_public_identifier
@@ -367,7 +367,7 @@ class Channel < ApplicationRecord
     identifier = loop do
       id = SecureRandom.alphanumeric(10)
       # Check if the value of public_identifier already exists in either column (case insensitive)
-      break id unless self.class.where('LOWER(public_name) = :value OR LOWER(public_identifier) = :value', value: id.downcase).exists?
+      break id unless self.class.where("LOWER(public_name) = :value OR LOWER(public_identifier) = :value", value: id.downcase).exists?
     end
 
     self.public_identifier = identifier
@@ -527,23 +527,23 @@ class Channel < ApplicationRecord
   def validate_public_url_unique
     return unless public_name
     # Check if the value of public_name already exists in either column (case insensitive)
-    if self.class.where('LOWER(public_name) = :value OR LOWER(public_identifier) = :value', value: public_name.downcase).exists?
-      errors.add(:public_name, 'must be unique across both public_name and public_identifier')
+    if self.class.where("LOWER(public_name) = :value OR LOWER(public_identifier) = :value", value: public_name.downcase).exists?
+      errors.add(:public_name, "must be unique across both public_name and public_identifier")
     end
-    
+
     unless public_name.length.between?(3, 32)
-      errors.add(:public_name, 'must be between 3 and 32 characters in length')
+      errors.add(:public_name, "must be between 3 and 32 characters in length")
     end
 
     # make sure that only letters, numbers, dashes and underscores are allowed
     unless /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/.match?(public_name)
-      errors.add(:public_name, 'must only contain letters, numbers, dashes, and underscores')
+      errors.add(:public_name, "must only contain letters, numbers, dashes, and underscores")
     end
 
     reserved = ReservedPublicName.find_by(public_name: public_name)
     # names previously in use are released after 1 year
     if reserved && (reserved.permanent || reserved.created_at >= 1.year.ago)
-      errors.add(:public_name, 'already under use')
+      errors.add(:public_name, "already under use")
     end
   end
 

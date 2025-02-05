@@ -73,11 +73,11 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
         current_channel.update(public_name: permitted_params[:publicName])
       end
 
-      unless current_channel.errors.empty?
-        render(json: {errors: current_channel.errors}, status: 400)
-      else
+      if current_channel.errors.empty?
         channel_data = format_channel_data(current_channel)
         render(json: channel_data, status: 200)
+      else
+        render(json: {errors: current_channel.errors}, status: 400)
       end
     rescue => e
       LogException.perform(e, publisher: current_publisher)
