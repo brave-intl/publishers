@@ -1,0 +1,40 @@
+div.row
+  div.col-sm-12
+    section.panel
+      h3 Reserved Public Names
+
+      .action-group
+        = form_tag admin_reserved_public_names_path, method: :get, class: "search-form" do
+          .input-group
+            = text_field_tag :search, params[:search], class:'form-control', placeholder: "Search by public name"
+            .input-group-btn
+              = submit_tag("Search", class: 'btn btn-default')
+      br
+      table.display.table.table-bordered.table-striped.dynamic-table 
+        thead
+          tr
+            th Public Name
+            th Permanent
+            th Actions
+        tbody
+          - @reserved_public_names.each do |reserved|
+            tr
+              td = reserved.public_name
+              td
+                = form_for reserved, url: admin_reserved_public_name_path(reserved), method: :patch do |f|
+                  = f.check_box :permanent, onchange: "this.form.submit();"
+              td
+                = link_to "Delete", admin_reserved_public_name_path(reserved), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"
+
+      = will_paginate @reserved_public_names
+
+      hr
+      h4 Add New Reserved Public Name
+      .action-group
+        = form_for @new_reserved_public_name, url: admin_reserved_public_names_path, method: :post do |f|
+          .input-group
+            = f.text_field :public_name, required: true, placeholder: 'Reserved Name', class: 'form-control'
+          .form-group.mt-2.mb-1
+            = f.check_box :permanent, class: "mr-2"
+            = f.label :permanent, "Permanent?"
+          = f.submit "Add", class: "btn btn-primary"

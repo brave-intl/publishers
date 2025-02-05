@@ -315,6 +315,8 @@ Rails.application.routes.draw do
 
     resources :case_notes
 
+    resources :reserved_public_names
+
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports do
