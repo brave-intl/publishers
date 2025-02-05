@@ -4,8 +4,8 @@ module Admin
 
     def index
       @reserved_public_names = ReservedPublicName.order(created_at: :desc)
-                                                .where("public_name ILIKE ?", "%#{params[:search]}%")
-                                                .paginate(page: params[:page])
+        .where("public_name ILIKE ?", "%#{params[:search]}%")
+        .paginate(page: params[:page])
       @new_reserved_public_name = ReservedPublicName.new
     end
 

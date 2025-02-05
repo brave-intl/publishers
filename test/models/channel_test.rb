@@ -104,7 +104,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
       channel.save!
     end
   end
-    
+
   describe "validations for public_name uniqueness" do
     test "should validate uniqueness of public_name" do
       channel = channels(:google_verified)
