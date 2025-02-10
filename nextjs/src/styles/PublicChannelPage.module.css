@@ -302,6 +302,15 @@
   padding-right: 15px;
 }
 
+.dollar-input-denomination {
+  position: relative;
+  top: -35px;
+  font-size: 13px;
+  color: rgb(63 72 85);
+  right: -179px;
+  padding-right: 15px;
+}
+
 .success-wrapper {
   width: 520px;
   height: 542px;
