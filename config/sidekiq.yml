@@ -20,7 +20,7 @@
       description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
       queue: scheduler
     UpdateOfacListJob:
-      cron: "0 2 * * *"
+      cron: "0 * * * *"
       description: "Update the Ofac list"
       queue: scheduler
     CleanAbandonedSiteChannelsJob:
@@ -47,8 +47,8 @@
       description: "Syncs zendesk tickets"
       queue: low
     BannedAddressJob:
-        cron: "0 1 * * *"
-        description: "Scan For Banned Addresses"
+      cron: "30 * * * *"
+      description: "Scan For Banned Addresses"
     Cache::BrowserChannels::Main:
       cron: "0 */2 * * *"
       description: "Syncs V4 channels list"
@@ -63,7 +63,7 @@
       queue: low
     EnqueuePublishersForPayoutJob:
       cron: "0 0 23 * *"
-      args: ['send_notifications']
+      args: ["send_notifications"]
       description: "Notifies publishers their wallet is disconnected on the 23rd of every month."
       queue: scheduler
     EnqueuePublishersForPayoutJobMonthly:
