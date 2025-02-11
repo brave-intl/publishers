@@ -684,14 +684,14 @@ en:
         <br/><br/>
         If you have an idea about what might have triggered this alert, or if you believe your account was mistakenly suspended, you can reach out to us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a>. A dedicated member of our support team will personally review and respond to your message.
     two_factor_authentication_removal:
-      heading: Having trouble with 2-factor authentication?
-      leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
-      note: Please note, for your security, we require a <strong>2 day waiting period</strong> for the 2-factor authentication removal to complete
+      heading: Experiencing Issues with Two-Factor Authentication?
+      leadin_html: "If you’ve lost access to your authenticator app or device, you can restore access by removing your two-factor authentication. For your security,<strong> there is a 2-day waiting period before your two-factor authentication is removed.</strong> Please note that:"
+      proceed_text: "To proceed, click the button below:"
       removals: >
         <ol>
-          <li>The account channels will need to be re-verified.</li>
-          <li>The account wallet will need to be re-verified.</li>
-          <li>There will be a 30-day waiting period on payments.</li>
+          <li><strong>Your account will be inaccessible for 30 days after your two-factor authentication has been removed</strong></li>
+          <li>You will need to re-add all your sites and channels</li>
+          <li>Any connected accounts or addresses will be removed and need to be re-added</li>
         </ol>
 
       reminder_body_html: >
@@ -716,7 +716,7 @@ en:
       request_note:
       request_success: You have successfully requested a 2-factor security removal.
       request_not_found: Publisher not found. Please ensure you have entered the correct e-mail
-      request_2fa_removal: Request 2-factor Security Removal
+      request_2fa_removal: Request Two-Factor Authentication Removal
       confirm_2fa_removal: Confirm 2-factor Security Removal
       cancel_2fa_removal: Cancel 2-factor Security Removal
       confirm_login_flash: You have confirmed your request for 2-factor security removal.
@@ -989,9 +989,10 @@ en:
       u2f_unavailable_totp_alternative_link: Use Authentication Code Instead
       submit_value: Try Again
     removal:
-      heading: Two-factor Authentication
-      body: Your two-factor authentication is in the process of being removed. <br/><strong>%{time} remaining.</strong>
+      heading: Two-Factor Authentication Removal
+      body: "Your request to remove two-factor authentication is now in progress. There are %{time} remaining before your two-factor authentication is removed. Please note that:"
       cancel: Cancel removal
+      cancel_text: "If you wish to cancel this request, press the button below:"
 
     index:
       u2f_unavailable_html: |
@@ -1022,10 +1023,10 @@ en:
           protocol. Please use a current release of Google Chrome or Opera.
           (IMPLEMENTATION_INCOMPLETE)
       lost_account:
-        lost_2fa: Lost your 2-factor-authentication?
+        lost_2fa: Lost access to your two-factor authentication?
         lost_2fa_link: We can help.
         lost_2fa_note_html: |
-          For information related to account settings, visit our <a href="https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-">Help Center.</a>
+          You can also visit our <a href="https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-">Help Center.</a>
   totp_registrations:
     new:
       heading: Set Up Authenticator App

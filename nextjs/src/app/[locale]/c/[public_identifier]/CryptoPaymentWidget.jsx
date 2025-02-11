@@ -53,7 +53,8 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   const defaultAmounts = [1,5,10];
   const ethBatAddress = cryptoConstants.eth_bat_address;
   const solanaBatAddress = cryptoConstants.solana_bat_address;
-  const solanaMainUrl = cryptoConstants.solana_main_url;
+  const solanaMainUrls = cryptoConstants.solana_main_urls;
+  const rpcHost = solanaMainUrls.filter((url) => url.toLowerCase().includes(window.location.host.toLowerCase()))[0];
   const ethUsdcAddress = cryptoConstants.eth_usdc_address;
   const solUsdcAddress = cryptoConstants.solana_usdc_address;
 
@@ -310,10 +311,10 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     } else {
       const provider = await window.solana.connect();
       if (provider.publicKey) {
-        const pub_key = provider.publicKey
-        const connection = new Connection(solanaMainUrl);
+        const pub_key = provider.publicKey;
+        const connection = new Connection(`${rpcHost}/rpc`);
         const amount = Math.round(currentAmount * LAMPORTS_PER_SOL)
-        
+
         const transaction = new Transaction().add(
           SystemProgram.transfer({
             fromPubkey: pub_key,
@@ -358,7 +359,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
           const amount = Math.round(currentAmount * Math.pow(10, decimal));
           // this is the account address that will receive bat
           const destinationAccountOwner = new PublicKey(addresses.SOL)
-          const connection = new Connection(solanaMainUrl)
+          const connection = new Connection(`${rpcHost}/rpc`);
           const contract = new PublicKey(contractAddress)
           // Check to see if the sender has an associated token account
           const senderAccount = await connection.getParsedTokenAccountsByOwner(sourceAccountOwner, {

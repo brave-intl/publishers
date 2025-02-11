@@ -16,7 +16,8 @@ class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
       site_banner = channel.site_banner&.read_only_react_property || SiteBanner.new_helper(channel.publisher.id, channel.id).read_only_react_property
 
       crypto_constants = {
-        solana_main_url: ENV["SOLANA_MAIN_URL"],
+        # need to reference both possible hostnames
+        solana_main_urls: [ENV["CREATORS_HOST"], ENV["CREATORS_OAUTH_HOST"]],
         solana_bat_address: ENV["SOLANA_BAT_ADDRESS"],
         eth_bat_address: ENV["ETH_BAT_ADDRESS"],
         eth_usdc_address: ENV["ETH_USDC_ADDRESS"],

@@ -27,7 +27,7 @@ export default function PublicChannelPage({publicIdentifier, previewMode}) {
     const siteBannerData = channelData.site_banner;
     setTitle(siteBannerData.title);
     setDescription(siteBannerData.description);
-    setSocialLinks(siteBannerData.socialLinks);
+    setSocialLinks(siteBannerData.socialLinks ?? {});
     setLogoUrl(siteBannerData.logoUrl);
     setCoverUrl(siteBannerData.coverUrl);
     setUrl(channelData.url);

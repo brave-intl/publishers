@@ -314,6 +314,15 @@
   box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
 }
 
+.dollar-input-denomination {
+  position: relative;
+  top: -35px;
+  font-size: 13px;
+  color: rgb(63 72 85);
+  right: -179px;
+  padding-right: 15px;
+}
+
 .success-message-wrapper {
   padding: 205px 50px 50px;
 }
