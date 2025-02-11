@@ -558,7 +558,6 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
                 placeholder={placeholder}
                 value={customAmount}
               />
-              <span className={`${styles['dollar-input-denomination']}`}>{!displayCrypto && '$'}</span>
               <span className={`${styles['amount-input-denomination']}`}>{displayCrypto && displayChain}</span>
             </div>
             <div className="col-span-12 md:col-span-5 text-right align-top">
