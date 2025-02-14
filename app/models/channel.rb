@@ -82,6 +82,7 @@ class Channel < ApplicationRecord
 
   before_save :clear_verified_at_if_necessary
 
+  before_save :update_public_name_changed_at, if: :public_name_changed?
   after_update :save_old_public_name, if: :saved_change_to_public_name?
 
   before_destroy :preserve_contested_by_channels
@@ -526,8 +527,15 @@ class Channel < ApplicationRecord
 
   def validate_public_url_unique
     return unless public_name
+
+    # check for cooldown period
+    if public_name_changed_at && public_name_changed_at > 60.days.ago
+      errors.add(:public_name, "public name change must be two months after previous change")
+    end
+    
     # Check if the value of public_name already exists in either column (case insensitive)
-    if self.class.where("LOWER(public_name) = :value OR LOWER(public_identifier) = :value", value: public_name.downcase).exists?
+    matches = self.class.where("LOWER(public_name) = :value OR LOWER(public_identifier) = :value", value: public_name.downcase)
+    if matches.exists? && !matches.pluck(:id).include?(self.id)
       errors.add(:public_name, "must be unique across both public_name and public_identifier")
     end
 
@@ -549,6 +557,10 @@ class Channel < ApplicationRecord
 
   def save_old_public_name
     ReservedPublicName.create(public_name: saved_change_to_public_name[0]) if saved_change_to_public_name[0]
+  end
+
+  def update_public_name_changed_at
+    self.public_name_changed_at = DateTime.now
   end
 
   def strip_public_name_whitespace

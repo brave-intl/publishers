@@ -41,6 +41,7 @@ export default function ContributionPage() {
   const [publicNameError, setPublicNameError] = useState('');
   const [isPublicUrlModalOpen, setIsPublicUrlModalOpen] = useState(false);
   const [tempPublicUrl, setTempPublicUrl] = useState('');
+  const [cooldownDays, setCooldownDays] = useState(0);
   const logoInputRef = useRef(null);
   const coverInputRef = useRef(null);
 
@@ -84,6 +85,7 @@ export default function ContributionPage() {
     setSocialLinks(bannerDetails.socialLinks);
     setLogoUrl(bannerDetails.logoUrl);
     setCoverUrl(bannerDetails.backgroundUrl);
+    setCooldownDays(findCooldownDays(channelData.public_name_changed_at));
   }
 
   function channelType(channelObj) {
@@ -92,6 +94,19 @@ export default function ContributionPage() {
 
   function channelDisplay(type) {
     return t(`contribution_pages.channel_names.${type}`);
+  }
+
+  function findCooldownDays(dateStr) {
+    // parsInt of null returns NaN
+    if (parseInt(dateStr)>=0) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const diffInMs = today - date;
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+      return 60 - diffInDays;
+    } else {
+      return 0;
+    }
   }
 
   function channelIconType(channelType) {
@@ -302,12 +317,18 @@ export default function ContributionPage() {
                 minlength={3}
                 maxlength={32}
                 onChange={(e) => {setIsPublicUrlModalOpen(true); setTempPublicUrl(e.value)}}
-                className='w-full md:w-1/2 inline-block pb-3'
+                className={`w-full md:w-1/2 inline-block pb-3`}
                 showErrors={publicNameError.length}
+                disabled={cooldownDays > 0}
               >
-                <span slot="left-icon">{`${currentDomain}/c/`}</span>
+                <span slot="left-icon" className={`${styles['public-url-input']} color-tertiary`}>{`${currentDomain}/c/`}</span>
                 <span slot='errors'>{publicNameError}</span>
               </Input>
+              {cooldownDays > 0 && (
+                <div className='pb-1 color-tertiary'>
+                  {t('contribution_pages.cooldown_warning', { days: Math.floor(cooldownDays) })}
+                </div>
+              )}
               <div className='pb-3 color-tertiary'>
                 {t('contribution_pages.public_url_note')}
                 <Link target='_blank'

@@ -105,7 +105,7 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
   private
 
   def format_channel_data(channel)
-    channel.as_json(only: [:details_type, :id, :public_identifier, :public_name],
+    channel.as_json(only: [:details_type, :id, :public_identifier, :public_name, :public_name_changed_at],
       include: {
         details: {only: [], methods: [:url, :publication_title]},
         site_banner: {only: [], methods: [:read_only_react_property]}

@@ -150,8 +150,11 @@ class ChannelTest < ActionDispatch::IntegrationTest
       channel = channels(:google_verified)
       channel.public_name = "old_name"
       channel.save!
+
+      channel.public_name_changed_at = 3.months.ago
+      channel.save!
       old_name = channel.public_name
-      new_name = "new_name"
+      new_name = "new_new_name"
       channel.update(public_name: new_name)
 
       reserved = ReservedPublicName.find_by(public_name: old_name)
@@ -181,6 +184,24 @@ class ChannelTest < ActionDispatch::IntegrationTest
       channel.public_name = reserved_name.public_name
       assert_not channel.valid?
       assert_includes channel.errors[:public_name], "already under use"
+    end
+
+    test "should validate public_name cannot be changed for two months after previous change" do
+      channel = channels(:google_verified)
+      channel.public_name = "old_name"
+      channel.save!
+      assert_raises do
+        channel.update!(public_name: "new_name")
+      end
+    end
+
+    test "should validate public_name_changed_at is set after a public_name change" do
+      channel = channels(:google_verified)
+      channel.public_name = "old_name"
+      assert_nil channel.public_name_changed_at
+      channel.save!
+
+      assert_instance_of ActiveSupport::TimeWithZone, channel.public_name_changed_at
     end
   end
 

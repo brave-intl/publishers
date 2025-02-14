@@ -10,6 +10,10 @@ export default function PublicUrlConfirmationModal({ close, save }) {
   return (
     <div>
       <p className={styles['privacy-text']}>{t('contribution_pages.confirmation_text')}</p>
+      <ol className={`${styles['ordered-list']} ml-2`}>
+        <li className='mt-1'>{t('contribution_pages.confirmation_text_bullet_1')}</li>
+        <li className='mt-1'>{t('contribution_pages.confirmation_text_bullet_2')}</li>
+      </ol>
       <div className="text-right">
         <div className={styles['privacy-button-container']}>
           <Button
