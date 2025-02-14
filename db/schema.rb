@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_01_140330) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_12_043723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -607,6 +607,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_140330) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["reddit_channel_id"], name: "index_reddit_channel_details_on_reddit_channel_id"
+  end
+
+  create_table "reserved_public_names", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "permanent"
+    t.string "public_name", null: false
+    t.index ["public_name"], name: "index_reserved_public_names_on_public_name", unique: true
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
