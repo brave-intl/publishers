@@ -4376,10 +4376,13 @@ ipaddr.js@^2.0.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-2.2.0.tgz#d33fa7bac284f4de7af949638c9d68157c6b92e8"
   integrity sha512-Ag3wB2o37wslZS19hZqorUnrnzSkpOVy+IiiDEiTqNubEYpYuHWIf6K4psgN2ZWKExS4xhVCrRVfb/wfW8fWJA==
 
-is-accessor-descriptor@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-3.0.2.tgz#d7c716b7605f5e25300e1810ace3f29da680d1c8"
-  integrity sha512-dBaASFfID89NXR0nRMACyjjeN/OWgfnFIOsWI8fYLe7j4Bz8LDYy9JH5XjUYKWZIB3Z2tQq15Mx3EY5EMuIYpQ==
+is-accessor-descriptor@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-3.0.5.tgz#ee83f5f089e723ac7d066dcea2cab7a1cbb50487"
+  integrity sha512-L/J/3c9teQb5x1/2FR5dFFaxnqFPmHTKPkMr+1aDAVBk2gb21I4LQwCnOuiosH/I0ZrA7tqy5YBQahaC85pW5A==
+  dependencies:
+    gopd "^1.0.1"
+    hasown "^2.0.0"
 
 is-array-buffer@^3.0.4, is-array-buffer@^3.0.5:
   version "3.0.5"
