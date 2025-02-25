@@ -58,7 +58,7 @@ As far as the code base, here are the usages classified:
 
 Read below if you wish to get promo services running locally.
 
-**Note: This documentation has not been reviewed for some time and may be incomplete/innaccurate.**
+**Note: This documentation has not been reviewed for some time and may be incomplete/inaccurate.**
 
 1. Request access to [Vault-Promo-Services](https://github.com/brave-intl/vault-promo-services) and [ip2tags](https://github.com/brave-intl/vault-promo-services)
 2. Follow the [setup instructions](https://github.com/brave-intl/vault-promo-services)
