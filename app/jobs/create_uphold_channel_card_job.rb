@@ -7,9 +7,9 @@ class CreateUpholdChannelCardJob < ApplicationJob
     uphold_connection = UpholdConnection.find(uphold_connection_id)
     channel = Channel.find(channel_id)
     return unless uphold_connection&.is_member? &&
-      uphold_connection.uphold_verified? &&
+      uphold_connection&.uphold_verified? &&
       uphold_connection&.status == "ok" &&
-      uphold_connection.valid_country? &&
+      uphold_connection&.valid_country? &&
       channel&.verified? &&
       uphold_connection&.publisher&.active?
 

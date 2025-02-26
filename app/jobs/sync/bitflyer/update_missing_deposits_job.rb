@@ -9,7 +9,8 @@ class Sync::Bitflyer::UpdateMissingDepositsJob
 
   # I manually execute this job and everyone of the pending tasks resolves so I'm setting this to be very very slow.
   def perform(async = true, wait = 0.5)
-    Channel.missing_deposit_id.using_active_bitflyer_connection.select(:id).find_in_batches do |batch|
+    # callbacks mean that public_identifier needs to be included in this select statement
+    Channel.missing_deposit_id.using_active_bitflyer_connection.select(:id, :public_identifier).find_in_batches do |batch|
       batch.each do |channel|
         # FML
         if async

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_14_003636) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_26_204927) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -169,6 +169,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_14_003636) do
     t.string "public_name"
     t.string "public_identifier"
     t.datetime "public_name_changed_at"
+    t.index "lower((public_identifier)::text)", name: "index_channels_on_lower_public_identifier", unique: true
+    t.index "lower((public_name)::text)", name: "index_channels_on_lower_public_name", unique: true
     t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"

@@ -435,7 +435,7 @@ bitflyer_pub_channel:
   publisher: bitflyer_pub
   details: bitflyer_pub_details (SiteChannelDetails)
   verified: true
-  public_identifier: 'S8baxMJnPI'
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   deposit_id: 'bitflyer_pub_channel123'
 
 bitflyer_suspended_channel:
@@ -448,6 +448,6 @@ bitflyer_suspended_channel:
 bitflyer_pub_website:
   publisher: bitflyer_pub
   verified: true
-  public_identifier: 'F8baxNJnPl'
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: bitflyer_completed_website_details(SiteChannelDetails)
   deposit_id: 'bitflyer_pub_website1'
