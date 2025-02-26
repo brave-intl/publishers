@@ -532,10 +532,10 @@ class Channel < ApplicationRecord
     if public_name_changed_at && public_name_changed_at > 60.days.ago
       errors.add(:public_name, "public name change must be two months after previous change")
     end
-    
+
     # Check if the value of public_name already exists in either column (case insensitive)
     matches = self.class.where("LOWER(public_name) = :value OR LOWER(public_identifier) = :value", value: public_name.downcase)
-    if matches.exists? && !matches.pluck(:id).include?(self.id)
+    if matches.exists? && !matches.pluck(:id).include?(id)
       errors.add(:public_name, "must be unique across both public_name and public_identifier")
     end
 
