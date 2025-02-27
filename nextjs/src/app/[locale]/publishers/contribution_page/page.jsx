@@ -314,8 +314,6 @@ export default function ContributionPage() {
               <Input
                 size='normal'
                 value={publicName || publicIdentifier}
-                minlength={3}
-                maxlength={32}
                 onChange={(e) => {setIsPublicUrlModalOpen(true); setTempPublicUrl(e.value)}}
                 className={`w-full md:w-1/2 inline-block pb-3`}
                 showErrors={publicNameError.length}

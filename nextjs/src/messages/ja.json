@@ -342,6 +342,13 @@
     "preview_title": "プレビュー - {social}: {title}",
     "profile": "プロフィールピクチャー",
     "cover": "カバーイメージ",
+    "public_url_note": "Choose a custom URL for your contribution page. See our ",
+    "public_url_link": "support article",
+    "public_url_note_2": " for more information about custom URLs.",
+    "cooldown_warning": "You may edit your public url in {days} days.",
+    "confirmation_text": "Are you sure you would like to change the URL for your contribution page? Note:",
+    "confirmation_text_bullet_1": "You can only change your URL once every 60 days.",
+    "confirmation_text_bullet_2": "If you change your URL, your old URL will become unavailable for awhile before it can be used again.",
     "channel_names": {
       "site": "Webサイト",
       "twitter": "X（旧Twitter）",
@@ -402,7 +409,10 @@
     }
   },
   "publicChannelPage": {
-    "privacyDisclaimer": "コントリビューションはブロックチェーンネットワークで履歴として一般に公開され、削除することはできませんのであらかじめご注意ください。",
+    "privacyDisclaimer": " コントリビューションはブロックチェーンネットワークで履歴として一般に公開され、削除することはできませんのであらかじめご注意ください。",
+    "trustWarning": "Make sure you trust this creator. Contributions made via this page go to: ",
+    "report_sus_urls": "Does this page have an inappropriate URL? ",
+    "report_link": "Report it to Brave.",
     "generateQR": "QRコードを生成する",
     "QRModalHeader": "モバイルウォレットから送信する",
     "QRModalText": "QRコードを読み込んでモバイル端末のWeb3ウォレットを使用して送信できます。",
