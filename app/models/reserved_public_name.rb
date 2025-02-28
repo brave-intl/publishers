@@ -1,0 +1,2 @@
+class ReservedPublicName < ApplicationRecord
+end

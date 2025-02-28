@@ -2,7 +2,8 @@ class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
   skip_before_action :authenticate_publisher!
 
   def show
-    channel = Channel.includes(:site_banner).find_by(public_identifier: params[:public_identifier])
+    channel = Channel.includes(:site_banner).where("public_identifier ILIKE :query OR public_name ILIKE :query", query: "%#{params[:public_identifier]}%").first
+
     channel_title = channel&.publication_title
     crypto_addresses = channel&.crypto_addresses&.pluck(:address, :chain)
 

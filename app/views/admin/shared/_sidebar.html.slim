@@ -41,6 +41,7 @@ aside
           / - if params[:id] || params[:invoice_id]
           /     ul.sub-menu
           /       = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
+      = nav_link "Reserved Public Names", admin_reserved_public_names_path
       = nav_link "FAQs", admin_faq_categories_path
       = nav_link "Payout Reports", admin_payout_reports_path
       = nav_link "Referral Promo", admin_unattached_promo_registrations_path

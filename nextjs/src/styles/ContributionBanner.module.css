@@ -114,3 +114,7 @@
 
 	max-width: 1280px;
 }
+
+.public-url-input {
+  margin-right: -8px;
+}

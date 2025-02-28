@@ -30,6 +30,6 @@ export async function apiRequest(
       console.log(err);
     }
 
-    return { errors: [err] };
+    return { errors: [err.response.data.errors] };
   }
 }

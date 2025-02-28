@@ -1,0 +1,14 @@
+forbidden:
+  public_name: "hitchhikers_guide_official"
+  permanent: true
+
+temporary:
+  public_name: "Slartybartfast"
+  permanent: false
+
+offensive:
+  public_name: "marvin_is_depressed"
+  permanent: true
+
+improbable:
+  public_name: "Heart_of_Gold"

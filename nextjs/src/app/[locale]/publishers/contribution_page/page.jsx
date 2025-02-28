@@ -20,6 +20,7 @@ import Card from '@/components/Card';
 import Container from '@/components/Container';
 import Toast from '@/components/Toast';
 import Preview from './preview/preview';
+import PublicUrlConfirmationModal from './PublicUrlConfirmationModal';
 import EmptyChannelCard from '../home/channels/EmptyChannelCard';
 import styles from '@/styles/ContributionBanner.module.css';
 
@@ -28,6 +29,7 @@ export default function ContributionPage() {
   const [channel, setChannel] = useState({});
   const [channelList, setChannelList] = useState([]);
   const [title, setTitle] = useState('');
+  const [publicName, setPublicName] = useState('');
   const [publicIdentifier, setPublicIdentifier] = useState('');
   const [description, setDescription] = useState('');
   const [socialLinks, setSocialLinks] = useState({});
@@ -36,6 +38,10 @@ export default function ContributionPage() {
   const [toastMessage, setToastMessage] = useState('');
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [noChannels, setNoChannels] = useState(false);
+  const [publicNameError, setPublicNameError] = useState('');
+  const [isPublicUrlModalOpen, setIsPublicUrlModalOpen] = useState(false);
+  const [tempPublicUrl, setTempPublicUrl] = useState('');
+  const [cooldownDays, setCooldownDays] = useState(0);
   const logoInputRef = useRef(null);
   const coverInputRef = useRef(null);
 
@@ -73,11 +79,13 @@ export default function ContributionPage() {
   async function updateChannelAttributes(channelData) {
     const bannerDetails = channelData.site_banner.read_only_react_property;
     setTitle(bannerDetails.title);
+    setPublicName(channelData.public_name);
     setPublicIdentifier(channelData.public_identifier);
     setDescription(bannerDetails.description);
     setSocialLinks(bannerDetails.socialLinks);
     setLogoUrl(bannerDetails.logoUrl);
     setCoverUrl(bannerDetails.backgroundUrl);
+    setCooldownDays(findCooldownDays(channelData.public_name_changed_at));
   }
 
   function channelType(channelObj) {
@@ -86,6 +94,19 @@ export default function ContributionPage() {
 
   function channelDisplay(type) {
     return t(`contribution_pages.channel_names.${type}`);
+  }
+
+  function findCooldownDays(dateStr) {
+    // parsInt of null returns NaN
+    if (parseInt(dateStr)>=0) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const diffInMs = today - date;
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+      return 60 - diffInDays;
+    } else {
+      return 0;
+    }
   }
 
   function channelIconType(channelType) {
@@ -101,8 +122,30 @@ export default function ContributionPage() {
   async function updateAttribute(body) {
     setToastMessage(t('contribution_pages.saving_toast'))
     const res = await apiRequest(`contribution_page/${channel.id}`, 'PATCH', body);
-    setChannel(res);
-    await updateChannelAttributes(res);
+    if (res.errors) {
+      // for now public name errors are the only ones we're displaying
+      setPublicNameError(res.errors[0]['public_name'].join(', '));
+    } else {
+      setChannel(res);
+      await updateChannelAttributes(res);
+    }
+  }
+
+  async function savePublicUrl() {
+    setIsPublicUrlModalOpen(false);
+    if (tempPublicUrl.length < 3 || tempPublicUrl.length > 32) {
+      setPublicNameError('must be between 3 and 32 characters in length');
+    } else if (!tempPublicUrl.match(/^[a-zA-Z0-9 _-]+$/).length) {
+      setPublicNameError('must only contain letters, numbers, dashes, and underscores');
+    } else {
+      setPublicNameError('');
+      await updateAttribute({ publicName: tempPublicUrl });
+    }
+  }
+
+  function closeModal() {
+    setTempPublicUrl('');
+    setIsPublicUrlModalOpen(false);
   }
 
   async function saveTitle(e) {
@@ -270,10 +313,30 @@ export default function ContributionPage() {
               <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.sharable_url')}</div>
               <Input
                 size='normal'
-                value={`${currentDomain}/c/${publicIdentifier}`}
-                className='w-full md:w-1/2 inline-block pb-3'
-                disabled={true}
-              />
+                value={publicName || publicIdentifier}
+                onChange={(e) => {setIsPublicUrlModalOpen(true); setTempPublicUrl(e.value)}}
+                className={`w-full md:w-1/2 inline-block pb-3`}
+                showErrors={publicNameError.length}
+                disabled={cooldownDays > 0}
+              >
+                <span slot="left-icon" className={`${styles['public-url-input']} color-tertiary`}>{`${currentDomain}/c/`}</span>
+                <span slot='errors'>{publicNameError}</span>
+              </Input>
+              {cooldownDays > 0 && (
+                <div className='pb-1 color-tertiary'>
+                  {t('contribution_pages.cooldown_warning', { days: Math.floor(cooldownDays) })}
+                </div>
+              )}
+              <div className='pb-3 color-tertiary'>
+                {t('contribution_pages.public_url_note')}
+                <Link target='_blank'
+                  rel="noreferrer"
+                  href="https://support.brave.com/hc/en-us/articles/33646848629901-Creators-Custom-URLs-for-Contribution-Pages"
+                >
+                  {t('contribution_pages.public_url_link')}
+                </Link>
+                {t('contribution_pages.public_url_note_2')}
+              </div>
 
               <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.avatar_cover_image')}</div>
               <div className='hidden md:block relative mb-3'>
@@ -362,6 +425,13 @@ export default function ContributionPage() {
           className={`${styles['preview-modal']}`}
         >
           <Preview channel={channel} isOpen={previewModalOpen} />
+        </Dialog>
+        <Dialog
+          isOpen={isPublicUrlModalOpen}
+          onClose={closeModal}
+          showClose={true}
+        >
+          <PublicUrlConfirmationModal close={closeModal} save={savePublicUrl}/>
         </Dialog>
       </main>
     );
