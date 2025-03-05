@@ -327,7 +327,7 @@
     "public_url_note": "Choose a custom URL for your contribution page. See our ",
     "public_url_link": "support article",
     "public_url_note_2": " for more information about custom URLs.",
-    "cooldown_warning": "You may edit your public url in {days} days.",
+    "cooldown_warning": "You may edit your public url in {days} days. ",
     "confirmation_text": "Are you sure you would like to change the URL for your contribution page? Note:",
     "confirmation_text_bullet_1": "You can only change your URL once every 60 days.",
     "confirmation_text_bullet_2": "If you change your URL, your old URL will become unavailable for awhile before it can be used again.",
