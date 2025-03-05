@@ -322,12 +322,8 @@ export default function ContributionPage() {
                 <span slot="left-icon" className={`${styles['public-url-input']} color-tertiary`}>{`${currentDomain}/c/`}</span>
                 <span slot='errors'>{publicNameError}</span>
               </Input>
-              {cooldownDays > 0 && (
-                <div className='pb-1 color-tertiary'>
-                  {t('contribution_pages.cooldown_warning', { days: Math.floor(cooldownDays) })}
-                </div>
-              )}
               <div className='pb-3 color-tertiary'>
+                {cooldownDays > 0 && t('contribution_pages.cooldown_warning', { days: Math.floor(cooldownDays) })}
                 {t('contribution_pages.public_url_note')}
                 <Link target='_blank'
                   rel="noreferrer"
