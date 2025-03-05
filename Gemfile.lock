@@ -447,7 +447,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (3.0.12)
+    rack (3.0.13)
     rack-protection (4.0.0)
       base64 (>= 0.1.0)
       rack (>= 3.0.0, < 4)
@@ -680,7 +680,7 @@ GEM
     u2f (1.0.0)
     unaccent (0.4.0)
     unicode-display_width (2.6.0)
-    uri (0.13.1)
+    uri (0.13.2)
     useragent (0.16.11)
     vcr (6.3.1)
       base64
@@ -802,7 +802,7 @@ DEPENDENCIES
   pry-stack_explorer (~> 0.6.1)
   public_suffix (~> 5.0)
   puma (~> 6.4.3)
-  rack (= 3.0.12)
+  rack (= 3.0.13)
   rack-utf8_sanitizer
   rails (= 7.2.2.1)
   rails-controller-testing
