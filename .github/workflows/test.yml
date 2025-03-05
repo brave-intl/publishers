@@ -34,7 +34,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.1
+          ruby-version: 3.4.2
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
@@ -57,9 +57,9 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: Yarn build
-        run: cd public/creators-landing && yarn install && yarn build 
-        env: 
-          process.env.CI : false
+        run: cd public/creators-landing && yarn install && yarn build
+        env:
+          process.env.CI: false
       - name: NewUI install
         run: cd nextjs && npm install
         env:
@@ -77,4 +77,3 @@ jobs:
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
           BAT_RATIOS_URL: https://ratios.rewards.bravesoftware.com
-

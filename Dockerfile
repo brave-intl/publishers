@@ -6,7 +6,7 @@ FROM ruby:$RUBY_VERSION
 ARG NODE_MAJOR_VERSION=20
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash -
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libvips nodejs libsodium23 && \
+    apt-get install -y build-essential libvips nodejs libsodium23 libyaml-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man && \
     npm install -g yarn

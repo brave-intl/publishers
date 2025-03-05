@@ -37,7 +37,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.1
+          ruby-version: 3.4.2
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
@@ -65,4 +65,3 @@ jobs:
       - if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]' }}
         name: Bundler Audit
         run: bundle exec bundle-audit check --update
-

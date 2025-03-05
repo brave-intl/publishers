@@ -40,6 +40,8 @@ gem "cancancan", "~> 3.5.0"
 
 gem "connection_pool", "~> 2.4"
 
+gem "csv"
+
 # Authentication
 gem "devise", "~> 4.9"
 
@@ -85,6 +87,8 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 
 # OAuth client for GitHub
 gem "omniauth-github", "~> 2.0.1"
+
+gem "ostruct"
 
 # Model record auditing
 gem "paper_trail", "~> 15.1.0"

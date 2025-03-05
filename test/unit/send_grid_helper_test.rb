@@ -57,7 +57,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
       SendGrid::ApiHelper.upsert_contact(publisher: publisher)
     end
 
-    assert_equal '[{"message"=>"The following parameters are not custom fields or reserved fields: [address]", "error_indices"=>[0]}]', exp.message
+    assert_equal '[{\"message\" => \"The following parameters are not custom fields or reserved fields: [address]\", \"error_indices\" => [0]}]', exp.message
   end
 
   test "can add a contact, by email, to a list" do
