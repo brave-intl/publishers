@@ -201,8 +201,9 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.1)
-    dnsruby (1.72.3)
+    dnsruby (1.72.4)
       base64 (~> 0.2.0)
+      logger (~> 1.6.5)
       simpleidn (~> 0.2.1)
     docile (1.4.1)
     domain_name (0.6.20240107)
