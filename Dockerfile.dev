@@ -1,4 +1,4 @@
-FROM ruby:3.3.1-slim
+FROM ruby:3.4.2-slim
 
 RUN apt-get update -qq && apt-get install -y build-essential software-properties-common
 RUN apt-get update -qq
@@ -11,7 +11,8 @@ RUN apt-get install -y nodejs \
   firefox-esr \
   libtool \
   automake \
-  libsodium23
+  libsodium23 \
+  libyaml-dev
 
 RUN gem install bundler
 

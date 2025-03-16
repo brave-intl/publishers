@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "~> 3.3.1"
+ruby "~> 3.4.0"
 
 source "https://rubygems.org"
 
@@ -39,6 +39,8 @@ gem "brotli", "~> 0.5.0"
 gem "cancancan", "~> 3.5.0"
 
 gem "connection_pool", "~> 2.4"
+
+gem "csv"
 
 # Authentication
 gem "devise", "~> 4.9"
@@ -85,6 +87,8 @@ gem "omniauth-reddit", git: "https://github.com/brave-intl/omniauth-reddit.git",
 
 # OAuth client for GitHub
 gem "omniauth-github", "~> 2.0.1"
+
+gem "ostruct"
 
 # Model record auditing
 gem "paper_trail", "~> 15.1.0"
