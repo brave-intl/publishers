@@ -27,8 +27,13 @@
   --leo-font-large-link: 400 16px/26px 'Inter';
   --leo-font-large-semibold: 600 16px/26px 'Inter';
   --leo-font-large-regular: 400 16px/26px 'Inter';
-  --leo-font-components-tableheader: 500 13px/15.6px 'Inter';
-  --leo-font-components-label: 700 10px/12px 'Inter';
+  --leo-font-components-button-default: 600 14px/20px 'Inter';
+  --leo-font-components-button-jumbo: 600 18px/24px 'Inter';
+  --leo-font-components-button-large: 600 16px/22px 'Inter';
+  --leo-font-components-button-small: 600 12px/18px 'Inter';
+  --leo-font-components-label: 700 10px/10px 'Inter';
+  --leo-font-components-navbutton: 600 14px/22px 'Inter';
+  --leo-font-components-tableheader: 600 13px/16px 'Inter';
   --leo-typography-components-label-font-weight: 700;
   
 
