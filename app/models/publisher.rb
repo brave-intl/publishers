@@ -553,6 +553,11 @@ class Publisher < ApplicationRecord
     end
   end
 
+  # Override Devise logic for IP tracking
+  def extract_ip_from(request)
+    nil
+  end
+
   class << self
     def available_countries
       ISO3166::Country.all_names_with_codes
