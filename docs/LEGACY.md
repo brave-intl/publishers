@@ -1,4 +1,3 @@
-
 # Legacy Docs - Preserved for Archival/Reference Purposes.
 
 Some content here may be helpful, but this document should be considered out of date.
@@ -64,7 +63,6 @@ bundle exec rake ssl:generate
 
 Note: If you are running in the docker context you can just manually execute the lines found in `lib/tasks/ssl.rake`. The task is just
 a convenience wrapper for openssl cert generation.
-
 
 When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
@@ -355,7 +353,6 @@ To access the `bat-ledgers` via direct network interface. You will need to be ru
 
 To test that the publishers containers have direct network access to `bat-ledgers`:
 
-
 1. Retrieve the container id
 
 Run `docker ps | grep publishers-web` and retrieve the publishers container id (first value in the output) and use it to attach to the container below
@@ -374,8 +371,7 @@ Execute simple GET against the name of the networked container (defined in the d
 curl eyeshade-web:3002
 ```
 
-If the network is properly configured you will recieve the default healthcheck response from eyeshade "ack". You are now able to access any container in the `ledger` network, i.e. `eyeshade-web`, `eyeshade-consumer`, or `eyeshade-postgres` ([See bat-legders' docker compose file](https://github.com/brave-intl/bat-ledger/blob/master/docker-compose.yml))
-
+If the network is properly configured you will receive the default healthcheck response from eyeshade "ack". You are now able to access any container in the `ledger` network, i.e. `eyeshade-web`, `eyeshade-consumer`, or `eyeshade-postgres` ([See bat-legders' docker compose file](https://github.com/brave-intl/bat-ledger/blob/master/docker-compose.yml))
 
 ### Create the databases
 
@@ -411,9 +407,9 @@ To add add a referral balance to an owner account:
 rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7, 400]" # Adds 400 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
 
-Balances should be reflected in the dashboard.  When using docker-compose the fixture data should be loaded for all available fixture users.
+Balances should be reflected in the dashboard. When using docker-compose the fixture data should be loaded for all available fixture users.
 
-For details on how these are generated see: `lib/docker/eyeshade_helper.rb` for core class and methods, `lib/tasks/docker.rb` for loading data if running `publishers` installed locally,  and `lib/tasks/eyeshade.rb` for loading data if you are using docker-compose to develop publishers.
+For details on how these are generated see: `lib/docker/eyeshade_helper.rb` for core class and methods, `lib/tasks/docker.rb` for loading data if running `publishers` installed locally, and `lib/tasks/eyeshade.rb` for loading data if you are using docker-compose to develop publishers.
 
 ### Adding a new type of channel
 
