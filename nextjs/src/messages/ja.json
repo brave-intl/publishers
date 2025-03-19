@@ -342,6 +342,13 @@
     "preview_title": "プレビュー - {social}: {title}",
     "profile": "プロフィールピクチャー",
     "cover": "カバーイメージ",
+    "public_url_note": "コントリビューション・ページのカスタムURLを選択してください。カスタムURLに関する詳細は",
+    "public_url_link": "サポートページ",
+    "public_url_note_2": "をご覧ください。",
+    "cooldown_warning": "{days} 日後に公開URLが編集できるようになる予定です。 ",
+    "confirmation_text": "コントリビューション・ページのURLを変更していいですか? 注意：",
+    "confirmation_text_bullet_1": "URLの変更は1度行うと60日間変更できなくなります。",
+    "confirmation_text_bullet_2": "URLを変更すると以前のURLはしばらく使用できなくなります。その期間は再設定もできません。",
     "channel_names": {
       "site": "Webサイト",
       "twitter": "X（旧Twitter）",
@@ -402,7 +409,10 @@
     }
   },
   "publicChannelPage": {
-    "privacyDisclaimer": "コントリビューションはブロックチェーンネットワークで履歴として一般に公開され、削除することはできませんのであらかじめご注意ください。",
+    "privacyDisclaimer": " コントリビューションはブロックチェーンネットワークで履歴として一般に公開され、削除することはできませんのであらかじめご注意ください。",
+    "trustWarning": "信頼できるクリエイターであることをご確認ください。コントリビューションはこのページを通じて以下に送られます: ",
+    "report_sus_urls": "正しくないURLが表示されていますか? ",
+    "report_link": "Braveに詳細をご報告ください。",
     "generateQR": "QRコードを生成する",
     "QRModalHeader": "モバイルウォレットから送信する",
     "QRModalText": "QRコードを読み込んでモバイル端末のWeb3ウォレットを使用して送信できます。",

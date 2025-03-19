@@ -90,10 +90,16 @@ export default function PublicChannelPage({publicIdentifier, previewMode}) {
               <CryptoPaymentWidget title={title} cryptoAddresses={cryptoAddresses} cryptoConstants={cryptoConstants} previewMode={previewMode} />
               <div className={`${styles['privacy-disclaimer']}`}>
                 {t('publicChannelPage.trustWarning')}
-                <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+                <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>.
+                {t('publicChannelPage.privacyDisclaimer')}
               </div>
               <div className={`${styles['privacy-disclaimer']}`}>
-                {t('publicChannelPage.privacyDisclaimer')}
+                {t('publicChannelPage.report_sus_urls')}
+                <strong>
+                  <a target="_blank" rel="noopener noreferrer" href="https://support.brave.com/hc/en-us/requests/new">
+                    {t('publicChannelPage.report_link')}
+                  </a>
+                </strong>
               </div>
             </div>
           </div>

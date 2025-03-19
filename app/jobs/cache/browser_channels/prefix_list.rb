@@ -44,7 +44,7 @@ class Cache::BrowserChannels::PrefixList
       dummy_values.each_with_index do |_, i|
         dummy_values[i] = ("%8.8s" % i.to_s(16)).tr(" ", "0")
       end
-      result.concat(dummy_values)
+      result.concat(dummy_values).sort!
     end
 
     to_protobuf_file(result)

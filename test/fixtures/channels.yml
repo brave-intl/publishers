@@ -2,11 +2,13 @@ default: &default
   publisher: default
   details: default_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 new_site:
   publisher: default
   details: new_site_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 verified:
   publisher: verified
@@ -18,94 +20,111 @@ verified_blocked_country:
   publisher: verified_blocked_country
   details: verified_blocked_country_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 verified_blocked_country_with_exception:
   publisher: verified_with_blocked_country_exception
   details: verified_blocked_country_with_exception_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 top_referrer_channel:
   publisher: top_referrer
   details: top_referrer_verified_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 top_referrer_gemini_channel:
   publisher: top_referrer_gemini
   details: top_referrer_gemini_verified_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 top_referrer_bitflyer_channel:
   publisher: top_referrer_bitflyer
   details: top_referrer_bitflyer_verified_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   deposit_id: 'bitflyer_pub_channel123'
 
 bitflyer_two_channel:
   publisher: bitflyer_two
   details: bitflyer_two_channel_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   deposit_id: 'bitflyer_pub_channel123'
 
 verified_exclude:
   publisher: medium_media_group
   details: verified_exclude_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_dns:
   publisher: default
   details: to_verify_dns_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_file:
   publisher: default
   details: to_verify_file_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_github:
   publisher: default
   details: to_verify_github_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_support:
   publisher: default
   details: to_verify_support_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_wordpress:
   publisher: default
   details: to_verify_wordpress_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_wordpress_blank_pub_id:
   publisher: default
   details: to_verify_wordpress_blank_pub_id_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 to_verify_restricted:
   publisher: default
   details: to_verify_restricted_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 default_verified:
   publisher: default
   details: verified_default_details (SiteChannelDetails)
   verified: true
-  public_identifier: '123456dfg6'
+  public_identifier: '123476dfg6'
 
 completed:
   publisher: completed
   details: completed_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 partially_completed_verified:
   publisher: partially_completed
   details: partially_completed_verified (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 partially_completed_unverified:
   publisher: partially_completed
   details: partially_completed_unverified (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 stale:
   created_at: <%= Time.now - 10.weeks %>
@@ -113,52 +132,62 @@ stale:
   publisher: stale
   details: stale_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 fake1:
   publisher: fake1
   details: fake1_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 fake2:
   publisher: fake2
   details: fake2_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 stats_test:
   publisher: stats
   details: stats_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 uphold_connected_channel:
   publisher: uphold_connected
   details: uphold_connected_site_channel (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 uphold_connected_selected_wallet_channel:
   publisher: publisher_selected_wallet_provider
   details: uphold_connected_selected_wallet_site_channel (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 uphold_connected_channel_in_japan:
   publisher: uphold_in_japan
   details: uphold_connected_site_channel_japan (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 <% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
 uphold_connected_<%= item %>:
   publisher: uphold_connected_<%= item %>
   details: uphold_connected_<%= item %> (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 uphold_connected_twitch_<%=item%>:
   publisher: uphold_connected_<%= item %>
   details: uphold_connected_twitch_<%=item%> (TwitchChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 uphold_connected_twitter_<%= item %>:
   publisher: uphold_connected_<%=item%>
   details: uphold_connected_twitter_<%=item%> (TwitterChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 <%end%>
 
 alice_default_twitter:
@@ -177,77 +206,92 @@ youtube_initial:
   publisher: youtube_initial
   details: youtube_initial_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 youtube_new:
   publisher: youtube_new
   details: youtube_new_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 google_verified:
   publisher: google_verified
   details: google_verified_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 twitch_new:
   publisher: twitch_new
   details: twitch_new_details (TwitchChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 twitch_verified:
   publisher: twitch_verified
   details: twitch_verified_details (TwitchChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 twitter_new:
   publisher: channel_publisher
   details: twitter_new_details (TwitterChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 vimeo_new:
   publisher: channel_publisher
   details: vimeo_details (VimeoChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 reddit_new:
   publisher: channel_publisher
   details: reddit_details (RedditChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 github_new:
   publisher: channel_publisher
   details: github_details (GithubChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 global_yt1:
   publisher: global_media_group
   details: global_yt1_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 global_yt2:
   publisher: global_media_group
   details: global_yt2_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 global_verified:
   publisher: global_media_group
   details: global_verified_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 global_inprocess:
   publisher: global_media_group
   details: global_inprocess_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 global_inprocess3:
   publisher: global_media_group
   details: global_inprocess3_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   verification_status: "started"
 
 global_inprocess4:
   publisher: global_media_group
   details: global_inprocess4_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   verification_status: "failed"
 
 global_abandoned:
@@ -256,12 +300,14 @@ global_abandoned:
   updated_at: <%= Time.now - 20.weeks %>
   details: global_abandoned_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   verification_status: "failed"
 
 small_media_group_to_delete:
   publisher: small_media_group
   details: to_delete_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 small_media_group_to_verify:
   publisher: small_media_group
@@ -269,11 +315,13 @@ small_media_group_to_verify:
   updated_at: <%= Time.now - 20.weeks %>
   details: to_verify_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 medium_media_group_abandoned_1:
   publisher: medium_media_group
   details: medium_media_group_abandoned_1_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   created_at: <%= Time.now - 1.day - 1.minute %>
   updated_at: <%= Time.now - 1.day - 1.minute%>
 
@@ -281,6 +329,7 @@ medium_media_group_abandoned_2:
   publisher: medium_media_group
   details: medium_media_group_abandoned_2_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   created_at: <%= Time.now - 1.day - 1.minute %>
   updated_at: <%= Time.now - 1.day - 1.minute%>
 
@@ -288,6 +337,7 @@ medium_media_group_abandoned_3:
   publisher: medium_media_group
   details: medium_media_group_abandoned_3_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   created_at: <%= Time.now - 1.hour %>
   updated_at: <%= Time.now - 1.hour %>
 
@@ -295,91 +345,109 @@ joe_yt1:
   publisher: joe_the_only_yt_verified
   details: joe_yt1_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 suspended:
   publisher: suspended
   details: suspended_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 fraudulently_verified_site:
   publisher: fraudulent_verifier
   details: fraudulently_verified_site_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 locked_out_site:
   publisher: locked_out_verifier
   details: locked_out_site_details (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 promo_enabled_site:
   publisher: promo_enabled
   details: promo_enabled_site_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 promo_enabled_site_not_verified:
   publisher: promo_enabled
   details: promo_enabled_site_details_not_verified (SiteChannelDetails)
   verified: false
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 promo_enabled_youtube:
   publisher: promo_enabled
   details: promo_enabled_youtube_details (YoutubeChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 reddit_promo_registered:
   publisher: promo_not_registered
   details: promo_reddit_details (RedditChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 reddit_promo_lockout:
   publisher: promo_lockout
   details: promo_lockout_reddit_details (RedditChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 potentially_paid_site:
   publisher: potentially_paid
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: potentially_paid_site_details (SiteChannelDetails)
 
 potentially_paid_youtube:
   publisher: potentially_paid
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: potentially_paid_youtube_details (YoutubeChannelDetails)
 
 uphold_connected_channel:
   publisher: uphold_connected
   details: uphold_connected_site_channel (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
 gemini_not_completed_website:
   publisher: gemini_not_completed
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: gemini_not_completed_website_details (SiteChannelDetails)
 
 gemini_completed_website:
   publisher: gemini_completed
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: gemini_completed_website_details (SiteChannelDetails)
 
 gemini_in_japan_completed_website:
   publisher: gemini_in_japan
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: gemini_in_japan_website_details (SiteChannelDetails)
 
 bitflyer_pub_channel:
   publisher: bitflyer_pub
   details: bitflyer_pub_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   deposit_id: 'bitflyer_pub_channel123'
 
 bitflyer_suspended_channel:
   publisher: bitflyer_suspended
   details: bitflyer_suspended_details (SiteChannelDetails)
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   deposit_id: 'bitflyer_pub_channel321'
 
 bitflyer_pub_website:
   publisher: bitflyer_pub
   verified: true
+  public_identifier: <%= SecureRandom.alphanumeric(10) %>
   details: bitflyer_completed_website_details(SiteChannelDetails)
   deposit_id: 'bitflyer_pub_website1'

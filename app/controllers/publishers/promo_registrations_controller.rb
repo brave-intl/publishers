@@ -70,8 +70,8 @@ class Publishers::PromoRegistrationsController < ApplicationController
   #
   # groups       - the group information from Eyeshade
   # user         - the publisher to find their finalizations
-  # start_date   - the beginning of the range to recieve data within
-  # end_date     - the end of the range to recieve data within
+  # start_date   - the beginning of the range to receive data within
+  # end_date     - the end of the range to receive data within
   #
   # Returns a hash of group_ids and their associated counts, { group_id => count }
   def group_counts(groups, user, start_date, end_date)

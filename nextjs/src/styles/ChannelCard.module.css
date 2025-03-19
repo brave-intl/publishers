@@ -105,3 +105,7 @@
   border-color: var(--leo-color-primitive-primary-30);
   box-shadow: 4px 4px 0 0 rgba(124 145 255 / 100%);
 }
+
+.ordered-list {
+  list-style: decimal;
+}

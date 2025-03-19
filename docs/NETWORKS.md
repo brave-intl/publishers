@@ -6,7 +6,6 @@ To access the `bat-ledgers` via direct network interface. You will need to be ru
 
 To test that the publishers containers have direct network access to `bat-ledgers`:
 
-
 1. Retrieve the container id
 
 Run `docker ps | grep publishers-web` and retrieve the publishers container id (first value in the output) and use it to attach to the container below
@@ -25,6 +24,4 @@ Execute simple GET against the name of the networked container (defined in the d
 curl eyeshade-web:3002
 ```
 
-If the network is properly configured you will recieve the default healthcheck response from eyeshade "ack". You are now able to access any container in the `ledger` network, i.e. `eyeshade-web`, `eyeshade-consumer`, or `eyeshade-postgres` ([See bat-legders' docker compose file](https://github.com/brave-intl/bat-ledger/blob/master/docker-compose.yml))
-
-
+If the network is properly configured you will receive the default healthcheck response from eyeshade "ack". You are now able to access any container in the `ledger` network, i.e. `eyeshade-web`, `eyeshade-consumer`, or `eyeshade-postgres` ([See bat-legders' docker compose file](https://github.com/brave-intl/bat-ledger/blob/master/docker-compose.yml))

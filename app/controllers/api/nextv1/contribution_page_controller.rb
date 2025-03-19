@@ -31,6 +31,7 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
 
     permitted_params = params.permit(
       :contribution_page,
+      :publicName,
       :id,
       :format,
       :description,
@@ -67,8 +68,17 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
         site_banner.save!
       end
       site_banner.reload
-      channel_data = format_channel_data(current_channel)
-      render(json: channel_data, status: 200)
+
+      # if permitted_params[:publicName]
+      #   current_channel.update(public_name: permitted_params[:publicName])
+      # end
+
+      if current_channel.errors.empty?
+        channel_data = format_channel_data(current_channel)
+        render(json: channel_data, status: 200)
+      else
+        render(json: {errors: current_channel.errors}, status: 400)
+      end
     rescue => e
       LogException.perform(e, publisher: current_publisher)
       render(json: {errors: "channel banner could not be updated"}, status: 400)
@@ -95,7 +105,7 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
   private
 
   def format_channel_data(channel)
-    channel.as_json(only: [:details_type, :id, :public_identifier],
+    channel.as_json(only: [:details_type, :id, :public_identifier, :public_name, :public_name_changed_at],
       include: {
         details: {only: [], methods: [:url, :publication_title]},
         site_banner: {only: [], methods: [:read_only_react_property]}
