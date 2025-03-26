@@ -69,9 +69,9 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
       end
       site_banner.reload
 
-      # if permitted_params[:publicName]
-      #   current_channel.update(public_name: permitted_params[:publicName])
-      # end
+      if permitted_params[:publicName]
+        current_channel.update(public_name: permitted_params[:publicName])
+      end
 
       if current_channel.errors.empty?
         channel_data = format_channel_data(current_channel)

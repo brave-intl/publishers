@@ -29,7 +29,7 @@ export default function ContributionPage() {
   const [channel, setChannel] = useState({});
   const [channelList, setChannelList] = useState([]);
   const [title, setTitle] = useState('');
-  // const [publicName, setPublicName] = useState('');
+  const [publicName, setPublicName] = useState('');
   const [publicIdentifier, setPublicIdentifier] = useState('');
   const [description, setDescription] = useState('');
   const [socialLinks, setSocialLinks] = useState({});
@@ -38,7 +38,7 @@ export default function ContributionPage() {
   const [toastMessage, setToastMessage] = useState('');
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
   const [noChannels, setNoChannels] = useState(false);
-  // const [publicNameError, setPublicNameError] = useState('');
+  const [publicNameError, setPublicNameError] = useState('');
   const [isPublicUrlModalOpen, setIsPublicUrlModalOpen] = useState(false);
   const [tempPublicUrl, setTempPublicUrl] = useState('');
   const [cooldownDays, setCooldownDays] = useState(0);
@@ -79,7 +79,7 @@ export default function ContributionPage() {
   async function updateChannelAttributes(channelData) {
     const bannerDetails = channelData.site_banner.read_only_react_property;
     setTitle(bannerDetails.title);
-    // setPublicName(channelData.public_name);
+    setPublicName(channelData.public_name);
     setPublicIdentifier(channelData.public_identifier);
     setDescription(bannerDetails.description);
     setSocialLinks(bannerDetails.socialLinks);
@@ -124,7 +124,7 @@ export default function ContributionPage() {
     const res = await apiRequest(`contribution_page/${channel.id}`, 'PATCH', body);
     if (res.errors) {
       // for now public name errors are the only ones we're displaying
-      // setPublicNameError(res.errors[0]['public_name'].join(', '));
+      setPublicNameError(res.errors[0]['public_name'].join(', '));
     } else {
       setChannel(res);
       await updateChannelAttributes(res);
@@ -132,15 +132,15 @@ export default function ContributionPage() {
   }
 
   async function savePublicUrl() {
-    // setIsPublicUrlModalOpen(false);
-    // if (tempPublicUrl.length < 3 || tempPublicUrl.length > 32) {
-    //   setPublicNameError('must be between 3 and 32 characters in length');
-    // } else if (!tempPublicUrl.match(/^[a-zA-Z0-9 _-]+$/).length) {
-    //   setPublicNameError('must only contain letters, numbers, dashes, and underscores');
-    // } else {
-    //   setPublicNameError('');
-    //   await updateAttribute({ publicName: tempPublicUrl });
-    // }
+    setIsPublicUrlModalOpen(false);
+    if (tempPublicUrl.length < 3 || tempPublicUrl.length > 32) {
+      setPublicNameError('must be between 3 and 32 characters in length');
+    } else if (!tempPublicUrl.match(/^[a-zA-Z0-9 _-]+$/).length) {
+      setPublicNameError('must only contain letters, numbers, dashes, and underscores');
+    } else {
+      setPublicNameError('');
+      await updateAttribute({ publicName: tempPublicUrl });
+    }
   }
 
   function closeModal() {
@@ -313,15 +313,16 @@ export default function ContributionPage() {
               <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.sharable_url')}</div>
               <Input
                 size='normal'
-                value={publicIdentifier}
+                value={publicName || publicIdentifier}
                 onChange={(e) => {setIsPublicUrlModalOpen(true); setTempPublicUrl(e.value)}}
                 className={`w-full md:w-1/2 inline-block pb-3`}
-                disabled={cooldownDays > 0 || true}
+                showErrors={publicNameError.length}
+                disabled={cooldownDays > 0}
               >
                 <span slot="left-icon" className={`${styles['public-url-input']} color-tertiary`}>{`${currentDomain}/c/`}</span>
-                {/*<span slot='errors'>{publicNameError}</span>*/}
+                <span slot='errors'>{publicNameError}</span>
               </Input>
-              <div className='hidden pb-3 color-tertiary'>
+              <div className='pb-3 color-tertiary'>
                 {cooldownDays > 0 && t('contribution_pages.cooldown_warning', { days: Math.floor(cooldownDays) })}
                 {t('contribution_pages.public_url_note')}
                 <Link target='_blank'
