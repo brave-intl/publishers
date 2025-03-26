@@ -45,7 +45,7 @@
     "@faker-js/faker": "8.4.1",
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "5.17.0",
-    "@testing-library/react": "14.0.0",
+    "@testing-library/react": "14.3.1",
     "@types/react": "18.2.22",
     "@typescript-eslint/eslint-plugin": "6.7.2",
     "@typescript-eslint/parser": "6.7.2",
