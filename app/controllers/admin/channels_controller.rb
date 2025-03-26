@@ -55,6 +55,20 @@ module Admin
       end
     end
 
+    def ofac_update
+      # rather than trying to chain jobs, just perform the sorter ofac logic then kick off the address
+      # comparison job
+      new_ofac_list = ParseOfacListService.perform[:addresses]
+      raise "Empty list" unless new_ofac_list.present?
+      list = new_ofac_list.map { |addr| OfacAddress.new(address: addr) }
+      ActiveRecord::Base.transaction do
+        ActiveRecord::Base.connection.truncate_tables(:ofac_addresses)
+        OfacAddress.import list
+      end
+      BannedAddressJob.perform_later
+      redirect_to admin_channels_path, flash: {notice: "The OFAC list is being updated"}
+    end
+
     private
 
     def sortable_columns

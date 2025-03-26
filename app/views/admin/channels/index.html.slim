@@ -3,6 +3,10 @@ div.row
     section.panel
       header.panel-heading
         h4= "#{params[:type]&.titlecase} Channels"
+      h6= 'Run OFAC jobs'
+      = form_tag ofac_update_admin_channels_path do
+        = submit_tag("Start job", class: "btn btn-primary")
+      br
       .action-group  
         = form_tag(admin_channels_path, method: "get")
           .input-group
