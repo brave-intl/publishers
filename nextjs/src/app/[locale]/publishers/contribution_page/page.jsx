@@ -427,7 +427,7 @@ export default function ContributionPage() {
           onClose={closeModal}
           showClose={true}
         >
-          <PublicUrlConfirmationModal close={closeModal} save={savePublicUrl}/>
+          <PublicUrlConfirmationModal close={closeModal} save={savePublicUrl} oldUrl={publicName || publicIdentifier} newUrl={tempPublicUrl} baseUrl={`${currentDomain}/c/`} />
         </Dialog>
       </main>
     );
