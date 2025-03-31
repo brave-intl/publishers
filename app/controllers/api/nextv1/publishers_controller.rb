@@ -24,10 +24,10 @@ class Api::Nextv1::PublishersController < Api::Nextv1::BaseController
 
   def update
     # If user enters current email address delete the pending email attribute
-    update_params[:pending_email] = update_params[:pending_email]&.downcase
-    update_params[:pending_email] = nil if update_params[:pending_email] == current_publisher.email
-
-    success = current_publisher.update(update_params)
+    # update_params[:pending_email] = update_params[:pending_email]&.downcase
+    # update_params[:pending_email] = nil if update_params[:pending_email] == current_publisher.email
+    update_params_except_email = update_params.except(:pending_email)
+    success = current_publisher.update(update_params_except_email)
 
     if success && update_params[:pending_email]
       MailerServices::ConfirmEmailChangeEmailer.new(publisher: current_publisher).perform
