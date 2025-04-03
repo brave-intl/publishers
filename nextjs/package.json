@@ -52,7 +52,7 @@
     "autoprefixer": "10.4.21",
     "eslint": "8.49.0",
     "eslint-config-airbnb": "19.0.4",
-    "eslint-config-next": "13.5.10",
+    "eslint-config-next": "13.5.11",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-prettier": "5.0.0",
     "eslint-plugin-simple-import-sort": "10.0.0",
