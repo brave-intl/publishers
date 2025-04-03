@@ -312,7 +312,7 @@ module PublishersHelper
   def name_from_email(email)
     return "Publisher" unless email.is_a?(String)
 
-    email.split("@")[0].try(:capitalize)
+    email
   end
 
   def two_factor_enabled?(publisher)
