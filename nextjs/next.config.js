@@ -18,6 +18,18 @@ const nextConfig = {
   // TODO: remove this code once Proxy is no longer needed
   images: { unoptimized: process.env.NODE_ENV === 'development' },
 
+  headers: () => [
+    {
+      source: '/:path*',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'no-cache',
+        },
+      ],
+    },
+  ],
+
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
