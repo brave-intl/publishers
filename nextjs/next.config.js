@@ -24,7 +24,7 @@ const nextConfig = {
       headers: [
         {
           key: 'Cache-Control',
-          value: 'no-cache',
+          value: 'no-store',
         },
       ],
     },
