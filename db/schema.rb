@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_26_204927) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_04_185415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -22,6 +22,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_26_204927) do
     "SOL",
     "ETH",
   ], force: :cascade
+
+  create_table "active_analytics_browsers_per_days", force: :cascade do |t|
+    t.string "site", null: false
+    t.string "name", null: false
+    t.string "version", null: false
+    t.date "date", null: false
+    t.bigint "total", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date", "site", "name"], name: "idx_on_date_site_name_8acaa57d8d"
+  end
 
   create_table "active_analytics_views_per_days", force: :cascade do |t|
     t.string "site", null: false
