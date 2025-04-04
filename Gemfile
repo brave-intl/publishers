@@ -29,14 +29,14 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.143.0"
+gem "aws-sdk-s3", "~> 1.182.0"
 
 gem "bootstrap", "5.3.3"
 
-gem "brotli", "~> 0.5.0"
+gem "brotli", "~> 0.6.0"
 
 # Authorization
-gem "cancancan", "~> 3.5.0"
+gem "cancancan", "~> 3.6.0"
 
 gem "connection_pool", "~> 2.4"
 
@@ -49,7 +49,7 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.9"
+gem "faraday", "2.12.2"
 gem "faraday-retry", "2.2.1"
 
 gem "ffi"
