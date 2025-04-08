@@ -175,7 +175,6 @@ export default function SettingsPage() {
                       value={settings.email}
                       onInput={(e) => handleInputChange(e, 'email')}
                       name='email'
-                      disabled={true}
                     />
                   ) : (
                     user.email
