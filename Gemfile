@@ -71,7 +71,7 @@ gem "newrelic_rpm", "~> 9.7"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
-gem "omniauth-google-oauth2", "~> 1.1.1"
+gem "omniauth-google-oauth2", "~> 1.2.0"
 
 # Oauth client for twitch
 gem "omniauth-twitch", "~> 1.2.0"
