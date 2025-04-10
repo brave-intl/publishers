@@ -207,7 +207,7 @@ group :test do
   gem "rails-controller-testing"
 
   # Image information library
-  gem "fastimage", "~> 2.3.0"
+  gem "fastimage", "~> 2.4.0"
 end
 
 group :development, :test do
