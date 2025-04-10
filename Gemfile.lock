@@ -239,7 +239,7 @@ GEM
       net-http (>= 0.5.0)
     faraday-retry (2.3.1)
       faraday (~> 2.0)
-    fastimage (2.3.1)
+    fastimage (2.4.0)
     ffi (1.17.1)
     ffi (1.17.1-aarch64-linux-gnu)
     ffi (1.17.1-aarch64-linux-musl)
@@ -781,7 +781,7 @@ DEPENDENCIES
   eth (~> 0.5)
   faraday (= 2.12.2)
   faraday-retry (= 2.3.1)
-  fastimage (~> 2.3.0)
+  fastimage (~> 2.4.0)
   ffi
   font-awesome-rails (~> 4.7.0)
   google-protobuf (~> 3.25)
