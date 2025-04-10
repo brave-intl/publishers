@@ -91,7 +91,7 @@ gem "omniauth-github", "~> 2.0.1"
 gem "ostruct"
 
 # Model record auditing
-gem "paper_trail", "~> 15.1.0"
+gem "paper_trail", "~> 15.2.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"

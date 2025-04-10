@@ -418,7 +418,7 @@ GEM
     orm_adapter (0.5.0)
     ostruct (0.6.1)
     package_json (0.1.0)
-    paper_trail (15.1.0)
+    paper_trail (15.2.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.26.3)
@@ -807,7 +807,7 @@ DEPENDENCIES
   omniauth-twitter2
   omniauth-vimeo!
   ostruct
-  paper_trail (~> 15.1.0)
+  paper_trail (~> 15.2.0)
   pg (>= 0.18, < 2.0)
   premailer-rails (~> 1.12.0)
   pry
