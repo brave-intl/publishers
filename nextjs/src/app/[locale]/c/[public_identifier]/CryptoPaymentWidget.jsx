@@ -43,7 +43,6 @@ import batAbi from "@/constant/batAbi.json";
 import erc20Abi from "@/constant/erc20Abi.json";
 
 export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConstants, previewMode}) {
-  console.log("I just rendered");
   const t = useTranslations();
   let intervalId;
   const placeholder = t('publicChannelPage.custom');
@@ -126,6 +125,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   const [isTryBraveModalOpen, setIsTryBraveModalOpen] = useState(false);
   const [customAmount, setCustomAmount] = useState(null);
   const [currentAmount, setCurrentAmount] = useState(5);
+  const [dollarValue, setDollarValue] = useState(5);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [displayCrypto, setDisplayCrypto] = useState(false);
@@ -153,19 +153,21 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     setIsLoading(false);
   };
 
-  function calculateUSDPrice() {
+  function calculateUSDPrice(amount) {
+    amount = amount || currentAmount;
     if (displayChain.includes('USDC')) {
-      return Math.round(currentAmount * 100) / 100;
+      return Math.round(amount * 100) / 100;
     } else {
-      return Math.round(currentAmount * ratios[displayChain.toLowerCase()]['usd'] * 100) / 100;
+      return Math.round(amount * ratios[displayChain.toLowerCase()]['usd'] * 100) / 100;
     }
   };
 
-  function calculateCryptoPrice(usd) {
-    if (displayChain.includes('USDC')) {
+  function calculateCryptoPrice(usd, chain) {
+    chain = chain || displayChain;
+    if (chain.includes('USDC')) {
       return usd;
     } else {
-      return usd / ratios[displayChain.toLowerCase()]['usd'];
+      return usd / ratios[chain.toLowerCase()]['usd'];
     }
   }
 
@@ -438,36 +440,39 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
 
   function changeChain(optionVal) {
     setCurrentChain(optionVal.value);
-    setSelectValue(optionVal)
-    SetDisplayChain(optionVal.value.includes('BAT') ? 'BAT' :
-                        optionVal.value.includes('USDC') ? 'USDC' :
-                        optionVal.value);
+    setSelectValue(optionVal);
+    const chain = optionVal.value.includes('BAT') ? 'BAT' :
+                    optionVal.value.includes('USDC') ? 'USDC' :
+                    optionVal.value;
+    SetDisplayChain(chain);
     clearError();
+    // keep the value the same in terms of dollars when the chain is switched
+    setCurrentAmount(calculateCryptoPrice(dollarValue, chain));
   }
-  
+
   function updateAmount(amount) {
+    // if dollar input has been selected
     if (!displayCrypto) {
       setCurrentAmount(calculateCryptoPrice(amount));
+      setDollarValue(amount);
+    // if crypto input has been selected
     } else {
       setCurrentAmount(amount);
+      setDollarValue(calculateUSDPrice(amount));
     }
   }
 
   function handleInputChange(event) {
     const customValue = event.target.value ? parseFloat(event.target.value) : null;
     setCustomAmount(customValue);
-    if (!displayCrypto) {
-      setCurrentAmount(calculateCryptoPrice(customValue));
-    } else {
-      setCurrentAmount(customValue);
-    }
+    updateAmount(customValue);
   }
 
   function handleDisplayCryptoChange() {
     setDisplayCrypto(!displayCrypto);
     displayCrypto ? setCustomAmount(calculateUSDPrice()) : setCustomAmount(currentAmount);
   }
-  
+
   if (isLoading) {
     return (<div className={`${styles['crypto-widget-wrapper']}`}></div>)
   } else if (isSuccessView) {
