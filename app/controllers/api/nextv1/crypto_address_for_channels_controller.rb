@@ -102,20 +102,19 @@ class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseControl
 
   def sanctioned?(address)
     bucket_name = 'brave-production-ofac-addresses'
-    encoded_address = Base64.urlsafe_encode64(address).gsub(/^=+|=+/)
-    # Aws.config[:credentials] = Aws::Credentials.new(
-    #   Rails.configuration.pub_secrets[:s3_rewards2_access_key_id],
-    #   Rails.configuration.pub_secrets[:s3_rewards2_secret_access_key]
-    # )    
-    p encoded_address
+    encoded_address = Base64.urlsafe_encode64('0x1999ef52700c34de7ec2b68a28aafb37db0c5ade').gsub(/^=+|=+/, "")    
     begin
-      s3 = Aws::S3::Client.new
-      s3.head_object(bucket: bucket_name, key: encoded_address)
+      Rails.logger.info("*"*1000)
+      obj = Aws::S3::Object.new(bucket_name: bucket_name, key: encoded_address, region: 'us-west-2')
+      Rails.logger.info(obj)
+      obj.head
       true
     rescue Aws::S3::Errors::NotFound
       false
     rescue Aws::S3::Errors::ServiceError => e # Catches other S3-related errors
       raise "S3 error while checking object existence: #{e.message}"
+    rescue => e
+      Rails.logger.info(e)
     end
   end
 end
