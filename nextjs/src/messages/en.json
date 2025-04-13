@@ -313,7 +313,7 @@
     "channel_name": "Channel name",
     "bio": "Bio",
     "show_social_links": "Show social links",
-    "twitter": "X (Previously Twitter)",
+    "twitter": "X",
     "add_account": "Add account",
     "clear_social": "Clear Account",
     "select_account": "Select an account to show",
@@ -335,7 +335,7 @@
     "confirmation_url_change_to": "To:",
     "channel_names": {
       "site": "Website",
-      "twitter": "X (Previously Twitter)",
+      "twitter": "X",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "YouTube",

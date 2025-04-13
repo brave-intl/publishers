@@ -211,8 +211,8 @@
     "security_issue": "セキュリティに関する問題を報告",
     "channel_names": {
       "site": "Webサイト",
-      "twitter": "X（旧Twitter）",
-      "x": "X（旧Twitter）",
+      "twitter": "X",
+      "x": "X ",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "YouTube",
@@ -331,7 +331,7 @@
     "channel_name": "チャンネル名",
     "bio": "自己紹介",
     "show_social_links": "ソーシャルメディアリンクの表示",
-    "twitter": "X（旧Twitter）",
+    "twitter": "X",
     "add_account": "アカウントを追加",
     "clear_social": "アカウントを削除",
     "select_account": "表示するアカウントを選択",
@@ -353,7 +353,7 @@
     "confirmation_url_change_to": "変更後：",
     "channel_names": {
       "site": "Webサイト",
-      "twitter": "X（旧Twitter）",
+      "twitter": "X",
       "reddit": "Reddit",
       "vimeo": "Vimeo",
       "youtube": "YouTube",
