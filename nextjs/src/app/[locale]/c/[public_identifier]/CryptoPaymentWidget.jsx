@@ -28,14 +28,12 @@ import {
   createTransferInstruction,
 } from "@solana/spl-token";
 
-import Icon from '@brave/leo/react/icon';
-import Input from '@brave/leo/react/input';
-import Select, { components } from 'react-select';
 import Dialog from '@brave/leo/react/dialog';
 import Button from '@brave/leo/react/button';
+import Icon from '@brave/leo/react/icon';
 import { CryptoWidgetContext } from '@/lib/context/CryptoWidgetContext';
 import TryBraveModal from "./TryBraveModal";
-import CryptoPaymentOption from "./CryptoPaymentOption";
+import CryptoWidgetAmountSelect from "./CryptoWidgetAmountSelect";
 import SuccessWidget from "./SuccessWidget";
 import { apiRequest } from '@/lib/api';
 import styles from '@/styles/PublicChannelPage.module.css';
@@ -45,13 +43,10 @@ import erc20Abi from "@/constant/erc20Abi.json";
 export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConstants, previewMode}) {
   const t = useTranslations();
   let intervalId;
-  const placeholder = t('publicChannelPage.custom');
   // There shouldn't be more than one of each, but just in case
   const solAddress = cryptoAddresses.filter(address => address.includes('SOL'))[0];
   const ethAddress = cryptoAddresses.filter(address => address.includes('ETH'))[0];
   const addresses = { SOL: solAddress && solAddress[0], ETH: ethAddress && ethAddress[0] };
-  const iconOptions = { SOL: 'sol-color', ETH: 'eth-color', BAT: 'bat-color', USDC: 'usdc-color' };
-  const defaultAmounts = [1,5,10];
   const ethBatAddress = cryptoConstants.eth_bat_address;
   const solanaBatAddress = cryptoConstants.solana_bat_address;
   const solanaMainUrls = cryptoConstants.solana_main_urls;
@@ -59,78 +54,17 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
   const ethUsdcAddress = cryptoConstants.eth_usdc_address;
   const solUsdcAddress = cryptoConstants.solana_usdc_address;
 
-  const dropdownOptions = [];
-  if (ethAddress) {
-    dropdownOptions.push({
-      label: t('publicChannelPage.ethereumNetwork'),
-      options: [
-        {
-          label: t('walletServices.addCryptoWidget.ethereum'),
-          subheading: t('publicChannelPage.ethSubheading'),
-          value: "ETH", 
-          icon: 'eth-color'
-        },
-        {
-          label: t('walletServices.addCryptoWidget.ethereumBAT'),
-          subheading: t('publicChannelPage.ethBatSubheading'),
-          value: "BAT",
-          icon: 'bat-color'
-        },
-        {
-          label: t('publicChannelPage.usdc'),
-          subheading: t('publicChannelPage.usdcSubheading'),
-          value: "USDC",
-          icon: 'usdc-color'
-        }
-      ]
-    })
-  }
-
-  if (solAddress) {
-    dropdownOptions.push({
-      label: t('publicChannelPage.solanaNetwork'),
-      options: [
-        {
-          label: t('walletServices.addCryptoWidget.solana'),
-          subheading: t('publicChannelPage.solSubheading'),
-          value: "SOL",
-          icon: 'sol-color'
-        },
-        {
-          label: t('walletServices.addCryptoWidget.solanaBAT'),
-          subheading: t('publicChannelPage.solBatSubheading'),
-          value: "splBAT",
-          icon: 'bat-color'
-        },
-        {
-          label: t('publicChannelPage.solUsdc'),
-          subheading: t('publicChannelPage.solUsdcSubheading'),
-          value: "USDC-SPL",
-          icon: 'usdc-color'
-        }
-      ]
-    })
-  }
-
-  const { currentChain, setCurrentChain, isLoading, setIsLoading, ratios, setRatios } =
+  const { currentChain, setCurrentChain, ratios, setRatios, displayChain, setDisplayChain, currentAmount, setCurrentAmount } =
     useContext(CryptoWidgetContext);
   // the channel must have at least one crypto address for this page to be navigable,
   // and right now the options are only sol and eth
-  // const [currentChain, setCurrentChain] = useState(ethAddress ? 'BAT' : 'splBAT');
   setCurrentChain(ethAddress ? 'BAT' : 'splBAT');
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [ratios, setRatios] = useState({});
-  const [displayChain, SetDisplayChain] = useState('BAT');
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTryBraveModalOpen, setIsTryBraveModalOpen] = useState(false);
-  const [customAmount, setCustomAmount] = useState(null);
-  const [currentAmount, setCurrentAmount] = useState(5);
-  const [dollarValue, setDollarValue] = useState(5);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [displayCrypto, setDisplayCrypto] = useState(false);
   const [isSuccessView, setIsSuccessView] = useState(false);
-  const [selectValue, setSelectValue] = useState(dropdownOptions.flatMap(opt => opt.options).filter(opt => opt.value === currentChain)[0])
 
   useEffect(() => {
     loadData();
@@ -152,24 +86,6 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     setRatios(ratioData);
     setIsLoading(false);
   };
-
-  function calculateUSDPrice(amount) {
-    amount = amount || currentAmount;
-    if (displayChain.includes('USDC')) {
-      return Math.round(amount * 100) / 100;
-    } else {
-      return Math.round(amount * ratios[displayChain.toLowerCase()]['usd'] * 100) / 100;
-    }
-  };
-
-  function calculateCryptoPrice(usd, chain) {
-    chain = chain || displayChain;
-    if (chain.includes('USDC')) {
-      return usd;
-    } else {
-      return usd / ratios[chain.toLowerCase()]['usd'];
-    }
-  }
 
   function roundCryptoPrice() {
     return Math.round(currentAmount * 100000) / 100000;
@@ -207,12 +123,12 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
       default:
         setGenericError();
     }
-  };
+  }
 
   function setGenericError() {
     setErrorTitle(t('publicChannelPage.ErrorTitle'));
     setErrorMsg(t('publicChannelPage.ErrorMsg'));
-  };
+  }
 
   function setError(titleId, msgId) {
     setErrorTitle(t(titleId));
@@ -438,41 +354,6 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
     await sendSolTokenPayment(solUsdcAddress, 6);
   }
 
-  function changeChain(optionVal) {
-    setCurrentChain(optionVal.value);
-    setSelectValue(optionVal);
-    const chain = optionVal.value.includes('BAT') ? 'BAT' :
-                    optionVal.value.includes('USDC') ? 'USDC' :
-                    optionVal.value;
-    SetDisplayChain(chain);
-    clearError();
-    // keep the value the same in terms of dollars when the chain is switched
-    setCurrentAmount(calculateCryptoPrice(dollarValue, chain));
-  }
-
-  function updateAmount(amount) {
-    // if dollar input has been selected
-    if (!displayCrypto) {
-      setCurrentAmount(calculateCryptoPrice(amount));
-      setDollarValue(amount);
-    // if crypto input has been selected
-    } else {
-      setCurrentAmount(amount);
-      setDollarValue(calculateUSDPrice(amount));
-    }
-  }
-
-  function handleInputChange(event) {
-    const customValue = event.target.value ? parseFloat(event.target.value) : null;
-    setCustomAmount(customValue);
-    updateAmount(customValue);
-  }
-
-  function handleDisplayCryptoChange() {
-    setDisplayCrypto(!displayCrypto);
-    displayCrypto ? setCustomAmount(calculateUSDPrice()) : setCustomAmount(currentAmount);
-  }
-
   if (isLoading) {
     return (<div className={`${styles['crypto-widget-wrapper']}`}></div>)
   } else if (isSuccessView) {
@@ -489,107 +370,7 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
           </h3>
         </div>
         <div className={`${styles['payment-options']}`}>
-          <Select
-              options={dropdownOptions}
-              onChange={changeChain}
-              components={{
-                SingleValue: ({ children, ...rest }) => (
-                  <components.SingleValue {...rest} className='flex'>
-                    <Icon name={`${iconOptions[displayChain]}`} className={`mr-2 ${styles['value-icon-image']}`}/>
-                    <div>
-                      {children}
-                      <div className={`${styles['crypto-option-subheading']}`}>{rest.data.subheading}</div>
-                    </div>
-                  </components.SingleValue>
-                ),
-                Option: CryptoPaymentOption
-              }}
-              className='crypto-currency-dropdown'
-              value={selectValue}
-              styles={{
-                control: (base) => ({ ...base,
-                  boxShadow: 'none',
-                  borderColor: 'rgba(161, 178, 186, 0.4)',
-                  padding: '0px 16px',
-                  borderRadius: '8px'
-                }),
-                groupHeading: (base) => ({...base,
-                  textAlign: 'left',
-                  fontSize: '11px',
-                  backgroundColor: 'rgba(243, 245, 247, 1)',
-                  padding: '12px 16px',
-                }),
-                group: (base) => ({...base, padding: '0px'}),
-                indicatorSeparator: (base) => ({...base, display: 'none'}),
-                dropdownIndicator: (base) => ({...base,
-                  padding: '0px',
-                  color: 'rgba(98, 117, 126, 1)',
-                }),
-                input: (base) => ({...base, caretColor: 'transparent' }),
-                valueContainer: (base) => ({ ...base,
-                  display: 'flex',
-                  textAlign: 'left',
-                  padding: '16px',
-                  paddingLeft: '0px',
-                  fontWeight: '600',
-                }),
-                menu: (base) => ({
-                  ...base,
-                  marginTop: '0px',
-                  borderRadius: '8px',
-                  boxShadow: '0px 4px 16px -2px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(0, 0, 0, 0.05)',
-                  overflow: 'hidden',
-                }),
-                menuList: (base) => ({
-                  ...base,
-                  maxHeight: '500px',
-                  paddingTop: '0px',
-                }),
-              }}
-            />
-          <div className="grid grid grid-cols-12 pb-4 pt-4">
-            <div className="col-span-12 md:col-span-7 text-left">
-              {!displayCrypto && defaultAmounts.map( amount => {
-                return(
-                  <button
-                    key={amount}
-                    className={`${calculateUSDPrice() === amount ? styles['selected'] : ''} ${styles['amount-button']}`}
-                    onClick={() => updateAmount(amount)}
-                  > 
-                    $ {amount}
-                  </button>
-                )
-              })}
-              <input
-                inputmode='numeric'
-                type='number'
-                min={0}
-                onChange={handleInputChange}
-                className={`${currentAmount === customAmount ? styles['selected'] : ''} ${displayCrypto ? styles['amount-full-width'] : ''} ${styles['amount-input']}`}
-                placeholder={placeholder}
-                value={customAmount}
-              />
-              <span className={`${styles['dollar-input-denomination']}`}>{!displayCrypto && '$'}</span>
-              <span className={`${styles['amount-input-denomination']}`}>{displayCrypto && displayChain}</span>
-            </div>
-            <div className="col-span-12 md:col-span-5 text-right align-top">
-              <h2 className={`${styles['large-currency-display']}`}>
-                {displayCrypto ? (
-                    <span>{roundCryptoPrice()} <span className={`${styles['currency']} align-middle`}>{displayChain}</span></span>
-                  ) : (
-                    <span>${calculateUSDPrice()} <span className={`${styles['currency']} align-middle`}>USD</span></span>
-                  )}
-              </h2>
-              <div className={`${styles['small-currency-display']}`}>
-                {!displayCrypto ? (
-                    <span>{roundCryptoPrice()} {displayChain}</span>
-                  ) : (
-                    <span>${calculateUSDPrice()} USD</span>
-                  )}
-              </div>
-              <div onClick={() => handleDisplayCryptoChange()} className={`${styles['exchange-icon']}`}></div>
-            </div>
-          </div>
+          <CryptoWidgetAmountSelect ethAddress={ethAddress} solAddress={solAddress} clearError={clearError.bind(this)} />
           {errorTitle && (
             <div className={`${styles['error-section']}`}>
               <div className={`${styles['error-icon']}`}><Icon name='warning-circle-filled' /></div>

@@ -23,21 +23,14 @@ export const CryptoWidgetContext = createContext({});
 
 export function CryptoWidgetProvider({ children }) {
   const [currentChain, setCurrentChain] = useState('BAT');
-  const [isLoading, setIsLoading] = useState(true);
   const [ratios, setRatios] = useState({});
-  const [displayChain, SetDisplayChain] = useState('BAT');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTryBraveModalOpen, setIsTryBraveModalOpen] = useState(false);
-  const [customAmount, setCustomAmount] = useState(null);
+  const [displayChain, setDisplayChain] = useState('BAT');
   const [currentAmount, setCurrentAmount] = useState(5);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [displayCrypto, setDisplayCrypto] = useState(false);
-  const [isSuccessView, setIsSuccessView] = useState(false);
-  const [selectValue, setSelectValue] = useState('')
 
   return (
-    <CryptoWidgetContext.Provider value={{ currentChain, setCurrentChain, isLoading, setIsLoading, ratios, setRatios }}>
+    <CryptoWidgetContext.Provider value={{ currentChain, setCurrentChain, ratios, setRatios, displayChain, setDisplayChain, currentAmount, setCurrentAmount }}>
       {children}
     </CryptoWidgetContext.Provider>
   )
