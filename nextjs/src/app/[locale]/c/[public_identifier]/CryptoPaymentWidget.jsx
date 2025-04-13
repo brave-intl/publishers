@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic';
 const QRCodeModal = dynamic(() => import('./QRCodeModal'), {
   ssr: false
 });
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useTranslations } from 'next-intl';
 import Web3 from "web3";
 import {
@@ -33,6 +33,7 @@ import Input from '@brave/leo/react/input';
 import Select, { components } from 'react-select';
 import Dialog from '@brave/leo/react/dialog';
 import Button from '@brave/leo/react/button';
+import { CryptoWidgetContext } from '@/lib/context/CryptoWidgetContext';
 import TryBraveModal from "./TryBraveModal";
 import CryptoPaymentOption from "./CryptoPaymentOption";
 import SuccessWidget from "./SuccessWidget";
@@ -42,6 +43,7 @@ import batAbi from "@/constant/batAbi.json";
 import erc20Abi from "@/constant/erc20Abi.json";
 
 export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConstants, previewMode}) {
+  console.log("I just rendered");
   const t = useTranslations();
   let intervalId;
   const placeholder = t('publicChannelPage.custom');
@@ -110,11 +112,15 @@ export default function CryptoPaymentWidget({title, cryptoAddresses, cryptoConst
       ]
     })
   }
+
+  const { currentChain, setCurrentChain, isLoading, setIsLoading, ratios, setRatios } =
+    useContext(CryptoWidgetContext);
   // the channel must have at least one crypto address for this page to be navigable,
   // and right now the options are only sol and eth
-  const [currentChain, setCurrentChain] = useState(ethAddress ? 'BAT' : 'splBAT');
-  const [isLoading, setIsLoading] = useState(true);
-  const [ratios, setRatios] = useState({});
+  // const [currentChain, setCurrentChain] = useState(ethAddress ? 'BAT' : 'splBAT');
+  setCurrentChain(ethAddress ? 'BAT' : 'splBAT');
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [ratios, setRatios] = useState({});
   const [displayChain, SetDisplayChain] = useState('BAT');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTryBraveModalOpen, setIsTryBraveModalOpen] = useState(false);

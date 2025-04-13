@@ -7,6 +7,7 @@ import ProgressRing from '@brave/leo/react/progressRing';
 import { apiRequest } from '@/lib/api';
 
 import CryptoPaymentWidget from "./CryptoPaymentWidget";
+import { CryptoWidgetProvider } from '@/lib/context/CryptoWidgetContext';
 import styles from '@/styles/PublicChannelPage.module.css';
 
 export default function PublicChannelPage({publicIdentifier, previewMode}) {
@@ -87,7 +88,9 @@ export default function PublicChannelPage({publicIdentifier, previewMode}) {
               </div>
             </div >
             <div className={`${styles['crypto-payment-container']}`}>
-              <CryptoPaymentWidget title={title} cryptoAddresses={cryptoAddresses} cryptoConstants={cryptoConstants} previewMode={previewMode} />
+              <CryptoWidgetProvider>
+                <CryptoPaymentWidget title={title} cryptoAddresses={cryptoAddresses} cryptoConstants={cryptoConstants} previewMode={previewMode} />
+              </CryptoWidgetProvider>
               <div className={`${styles['privacy-disclaimer']}`}>
                 {t('publicChannelPage.trustWarning')}
                 <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>.
