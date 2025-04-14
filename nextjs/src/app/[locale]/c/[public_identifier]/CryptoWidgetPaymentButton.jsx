@@ -54,30 +54,19 @@ export default function CryptoWidgetPaymentButton({
   } = useContext(CryptoWidgetContext);
 
   async function sendPayment() {
-    clearError();
-    switch (currentChain) {
-      case "ETH":
-        await sendEthPayment();
-        break;
-      case "SOL":
-        sendSolPayment();
-        break;
-      case "BAT":
-        sendEthBatPayment();
-        break;
-      case "splBAT":
-        sendSolBatPayment();
-        break;
-      case "USDC":
-        sendEthUsdcPayment();
-        break;
-      case "USDC-SPL":
-        sendSolUsdcPayment();
-        break;
-      default:
-        setGenericError();
-    }
-  }
+  clearError();
+
+  const paymentFunctions = {
+    "ETH": sendEthPayment,
+    "SOL": sendSolPayment,
+    "BAT": sendEthBatPayment,
+    "splBAT": sendSolBatPayment,
+    "USDC": sendEthUsdcPayment,
+    "USDC-SPL": sendSolUsdcPayment,
+  };
+
+  paymentFunctions[currentChain]();
+}
 
   function setGenericError() {
     setErrorTitle(t("publicChannelPage.ErrorTitle"));
