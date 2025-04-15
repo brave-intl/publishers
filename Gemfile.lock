@@ -229,7 +229,7 @@ GEM
       rbsecp256k1 (~> 6.0)
       scrypt (~> 3.0)
     execjs (2.9.1)
-    faraday (2.12.2)
+    faraday (2.13.0)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -780,7 +780,7 @@ DEPENDENCIES
   domain_name
   dotenv-rails (= 3.1.7)
   eth (~> 0.5)
-  faraday (= 2.12.2)
+  faraday (= 2.13.0)
   faraday-retry (= 2.3.1)
   fastimage (~> 2.4.0)
   ffi
