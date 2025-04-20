@@ -111,7 +111,7 @@ gem "rack-utf8_sanitizer"
 gem "rails-i18n", "~> 7.0"
 
 # I love captchas
-gem "recaptcha", "~> 5.16.0", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.19.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.1"
