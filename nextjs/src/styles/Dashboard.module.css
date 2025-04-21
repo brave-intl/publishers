@@ -1,3 +1,42 @@
-.disconnect-btn {
-  --leo-color-text-interactive: var(--leo-color-text-tertiary);
+.howto-box-orange, .howto-box-pink, .howto-box-purple {
+  border-radius: var(--leo-radius-m);
+  padding: var(--leo-spacing-m);
+}
+
+@media (width <= 768px) {
+  .howto-box-orange, .howto-box-pink, .howto-box-purple {
+    border-radius: var(--leo-radius-xl);
+  }
+}
+
+.howto-text {
+  padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
+}
+
+.howto-box-orange {
+  background-color: var(--leo-color-orange-5);
+  border: 1px solid var(--leo-color-orange-10);
+}
+
+.howto-box-pink {
+  background-color: var(--leo-color-pink-5);
+  border: 1px solid var(--leo-color-pink-10);
+}
+
+.howto-box-purple {
+  background-color: var(--leo-color-purple-5);
+  border: 1px solid var(--leo-color-purple-10);
+}
+
+.howto-arrow {
+  border-radius: var(--leo-radius-full);
+  width: 40px;
+  height: 40px;
+  background-color: var(--leo-color-container-background);
+  position: absolute;
+  right: -28px;
+}
+
+.howto-arrow-icon {
+  --leo-icon-color: var(--leo-color-icon-secondary);
 }

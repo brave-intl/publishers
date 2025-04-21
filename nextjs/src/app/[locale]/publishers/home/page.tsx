@@ -1,36 +1,40 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
+import Collapse from '@brave/leo/react/collapse';
 import Dialog from '@brave/leo/react/dialog';
 import ProgressRing from '@brave/leo/react/progressRing';
+import Icon from '@brave/leo/react/icon';
 import * as moment from 'moment';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { apiRequest } from '@/lib/api';
+import styles from '@/styles/Dashboard.module.css';
+
+import addAccounts from "~/images/add_accounts.png";
+import addPayment from "~/images/add_payment.png";
+import receiveContributions from "~/images/receive_contributions.png";
 
 import Card from '@/components/Card';
 import Container from '@/components/Container';
-import CryptoAddressProvider from '@/components/CryptoAddressProvider';
+import CryptoAddressProvider from '@/lib/context/CryptoAddressContext';
+import CustodianConnectionProvider from '@/lib/context/CustodianConnectionContext';
 
 import AddChannelModal from './channels/AddChannelModal';
 import ChannelCard from './channels/ChannelCard';
 import EmptyChannelCard from './channels/EmptyChannelCard';
-import CustodianServiceWidget from './custodianServices/CustodianServiceWidget';
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [lastDeposit, setLastDeposit] = useState(0);
-  const [lastDepositDate, setLastDepositDate] = useState('');
-  const [nextDepositDate, setNextDepositDate] = useState('');
   const [channels, setChannels] = useState([]);
-  const [walletData, setWalletData] = useState({});
   const [publisherId, setPublisherId] = useState('');
   const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
   const searchParams = useSearchParams();
   const startWithModalOpen = searchParams.get('addChannelModal');
   const t = useTranslations();
+  const [custodianData, setCustodianData] = useState({});
 
   useEffect(() => {
     fetchDashboard();
@@ -38,28 +42,8 @@ export default function HomePage() {
 
   async function fetchDashboard() {
     const res = await apiRequest(`/home/dashboard`);
-    const wallet = res.wallet_data;
-    if (wallet.wallet && wallet.wallet.last_settlement_balance) {
-      setLastDeposit(
-        Math.round(wallet.wallet.last_settlement_balance.amount_bat) || 0,
-      );
-
-      wallet.wallet.last_settlement_balance.timestamp
-        ? setLastDepositDate(
-            moment
-              .unix(wallet.wallet.last_settlement_balance.timestamp)
-              .format('MMM D, YYYY - h:mm a'),
-          )
-        : setLastDepositDate('--');
-    } else {
-      setLastDeposit(0);
-      setLastDepositDate('--');
-    }
-
+    setCustodianData(res.wallet_data);
     setPublisherId(res.publisher.id);
-
-    setWalletData(wallet);
-    setNextDepositDate(wallet.next_deposit_date);
     setChannels(res.channels);
     setIsLoading(false);
     if (startWithModalOpen) {
@@ -83,48 +67,57 @@ export default function HomePage() {
       <main className='main transition-colors'>
         <Container>
           <div className='mx-auto max-w-screen-lg'>
-            <h1 className='mb-3'>{t('Home.headings.account_details')}</h1>
-            <Card className='lg:items-top lg:flex'>
-              <section className='inline-block w-full lg:w-1/2'>
-                <h3 className='pb-3'>{t('Home.account.monthly_payouts')}</h3>
-                <section className='grid sm:grid-cols-2'>
-                  <div className='pb-0 sm:pb-2'>
-                    {t('Home.account.last_deposit')}
+            <Collapse >
+              <div slot='title'><h4>{t('Home.headings.how_to_receive')}</h4></div>
+              <div className="grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-2">
+                <div className={`relative ${styles['howto-box-orange']}`}>
+                  <img className='hidden lg:block' src={addAccounts.src}/>
+                  <div className={`${styles['howto-text']}`}>
+                    <h4 className='pl-0.5'>{t('Home.headings.add_accounts')}</h4>
+                    <p className='pt-1'>{t('Home.headings.add_accounts_text')}</p>
                   </div>
-                  <div className='pb-2 sm:pb-0'>
-                    <strong>{lastDeposit} BAT</strong>
+                  <div className={`z-20 hidden lg:flex top-1/2 items-center shadow ${styles['howto-arrow']}`}>
+                    <Icon className={`mx-auto ${styles['howto-arrow-icon']}`} name='arrow-right' />
                   </div>
-                  <div className='pb-0 sm:pb-2'>
-                    {t('Home.account.last_deposit_date')}
+                </div>
+                <div className={`z-10 relative ${styles['howto-box-pink']}`}>
+                  <img className='hidden lg:block' src={addPayment.src}/>
+                  <div className={`${styles['howto-text']}`}>
+                    <h4 className='pl-0.5'>{t('Home.headings.add_payments')}</h4>
+                    <p className='pt-1'>{t('Home.headings.add_payments_text')}</p>
                   </div>
-                  <div className='pb-2 sm:pb-0'>{lastDepositDate}</div>
-                  <div className='pb-0 sm:pb-2'>
-                    {t('Home.account.next_deposit_date')}
+                  <div className={`hidden lg:flex top-1/2 items-center shadow ${styles['howto-arrow']}`}>
+                    <Icon className={`mx-auto ${styles['howto-arrow-icon']}`} name='arrow-right' />
                   </div>
-                  <div className='pb-2 sm:pb-0'>{nextDepositDate}</div>
-                </section>
-              </section>
-              <section className='inline-block w-full pt-2 lg:w-1/2 lg:pt-0'>
-                <h3 className='pb-3'>{t('Home.account.custodial_accounts')}</h3>
-                <CustodianServiceWidget walletData={walletData} />
-              </section>
-            </Card>
+                </div>
+                <div className={`${styles['howto-box-purple']}`}>
+                  <img src={receiveContributions.src}/>
+                  <div className={`${styles['howto-text']}`}>
+                    <h4 className='pl-0.5'>{t('Home.headings.receive_contributions')}</h4>
+                    <p className='pt-1'>{t('Home.headings.receive_contributions_text')}</p>
+                  </div>
+                </div>
+              </div>
+            </Collapse>
             <h1 className='mb-3 mt-3'>{t('Home.headings.channels')}</h1>
             {channels.length ? (
               <>
                 <CryptoAddressProvider>
-                  <section className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                    {channels.map(function (channel) {
-                      return (
-                        <ChannelCard
-                          key={channel.id}
-                          channel={channel}
-                          publisherId={publisherId}
-                          onChannelDelete={onChannelDelete}
-                        />
-                      );
-                    })}
-                  </section>
+                  <CustodianConnectionProvider>
+                    <section className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                      {channels.map(function (channel) {
+                        return (
+                          <ChannelCard
+                            key={channel.id}
+                            channel={channel}
+                            publisherId={publisherId}
+                            onChannelDelete={onChannelDelete}
+                            custodianData={custodianData}
+                          />
+                        );
+                      })}
+                    </section>
+                  </CustodianConnectionProvider>
                 </CryptoAddressProvider>
                 <Button
                   id='add-channel'

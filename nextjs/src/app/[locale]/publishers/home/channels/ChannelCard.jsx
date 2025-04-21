@@ -4,19 +4,30 @@ import Button from '@brave/leo/react/button';
 import Hr from '@brave/leo/react/hr';
 import Icon from '@brave/leo/react/icon';
 import { useTranslations } from 'next-intl';
+import { useContext, useEffect } from 'react';
 
 import styles from '@/styles/ChannelCard.module.css';
 
 import { apiRequest } from '@/lib/api';
-
+import { CustodianConnectionContext } from '@/lib/context/CustodianConnectionContext';
 import Card from '@/components/Card';
 
+import CustodianServiceWidget from '../custodianServices/CustodianServiceWidget';
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
-export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
+export default function ChannelCard({ channel, publisherId, onChannelDelete, custodianData }) {
   const t = useTranslations();
   // TODO: come up with some default name
   const defaultName = '';
+
+  const {setBitflyerConnection, setUpholdConnection, setGeminiConnection, setAllowedRegions} = useContext(CustodianConnectionContext);
+
+  useEffect(() => {
+    setBitflyerConnection(custodianData.bitflyer_connection);
+    setUpholdConnection(custodianData.uphold_connection);
+    setGeminiConnection(custodianData.gemini_connection);
+    setAllowedRegions(custodianData.allowed_regions);
+  }, [])
 
   async function removeChannel() {
     const response = await apiRequest(`channels/${channel.id}`, 'DELETE');
@@ -112,14 +123,17 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete }) {
       <h3 className='break-words pb-3'>
         {channel.details.publication_title || defaultName}
       </h3>
-      <section className='pb-1'>
+      <section>
         {isUnverifiedChannel() ? (
           <div className='error-text mt-3'>
             <h4>{channel.failed_verification_details}</h4>
             <p>{channel.failed_verification_call_to_action}</p>
           </div>
         ) : (
-          <ChannelCryptoEditor channel={channel} />
+          <div className='pb-1'>
+            <ChannelCryptoEditor channel={channel} />
+            <CustodianServiceWidget custodianData={custodianData} />
+          </div>
         )}
       </section>
       <Hr />

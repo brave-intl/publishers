@@ -35,8 +35,6 @@ export const CryptoAddressContext = createContext({
 
 export default function CryptoAddressProvider({
   children,
-}: {
-  children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, {
     addressesInUse: [],
