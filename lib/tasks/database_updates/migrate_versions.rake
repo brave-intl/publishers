@@ -12,7 +12,7 @@ namespace :database_updates do
     values = []
 
     LegacyVersion.in_batches.each_record.with_index do |legacy_version, index|
-      printf("\rPercentage: %.2f%", (index / total.to_f * 100))
+      printf("\rPercentage: %.2f%", index / total.to_f * 100)
 
       item_id = extract_id(legacy_version.object || legacy_version.object_changes)
 

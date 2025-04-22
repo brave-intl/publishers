@@ -71,7 +71,7 @@ class PromoRegistration < ApplicationRecord
     parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
     parsed = parsed.select do |event|
       date = event["ymd"].to_date
-      date >= period_start && date <= period_end
+      date.between?(period_start, period_end)
     end
 
     parsed.reduce(BASE_STATS.deep_dup, &PromoRegistration.sum_stats)

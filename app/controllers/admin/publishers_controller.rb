@@ -122,7 +122,7 @@ class Admin::PublishersController < AdminController
 
   def sign_in_as_user
     if @publisher.admin?
-      render status: 401, json: {
+      render status: 401, json: { # standard:disable Lint/LiteralAsCondition
         error: "You cannot sign in as another admin"
       } && return
     end
