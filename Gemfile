@@ -173,7 +173,7 @@ gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "sprockets-rails", "3.4.2"
+gem "sprockets-rails", "3.5.2"
 gem "sprockets", "4.2.1"
 
 gem "eth", "~> 0.5"
