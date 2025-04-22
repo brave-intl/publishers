@@ -17,5 +17,4 @@ if Rails.configuration.pub_secrets[:redis_url].present?
   require "sidekiq-scheduler/web"
 
   require "sidekiq/throttled"
-  Sidekiq::Throttled.setup!
 end
