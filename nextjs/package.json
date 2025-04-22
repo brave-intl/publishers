@@ -70,7 +70,7 @@
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "0.6.11",
     "selfsigned": "2.4.1",
-    "stylelint": "15.10.3",
+    "stylelint": "15.11.0",
     "stylelint-config-clean-order": "5.2.0",
     "stylelint-config-standard": "34.0.0",
     "stylelint-webpack-plugin": "4.1.1",
