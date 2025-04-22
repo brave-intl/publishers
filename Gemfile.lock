@@ -661,7 +661,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    ssrf_filter (1.1.2)
+    ssrf_filter (1.2.0)
     standard (1.41.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -850,7 +850,7 @@ DEPENDENCIES
   solargraph
   sprockets (= 4.2.1)
   sprockets-rails (= 3.5.2)
-  ssrf_filter (= 1.1.2)
+  ssrf_filter (= 1.2.0)
   standard
   strong_migrations
   temping
