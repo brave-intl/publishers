@@ -64,7 +64,7 @@
     "@rails/activestorage": "^7.0.6",
     "@rails/ujs": "^7.0.6",
     "axios": "1.8.4",
-    "babel-loader": "9.1.3",
+    "babel-loader": "9.2.1",
     "brave-ui": "git+https://github.com/brave/brave-ui#4a76f0153255278d5a792bd9e9d1056ef0c602d0",
     "chart.js": "4.4.9",
     "clipboard": "^2.0.11",
