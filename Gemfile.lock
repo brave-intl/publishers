@@ -733,7 +733,7 @@ GEM
     yard (0.9.37)
     yard-solargraph (0.1.0)
       yard (~> 0.9)
-    yt (0.33.4)
+    yt (0.34.0)
       activesupport
     zeitwerk (2.7.2)
     zendesk_api (3.0.5)
