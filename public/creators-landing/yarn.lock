@@ -5024,19 +5024,18 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-grommet-icons@^4.12.1:
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/grommet-icons/-/grommet-icons-4.12.1.tgz#780aa7cd59c5586f642f221bdb5c6becd04ad000"
-  integrity sha512-LhOP6BkDAGiSNcUOfsGGRo+AKD6zWOXeNeusY1WYvKplAR6mKCAQfH7Nig2Buc/v5zadKSko2NDtCQqwJaME0Q==
+grommet-icons@^4.12.4:
+  version "4.12.4"
+  resolved "https://registry.yarnpkg.com/grommet-icons/-/grommet-icons-4.12.4.tgz#23d2d994ca666197f3132e4b02edc11b39a1cc84"
+  integrity sha512-LB2u1X7B22wq6ib0DUPhdXmiYXvkg+Xx3eP1tVrKGqhfk+tTkX0nDyK7wFhH+7fvj2ebWjJMYia6G0zH1voGOw==
 
 grommet@^2.37.0:
-  version "2.43.0"
-  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.43.0.tgz#ac2e988815b8bada8a16ed95157ea0128c9a65f5"
-  integrity sha512-72hMPLPGQ/9AMEZLd6K0mTXBNHLJpDfJ320tgSnNnM32aaEBTYk2btVW6ksvSGVH9YOiWQsGqFgLGw23KXHMdg==
+  version "2.46.1"
+  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.46.1.tgz#71ba125fe7fba21c571841ec8e9b022cf267ab57"
+  integrity sha512-jrkoK8cVledKhf5tQFDWgnxzs9S+1gun6Nq3NTIsN/jYSpIF6gj1PsXmGyRm8eJ/nyH0Lu5ZtczemhowjEgUZw==
   dependencies:
     "@emotion/is-prop-valid" "^1.3.1"
-    grommet-icons "^4.12.1"
-    hoist-non-react-statics "^3.3.2"
+    grommet-icons "^4.12.4"
     markdown-to-jsx "7.4.4"
     prop-types "^15.8.1"
 
@@ -5110,7 +5109,7 @@ he@^1.2.0:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-hoist-non-react-statics@3, hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@3, hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
