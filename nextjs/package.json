@@ -87,7 +87,7 @@
     ]
   },
   "engines": {
-    "node": "20.19.0",
+    "node": "20.19.1",
     "yarn": "please use NPM"
   }
 }
