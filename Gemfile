@@ -174,7 +174,7 @@ gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.5.2"
-gem "sprockets", "4.2.1"
+gem "sprockets", "4.2.2"
 
 gem "eth", "~> 0.5"
 gem "rbnacl"
