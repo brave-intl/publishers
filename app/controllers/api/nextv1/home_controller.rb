@@ -6,7 +6,7 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
   def dashboard
     publisher = current_publisher.as_json(only: [:id], methods: [:brave_payable?])
     channels = current_publisher.channels.visible.as_json(only: [:details_type, :id, :verified, :verification_status, :verification_details, :public_identifier],
-      methods: [:failed_verification_details, :failed_verification_call_to_action],
+      methods: [:failed_verification_details, :failed_verification_call_to_action, :brave_payable?],
       include: {
         details: {only: [], methods: [:publication_title]}
       })
@@ -16,7 +16,7 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
       uphold_connection: uphold_wallet,
       gemini_connection: gemini_wallet,
       bitflyer_connection: bitflyer_wallet,
-      allowed_regions: regions,
+      allowed_regions: regions
     }
 
     response_data = {

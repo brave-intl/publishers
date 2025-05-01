@@ -20,13 +20,19 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
   // TODO: come up with some default name
   const defaultName = '';
 
-  const {setBitflyerConnection, setUpholdConnection, setGeminiConnection, setAllowedRegions} = useContext(CustodianConnectionContext);
+  const {
+      setBitflyerConnection,
+      setUpholdConnection,
+      setGeminiConnection,
+      setAllowedRegions
+  } = useContext(CustodianConnectionContext);
 
   useEffect(() => {
     setBitflyerConnection(custodianData.bitflyer_connection);
     setUpholdConnection(custodianData.uphold_connection);
     setGeminiConnection(custodianData.gemini_connection);
     setAllowedRegions(custodianData.allowed_regions);
+    console.log(channel)
   }, [])
 
   async function removeChannel() {
@@ -78,7 +84,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
   }
 
   function displayVerified() {
-    if (channel.verified) {
+    if (channel.verified && channel["brave_payable?"]) {
       return (
         <div className='flex items-center'>
           <span className='small-regular pr-0.5'>

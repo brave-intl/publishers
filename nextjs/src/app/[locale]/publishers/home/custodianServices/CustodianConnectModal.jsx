@@ -25,8 +25,9 @@ export default function CustodianConnectModal({}) {
   // Since japanese accounts are limited to bitflyer, translation isn't a concern here. If we add other languages, we might need to revisit this.
   useEffect(() => {
     const unsupportedProvider = [];
+    // hard code gemini to us
     if (allowedRegions.uphold.allow.includes(selectedCountry) &&
-      allowedRegions.gemini.allow.includes(selectedCountry)
+      ['US'].includes(selectedCountry)
     ) {
       setUnsupportedCountry(false);
     } else {
