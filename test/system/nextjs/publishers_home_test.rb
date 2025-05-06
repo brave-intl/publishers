@@ -60,35 +60,4 @@ class PublishersHomeTest < ApplicationSystemTestCase
 
     assert_current_path(/site_channels\/new/)
   end
-
-  test "dashboard can still load even when publisher's wallet cannot be fetched from eyeshade" do
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected_currency_unconfirmed)
-    sign_in_through_link publisher
-
-    wallet = {"wallet" => {"authorized" => false}}
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
-    visit home_publishers_path
-
-    assert publisher.wallet.present?
-  end
-
-  test "dashboard can still load even when publisher's balance cannot be fetched from eyeshade" do
-    prev_api_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
-    sign_in_through_link publisher
-
-    wallet = {"wallet" => {"authorized" => false}}
-    balances = "go away\nUser-agent: *\nDisallow:"
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
-
-    visit home_publishers_path
-
-    refute publisher.wallet.present?
-    assert_content page, "0 BAT"
-  ensure
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-  end
 end

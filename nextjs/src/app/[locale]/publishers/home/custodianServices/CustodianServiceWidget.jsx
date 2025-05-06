@@ -1,34 +1,28 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
-import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Link from '@brave/leo/react/link';
 import Dialog from '@brave/leo/react/dialog';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState, useContext } from 'react';
 
 import { apiRequest } from '@/lib/api';
 
-import countryList from './countryList.json';
-import styles from '@/styles/Dashboard.module.css';
+import styles from '@/styles/ChannelCard.module.css';
 import DisconnectConfirmationModal from './DisconnectConfirmationModal';
+import CustodianConnectModal from './CustodianConnectModal';
+import { CustodianConnectionContext } from '@/lib/context/CustodianConnectionContext';
 
-export default function CustodianServiceWidget({ walletData }) {
+export default function CustodianServiceWidget({}) {
   const t = useTranslations();
   const locale = useLocale();
-  const supportedRegions = walletData.allowed_regions;
-  const [selectedCountry, setSelectedCountry] = useState(undefined);
-  const [unsupportedCountry, setUnsupportedCountry] = useState(false);
-  const [upholdConnection, setUpholdConnection] = useState(walletData.uphold_connection);
-  const [geminiConnection, setGeminiConnection] = useState(walletData.gemini_connection);
-  const [bitflyerConnection, setBitflyerConnection] = useState(walletData.bitflyer_connection);
-  const [unsupportedCountryMsg, setUnsupportedCountryMsg] = useState('');
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-
   const supportUrl = locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597';
 
+  const {bitflyerConnection, setBitflyerConnection, upholdConnection, setUpholdConnection, geminiConnection, setGeminiConnection} = useContext(CustodianConnectionContext);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isCustodianConnectModalOpen, setIsCustodianConnectModalOpen] = useState(false);
 
   const providerUpdaters = {
     gemini: setGeminiConnection,
@@ -42,40 +36,6 @@ export default function CustodianServiceWidget({ walletData }) {
     bitflyer: 'https://bitflyer.com/',
   }
 
-// Since japanese accounts are limited to bitflyer, translation isn't a concern here. If we add other languages, we might need to revisit this.
-  useEffect(() => {
-    const unsupportedProvider = [];
-    if (supportedRegions.uphold.allow.includes(countryList[selectedCountry]) &&
-      supportedRegions.gemini.allow.includes(countryList[selectedCountry])
-    ) {
-      setUnsupportedCountry(false);
-    } else {
-      setUnsupportedCountry(true);
-      !supportedRegions.uphold.allow.includes(countryList[selectedCountry]) && unsupportedProvider.push('Uphold');
-      !supportedRegions.gemini.allow.includes(countryList[selectedCountry]) && unsupportedProvider.push('Gemini');
-
-      setUnsupportedCountryMsg(
-        t('Home.account.wrong_region',
-          { provider: unsupportedProvider.join(' and '), region: selectedCountry }
-        )
-      );
-    }
-  }, [selectedCountry]);
-
-  function handleCountryChange({ value }) {
-    setSelectedCountry(value);
-    return value;
-  }
-
-  async function redirectToAuthUrl(provider) {
-    const res = await apiRequest(
-      `connection/${provider}_connection`,
-      'POST',
-      {},
-    );
-    window.location.assign(res.authorization_url);
-  }
-
   async function disconnectProvider(provider) {
     const res = await apiRequest(
       `connection/${provider}_connection`,
@@ -84,13 +44,14 @@ export default function CustodianServiceWidget({ walletData }) {
     );
     if (!res.errors) {
       providerUpdaters[provider].call(null);
+      setIsConfirmationModalOpen(false);
     } else {
       // show error state here?
     }
   }
 
-  function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  function launchCustodianModal() {
+    setIsCustodianConnectModalOpen(true);
   }
 
   function providerIcon(provider) {
@@ -103,37 +64,31 @@ export default function CustodianServiceWidget({ walletData }) {
 
   function showConnected(provider) {
     return (
-      <section className='grid xl:grid-cols-2'>
-        <div className='xl:pb-2'>{t('Home.account.connected_account')}</div>
-        <div className='pb-2 xl:pb-0 flex items-start'>
-          <span className='inline-block'>
-            {providerIcon(provider)}
-          </span>
-          <span className='px-1'>
-            <strong>{t(`shared.${provider}`)}</strong>
-          </span>
+      <section>
+        <div className='small-semibold pb-0.5'>{t('Home.account.custodial_account')}</div>
+        <div className={`pb-2 xl:pb-0 flex justify-between ${styles['faux-btn']}`}>
+          <div className='flex items-center'>
+            <span className='inline-block align-middle'>
+              {providerIcon(provider)}
+            </span>
+            <span className='inline-block align-middle px-1'>
+              {t(`shared.${provider}`)}
+            </span>
+          </div>
           <Link href={providerWebsites[provider]} className='color-tertiary pr-1'>
             <Icon name='launch' className='color-tertiary'/>
           </Link>
-          |
+        </div>
+        <div className='mt-0.5 small-regular color-tertiary'>
           <Link
-            className={`pl-1 ${styles['disconnect-btn']}`}
+            className={styles['disconnect-btn']}
             onClick={() => {
               setIsConfirmationModalOpen(true);
             }}
           >
-            Disconnect
+            {t('walletServices.disconnect')}
           </Link>
-        </div>
-        <div className='xl:pb-2'>{t('Home.account.deposit_currency')}</div>
-        <div className='pb-2 xl:pb-0 flex items-start'>
-          <span className='inline-block'>
-            <Icon name='bat-color' />
-          </span>
-          <span className='px-1'>
-            <strong>BAT</strong>
-          </span>
-          <span>{t('shared.basic_attention_token')}</span>
+          <span> - {t('Home.account.disconnect_warning')}</span>
         </div>
         <Dialog
           isOpen={isConfirmationModalOpen}
@@ -142,6 +97,7 @@ export default function CustodianServiceWidget({ walletData }) {
         >
           <DisconnectConfirmationModal close={disconnectProvider} provider={provider} />
         </Dialog>
+
       </section>
     );
   }
@@ -149,88 +105,31 @@ export default function CustodianServiceWidget({ walletData }) {
   function showUnconnected() {
     return (
       <section>
-        <p className='pb-3'>{t('Home.account.connect_prompt')}</p>
-        {locale !== 'ja' && (
-          <Dropdown
-            size='normal'
-            value={selectedCountry}
-            className='w-full'
-            placeholder={t('Home.account.country_placeholder')}
-            onChange={handleCountryChange}
-          >
-            <div className='small-semibold' slot="label">{t('Home.account.country_label')}</div>
-            {selectedCountry && (
-              <div slot="left-icon">
-                <Icon name={`country-${countryList[selectedCountry].toLowerCase()}`} />
-              </div>
-            )}
-            {Object.keys(countryList).map(function (countryName) {
-              return (
-                <leo-option
-                  className='py-0'
-                  key={countryList[countryName]}
-                  value={countryName}
-                >
-                  <Icon
-                    className='inline-block'
-                    name={`country-${countryList[countryName].toLowerCase()}`}
-                  />
-                  <div className='px-1 inline-block align-top'>{countryName}</div>
-                </leo-option>
-              );
-            })}
-          </Dropdown>
-        )}
-        {selectedCountry && (
-          <div className='pt-3'>
-            <p className='small-semibold mb-0.5'>
-              {t('Home.account.custodial_select_heading')}
-            </p>
-            <Button
-              onClick={() => redirectToAuthUrl('uphold')}
-              kind='outline'
-              className='mr-1'
-            >
-              <Icon className='color-tertiary' name="uphold-color" slot="icon-before" />
-              {t('Home.account.uphold_connect')}
-              <Icon name="launch" slot="icon-after" />
-            </Button>
-            <Button
-              onClick={() => redirectToAuthUrl('gemini')}
-              kind='outline'
-            >
-              <Icon slot="icon-before"><Image src="/images/gemini-color.svg" width="24" height="24" /></Icon>
-              {t('Home.account.gemini_connect')}
-              <Icon name="launch" slot="icon-after" />
-            </Button>
-            {unsupportedCountry && (
-              <div className='info-text mt-3'>
-                {unsupportedCountryMsg}
-              </div>
-            )}
+        <div className='small-semibold pb-0.5'>{t('Home.account.custodial_account')}</div>
+        <div className={`pb-2 xl:pb-0 flex justify-between cursor-pointer ${styles['faux-btn']}`} onClick={launchCustodianModal} >
+          <div className='pl-0.5 color-secondary'>
+            {t('Home.account.not_connected')}
           </div>
-        )}
-        {locale === 'ja' && (
-          <Button
-            onClick={() => redirectToAuthUrl('bitflyer')}
-            kind='outline'
-          >
-            <Icon name="bitflyer-color" slot="icon-before" />
-            {t('Home.account.bitflyer_connect')}
-            <Icon name="launch" slot="icon-after" />
-          </Button>
-        )}
-        <p className='small-regular color-tertiary pt-3'>
-          {t('Home.account.country_disclaimer')}
+          <Icon name='launch' className='color-tertiary'/>
+        </div>
+        <div className='mt-0.5 small-regular color-tertiary'>
+          {t('Home.account.connect_warning')}
           <a
             href={supportUrl}
             rel='noopener noreferrer'
             target='_blank'
             className='underline'
           >
-            {t('shared.learn_more')}.
+            {t('shared.learn_more')}
           </a>
-        </p>
+        </div>
+        <Dialog
+          isOpen={isCustodianConnectModalOpen}
+          onClose={() => setIsCustodianConnectModalOpen(false)}
+          showClose={true}
+        >
+          <CustodianConnectModal />
+        </Dialog>
       </section>
     );
   }

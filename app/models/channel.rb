@@ -214,6 +214,10 @@ class Channel < ApplicationRecord
     promo_registration&.referral_code&.present?
   end
 
+  def brave_payable?
+    gemini_connection || uphold_connection || bitflyer_connection || crypto_address_for_channels.exists?
+  end
+
   def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     reload
