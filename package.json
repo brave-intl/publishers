@@ -93,7 +93,7 @@
     "terser-webpack-plugin": "5.3.14",
     "tributejs": "^5.1.3",
     "vm-browserify": "^1.1.2",
-    "webpack": "5.99.7",
+    "webpack": "5.99.8",
     "webpack-assets-manifest": "5.2.1",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "^4.15.1",
