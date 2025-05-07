@@ -31,6 +31,7 @@ export default function HomePage() {
   const [channels, setChannels] = useState([]);
   const [publisherId, setPublisherId] = useState('');
   const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
+  const [isCollapseOpen, setIsCollapseOpen] = useState(true);
   const searchParams = useSearchParams();
   const startWithModalOpen = searchParams.get('addChannelModal');
   const t = useTranslations();
@@ -67,7 +68,7 @@ export default function HomePage() {
       <main className='main transition-colors'>
         <Container>
           <div className='mx-auto max-w-screen-lg'>
-            <Collapse >
+            <Collapse isOpen={isCollapseOpen} onToggle={()=>{setIsCollapseOpen(!isCollapseOpen)}}>
               <div slot='title'><h4>{t('Home.headings.how_to_receive')}</h4></div>
               <div className="grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-2">
                 <div className={`relative ${styles['howto-box-orange']}`}>

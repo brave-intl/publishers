@@ -32,7 +32,6 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
     setUpholdConnection(custodianData.uphold_connection);
     setGeminiConnection(custodianData.gemini_connection);
     setAllowedRegions(custodianData.allowed_regions);
-    console.log(channel)
   }, [])
 
   async function removeChannel() {

@@ -128,17 +128,6 @@ export default function CustodianConnectModal({}) {
           <Icon name="launch" slot="icon-after" />
         </Button>
       )}
-      <p className='small-regular color-tertiary pt-3'>
-        {t('Home.account.country_disclaimer')}
-        <a
-          href={supportUrl}
-          rel='noopener noreferrer'
-          target='_blank'
-          className='underline'
-        >
-          {t('shared.learn_more')}.
-        </a>
-      </p>
       {/* force dialog to be 'taller' and allow space for the dropdown */}
       <div className={styles['dialog-pad']}></div>
     </section>
