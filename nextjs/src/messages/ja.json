@@ -266,10 +266,20 @@
   },
   "Home": {
     "headings": {
-      "account_details": "アカウント詳細",
+      "how_to_receive": "どうすればBAT等の暗号資産を閲覧者から受け取ることができますか？",
+      "add_accounts": "1. アカウントを追加する",
+      "add_accounts_text": "サイトやチャンネル、ソーシャルアカウントを登録する。",
+      "add_payments": "2. ペイメント・メソッドを追加する",
+      "add_payments_text": "ペイメント・メソッドを追加すると、閲覧者がBATやその他暗号資産をコントリビューションとして送れるようになります。",
+      "receive_contributions": "3. コントリビューションを受け取る",
+      "receive_contributions_text": "ペイメント・メソッド追加後、Braveブラウザを使用している閲覧者にはあなたのサイトやチャンネルを訪問した際に青の認証チェックマークが表示されます。",
       "channels": "サイトやチャンネル"
     },
     "account": {
+      "disconnect_warning": "注意: 全ての登録チャンネルに反映されます。",
+      "connect_warning": "カストディアル・アカウントの追加は全ての登録チャンネルに反映されます。 ",
+      "not_connected": "接続されていません - アカウントを追加してください",
+      "custodial_account": "カストディアル・アカウント",
       "monthly_payouts": "月毎の支払い",
       "last_deposit": "前回の入金：",
       "last_deposit_date": "前回の入金日：",
