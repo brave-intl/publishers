@@ -18,18 +18,18 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#77ba11a7d512c32b25b77b878a98b594877bbe9b",
-    "@fontsource/poppins": "5.0.12",
-    "@fontsource/inter": "5.0.17",
-    "@fontsource/dm-mono": "5.0.19",
+    "@brave/leo": "github:brave/leo#8e63ed2a6a930ad980451076c05141a996409dc1",
+    "@fontsource/poppins": "5.2.5",
+    "@fontsource/inter": "5.2.5",
+    "@fontsource/dm-mono": "5.2.5",
     "@github/webauthn-json": "^2.1.1",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.8",
-    "axios": "1.8.4",
+    "axios": "1.9.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
     "next": "^14.2.25",
-    "next-intl": "3.13.0",
+    "next-intl": "3.26.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-responsive": "^9.0.2",
@@ -47,8 +47,8 @@
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "14.3.1",
     "@types/react": "18.3.20",
-    "@typescript-eslint/eslint-plugin": "6.7.2",
-    "@typescript-eslint/parser": "6.7.2",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/parser": "6.21.0",
     "autoprefixer": "10.4.21",
     "eslint": "8.57.1",
     "eslint-config-airbnb": "19.0.4",
@@ -59,23 +59,23 @@
     "eslint-plugin-unused-imports": "3.2.0",
     "express": "4.21.2",
     "http-proxy": "1.18.1",
-    "http-proxy-middleware": "2.0.7",
+    "http-proxy-middleware": "2.0.9",
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "13.3.0",
     "miragejs": "0.1.48",
     "next-router-mock": "0.9.13",
     "patch-package": "8.0.0",
-    "postcss": "8.4.49",
-    "prettier": "3.0.3",
-    "prettier-plugin-tailwindcss": "0.5.4",
+    "postcss": "8.5.3",
+    "prettier": "3.5.3",
+    "prettier-plugin-tailwindcss": "0.6.11",
     "selfsigned": "2.4.1",
-    "stylelint": "15.10.3",
-    "stylelint-config-clean-order": "5.2.0",
+    "stylelint": "15.11.0",
+    "stylelint-config-clean-order": "5.4.2",
     "stylelint-config-standard": "34.0.0",
     "stylelint-webpack-plugin": "4.1.1",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.5.4"
+    "tailwindcss": "3.4.17",
+    "typescript": "5.8.3"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -87,7 +87,7 @@
     ]
   },
   "engines": {
-    "node": "18.17.1",
+    "node": "20.19.1",
     "yarn": "please use NPM"
   }
 }

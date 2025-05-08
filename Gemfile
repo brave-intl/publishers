@@ -9,7 +9,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
-gem "rack", "3.0.14"
+gem "rack", "3.1.13"
 
 # All things countries
 gem "countries"
@@ -29,9 +29,9 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.182.0"
+gem "aws-sdk-s3", "~> 1.185.0"
 
-gem "bootstrap", "5.3.3"
+gem "bootstrap", "5.3.5"
 
 gem "brotli", "~> 0.6.0"
 
@@ -49,8 +49,8 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.12.2"
-gem "faraday-retry", "2.2.1"
+gem "faraday", "2.13.1"
+gem "faraday-retry", "2.3.1"
 
 gem "ffi"
 
@@ -71,7 +71,7 @@ gem "newrelic_rpm", "~> 9.7"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
-gem "omniauth-google-oauth2", "~> 1.1.1"
+gem "omniauth-google-oauth2", "~> 1.2.0"
 
 # Oauth client for twitch
 gem "omniauth-twitch", "~> 1.2.0"
@@ -91,7 +91,7 @@ gem "omniauth-github", "~> 2.0.1"
 gem "ostruct"
 
 # Model record auditing
-gem "paper_trail", "~> 15.1.0"
+gem "paper_trail", "~> 15.2.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -103,7 +103,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 5.0"
 
 # Puma as app server
-gem "puma", "~> 6.4.3"
+gem "puma", "~> 6.6.0"
 
 # Sanitize bad inputs coming in
 gem "rack-utf8_sanitizer"
@@ -111,7 +111,7 @@ gem "rack-utf8_sanitizer"
 gem "rails-i18n", "~> 7.0"
 
 # I love captchas
-gem "recaptcha", "~> 5.16.0", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.19.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.1"
@@ -141,12 +141,12 @@ gem "terser"
 gem "sidekiq", "~> 7.2"
 
 gem "sidekiq-scheduler", "~> 5.0.3"
-gem "sidekiq-throttled", "~> 1.3.0"
+gem "sidekiq-throttled", "~> 1.5.0"
 
 # slim for view templates
-gem "slim-rails", "3.6.3"
+gem "slim-rails", "3.7.0"
 
-gem "ssrf_filter", "1.1.2"
+gem "ssrf_filter", "1.2.0"
 
 gem "strong_migrations"
 
@@ -166,15 +166,15 @@ gem "will_paginate"
 gem "yt", "~> 0.33"
 
 gem "zeitwerk", "~> 2.6"
-gem "zendesk_api", "~> 3.0.5"
+gem "zendesk_api", "~> 3.1.0"
 
 gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb", branch: "fix/activerecord72-register-adapter"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "sprockets-rails", "3.4.2"
-gem "sprockets", "4.2.1"
+gem "sprockets-rails", "3.5.2"
+gem "sprockets", "4.2.2"
 
 gem "eth", "~> 0.5"
 gem "rbnacl"
@@ -207,7 +207,7 @@ group :test do
   gem "rails-controller-testing"
 
   # Image information library
-  gem "fastimage", "~> 2.3.0"
+  gem "fastimage", "~> 2.4.0"
 end
 
 group :development, :test do
@@ -232,12 +232,12 @@ group :development, :test do
   gem "capybara"
   gem "minitest"
   gem "minitest-retry"
-  gem "minitest-rails", "~> 7.1.0"
+  gem "minitest-rails", "~> 7.2.0"
   gem "mocha", require: false
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
   gem "solargraph"
-  gem "dotenv-rails", "3.1.7"
+  gem "dotenv-rails", "3.1.8"
 end
 
 gem "importmap-rails", "~>2.0"

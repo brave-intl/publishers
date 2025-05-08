@@ -7,10 +7,14 @@ import styles from '@/styles/ChannelCard.module.css';
 export default function DisconnectConfirmationModal({ close, provider }) {
   const t = useTranslations();
 
+  function capitalize(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+  }
+
   return (
     <div>
       <h1 className={styles['privacy-header']}>{t('walletServices.disconnectModal.title')}</h1>
-      <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.text', { provider: provider })}</p>
+      <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.text', { provider: capitalize(provider) })}</p>
       <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.textLine2')}</p>
       <div className="text-right">
         <div className={styles['privacy-button-container']}>

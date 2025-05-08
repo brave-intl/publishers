@@ -17,7 +17,7 @@
   "devDependencies": {
     "@babel/helper-call-delegate": "7.12.13",
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
-    "prettier": "3.2.5",
+    "prettier": "3.5.3",
     "rollup": "3.29.5"
   },
   "scripts": {
@@ -43,7 +43,7 @@
   },
   "resolutions": {
     "nth-check": "2.1.1",
-    "postcss": "8.4.49",
+    "postcss": "8.5.3",
     "word-wrap": "aashutoshrathi/word-wrap"
   }
 }

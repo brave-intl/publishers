@@ -2,6 +2,8 @@
 
 import Dialog from '@brave/leo/react/dialog';
 import ProgressRing from '@brave/leo/react/progressRing';
+import Link from '@brave/leo/react/link';
+
 import bs58 from 'bs58';
 import { useTranslations } from 'next-intl';
 import { useContext, useEffect, useState } from 'react';
@@ -12,7 +14,7 @@ import styles from '@/styles/ChannelCard.module.css';
 import { apiRequest } from '@/lib/api';
 import UserContext from '@/lib/context/UserContext';
 
-import { CryptoAddressContext } from '@/components/CryptoAddressProvider';
+import { CryptoAddressContext } from '@/lib/context/CryptoAddressContext';
 
 import CryptoPrivacyModal from './CryptoPrivacyModal';
 import CryptoWalletOption from './CryptoWalletOption';
@@ -398,9 +400,11 @@ export default function ChannelCryptoEditor({ channel }) {
         </div>
         <div className={styles['alert-warning']}>{errorText}</div>
         {(currentSolAddress || currentEthAddress) && (
-          <a href={`/c/${channel.public_identifier}`}>
-            {t('Home.addCryptoWidget.channelPageLink')}
-          </a>
+          <div className="mb-1">
+            <Link href={`/c/${channel.public_identifier}`}>
+              {t('Home.addCryptoWidget.channelPageLink')}
+            </Link>
+          </div>
         )}
         <Dialog isOpen={isModalOpen} onClose={closeModal}>
           <CryptoPrivacyModal

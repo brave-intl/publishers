@@ -6,6 +6,6 @@ module SignInHelpers
     PublisherTokenGenerator.new(publisher: publisher).perform
     link = publisher_private_reauth_url(publisher: publisher)
     visit link
-    assert_content page, "Account details"
+    assert_content page, "Sites and channels"
   end
 end
