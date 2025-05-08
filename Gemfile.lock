@@ -454,7 +454,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (3.1.13)
+    rack (3.1.14)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -822,7 +822,7 @@ DEPENDENCIES
   pry-stack_explorer (~> 0.6.1)
   public_suffix (~> 5.0)
   puma (~> 6.6.0)
-  rack (= 3.1.13)
+  rack (= 3.1.14)
   rack-utf8_sanitizer
   rails (= 7.2.2.1)
   rails-controller-testing
