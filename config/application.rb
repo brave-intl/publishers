@@ -22,6 +22,9 @@ module Publishers
     config.middleware.use HttpHeaderMiddleware
     config.middleware.use Rack::Deflater
 
+    Rack::Utils.default_query_parser = Rack::QueryParser.make_default(32,
+      bytesize_limit: 10000100, params_limit: 4096)
+
     config.active_job.queue_adapter = :sidekiq
 
     config.eager_load_paths += %W[#{config.root}/app/services/ #{config.root}/lib #{config.root}/app/validators/ #{config.root}/lib/devise #{config.root}/app/jobs/payout/concerns/]
