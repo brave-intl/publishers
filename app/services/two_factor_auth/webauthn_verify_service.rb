@@ -26,22 +26,13 @@ module TwoFactorAuth
       )
 
       begin
-        if registration.u2f? # old registration format
-          assertion_response.verify(
-            Base64.urlsafe_decode64(session[:current_authentication][:challenge]),
-            domain,
-            public_key: Base64.urlsafe_decode64(registration.public_key),
-            sign_count: registration.counter,
-            rp_id: domain
-          )
-        else
-          assertion_response.verify(
-            Base64.urlsafe_decode64(session[:current_authentication][:challenge]),
-            domain,
-            public_key: Base64.urlsafe_decode64(registration.public_key),
-            sign_count: registration.counter
-          )
-        end
+        assertion_response.verify(
+          Base64.urlsafe_decode64(session[:current_authentication][:challenge]),
+          domain,
+          public_key: Base64.urlsafe_decode64(registration.public_key),
+          sign_count: registration.counter,
+          rp_id: URI.parse(domain).host
+        )
       rescue WebAuthn::VerificationError => e
         Rails.logger.debug("WebAuthn::Error! #{e}")
         return problem(e.message)
