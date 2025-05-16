@@ -15,11 +15,6 @@ services:
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
-      AWS_PROFILE: compliance-shared-services-developer
-      AWS_ACCESS_KEY_ID:
-      AWS_SECRET_ACCESS_KEY:
-      AWS_SESSION_TOKEN:
-      AWS_REGION:
     command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
     networks:
       - default
