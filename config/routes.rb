@@ -302,6 +302,7 @@ Rails.application.routes.draw do
     resources :channels, only: [:index, :destroy] do
       collection do
         get :duplicates
+        post :ofac_update
       end
     end
 

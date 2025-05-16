@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   web: &web_base
@@ -15,6 +15,11 @@ services:
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+      AWS_PROFILE: compliance-shared-services-developer
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_SESSION_TOKEN:
+      AWS_REGION:
     command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
     networks:
       - default
@@ -24,6 +29,7 @@ services:
     volumes:
       - .:/var/www
       - /var/www/node_modules
+      - $HOME/.aws:/root/.aws
     ports:
       - "3000:3000"
     env_file: .env.docker.dev
@@ -75,4 +81,3 @@ services:
       - web
 volumes:
   db-data:
-
