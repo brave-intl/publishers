@@ -19,6 +19,7 @@ require "test_helpers/mock_rewards_responses"
 require "test_helpers/sign_in_helpers"
 require "minitest/rails"
 require "minitest/retry"
+require "aws-sdk-s3"
 
 if ENV["USE_MINITEST_RETRY"]
   Minitest::Retry.use!(

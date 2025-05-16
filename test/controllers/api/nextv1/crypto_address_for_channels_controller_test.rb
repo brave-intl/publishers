@@ -15,6 +15,20 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     @publisher = publishers(:verified)
     sign_in @publisher
     @csrf_token = get_csrf_token
+
+    Aws.config[:s3] = {
+      region: "us-west-2",
+      credentials: Aws::Credentials.new("akid", "secret"),
+      endpoint: "http://localhost:8000",
+      stub_responses: {
+        list_buckets: {
+          buckets: [name: "brave-production-ofac-addresses"]
+        },
+        list_objects: {
+          contents: [{key: "MHgxOTk5ZWY1MjcwMGMzNGRlN2VjMmI2OGEyOGFhZmIzN2RiMGM1YWRl"}]
+        }
+      }
+    }
   end
 
   def teardown
@@ -36,6 +50,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
 
     Util::CryptoUtils.expects(:verify_solana_address).with(signature, account_address, message, @publisher).returns(true)
     Api::Nextv1::CryptoAddressForChannelsController.any_instance.expects(:replace_crypto_address_for_channel).with(account_address, chain, @channel).returns(true)
+    Api::Nextv1::CryptoAddressForChannelsController.any_instance.expects(:sanctioned?).with(account_address).returns(false)
 
     post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels", params: {
       transaction_signature: signature,
@@ -62,6 +77,26 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
 
     assert_response :bad_request
     assert_equal ["message is invalid"], JSON.parse(response.body)["errors"]
+  end
+
+  test "should reject a crypto address on the sanctioned list" do
+    signature = "3mAsCPAU88U3U4AplCrrPMuL8K3df3ydGoqaQRSXqgqzM2o1zpzsk2JU9uY8Z1oke7nSgCc1Lhaxu7K5sowt6Z6p"
+    account_address = "0x1999ef52700c34de7ec2b68a28aafb37db0c5ade"
+    chain = "ETH"
+    message = "d1133a45-deed-4398-9f85-5df3864ca460"
+    Rails.cache.write(message, @publisher.id)
+
+    Util::CryptoUtils.expects(:verify_ethereum_address).with(signature, account_address, message, @publisher).returns(true)
+
+    post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels", params: {
+      transaction_signature: signature,
+      account_address: account_address,
+      chain: chain,
+      message: message
+    }, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token}
+
+    assert_response :bad_request
+    assert_equal [], JSON.parse(response.body)["errors"]
   end
 
   test "should change address for channel" do
