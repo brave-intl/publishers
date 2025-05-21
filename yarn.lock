@@ -4418,9 +4418,9 @@ ignore@^5.2.0, ignore@^5.2.4:
   integrity sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==
 
 immutable@^5.0.2:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.1.1.tgz#d4cb552686f34b076b3dcf23c4384c04424d8354"
-  integrity sha512-3jatXi9ObIsPGr3N5hGw/vWWcTkq6hUYhpQz4k0wLC+owqWi/LiugIw9x0EdNZ2yGedKN/HzePiBvaJRXa0Ujg==
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.1.2.tgz#e8169476414505e5a4fa650107b65e1227d16d4b"
+  integrity sha512-qHKXW1q6liAk1Oys6umoaZbDRqjcjgSrbnrifHsfsttza7zcvRAsL7mMV6xWcyhwQy7Xj5v4hhbr6b+iDYwlmQ==
 
 import-fresh@^3.2.1:
   version "3.3.1"
@@ -6750,9 +6750,9 @@ sass-loader@^13.3.2:
     neo-async "^2.6.2"
 
 sass@^1.64.1:
-  version "1.87.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.87.0.tgz#8cceb36fa63fb48a8d5d7f2f4c13b49c524b723e"
-  integrity sha512-d0NoFH4v6SjEK7BoX810Jsrhj7IQSYHAHLi/iSpgqKc7LaIDshFRlSg5LOymf9FqQhxEHs2W5ZQXlvy0KD45Uw==
+  version "1.89.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.89.0.tgz#6df72360c5c3ec2a9833c49adafe57b28206752d"
+  integrity sha512-ld+kQU8YTdGNjOLfRWBzewJpU5cwEv/h5yyqlSeJcj6Yh8U4TDA9UA5FPicqDz/xgRPWRSYIQNiFks21TbA9KQ==
   dependencies:
     chokidar "^4.0.0"
     immutable "^5.0.2"
