@@ -368,6 +368,7 @@ export default function ChannelCryptoEditor({ channel }) {
             value={currentEthAddress}
             deleteAddress={deleteAddress.bind(this)}
             formatCryptoAddress={formatCryptoAddress}
+            isSearchable={false}
             classNames={{
               control: () =>
                 `${styles['crypto-wallet-dropdown']} ${styles['crypto-wallet-dropdown-eth']}`,
@@ -389,6 +390,7 @@ export default function ChannelCryptoEditor({ channel }) {
             value={currentSolAddress}
             deleteAddress={deleteAddress.bind(this)}
             formatCryptoAddress={formatCryptoAddress}
+            isSearchable={false}
             classNames={{
               control: () =>
                 `${styles['crypto-wallet-dropdown']} ${styles['crypto-wallet-dropdown-sol']}`,
