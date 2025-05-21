@@ -14,6 +14,7 @@ import styles from '@/styles/ChannelCard.module.css';
 import DisconnectConfirmationModal from './DisconnectConfirmationModal';
 import CustodianConnectModal from './CustodianConnectModal';
 import { CustodianConnectionContext } from '@/lib/context/CustodianConnectionContext';
+import { ChannelCardContext } from '@/lib/context/ChannelCardContext';
 
 export default function CustodianServiceWidget({}) {
   const t = useTranslations();
@@ -21,6 +22,7 @@ export default function CustodianServiceWidget({}) {
   const supportUrl = locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597';
 
   const {bitflyerConnection, setBitflyerConnection, upholdConnection, setUpholdConnection, geminiConnection, setGeminiConnection} = useContext(CustodianConnectionContext);
+  const { setHasCustodian } = useContext(ChannelCardContext);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isCustodianConnectModalOpen, setIsCustodianConnectModalOpen] = useState(false);
 
@@ -44,6 +46,7 @@ export default function CustodianServiceWidget({}) {
     );
     if (!res.errors) {
       providerUpdaters[provider].call(null);
+      setHasCustodian(false);
       setIsConfirmationModalOpen(false);
     } else {
       // show error state here?
