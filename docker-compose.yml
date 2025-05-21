@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   web: &web_base
@@ -24,6 +24,7 @@ services:
     volumes:
       - .:/var/www
       - /var/www/node_modules
+      - $HOME/.aws:/root/.aws
     ports:
       - "3000:3000"
     env_file: .env.docker.dev
@@ -75,4 +76,3 @@ services:
       - web
 volumes:
   db-data:
-
