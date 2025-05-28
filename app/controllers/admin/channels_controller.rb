@@ -19,6 +19,18 @@ module Admin
 
       @channels = @channels.verified if params[:verified].present?
 
+      begin
+        # find the time of the last completed BannedAddressJob through sidekiq
+        # This isn't something sidekiq is really meant to do, so the query is kind of
+        # a mess.  If for some reason the query fails, we're going to display a message
+        # that says the time couldn't be found.
+        stats = Sidekiq::Metrics::Query.new.for_job(BannedAddressJob)
+        utc_last_job_ran = stats.job_results.values[0].series["ms"].keys[0]
+        @last_job_time = Time.strptime(utc_last_job_ran, "%H:%M")
+      rescue
+        @last_job_time = nil
+      end
+
       case params[:type]
       when "website"
         @channels = @channels.site_channels
