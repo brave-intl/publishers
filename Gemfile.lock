@@ -258,7 +258,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.7)
+    google-protobuf (3.25.8)
     hashdiff (1.1.2)
     hashie (5.0.0)
     highline (3.1.2)
