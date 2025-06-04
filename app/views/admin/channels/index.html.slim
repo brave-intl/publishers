@@ -7,6 +7,14 @@ div.row
       = form_tag ofac_update_admin_channels_path do
         = submit_tag("Start job", class: "btn btn-primary")
       br
+      h6= 'Last time banned address job ran:'
+      - if @last_job_time
+        #job-time = @last_job_time
+      - else
+        = "No completed jobs found in the last 8 hours"
+      
+      br
+      br
       .action-group  
         = form_tag(admin_channels_path, method: "get")
           .input-group

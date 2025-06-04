@@ -1,6 +1,7 @@
 import "utils/request";
 import "admin/stats/index";
 import "admin/dashboard/unattached_promo_registration";
+import "admin/channels/index";
 import Rails from "@rails/ujs";
 
 /*
@@ -32,10 +33,10 @@ Rails.href = function Rails_href_override(element) {
 Rails.start();
 document.addEventListener(
   "DOMContentLoaded",
-  function() {
+  function () {
     let sidebarToggles = document.getElementsByClassName("sidebar-toggle");
     for (var i = 0; i < sidebarToggles.length; i++) {
-      sidebarToggles[i].addEventListener("click", function(event) {
+      sidebarToggles[i].addEventListener("click", function (event) {
         var item = event.target || event.srcElement;
         // If the clicked element doesn't have the right selector, bail
         document.activeElement.blur();
@@ -58,5 +59,5 @@ document.addEventListener(
       });
     }
   },
-  false
+  false,
 );
