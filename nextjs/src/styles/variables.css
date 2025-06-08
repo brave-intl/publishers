@@ -35,7 +35,14 @@
   --leo-font-components-navbutton: 600 14px/22px 'Inter';
   --leo-font-components-tableheader: 600 13px/16px 'Inter';
   --leo-typography-components-label-font-weight: 700;
-  
+  --leo-font-components-numbers-large: 600 36px/46px 'Inter';
+  --leo-font-heading-display1: 600 46px/54px 'Inter';
+  --leo-font-heading-display2: 600 40px/48px 'Inter';
+  --leo-font-heading-display3: 600 34px/40px 'Inter';
+  --leo-font-heading-h1: 600 30px/38px 'Inter';
+  --leo-font-heading-h2: 600 24px/30px 'Inter';
+  --leo-font-heading-h3: 600 20px/26px 'Inter';
+  --leo-font-heading-h4: 600 16px/24px 'Inter';
 
   /* this needs to be fixed in Leo */
   --leo-color-text-primary: rgb(13 15 20);

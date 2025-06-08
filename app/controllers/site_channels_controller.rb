@@ -53,6 +53,7 @@ class SiteChannelsController < ApplicationController
     @current_channel = Channel.new(publisher: current_publisher)
     @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params.except(:ads_enabled))
     @current_channel.details.ads_enabled_at = ActiveModel::Type::Boolean.new.cast(channel_update_unverified_params[:ads_enabled]) ? Time.now : nil
+
     SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
 
     if @current_channel.save
