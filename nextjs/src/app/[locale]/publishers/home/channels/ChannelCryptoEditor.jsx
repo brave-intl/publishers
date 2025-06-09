@@ -15,6 +15,7 @@ import { apiRequest } from '@/lib/api';
 import UserContext from '@/lib/context/UserContext';
 
 import { CryptoAddressContext } from '@/lib/context/CryptoAddressContext';
+import { ChannelCardContext } from '@/lib/context/ChannelCardContext';
 
 import CryptoPrivacyModal from './CryptoPrivacyModal';
 import CryptoWalletOption from './CryptoWalletOption';
@@ -29,6 +30,7 @@ export default function ChannelCryptoEditor({ channel }) {
     updateResponseData,
   } = useContext(CryptoAddressContext);
   const { user } = useContext(UserContext);
+  const { setHasCrypto } = useContext(ChannelCardContext);
   const [ethOptions, setEthOptions] = useState([]);
   const [solOptions, setSolOptions] = useState([]);
   const [currentSolAddress, setCurrentSolAddress] = useState(null);
@@ -130,6 +132,7 @@ export default function ChannelCryptoEditor({ channel }) {
     const channelResponse = await apiRequest(
       `channels/${channel.id}/crypto_address_for_channels`,
     );
+
     const solAddress = findCurrentAddress('SOL', channelResponse, response);
     const ethAddress = findCurrentAddress('ETH', channelResponse, response);
     setCurrentSolAddress(solAddress);
@@ -142,6 +145,8 @@ export default function ChannelCryptoEditor({ channel }) {
     if (ethAddress) {
       addAddressInUse({ newAddress: ethAddress.value });
     }
+
+    setHasCrypto(solAddress || ethAddress);
 
     setEthOptions(formatOptionData(response, ethAddress, 'ETH'));
     setSolOptions(formatOptionData(response, solAddress, 'SOL'));
