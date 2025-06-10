@@ -165,7 +165,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
             href={`/publishers/contribution_page?channel=${channel.id}`}
             kind='outline'
           >
-            {t('shared.customize')}
+            {t('shared.customize_contribution')}
           </Button>
         )}
       </section>
