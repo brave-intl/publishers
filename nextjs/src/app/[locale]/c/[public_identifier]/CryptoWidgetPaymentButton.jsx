@@ -39,7 +39,7 @@ export default function CryptoWidgetPaymentButton({
   const solanaBatAddress = cryptoConstants.solana_bat_address;
   const solanaMainUrls = cryptoConstants.solana_main_urls;
   const rpcHost = solanaMainUrls.filter((url) =>
-    url.toLowerCase().includes(window.location.host.toLowerCase()),
+    url.toLowerCase().includes(window.location.origin.toLowerCase()),
   )[0];
   const ethUsdcAddress = cryptoConstants.eth_usdc_address;
   const solUsdcAddress = cryptoConstants.solana_usdc_address;
@@ -191,31 +191,36 @@ export default function CryptoWidgetPaymentButton({
     } else {
       const provider = await window.solana.connect();
       if (provider.publicKey) {
-        const pub_key = provider.publicKey;
-        const connection = new Connection(`${rpcHost}/rpc`);
-        const amount = Math.round(currentAmount * LAMPORTS_PER_SOL);
-
-        const transaction = new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: pub_key,
-            toPubkey: addresses.SOL,
-            lamports: amount,
-          }),
-        );
-        transaction.feePayer = pub_key;
-        const blockhashObj = await connection.getLatestBlockhash("confirmed");
-        transaction.recentBlockhash = await blockhashObj.blockhash;
-
         try {
-          const result =
-            await window.solana.signAndSendTransaction(transaction);
-          if (result.signature) {
+          const pub_key = provider.publicKey;
+          const connection = new Connection(`${rpcHost}/rpc`);
+          console.log(connection)
+          const amount = Math.round(currentAmount * LAMPORTS_PER_SOL);
+
+          const transaction = new Transaction().add(
+            SystemProgram.transfer({
+              fromPubkey: pub_key,
+              toPubkey: addresses.SOL,
+              lamports: amount,
+            }),
+          );
+          transaction.feePayer = pub_key;
+          const blockhashObj = await connection.getLatestBlockhash("confirmed");
+          transaction.recentBlockhash = await blockhashObj.blockhash;
+
+          try {
+            const result =
+              await window.solana.signAndSendTransaction(transaction);
+            if (result.signature) {
+              window.solana.disconnect();
+              setIsSuccessView(true);
+            }
+          } catch (e) {
+            setGenericError();
             window.solana.disconnect();
-            setIsSuccessView(true);
           }
         } catch (e) {
-          setGenericError();
-          window.solana.disconnect();
+          console.log(e)
         }
       } else {
         setGenericError();
@@ -241,6 +246,7 @@ export default function CryptoWidgetPaymentButton({
           // this is the account address that will receive bat
           const destinationAccountOwner = new PublicKey(addresses.SOL);
           const connection = new Connection(`${rpcHost}/rpc`);
+          console.log(connection)
           const contract = new PublicKey(contractAddress);
           // Check to see if the sender has an associated token account
           const senderAccount = await connection.getParsedTokenAccountsByOwner(
@@ -313,6 +319,7 @@ export default function CryptoWidgetPaymentButton({
             return;
           }
         } catch (e) {
+          console.log(e)
           setGenericError();
           window.solana.disconnect();
         }
