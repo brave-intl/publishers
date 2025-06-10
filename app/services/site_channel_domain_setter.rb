@@ -37,7 +37,10 @@ class SiteChannelDomainSetter < BaseService
     # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
     Addressable::URI.parse("http://#{channel_details.brave_publisher_id}")
 
-    unless DomainName(channel_details.brave_publisher_id).canonical_tld?
+    acceptable_tld = ["brave"].include?(PublicSuffix.parse(channel_details.brave_publisher_id).tld) ||
+      DomainName(channel_details.brave_publisher_id).canonical_tld?
+
+    unless acceptable_tld
       raise DomainExclusionError.new("Non-canonical TLD for #{channel_details.brave_publisher_id}")
     end
 
