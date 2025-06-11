@@ -43,7 +43,7 @@
   },
   "resolutions": {
     "nth-check": "2.1.1",
-    "postcss": "8.5.3",
+    "postcss": "8.5.4",
     "word-wrap": "aashutoshrathi/word-wrap"
   }
 }
