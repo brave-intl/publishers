@@ -204,7 +204,16 @@ class Channel < ApplicationRecord
     if name == "twitch"
       Channel.twitch_channels.verified.where("twitch_channel_details.name": value).first
     elsif PROPERTIES.include?(name)
-      public_send(:"#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
+      method_mapping = {
+        "youtube" => :youtube_channels,
+        "twitch" => :twitch_channels,
+        "follower" => :follower_channels,
+        "video" => :video_channels,
+        "subscriber" => :subscriber_channels
+      }
+      method = method_mapping[name]
+      return nil unless method
+      send(method).verified.where("#{name}_channel_details.#{name}_channel_id": value).first
     else
       visible_site_channels_fully_verified.where("site_channel_details.brave_publisher_id": identifier).first
     end
