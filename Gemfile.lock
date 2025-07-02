@@ -231,9 +231,9 @@ GEM
       logger
     faraday-multipart (1.1.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.0)
+    faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
-    faraday-retry (2.3.1)
+    faraday-retry (2.3.2)
       faraday (~> 2.0)
     fastimage (2.4.0)
     ffi (1.17.2)
@@ -289,7 +289,7 @@ GEM
       reline (>= 0.4.2)
     jaro_winkler (1.6.1)
     jmespath (1.6.2)
-    json (2.12.0)
+    json (2.12.2)
     jsonapi-renderer (0.2.2)
     jwt (2.10.1)
       base64
@@ -788,7 +788,7 @@ DEPENDENCIES
   dotenv-rails (= 3.1.8)
   eth (~> 0.5)
   faraday (= 2.13.1)
-  faraday-retry (= 2.3.1)
+  faraday-retry (= 2.3.2)
   fastimage (~> 2.4.0)
   ffi
   font-awesome-rails (~> 4.7.0)
