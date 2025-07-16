@@ -61,15 +61,6 @@ export default class BottomNav extends React.Component<{}, {}> {
             <InnerNav>
               <NavIcon>
                 {" "}
-                <PaymentDueIcon />
-              </NavIcon>
-              <NavText selected={true}>Payments</NavText>
-            </InnerNav>
-          </Nav>
-          <Nav>
-            <InnerNav>
-              <NavIcon>
-                {" "}
                 <SettingsIcon />
               </NavIcon>
               <NavText>Settings</NavText>

@@ -2,18 +2,6 @@ aside
   div.nav-collapse id="sidebar"
     ul.sidebar-menu id="nav-accordion"
       = nav_link "Referral Totals", admin_referral_totals_path
-      = nav_link "Publisher Stats", admin_stats_publisher_statistics_path
-      = nav_link "Top Publisher Contributions", admin_stats_contributions_path
-      = nav_link "Top Publisher Referrals", admin_stats_referrals_path
-      li
-        a href='#' class="sidebar-toggle pull-right"
-          = fa_icon "chevron-down"
-        = link_to "Top Balances", admin_stats_top_balances_path(type: Eyeshade::TopBalances::CHANNEL)
-        ul.sub-menu style="#{params[:controller] == 'admin/stats/top_balances' ? "" : "display:none"} "
-          = nav_link "Channel", admin_stats_top_balances_path(type: Eyeshade::TopBalances::CHANNEL)
-          = nav_link "Owner", admin_stats_top_balances_path(type: Eyeshade::TopBalances::OWNER)
-          = nav_link "Uphold", admin_stats_top_balances_path(type: Eyeshade::TopBalances::UPHOLD)
-      = nav_link "Top YouTube Channels", admin_stats_top_youtube_channels_path
       li
         a href='#' class="sidebar-toggle pull-right"
           = fa_icon "chevron-down"

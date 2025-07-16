@@ -7,23 +7,16 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test "deletes channel for publisher" do
-    prev_api_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
-    begin
-      Rails.configuration.pub_secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:youtube_new)
+    channel = channels(:youtube_new)
 
-      publisher = publishers(:youtube_new)
-      channel = channels(:youtube_new)
+    stub_request(:delete, /v1\/owners\/#{URI.encode_www_form_component(publisher.owner_identifier)}\/#{CGI.escape(channel.details.channel_identifier)}/)
+      .with(headers: {"Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "User-Agent" => "Faraday v0.9.2"})
+      .to_return(status: 200, body: nil, headers: {})
 
-      stub_request(:delete, /v1\/owners\/#{URI.encode_www_form_component(publisher.owner_identifier)}\/#{CGI.escape(channel.details.channel_identifier)}/)
-        .with(headers: {"Accept" => "*/*", "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3", "User-Agent" => "Faraday v0.9.2"})
-        .to_return(status: 200, body: nil, headers: {})
+    DeletePublisherChannelJob.perform_now(channel.id)
 
-      DeletePublisherChannelJob.perform_now(channel.id)
-
-      # assert something
-    ensure
-      Rails.configuration.pub_secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end
+    # assert something
   end
 
   test "deletes unverifed channel" do

@@ -36,12 +36,6 @@
       - if channel.verified?
         .d-flex.mt-3
           div
-            div
-              small.text-muted CONTRIBUTIONS
-              .d-flex
-                h6.font-weight-bold= publisher_channel_bat_balance(@publisher, channel.details.channel_identifier)
-                small.ml-1 BAT
-
             - if channel.promo_registration.present?
               div
                 div.mr-5

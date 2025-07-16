@@ -52,11 +52,6 @@ class Admin::PublishersController < AdminController
     @publisher = Publisher.find(params[:id])
     @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({navbarSelection: "Dashboard"}).to_json
     @current_user = current_user
-
-    if payout_in_progress?(current_user) || Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
-      @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
-      @payout_message = PayoutMessage.find_by(payout_report: @payout_report, publisher: @publisher)
-    end
     @channels = @publisher.channels.paginate(page: params[:page], per_page: 10)
   end
 

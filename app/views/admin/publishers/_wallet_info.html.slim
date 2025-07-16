@@ -20,14 +20,6 @@
   .db-info-row
     .db-field = "Created:"
     .db-row = @publisher.created_at.strftime('%B %d, %Y')
-  .db-info-row
-    .db-field = "Overall BAT balance:"
-    .db-value = "#{publisher_overall_bat_balance(@publisher)}"
-  - default_currency = @publisher.selected_wallet_provider&.default_currency
-  - if @publisher.selected_wallet_provider&.default_currency.present? && default_currency != 'BAT'
-    .db-info-row
-      .db-field = "Overall #{@publisher.selected_wallet_provider&.default_currency} balance:"
-      .db-value = "#{publisher_converted_overall_balance(@publisher)}"
   - if @publisher.created_by.present?
     .db-info-row
       .db-field = "Created by:"
