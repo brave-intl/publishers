@@ -68,7 +68,7 @@
     "patch-package": "8.0.0",
     "postcss": "8.5.6",
     "prettier": "3.5.3",
-    "prettier-plugin-tailwindcss": "0.6.13",
+    "prettier-plugin-tailwindcss": "0.6.14",
     "selfsigned": "2.4.1",
     "stylelint": "15.11.0",
     "stylelint-config-clean-order": "5.4.2",
