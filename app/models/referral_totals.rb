@@ -12,9 +12,9 @@ class ReferralTotals < ApplicationRecord
   def sync_paid_at_with_paid
     if paid_changed?
       if paid
-        paid_at = DateTime.current
+        self.paid_at = DateTime.current
       else
-        paid_at = nil
+        self.paid_at = nil
       end
     end
   end
