@@ -197,6 +197,7 @@
     "channel_quota_exceeded": "YouTubeの登録数がとても多く、1日の上限を超えてしまいました。明日以降もう一度お試しください。",
     "date_format": "%Y/%m/%d",
     "customize": "カスタマイズ",
+    "customize_contribution": "Cコントリビューションページを編集",
     "basic_attention_token": "Basic Attention Token",
     "open": "開く",
     "disconnect": "切断",

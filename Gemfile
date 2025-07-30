@@ -9,7 +9,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
-gem "rack", "3.1.14"
+gem "rack", "3.1.16"
 
 # All things countries
 gem "countries"
@@ -29,7 +29,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.185.0"
+gem "aws-sdk-s3", "~> 1.186.0"
 
 gem "bootstrap", "5.3.5"
 
@@ -49,8 +49,8 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.13.1"
-gem "faraday-retry", "2.3.1"
+gem "faraday", "2.13.3"
+gem "faraday-retry", "2.3.2"
 
 gem "ffi"
 
@@ -146,7 +146,7 @@ gem "sidekiq-throttled", "~> 1.5.0"
 # slim for view templates
 gem "slim-rails", "3.7.0"
 
-gem "ssrf_filter", "1.2.0"
+gem "ssrf_filter", "1.3.0"
 
 gem "strong_migrations"
 

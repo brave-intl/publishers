@@ -15,7 +15,6 @@ export default function CryptoWalletOption({
   function handleDelete(e) {
     e.stopPropagation();
     deleteAddress(value);
-    close();
   }
 
   if (value.hasOwnProperty('newAddress')) {

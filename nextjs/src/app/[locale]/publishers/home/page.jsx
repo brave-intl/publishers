@@ -20,6 +20,7 @@ import receiveContributions from "~/images/receive_contributions.png";
 import Card from '@/components/Card';
 import Container from '@/components/Container';
 import CryptoAddressProvider from '@/lib/context/CryptoAddressContext';
+import ChannelCardProvider from '@/lib/context/ChannelCardContext';
 import CustodianConnectionProvider from '@/lib/context/CustodianConnectionContext';
 
 import AddChannelModal from './channels/AddChannelModal';
@@ -108,13 +109,15 @@ export default function HomePage() {
                     <section className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
                       {channels.map(function (channel) {
                         return (
-                          <ChannelCard
-                            key={channel.id}
-                            channel={channel}
-                            publisherId={publisherId}
-                            onChannelDelete={onChannelDelete}
-                            custodianData={custodianData}
-                          />
+                          <ChannelCardProvider key={channel.id}>
+                            <ChannelCard
+                              key={channel.id}
+                              channel={channel}
+                              publisherId={publisherId}
+                              onChannelDelete={onChannelDelete}
+                              custodianData={custodianData}
+                            />
+                            </ChannelCardProvider>
                         );
                       })}
                     </section>

@@ -26,13 +26,6 @@ export default function NavigationOptions() {
         {t('shared.dashboard')}
       </NavigationItem>
       <NavigationItem
-        icon='window-settings'
-        href='/publishers/contribution_page'
-        isCurrent={route.includes(`/publishers/contribution_page`)}
-      >
-        {t('NavDropdown.contribution_banners')}
-      </NavigationItem>
-      <NavigationItem
         icon='lock'
         href='/publishers/security'
         isCurrent={route.includes('/publishers/security')}

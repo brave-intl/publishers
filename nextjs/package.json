@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#e05e6fe049b1a21b6d447c8005fdf43a6a18894a",
+    "@brave/leo": "github:brave/leo#642379030235d3f1bc2184b5e72f396c1f8d8918",
     "@fontsource/poppins": "5.2.6",
     "@fontsource/inter": "5.2.5",
     "@fontsource/dm-mono": "5.2.5",
@@ -28,7 +28,7 @@
     "axios": "1.9.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
-    "next": "^14.2.25",
+    "next": "^14.2.30",
     "next-intl": "3.26.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -46,15 +46,15 @@
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "14.3.1",
-    "@types/react": "18.3.21",
+    "@types/react": "18.3.23",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
     "autoprefixer": "10.4.21",
     "eslint": "8.57.1",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-next": "13.5.11",
-    "eslint-config-prettier": "8.10.0",
-    "eslint-plugin-prettier": "5.4.0",
+    "eslint-config-prettier": "8.10.2",
+    "eslint-plugin-prettier": "5.4.1",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-unused-imports": "3.2.0",
     "express": "4.21.2",
@@ -66,9 +66,9 @@
     "miragejs": "0.1.48",
     "next-router-mock": "0.9.13",
     "patch-package": "8.0.0",
-    "postcss": "8.5.3",
+    "postcss": "8.5.6",
     "prettier": "3.5.3",
-    "prettier-plugin-tailwindcss": "0.6.11",
+    "prettier-plugin-tailwindcss": "0.6.14",
     "selfsigned": "2.4.1",
     "stylelint": "15.11.0",
     "stylelint-config-clean-order": "5.4.2",
@@ -87,7 +87,7 @@
     ]
   },
   "engines": {
-    "node": "20.19.1",
+    "node": "20.19.4",
     "yarn": "please use NPM"
   }
 }

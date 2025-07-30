@@ -10,6 +10,7 @@ import styles from '@/styles/ChannelCard.module.css';
 
 import { apiRequest } from '@/lib/api';
 import { CustodianConnectionContext } from '@/lib/context/CustodianConnectionContext';
+import { ChannelCardContext } from '@/lib/context/ChannelCardContext';
 import Card from '@/components/Card';
 
 import CustodianServiceWidget from '../custodianServices/CustodianServiceWidget';
@@ -27,10 +28,18 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
       setAllowedRegions
   } = useContext(CustodianConnectionContext);
 
+  const {
+    hasCustodian,
+    hasCrypto,
+    setHasCustodian
+  } = useContext(ChannelCardContext);
+
   useEffect(() => {
     setBitflyerConnection(custodianData.bitflyer_connection);
     setUpholdConnection(custodianData.uphold_connection);
     setGeminiConnection(custodianData.gemini_connection);
+
+    setHasCustodian(custodianData.bitflyer_connection || custodianData.uphold_connection || custodianData.gemini_connection)
     setAllowedRegions(custodianData.allowed_regions);
   }, [])
 
@@ -83,7 +92,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
   }
 
   function displayVerified() {
-    if (channel.verified && channel["brave_payable?"]) {
+    if (channel.verified && ( hasCrypto || hasCustodian )) {
       return (
         <div className='flex items-center'>
           <span className='small-regular pr-0.5'>
@@ -151,12 +160,12 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
         >
           {t('shared.remove')}
         </Button>
-        {!isUnverifiedChannel() && (
+        {hasCrypto && (
           <Button
             href={`/publishers/contribution_page?channel=${channel.id}`}
             kind='outline'
           >
-            {t('shared.customize')}
+            {t('shared.customize_contribution')}
           </Button>
         )}
       </section>

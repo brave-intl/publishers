@@ -39,7 +39,7 @@ export default function CryptoWidgetPaymentButton({
   const solanaBatAddress = cryptoConstants.solana_bat_address;
   const solanaMainUrls = cryptoConstants.solana_main_urls;
   const rpcHost = solanaMainUrls.filter((url) =>
-    url.toLowerCase().includes(window.location.host.toLowerCase()),
+    url.toLowerCase().includes(window.location.origin.toLowerCase()),
   )[0];
   const ethUsdcAddress = cryptoConstants.eth_usdc_address;
   const solUsdcAddress = cryptoConstants.solana_usdc_address;
