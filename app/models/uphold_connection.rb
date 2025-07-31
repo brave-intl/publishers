@@ -391,7 +391,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def find_and_verify_uphold_user!
     result = find_and_verify_uphold_user
-
+    Rails.logger.info(result)
     case result
     when UpholdUser
       result
@@ -401,6 +401,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
   end
 
   def find_or_create_uphold_card!
+    Rails.logger.info("Can create uphold cards: #{can_create_uphold_cards?}")
     raise InsufficientScopeError.new("Cannot configure wallet") if !can_create_uphold_cards?
 
     begin
@@ -424,7 +425,7 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
 
   def has_deposit_capability?
     result = connection_client.users.get_capability("deposits")
-
+    Rails.logger.info(result)
     case result
     when UpholdUserCapability
       result.requirements.empty? && result.restrictions.empty?
@@ -450,67 +451,72 @@ class UpholdConnection < Oauth2::AuthorizationCodeBase
       access_expiration_time = access_token_response.expires_in.present? ? access_token_response.expires_in.seconds.from_now : nil
 
       # Do everything in a transaction so hopefully we begin tamping down data artifacts
-      ActiveRecord::Base.transaction do
-        # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
-        # We have so many empty connections
-        UpholdConnection.where(publisher_id: publisher.id).delete_all
+      begin
+        ActiveRecord::Base.transaction do
+          # 1.) Cleanup artifacts in absence of any actual uniqueness verifications
+          # We have so many empty connections
+          UpholdConnection.where(publisher_id: publisher.id).delete_all
 
-        # 2.) Set core params/token values.
-        conn = UpholdConnection.new(
-          publisher_id: publisher.id,
-          uphold_access_parameters: access_token_response.to_json,
-          access_expiration_time: access_expiration_time,
-          uphold_verified: true,
-          default_currency: "BAT",
-          default_currency_confirmed_at: Time.now
-        )
+          # 2.) Set core params/token values.
+          conn = UpholdConnection.new(
+            publisher_id: publisher.id,
+            uphold_access_parameters: access_token_response.to_json,
+            access_expiration_time: access_expiration_time,
+            uphold_verified: true,
+            default_currency: "BAT",
+            default_currency_confirmed_at: Time.now
+          )
 
-        if !conn.has_deposit_capability?
-          raise CapabilityError.new(I18n.t(".publishers.uphold.create.limited_functionality"))
+          if !conn.has_deposit_capability?
+            Rails.logger.warn(conn.has_deposit_capability?)
+            raise CapabilityError.new(I18n.t(".publishers.uphold.create.limited_functionality"))
+          end
+
+          # 3.) Pull data on existing user from uphold and set on model
+          # Fail whole transaction if cannot be found
+          user = conn.find_and_verify_uphold_user!
+
+          # Sorbet is strict
+          if user.memberAt.present?
+            conn.member_at = Time.zone.parse(user.memberAt)
+            conn.is_member = true
+          else
+            conn.is_member = false
+          end
+
+          # Wow.  This I haven't encountered before
+          # The type annotations of the UpholdUser struct are different
+          # from that of the model, so you have to cast the values
+          # in order to assign them
+          conn.status = user.status
+          conn.uphold_id = user.id
+          conn.country = user.country
+
+          # 4.) Create the uphold "card" or wallet for the default currency in question.
+          # Fail if we cannot
+          result = conn.find_or_create_uphold_card!
+          Rails.logger.info(result)
+          case result
+          when UpholdCard
+            # 5.) Save card id and write to disk
+            conn.address = result.id
+            conn.save!
+
+            # 6.) Update publisher, fail if anything goes wrong
+            #
+            # If all succeeds we have everything we need for a valid UpholdConnection
+            # on create.
+            publisher.update!(selected_wallet_provider: conn)
+
+            # Create whatever this report is, pulled out of the previous uphold connections controller
+            UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
+            conn
+          else
+            raise result
+          end
         end
-
-        # 3.) Pull data on existing user from uphold and set on model
-        # Fail whole transaction if cannot be found
-        user = conn.find_and_verify_uphold_user!
-
-        # Sorbet is strict
-        if user.memberAt.present?
-          conn.member_at = Time.zone.parse(user.memberAt)
-          conn.is_member = true
-        else
-          conn.is_member = false
-        end
-
-        # Wow.  This I haven't encountered before
-        # The type annotations of the UpholdUser struct are different
-        # from that of the model, so you have to cast the values
-        # in order to assign them
-        conn.status = user.status
-        conn.uphold_id = user.id
-        conn.country = user.country
-
-        # 4.) Create the uphold "card" or wallet for the default currency in question.
-        # Fail if we cannot
-        result = conn.find_or_create_uphold_card!
-
-        case result
-        when UpholdCard
-          # 5.) Save card id and write to disk
-          conn.address = result.id
-          conn.save!
-
-          # 6.) Update publisher, fail if anything goes wrong
-          #
-          # If all succeeds we have everything we need for a valid UpholdConnection
-          # on create.
-          publisher.update!(selected_wallet_provider: conn)
-
-          # Create whatever this report is, pulled out of the previous uphold connections controller
-          UpholdStatusReport.find_or_create_by(publisher_id: publisher.id, uphold_id: conn.uphold_id).save!
-          conn
-        else
-          raise result
-        end
+      rescue Exception => e
+        Rails.logger.error(e)
       end
     end
 
