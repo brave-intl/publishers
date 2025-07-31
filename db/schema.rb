@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_16_225001) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_31_200749) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -185,6 +185,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_16_225001) do
     t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
+  end
+
+  create_table "creator_totals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "total", default: 0, null: false
+    t.boolean "paid", default: false
+    t.date "paid_at"
+    t.uuid "publisher_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_creator_totals_on_publisher_id"
   end
 
   create_table "crypto_address_for_channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

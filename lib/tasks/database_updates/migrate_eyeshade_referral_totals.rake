@@ -3,7 +3,7 @@ namespace :database_updates do
     puts "Running eyeshade migration"
 
     # once we delete the eyshade code, this job will fail and that is intentional
-    publishers = Publisher.in_top_referrer_program.map { |p| {id: p.id, total: p.wallet.referral_balance.amount_bat} }
+    publishers = Publisher.in_top_referrer_program.map { |p| {id: p.id, total: p.wallet&.referral_balance&.amount_bat} }
     puts "#{publishers.length} publishers in referral program"
 
     publishers.each do |pub|

@@ -319,6 +319,7 @@ Rails.application.routes.draw do
     resources :reserved_public_names
 
     resources :referral_totals, only: [:index, :update]
+    resources :creator_totals, only: [:index, :update]
 
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]

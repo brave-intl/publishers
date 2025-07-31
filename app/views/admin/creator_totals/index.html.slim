@@ -1,0 +1,30 @@
+div.row
+  div.col-sm-12
+    section.panel
+      h3 Creator Totals
+
+      .action-group
+        = form_tag admin_creator_totals_path, method: :get, class: "search-form" do
+          .input-group
+            = text_field_tag :search, params[:search], class:'form-control', placeholder: "Search by publisher id"
+            .input-group-btn
+              = submit_tag("Search", class: 'btn btn-default')
+      br
+      table.display.table.table-bordered.table-striped.dynamic-table 
+        thead
+          tr
+            th Publisher
+            th Total (BAT)
+            th Paid
+            th Paid At
+        tbody
+          - @creator_totals.each do |creator|
+            tr
+              td = link_to creator.publisher_id, admin_publisher_path(id: creator.publisher_id)
+              td = creator.total
+              td
+                = form_for creator, url: admin_creator_total_path(creator), method: :patch do |f|
+                  = f.check_box :paid, onchange: "this.form.submit();"
+              td = creator.paid_at
+
+      = will_paginate @creator_totals
