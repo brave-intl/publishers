@@ -1,5 +1,6 @@
 class Api::Nextv1::HomeController < Api::Nextv1::BaseController
   include PublishersHelper
+  include ActionController::Flash
 
   before_action :prompt_for_two_factor_setup, only: %i[dashboard]
 
@@ -22,7 +23,8 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
     response_data = {
       publisher: publisher,
       channels: channels,
-      wallet_data: wallet_data
+      wallet_data: wallet_data,
+      flash_data: {alert: flash[:alert], notice: flash[:notice]}
     }
 
     render(json: response_data.to_json, status: 200)
