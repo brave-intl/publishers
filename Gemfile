@@ -33,7 +33,7 @@ gem "aws-sdk-s3", "~> 1.194.0"
 
 gem "bootstrap", "5.3.5"
 
-gem "brotli", "~> 0.6.0"
+gem "brotli", "~> 0.7.0"
 
 # Authorization
 gem "cancancan", "~> 3.6.0"
