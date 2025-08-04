@@ -61,10 +61,10 @@
           = " Allow publisher to create referrals"
         p.text-dark Allow publisher to create referrals
         label
-          = " Number of Site Channels allowed  "
+          = " DEPRECATED: Number of Site Channels allowed  "
           = f.number_field :site_channel_limit
           br
-        p.text-dark How many site channels this user can have (default 2)
+        p.text-dark How many site channels this user can have (default 2).  This feature is no longer active, but the database fields are still there in case we want to re-enable in the future.
 
       .form-group
         = f.submit class: "btn btn-primary m-0"
