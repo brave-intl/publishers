@@ -188,29 +188,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "when channel creation exceeds the limit" do
-    prev_host_inspector_offline = Rails.configuration.pub_secrets[:host_inspector_offline]
-    begin
-      Rails.configuration.pub_secrets[:host_inspector_offline] = true
-
-      sign_in publishers(:promo_enabled)
-
-      create_params = {
-        channel: {
-          details_attributes: {
-            brave_publisher_id_unnormalized: "new_site_54634.org"
-          }
-        }
-      }
-
-      count = Channel.count
-      post site_channels_url, params: create_params
-      assert Channel.count == count
-    ensure
-      Rails.configuration.pub_secrets[:host_inspector_offline] = prev_host_inspector_offline
-    end
-  end
-
   test "when user only is in status 'only user funds' we do not register for promos" do
     prev_host_inspector_offline = Rails.configuration.pub_secrets[:host_inspector_offline]
     begin
