@@ -9,7 +9,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
   include Oauth2::Responses
   include MailerTestHelper
   include PromosHelper
-  include EyeshadeHelper
   include MockOauth2Responses
   include MockUpholdResponses
   include MockRewardsResponses

@@ -9,18 +9,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
   include MailerTestHelper
   include PublishersHelper
-  include EyeshadeHelper
   include MockUpholdResponses
   include MockRewardsResponses
 
   before do
-    @prev_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
     stub_uphold_cards!
     stub_rewards_parameters
-  end
-
-  after do
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
   SIGNUP_PARAMS = {
@@ -106,25 +100,16 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response 200
 
-    get statements_path
-    assert_response 200
-
     # Get suspended
     publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
 
     get home_publishers_path
     assert_redirected_to controller: "/publishers", action: "suspended_error"
 
-    get statements_path
-    assert_redirected_to controller: "/publishers", action: "suspended_error"
-
     # Go back to active
     publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
 
     get home_publishers_path
-    assert_response 200
-
-    get statements_path
     assert_response 200
   end
 
@@ -469,28 +454,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # verify pending email is removed after confirmation
     assert_nil(publisher.pending_email)
-  end
-
-  test "a publisher's statement can be downloaded as html" do
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-
-    get statements_path
-    assert_equal response.status, 200
-  end
-
-  test "a publisher's wallet can be polled via ajax" do
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-    stub_get_user
-
-    get wallet_path, headers: {"HTTP_ACCEPT" => "application/json"}
-
-    assert_response 200
-
-    wallet_response = JSON.parse(response.body)
-
-    assert wallet_response["wallet"]["channel_balances"].present?
   end
 
   test "a publisher can destroy his uphold connection" do

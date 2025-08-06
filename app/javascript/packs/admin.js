@@ -1,5 +1,4 @@
 import "utils/request";
-import "admin/stats/index";
 import "admin/dashboard/unattached_promo_registration";
 import "admin/channels/index";
 import Rails from "@rails/ujs";

@@ -11,8 +11,6 @@ class YoutubeChannelDetails < BaseChannelDetails
 
   PREFIX = "youtube#channel:".freeze
 
-  ## Begin methods to satisfy the Eyeshade integration
-
   def channel_identifier
     "#{PREFIX}#{youtube_channel_id}"
   end
@@ -24,8 +22,6 @@ class YoutubeChannelDetails < BaseChannelDetails
   def authorizer_name
     auth_name
   end
-
-  ## End methods to satisfy the Eyeshade integration
 
   def publication_title
     title

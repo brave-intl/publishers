@@ -9,8 +9,6 @@ class TwitterChannelDetails < BaseChannelDetails
 
   PREFIX = "twitter#channel:".freeze
 
-  # TODO: Figure out why eyeshade needs the email and name
-  ## Begin methods to satisfy the Eyeshade integration
   def channel_identifier
     "#{PREFIX}#{twitter_channel_id}"
   end
@@ -22,7 +20,6 @@ class TwitterChannelDetails < BaseChannelDetails
   def authorizer_name
     name
   end
-  ## End methods to satisfy the Eyeshade integration
 
   def publication_title
     name

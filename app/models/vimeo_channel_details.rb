@@ -21,7 +21,6 @@ class VimeoChannelDetails < BaseChannelDetails
   def authorizer_name
     name
   end
-  ## End methods to satisfy the Eyeshade integration
 
   def publication_title
     name

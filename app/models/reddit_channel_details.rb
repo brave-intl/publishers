@@ -17,7 +17,6 @@ class RedditChannelDetails < BaseChannelDetails
   def authorizer_name
     name
   end
-  ## End methods to satisfy the Eyeshade integration
 
   def publication_title
     nickname

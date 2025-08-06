@@ -67,21 +67,11 @@ Rails.application.routes.draw do
         end
 
         resources :crypto_addresses, only: %i[index destroy]
-
-        resources :promo_registrations, only: [:index, :create] do
-          collection do
-            get :for_referral_code
-            get :overview
-          end
-        end
       end
 
       post :log_out
       get :log_out
       get :home
-      get :home_balances
-      get :uphold_wallet_panel
-      get :paypal_wallet_panel
       get :change_email
       get :change_email_confirm
       patch :update_email
