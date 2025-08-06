@@ -1,5 +1,6 @@
 'use client';
 
+import Alert from '@brave/leo/react/alert';
 import Button from '@brave/leo/react/button';
 import Collapse from '@brave/leo/react/collapse';
 import Dialog from '@brave/leo/react/dialog';
@@ -31,6 +32,8 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [channels, setChannels] = useState([]);
   const [publisherId, setPublisherId] = useState('');
+  const [alert, setAlert] = useState(null);
+  const [notice, setNotice] = useState(null);
   const [isAddChannelModalOpen, setIsAddChannelModalOpen] = useState(false);
   const [isCollapseOpen, setIsCollapseOpen] = useState(true);
   const searchParams = useSearchParams();
@@ -47,6 +50,8 @@ export default function HomePage() {
     setCustodianData(res.wallet_data);
     setPublisherId(res.publisher.id);
     setChannels(res.channels);
+    setAlert(res.flash_data.alert);
+    setNotice(res.flash_data.notice);
     setIsLoading(false);
     if (startWithModalOpen) {
       setIsAddChannelModalOpen(true);
@@ -68,6 +73,12 @@ export default function HomePage() {
     return (
       <main className='main transition-colors'>
         <Container>
+          {alert && (
+            <Alert className='mb-3'>{alert}</Alert>
+          )}
+          {notice && (
+            <Alert className='mb-3' type='warning'>{notice}</Alert>
+          )}
           <div className='mx-auto max-w-screen-lg'>
             <Collapse isOpen={isCollapseOpen} onToggle={()=>{setIsCollapseOpen(!isCollapseOpen)}}>
               <div slot='title'><h4>{t('Home.headings.how_to_receive')}</h4></div>
