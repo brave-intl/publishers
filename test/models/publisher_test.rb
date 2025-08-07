@@ -8,15 +8,6 @@ class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
   include PromosHelper
-  include EyeshadeHelper
-
-  before(:example) do
-    @prev_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
-  end
-
-  after(:example) do
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_offline
-  end
 
   describe "#authorized_to_act?" do
     describe "when publisher is a member in good standing" do

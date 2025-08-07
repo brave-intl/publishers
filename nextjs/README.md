@@ -4,8 +4,6 @@ Creators powers the <https://creators.brave.com> platform and enables content cr
 
 It allows a creator to connect channels where they are hosted content as well as a wallet through which we deposit auto-contribute suggestions.
 
-The ledger for current creator balance is stored in [bat-ledger](https://github.com/brave-intl/bat-ledger), also known as eyeshade.
-
 Creators is powered by Ruby on Rails and React w/NextJS
 
 ## Getting Started

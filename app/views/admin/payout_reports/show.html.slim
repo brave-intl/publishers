@@ -5,9 +5,6 @@
     br
     small.text-muted= @payout_report.created_at.strftime("%B %d, %Y, %H:%M")
 
-  .ml-3
-    = link_to "Edit", edit_admin_payout_report_path(@payout_report.id), class: 'btn btn-dark mr-1'
-
 h6 Payout Details
 
 .row
@@ -136,5 +133,3 @@ h6 Payout Details
       tr
         td.small= link_to(publisher_id, admin_publisher_path(publisher_id))
 
-
-=append_javascript_pack_tag 'PayoutReports'

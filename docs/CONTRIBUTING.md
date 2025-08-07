@@ -30,7 +30,6 @@ We like to make sure that all contributions follow a few guidelines, which will 
 If your code touches any of the aspects mentioned [here][security], or more specific to creators:
 
 - Any changes to data being sent in the pCDN
-- Any changes in data being sent from Eyeshade
 - Any information collection changes for registration
 - Email auth flow changes
 - oAuth flow changes

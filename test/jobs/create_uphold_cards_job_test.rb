@@ -7,7 +7,6 @@ require "webmock/minitest"
 class CreateUpholdCardsJobTest < ActiveJob::TestCase
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
-  include EyeshadeHelper
   include MockUpholdResponses
   include MockOauth2Responses
 

@@ -181,17 +181,6 @@ function Navigation(props) {
       >
         {locale.navbar.referrals}
       </Nav>
-      <Nav
-        onClick={() =>
-          (window.location.href = routes.admin.userNavbar.payments.path.replace(
-            "{id}",
-            props.userID
-          ))
-        }
-        selected={props.navbarSelection === "Payments"}
-      >
-        {locale.navbar.payments}
-      </Nav>
     </React.Fragment>
   );
 }

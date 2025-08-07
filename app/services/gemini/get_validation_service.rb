@@ -2,7 +2,7 @@ require "uri"
 require "net/http"
 
 module Gemini
-  class GetValidationService < ::Payout::Service
+  class GetValidationService < BaseApiClient
     DOCUMENT_PRIORITY = %w[passport drivers_license national_identity_card passport_card]
 
     def self.perform(gemini_connection, verification_token)

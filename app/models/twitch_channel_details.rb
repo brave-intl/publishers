@@ -9,8 +9,6 @@ class TwitchChannelDetails < BaseChannelDetails
 
   PREFIX = "twitch#author:".freeze
 
-  ## Begin methods to satisfy the Eyeshade integration
-
   def channel_identifier
     "#{PREFIX}#{name}"
   end
@@ -22,8 +20,6 @@ class TwitchChannelDetails < BaseChannelDetails
   def authorizer_name
     display_name
   end
-
-  ## End methods to satisfy the Eyeshade integration
 
   def publication_title
     display_name

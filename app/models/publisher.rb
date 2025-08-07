@@ -237,11 +237,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  # API call to eyeshade
-  def wallet
-    @wallet ||= PublisherWalletGetter.new(publisher: self, include_transactions: false).perform
-  end
-
   # Public: Checks the different wallet connections and enqueues sync jobs to refresh their data
   #         If their data wasn't refreshed in the last 2 hours.
   #

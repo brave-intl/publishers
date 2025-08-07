@@ -6,11 +6,6 @@
         = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
         .btn.btn-primary Upload Settlement Report
 
-javascript:
-  document.getElementById('settlementFile').addEventListener("change", function() {
-    document.getElementById('settlementForm').submit();
-  })
-
 hr
 
 table.display.table.table-bordered.table-striped
@@ -20,10 +15,7 @@ table.display.table.table-bordered.table-striped
     th Type
     th Manual
     th Status
-    /TODO: (Albert Wang): Re-enable these columns once we query follower or figure out a smart optimization th Expected - actual # of payments
-    / th # Payments to be paid
-    / th # Legit payments missing addresses
-    / th Amount
+
   tbody
     - @payout_reports.each do |report|
       tr.gradeX
@@ -32,10 +24,6 @@ table.display.table.table-bordered.table-striped
         td = "#{report.final ? "Final" : "Temp"}"
         td = report.manual ? "Yes" : "No"
         td = "#{report.status}"
-        / TODO: Re-enable this once we can query follower or we figure out something longer term td = "#{report.expected_num_payments} - #{report.num_payments}"
-        / td = report.num_payments_to_be_paid
-        / td = report.missing_addresses
-        / td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
 hr
 
 h3 Generate Payout Report
@@ -50,13 +38,13 @@ h3 Generate Payout Report
     span = "   "
     = label_tag "Manual"
     span = "   "
-    = submit_tag("Generate", class: "btn btn-primary")
+    = submit_tag("Generate", disabled: true, class: "btn btn-primary")
 br
 
 = form_tag notify_admin_payout_reports_path do
     = label_tag "Send notifications to publishers"
     span = "   "
-    = submit_tag("Notify publishers", class: "btn btn-primary")
+    = submit_tag("Notify publishers", class: "btn btn-primary", disabled: true)
 = will_paginate @payout_reports
 
 br
@@ -65,8 +53,8 @@ h4 Change Payout Progress
 = form_for(:payout_in_progress, { method: :put, url: payouts_in_progress_admin_payout_reports_path}) do |f|
   - payouts_in_progress = Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS) || {}
   - SetPayoutsInProgressJob::CONNECTIONS.each do |connection_name|
-    = f.check_box(connection_name, checked: payouts_in_progress[connection_name].present?, class: "progress-checkbox")
+    = f.check_box(connection_name, disabled: true, checked: payouts_in_progress[connection_name].present?, class: "progress-checkbox")
     = f.label connection_name
     br
-  = f.submit("Submit", class: "btn btn-primary")
+  = f.submit("Submit", class: "btn btn-primary", disabled: true)
 

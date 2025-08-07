@@ -4,7 +4,6 @@ require "test_helpers/nextjs_test_setup"
 
 class PublishersHomeTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  include EyeshadeHelper
   include Rails.application.routes.url_helpers
   include MockRewardsResponses
   include NextjsTestSetup
@@ -13,17 +12,12 @@ class PublishersHomeTest < ApplicationSystemTestCase
   before do
     setup_nextjs_test
     stub_rewards_parameters
-    @prev_eyeshade_offline = Rails.configuration.pub_secrets[:api_eyeshade_offline]
 
     stub_request(:get, uphold_url).to_return(body: {status: "restricted", uphold_id: "123e4567-e89b-12d3-a456-426655440000", currencies: []}.to_json)
     # Mock out the creation of cards
     stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
     stub_request(:post, /cards/).to_return(body: {id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"}.to_json)
     stub_request(:get, /address/).to_return(body: [{formats: [{format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1"}], type: "anonymous"}].to_json)
-  end
-
-  after do
-    Rails.configuration.pub_secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
   test "verified channel can be removed after confirmation" do

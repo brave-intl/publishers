@@ -1,24 +1,31 @@
-import './u2f-api';
-import { ErrorManager } from './shared';
+import "./u2f-api";
+import { ErrorManager } from "./shared";
 import { get } from "@github/webauthn-json";
 
 /*
  * Register a u2f device
  */
 async function authenticate(formElement, responseInput, errorManager) {
-  formElement.classList.add('js-u2f-working');
+  formElement.classList.add("js-u2f-working");
 
-  let appId = formElement.querySelector('[name=webauthn_u2f_app_id]').value;
-  let challenge = formElement.querySelector('[name=webauthn_u2f_challenge]').value;
-  let signRequests = JSON.parse(formElement.querySelector('[name=webauthn_u2f_sign_requests]').value);
+  let appId = formElement.querySelector("[name=webauthn_u2f_app_id]").value;
+  let challenge = formElement.querySelector(
+    "[name=webauthn_u2f_challenge]",
+  ).value;
+  let signRequests = JSON.parse(
+    formElement.querySelector("[name=webauthn_u2f_sign_requests]").value,
+  );
 
-  async function authenticate({appId, challenge, signRequests}) {
+  async function authenticate({ appId, challenge, signRequests }) {
     return await get({
       publicKey: {
         challenge: challenge,
-        allowCredentials: signRequests.map(x => ({id: x, type: 'public-key'})),
+        allowCredentials: signRequests.map((x) => ({
+          id: x,
+          type: "public-key",
+        })),
         extensions: {
-          "appid": appId
+          appid: appId,
         },
         userVerification: "discouraged",
       },
@@ -39,7 +46,7 @@ async function authenticate(formElement, responseInput, errorManager) {
   //   "appid": true
   // }
   // }
-  const result = await authenticate({appId, challenge, signRequests});
+  const result = await authenticate({ appId, challenge, signRequests });
 
   // Errors handled by browser built-in
   responseInput.value = JSON.stringify(result);
@@ -50,12 +57,14 @@ async function authenticate(formElement, responseInput, errorManager) {
  * Setup the DOM event listeners
  *
  */
-document.addEventListener('DOMContentLoaded', function() {
-  let formElement = document.querySelector('.js-authenticate-u2f');
+document.addEventListener("DOMContentLoaded", function () {
+  let formElement = document.querySelector(".js-authenticate-u2f");
   if (formElement) {
-    let responseInput = formElement.querySelector('[name=webauthn_u2f_response]');
-    let errorManager = new ErrorManager('authenticate-u2f-error');
-    formElement.addEventListener('submit', function(event) {
+    let responseInput = formElement.querySelector(
+      "[name=webauthn_u2f_response]",
+    );
+    let errorManager = new ErrorManager("authenticate-u2f-error");
+    formElement.addEventListener("submit", function (event) {
       errorManager.clear();
       if (!responseInput.value) {
         event.preventDefault();

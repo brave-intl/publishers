@@ -1,7 +1,7 @@
 # typed: ignore
 
 class SiteChannelDetails < BaseChannelDetails
-  # brave_publisher_id is a normalized identifier provided by eyeshade API
+  # brave_publisher_id is a normalized identifier used in the pCDN
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
   # - normalized and unnormalized domains
