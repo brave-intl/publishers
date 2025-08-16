@@ -6,20 +6,20 @@ import {
   PrimaryButton,
   SwoopBottom,
   StyledInput,
-  Toast
+  Toast,
 } from "../../../components";
 
 import { Loading } from "../../../components/icons/Loading";
 
-import { FormattedMessage } from 'react-intl';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from "react-intl";
+import { useIntl } from "react-intl";
 import { Heading, Text, Box, Anchor, Form } from "grommet";
 
 import SentEmail from "../sentEmail";
 
 // Sign up and sign in shared this component since
 // they are so similar in structure
-const SignComponent = props => {
+const SignComponent = (props) => {
   const intl = useIntl();
   return (
     <React.Fragment>
@@ -66,7 +66,7 @@ const SignComponent = props => {
                 type="email"
                 autoFocus
                 placeholder={intl.formatMessage({
-                  id: "main.signin.inputPlaceholder"
+                  id: "main.signin.inputPlaceholder",
                 })}
                 validate={(fieldData, _) => {
                   if (!fieldData) {
@@ -125,7 +125,7 @@ const SignComponent = props => {
   );
 };
 
-const WrappedSignComponent = props => {
+const WrappedSignComponent = (props) => {
   const [notification, setNotification] = useState({ show: false });
   const [animation, setAnimation] = useState("fadeIn");
   const [emailed, setEmailed] = useState(false);
@@ -135,16 +135,16 @@ const WrappedSignComponent = props => {
   const intl = useIntl();
 
   const successSignInWords = {
-    headline: intl.formatMessage({ id: 'sign.signinSuccess' }),
-    body: intl.formatMessage({ id: 'sign.signinSuccessBody' })
+    headline: intl.formatMessage({ id: "sign.signinSuccess" }),
+    body: intl.formatMessage({ id: "sign.signinSuccessBody" }),
   };
 
   const successSignUpWords = {
-    headline: intl.formatMessage({ id: 'sign.signupSuccess' }),
-    body: intl.formatMessage({ id: 'sign.signupSuccessBody' })
+    headline: intl.formatMessage({ id: "sign.signupSuccess" }),
+    body: intl.formatMessage({ id: "sign.signupSuccessBody" }),
   };
 
-  const submitForm = event => {
+  const submitForm = (event) => {
     // Prevent people from endlessly submitting
     event.target.blur();
     if (loading) {
@@ -169,9 +169,12 @@ const WrappedSignComponent = props => {
     sendToServer(event);
   };
 
-  const tryAgain = event => {
+  const tryAgain = (event) => {
     event.preventDefault();
-    setNotification({ show: true, text: <FormattedMessage id="sign.sentAgain" /> });
+    setNotification({
+      show: true,
+      text: <FormattedMessage id="sign.sentAgain" />,
+    });
   };
 
   async function sendToServer(body) {
@@ -190,11 +193,11 @@ const WrappedSignComponent = props => {
         Accept: "application/json",
         "X-CSRF-Token": crsf,
         "X-Requested-With": "XMLHttpRequest",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       method: props.method,
-      body: JSON.stringify(body.value)
-    }).then(response => {
+      body: JSON.stringify(body.value),
+    }).then((response) => {
       setLoading(false);
 
       if (response.ok) {
@@ -202,10 +205,10 @@ const WrappedSignComponent = props => {
       } else {
         response
           .json()
-          .then(json => {
+          .then((json) => {
             setNotification({ show: true, text: json.message });
           })
-          .catch(errorText => {
+          .catch((errorText) => {
             setNotification({ show: true, text: "Something went wrong." });
           });
       }
@@ -217,7 +220,7 @@ const WrappedSignComponent = props => {
       type: "fadeOut",
       delay: 0,
       duration: 100,
-      size: "xsmall"
+      size: "xsmall",
     });
     setTimeout(function () {
       setEmailed(true);

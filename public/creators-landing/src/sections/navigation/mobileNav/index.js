@@ -7,7 +7,7 @@ import MobileLogo from "../../../components/img/brave-rewards-creators-mobile-lo
 import { MenuIcon } from "../../../components";
 import { NavWrapper, NavContainer } from "../../../components/styled/container";
 
-const MobileNav = props => (
+const MobileNav = (props) => (
   <NavWrapper as="nav" id="nav">
     <NavContainer
       direction="row"
@@ -31,14 +31,14 @@ const MobileNav = props => (
             label: "sign up",
             onClick: () => {
               props.history.push("/sign-up");
-            }
+            },
           },
           {
             label: "log in",
             onClick: () => {
               props.history.push("/log-in");
-            }
-          }
+            },
+          },
         ]}
       />
     </NavContainer>
