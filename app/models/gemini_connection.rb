@@ -56,11 +56,11 @@ class GeminiConnection < Oauth2::AuthorizationCodeBase
     with_active_connection.with_expired_tokens
   }
 
-  enum recipient_id_status: {
+  enum :recipient_id_status, {
     pending: 0,
     duplicate: 1,
     present: 2
-  }, _prefix: :recipient_id
+  }, prefix: :recipient_id
 
   def provider_sym
     :gemini

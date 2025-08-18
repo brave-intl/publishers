@@ -105,19 +105,12 @@ Rails.application.routes.draw do
   devise_for :publishers, only: :omniauth_callbacks, controllers: {omniauth_callbacks: "publishers/omniauth_callbacks"}
 
   resources :channels, only: %i[destroy] do
-    resources :crypto_address_for_channels, only: %i[index create delete] do
-      collection do
-        post :change_address
-        get :generate_nonce
-      end
-    end
-
     member do
       get :verification_status
       get :cancel_add
       get :total_verified_count
       delete :destroy
-      resources :tokens, only: %() do
+      resources :tokens, except: [:index, :create, :new, :show, :update, :destroy, :edit] do
         get :reject_transfer, to: "channel_transfer#reject_transfer"
       end
     end
@@ -182,7 +175,7 @@ Rails.application.routes.draw do
         member do
           get :verification_status
           delete :destroy
-          resources :tokens, only: %() do
+          resources :tokens, except: [:index, :create, :new, :show, :update, :destroy, :edit] do
             get :reject_transfer, to: "channel_transfer#reject_transfer"
           end
         end
