@@ -4,12 +4,12 @@ ruby "~> 3.4.0"
 
 source "https://rubygems.org"
 
-rails_version = "7.2.2.1"
+rails_version = "8.0.2.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
-gem "rack", "3.1.16"
+gem "rack", "3.2.0"
 
 # All things countries
 gem "countries"
@@ -108,7 +108,7 @@ gem "puma", "~> 6.6.0"
 # Sanitize bad inputs coming in
 gem "rack-utf8_sanitizer"
 
-gem "rails-i18n", "~> 7.0"
+gem "rails-i18n", "~> 8.0"
 
 # I love captchas
 gem "recaptcha", "~> 5.19.0", require: "recaptcha/rails"
@@ -168,7 +168,7 @@ gem "yt", "~> 0.33"
 gem "zeitwerk", "~> 2.6"
 gem "zendesk_api", "~> 3.1.0"
 
-gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb", branch: "fix/activerecord72-register-adapter"
+# gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb", branch: "fix/activerecord72-register-adapter"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -232,7 +232,7 @@ group :development, :test do
   gem "capybara"
   gem "minitest"
   gem "minitest-retry"
-  gem "minitest-rails", "~> 7.2.0"
+  gem "minitest-rails", "~> 8.0"
   gem "mocha", require: false
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
