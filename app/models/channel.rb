@@ -387,6 +387,10 @@ class Channel < ApplicationRecord
     save!
   end
 
+  def web3_subdirectory
+    public_name || public_identifier
+  end
+
   def failed_verification_details
     return if verified? || details_type != "SiteChannelDetails"
     case verification_details

@@ -168,8 +168,6 @@ gem "yt", "~> 0.33"
 gem "zeitwerk", "~> 2.6"
 gem "zendesk_api", "~> 3.1.0"
 
-# gem "activerecord-nulldb-adapter", git: "https://github.com/taylorthurlow/nulldb", branch: "fix/activerecord72-register-adapter"
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
