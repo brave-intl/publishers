@@ -159,12 +159,12 @@ class Cache::BrowserChannels::ResponsesForPrefix
       details[key.underscore] = value
     end
 
-    public_id = site_banner_lookup.channel.public_identifier
+    public_id = site_banner_lookup.channel.web3_subdirectory
     include_web3 = (site_banner_lookup.channel.crypto_address_for_channels.length > 0) && public_id
-    details.web3_url = include_web3 ? "#{ENV["CREATORS_HOST"]}/c/#{public_id}" : ""
+    web3_address = include_web3 ? "#{ENV["CREATORS_HOST"]}/c/#{public_id}" : ""
 
     # ENV host variables serve various purposes, some will begin with https and some wont
-    details.web3_url.start_with?("https://") ? details.web3_url : "https://#{details.web3_url}"
+    details.web3_url = (!include_web3 || web3_address.start_with?("https://")) ? web3_address : "https://#{web3_address}"
 
     if site_banner_lookup.derived_site_banner_info["socialLinks"].present?
       social_links_pb = nil
