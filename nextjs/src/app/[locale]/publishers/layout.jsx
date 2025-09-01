@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
-import ControlItem from '@brave/leo/react/controlItem';
+import ControlItem from '@brave/leo/react/segmentedControlItem';
 import Hr from '@brave/leo/react/hr';
 import Icon from '@brave/leo/react/icon';
 import Link from '@brave/leo/react/link';
