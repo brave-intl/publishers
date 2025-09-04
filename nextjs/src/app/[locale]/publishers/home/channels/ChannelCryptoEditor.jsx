@@ -18,6 +18,7 @@ import { CryptoAddressContext } from '@/lib/context/CryptoAddressContext';
 import { ChannelCardContext } from '@/lib/context/ChannelCardContext';
 
 import CryptoPrivacyModal from './CryptoPrivacyModal';
+import CryptoRemovalModal from './CryptoRemovalModal';
 import CryptoWalletOption from './CryptoWalletOption';
 
 export default function ChannelCryptoEditor({ channel }) {
@@ -39,6 +40,7 @@ export default function ChannelCryptoEditor({ channel }) {
   const [errorText, setErrorText] = useState(null);
   const [pendingAddress, setPendingAddress] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRemovalModalOpen, setIsRemovalModalOpen] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -304,7 +306,13 @@ export default function ChannelCryptoEditor({ channel }) {
     } else if (address.newAddress === 'ETH') {
       await connectEthereumAddress();
     } else if (address.clearAddress) {
-      await clearAddress(address.deletedAddress.value);
+      // check to see if there is still a crypto address associated with the channel
+      const otherChain = address.clearAddress === 'ETH' ? currentSolAddress : currentEthAddress;
+      if (otherChain) {
+        await clearAddress(address.deletedAddress.value);
+      } else {
+        launchRemovalModal(address.deletedAddress.value)
+      }
     } else if (address.chain && address.address) {
       if (
         addressesInUse.filter((usedAddress) => usedAddress.id === address.id)
@@ -348,9 +356,19 @@ export default function ChannelCryptoEditor({ channel }) {
     setIsModalOpen(true);
   }
 
+  function launchRemovalModal(pendingAddress) {
+    setPendingAddress(pendingAddress);
+    setIsRemovalModalOpen(true);
+  }
+
   function closeModal() {
     setPendingAddress(null);
     setIsModalOpen(false);
+  }
+
+  function closeRemovalModal() {
+    setPendingAddress(null);
+    setIsRemovalModalOpen(false);
   }
 
   if (isLoading) {
@@ -417,6 +435,13 @@ export default function ChannelCryptoEditor({ channel }) {
           <CryptoPrivacyModal
             close={closeModal}
             updateAddress={updateAddress.bind(this)}
+            address={pendingAddress}
+          />
+        </Dialog>
+        <Dialog isOpen={isRemovalModalOpen} onClose={closeModal}>
+          <CryptoRemovalModal
+            close={closeRemovalModal}
+            clearAddress={clearAddress.bind(this)}
             address={pendingAddress}
           />
         </Dialog>

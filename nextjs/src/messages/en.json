@@ -159,7 +159,10 @@
       "privacyHeader": "Privacy reminder",
       "privacyNotification": "Using the same crypto address for multiple channels will allow others to know that those channels all belong to you. If you don't want others to know, use a different crypto address for each of your channels.",
       "privacyQuit": "Cancel",
-      "privacyContinue": "I understand"
+      "privacyContinue": "I understand",
+      "removalHeader": "Are you sure want to remove all your crypto addresses?",
+      "removalNotification": "Removing all crypto addresses from your site/channel will deactivate your shareable contribution page. Your contribution page will automatically reactivate once you connect a crypto address.",
+      "removalContinue": "Confirm remove"
     }
   },
   "Settings": {

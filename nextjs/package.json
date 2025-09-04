@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#72fdbaee9a92ea925eccc6c52f4896009aba286a",
+    "@brave/leo": "github:brave/leo#21133d19bc0d7faf2ee99c14950267dac7fe47a7",
     "@fontsource/poppins": "5.2.6",
     "@fontsource/inter": "5.2.6",
     "@fontsource/dm-mono": "5.2.6",
@@ -28,7 +28,7 @@
     "axios": "1.9.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
-    "next": "^14.2.30",
+    "next": "^14.2.32",
     "next-intl": "3.26.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -54,7 +54,7 @@
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-next": "13.5.11",
     "eslint-config-prettier": "8.10.2",
-    "eslint-plugin-prettier": "5.5.3",
+    "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-unused-imports": "3.2.0",
     "express": "4.21.2",
