@@ -522,7 +522,7 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
-    recaptcha (5.19.0)
+    recaptcha (5.20.1)
     redis (5.4.1)
       redis-client (>= 0.22.0)
     redis-client (0.24.0)
@@ -830,7 +830,7 @@ DEPENDENCIES
   rails-i18n (~> 8.0)
   railties (= 8.0.2.1)
   rbnacl
-  recaptcha (~> 5.19.0)
+  recaptcha (~> 5.20.0)
   redis (~> 5.1)
   redis-session-store
   render_async (~> 2.1)
