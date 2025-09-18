@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useTranslations } from 'next-intl';
 
 import styles from '@/styles/PublicLayout.module.css';
-import Logo from '~/images/brave_creators_full_logo.png';
+import Logo from '~/images/brave_creators_logo.png';
 import DarkLogo from '~/images/brave_logo_dark_bg.png';
 
 export default function PublicChannelLayout({ children }) {
@@ -20,7 +20,7 @@ export default function PublicChannelLayout({ children }) {
             src={Logo}
             alt='Brave Creators Logo'
             priority={true}
-            width={200}
+            width={150}
           />
         </div>
       </div>
