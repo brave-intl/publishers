@@ -9,7 +9,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
-gem "rack", "3.2.0"
+gem "rack", "3.2.1"
 
 # All things countries
 gem "countries"
@@ -29,7 +29,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.194.0"
+gem "aws-sdk-s3", "~> 1.199.0"
 
 gem "bootstrap", "5.3.5"
 
@@ -111,7 +111,7 @@ gem "rack-utf8_sanitizer"
 gem "rails-i18n", "~> 8.0"
 
 # I love captchas
-gem "recaptcha", "~> 5.19.0", require: "recaptcha/rails"
+gem "recaptcha", "~> 5.20.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 5.1"

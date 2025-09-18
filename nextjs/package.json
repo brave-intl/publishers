@@ -18,14 +18,14 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#21133d19bc0d7faf2ee99c14950267dac7fe47a7",
+    "@brave/leo": "github:brave/leo#e2449a89c92af803652e8fa55c2ec7027eeb0ec7",
     "@fontsource/poppins": "5.2.6",
     "@fontsource/inter": "5.2.6",
     "@fontsource/dm-mono": "5.2.6",
     "@github/webauthn-json": "^2.1.1",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.8",
-    "axios": "1.9.0",
+    "axios": "1.12.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
     "next": "^14.2.32",
@@ -46,7 +46,7 @@
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "14.3.1",
-    "@types/react": "18.3.23",
+    "@types/react": "18.3.24",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
     "autoprefixer": "10.4.21",
@@ -87,7 +87,7 @@
     ]
   },
   "engines": {
-    "node": "20.19.4",
+    "node": "20.19.5",
     "yarn": "please use NPM"
   }
 }
