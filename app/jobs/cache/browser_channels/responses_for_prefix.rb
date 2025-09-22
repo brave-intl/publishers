@@ -2,6 +2,7 @@
 
 class Cache::BrowserChannels::ResponsesForPrefix
   include Sidekiq::Worker
+
   sidekiq_options queue: :low, retry: true
 
   PATH = "publishers/prefixes/".freeze
@@ -128,7 +129,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     # Round up to nearest KB
     file_size = File.size(path)
     # Converts size from like 326 to 1000
-    new_size = (((file_size + 1000) / 1000)) * 1000
+    new_size = ((file_size + 1000) / 1000) * 1000
     delta = new_size - file_size
     # I'm assuming padding will be fast in a for loop, this can be optimized if this is slow
     # if moving around the file on disk is a frequent operation

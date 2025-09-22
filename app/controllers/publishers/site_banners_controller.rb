@@ -2,6 +2,7 @@
 
 class Publishers::SiteBannersController < ApplicationController
   include ActiveStorage::SetCurrent
+
   before_action :authenticate_publisher!
   layout "publishers"
 

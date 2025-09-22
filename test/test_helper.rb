@@ -50,6 +50,7 @@ end
 module ActiveSupport
   class TestCase
     include ServiceClassHelpers
+
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
     self.use_transactional_tests = true
@@ -78,6 +79,7 @@ module ActionDispatch
     include MockOauth2Responses
     include SignInHelpers
     include Devise::Test::IntegrationHelpers
+
     self.use_transactional_tests = true
     # We should not stub methods here,
     # I did that only for the sake of moving things along previously.
@@ -102,6 +104,7 @@ module ActionDispatch
     include MockGeminiResponses
     include MockOauth2Responses
     include SignInHelpers
+
     self.use_transactional_tests = true
     setup do
       stub_get_user

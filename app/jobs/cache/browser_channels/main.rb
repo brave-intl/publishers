@@ -2,6 +2,7 @@
 
 class Cache::BrowserChannels::Main
   include Sidekiq::Worker
+
   sidekiq_options queue: :scheduler, retry: false
 
   LAST_RAN_AT_KEY = "cache_browser_channels_main_last_ran_at".freeze

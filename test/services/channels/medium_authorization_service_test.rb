@@ -4,6 +4,7 @@ require "test_helper"
 
 class MediumAuthorizationServiceTest < ActiveSupport::TestCase
   include Channels
+
   let(:schema) {
     {
       "provider" => "medium",

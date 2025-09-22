@@ -2,6 +2,7 @@
 
 class PublisherMailer < ApplicationMailer
   include PublishersHelper
+
   helper PublishersHelper
 
   after_action :ensure_fresh_token,

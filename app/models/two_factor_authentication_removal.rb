@@ -2,6 +2,7 @@
 
 class TwoFactorAuthenticationRemoval < ApplicationRecord
   include ActionView::Helpers::DateHelper
+
   belongs_to :publisher
   TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD = 2.days.seconds
   LOCKED_STATUS_WAITING_PERIOD = 4.weeks.seconds
