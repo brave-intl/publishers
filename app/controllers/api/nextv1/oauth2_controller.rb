@@ -7,6 +7,7 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
   # of the Oauth2::AuthorizationCodebase children.
   include Oauth2::Responses
   include Oauth2::Errors
+
   before_action :set_controller_state
   before_action :set_request_state, only: [:create]
 

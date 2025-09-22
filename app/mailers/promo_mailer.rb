@@ -2,6 +2,7 @@
 
 class PromoMailer < ApplicationMailer
   include PromosHelper
+
   helper PromosHelper
   layout "promo_mailer"
 

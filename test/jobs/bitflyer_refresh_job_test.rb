@@ -2,6 +2,7 @@ require "test_helper"
 
 class BitflyerRefreshJobTest < ActiveJob::TestCase
   include MockOauth2Responses
+
   let(:limit) { 5 }
 
   describe "#perform" do

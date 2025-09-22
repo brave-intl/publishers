@@ -9,6 +9,7 @@ require "uri"
 class Oauth2::AuthorizationCodeClient
   include Oauth2::Responses
   include Oauth2::Errors
+
   attr_reader :authorization_url
   attr_reader :token_url
   attr_reader :request

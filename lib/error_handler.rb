@@ -7,6 +7,7 @@ module ErrorHandler
 
   included do
     include ActiveSupport::Rescuable
+
     rescue_from StandardError, with: :handle_standard_error
     rescue_from ActionController::InvalidAuthenticityToken, with: :redirect_to_referer_or_home
     rescue_from SecurityError, with: :redirect_to_referer_or_home
