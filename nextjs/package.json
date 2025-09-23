@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#e2449a89c92af803652e8fa55c2ec7027eeb0ec7",
+    "@brave/leo": "github:brave/leo#e6929c6bb083f65b065a885647cf907040174938",
     "@fontsource/poppins": "5.2.6",
     "@fontsource/inter": "5.2.6",
     "@fontsource/dm-mono": "5.2.6",
