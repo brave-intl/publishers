@@ -35,7 +35,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Set up Ruby
-        uses: ruby/setup-ruby@829114fc20da43a41d27359103ec7a63020954d4 # v1.255.0
+        uses: ruby/setup-ruby@3fee6763234110473bd57dd4595c5199fce2c510 # v1.258.0
         with:
           ruby-version: 3.4.2
       - name: Bundle install
