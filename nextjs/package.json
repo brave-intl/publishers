@@ -20,7 +20,7 @@
   "dependencies": {
     "@brave/leo": "github:brave/leo#e6929c6bb083f65b065a885647cf907040174938",
     "@fontsource/poppins": "5.2.6",
-    "@fontsource/inter": "5.2.6",
+    "@fontsource/inter": "5.2.7",
     "@fontsource/dm-mono": "5.2.6",
     "@github/webauthn-json": "^2.1.1",
     "@solana/spl-token": "^0.4.8",
