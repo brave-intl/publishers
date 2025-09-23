@@ -129,7 +129,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-config-standard": "9.0.0",
     "tslint-react": "5.0.0",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   },
   "resolutions": {
     "node-fetch": "3.3.2",
