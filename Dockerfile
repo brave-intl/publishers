@@ -1,5 +1,5 @@
 # Make sure it matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.4.5
+ARG RUBY_VERSION=3.4.6
 FROM ruby:$RUBY_VERSION
 
 # Install JavaScript dependencies and libvips for Active Storage
