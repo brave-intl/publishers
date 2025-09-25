@@ -4,7 +4,6 @@ import "userMenu";
 import "utils/request";
 import "u2f/registrationPage";
 import "u2f/authenticationPage";
-import Rails from "@rails/ujs";
 
 /*
  * Override the default way Rails picks an href for a data-method link. This
@@ -27,9 +26,3 @@ import Rails from "@rails/ujs";
  * Now a non-JS user will be sent to `/publishers/confirm_delete_page` while
  * a JS user will have the deletion occur immediately.
  */
-Rails.href = function Rails_href_override(element) {
-  let dataHref = element.dataset.href;
-  return dataHref || element.href;
-};
-
-Rails.start();
