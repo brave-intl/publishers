@@ -1547,11 +1547,6 @@
   dependencies:
     spark-md5 "^3.0.1"
 
-"@rails/ujs@^7.0.6":
-  version "7.1.502"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.502.tgz#504a05c44ec079432fae894e698556c630fdcd49"
-  integrity sha512-SFtA5X59BimNG8cy60pgZhPf1bGpg5KXVYF6Jj5H5hrwwNXKNmD2yNZhHC+WfuLqBN+972cZHR9Fto6nJQz+Xw==
-
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
