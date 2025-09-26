@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@brave/leo": "github:brave/leo#8e11382aa1fc1e47ad27bc8bea76d162eb0e4259",
-    "@fontsource/poppins": "5.2.6",
-    "@fontsource/inter": "5.2.7",
-    "@fontsource/dm-mono": "5.2.6",
+    "@fontsource/poppins": "5.2.7",
+    "@fontsource/inter": "5.2.8",
+    "@fontsource/dm-mono": "5.2.7",
     "@github/webauthn-json": "^2.1.1",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.8",
