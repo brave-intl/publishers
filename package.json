@@ -56,17 +56,16 @@
   },
   "dependencies": {
     "@babel/core": ">=7.23.2",
-    "@babel/plugin-transform-runtime": "7.27.4",
-    "@babel/preset-env": "7.27.2",
+    "@babel/plugin-transform-runtime": "7.28.3",
+    "@babel/preset-env": "7.28.3",
     "@babel/preset-typescript": "^7.22.5",
-    "@babel/runtime": "7.27.4",
+    "@babel/runtime": "7.28.4",
     "@github/webauthn-json": "^2.1.1",
     "@rails/activestorage": "^7.0.6",
-    "@rails/ujs": "^7.0.6",
-    "axios": "1.12.0",
+    "axios": "1.12.2",
     "babel-loader": "9.2.1",
     "brave-ui": "git+https://github.com/brave/brave-ui#4a76f0153255278d5a792bd9e9d1056ef0c602d0",
-    "chart.js": "4.4.9",
+    "chart.js": "4.5.0",
     "clipboard": "^2.0.11",
     "compression-webpack-plugin": "10",
     "css-loader": "^6.8.1",
@@ -129,7 +128,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-config-standard": "9.0.0",
     "tslint-react": "5.0.0",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   },
   "resolutions": {
     "node-fetch": "3.3.2",

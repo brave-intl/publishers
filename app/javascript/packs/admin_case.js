@@ -1,5 +1,4 @@
-import Rails from "@rails/ujs";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 const shiftClick = () => {
   // get array of items
@@ -12,7 +11,7 @@ const shiftClick = () => {
   // method for ticking all items between first and last
   function tick(first, last) {
     // items is a nodeList, so we do some prototype trickery
-    Array.prototype.forEach.call(items, function(el, i) {
+    Array.prototype.forEach.call(items, function (el, i) {
       // find each checkbox
       var checkbox = el.getElementsByTagName("input")[0];
       // tick all within first to last range
@@ -24,7 +23,7 @@ const shiftClick = () => {
 
   // method for unticking all items except current item
   function untickAllExcept(first) {
-    Array.prototype.forEach.call(items, function(el, i) {
+    Array.prototype.forEach.call(items, function (el, i) {
       var cb = el.querySelectorAll("input[type='checkbox']");
       if (i !== first) {
         cb[0].checked = false;
@@ -33,8 +32,8 @@ const shiftClick = () => {
   }
 
   // click listener on list
-  list.addEventListener("click", function(e) {
-    if (e.target.name =='selectAllCheckbox'){
+  list.addEventListener("click", function (e) {
+    if (e.target.name == "selectAllCheckbox") {
       return;
     }
 
@@ -68,7 +67,7 @@ const shiftClick = () => {
 function selected(e) {
   console.log(
     "Original event that triggered text replacement:",
-    e.detail.event
+    e.detail.event,
   );
   console.log("Matched item:", e.detail.item);
 
@@ -77,18 +76,17 @@ function selected(e) {
     const existingSearch = document.getElementsByName("q")[0].value;
     event.target.value =
       existingSearch + " assigned:" + e.detail.item.original.value;
-    form.submit();
-  } else {
-    Rails.fire(form, "submit");
   }
+  form.submit();
 
   event.target.value = "";
 
-  const assignedHTML = DOMPurify.sanitize(`<div class="text-dark">${
-    e.detail.item.original.key
-  }</div>`, {
-    RETURN_TRUSTED_TYPE: true
-  });
+  const assignedHTML = DOMPurify.sanitize(
+    `<div class="text-dark">${e.detail.item.original.key}</div>`,
+    {
+      RETURN_TRUSTED_TYPE: true,
+    },
+  );
 
   assignCheckboxes(e, event.target, assignedHTML);
 
@@ -118,12 +116,12 @@ function assignCheckboxes(e, target, assignedHTML) {
       .closest("table")
       .querySelectorAll("input[type='checkbox']:checked");
 
-    inputChecked.forEach(checked => {
+    inputChecked.forEach((checked) => {
       const checkedForm = checked.closest("tr").querySelector("form");
 
       checkedForm.querySelector(".assignee-input").value =
         e.detail.item.original.value;
-      Rails.fire(checkedForm, "submit");
+      checkedForm.submit();
 
       let parentDiv = checkedForm.closest("div");
       if (parentDiv.id) {
@@ -140,14 +138,16 @@ function toggleForm(event) {
   form.querySelector(".assignee-input").focus();
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   document
     .querySelectorAll(".assignee-input")
-    .forEach(element => element.addEventListener("tribute-replaced", selected));
+    .forEach((element) =>
+      element.addEventListener("tribute-replaced", selected),
+    );
 
   const assignee = document.getElementById("assignee");
   if (assignee) {
-    assignee.onclick = function() {
+    assignee.onclick = function () {
       document.getElementById("assignSearch").classList.toggle("d-none");
       document.querySelector(".assignee-input").focus();
     };
@@ -157,16 +157,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document
     .querySelectorAll(".filter")
-    .forEach(element => element.addEventListener("click", toggleForm));
+    .forEach((element) => element.addEventListener("click", toggleForm));
 
-
-  document.getElementById('toggleChecks').addEventListener('click', function() {
-    var checked = event.target.checked
-    if(checked === undefined) {
-      checked = false
-    }
-    document.querySelectorAll('input[name="case_check[]"]')
-      .forEach(element => element.checked = checked);
-
-  })
+  document
+    .getElementById("toggleChecks")
+    .addEventListener("click", function () {
+      var checked = event.target.checked;
+      if (checked === undefined) {
+        checked = false;
+      }
+      document
+        .querySelectorAll('input[name="case_check[]"]')
+        .forEach((element) => (element.checked = checked));
+    });
 });

@@ -2,6 +2,7 @@
 
 class Sync::Bitflyer::UpdateMissingDepositsJob
   include Sidekiq::Worker
+
   sidekiq_options queue: :default, retry: false
 
   # THere is definitely a rate limit here despite being told there wasn't.  I manually

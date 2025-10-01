@@ -2,6 +2,7 @@
 
 class Cache::BrowserChannels::PrefixList
   include Sidekiq::Worker
+
   sidekiq_options queue: :low, retry: true
 
   # Might need to adjust the value based on collision rate

@@ -4,6 +4,7 @@ require "base58"
 
 class CryptoAddressForChannelsController < ApplicationController
   include Eth
+
   before_action :authenticate_publisher!
 
   def index

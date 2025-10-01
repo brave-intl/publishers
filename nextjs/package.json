@@ -18,14 +18,14 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#e2449a89c92af803652e8fa55c2ec7027eeb0ec7",
-    "@fontsource/poppins": "5.2.6",
-    "@fontsource/inter": "5.2.6",
-    "@fontsource/dm-mono": "5.2.6",
+    "@brave/leo": "github:brave/leo#23a284e407a88c20c474785dac50afeafcebc231",
+    "@fontsource/poppins": "5.2.7",
+    "@fontsource/inter": "5.2.8",
+    "@fontsource/dm-mono": "5.2.7",
     "@github/webauthn-json": "^2.1.1",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.8",
-    "axios": "1.12.0",
+    "axios": "1.12.2",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
     "next": "^14.2.32",
@@ -75,7 +75,7 @@
     "stylelint-config-standard": "34.0.0",
     "stylelint-webpack-plugin": "4.1.1",
     "tailwindcss": "3.4.17",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
