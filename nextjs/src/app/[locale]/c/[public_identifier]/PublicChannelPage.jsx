@@ -30,7 +30,7 @@ export default function PublicChannelPage({ publicIdentifier, previewMode }) {
     setDescription(siteBannerData.description);
     setSocialLinks(siteBannerData.socialLinks ?? {});
     setLogoUrl(siteBannerData.logoUrl);
-    setCoverUrl(siteBannerData.coverUrl);
+    setCoverUrl(siteBannerData.backgroundUrl);
     setUrl(channelData.url);
     setCryptoAddresses(channelData.crypto_addresses);
     setCryptoConstants(channelData.crypto_constants);
