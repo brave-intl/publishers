@@ -20,7 +20,7 @@ export default function SuccessWidget({setStateToStart, amount, chain, name}) {
       <div className={`${styles['payment-buttons']}`}>
         <button
           className={`${styles['share-button']}`}
-          href={`https://twitter.com/intent/tweet?text=${tweetText}`}
+          href={`https://x.com/intent/tweet?text=${tweetText}`}
           target="_blank"
           rel="noopener noreferrer"
         >
