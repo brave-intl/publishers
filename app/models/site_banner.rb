@@ -48,7 +48,16 @@ class SiteBanner < ApplicationRecord
       social_links["youtube"] = ""
     end
 
-    unless social_links["twitter"].blank? || Addressable::URI.parse(social_links["twitter"]).to_s.starts_with?("https://www.twitter.com/", "https://twitter.com/", "www.twitter.com/", "twitter.com/")
+    unless social_links["twitter"].blank? || Addressable::URI.parse(social_links["twitter"]).to_s.starts_with?(
+      "https://www.twitter.com/",
+      "https://twitter.com/",
+      "www.twitter.com/",
+      "twitter.com/",
+      "https://www.x.com/",
+      "https://x.com/",
+      "www.x.com/",
+      "x.com/"
+    )
       social_links["twitter"] = ""
     end
 

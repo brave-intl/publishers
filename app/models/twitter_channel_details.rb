@@ -26,7 +26,7 @@ class TwitterChannelDetails < BaseChannelDetails
   end
 
   def url
-    "https://twitter.com/#{screen_name}"
+    "https://x.com/#{screen_name}"
   end
 
   private
