@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#23a284e407a88c20c474785dac50afeafcebc231",
+    "@brave/leo": "github:brave/leo#596324cde459ed576a11208654bff981ad0181c8",
     "@fontsource/poppins": "5.2.7",
     "@fontsource/inter": "5.2.8",
     "@fontsource/dm-mono": "5.2.7",
@@ -46,7 +46,7 @@
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "14.3.1",
-    "@types/react": "18.3.24",
+    "@types/react": "18.3.25",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
     "autoprefixer": "10.4.21",
@@ -65,7 +65,7 @@
     "lint-staged": "13.3.0",
     "miragejs": "0.1.48",
     "next-router-mock": "0.9.13",
-    "patch-package": "8.0.0",
+    "patch-package": "8.0.1",
     "postcss": "8.5.6",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.6.14",
@@ -74,8 +74,8 @@
     "stylelint-config-clean-order": "5.4.2",
     "stylelint-config-standard": "34.0.0",
     "stylelint-webpack-plugin": "4.1.1",
-    "tailwindcss": "3.4.17",
-    "typescript": "5.9.2"
+    "tailwindcss": "3.4.18",
+    "typescript": "5.9.3"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [

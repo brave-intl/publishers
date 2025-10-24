@@ -9,7 +9,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
 
-gem "rack", "3.2.1"
+gem "rack", "3.2.3"
 
 # All things countries
 gem "countries"
@@ -49,7 +49,7 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.13.4"
+gem "faraday", "2.14.0"
 gem "faraday-retry", "2.3.2"
 
 gem "ffi"

@@ -30,7 +30,7 @@ export default function PublicChannelPage({ publicIdentifier, previewMode }) {
     setDescription(siteBannerData.description);
     setSocialLinks(siteBannerData.socialLinks ?? {});
     setLogoUrl(siteBannerData.logoUrl);
-    setCoverUrl(siteBannerData.coverUrl);
+    setCoverUrl(siteBannerData.backgroundUrl);
     setUrl(channelData.url);
     setCryptoAddresses(channelData.crypto_addresses);
     setCryptoConstants(channelData.crypto_constants);
@@ -82,7 +82,7 @@ export default function PublicChannelPage({ publicIdentifier, previewMode }) {
       <div className={`${styles["public-channel-container"]}`}>
         <div className={`${styles["image-container"]}`}>
           <div
-            style={{ "--cover-url": `url('${coverUrl}')` }}
+            style={{ "--cover-url": `url('${coverUrl || '../../public/images/default_banner_bg.jpg'}')` }}
             className={`${styles["cover"]}`}
           ></div>
         </div>

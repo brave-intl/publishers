@@ -5025,9 +5025,9 @@ grommet-icons@^4.12.4:
   integrity sha512-Y1XxECsP24nU5y1Xs+Xyz6Q4jduzzMUBOb6Dno9YfxZFgxw1ie3+Wwui04+3I6xf036NQJpEI/O8mfMgBaLWXg==
 
 grommet@^2.37.0:
-  version "2.49.0"
-  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.49.0.tgz#cdaa35bef4c3520bb90f8dd316d51500cbaa5ab1"
-  integrity sha512-7Y2QDwL+rtUZC0qyDWMfHmzY874EM3yezSi5M3zwcR39HiJC/wjV7j8hJbfMZUsDeYQtbbxY1hd/8DGI+nzRzA==
+  version "2.50.0"
+  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.50.0.tgz#8f99bd6a06b955da28c2a45519bd91783070e9eb"
+  integrity sha512-yz7UrSIRbdlSfVYpR7UBrfBayVpb8rYTRapZbUNI/CCDFEjDruT7cGl1ioYfNcTRNniXdOkaueF1Y//bUJ27aw==
   dependencies:
     "@emotion/is-prop-valid" "^1.3.1"
     grommet-icons "^4.12.4"

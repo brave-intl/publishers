@@ -21,7 +21,7 @@
   width: 100%;
   height: 234px;
 
-  background-image: var(--cover-url), url('../../public/images/default_banner_bg.jpg');
+  background-image: var(--cover-url);
   background-repeat: no-repeat;
   background-size: cover;
 }
