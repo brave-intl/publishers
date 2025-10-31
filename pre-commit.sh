@@ -15,13 +15,3 @@ fi
 set -e
 git secrets --pre_commit_hook
 
-if git diff --cached --name-status | grep public/creators-landing
-then
-  echo "Building the landing page"
-  cd public/creators-landing && yarn install && yarn build
-  cd -
-  git add public/
-  exit 0
-else
-  exit 0
-fi
