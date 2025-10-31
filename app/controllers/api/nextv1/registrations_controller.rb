@@ -1,10 +1,10 @@
 class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
   include PublishersHelper
+
   skip_before_action :authenticate_publisher!
 
   # Number of requests to #create before we present a captcha.
   THROTTLE_THRESHOLD_REGISTRATION = 3
-  THROTTLE_THRESHOLD_RESEND_AUTHENTICATION_EMAIL = 20
 
   before_action :require_unauthenticated_publisher
 
@@ -23,13 +23,13 @@ class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
     @publisher = Publisher.find_or_create_by(pending_email: params[:email], email: nil, role: Publisher::PUBLISHER)
     @publisher_email = @publisher.pending_email
     @publisher.agreed_to_tos = Time.now if params[:terms_of_service].present?
-  
+
     if params[:terms_of_service] && @publisher.save
       MailerServices::VerifyEmailEmailer.new(publisher: @publisher, locale: locale_from_header).perform
-      return render json: {}, status: 200
+      render json: {}, status: 200
     else
       Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-      return render json: {}, status: 400
+      render json: {}, status: 400
     end
   end
 
@@ -45,36 +45,7 @@ class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
     MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
 
     # If the publisher doesn't exist we'll just pretend like they do
-    return render json: {}, status: 200
-  end
-
-  def expired_authentication_token
-    @publisher = Publisher.where(id: params[:id]).first
-    if @publisher.blank?
-      flash[:notice] = "Problem processing your request, please try again."
-      redirect_to root_path
-    end
-  end
-
-  # Used by emailed_authentication_token.html.slim to send a new sign up or log in access email
-  # to the publisher passed through the params
-  def resend_authentication_email
-    @publisher = Publisher.find(params[:id])
-
-    enforce_throttle(throttled: throttle_resend_authentication_email?, path: log_in_publishers_path) and return
-
-    if @publisher.email.blank?
-      MailerServices::VerifyEmailEmailer.new(publisher: @publisher, locale: locale_from_header).perform
-      @publisher_email = @publisher.pending_email
-    else
-      @publisher_email = @publisher.email
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-    end
-
-    @publisher_email = filter_email(@publisher_email)
-
-    flash.now[:notice] = t(".done")
-    render(:emailed_authentication_token)
+    render json: {}, status: 200
   end
 
   private
@@ -83,14 +54,6 @@ class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
     (request.env["HTTP_ACCEPT_LANGUAGE"].scan(/^[a-z]{2}/).first == "ja") ? :ja : :en
   rescue
     I18n.default_locale
-  end
-
-  def filter_email(email)
-    # Only keep first and last characters
-    range = 1...-1
-    identifier, provider = email.split("@")
-    identifier.tap { |x| x[range] = ("*" * x[range].length) }
-    "#{identifier}@#{provider}"
   end
 
   def email_existing_publisher(publisher)
@@ -127,11 +90,6 @@ class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
   def throttle_registration?
     manually_triggered_captcha? ||
       request.env.dig("rack.attack.throttle_data", "created-auth-tokens/ip", :count).to_i >= THROTTLE_THRESHOLD_REGISTRATION
-  end
-
-  def throttle_resend_authentication_email?
-    manually_triggered_captcha? ||
-      request.env.dig("rack.attack.throttle_data", "resend_authentication_email/publisher_id", :count).to_i >= THROTTLE_THRESHOLD_RESEND_AUTHENTICATION_EMAIL
   end
 
   # If an active session is present require users to explicitly sign out

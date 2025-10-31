@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Icon from '@brave/leo/react/icon';
 
 export default function Carousel({ items, slideTime }) {
-  console.log(slideTime)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
 
