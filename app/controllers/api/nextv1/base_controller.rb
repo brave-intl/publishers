@@ -6,7 +6,7 @@ class Api::Nextv1::BaseController < ActionController::API
   include ActionController::Cookies
   include ActionController::RequestForgeryProtection
 
-  protect_from_forgery with: :exception
+  protect_from_forgery  with: :exception
 
   before_action :log_full_request, if: -> { Rails.configuration.pub_secrets[:log_api_requests] }
 
