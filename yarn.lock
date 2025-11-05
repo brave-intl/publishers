@@ -1548,9 +1548,9 @@
     "@parcel/watcher-win32-x64" "2.5.1"
 
 "@rails/activestorage@^7.0.6":
-  version "7.2.202"
-  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-7.2.202.tgz#a4fcd43b1b18c9c382606ea69a38cebf76fd3e68"
-  integrity sha512-VGC7MimZsM65ac2u3kQulonGnD0BRfULNe8xCsr86ONCefC50td6GdNgpdDPoCQFnakx4Yvnj9Ni2Q+y3KpHww==
+  version "7.2.300"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-7.2.300.tgz#017a6047670341f12699c87cb5cf1e1d54e54eb1"
+  integrity sha512-UE3dtCTCBNTLUhuq8eZGKJkXE9NRAgOyzPZJyA7sGNivV/mDcN4949CfZG7CFx7R96IqmulvdfkwfrucPVynCg==
   dependencies:
     spark-md5 "^3.0.1"
 
