@@ -106,8 +106,8 @@ GEM
     android_key_attestation (0.3.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1161.0)
-    aws-sdk-core (3.232.0)
+    aws-partitions (1.1181.0)
+    aws-sdk-core (3.237.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -115,11 +115,11 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.112.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-kms (1.117.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.199.1)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-s3 (1.203.1)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -133,7 +133,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.1)
     bindata (2.5.1)
     bindex (0.8.1)
     binding_of_caller (1.0.1)
@@ -782,7 +782,7 @@ DEPENDENCIES
   activerecord-import (~> 1.8.0)
   activerecord-postgres_enum
   addressable (~> 2.8)
-  aws-sdk-s3 (~> 1.199.0)
+  aws-sdk-s3 (~> 1.203.0)
   base58
   better_errors
   binding_of_caller
