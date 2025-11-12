@@ -25,7 +25,7 @@ class PublishersHomeTest < ApplicationSystemTestCase
     channel = channels(:small_media_group_to_delete)
 
     sign_in_through_link publisher
-    p "*"*1000
+    p "*" * 1000
     p home_publishers_path
     visit home_publishers_path
 
