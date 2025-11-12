@@ -56,7 +56,6 @@ RUN yarn cache clean
 RUN yarn install --verbose
 
 COPY . .
-RUN cd public/creators-landing && yarn install && yarn build
 
 # Now for the NextJS frontend
 WORKDIR /var/www//nextjs

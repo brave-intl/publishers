@@ -22,10 +22,12 @@ const nextAllowPageRoutes = [
   'publishers/u2f_registrations/new',
   'publishers/home',
   'publishers/contribution_page',
-  '/c/*'
+  'c/*',
+  'sign-up',
+  'log-in'
 ];
 const routeMatch = [
-  nextAllowPageRoutes.map((r) => `ja/${r}`).join('|'),
+  nextAllowPageRoutes.map((r) => `/ja/${r}`).join('|'),
   nextAllowPageRoutes.join('|'),
   nextAllowRoutes.join('|'),
 ].join('|');
@@ -96,11 +98,22 @@ app
       return handle(req, res);
     });
 
+    // express will overmatch on the root path, so handle that outside the other matchers
+    expressApp.get('*', (req, res, next) => {
+      if (req.url === '/' || req.url === '/en' || req.url === '/jp') {
+        return handle(req, res);
+      } else {
+        next();
+      }
+    });
+
     // Then the rest proxy over to Rails
     expressApp.use(
       '*',
       middlewareToRouteToRails,
     );
+
+    expressApp._router.stack
 
     let server;
     if (dev) {

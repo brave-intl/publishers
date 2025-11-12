@@ -2,7 +2,6 @@
     "i18n-ally.localesPaths": [
         "config/locales",
         "app/javascript/locale",
-        "nextjs/src/messages",
-        "public/creators-landing/src/locale"
+        "nextjs/src/messages"
     ]
 }

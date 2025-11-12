@@ -155,6 +155,11 @@ Rails.application.routes.draw do
         resources :crypto_addresses, only: %i[index destroy]
       end
 
+      resource :registrations, only: [:create, :update] do
+        get :expired_authentication_token
+        post :resend_authentication_email
+      end
+
       get "publishers/security", to: "publishers#security"
       get "home/dashboard", to: "home#dashboard"
 

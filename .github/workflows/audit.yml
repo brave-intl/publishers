@@ -61,7 +61,7 @@ jobs:
         run: yarn --frozen-lockfile
       - if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]' }}
         name: Yarn audit
-        run: npx audit-ci --config .audit-ci.json && (cd public/creators-landing && npx audit-ci --config ../../.audit-ci.json)
+        run: npx audit-ci --config .audit-ci.json
       - if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]' }}
         name: Bundler Audit
         run: bundle exec bundle-audit check --update
