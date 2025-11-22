@@ -31,6 +31,16 @@ class Api::Nextv1::BaseController < ActionController::API
     current_publisher && warden.session(:publisher)
   end
 
+  def log_full_request
+    http_envs = {}.tap do |envs|
+      request.headers.each do |key, value|
+        envs[key] = value if key == key.upcase
+      end
+    end
+    Rails.logger.info("Headers: #{http_envs}")
+    Rails.logger.info("Body: #{request&.raw_post}")
+  end
+
   private
 
   def set_csrf_cookie

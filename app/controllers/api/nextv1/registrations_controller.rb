@@ -11,8 +11,6 @@ class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
   # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
   # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
   def create
-    enforce_throttle(throttled: throttle_registration?, path: root_path(captcha: params[:captcha])) and return
-
     # First check if publisher with the email already exists.
     existing_publisher = Publisher.by_email_case_insensitive(params[:email]).first
     email_existing_publisher(existing_publisher) and return if existing_publisher
@@ -40,56 +38,29 @@ class Api::Nextv1::RegistrationsController < Api::Nextv1::BaseController
     @publisher = Publisher.by_email_case_insensitive(params[:email]).first
     @publisher_email = params[:email]
 
-    enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path) and return
-
     MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
 
     # If the publisher doesn't exist we'll just pretend like they do
     render json: {}, status: 200
   end
 
-  private
-
-  def locale_from_header
-    (request.env["HTTP_ACCEPT_LANGUAGE"].scan(/^[a-z]{2}/).first == "ja") ? :ja : :en
-  rescue
-    I18n.default_locale
+  def tos_links
+    render json: {tos: ENV["TOS_LINK"], help: ENV["SUPPORT_LINK"]}, status: 200
   end
+
+  private
 
   def email_existing_publisher(publisher)
     @publisher = publisher
     @publisher_email = publisher.email
     MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-    flash.now[:notice] = t("publishers.registrations.create.email_already_active", email: @publisher_email)
-    respond_to do |format|
-      format.html { render :emailed_authentication_token }
-      format.json { head :ok }
-    end
+    render json: {}, status: 200
   end
 
-  def enforce_throttle(throttled:, path:)
-    @should_throttle = throttled
-    throttle_is_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-    return if throttle_is_legit
-
-    Rails.logger.info("User has been throttled")
-    respond_to do |format|
-      format.html { redirect_to path, alert: t(".access_throttled") and return true }
-      format.json do
-        render json: {message: t(".access_throttled")}, status: :too_many_requests
-      end
-    end
-  end
-
-  # Level 1 throttling -- After the first two requests, ask user to
-  # submit a captcha. See rack-ttack.rb for throttle keys.
-  def manually_triggered_captcha?
-    params[:captcha].present?
-  end
-
-  def throttle_registration?
-    manually_triggered_captcha? ||
-      request.env.dig("rack.attack.throttle_data", "created-auth-tokens/ip", :count).to_i >= THROTTLE_THRESHOLD_REGISTRATION
+  def locale_from_header
+    (request.env["HTTP_ACCEPT_LANGUAGE"].scan(/^[a-z]{2}/).first == "ja") ? :ja : :en
+  rescue
+    I18n.default_locale
   end
 
   # If an active session is present require users to explicitly sign out

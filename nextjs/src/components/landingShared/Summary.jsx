@@ -12,7 +12,7 @@ function TextBlock({ side, step, title, description }) {
       <h1 className={`${styles['summary-number']}`}>
         {step}
       </h1>
-      <div className="flex-auto self-stretch w-[12px] md:w-[16px]"></div>
+      <div className="flex-[0 0 auto] self-stretch w-[12px] md:w-[16px]"></div>
       <div className={`${styles['box']} flex-col w-auto md:w-[480px]`}>
         <h3 className={`${styles['spotlight-heading']} text-white m-0`}>
           {title}
@@ -48,7 +48,7 @@ export default function Summary() {
     <div className={`${styles['gradient-background']} ${styles['box']} flex-col`}>
       <SwoopTop className="absolute top-[-2px] w-full" />
       <div className={`${styles['box']} h-[13vw] min-h-[100px]`} />
-      <div className={`${styles['box']} w-full w-max-[1200px] flex-col px-[48px]`}>
+      <div className={`${styles['box']} w-full max-w-[1200px] flex-col px-[48px]`}>
         <h2 className={`${styles['summary-heading']}`}>
           {t("landingPages.summary.heading")}
         </h2>

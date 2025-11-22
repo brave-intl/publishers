@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SwoopBottom from "~/images/swoop-bottom.svg";
 import styles from '@/styles/LandingPages.module.css';
 import { useTranslations } from 'next-intl';
@@ -19,9 +19,7 @@ export default function SignComponent({
   tinyTwo,
   tinyTwoHref,
   footerOne,
-  footerOneHref,
   footerTwo,
-  footerTwoHref,
   formId,
   termsOfService,
   method
@@ -33,6 +31,8 @@ export default function SignComponent({
   const [confetti, setConfetti] = useState(false);
   const [words, setWords] = useState({});
   const [email, setEmail] = useState("");
+  const [tosLink, setTosLink] = useState("");
+  const [helpLink, setHelpLink] = useState("");
   const [emailError, setEmailError] = useState("");
   const t = useTranslations();
 
@@ -45,6 +45,16 @@ export default function SignComponent({
     headline: t("landingPages.sign.signupSuccess"),
     body: t("landingPages.sign.signupSuccessBody")
   };
+
+  useEffect(() => {
+    getTosLinks();
+  }, []);
+
+  async function getTosLinks() {
+    const res = await apiRequest('registrations/tos_links', 'GET')
+    setTosLink(res['tos']);
+    setHelpLink(res['help']);
+  }
 
   function validateEmail() {
     if (!email) {
@@ -79,9 +89,16 @@ export default function SignComponent({
     sendToServer(event);
   };
 
-  function tryAgain(event) {
+  async function tryAgain(event) {
     event.preventDefault();
-    setNotification({ show: true, text: t("landingPages.sign.sentAgain")});
+    
+    const res = await apiRequest(url, method, {email: email});
+    
+    if (res.errors) {
+      setNotification({ show: true, text: errors });
+    } else {
+      setNotification({ show: true, text: t("landingPages.sign.sentAgain")});
+    }
   };
 
   async function sendToServer(body) {
@@ -101,12 +118,6 @@ export default function SignComponent({
 
   function submitSuccess() {
     setEmailed(true);
-    // setAnimation({
-    //   type: "fadeOut",
-    //   delay: 0,
-    //   duration: 100,
-    //   size: "xsmall"
-    // });
   };
 
   return (
@@ -179,7 +190,7 @@ export default function SignComponent({
               <div className={`${styles['box']} flex flex-center flex-row`}>
                 <a
                   className={`${styles['link-text']} inline-flex`}
-                  href={footerOneHref}
+                  href={tosLink}
                   rel="noopener"
                 >
                   {footerOne}
@@ -187,7 +198,7 @@ export default function SignComponent({
                 <span className={`${styles['link-text']}`}>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
                 <a
                   className={`${styles['link-text']} inline-flex`}
-                  href={footerTwoHref}
+                  href={helpLink}
                   rel="noopener"
                 >
                   {footerTwo}

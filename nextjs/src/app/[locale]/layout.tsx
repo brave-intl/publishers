@@ -7,7 +7,7 @@ import * as React from 'react';
 import '@fontsource/poppins';
 import '@fontsource/inter';
 import '@fontsource/dm-mono';
-import '@fontsource/muli';
+import '@fontsource-variable/mulish';
 
 import '@/styles/globals.css';
 

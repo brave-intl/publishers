@@ -10,68 +10,6 @@ module Publishers
 
     before_action :require_unauthenticated_publisher
 
-    # Log in page
-    def sign_up
-      @publisher = Publisher.new(email: params[:email])
-    end
-
-    def log_in
-      @publisher = Publisher.new
-    end
-
-    # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
-    # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
-    def create
-      enforce_throttle(throttled: throttle_registration?, path: root_path(captcha: params[:captcha])) and return
-
-      # First check if publisher with the email already exists.
-      existing_publisher = Publisher.by_email_case_insensitive(params[:email]).first
-      email_existing_publisher(existing_publisher) and return if existing_publisher
-
-      # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
-      # Requiring `email: nil` ensures we do not select a publisher with the same pending_email
-      # as a publisher in the middle of the change email flow
-      @publisher = Publisher.find_or_create_by(pending_email: params[:email], email: nil, role: Publisher::PUBLISHER)
-      @publisher_email = @publisher.pending_email
-      @publisher.agreed_to_tos = Time.now if params[:terms_of_service].present?
-
-      if params[:terms_of_service] && @publisher.save
-        MailerServices::VerifyEmailEmailer.new(publisher: @publisher, locale: locale_from_header).perform
-
-        respond_to do |format|
-          format.html { render :emailed_authentication_token }
-          format.json { head :ok }
-        end
-      else
-        Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-        respond_to do |format|
-          format.html do
-            flash[:warning] = t(".invalid_email")
-            redirect_to sign_up_publishers_path
-          end
-          format.json { head :bad_request }
-        end
-      end
-    end
-
-    # This is the method that is called after the user clicks the "Log In" button
-    # If the user is an existing publisher we will send them a log in link, if they are not
-    # then we provide the ability to create an account by clicking the alert on the page.
-    def update
-      @publisher = Publisher.by_email_case_insensitive(params[:email]).first
-      @publisher_email = params[:email]
-
-      enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path) and return
-
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-
-      # If the publisher doesn't exist we'll just pretend like they do
-      respond_to do |format|
-        format.html { render :emailed_authentication_token }
-        format.json { head :ok }
-      end
-    end
-
     def expired_authentication_token
       @publisher = Publisher.where(id: params[:id]).first
       if @publisher.blank?
@@ -84,8 +22,6 @@ module Publishers
     # to the publisher passed through the params
     def resend_authentication_email
       @publisher = Publisher.find(params[:id])
-
-      enforce_throttle(throttled: throttle_resend_authentication_email?, path: log_in_publishers_path) and return
 
       if @publisher.email.blank?
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher, locale: locale_from_header).perform

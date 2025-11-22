@@ -1,7 +1,6 @@
 .box {
   display: flex;
   box-sizing: border-box;
-  max-width: 100%;
   -webkit-box-align: center;
   align-items: center;
   min-width: 0;
@@ -9,7 +8,7 @@
 }
 
 .landing-wrapper {
-  font-family: Muli, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Mulish Variable', -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 18px;
   line-height: 24px;
   box-sizing: border-box;
@@ -154,7 +153,7 @@
 
 .notification-layer {
   transform: translate(-50%);
-  font-family: Muli, sans-serif;
+  font-family: 'Mulish Variable', sans-serif;
   font-size: 18px;
   line-height: 24px;
   box-sizing: border-box;

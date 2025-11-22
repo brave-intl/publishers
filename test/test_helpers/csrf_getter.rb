@@ -1,7 +1,6 @@
 module CsrfGetter
   def get_csrf_token
-    get api_nextv1_home_dashboard_path
-    assert_response :success
+    get tos_links_api_nextv1_registrations_path
 
     # "CSRF-TOKEN=5Jtjrf2LbEcvbC6KmkrUoz0ovZAAo3KcT2pdKXL7KmRe1CtK6oXqnN4bkKBdld0-QpiJJaek47EnW0ElleYrdw;"
     cookie_string = @response.headers["set-cookie"][0].split(" ")[0]

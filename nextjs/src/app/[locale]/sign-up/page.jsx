@@ -24,9 +24,7 @@ export default function SignUp() {
         tinyOne={t("landingPages.main.signup.tinyOne")}
         tinyOneHref="/log-in"
         footerOne={t("landingPages.main.footerOne")}
-        footerOneHref="https://basicattentiontoken.org/publisher-terms-of-service/"
         footerTwo={t("landingPages.main.footerTwo")}
-        footerTwoHref="https://support.brave.com/hc/en-us"
         formId="signUpForm"
         termsOfService={<TermsOfService />}
         method="POST"
