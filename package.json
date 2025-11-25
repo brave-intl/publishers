@@ -103,7 +103,7 @@
     "@types/jest": "29.5.14",
     "@types/react": "16.14.67",
     "@types/react-dom": "16.9.25",
-    "@types/styled-components": "5.1.35",
+    "@types/styled-components": "5.1.36",
     "audit-ci": "6.6.1",
     "autoprefixer": "10.4.22",
     "babel-plugin-styled-components": "2.1.4",
@@ -135,7 +135,7 @@
     "nth-check": "2.1.1",
     "postcss": "8.5.6",
     "@types/react": "16.14.67",
-    "@types/styled-components": "5.1.35",
+    "@types/styled-components": "5.1.36",
     "tar": "6.2.1"
   },
   "browserslist": [
