@@ -197,7 +197,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.6.2)
-    dnsruby (1.73.0)
+    dnsruby (1.73.1)
       base64 (>= 0.2)
       logger (~> 1.6)
       simpleidn (~> 0.2.1)
