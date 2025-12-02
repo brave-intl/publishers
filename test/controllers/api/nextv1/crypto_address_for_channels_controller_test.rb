@@ -13,8 +13,8 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     @channel = channels(:verified)
     @crypto_address = crypto_addresses(:eth_address)
     @publisher = publishers(:verified)
-    sign_in @publisher
     @csrf_token = get_csrf_token
+    sign_in @publisher
 
     Aws.config[:s3] = {
       region: "us-west-2",

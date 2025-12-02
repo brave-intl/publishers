@@ -25,9 +25,7 @@ export default function LogIn() {
         tinyTwo={t("landingPages.main.signin.tinyTwo")}
         tinyTwoHref="/publishers/auth/youtube_login"
         footerOne={t("landingPages.main.footerOne")}
-        footerOneHref="https://basicattentiontoken.org/publisher-terms-of-service/"
         footerTwo={t("landingPages.main.footerTwo")}
-        footerTwoHref="https://support.brave.com/hc/en-us"
         formId="signInForm"
         method="PUT"
       />

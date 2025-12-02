@@ -8,8 +8,6 @@ class Api::Nextv1::BaseController < ActionController::API
 
   protect_from_forgery with: :exception
 
-  before_action :log_full_request, if: -> { Rails.configuration.pub_secrets[:log_api_requests] }
-
   before_action :authenticate_publisher!
 
   before_action :set_csrf_cookie

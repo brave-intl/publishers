@@ -132,6 +132,7 @@ export default function CryptoWidgetPaymentButton({
         method: "eth_requestAccounts",
       });
       const address = accounts[0];
+      console.log("address: ", address)
       if (!address) {
         setGenericError();
         return;
@@ -162,6 +163,7 @@ export default function CryptoWidgetPaymentButton({
           setIsSuccessView(true);
         }
       } catch (e) {
+        console.log(e)
         setGenericError();
         return;
       }
@@ -173,6 +175,7 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendEthBatPayment() {
+    console.log("*****************************************************")
     const amount = Web3.utils.toBigInt(Math.round(currentAmount * 10e17));
     await sendEthTokenPayment(ethBatAddress, amount, batAbi);
   }

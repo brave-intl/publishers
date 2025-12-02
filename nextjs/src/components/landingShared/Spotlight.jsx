@@ -67,7 +67,7 @@ export default function Spotlight() {
   
   return (
     <div className={`${styles['box']} flex-col items-center p-[48px]`}>
-      <div className={`${styles['box']} items-center flex-col w-full max-w-1200`}>
+      <div className={`${styles['box']} items-center flex-col w-full max-w-[1200px]`}>
         <div className={`${styles['box']} items-center flex-col p-[24px]`}>
           <h3 className={`${styles['spotlight-heading']} my-[1em]`} >
             {t("landingPages.spotlight.heading")}

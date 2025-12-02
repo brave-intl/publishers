@@ -40,12 +40,8 @@ Rails.application.routes.draw do
       scope module: "publishers" do
         # Registrations, eventually we should consider refactoring these routes into something a little more restful
         scope controller: "registrations" do
-          get :sign_up
-          get :log_in
           get :expired_authentication_token
           post :resend_authentication_email
-
-          resource :registrations, only: [:create, :update]
         end
 
         resource :case do
@@ -156,8 +152,7 @@ Rails.application.routes.draw do
       end
 
       resource :registrations, only: [:create, :update] do
-        get :expired_authentication_token
-        post :resend_authentication_email
+        get :tos_links
       end
 
       get "publishers/security", to: "publishers#security"

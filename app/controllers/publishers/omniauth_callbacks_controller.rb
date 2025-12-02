@@ -89,38 +89,6 @@ module Publishers
       redirect_to home_publishers_path, notice: t("shared.channel_created")
     end
 
-    def youtube_login
-      if current_publisher
-        sign_out(current_publisher)
-      end
-
-      oauth_response = request.env["omniauth.auth"]
-
-      channel_details = YoutubeChannelDetails.where(auth_user_id: oauth_response.uid)
-        .where.not(youtube_channel_id: nil).first
-
-      if channel_details.nil?
-        redirect_to log_in_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
-        return
-      end
-
-      publisher = channel_details.channel.publisher
-
-      # if publisher.email != oauth_response.dig('info', 'email')
-      unless youtube_login_permitted?(channel_details.channel)
-        redirect_to log_in_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
-        return
-      end
-
-      session["google_oauth2_credentials_token"] = oauth_response.credentials.token
-
-      unless current_publisher
-        sign_in(:publisher, publisher)
-      end
-
-      redirect_to change_email_publishers_path
-    end
-
     def after_omniauth_failure_path_for(scope)
       publisher = current_publisher
       if publisher

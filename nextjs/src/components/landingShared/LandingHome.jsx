@@ -12,7 +12,7 @@ export default function LandingHome() {
 
   return (
     <div className={`${styles['gradient-background']} ${styles['box']} flex-col`}>
-      <div className={`${styles['box']} flex-col w-full max-w-1200`} role="main">
+      <div className={`${styles['box']} flex-col w-full max-w-[1200px]`} role="main">
         <div className={`${styles['box']} ${styles['landing-home-container']}`}>
         {(locale !== 'ja') &&
             <a
