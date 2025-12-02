@@ -8,8 +8,6 @@ class Api::Nextv1::BaseController < ActionController::API
 
   protect_from_forgery with: :exception
 
-  before_action :log_full_request, if: -> { Rails.configuration.pub_secrets[:log_api_requests] }
-
   before_action :authenticate_publisher!
 
   before_action :set_csrf_cookie
@@ -29,16 +27,6 @@ class Api::Nextv1::BaseController < ActionController::API
 
   def publisher_session
     current_publisher && warden.session(:publisher)
-  end
-
-  def log_full_request
-    http_envs = {}.tap do |envs|
-      request.headers.each do |key, value|
-        envs[key] = value if key == key.upcase
-      end
-    end
-    Rails.logger.info("Headers: #{http_envs}")
-    Rails.logger.info("Body: #{request&.raw_post}")
   end
 
   private
