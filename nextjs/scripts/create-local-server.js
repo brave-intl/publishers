@@ -100,7 +100,7 @@ app
 
     // express will overmatch on the root path, so handle that outside the other matchers
     expressApp.get('*', (req, res, next) => {
-      if (req.path === '/' || req.path === '/en' || req.path === '/jp') {
+      if (req.path === '' || req.path === '/' || req.path === '/en' || req.path === '/jp') {
         return handle(req, res);
       } else {
         next();
