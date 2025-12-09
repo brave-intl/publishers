@@ -101,6 +101,8 @@ app
     // express will overmatch on the root path, so handle that outside the other matchers
     expressApp.get('*', (req, res, next) => {
       if (['//', '', '/', '/en', '/jp'].includes(req.path)) {
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        console.log(req.path)
         return handle(req, res);
       } else {
         next();
