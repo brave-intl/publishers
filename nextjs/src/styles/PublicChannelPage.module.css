@@ -9,7 +9,7 @@
   background-color: rgba(0 0 0/ 0%);
   background-image: var(--logo-url);
   background-size: cover;
-  border: var(--logo-url,6px) solid rgba(0 0 0/ 0%);
+  border: var(--logo-url, 6px) solid rgba(0 0 0/ 0%);
   border-radius: 50%;
 }
 
@@ -55,7 +55,7 @@
 
 .creator-description {
   margin-bottom: 2rem;
-  color: #3F4855;
+  color: #3f4855;
 }
 
 .creator-title {
@@ -68,9 +68,9 @@
   margin: 1rem auto;
 
   font-family: Inter, sans-serif;
-  font-size: .8rem;
+  font-size: 0.8rem;
   line-height: 1.2rem;
-  color: #3F4855;
+  color: #3f4855;
   text-align: left;
 }
 
@@ -121,7 +121,9 @@
 
   border: 1px solid rgb(219 222 226 / 100%);
   border-radius: 8px;
-  box-shadow: 0 4px 8px -1px rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
+  box-shadow:
+    0 4px 8px -1px rgb(0 0 0 / 10%),
+    0 1px 0 0 rgb(0 0 0 / 5%);
 }
 
 .qr-link {
@@ -131,7 +133,7 @@
   font-family: poppins, sans-serif;
   font-size: 1.1em;
   font-weight: 600;
-  color: #3F39E8;
+  color: #3f39e8;
 
   background: none;
   border: none;
@@ -175,7 +177,7 @@
 .small-currency-display {
   display: inline-block;
   font-family: Inter, sans-serif;
-  color: #3F4855;
+  color: #3f4855;
 }
 
 .large-currency-display {
@@ -192,7 +194,7 @@
   height: 14px;
   margin-left: 5px;
 
-  color: #3F4855;
+  color: #3f4855;
 
   background-image: url('../../public/images/exchange.svg');
   background-repeat: no-repeat;
@@ -242,17 +244,17 @@
 }
 
 .amount-button {
+  min-width: 58px;
   padding: 12px 16px;
 
   font-size: 13px;
   color: rgb(63 72 85);
 
-  background-color: #FFF;
-  border: 1px solid #A1ABBA;
-  min-width: 58px;
+  background-color: #fff;
+  border: 1px solid #a1abba;
 
   &.selected {
-    background-color: #EDEEF1;
+    background-color: #edeef1;
   }
 
   &:first-of-type {
@@ -273,35 +275,38 @@
   font-size: 13px;
   color: rgb(63 72 85);
 
-  border: 1px solid #A1ABBA;
+  border: 1px solid #a1abba;
   border-left: none;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 
   &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button { 
+  &::-webkit-outer-spin-button {
     margin: 0;
     appearance: none;
   }
 
   &::placeholder {
-    color: #3F4855;
+    color: #3f4855;
   }
 }
 
 .amount-input.amount-full-width {
   width: 260px;
-  border-left: 1px solid #A1ABBA;
+  border-left: 1px solid #a1abba;
   border-radius: 8px;
 }
 
 .amount-input-denomination {
   position: relative;
   top: -35px;
+
+  float: right;
+
+  padding-right: 15px;
+
   font-size: 13px;
   color: rgb(63 72 85);
-  float: right;
-  padding-right: 15px;
 }
 
 .success-wrapper {
@@ -319,10 +324,12 @@
 .dollar-input-denomination {
   position: relative;
   top: -35px;
+  right: -179px;
+
+  padding-right: 15px;
+
   font-size: 13px;
   color: rgb(63 72 85);
-  right: -179px;
-  padding-right: 15px;
 }
 
 .success-message-wrapper {
@@ -333,13 +340,13 @@
   padding-top: 10px;
   font-size: 1.5em;
   font-weight: 600;
-  color: #3F39E8;
+  color: #3f39e8;
 }
 
 .success-amount {
   font-family: Inter, sans-serif;
   font-weight: 600;
-  color: #2ABA32;
+  color: #2aba32;
 }
 
 .share-button {
@@ -371,7 +378,7 @@
 
   text-align: left;
 
-  background-color: #FFE8E7;
+  background-color: #ffe8e7;
   border-radius: 8px;
 }
 
@@ -396,13 +403,13 @@
   font-family: Inter, sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #89001E;
+  color: #89001e;
 }
 
 .error-message {
   font-family: Inter, sans-serif;
   font-size: 12px;
-  color: #89001E;
+  color: #89001e;
 }
 
 .try-brave-modal {
@@ -441,8 +448,8 @@
   box-shadow: 0 1px 4px 0 rgb(0 0 0 / 7%);
 
   img.try-brave-image {
-    max-width:100%;
-    max-height:100%;
+    max-width: 100%;
+    max-height: 100%;
   }
 }
 
@@ -464,7 +471,7 @@
 
   display: block;
 
-  width: calc(100% - 50px );
+  width: calc(100% - 50px);
   margin-top: 16px;
   padding: 14px 20px;
 
@@ -474,7 +481,7 @@
   color: #fff;
   text-align: center;
 
-  background: linear-gradient(174.36deg, #F50 2.32%, #F5002D 93.33%);
+  background: linear-gradient(174.36deg, #f50 2.32%, #f5002d 93.33%);
   border-radius: 26px;
 
   &:hover {

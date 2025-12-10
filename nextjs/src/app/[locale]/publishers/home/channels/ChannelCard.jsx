@@ -16,32 +16,38 @@ import Card from '@/components/Card';
 import CustodianServiceWidget from '../custodianServices/CustodianServiceWidget';
 import ChannelCryptoEditor from './ChannelCryptoEditor';
 
-export default function ChannelCard({ channel, publisherId, onChannelDelete, custodianData }) {
+export default function ChannelCard({
+  channel,
+  publisherId,
+  onChannelDelete,
+  custodianData,
+}) {
   const t = useTranslations();
   // TODO: come up with some default name
   const defaultName = '';
 
   const {
-      setBitflyerConnection,
-      setUpholdConnection,
-      setGeminiConnection,
-      setAllowedRegions
+    setBitflyerConnection,
+    setUpholdConnection,
+    setGeminiConnection,
+    setAllowedRegions,
   } = useContext(CustodianConnectionContext);
 
-  const {
-    hasCustodian,
-    hasCrypto,
-    setHasCustodian
-  } = useContext(ChannelCardContext);
+  const { hasCustodian, hasCrypto, setHasCustodian } =
+    useContext(ChannelCardContext);
 
   useEffect(() => {
     setBitflyerConnection(custodianData.bitflyer_connection);
     setUpholdConnection(custodianData.uphold_connection);
     setGeminiConnection(custodianData.gemini_connection);
 
-    setHasCustodian(custodianData.bitflyer_connection || custodianData.uphold_connection || custodianData.gemini_connection)
+    setHasCustodian(
+      custodianData.bitflyer_connection ||
+        custodianData.uphold_connection ||
+        custodianData.gemini_connection,
+    );
     setAllowedRegions(custodianData.allowed_regions);
-  }, [])
+  }, []);
 
   async function removeChannel() {
     const response = await apiRequest(`channels/${channel.id}`, 'DELETE');
@@ -92,7 +98,7 @@ export default function ChannelCard({ channel, publisherId, onChannelDelete, cus
   }
 
   function displayVerified() {
-    if (channel.verified && ( hasCrypto || hasCustodian )) {
+    if (channel.verified && (hasCrypto || hasCustodian)) {
       return (
         <div className='flex items-center'>
           <span className='small-regular pr-0.5'>

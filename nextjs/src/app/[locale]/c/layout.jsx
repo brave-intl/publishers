@@ -13,7 +13,7 @@ export default function PublicChannelLayout({ children }) {
   const t = useTranslations();
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex h-screen flex-col'>
       <div className={`${styles['header']}`}>
         <div className='container mx-auto'>
           <Image
@@ -24,9 +24,7 @@ export default function PublicChannelLayout({ children }) {
           />
         </div>
       </div>
-      <div className='flex-grow'>
-        {children}
-      </div>
+      <div className='flex-grow'>{children}</div>
       <div className={`${styles['footer']} small-regular`}>
         <div className='container mx-auto flex justify-between'>
           <div className='flex'>
@@ -40,12 +38,30 @@ export default function PublicChannelLayout({ children }) {
           </div>
           <div className='text-right'>
             <div>
-              <a className={`${styles['footer-link']}`} rel="noopener" href='https://basicattentiontoken.org/publisher-terms-of-service/'>{t('shared.terms_of_use')}</a>
+              <a
+                className={`${styles['footer-link']}`}
+                rel='noopener'
+                href='https://basicattentiontoken.org/publisher-terms-of-service/'
+              >
+                {t('shared.terms_of_use')}
+              </a>
               <span className={`${styles['footer-divider']}`}>/</span>
-              <a className={`${styles['footer-link']}`} rel="noopener" href='https://hackerone.com/brave?type=team'>{t('shared.security_issue')}</a>
+              <a
+                className={`${styles['footer-link']}`}
+                rel='noopener'
+                href='https://hackerone.com/brave?type=team'
+              >
+                {t('shared.security_issue')}
+              </a>
             </div>
             <div>
-              <a className={`${styles['footer-link']}`} rel="noopener" href='https://brave.com/'>{t('shared.brave_copyright')}</a>
+              <a
+                className={`${styles['footer-link']}`}
+                rel='noopener'
+                href='https://brave.com/'
+              >
+                {t('shared.brave_copyright')}
+              </a>
             </div>
           </div>
         </div>

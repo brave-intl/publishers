@@ -42,15 +42,17 @@ export default function NavigationLayout({ children }) {
 
   return (
     <UserProvider>
-      <div className={`${isNavOpen ? 'hidden' : 'inline-block'} md:hidden grid grid-cols-6 ${styles['nav-mobile']}`}>
+      <div
+        className={`${isNavOpen ? 'hidden' : 'inline-block'} grid grid-cols-6 md:hidden ${styles['nav-mobile']}`}
+      >
         <Button
           onClick={() => setIsNavOpen(true)}
           kind='plain-faint'
           className='col-span-1'
         >
-          <Icon name='hamburger-menu'/>
+          <Icon name='hamburger-menu' />
         </Button>
-        <div className='col-span-5 flex flex-row justify-center items-center'>
+        <div className='col-span-5 flex flex-row items-center justify-center'>
           <Image
             src={Logo}
             alt='Brave Creators Logo'
@@ -60,9 +62,9 @@ export default function NavigationLayout({ children }) {
           />
         </div>
       </div>
-      <div className='flex-row flex min-h-screen'>
+      <div className='flex min-h-screen flex-row'>
         <Navigation
-          className={`${isNavOpen ? 'flex' : 'hidden'} md:flex max-w-[280px] min-w-[280px] ${styles['nav-background']}`}
+          className={`${isNavOpen ? 'flex' : 'hidden'} min-w-[280px] max-w-[280px] md:flex ${styles['nav-background']}`}
         >
           <NavigationHeader>
             <Image
@@ -71,12 +73,12 @@ export default function NavigationLayout({ children }) {
               priority={true}
               width={110}
             />
-            <Button 
+            <Button
               kind='plain-faint'
-              onClick={()=> setIsNavOpen(false)}
+              onClick={() => setIsNavOpen(false)}
               className='md:hidden'
             >
-              <Icon name='close' className='absolute right-0 top-1'/>
+              <Icon name='close' className='absolute right-0 top-1' />
             </Button>
           </NavigationHeader>
           <NavigationOptions />
@@ -85,15 +87,17 @@ export default function NavigationLayout({ children }) {
               styles['crypto-contributions']
             }`}
           >
-            <h4 className='mb-1 w-3/5 mobile leading-relaxed'>
+            <h4 className='mobile mb-1 w-3/5 leading-relaxed'>
               {t('NavDropdown.crypto_contributions_header')}
             </h4>
             <p className='small-regular leading-relaxed'>
               {t('NavDropdown.crypto_contributions_text')}{' '}
-              <Link href='https://brave.com/blog/on-chain-contributions/'>{t('shared.learn_more')}</Link>
+              <Link href='https://brave.com/blog/on-chain-contributions/'>
+                {t('shared.learn_more')}
+              </Link>
               {' - '}
               <Link
-                className='underline font-normal'
+                className='font-normal underline'
                 onClick={() => {
                   setDismissCrypto(true);
                 }}
@@ -103,7 +107,7 @@ export default function NavigationLayout({ children }) {
             </p>
           </div>
           <NavigationActions slot='actions'>
-{/*            <div className={styles['theme-switcher']}>
+            {/*            <div className={styles['theme-switcher']}>
               <span className={styles.theme}>Theme</span>
               <SegmentedControl size='tiny' value={theme} onChange={updateTheme}>
                 <ControlItem value='light'>
@@ -119,7 +123,7 @@ export default function NavigationLayout({ children }) {
             </div>*/}
             <Hr />
             <div className='action-items'>
-{/*              <NavigationItem
+              {/*              <NavigationItem
                 outsideList={true}
                 icon='help-outline'
                 href='/faqs'
@@ -148,14 +152,40 @@ export default function NavigationLayout({ children }) {
         </div>
         <div className={`${isNavOpen ? 'flex' : 'hidden'} bg-gray-400`}></div>
       </div>
-      <div className={`${styles['footer']} text-center small-regular color-subtle`}>
-        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://brave.com/'>{t('shared.brave_copyright')}</a>
+      <div
+        className={`${styles['footer']} small-regular color-subtle text-center`}
+      >
+        <a
+          className={`${styles['footer-link']} color-tertiary`}
+          rel='noopener'
+          href='https://brave.com/'
+        >
+          {t('shared.brave_copyright')}
+        </a>
         <span className={`${styles['footer-divider']}`}>|</span>
-        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://basicattentiontoken.org/publisher-terms-of-service/'>{t('shared.terms_of_use')}</a>
+        <a
+          className={`${styles['footer-link']} color-tertiary`}
+          rel='noopener'
+          href='https://basicattentiontoken.org/publisher-terms-of-service/'
+        >
+          {t('shared.terms_of_use')}
+        </a>
         <span className={`${styles['footer-divider']}`}>|</span>
-        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://brave.com/privacy/publishers-creators/'>{t('shared.privacy_policy')}</a>
+        <a
+          className={`${styles['footer-link']} color-tertiary`}
+          rel='noopener'
+          href='https://brave.com/privacy/publishers-creators/'
+        >
+          {t('shared.privacy_policy')}
+        </a>
         <span className={`${styles['footer-divider']}`}>|</span>
-        <a className={`${styles['footer-link']} color-tertiary`} rel="noopener" href='https://hackerone.com/brave?type=team'>{t('shared.security_issue')}</a>
+        <a
+          className={`${styles['footer-link']} color-tertiary`}
+          rel='noopener'
+          href='https://hackerone.com/brave?type=team'
+        >
+          {t('shared.security_issue')}
+        </a>
       </div>
     </UserProvider>
   );

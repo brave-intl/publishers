@@ -6,11 +6,11 @@ export function generateStaticParams() {
 }
 
 // Look at @/constant/config to change them
-export async function generateMetadata({ params: { locale }}) {
-  const t = await getTranslations({ locale, namespace: 'metadata'});
+export async function generateMetadata({ params: { locale } }) {
+  const t = await getTranslations({ locale, namespace: 'metadata' });
   return {
     title: t('dashboard'),
-    description: t("description"),
+    description: t('description'),
     icons: {
       icon: '/favicon/favicon.ico',
     },

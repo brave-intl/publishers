@@ -11,8 +11,8 @@ const { createServer } = dev ? require('https') : require('http');
 const PORT = 5001;
 const app = next({ dev });
 const handle = app.getRequestHandler();
-const basicAuth = require('express-basic-auth')
-const selfsigned = require('selfsigned')
+const basicAuth = require('express-basic-auth');
+const selfsigned = require('selfsigned');
 
 const nextAllowRoutes = ['_next', '^icons', 'favicon'];
 const nextAllowPageRoutes = [
@@ -24,7 +24,7 @@ const nextAllowPageRoutes = [
   'publishers/contribution_page',
   'c/*',
   'sign-up',
-  'log-in'
+  'log-in',
 ];
 const routeMatch = [
   nextAllowPageRoutes.map((r) => `/ja/${r}`).join('|'),
@@ -58,25 +58,32 @@ app
       changeOrigin: true,
       secure: testMode ? false : !dev,
       onProxyReq: (proxyReq, request, response) => {
-        const ip = (request.headers['x-forwarded-for'] || request.socket.remoteAddress).split(':').pop()
-        proxyReq.setHeader('originalIP', ip );
-        proxyReq.setHeader('origin', pubHost.origin );
+        const ip = (
+          request.headers['x-forwarded-for'] || request.socket.remoteAddress
+        )
+          .split(':')
+          .pop();
+        proxyReq.setHeader('originalIP', ip);
+        proxyReq.setHeader('origin', pubHost.origin);
       },
       onProxyRes: (proxyRes, request, response) => {
         const redir = proxyRes.headers['location'];
         if (redir) {
           try {
             const redirUrl = new URL(redir);
-            if (redirUrl.protocol === pubHost.protocol && redirUrl.host === pubHost.host) {
+            if (
+              redirUrl.protocol === pubHost.protocol &&
+              redirUrl.host === pubHost.host
+            ) {
               const newRedirUrlToProxy = `${nextHost}${redirUrl.pathname}${redirUrl.search}`;
               proxyRes.headers['location'] = newRedirUrlToProxy;
             }
           } catch (e) {
-            if (!e.code || e.code != "ERR_INVALID_URL") throw e;
+            if (!e.code || e.code != 'ERR_INVALID_URL') throw e;
           }
         }
       },
-    })
+    });
 
     // Pull out the health check in particular as not needed http auth
     expressApp.use('/health-check', middlewareToRouteToRails);
@@ -101,8 +108,6 @@ app
     // express will overmatch on the root path, so handle that outside the other matchers
     expressApp.get('*', (req, res, next) => {
       if (['//', '', '/', '/en', '/jp'].includes(req.path)) {
-        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-        console.log(req.path)
         return handle(req, res);
       } else {
         next();
@@ -110,12 +115,9 @@ app
     });
 
     // Then the rest proxy over to Rails
-    expressApp.use(
-      '*',
-      middlewareToRouteToRails,
-    );
+    expressApp.use('*', middlewareToRouteToRails);
 
-    expressApp._router.stack
+    expressApp._router.stack;
 
     let server;
     if (dev) {
@@ -127,26 +129,16 @@ app
         key: pems.private,
         cert: pems.cert,
       };
-      server = createServer(
-        serverOptions,
-        expressApp,
-      );
+      server = createServer(serverOptions, expressApp);
     } else {
-      server = createServer(
-        {},
-        expressApp,
-      );
+      server = createServer({}, expressApp);
     }
 
     return server.listen(PORT, (err) => {
       if (err) throw err;
 
       console.log(
-        chalk.green(
-          `> Server started on ${chalk.bold.green(
-            `${nextHost}`,
-          )}`,
-        ),
+        chalk.green(`> Server started on ${chalk.bold.green(`${nextHost}`)}`),
       );
     });
   })

@@ -16,10 +16,7 @@
     "source.fixAll.stylelint": true,
     "source.fixAll": true
   },
-  "eslint.codeActionsOnSave.rules": [
-    "!unused-imports/no-unused-imports",
-    "*"
-  ],
+  "eslint.codeActionsOnSave.rules": ["!unused-imports/no-unused-imports", "*"],
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "explorer.sortOrder": "filesFirst",
   "explorer.fileNesting.enabled": true,
@@ -48,15 +45,11 @@
     "titleBar.activeForeground": "#F6FBFB"
   },
   "i18n-ally.theme.annotation": "rgba(255, 255, 255)",
-  "i18n-ally.localesPaths": [
-    "src/messages"
-  ],
+  "i18n-ally.localesPaths": ["src/messages"],
   "i18n-ally.sortKeys": true,
   "i18n-ally.keepFulfilled": true,
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.extract.ignored": [
-    "|"
-  ],
+  "i18n-ally.extract.ignored": ["|"],
   "i18n-ally.annotationMaxLength": 60,
   "i18n-ally.extract.autoDetect": true
 }

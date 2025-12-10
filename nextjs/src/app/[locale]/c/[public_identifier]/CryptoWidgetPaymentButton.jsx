@@ -1,32 +1,32 @@
-"use client";
+'use client';
 // webpacker does not import the correct version automatically.
 // this is necessary for the Solana transfer object to function
-import * as buffer from "buffer";
-if (typeof window !== "undefined") {
+import * as buffer from 'buffer';
+if (typeof window !== 'undefined') {
   window.Buffer = buffer.Buffer;
 }
 
-import { useContext } from "react";
-import { useTranslations } from "next-intl";
-import Web3 from "web3";
+import { useContext } from 'react';
+import { useTranslations } from 'next-intl';
+import Web3 from 'web3';
 import {
   Connection,
   SystemProgram,
   LAMPORTS_PER_SOL,
   Transaction,
   PublicKey,
-} from "@solana/web3.js";
+} from '@solana/web3.js';
 import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   createTransferInstruction,
-} from "@solana/spl-token";
+} from '@solana/spl-token';
 
-import Button from "@brave/leo/react/button";
-import { CryptoWidgetContext } from "@/lib/context/CryptoWidgetContext";
-import styles from "@/styles/PublicChannelPage.module.css";
-import batAbi from "@/constant/batAbi.json";
-import erc20Abi from "@/constant/erc20Abi.json";
+import Button from '@brave/leo/react/button';
+import { CryptoWidgetContext } from '@/lib/context/CryptoWidgetContext';
+import styles from '@/styles/PublicChannelPage.module.css';
+import batAbi from '@/constant/batAbi.json';
+import erc20Abi from '@/constant/erc20Abi.json';
 
 export default function CryptoWidgetPaymentButton({
   previewMode,
@@ -54,23 +54,23 @@ export default function CryptoWidgetPaymentButton({
   } = useContext(CryptoWidgetContext);
 
   async function sendPayment() {
-  clearError();
+    clearError();
 
-  const paymentFunctions = {
-    "ETH": sendEthPayment,
-    "SOL": sendSolPayment,
-    "BAT": sendEthBatPayment,
-    "splBAT": sendSolBatPayment,
-    "USDC": sendEthUsdcPayment,
-    "USDC-SPL": sendSolUsdcPayment,
-  };
+    const paymentFunctions = {
+      ETH: sendEthPayment,
+      SOL: sendSolPayment,
+      BAT: sendEthBatPayment,
+      splBAT: sendSolBatPayment,
+      USDC: sendEthUsdcPayment,
+      'USDC-SPL': sendSolUsdcPayment,
+    };
 
-  paymentFunctions[currentChain]();
-}
+    paymentFunctions[currentChain]();
+  }
 
   function setGenericError() {
-    setErrorTitle(t("publicChannelPage.ErrorTitle"));
-    setErrorMsg(t("publicChannelPage.ErrorMsg"));
+    setErrorTitle(t('publicChannelPage.ErrorTitle'));
+    setErrorMsg(t('publicChannelPage.ErrorMsg'));
   }
 
   function setError(titleId, msgId) {
@@ -84,9 +84,9 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendEthPayment() {
-    if (typeof window !== "undefined" && window.ethereum) {
+    if (typeof window !== 'undefined' && window.ethereum) {
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+        method: 'eth_requestAccounts',
       });
       const address = accounts[0];
       if (!address) {
@@ -110,7 +110,7 @@ export default function CryptoWidgetPaymentButton({
 
       window.ethereum
         .request({
-          method: "eth_sendTransaction",
+          method: 'eth_sendTransaction',
           params,
         })
         .then((result) => {
@@ -121,18 +121,18 @@ export default function CryptoWidgetPaymentButton({
         });
     } else {
       setIsTryBraveModalOpen(true);
-      setError("publicChannelPage.noEthTitle", "publicChannelPage.noEthMsg");
+      setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg');
       return;
     }
   }
 
   async function sendEthTokenPayment(contractAddress, amount, abi) {
-    if (typeof window !== "undefined" && window.ethereum) {
+    if (typeof window !== 'undefined' && window.ethereum) {
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+        method: 'eth_requestAccounts',
       });
       const address = accounts[0];
-      console.log("address: ", address)
+
       if (!address) {
         setGenericError();
         return;
@@ -149,7 +149,7 @@ export default function CryptoWidgetPaymentButton({
         const transaction = {
           from: address,
           to: contractAddress,
-          value: "0", // note that value is a string
+          value: '0', // note that value is a string
           data: encodedAbi,
           gasPrice,
         };
@@ -163,19 +163,18 @@ export default function CryptoWidgetPaymentButton({
           setIsSuccessView(true);
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
         setGenericError();
         return;
       }
     } else {
       setIsTryBraveModalOpen(true);
-      setError("publicChannelPage.noEthTitle", "publicChannelPage.noEthMsg");
+      setError('publicChannelPage.noEthTitle', 'publicChannelPage.noEthMsg');
       return;
     }
   }
 
   async function sendEthBatPayment() {
-    console.log("*****************************************************")
     const amount = Web3.utils.toBigInt(Math.round(currentAmount * 10e17));
     await sendEthTokenPayment(ethBatAddress, amount, batAbi);
   }
@@ -187,9 +186,9 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendSolPayment() {
-    if (typeof window !== "undefined" && !window.solana) {
+    if (typeof window !== 'undefined' && !window.solana) {
       setIsTryBraveModalOpen(true);
-      setError("publicChannelPage.noSolTitle", "publicChannelPage.noSolMsg");
+      setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     } else {
       const provider = await window.solana.connect();
@@ -206,7 +205,7 @@ export default function CryptoWidgetPaymentButton({
           }),
         );
         transaction.feePayer = pub_key;
-        const blockhashObj = await connection.getLatestBlockhash("confirmed");
+        const blockhashObj = await connection.getLatestBlockhash('confirmed');
         transaction.recentBlockhash = await blockhashObj.blockhash;
 
         try {
@@ -228,9 +227,9 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendSolTokenPayment(contractAddress, decimal) {
-    if (typeof window !== "undefined" && !window.solana) {
+    if (typeof window !== 'undefined' && !window.solana) {
       setIsTryBraveModalOpen(true);
-      setError("publicChannelPage.noSolTitle", "publicChannelPage.noSolMsg");
+      setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     } else {
       const provider = await window.solana.connect();
@@ -298,7 +297,7 @@ export default function CryptoWidgetPaymentButton({
 
             tx.feePayer = sourceAccountOwner;
             const latestBlockHash =
-              await connection.getLatestBlockhash("confirmed");
+              await connection.getLatestBlockhash('confirmed');
             tx.recentBlockhash = latestBlockHash.blockhash;
 
             const signature = await window.solana.signAndSendTransaction(tx);
@@ -309,8 +308,8 @@ export default function CryptoWidgetPaymentButton({
             }
           } else {
             setError(
-              "publicChannelPage.ErrorTitle",
-              "publicChannelPage.insufficientBalance",
+              'publicChannelPage.ErrorTitle',
+              'publicChannelPage.insufficientBalance',
             );
             window.solana.disconnect();
             return;
@@ -341,9 +340,9 @@ export default function CryptoWidgetPaymentButton({
         sendPayment();
       }}
       isDisabled={currentAmount <= 0 || previewMode}
-      className={`mb-3 ${styles["send-button"]}`}
+      className={`mb-3 ${styles['send-button']}`}
     >
-      {t("publicChannelPage.send")}
+      {t('publicChannelPage.send')}
     </Button>
   );
 }

@@ -111,7 +111,7 @@ export default function SecurityPage() {
           </div>
           <hr className='my-4' />
           <div className='max-w-screen-md'>
-            <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row '>
+            <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.totp.heading')}</h3>
                 <div className='md:order-2'>
@@ -185,7 +185,7 @@ export default function SecurityPage() {
                   </div>
                 )}
               </div>
-              <div className='mt-3 flex-col items-center md:mt-0  md:flex md:pl-5'>
+              <div className='mt-3 flex-col items-center md:mt-0 md:flex md:pl-5'>
                 <Link href='./u2f_registrations/new'>
                   <Button className='w-[150px] flex-grow-0'>
                     {t('security.index.u2f.button')}

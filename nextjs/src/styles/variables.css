@@ -1,6 +1,9 @@
 :root {
   /* Brave Leo overrides for variables that use Font-Family */
-  --font-poppins: 'Poppins', -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-poppins:
+    'Poppins', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
+    'Helvetica Neue', arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
   --leo-font-primary-heading-display1: var(--leo-font-heading-display1);
   --leo-font-primary-heading-display2: var(--leo-font-heading-display2);
   --leo-font-primary-heading-h1: var(--leo-font-heading-h1);
@@ -57,11 +60,15 @@
   --primary: var(--leo-control-color, var(--base));
   --background: var(--primary);
   --border-color: color-mix(in srgb, var(--primary), var(--foreground) 25%);
-  --border-color-hover: color-mix(in srgb, var(--primary), var(--foreground) 40%);
+  --border-color-hover: color-mix(
+    in srgb,
+    var(--primary),
+    var(--foreground) 40%
+  );
 }
 
 /* this needs to be fixed in Leo */
-[data-theme="light"] {
+[data-theme='light'] {
   --leo-color-text-primary: rgb(13 15 20);
 }
 
@@ -71,12 +78,12 @@
   }
 }
 
-[data-theme="dark"] {
-/*  --leo-color-text-primary: rgb(246 247 248); */
+[data-theme='dark'] {
+  /*  --leo-color-text-primary: rgb(246 247 248); */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-/*    --leo-color-text-primary: rgb(246 247 248); */
+    /*    --leo-color-text-primary: rgb(246 247 248); */
   }
 }
