@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 
 export const CryptoWidgetContext = createContext({});
 
 export function CryptoWidgetProvider({ children }) {
-  const [currentChain, setCurrentChain] = useState("");
+  const [currentChain, setCurrentChain] = useState('');
   const [ratios, setRatios] = useState({});
-  const [displayChain, setDisplayChain] = useState("BAT");
+  const [displayChain, setDisplayChain] = useState('BAT');
   const [currentAmount, setCurrentAmount] = useState(5);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);

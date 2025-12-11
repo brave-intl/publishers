@@ -9,10 +9,7 @@ export const ChannelCardContext = createContext({
   setHasCrypto: () => {},
 });
 
-export default function ChannelCardProvider({
-  children,
-}) {
-
+export default function ChannelCardProvider({ children }) {
   const [hasCrypto, setHasCrypto] = useState(false);
   const [hasCustodian, setHasCustodian] = useState(false);
 

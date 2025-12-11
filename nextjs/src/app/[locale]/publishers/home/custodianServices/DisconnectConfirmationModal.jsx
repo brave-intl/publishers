@@ -13,10 +13,18 @@ export default function DisconnectConfirmationModal({ close, provider }) {
 
   return (
     <div>
-      <h1 className={styles['privacy-header']}>{t('walletServices.disconnectModal.title')}</h1>
-      <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.text', { provider: capitalize(provider) })}</p>
-      <p className={styles['privacy-text']}>{t('walletServices.disconnectModal.textLine2')}</p>
-      <div className="text-right">
+      <h1 className={styles['privacy-header']}>
+        {t('walletServices.disconnectModal.title')}
+      </h1>
+      <p className={styles['privacy-text']}>
+        {t('walletServices.disconnectModal.text', {
+          provider: capitalize(provider),
+        })}
+      </p>
+      <p className={styles['privacy-text']}>
+        {t('walletServices.disconnectModal.textLine2')}
+      </p>
+      <div className='text-right'>
         <div className={styles['privacy-button-container']}>
           <Button
             onClick={close}
@@ -28,7 +36,9 @@ export default function DisconnectConfirmationModal({ close, provider }) {
         </div>
         <div className={styles['privacy-button-container']}>
           <Button
-            onClick={() => {close(provider)}}
+            onClick={() => {
+              close(provider);
+            }}
             style={{ margin: '10px 0px', width: '320px' }}
             kind='filled'
           >
@@ -37,5 +47,5 @@ export default function DisconnectConfirmationModal({ close, provider }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

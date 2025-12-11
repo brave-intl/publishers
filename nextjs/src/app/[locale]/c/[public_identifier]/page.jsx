@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import PublicChannelPage from "./PublicChannelPage";
+import PublicChannelPage from './PublicChannelPage';
 
 export default function PublicChannelPageContainer() {
   const params = useParams();
@@ -9,7 +9,10 @@ export default function PublicChannelPageContainer() {
 
   return (
     <div>
-      <PublicChannelPage publicIdentifier={publicIdentifier} previewMode={false} />
+      <PublicChannelPage
+        publicIdentifier={publicIdentifier}
+        previewMode={false}
+      />
     </div>
   );
 }

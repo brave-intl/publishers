@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
 import Icon from '@brave/leo/react/icon';
@@ -20,7 +20,7 @@ export default function Carousel({ items, slideTime }) {
   const goToPrevious = () => {
     setAutoPlay(false);
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? items.length - 1 : prevIndex - 1
+      prevIndex === 0 ? items.length - 1 : prevIndex - 1,
     );
   };
 
@@ -43,14 +43,14 @@ export default function Carousel({ items, slideTime }) {
 
   return (
     <div
-      className="relative w-full max-w-[1200px] mx-auto"
+      className='relative mx-auto w-full max-w-[1200px]'
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {/* Carousel Container */}
-      <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+      <div className='bg-gray-100 rounded-lg relative overflow-hidden'>
         {/* Items */}
-        <div className="relative w-full h-[500px]">
+        <div className='relative h-[500px] w-full'>
           {items.map((item, index) => (
             <div
               key={index}
@@ -66,24 +66,24 @@ export default function Carousel({ items, slideTime }) {
         {/* Previous Arrow */}
         <button
           onClick={goToPrevious}
-          className="absolute left-1 top-1/2 transform bg-[#5E6175] hover:bg-opacity-75 text-white rounded-full p-[1px] z-10 transition-all"
-          aria-label="Previous slide"
+          className='absolute left-1 top-1/2 z-10 transform rounded-full bg-[#5E6175] p-[1px] text-white transition-all hover:bg-opacity-75'
+          aria-label='Previous slide'
         >
-          <Icon name="carat-left" />
+          <Icon name='carat-left' />
         </button>
 
         {/* Next Arrow */}
         <button
           onClick={goToNext}
-          className="absolute right-1 top-1/2 transform bg-[#5E6175] hover:bg-opacity-75 text-white rounded-full p-[1px] z-10 transition-all"
-          aria-label="Next slide"
+          className='absolute right-1 top-1/2 z-10 transform rounded-full bg-[#5E6175] p-[1px] text-white transition-all hover:bg-opacity-75'
+          aria-label='Next slide'
         >
-          <Icon name="carat-right" />
+          <Icon name='carat-right' />
         </button>
       </div>
 
       {/* Indicators */}
-      <div className="flex justify-center gap-2">
+      <div className='flex justify-center gap-2'>
         {items.map((_, index) => (
           <button
             key={index}
@@ -91,10 +91,8 @@ export default function Carousel({ items, slideTime }) {
               setAutoPlay(false);
               setCurrentIndex(index);
             }}
-            className={`w-[20px] h-[2px] transition-all ${
-              index === currentIndex
-                ? 'bg-[#7d4cdb]'
-                : 'bg-[#666666]'
+            className={`h-[2px] w-[20px] transition-all ${
+              index === currentIndex ? 'bg-[#7d4cdb]' : 'bg-[#666666]'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

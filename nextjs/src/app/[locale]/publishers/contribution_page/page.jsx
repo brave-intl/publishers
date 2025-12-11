@@ -45,7 +45,14 @@ export default function ContributionPage() {
   const logoInputRef = useRef(null);
   const coverInputRef = useRef(null);
 
-  const channelCategories = ['twitter', 'youtube', 'twitch', 'github', 'reddit', 'vimeo'];
+  const channelCategories = [
+    'twitter',
+    'youtube',
+    'twitch',
+    'github',
+    'reddit',
+    'vimeo',
+  ];
   const searchParams = useSearchParams();
   const channelId = searchParams.get('channel');
   const [currentDomain, setCurrentDomain] = useState('');
@@ -54,21 +61,21 @@ export default function ContributionPage() {
 
   useEffect(() => {
     fetchChannelList();
-    setCurrentDomain(window.location.origin)
+    setCurrentDomain(window.location.origin);
   }, []);
 
   async function fetchChannelList() {
     const res = await apiRequest(`contribution_page`);
     setChannelList(res);
     if (res.length > 0) {
-      await fetchChannelData({value: channelId || res[0].id});
+      await fetchChannelData({ value: channelId || res[0].id });
     } else {
       setNoChannels(true);
       setIsLoading(false);
     }
   }
 
-  async function fetchChannelData({value}) {
+  async function fetchChannelData({ value }) {
     setIsLoading(true);
     const channelData = await apiRequest(`contribution_page/${value}`);
     setChannel(channelData);
@@ -89,7 +96,10 @@ export default function ContributionPage() {
   }
 
   function channelType(channelObj) {
-    return channelObj.details_type.split('ChannelDetails').join('').toLowerCase();
+    return channelObj.details_type
+      .split('ChannelDetails')
+      .join('')
+      .toLowerCase();
   }
 
   function channelDisplay(type) {
@@ -98,7 +108,7 @@ export default function ContributionPage() {
 
   function findCooldownDays(dateStr) {
     // parsInt of null returns NaN
-    if (parseInt(dateStr)>=0) {
+    if (parseInt(dateStr) >= 0) {
       const date = new Date(dateStr);
       const today = new Date();
       const diffInMs = today - date;
@@ -111,17 +121,39 @@ export default function ContributionPage() {
 
   function channelIconType(channelType) {
     if (channelType === 'site') {
-      return <Icon className='color-interactive inline-block align-top' name='globe' forceColor={true}/>;
+      return (
+        <Icon
+          className='color-interactive inline-block align-top'
+          name='globe'
+          forceColor={true}
+        />
+      );
     } else if (channelType === 'twitter') {
-      return <Icon className='inline-block align-top' name='social-x' forceColor={true} />;
+      return (
+        <Icon
+          className='inline-block align-top'
+          name='social-x'
+          forceColor={true}
+        />
+      );
     } else {
-      return <Icon className='inline-block align-top' name={`social-${channelType}`} forceColor={true} />;
+      return (
+        <Icon
+          className='inline-block align-top'
+          name={`social-${channelType}`}
+          forceColor={true}
+        />
+      );
     }
   }
 
   async function updateAttribute(body) {
-    setToastMessage(t('contribution_pages.saving_toast'))
-    const res = await apiRequest(`contribution_page/${channel.id}`, 'PATCH', body);
+    setToastMessage(t('contribution_pages.saving_toast'));
+    const res = await apiRequest(
+      `contribution_page/${channel.id}`,
+      'PATCH',
+      body,
+    );
     if (res.errors) {
       // for now public name errors are the only ones we're displaying
       setPublicNameError(res.errors[0]['public_name'].join(', '));
@@ -136,7 +168,9 @@ export default function ContributionPage() {
     if (tempPublicUrl.length < 3 || tempPublicUrl.length > 32) {
       setPublicNameError('must be between 3 and 32 characters in length');
     } else if (!tempPublicUrl.match(/^[a-zA-Z0-9 _-]+$/).length) {
-      setPublicNameError('must only contain letters, numbers, dashes, and underscores');
+      setPublicNameError(
+        'must only contain letters, numbers, dashes, and underscores',
+      );
     } else {
       setPublicNameError('');
       await updateAttribute({ publicName: tempPublicUrl });
@@ -168,25 +202,25 @@ export default function ContributionPage() {
     let reader = new FileReader();
     reader.readAsDataURL(file.files[0]);
     return new Promise(
-      resolve =>
-        (reader.onloadend = function() {
+      (resolve) =>
+        (reader.onloadend = function () {
           resolve(reader.result);
-        })
+        }),
     );
   }
 
   async function addLogo(e) {
-    const logoData = await readData(event.target)
-    await updateAttribute({logo: logoData});
+    const logoData = await readData(event.target);
+    await updateAttribute({ logo: logoData });
   }
 
   const triggerLogoInput = () => {
-    logoInputRef.current.click();  // Trigger the hidden file input on mobile
+    logoInputRef.current.click(); // Trigger the hidden file input on mobile
   };
 
   async function addCover(e) {
-    const coverData = await readData(event.target)
-    await updateAttribute({cover: coverData});
+    const coverData = await readData(event.target);
+    await updateAttribute({ cover: coverData });
   }
 
   const triggerCoverInput = () => {
@@ -194,10 +228,17 @@ export default function ContributionPage() {
   };
 
   async function deleteImage(type) {
-    if((type === 'logo' && logoUrl.length) || (type === 'cover' && coverUrl.length)) {
-      setToastMessage(t('contribution_pages.saving_toast'))
-      const res = await apiRequest(`contribution_page/${channel.id}/destroy_attachment`, 'DELETE', {[type]: true});
-      setChannel(res)
+    if (
+      (type === 'logo' && logoUrl.length) ||
+      (type === 'cover' && coverUrl.length)
+    ) {
+      setToastMessage(t('contribution_pages.saving_toast'));
+      const res = await apiRequest(
+        `contribution_page/${channel.id}/destroy_attachment`,
+        'DELETE',
+        { [type]: true },
+      );
+      setChannel(res);
       await updateChannelAttributes(res);
     }
   }
@@ -205,35 +246,55 @@ export default function ContributionPage() {
   function renderSocialLinks(category, socialLinks) {
     const options = channelList.filter((c) => channelType(c) === category);
     const noOptions = options.length === 0;
-    
+
     return (
       <div className={`${styles['social-link-wrapper']}`} key={category}>
         <div>
-          <div className='small-semibold pl-0.5 inline'>{channelDisplay(category)}</div>
+          <div className='small-semibold inline pl-0.5'>
+            {channelDisplay(category)}
+          </div>
           {noOptions && (
-            <Link className='small-semibold pl-0.5 inline' href={`/publishers/home?addChannelModal=true`}>{t('contribution_pages.add_account')}</Link>
+            <Link
+              className='small-semibold inline pl-0.5'
+              href={`/publishers/home?addChannelModal=true`}
+            >
+              {t('contribution_pages.add_account')}
+            </Link>
           )}
         </div>
         <Dropdown
-          placeholder={noOptions ? t('contribution_pages.add_account_msg', { social: channelDisplay(category) }) : t('contribution_pages.select_account')}
+          placeholder={
+            noOptions
+              ? t('contribution_pages.add_account_msg', {
+                  social: channelDisplay(category),
+                })
+              : t('contribution_pages.select_account')
+          }
           disabled={noOptions}
           value={socialLinks[category] || undefined}
-          onChange={({value}) => updateSocial(category, value)}
-          className='w-full mt-0.5'
+          onChange={({ value }) => updateSocial(category, value)}
+          className='mt-0.5 w-full'
           size='normal'
         >
-          <div slot='left-icon' className={`${noOptions ? styles['social-link-icon'] : ''}`}>
+          <div
+            slot='left-icon'
+            className={`${noOptions ? styles['social-link-icon'] : ''}`}
+          >
             {channelIconType(category, !(noOptions || !socialLinks[category]))}
           </div>
           <div slot='value'>
-            {socialLinks[category] && socialLinks[category].replace('https://','') || ''}
+            {(socialLinks[category] &&
+              socialLinks[category].replace('https://', '')) ||
+              ''}
           </div>
           {options.map((opt) => {
-            return(
+            return (
               <leo-option key={opt.id} value={opt.details.url}>
-                <div className='py-1'>{opt.details.url.replace('https://','')}</div>
+                <div className='py-1'>
+                  {opt.details.url.replace('https://', '')}
+                </div>
               </leo-option>
-            )
+            );
           })}
           {socialLinks[category] && (
             <leo-option key='clear' value=''>
@@ -241,12 +302,10 @@ export default function ContributionPage() {
             </leo-option>
           )}
           {/* When there are no options, nala dropdowns are about 4 pixels shorter, which looks weird */}
-          {noOptions && (
-            <leo-option key='placeholder' value=''></leo-option>
-          )}
+          {noOptions && <leo-option key='placeholder' value=''></leo-option>}
         </Dropdown>
       </div>
-    )
+    );
   }
 
   if (isLoading) {
@@ -255,7 +314,7 @@ export default function ContributionPage() {
         <Container>
           <div className='mx-auto max-w-screen-lg'>
             <Card>
-              <div className="flex basis-full grow items-center justify-center">
+              <div className='flex grow basis-full items-center justify-center'>
                 <ProgressRing />
               </div>
             </Card>
@@ -268,7 +327,11 @@ export default function ContributionPage() {
       <main className='main transition-colors'>
         <Container>
           <div className='mx-auto max-w-screen-lg'>
-            <EmptyChannelCard addChannel={() => router.push('/publishers/home?addChannelModal=true')}/>
+            <EmptyChannelCard
+              addChannel={() =>
+                router.push('/publishers/home?addChannelModal=true')
+              }
+            />
           </div>
         </Container>
       </main>
@@ -286,15 +349,13 @@ export default function ContributionPage() {
               <Dropdown
                 size='normal'
                 value={channel.id}
-                className='w-full md:w-1/2 pb-5'
+                className='w-full pb-5 md:w-1/2'
                 onChange={fetchChannelData}
               >
-                <div slot="left-icon">
+                <div slot='left-icon'>
                   {channelIconType(channelType(channel))}
                 </div>
-                <div slot="value">
-                  {channel.details.publication_title}
-                </div>
+                <div slot='value'>{channel.details.publication_title}</div>
                 {channelList.map(function (channelName) {
                   return (
                     <leo-option
@@ -303,71 +364,121 @@ export default function ContributionPage() {
                       value={channelName.id}
                     >
                       {channelIconType(channelType(channelName))}
-                      <div className='px-1 inline-block align-top'>{channelName.details.publication_title}</div>
+                      <div className='inline-block px-1 align-top'>
+                        {channelName.details.publication_title}
+                      </div>
                     </leo-option>
                   );
                 })}
               </Dropdown>
 
               <h2 className='pb-2'>{t('contribution_pages.channel_header')}</h2>
-              <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.sharable_url')}</div>
+              <div className='small-semibold pb-0.5 pl-0.5'>
+                {t('contribution_pages.sharable_url')}
+              </div>
               <Input
                 size='normal'
                 value={publicName || publicIdentifier}
-                onChange={(e) => {setIsPublicUrlModalOpen(true); setTempPublicUrl(e.value)}}
-                className={`w-full md:w-1/2 inline-block pb-3`}
+                onChange={(e) => {
+                  setIsPublicUrlModalOpen(true);
+                  setTempPublicUrl(e.value);
+                }}
+                className={`inline-block w-full pb-3 md:w-1/2`}
                 showErrors={publicNameError.length}
                 disabled={cooldownDays > 0}
               >
-                <span slot="left-icon" className={`${styles['public-url-input']} color-tertiary`}>{`${currentDomain}/c/`}</span>
+                <span
+                  slot='left-icon'
+                  className={`${styles['public-url-input']} color-tertiary`}
+                >{`${currentDomain}/c/`}</span>
                 <span slot='errors'>{publicNameError}</span>
               </Input>
-              <div className='pb-3 color-tertiary'>
-                {cooldownDays > 0 && t('contribution_pages.cooldown_warning', { days: Math.floor(cooldownDays) })}
+              <div className='color-tertiary pb-3'>
+                {cooldownDays > 0 &&
+                  t('contribution_pages.cooldown_warning', {
+                    days: Math.floor(cooldownDays),
+                  })}
                 {t('contribution_pages.public_url_note')}
-                <Link target='_blank'
-                  rel="noreferrer"
-                  href="https://support.brave.com/hc/en-us/articles/33646848629901-Creators-Custom-URLs-for-Contribution-Pages"
+                <Link
+                  target='_blank'
+                  rel='noreferrer'
+                  href='https://support.brave.com/hc/en-us/articles/33646848629901-Creators-Custom-URLs-for-Contribution-Pages'
                 >
                   {t('contribution_pages.public_url_link')}
                 </Link>
                 {t('contribution_pages.public_url_note_2')}
               </div>
 
-              <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.avatar_cover_image')}</div>
-              <div className='hidden md:block relative mb-3'>
-                <div style={{ '--cover-url': `url('${coverUrl}')` }} className={`${styles['cover-container']}`}></div>
+              <div className='small-semibold pb-0.5 pl-0.5'>
+                {t('contribution_pages.avatar_cover_image')}
+              </div>
+              <div className='relative mb-3 hidden md:block'>
+                <div
+                  style={{ '--cover-url': `url('${coverUrl}')` }}
+                  className={`${styles['cover-container']}`}
+                ></div>
                 <div className={`${styles['cover-edit-container']}`}>
-                  <label htmlFor='cover-upload' className={`${styles['logo-upload-btn']}`}>
+                  <label
+                    htmlFor='cover-upload'
+                    className={`${styles['logo-upload-btn']}`}
+                  >
                     <Icon name='camera' />
                   </label>
-                  <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp"  id='cover-upload' onChange={addCover}/>
-                  <div className={`ml-1 ${styles['logo-upload-btn']}`} onClick={()=> deleteImage('cover')}>
+                  <input
+                    className='hidden'
+                    type='file'
+                    accept='image/png, image/jpeg, image/webp'
+                    id='cover-upload'
+                    onChange={addCover}
+                  />
+                  <div
+                    className={`ml-1 ${styles['logo-upload-btn']}`}
+                    onClick={() => deleteImage('cover')}
+                  >
                     <Icon name='close' />
                   </div>
                 </div>
                 <div className={`${styles['logo-upload-container']}`}>
-                  <div style={{ '--logo-url': `url('${logoUrl}')` }} className={`${styles['logo-container']}`}></div>
+                  <div
+                    style={{ '--logo-url': `url('${logoUrl}')` }}
+                    className={`${styles['logo-container']}`}
+                  ></div>
                   <div className={`${styles['logo-edit-container']}`}>
-                    <label htmlFor='logo-upload' className={`${styles['logo-upload-btn']}`}>
+                    <label
+                      htmlFor='logo-upload'
+                      className={`${styles['logo-upload-btn']}`}
+                    >
                       <Icon name='camera' />
                     </label>
-                    <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp"  id='logo-upload' onChange={addLogo}/>
-                    <div className={`ml-1 ${styles['logo-upload-btn']}`} onClick={()=> deleteImage('logo')}>
+                    <input
+                      className='hidden'
+                      type='file'
+                      accept='image/png, image/jpeg, image/webp'
+                      id='logo-upload'
+                      onChange={addLogo}
+                    />
+                    <div
+                      className={`ml-1 ${styles['logo-upload-btn']}`}
+                      onClick={() => deleteImage('logo')}
+                    >
                       <Icon name='close' />
                     </div>
                   </div>
                 </div>
               </div>
-              
-              <div className='small-semibold pl-0.5 pb-0.5'>{t('contribution_pages.channel_name')}</div>
+
+              <div className='small-semibold pb-0.5 pl-0.5'>
+                {t('contribution_pages.channel_name')}
+              </div>
               <Input
                 value={title}
                 onChange={saveTitle}
-                className='w-full md:w-1/2 inline-block'
+                className='inline-block w-full md:w-1/2'
               />
-              <div className='small-semibold pb-0.5 pl-0.5 mt-3'>{t('contribution_pages.bio')}</div>
-              <div className='flex mb-5'>
+              <div className='small-semibold mt-3 pb-0.5 pl-0.5'>
+                {t('contribution_pages.bio')}
+              </div>
+              <div className='mb-5 flex'>
                 <textarea
                   name='description'
                   onBlur={saveDescription}
@@ -377,46 +488,90 @@ export default function ContributionPage() {
                 />
               </div>
 
-              <div className="md:hidden">
-                <div className='small-semibold pl-0.5 mt-3 pb-0.5'>{t('contribution_pages.profile')}</div>
-                <div className='flex justify-normal justify-items-start items-center'>
-                  <div style={{ '--logo-url': `url('${logoUrl}')` }} className={`${styles['logo-container-mobile']}`}></div>
-                  <Button kind='outline' className='grow-0' onClick={triggerLogoInput}>{t('shared.change')}</Button>
-                  <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp" ref={logoInputRef} onChange={addLogo}/>
-                  <Button kind='plain-faint' className={`ml-1 grow-0`} onClick={()=> deleteImage('logo')}>
+              <div className='md:hidden'>
+                <div className='small-semibold mt-3 pb-0.5 pl-0.5'>
+                  {t('contribution_pages.profile')}
+                </div>
+                <div className='flex items-center justify-normal justify-items-start'>
+                  <div
+                    style={{ '--logo-url': `url('${logoUrl}')` }}
+                    className={`${styles['logo-container-mobile']}`}
+                  ></div>
+                  <Button
+                    kind='outline'
+                    className='grow-0'
+                    onClick={triggerLogoInput}
+                  >
+                    {t('shared.change')}
+                  </Button>
+                  <input
+                    className='hidden'
+                    type='file'
+                    accept='image/png, image/jpeg, image/webp'
+                    ref={logoInputRef}
+                    onChange={addLogo}
+                  />
+                  <Button
+                    kind='plain-faint'
+                    className={`ml-1 grow-0`}
+                    onClick={() => deleteImage('logo')}
+                  >
                     {t('shared.remove')}
                   </Button>
                 </div>
-                <div className='small-semibold pl-0.5 mt-3 pb-0.5'>{t('contribution_pages.cover')}</div>
-                <div style={{ '--cover-url': `url('${coverUrl}')` }} className={`${styles['cover-container-mobile']}`}></div>
-                <Button onClick={triggerCoverInput} kind='outline'>{t('shared.change')}</Button>
-                <input className='hidden' type="file" accept="image/png, image/jpeg, image/webp" ref={coverInputRef} onChange={addCover}/>
-                <Button kind='plain-faint' className={`ml-1`} onClick={()=> deleteImage('cover')}>
+                <div className='small-semibold mt-3 pb-0.5 pl-0.5'>
+                  {t('contribution_pages.cover')}
+                </div>
+                <div
+                  style={{ '--cover-url': `url('${coverUrl}')` }}
+                  className={`${styles['cover-container-mobile']}`}
+                ></div>
+                <Button onClick={triggerCoverInput} kind='outline'>
+                  {t('shared.change')}
+                </Button>
+                <input
+                  className='hidden'
+                  type='file'
+                  accept='image/png, image/jpeg, image/webp'
+                  ref={coverInputRef}
+                  onChange={addCover}
+                />
+                <Button
+                  kind='plain-faint'
+                  className={`ml-1`}
+                  onClick={() => deleteImage('cover')}
+                >
                   {t('shared.remove')}
                 </Button>
               </div>
 
-              <h2 className='pt-5 mb-3'>{t('contribution_pages.show_social_links')}</h2>
-              <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 items-start'>
-                {channelCategories.map((category) => renderSocialLinks(category, socialLinks))}
+              <h2 className='mb-3 pt-5'>
+                {t('contribution_pages.show_social_links')}
+              </h2>
+              <div className='grid grid-cols-1 items-start gap-2 lg:grid-cols-2'>
+                {channelCategories.map((category) =>
+                  renderSocialLinks(category, socialLinks),
+                )}
               </div>
-              <div className='py-3 color-tertiary'>
+              <div className='color-tertiary py-3'>
                 {t('contribution_pages.social_link_note')}
               </div>
-              <Hr/>
-              <Button className='px-3 pt-5' onClick={()=> setPreviewModalOpen(true)}>{t('contribution_pages.preview_btn')}</Button>
+              <Hr />
+              <Button
+                className='px-3 pt-5'
+                onClick={() => setPreviewModalOpen(true)}
+              >
+                {t('contribution_pages.preview_btn')}
+              </Button>
             </Card>
           </div>
         </Container>
         {toastMessage && (
-          <Toast 
-            message={toastMessage} 
-            onClose={() => setToastMessage('')}
-          />
+          <Toast message={toastMessage} onClose={() => setToastMessage('')} />
         )}
         <Dialog
           isOpen={previewModalOpen}
-          onClose={() => (setPreviewModalOpen(false))}
+          onClose={() => setPreviewModalOpen(false)}
           showClose={true}
           className={`${styles['preview-modal']}`}
         >
@@ -427,7 +582,13 @@ export default function ContributionPage() {
           onClose={closeModal}
           showClose={true}
         >
-          <PublicUrlConfirmationModal close={closeModal} save={savePublicUrl} oldUrl={publicName || publicIdentifier} newUrl={tempPublicUrl} baseUrl={`${currentDomain}/c/`} />
+          <PublicUrlConfirmationModal
+            close={closeModal}
+            save={savePublicUrl}
+            oldUrl={publicName || publicIdentifier}
+            newUrl={tempPublicUrl}
+            baseUrl={`${currentDomain}/c/`}
+          />
         </Dialog>
       </main>
     );

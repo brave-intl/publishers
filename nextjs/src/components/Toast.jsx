@@ -10,7 +10,7 @@ const Toast = ({ message, onClose }) => {
 
   return (
     <div className={`${styles['toast']}`}>
-      <ProgressRing className={`${styles['toast-progress']}`}/>
+      <ProgressRing className={`${styles['toast-progress']}`} />
       {message}
     </div>
   );

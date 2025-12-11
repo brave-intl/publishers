@@ -1,5 +1,5 @@
-@import url("@brave/leo/tokens/css/variables.css");
-@import url("./variables.css");
+@import url('@brave/leo/tokens/css/variables.css');
+@import url('./variables.css');
 
 @tailwind base;
 @tailwind components;
@@ -7,13 +7,25 @@
 
 html {
   box-sizing: border-box;
-  font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    var(--font-poppins),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
   font-size: var(--leo-typography-default-regular-font-size);
-
   -webkit-font-smoothing: antialiased;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -23,14 +35,23 @@ body {
   background: var(--leo-color-container-background);
 }
 
-body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
   margin: 0;
   padding: 0;
-
   -webkit-font-smoothing: antialiased;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
@@ -108,7 +129,6 @@ hr {
   color: var(--leo-color-divider-subtle);
 }
 
-
 .label-component {
   font-size: var(--leo-typography-components-label-font-size);
   font-weight: var(--leo-typography-components-label-font-weight);
@@ -168,19 +188,22 @@ hr {
   width: 100%;
   padding: var(--leo-spacing-4xl);
   background: var(--leo-color-page-background);
-  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
+  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m)
+    var(--leo-radius-xl);
 }
 
 @media (width <= 768px) {
-  .content-background, .main {
+  .content-background,
+  .main {
     padding: 5px;
     background: var(--leo-color-container-background);
   }
 }
 
 @media (width <= 468px) {
-  .content-background, .main {
-    margin:0;
+  .content-background,
+  .main {
+    margin: 0;
     padding: 10px;
     background: var(--leo-color-container-background);
   }
@@ -199,7 +222,9 @@ hr {
 }
 
 .shadow {
-  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%), 0 1px 0 0 rgb(0 0 0 / 5%);
+  box-shadow:
+    0 1px 4px 0 rgb(0 0 0 / 10%),
+    0 1px 0 0 rgb(0 0 0 / 5%);
 }
 
 @keyframes dash {

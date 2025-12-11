@@ -10,17 +10,14 @@ export const CustodianConnectionContext = createContext({
   bitflyerConnection: {},
   setBitflyerConnection: ({}) => {},
   allowedRegions: {},
-  setAllowedRegions: ({}) => {}
+  setAllowedRegions: ({}) => {},
 });
 
-export default function CustodianConnectionProvider({
-  children,
-}) {
-
+export default function CustodianConnectionProvider({ children }) {
   const [upholdConnection, setUpholdConnection] = useState({});
   const [geminiConnection, setGeminiConnection] = useState({});
   const [bitflyerConnection, setBitflyerConnection] = useState({});
-  const [allowedRegions, setAllowedRegions] = useState({})
+  const [allowedRegions, setAllowedRegions] = useState({});
 
   return (
     <CustodianConnectionContext.Provider
@@ -32,7 +29,7 @@ export default function CustodianConnectionProvider({
         bitflyerConnection,
         setBitflyerConnection,
         allowedRegions,
-        setAllowedRegions
+        setAllowedRegions,
       }}
     >
       {children}
