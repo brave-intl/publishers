@@ -102,12 +102,18 @@ app
 
     // Paths next will handle, route them explicitly, everything else goes to rails
     expressApp.get(routeMatch, (req, res) => {
+      console.log("########################################################################")
+      console.log("route match detected in express")
+      console.log(req.path)
       return handle(req, res);
     });
 
     // express will overmatch on the root path, so handle that outside the other matchers
     expressApp.get('*', (req, res, next) => {
+      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+      console.log("request path: ", req.path)
       if (['//', '', '/', '/en', '/jp'].includes(req.path)) {
+        console.log("root path detected in express")
         return handle(req, res);
       } else {
         next();
