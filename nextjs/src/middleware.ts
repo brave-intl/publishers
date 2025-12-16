@@ -15,10 +15,17 @@ export function middleware(request) {
 
   // next-intl middleware
   const defaultLocale = request.headers.get('x-default-locale') || 'en';
+
+  if (pathname === '/' ) {
+    const rootLocale = ['en', 'ja'].includes(defaultLocale) ? defaultLocale : null;
+    return NextResponse.redirect(new URL(`/${rootLocale}`, request.url));
+  }
+
   const handleI18nRouting = createMiddleware({
     locales: ['en', 'ja'],
     defaultLocale: 'en',
   });
+
   const response = handleI18nRouting(request);
   response.headers.set('x-default-locale', defaultLocale);
 
