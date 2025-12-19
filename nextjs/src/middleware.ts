@@ -10,21 +10,12 @@ export function middleware(request) {
   console.log("request: ", request)
   const pathname = request.nextUrl.pathname;
   const locale = request.nextUrl.searchParams.get('locale');
-  console.log('***************************************************************')
-  console.log('pathname: ', pathname)
-  console.log('locale: ', locale)
   if (locale === 'ja') {
-    console.log('japanese locale param detected')
     return NextResponse.redirect(new URL(`/ja/${pathname}`, request.url));
   }
 
   // next-intl middleware
   const defaultLocale = request.headers.get('x-default-locale') || 'en';
-  console.log("testing statements next intl middleware will run:")
-  const unsafeExternalPathname = decodeURI(request.nextUrl.pathname);
-  console.log(unsafeExternalPathname)
-  console.log("base path: ", request.nextUrl.basePath)
-
   const handleI18nRouting = createMiddleware({
     locales: ['en', 'ja'],
     defaultLocale: 'en',
@@ -32,7 +23,6 @@ export function middleware(request) {
 
   const response = handleI18nRouting(request);
   response.headers.set('x-default-locale', defaultLocale);
-  console.log("response: ", response)
 
   // NextJS will pre-compile middleware routes in HTTP. To use SSL, we need to set all rewrites to
   // the appropriate url scheme
