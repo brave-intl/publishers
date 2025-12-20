@@ -235,7 +235,7 @@ group :development, :test do
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
   gem "solargraph"
-  gem "dotenv-rails", "3.1.8"
+  gem "dotenv-rails", "3.2.0"
 end
 
 gem "importmap-rails", "~>2.0"
