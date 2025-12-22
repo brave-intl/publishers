@@ -106,19 +106,18 @@ app
     });
 
     // express will overmatch on the root path, so handle that outside the other matchers
-    expressApp.get('*', (req, res, next) => {
-      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-      console.log("request path: ", req.path)
-      console.log("request url: ", req.url)
-      if (['', '/', '//'].includes(req.path)) {
-        const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
-        return res.redirect(307, `/${locale}`); 
-      } else if (['/en', '/ja'].includes(req.path)) {
-        return handle(req, res);
-      } else {
-        next();
-      }
-    });
+    // expressApp.get('*', (req, res, next) => {
+    //   console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    //   // console.log("request: ", req)
+    //   if (['', '/', '//'].includes(req.path)) {
+    //     const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
+    //     return res.redirect(307, `/${locale}`); 
+    //   } else if (['/en', '/ja'].includes(req.path)) {
+    //     return handle(req, res);
+    //   } else {
+    //     next();
+    //   }
+    // });
 
     // Then the rest proxy over to Rails
     expressApp.use('*', middlewareToRouteToRails);
