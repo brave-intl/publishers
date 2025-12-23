@@ -7,7 +7,7 @@ function secureUrl(url: string): string {
 
 export function middleware(request) {
   console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-  console.log("middleware fired")
+  console.log("request url: ", request.url)
   const pathname = request.nextUrl.pathname;
   const locale = request.nextUrl.searchParams.get('locale');
   if (locale === 'ja') {
