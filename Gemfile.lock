@@ -346,7 +346,7 @@ GEM
     minitest-rails (8.0.0)
       minitest (~> 5.20)
       railties (>= 8.0.0, < 8.1.0)
-    minitest-retry (0.2.5)
+    minitest-retry (0.3.0)
       minitest (>= 5.0)
     mocha (2.8.2)
       ruby2_keywords (>= 0.0.5)
