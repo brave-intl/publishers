@@ -142,7 +142,7 @@ GEM
       h2c (~> 0.2.0)
     bootstrap (5.3.5)
       popper_js (>= 2.11.8, < 3)
-    brakeman (6.2.2)
+    brakeman (7.1.2)
       racc
     brotli (0.7.0)
     browser (6.2.0)
