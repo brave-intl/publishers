@@ -24,12 +24,13 @@ const nextAllowPageRoutes = [
   'publishers/contribution_page',
   'c/*',
   'sign-up',
-  'log-in',
+  'log-in'
 ];
 const routeMatch = [
   nextAllowPageRoutes.map((r) => `/ja/${r}`).join('|'),
   nextAllowPageRoutes.join('|'),
   nextAllowRoutes.join('|'),
+  ['/en', '/ja'].join('|')
 ].join('|');
 
 app
@@ -58,6 +59,9 @@ app
       changeOrigin: true,
       secure: testMode ? false : !dev,
       onProxyReq: (proxyReq, request, response) => {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        console.log("proxy req: ", proxyReq.path)
+        console.log("req: ", request.path)
         const ip = (
           request.headers['x-forwarded-for'] || request.socket.remoteAddress
         )
@@ -67,6 +71,8 @@ app
         proxyReq.setHeader('origin', pubHost.origin);
       },
       onProxyRes: (proxyRes, request, response) => {
+        console.log("************************************************************************")
+        console.log("proxyRes: ", proxyRes.path)
         const redir = proxyRes.headers['location'];
         if (redir) {
           try {
@@ -102,13 +108,15 @@ app
 
     // Paths next will handle, route them explicitly, everything else goes to rails
     expressApp.get(routeMatch, (req, res) => {
+      console.log("######################################################################")
+      console.log("matched request: ", req.path)
       return handle(req, res);
     });
 
     // express will overmatch on the root path, so handle that outside the other matchers
-    expressApp.get('*', (req, res, next) => {
+    expressApp.get(['/', '//'], (req, res, next) => {
       console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-      console.log("request: ", req)
+      console.log("request: ", req.path)
       if (['', '/', '//'].includes(req.path)) {
         const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
         return res.redirect(307, `/${locale}`); 

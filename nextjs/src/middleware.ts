@@ -36,7 +36,7 @@ export function middleware(request) {
       response.headers.set('location', secureUrl(locationUrl));
     }
   }
-
+  console.log("response status: ", response.status)
   return response;
 }
 
