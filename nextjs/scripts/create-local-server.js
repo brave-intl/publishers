@@ -71,8 +71,6 @@ app
         proxyReq.setHeader('origin', pubHost.origin);
       },
       onProxyRes: (proxyRes, request, response) => {
-        console.log("************************************************************************")
-        console.log("proxyRes: ", proxyRes.path)
         const redir = proxyRes.headers['location'];
         if (redir) {
           try {
@@ -105,7 +103,6 @@ app
     // }
 
     // Then handle the next specific routes
-
     // Paths next will handle, route them explicitly, everything else goes to rails
     expressApp.get(routeMatch, (req, res) => {
       console.log("######################################################################")
@@ -117,10 +114,13 @@ app
     expressApp.get(['/', '//'], (req, res, next) => {
       console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
       console.log("request: ", req.path)
+      console.log("request url: ", req.url)
+      console.log(req.headers)
+      console.log(req._parsedUrl)
       if (['', '/', '//'].includes(req.path)) {
-        const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
-        return res.redirect(307, `/${locale}`); 
-      } else if (['/en', '/ja'].includes(req.path)) {
+        console.log('root path redirected')
+        // const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
+        // return res.redirect(307, `/${locale}`); 
         return handle(req, res);
       } else {
         next();
