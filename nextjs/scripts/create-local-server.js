@@ -119,9 +119,8 @@ app
       console.log(req._parsedUrl)
       if (['', '/', '//'].includes(req.path)) {
         console.log('root path redirected')
-        // const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
-        // return res.redirect(307, `/${locale}`); 
-        return handle(req, res);
+        const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
+        return res.redirect(307, `/${locale}`); 
       } else {
         next();
       }
