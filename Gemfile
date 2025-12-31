@@ -221,7 +221,7 @@ group :development, :test do
 
   # Get rid of mailcatcher
   gem "letter_opener"
-  gem "letter_opener_web", "~> 2.0"
+  gem "letter_opener_web", "~> 3.0"
 
   # Static security vulnerability scanner
   gem "brakeman"
