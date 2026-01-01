@@ -123,7 +123,7 @@ gem "render_async", "~> 2.1"
 gem "rexml", ">= 3.3.6"
 
 # Generate QR codes for TOTP 2fa
-gem "rqrcode", "~> 2.2.0"
+gem "rqrcode", "~> 3.1.0"
 
 # SCSS for stylesheets
 gem "sass-rails", ">= 6"
