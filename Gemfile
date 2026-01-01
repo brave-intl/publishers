@@ -100,7 +100,7 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "premailer-rails", "~> 1.12.0", require: false
 
 # Implementation of PublicSuffix
-gem "public_suffix", "~> 5.0"
+gem "public_suffix", "~> 7.0"
 
 # Puma as app server
 gem "puma", "~> 6.6.0"
