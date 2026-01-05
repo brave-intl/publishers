@@ -231,9 +231,9 @@ GEM
       logger
     faraday-multipart (1.1.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.1)
-      net-http (>= 0.5.0)
-    faraday-retry (2.3.2)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
+    faraday-retry (2.4.0)
       faraday (~> 2.0)
     fastimage (2.4.0)
     ffi (1.17.2)
@@ -354,8 +354,8 @@ GEM
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
-    net-http (0.6.0)
-      uri
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     net-imap (0.6.2)
       date
       net-protocol
@@ -807,7 +807,7 @@ DEPENDENCIES
   dotenv-rails (= 3.2.0)
   eth (~> 0.5)
   faraday (= 2.14.0)
-  faraday-retry (= 2.3.2)
+  faraday-retry (= 2.4.0)
   fastimage (~> 2.4.0)
   ffi
   font-awesome-rails (~> 4.7.0)

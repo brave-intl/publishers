@@ -50,7 +50,7 @@ gem "domain_name"
 
 # HTTP library wrapper
 gem "faraday", "2.14.0"
-gem "faraday-retry", "2.3.2"
+gem "faraday-retry", "2.4.0"
 
 gem "ffi"
 
