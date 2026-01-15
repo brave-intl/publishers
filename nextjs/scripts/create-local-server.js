@@ -1,5 +1,4 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const httpProxy = require('http-proxy');
 const chalk = require('chalk');
 const next = require('next');
 const path = require('path');
@@ -14,24 +13,24 @@ const handle = app.getRequestHandler();
 const basicAuth = require('express-basic-auth');
 const selfsigned = require('selfsigned');
 
-const nextAllowRoutes = ['_next', '^icons', 'favicon'];
 const nextAllowPageRoutes = [
-  'publishers/settings',
-  'publishers/security',
-  'publishers/totp_registrations/new',
-  'publishers/u2f_registrations/new',
-  'publishers/home',
-  'publishers/contribution_page',
-  'c/*',
-  'sign-up',
-  'log-in'
+  '/publishers/settings',
+  '/publishers/security',
+  '/publishers/totp_registrations/new',
+  '/publishers/u2f_registrations/new',
+  '/publishers/home',
+  '/publishers/contribution_page',
+  '/c/*name',
+  '/sign-up',
+  '/log-in'
 ];
 const routeMatch = [
-  nextAllowPageRoutes.map((r) => `/ja/${r}`).join('|'),
-  nextAllowPageRoutes.join('|'),
-  nextAllowRoutes.join('|'),
-  ['/en', '/ja'].join('|')
-].join('|');
+  ...nextAllowPageRoutes.map((r) => `/ja${r}`),
+  ...nextAllowPageRoutes.map((r) => `/en${r}`),
+  ...nextAllowPageRoutes,
+  '/_next/*splat',
+  ...['/en', '/ja']
+];
 
 app
   .prepare()
@@ -59,9 +58,6 @@ app
       changeOrigin: true,
       secure: testMode ? false : !dev,
       onProxyReq: (proxyReq, request, response) => {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        console.log("proxy req: ", proxyReq.path)
-        console.log("req: ", request.path)
         const ip = (
           request.headers['x-forwarded-for'] || request.socket.remoteAddress
         )
@@ -105,31 +101,22 @@ app
     // Then handle the next specific routes
     // Paths next will handle, route them explicitly, everything else goes to rails
     expressApp.get(routeMatch, (req, res) => {
-      console.log("######################################################################")
-      console.log("matched request: ", req.path)
       return handle(req, res);
     });
 
     // express will overmatch on the root path, so handle that outside the other matchers
     expressApp.get(['/', '//'], (req, res, next) => {
-      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-      console.log("request: ", req.path)
-      console.log("request url: ", req.url)
-      console.log(req.headers)
-      console.log(req._parsedUrl)
       if (['', '/', '//'].includes(req.path)) {
-        console.log('root path redirected')
         const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
         return res.redirect(307, `/${locale}`); 
       } else {
+        console.log('i overmatched')
         next();
       }
     });
 
     // Then the rest proxy over to Rails
-    expressApp.use('*', middlewareToRouteToRails);
-
-    expressApp._router.stack;
+    expressApp.use('/*any', middlewareToRouteToRails);
 
     let server;
     if (dev) {
