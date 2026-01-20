@@ -6,8 +6,6 @@ function secureUrl(url: string): string {
 }
 
 export function middleware(request) {
-  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-  console.log("request url: ", request.url)
   const pathname = request.nextUrl.pathname;
   const locale = request.nextUrl.searchParams.get('locale');
   if (locale === 'ja') {
@@ -36,7 +34,7 @@ export function middleware(request) {
       response.headers.set('location', secureUrl(locationUrl));
     }
   }
-  console.log("response status: ", response.status)
+
   return response;
 }
 
