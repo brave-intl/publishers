@@ -4,14 +4,16 @@ const next = require('next');
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
+const selfsigned = require('selfsigned');
+
 const dev = process.env.NODE_ENV === 'development';
-const testMode = process.env.TEST_MODE === 'true';
 const { createServer } = dev ? require('https') : require('http');
+
+const testMode = process.env.TEST_MODE === 'true';
 const PORT = 5001;
 const app = next({ dev });
 const handle = app.getRequestHandler();
-const basicAuth = require('express-basic-auth');
-const selfsigned = require('selfsigned');
+
 
 const nextAllowPageRoutes = [
   '/publishers/settings',
@@ -22,14 +24,14 @@ const nextAllowPageRoutes = [
   '/publishers/contribution_page',
   '/c/*name',
   '/sign-up',
-  '/log-in'
+  '/log-in',
 ];
 const routeMatch = [
   ...nextAllowPageRoutes.map((r) => `/ja${r}`),
   ...nextAllowPageRoutes.map((r) => `/en${r}`),
   ...nextAllowPageRoutes,
   '/_next/*splat',
-  ...['/en', '/ja']
+  ...['/', '//', '/en', '/ja']
 ];
 
 app
@@ -52,51 +54,41 @@ app
     console.log('pubHost', pubHost);
     console.log('nextHost', nextHost);
 
-    const middlewareToRouteToRails = createProxyMiddleware('**', {
+    const middlewareToRouteToRails = createProxyMiddleware({
       logger: console,
       target: pubHost,
       changeOrigin: true,
+      prependPath: true,
       secure: testMode ? false : !dev,
-      onProxyReq: (proxyReq, request, response) => {
-        const ip = (
-          request.headers['x-forwarded-for'] || request.socket.remoteAddress
-        )
-          .split(':')
-          .pop();
-        proxyReq.setHeader('originalIP', ip);
-        proxyReq.setHeader('origin', pubHost.origin);
-      },
-      onProxyRes: (proxyRes, request, response) => {
-        const redir = proxyRes.headers['location'];
-        if (redir) {
-          try {
-            const redirUrl = new URL(redir);
-            if (
-              redirUrl.protocol === pubHost.protocol &&
-              redirUrl.host === pubHost.host
-            ) {
-              const newRedirUrlToProxy = `${nextHost}${redirUrl.pathname}${redirUrl.search}`;
-              proxyRes.headers['location'] = newRedirUrlToProxy;
+      on: {
+        proxyReq: (proxyReq, request, response) => {
+          const ip = (
+            request.headers['x-forwarded-for'] || request.socket.remoteAddress
+          )
+            .split(':')
+            .pop();
+          proxyReq.setHeader('originalIP', ip);
+          proxyReq.setHeader('origin', pubHost.origin);
+        },
+        proxyRes: (proxyRes, request, response) => {
+          const redir = proxyRes.headers['location'];
+          if (redir) {
+            try {
+              const redirUrl = new URL(redir);
+              if (
+                redirUrl.protocol === pubHost.protocol &&
+                redirUrl.host === pubHost.host
+              ) {
+                const newRedirUrlToProxy = `${nextHost}${redirUrl.pathname}${redirUrl.search}`;
+                proxyRes.headers['location'] = newRedirUrlToProxy;
+              }
+            } catch (e) {
+              if (!e.code || e.code != 'ERR_INVALID_URL') throw e;
             }
-          } catch (e) {
-            if (!e.code || e.code != 'ERR_INVALID_URL') throw e;
           }
-        }
-      },
+        },
+      }
     });
-
-    // Pull out the health check in particular as not needed http auth
-    expressApp.use('/health-check', middlewareToRouteToRails);
-
-    // Then add http auth to everything else
-    // const basicAuthUser = process.env.BASIC_AUTH_USER;
-    // const basicAuthPass = process.env.BASIC_AUTH_PASSWORD;
-    // if (basicAuthUser && basicAuthPass) {
-    //   expressApp.use(basicAuth({
-    //     users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD },
-    //     challenge: true
-    //   }))
-    // }
 
     // Then handle the next specific routes
     // Paths next will handle, route them explicitly, everything else goes to rails
@@ -104,19 +96,8 @@ app
       return handle(req, res);
     });
 
-    // express will overmatch on the root path, so handle that outside the other matchers
-    expressApp.get(['/', '//'], (req, res, next) => {
-      if (['', '/', '//'].includes(req.path)) {
-        const locale = req.headers['accept-language']?.includes('ja') ? 'ja' : 'en';                                                                                                                      
-        return res.redirect(307, `/${locale}`); 
-      } else {
-        console.log('i overmatched')
-        next();
-      }
-    });
-
     // Then the rest proxy over to Rails
-    expressApp.use('/*any', middlewareToRouteToRails);
+    expressApp.all('/*any', middlewareToRouteToRails);
 
     let server;
     if (dev) {
