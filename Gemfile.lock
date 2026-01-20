@@ -140,7 +140,7 @@ GEM
       debug_inspector (>= 1.2.0)
     bls12-381 (0.3.0)
       h2c (~> 0.2.0)
-    bootstrap (5.3.5)
+    bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
     brakeman (7.1.2)
       racc
@@ -790,7 +790,7 @@ DEPENDENCIES
   base58
   better_errors
   binding_of_caller
-  bootstrap (= 5.3.5)
+  bootstrap (= 5.3.8)
   brakeman
   brotli (~> 0.7.0)
   bundler-audit
