@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import  { Chart } from "chart.js";
+import { Chart } from "chart.js";
 
 export default class ReactChart extends React.Component {
   constructor(props) {
@@ -22,11 +22,14 @@ export default class ReactChart extends React.Component {
       this.chart = new Chart(document.getElementById("chart-canvas"), {
         type: "line",
         data: this.getData(this.props.data),
-        options: this.getOptions(this.props.title, this.props.max)
+        options: this.getOptions(this.props.title, this.props.max),
       });
     } else {
       this.chart.data = this.getData(this.props.data);
-      this.chart.options = this.getOptions(this.props.title, this.getSuggestedMax(this.props.data));
+      this.chart.options = this.getOptions(
+        this.props.title,
+        this.getSuggestedMax(this.props.data),
+      );
       this.chart.update();
     }
   }
@@ -37,42 +40,42 @@ export default class ReactChart extends React.Component {
       datasets: [
         {
           label: "Downloads",
-          data: data.map(x => x.retrievals),
+          data: data.map((x) => x.retrievals),
           borderColor: "#F88469",
-          fill: false
+          fill: false,
         },
         {
           label: "Installs",
-          data: data.map(x => x.first_runs),
+          data: data.map((x) => x.first_runs),
           borderColor: "#66C3FC",
-          fill: false
+          fill: false,
         },
         {
           label: "30-Day-Use",
-          data: data.map(x => x.finalized),
+          data: data.map((x) => x.finalized),
           borderColor: "#7B82E1",
-          fill: false
-        }
-      ]
+          fill: false,
+        },
+      ],
     };
-  }
+  };
 
   getOptions(title, suggestedMax) {
     let options = {
       tooltips: {
-        mode: "x"
+        mode: "x",
       },
       elements: {
         point: {
           radius: 0,
           hitRadius: 5,
-          hoverRadius: 5
-        }
+          hoverRadius: 5,
+        },
       },
       title: {
         fontSize: 18,
         display: true,
-        text: title.toUpperCase()
+        text: title.toUpperCase(),
       },
       scales: {
         xAxes: [
@@ -81,27 +84,27 @@ export default class ReactChart extends React.Component {
             distribution: "series",
             ticks: {
               autoSkip: true,
-              source: "labels"
+              source: "labels",
             },
             time: {
-              unit: "day"
-            }
-          }
+              unit: "day",
+            },
+          },
         ],
         yAxes: [
           {
             type: "linear",
             ticks: {
-              suggestedMax: suggestedMax
-            }
-          }
-        ]
+              suggestedMax: suggestedMax,
+            },
+          },
+        ],
       },
       legend: {
         labels: {
-          usePointStyle: true
-        }
-      }
+          usePointStyle: true,
+        },
+      },
     };
     return options;
   }
@@ -109,10 +112,12 @@ export default class ReactChart extends React.Component {
   // Max of the chart is 80% of the suggested max to be used by Chartjs
   getSuggestedMax(data) {
     var currentMax = 0;
-    Object.keys(data).forEach(function(key) {
+    Object.keys(data).forEach(function (key) {
       var value = data[key];
-      currentMax = value.retrievals > currentMax ? value.retrievals : currentMax;
-      currentMax = value.first_runs > currentMax ? value.first_runs : currentMax;
+      currentMax =
+        value.retrievals > currentMax ? value.retrievals : currentMax;
+      currentMax =
+        value.first_runs > currentMax ? value.first_runs : currentMax;
       currentMax = value.finalized > currentMax ? value.finalized : currentMax;
     });
     return Math.ceil((currentMax / 95) * 100);
@@ -135,6 +140,10 @@ export default class ReactChart extends React.Component {
   }
 
   render() {
-    return <div>{this.props.data && <canvas id="chart-canvas" ref={this.chartRef} />}</div>;
+    return (
+      <div>
+        {this.props.data && <canvas id="chart-canvas" ref={this.chartRef} />}
+      </div>
+    );
   }
 }
