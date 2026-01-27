@@ -489,8 +489,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "og meta tags should be set" do
     # ensure meta tags appear on static home apge
     get root_path
-    ["og:image", "og:title", "og:description", "og:url", "og:type"].each do |meta_tag|
-      assert_select "meta[property='#{meta_tag}']"
+
+    assert_select "head" do
+      ["og:image", "og:title", "og:description", "og:url", "og:type"].each do |meta_tag|
+        assert_select "meta[property='#{meta_tag}']"
+      end
     end
 
     # ensure meta tags appear in publisher dashboard and elsewhere

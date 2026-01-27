@@ -1,0 +1,266 @@
+<body>
+  <div class="landing-wrapper">
+    <!-- Navigation -->
+    <div class="nav-wrapper" id="nav">
+      <div class="nav-container">
+        <div class="box flex-row">
+          <a href="/" title="Home">
+            <div style="max-width: 125px;">
+              <%= image_tag("brave_logo_dark_bg.png", alt: t('landing.nav.logo_alt'), style: "max-width: 125px") %>
+            </div>
+          </a>
+          <div class='nav-spacer'></div>
+          <a aria-label="Built with BAT" rel="noopener noreferrer" href="http://www.basicattentiontoken.org" name="http://www.basicattentiontoken.org">
+            <%= image_tag("built-with-bat-pill.svg", alt: t('landing.nav.logo_alt')) %>
+          </a>
+        </div>
+        <div class="box flex-row" style="gap: 48px;">
+          <a href="/sign-up" class="landing-nav-link" aria-label="<%= t('landing.nav.signup_aria') %>">
+            <%= t('landing.nav.signup') %>
+          </a>
+          <a href="/log-in" class="landing-nav-link button-link" aria-label="<%= t('landing.nav.login_aria') %>">
+            <%= t('landing.nav.login') %>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="gradient-background box flex-col">
+      <div class="box w-full max-w-1200 flex-col" role="main">
+        <div class="box landing-home-container">
+          <a aria-label="Built with BAT" class="bat-pill" rel="noopener noreferrer" href="http://www.basicattentiontoken.org">
+            <%= image_tag("built-with-bat-pill.svg", alt: t('landing.nav.logo_alt')) %>
+          </a>
+          <h1 class="landing-headline"><%= t('landing.home.headline') %></h1>
+          <p class="landing-subhead">
+            <%= t('landing.home.subhead') %>
+          </p>
+          <div class="box w-full flex-row" style="flex-wrap: wrap; align-items: center; padding: 24px 0; gap: 24px;">
+            <a href="/sign-up" style="text-decoration: none;">
+              <button class="primary-button"><%= t('landing.home.btn_signup') %></button>
+            </a>
+            <a href="/log-in" class="text-white" style="text-decoration: none;">
+              <%= t('landing.home.btn_login') %>
+            </a>
+          </div>
+          <h3 class="get-started-text" style="margin: 1em 0;"><%= t('landing.home.get_started') %></h3>
+          <div class="box flex-row" style="gap: 24px; flex-wrap: wrap;">
+            <div class="box started-box">
+              <div class="box flex-row" style="margin: 8px 0;">
+                <span style="margin-right: 12px; color: white;">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 7.001A7 7 0 1 1 4.999 7 7 7 0 0 1 19 7zm-1.598 7.18A8.937 8.937 0 0 1 12 16.001a8.953 8.953 0 0 1-5.407-1.822C2.521 15.972 0 21.555 0 24h24c0-2.423-2.6-8.006-6.598-9.819z" fill="#FFF"></path></svg>
+                </span>
+                <h3 class="get-started-text" style="margin: 0;"><%= t('landing.home.website') %></h3>
+              </div>
+              <div class="box flex-row" style="margin: 8px 0;">
+                <span style="margin-right: 12px; color: white;">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.55 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 3.993L9 16z" fill="#FFF"></path></svg>
+                </span>
+                <h3 class="get-started-text" style="margin: 0;"><%= t('landing.home.youtube') %></h3>
+              </div>
+            </div>
+            <div class="box started-box">
+              <div class="box flex-row" style="margin: 8px 0;">
+                <span style="margin-right: 12px; color: white;">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 13h13v2H7v-2zm0-5h13v2H7V8zM3 2v17.199c0 .771-1 .771-1 0V4H0v15.98A2.02 2.02 0 0 0 2.02 22h19.958A2.02 2.02 0 0 0 24 19.98V2H3zm19 17H5V4h17v15z" fill="#FFF"></path></svg>
+                </span>
+                <h3 class="get-started-text" style="margin: 0;"><%= t('landing.home.social_media') %></h3>
+              </div>
+              <div class="box flex-row" style="margin: 8px 0;">
+                <span style="margin-right: 12px; color: white;">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M1.612 0L0 4.119v16.836h5.731V24h3.224L12 20.955h4.657l6.269-6.269V0H1.612zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045H3.582V2.149h17.194v11.463zm-3.582-7.343v6.262h-2.149V6.269h2.149zm-5.731 0v6.262H9.314V6.269h2.149z" fill="#FFF"></path></svg>
+                </span>
+                <h3 class="get-started-text" style="margin: 0;"><%= t('landing.home.twitch') %></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1430 140" fill="#FFF" style="position: absolute; bottom: -2px; z-index: 0; width: 100%;" class="bottom-swoop"><path d="M0 140h1440V46.75C1360.635 15.583 1268.302 0 1163 0 812.13 0 674 113.78 370.736 127.279 188.866 135.374 65.286 119.625 0 80.03V140z"></path></svg>
+    </div>
+
+    <!-- Spotlight Section -->
+    <div class="box flex-col" style="align-items: center; padding: 48px;">
+      <div class="box w-full max-w-1200 flex-col" style="align-items: center;">
+        <div class="box flex-col" style="align-items: center; padding: 24px;">
+          <h3 class="spotlight-heading" style="margin: 1em 0;"><%= t('landing.spotlight.heading') %></h3>
+          <p style="margin: 1em 0; text-align: center; line-height: 1.6em; color: #808080;">
+            <%= t('landing.spotlight.subhead') %>
+          </p>
+        </div>
+        <div class="carousel-wrapper">
+          <div class="carousel-inner">
+            <!-- Carousel buttons -->
+            <button class="carousel-button prev" aria-label="Previous slide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="carousel-button next" aria-label="Next slide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <!-- Slide 1: Scotty Allen -->
+            <div class="carousel-slide active" data-slide="0">
+              <div class="carousel-container">
+                <div class="carousel-quote">
+                  <h3 class="spotlight-heading"><%= t('landing.spotlight.scotty_quote') %></h3>
+                  <p style="margin: 1em 0; font-weight: 600; color: #808080;"><%= t('landing.spotlight.scotty_credit') %></p>
+                </div>
+                <a class="carousel-img" href="https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw" rel="noopener noreferrer" target="_blank">
+                  <%= image_tag("card-scotty.webp", alt: t('landing.spotlight.scotty_alt')) %>
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 2: Bart Baker -->
+            <div class="carousel-slide" data-slide="1">
+              <div class="carousel-container">
+                <div class="carousel-quote">
+                  <h3 class="spotlight-heading"><%= t('landing.spotlight.baker_quote') %></h3>
+                  <p style="margin: 1em 0; font-weight: 600; color: #808080;"><%= t('landing.spotlight.baker_credit') %></p>
+                </div>
+                <a class="carousel-img" href="https://www.youtube.com/BartBaKer" rel="noopener noreferrer" target="_blank">
+                  <%= image_tag("card-baker.webp", alt: t('landing.spotlight.baker_alt')) %>
+                </a>
+              </div>
+            </div>
+
+            <!-- Slide 3: Philip DeFranco -->
+            <div class="carousel-slide" data-slide="2">
+              <div class="carousel-container">
+                <a rel="noopener noreferrer" class="carousel-img" href="https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw" target="_blank">
+                  <%= image_tag("card-defranco.webp", alt: t('landing.spotlight.defranco_alt')) %>
+                </a>
+                <div class="carousel-quote">
+                  <h3 class="spotlight-heading"><%= t('landing.spotlight.defranco_quote') %></h3>
+                  <p style="margin: 1em 0; font-weight: 600; color: #808080;"><%= t('landing.spotlight.defranco_credit') %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Indicators -->
+          <div class="carousel-indicators">
+            <button class="carousel-indicator active" onclick="goToSlide(0)" aria-label="Go to slide 1"></button>
+            <button class="carousel-indicator" onclick="goToSlide(1)" aria-label="Go to slide 2"></button>
+            <button class="carousel-indicator" onclick="goToSlide(2)" aria-label="Go to slide 3"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="gradient-background box flex-col">
+      <svg viewBox="0 0 1430 140" class="top-swoop" fill="#FFF" xmlns="http://www.w3.org/2000/svg"><path d="M1440 0v59.969c-65.287-39.594-188.865-55.343-370.736-47.248C766 26.221 627.87 140 277 140 171.698 140 79.365 124.417 0 93.25V0h1440z"></path></svg>
+      <div class="box" style="min-height: 50px;"></div>
+      <div class="box w-full max-w-1200 flex-col" style="padding: 0 48px;">
+        <h2 class="summary-heading"><%= t('landing.summary.heading') %></h2>
+
+        <div class="summary-text-block start">
+          <h1 class="summary-number">1</h1>
+          <div style="flex: 0 0 auto; width: 16px;"></div>
+          <div class="summary-text-content">
+            <h3 class="spotlight-heading text-white" style="margin: 0;"><%= t('landing.summary.one_title') %></h3>
+            <p style="margin: 1em 0; line-height: 1.6; color: #E9E9F4;">
+              <%= t('landing.summary.one_desc') %>
+            </p>
+          </div>
+        </div>
+
+        <div class="summary-text-block end">
+          <h1 class="summary-number">2</h1>
+          <div style="flex: 0 0 auto; width: 16px;"></div>
+          <div class="summary-text-content">
+            <h3 class="spotlight-heading text-white" style="margin: 0;"><%= t('landing.summary.two_title') %></h3>
+            <p style="margin: 1em 0; line-height: 1.6; color: #E9E9F4;">
+              <%= t('landing.summary.two_desc') %>
+            </p>
+          </div>
+        </div>
+
+        <div class="summary-text-block start">
+          <h1 class="summary-number">3</h1>
+          <div style="flex: 0 0 auto; width: 16px;"></div>
+          <div class="summary-text-content">
+            <h3 class="spotlight-heading text-white" style="margin: 0;"><%= t('landing.summary.three_title') %></h3>
+            <p style="margin: 1em 0; line-height: 1.6; color: #E9E9F4;">
+              <%= t('landing.summary.three_desc') %>
+            </p>
+          </div>
+        </div>
+
+        <div class="summary-text-block end">
+          <h1 class="summary-number">4</h1>
+          <div style="flex: 0 0 auto; width: 16px;"></div>
+          <div class="summary-text-content">
+            <h3 class="spotlight-heading text-white" style="margin: 0;"><%= t('landing.summary.four_title') %></h3>
+            <p style="margin: 1em 0; line-height: 1.6; color: #E9E9F4;">
+              <%= t('landing.summary.four_desc') %>
+            </p>
+          </div>
+        </div>
+
+        <div style="margin: 24px 0; width: 70%; border: 1px solid rgba(255, 255, 255, 0.15);"></div>
+
+        <div class="box flex-row summary-card-container">
+          <a href="https://brave.com/brave-ads-waitlist" rel="noopener noreferrer" class="card-button">
+            <div class="card-interior">
+              <svg fill="#FFF" width="28" height="28"><svg viewBox="0 0 32 32"><path d="M18 18v4.285C18 23.23 17.252 24 16.333 24h-3.919l-3.707 3.707A1 1 0 0 1 7 27v-3H5.666C4.748 24 4 23.23 4 22.285v-8.57c0-.945.748-1.716 1.666-1.716H12a1 1 0 0 1 0 2H6v8h2a1 1 0 0 1 1 1v1.587l2.292-2.293A1.022 1.022 0 0 1 12 22h4v-4a1 1 0 0 1 2 0zm8-4h-2a1 1 0 0 0-1 1v1.585l-2.292-2.293A1.022 1.022 0 0 0 20 14h-4V6h10v8zm.334-10H15.667C14.748 4 14 4.77 14 5.715v8.57c0 .945.748 1.714 1.667 1.714h3.919l3.707 3.708A1 1 0 0 0 25 19v-3h1.334c.918 0 1.666-.77 1.666-1.714V5.714C28 4.77 27.252 4 26.334 4z"></path></svg></svg>
+              <span style="margin: 6px"></span>
+              <p style="margin: 0;"><%= t('landing.summary.card_business') %></p>
+              <span style="margin: 6px"></span>
+              <svg fill="#FFF" width="24" height="24"><svg viewBox="0 0 32 32"><path d="M19.047 16l-9.2-11.04a1.5 1.5 0 0 1 2.305-1.92l10 12a1.5 1.5 0 0 1 0 1.92l-10 12a1.5 1.5 0 0 1-2.304-1.92l9.2-11.04z"></path></svg></svg>
+            </div>
+          </a>
+          <a href="https://support.brave.com/hc/<%= I18n.locale == :ja ? 'ja' : 'en-us' %>" rel="noopener noreferrer" class="card-button">
+            <div class="card-interior">
+              <svg fill="#FFF" width="28" height="28"><svg viewBox="0 0 32 32"><path d="M16 27c6.075 0 11-4.925 11-11S22.075 5 16 5 5 9.925 5 16s4.925 11 11 11zm0 2C8.82 29 3 23.18 3 16S8.82 3 16 3s13 5.82 13 13-5.82 13-13 13zm1.086-12.496v1.046c0 1.445-2.166 1.445-2.166 0v-1.984c0-.598.485-1.083 1.083-1.083 1.21 0 2.164-.891 2.164-1.95 0-1.06-.954-1.95-2.164-1.95-1.214 0-2.17.89-2.17 1.95a1.083 1.083 0 1 1-2.166 0c0-2.29 1.957-4.117 4.336-4.117 2.375 0 4.33 1.828 4.33 4.117 0 1.927-1.392 3.513-3.247 3.97zM16 22.5a1.083 1.083 0 1 1 0-2.167 1.083 1.083 0 0 1 0 2.167z"></path></svg></svg>
+              <span style="margin: 6px"></span>
+              <p style="margin: 0;"><%= t('landing.summary.card_help') %></p>
+              <span style="margin: 6px"></span>
+              <svg fill="#FFF" width="24" height="24"><svg viewBox="0 0 32 32"><path d="M19.047 16l-9.2-11.04a1.5 1.5 0 0 1 2.305-1.92l10 12a1.5 1.5 0 0 1 0 1.92l-10 12a1.5 1.5 0 0 1-2.304-1.92l9.2-11.04z"></path></svg></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="box" style="min-height: 50px"></div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1430 140" fill="#FFF" class="bottom-swoop"><path d="M0 140h1440V46.75C1360.635 15.583 1268.302 0 1163 0 812.13 0 674 113.78 370.736 127.279 188.866 135.374 65.286 119.625 0 80.03V140z"></path></svg>
+    </div>
+
+    <!-- Signoff Section -->
+    <div class="box flex-col">
+      <div class="box w-full flex-col" style="max-width: 1200px; padding: 48px;">
+        <div class="box flex-col" style="padding: 0 48px;">
+          <h4 class="signoff-heading">
+            <%= t('landing.signoff.headline_html', count: number_with_delimiter(@verified_channels_count)) %>
+          </h4>
+          <div class="box flex-col" style="padding: 24px;">
+            <%= image_tag("creator-logos-wide.webp", class: "hidden-mobile", style: "flex: 1 1 0%; overflow: hidden; object-fit: contain;") %>
+            <%= image_tag("creator-logos-mobile.webp", class: "show-mobile") %>
+          </div>
+        </div>
+        <a class="primary-button" href="/sign-up" style="margin: 48px auto;">
+          <%= t('landing.signoff.btn') %>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="box footer">
+      <div class="box flex-row" style="padding: 8px; gap: 12px;">
+        <a rel="noopener noreferrer" href="http://www.brave.com"><%= t('landing.footer.copyright') %></a>
+        <p style="font-size: 14px; color: #808080;">|</p>
+        <a rel="noopener noreferrer" href="https://brave.com/publishers-creators-privacy"><%= t('landing.footer.privacy') %></a>
+        <p style="font-size: 14px; color: #808080;">|</p>
+        <a rel="noopener noreferrer" href="https://basicattentiontoken.org/publisher-terms-of-service/"><%= t('landing.footer.terms') %></a>
+      </div>
+      <div>
+        <a aria-label="Built with BAT" rel="noopener noreferrer" href="https://basicattentiontoken.org" class="StyledBox-sc-13pk1d4-0 kyonEa"><svg width="130" height="24" viewBox="0 0 130 24"><defs><path id="path-1" d="M0.00016 0.39168L129.4032 0.39168 129.4032 9.51808 0.00016 9.51808z"></path><path id="path-3" d="M0.126773333 0.512106667L26.93904 0.512106667 26.93904 5.33333333 0.126773333 5.33333333z"></path></defs><g fill="none" stroke="none" stroke-width="1"><g transform="translate(-1281 -3958)"><g transform="translate(0 3930)"><g transform="translate(1281 28)"><g transform="translate(0 9.607)"><mask id="mask-2" fill="#fff"><use xlink:href="#path-1"></use></mask><path fill="#4C54D2" d="M129.403.392v1.433h-2.496v7.603h-1.804V1.825h-2.484V.392h6.784zm-10.137 5.85l-1.33-3.815-1.333 3.815h2.663zm.486 1.369h-3.622l-.64 1.817h-1.907L116.91.494h2.06l3.316 8.934h-1.907l-.628-1.817zm-8.998.032c.256-.21.384-.514.384-.915 0-.4-.13-.71-.39-.928-.26-.218-.63-.327-1.108-.327h-1.702v2.484h1.715c.478 0 .845-.105 1.101-.314zm-2.816-3.463h1.625c.453 0 .796-.1 1.03-.3.235-.2.353-.488.353-.864 0-.375-.115-.666-.345-.87-.231-.206-.585-.308-1.063-.308h-1.6V4.18zm4.55 1.364c.329.406.493.881.493 1.427 0 .76-.254 1.36-.761 1.798-.508.44-1.244.66-2.208.66h-3.879V.391h3.802c.913 0 1.614.2 2.105.601.49.402.737.965.737 1.69 0 .564-.148 1.024-.442 1.383a2.054 2.054 0 01-1.158.703c.545.111.983.37 1.312.775zM67.302.392v9.036h-1.817v-3.93h-3.866v3.93h-1.805V.392h1.805v3.66h3.866V.392H67.3zm-8.486 0v1.433H56.32v7.603h-1.805V1.825h-2.483V.392h6.784zm-9.587 9.036h1.805V.392h-1.805v9.036zM47.999.392l-2.214 9.036h-2.227l-1.69-6.553-1.703 6.553h-2.214L35.737.392h1.958l1.383 7.001L40.87.392h1.983l1.806 7.001L46.04.392h1.958zm-15.641 0v1.433h-2.496v7.603h-1.805V1.825h-2.483V.392h6.784zM22.105 8.047h3.034v1.381H20.3V.392h1.805v7.655zm-5.248 1.381h1.805V.392h-1.805v9.036zM9.856.392v5.3c0 .708.155 1.239.467 1.593.311.354.761.53 1.35.53.58 0 1.026-.176 1.338-.53.311-.354.467-.885.467-1.594v-5.3h1.792v5.3c0 .837-.156 1.542-.467 2.118a3.013 3.013 0 01-1.293 1.287c-.55.282-1.175.422-1.875.422-1.084 0-1.95-.324-2.598-.973-.65-.648-.973-1.6-.973-2.854v-5.3h1.792zM4.62 7.643c.256-.21.383-.514.383-.915 0-.4-.13-.71-.39-.928-.26-.218-.63-.327-1.107-.327H1.804v2.484H3.52c.477 0 .845-.105 1.101-.314zM1.804 4.18H3.43c.452 0 .796-.1 1.03-.3.235-.2.353-.488.353-.864 0-.375-.115-.666-.346-.87-.23-.206-.585-.308-1.063-.308h-1.6V4.18zm4.551 1.364c.328.406.493.881.493 1.427 0 .76-.254 1.36-.761 1.798-.508.44-1.245.66-2.208.66H0V.391h3.802c.912 0 1.614.2 2.105.601.49.402.736.965.736 1.69 0 .564-.147 1.024-.441 1.383a2.054 2.054 0 01-1.159.703c.546.111.983.37 1.312.775z" mask="url(#mask-2)"></path></g><path fill="#FF4724" d="M74.26 23.27l7.935-4.617 5.471-9.497V0c-.144 0-.289.095-.398.285l-6.48 11.249-6.48 11.249c-.11.19-.12.362-.048.487"></path><path fill="#9E1F63" d="M87.666 0v9.156l5.47 9.497 7.937 4.617c.071-.125.06-.297-.048-.487l-6.48-11.25L88.064.286C87.954.095 87.81 0 87.666 0"></path><g transform="translate(74.133 18.14)"><mask id="mask-4" fill="#fff"><use xlink:href="#path-3"></use></mask><path fill="#662D91" d="M26.939 5.13L19.004.512H8.062L.127 5.13c.07.126.225.203.444.203h25.924c.218 0 .373-.077.444-.203" mask="url(#mask-4)"></path></g><path fill="#FFF" d="M82.1953067 18.6528L93.13664 18.6528 87.66624 9.15626667z"></path></g></g></g></g></svg></a>
+      </div>
+    </div>
+  </div>
+</body>
