@@ -5,7 +5,7 @@ class Duplicates extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0
+      count: 0,
     };
   }
 
@@ -18,22 +18,22 @@ class Duplicates extends React.Component {
         "X-CSRF-Token": document.head
           .querySelector("[name=csrf-token]")
           .getAttribute("content"),
-        "X-Requested-With": "XMLHttpRequest"
+        "X-Requested-With": "XMLHttpRequest",
       },
-      method: "GET"
+      method: "GET",
     })
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
-      .then(function(myJson) {
+      .then(function (myJson) {
         _this.setState({ count: myJson.length });
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   }
 
   render() {
     return (
-      <React.Fragment>
+      <>
         {this.state.count > 0 && (
           <div className="alert mb-2 alert-warning">
             <i className="fa fa-exclamation-circle mr-2" />
@@ -44,7 +44,7 @@ class Duplicates extends React.Component {
             This could impact payout.
           </div>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
@@ -54,6 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     <Duplicates />,
     document
       .getElementById("duplicates")
-      .appendChild(document.createElement("div"))
+      .appendChild(document.createElement("div")),
   );
 });
