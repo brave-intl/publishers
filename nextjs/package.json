@@ -24,7 +24,7 @@
     "@fontsource/inter": "5.2.8",
     "@fontsource/poppins": "5.2.7",
     "@github/webauthn-json": "^2.1.1",
-    "@solana/spl-token": "^0.1.8",
+    "@solana/spl-token": "^0.4.0",
     "@solana/web3.js": "^1.95.8",
     "axios": "1.13.2",
     "bs58": "5.0.0",
