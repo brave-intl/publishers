@@ -67,7 +67,7 @@ gem "nokogiri", ">= 1.16"
 # Open Graph tag
 gem "meta-tags", "~> 2.20"
 
-gem "newrelic_rpm", "~> 9.7"
+gem "newrelic_rpm", "~> 10.0"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0.1"
 # Oauth client for google / youtube
