@@ -6,10 +6,10 @@ import Button from '@brave/leo/react/button';
 import Link from '@brave/leo/react/link';
 import Icon from '@brave/leo/react/icon';
 import LandingToast from './LandingToast';
-import SwoopBottom from '~/images/swoop-bottom.svg';
+import SwoopBottom from '@/assets/swoop-bottom';
 import BatLockup from './BatLockup.jsx';
 import { useTranslations } from 'next-intl';
-import BatPill from '~/images/built-with-bat-pill.jsx';
+import BatPill from '@/assets/built-with-bat-pill';
 import styles from '@/styles/LandingPages.module.css';
 
 const ConfettiConfig = {

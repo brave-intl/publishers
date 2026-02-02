@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import Link from '@brave/leo/react/link';
 import Logo from '~/images/brave_color_darkbackground.png';
-import BatPill from '~/images/built-with-bat-pill.jsx';
+import BatPill from '@/assets/built-with-bat-pill.jsx';
 import styles from '@/styles/LandingPages.module.css';
 import MobileNav from './MobileNav';
 

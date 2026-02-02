@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import SwoopBottom from '~/images/swoop-bottom.svg';
+import SwoopBottom from '@/assets/swoop-bottom';
 import styles from '@/styles/LandingPages.module.css';
 import { useTranslations } from 'next-intl';
 import { apiRequest } from '@/lib/api';
@@ -225,7 +225,9 @@ export default function SignComponent({
         notification={notification}
         closeNotification={() => setNotification({ show: false })}
       />
-      <SwoopBottom className={`${styles['fade']}`} />
+      <div className={`absolute bottom-[-2px] z-0 w-full ${styles['fade']}`}>
+        <SwoopBottom />
+      </div>
     </div>
   );
 }

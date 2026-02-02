@@ -1,8 +1,8 @@
 'use client';
 
-import SwoopBottom from '~/images/swoop-bottom.svg';
+import SwoopBottom from '@/assets/swoop-bottom';
 import Icon from '@brave/leo/react/icon';
-import BatPill from '~/images/built-with-bat-pill.jsx';
+import BatPill from '@/assets/built-with-bat-pill';
 import styles from '@/styles/LandingPages.module.css';
 import { useLocale, useTranslations } from 'next-intl';
 

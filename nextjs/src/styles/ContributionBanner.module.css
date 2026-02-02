@@ -29,7 +29,7 @@
   height: 120px;
 
   background-color: rgba(255 255 255/ 80%);
-  background-image: var(--logo-url), url('../../public/images/user_avatar.svg');
+  background-image: var(--logo-url), url('/images/user_avatar.svg');
   background-size: cover;
   border: var(--logo-url, 6px) solid rgba(0 0 0/ 0%);
   border-radius: 50%;
@@ -41,7 +41,7 @@
   margin-right: 10px;
 
   background-color: rgba(0 0 0/ 0%);
-  background-image: var(--logo-url), url('../../public/images/user_avatar.svg');
+  background-image: var(--logo-url), url('/images/user_avatar.svg');
   background-size: cover;
   border: var(--logo-url, 6px) solid rgba(0 0 0/ 80%);
   border-radius: 50%;
@@ -78,7 +78,7 @@
   height: 300px;
 
   background-image:
-    var(--cover-url), url('../../public/images/default_banner_bg.jpg');
+    var(--cover-url), url('/images/default_banner_bg.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 8px;
@@ -90,7 +90,7 @@
   margin-bottom: 10px;
 
   background-image:
-    var(--cover-url), url('../../public/images/default_banner_bg.jpg');
+    var(--cover-url), url('/images/default_banner_bg.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 4px;

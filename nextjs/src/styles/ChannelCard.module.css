@@ -25,11 +25,11 @@
 }
 
 .crypto-wallet-dropdown-eth {
-  background-image: url('../../public/icons/eth-color.svg');
+  background-image: url('/icons/eth-color.svg');
 }
 
 .crypto-wallet-dropdown-sol {
-  background-image: url('../../public/icons/sol-color.svg');
+  background-image: url('/icons/sol-color.svg');
 }
 
 .menu {

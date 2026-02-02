@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const StylelintPlugin = require('stylelint-webpack-plugin');
-const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+const withNextIntl = require('next-intl/plugin')('./i18n.js');
 
 const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');

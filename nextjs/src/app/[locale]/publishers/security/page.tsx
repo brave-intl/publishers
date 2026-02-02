@@ -16,8 +16,8 @@ import { apiRequest } from '@/lib/api';
 import Card from '@/components/Card';
 import Container from '@/components/Container';
 
-import PhoneOutline from '~/images/phone_outline.svg';
-import USBOutline from '~/images/usb_outline.svg';
+import PhoneOutline from '@/assets/phone-outline';
+import USBOutline from '@/assets/usb-outline';
 
 export default function SecurityPage() {
   const [modal, setModal] = useState({ isOpen: false, id: null });
@@ -146,7 +146,9 @@ export default function SecurityPage() {
                     {totp_enabled ? 'Reconfigure' : t('security.index.setup')}
                   </Button>
                 </Link>
-                <PhoneOutline className='mt-3 hidden h-[70px] w-[40px] md:block' />
+                <div className='mt-3 hidden h-[70px] w-[40px] md:block'>
+                  <PhoneOutline  />
+                </div>
               </div>
             </div>
           </div>
@@ -191,7 +193,9 @@ export default function SecurityPage() {
                     {t('security.index.u2f.button')}
                   </Button>
                 </Link>
-                <USBOutline className='mt-3 hidden h-[50px] w-[60px] md:block' />
+                <div className='mt-3 hidden h-[50px] w-[60px] md:block'>
+                  <USBOutline />
+                </div>
               </div>
             </div>
           </div>

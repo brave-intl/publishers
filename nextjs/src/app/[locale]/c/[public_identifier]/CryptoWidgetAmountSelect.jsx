@@ -249,7 +249,7 @@ export default function CryptoWidgetAmountSelect({
               );
             })}
           <input
-            inputmode='numeric'
+            inputMode='numeric'
             type='number'
             min={0}
             onChange={handleInputChange}

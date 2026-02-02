@@ -3,7 +3,7 @@
   margin: 8px;
   padding: 14px;
 
-  background-image: url('../../public/images/crypto_contributions_background.svg');
+  background-image: url('/images/crypto_contributions_background.svg');
   background-repeat: no-repeat;
   background-size: cover;
   border: 1px solid rgb(255 209 207);
