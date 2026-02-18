@@ -138,7 +138,7 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 8.0"
 
 gem "sidekiq-scheduler", "~> 6.0.0"
 gem "sidekiq-throttled", "~> 1.5.0"
