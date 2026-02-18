@@ -624,12 +624,12 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    sidekiq (7.3.10)
-      base64
-      connection_pool (>= 2.3.0, < 3)
-      logger
-      rack (>= 2.2.4, < 3.3)
-      redis-client (>= 0.23.0, < 1)
+    sidekiq (8.0.10)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
     sidekiq-scheduler (6.0.1)
       rufus-scheduler (~> 3.2)
       sidekiq (>= 7.3, < 9)
@@ -866,7 +866,7 @@ DEPENDENCIES
   selenium-webdriver (~> 4.4)
   sendgrid-ruby (~> 6.7)
   shakapacker (= 9.5.0)
-  sidekiq (~> 7.2)
+  sidekiq (~> 8.0)
   sidekiq-scheduler (~> 6.0.0)
   sidekiq-throttled (~> 1.5.0)
   simplecov
