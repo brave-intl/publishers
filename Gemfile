@@ -38,7 +38,7 @@ gem "brotli", "~> 0.7.0"
 # Authorization
 gem "cancancan", "~> 3.6.0"
 
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 3.0"
 
 gem "csv"
 
