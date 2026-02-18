@@ -10,7 +10,7 @@ export default function Loading() {
             r='20'
             fill='none'
             stroke='var(--leo-color-container-background)'
-            stroke-width='5'
+            strokeWidth='5'
           />
           <circle
             strokeLinecap='round'
@@ -20,7 +20,7 @@ export default function Loading() {
             r='20'
             fill='none'
             stroke='#fd2f00'
-            stroke-width='5'
+            strokeWidth='5'
           />
         </svg>
       </div>

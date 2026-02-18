@@ -47,7 +47,7 @@
   margin: 0 auto;
   padding: 32px 16px;
 
-  background-image: url('../../public/images/crypto_widget_bg.png');
+  background-image: url('/images/crypto_widget_bg.png');
   background-size: cover;
   border-radius: 12px;
   box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
@@ -196,7 +196,7 @@
 
   color: #3f4855;
 
-  background-image: url('../../public/images/exchange.svg');
+  background-image: url('/images/exchange.svg');
   background-repeat: no-repeat;
   background-size: 14px;
 }
@@ -315,7 +315,7 @@
   margin: 0 auto;
   padding: 32px 16px;
 
-  background-image: url('../../public/images/crypto_widget_success.png');
+  background-image: url('/images/crypto_widget_success.png');
   background-size: cover;
   border-radius: 12px;
   box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
@@ -421,7 +421,7 @@
 
 .try-brave-background {
   padding: 15px;
-  background-image: url('../../public/images/try_wallet_modal_gradient.png');
+  background-image: url('/images/try_wallet_modal_gradient.png');
   background-size: cover;
   border-radius: 16px;
 

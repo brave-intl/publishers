@@ -2,8 +2,8 @@
 
 import Icon from '@brave/leo/react/icon';
 import styles from '@/styles/LandingPages.module.css';
-import SwoopBottom from '~/images/swoop-bottom.svg';
-import SwoopTop from '~/images/swoop-top.svg';
+import SwoopBottom from '@/assets/swoop-bottom';
+import SwoopTop from '@/assets/swoop-top';
 import { useTranslations } from 'next-intl';
 
 function TextBlock({ side, step, title, description }) {

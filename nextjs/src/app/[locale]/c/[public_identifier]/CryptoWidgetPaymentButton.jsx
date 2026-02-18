@@ -17,9 +17,7 @@ import {
   PublicKey,
 } from '@solana/web3.js';
 import {
-  getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction,
-  createTransferInstruction,
+  Token
 } from '@solana/spl-token';
 
 import Button from '@brave/leo/react/button';
@@ -268,7 +266,7 @@ export default function CryptoWidgetPaymentButton({
             // Get the receiver token address, whether it exists or not
             const destinationTokenAddress = hasDestinationAccount
               ? destinationAccount.value[0].pubkey
-              : await getAssociatedTokenAddress(
+              : await Token.getAssociatedTokenAddress(
                   contract,
                   destinationAccountOwner,
                 );
@@ -277,7 +275,7 @@ export default function CryptoWidgetPaymentButton({
             // if the token accout has not been created, add an instruction to create it
             if (!hasDestinationAccount) {
               tx.add(
-                createAssociatedTokenAccountInstruction(
+                Token.createAssociatedTokenAccountInstruction(
                   sourceAccountOwner,
                   destinationTokenAddress,
                   destinationAccountOwner,
@@ -287,7 +285,7 @@ export default function CryptoWidgetPaymentButton({
             }
             // Add the instruction to transfer the tokens
             tx.add(
-              createTransferInstruction(
+              Token.createTransferInstruction(
                 senderTokenAddress,
                 destinationTokenAddress,
                 sourceAccountOwner,

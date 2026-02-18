@@ -1,8 +1,7 @@
-import React from 'react';
 
-function Icon(props) {
+export default function Icon() {
   return (
-    <svg width='95' height={props.height || 20} viewBox='0 0 95 20'>
+    <svg width='95' height='20' viewBox='0 0 95 20'>
       <g fill='none' fillRule='evenodd'>
         <rect
           width='95'
@@ -32,5 +31,3 @@ function Icon(props) {
     </svg>
   );
 }
-
-export default Icon;

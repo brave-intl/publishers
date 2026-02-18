@@ -1,7 +1,7 @@
 // import { cookies, headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import * as React from 'react';
 import '@fontsource/poppins';
 import '@fontsource/inter';
@@ -19,7 +19,8 @@ export function generateStaticParams() {
 }
 
 // Look at @/constant/config to change them
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const {locale} = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
 
   return {
@@ -51,12 +52,10 @@ export async function generateMetadata({ params: { locale } }) {
 
 export default async function RootLayout({
   children,
-  params: { locale },
-}: {
-  children: React.ReactNode;
-  params: { locale: string };
+  params
 }) {
   // load messages based on locale
+  const {locale} = await params;
   let messages;
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;
@@ -64,7 +63,7 @@ export default async function RootLayout({
     notFound();
   }
 
-  unstable_setRequestLocale(locale);
+  setRequestLocale(locale);
 
   return (
     <html>
