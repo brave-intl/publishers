@@ -29,7 +29,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.212.0"
+gem "aws-sdk-s3", "~> 1.213.0"
 
 gem "bootstrap", "5.3.8"
 
