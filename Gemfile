@@ -4,7 +4,7 @@ ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.0.2.1"
+rails_version = "8.1.2"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.6.2"
 gem "railties", rails_version
@@ -38,7 +38,7 @@ gem "brotli", "~> 0.7.0"
 # Authorization
 gem "cancancan", "~> 3.6.0"
 
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 3.0.2"
 
 gem "csv"
 
@@ -138,7 +138,7 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 8.0"
+gem "sidekiq", "~> 8.1.0"
 
 gem "sidekiq-scheduler", "~> 6.0.0"
 gem "sidekiq-throttled", "~> 2.1.0"
