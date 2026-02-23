@@ -78,6 +78,9 @@
     "tailwindcss": "3.4.19",
     "typescript": "5.9.3"
   },
+  "overrides": {
+    "minimatch": "10.2.1"
+  },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --max-warnings=0",
