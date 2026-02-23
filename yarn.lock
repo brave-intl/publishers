@@ -5946,18 +5946,7 @@ stylelint-config-styled-components@0.1.1:
   resolved "https://registry.yarnpkg.com/stylelint-config-styled-components/-/stylelint-config-styled-components-0.1.1.tgz#b408388d7c687833ab4be4c4e6522d97d2827ede"
   integrity sha512-z5Xz/9GmvxO6e/DLzBMwkB85zHxEEjN6K7Cj80Bi+o/9vR9eS3GX3E9VuMnX9WLFYulqbqLtTapGGY28JBiy9Q==
 
-stylelint-scss@5.3.2:
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-5.3.2.tgz#c54564dfbd98de0c08742b9c43025cda91acf940"
-  integrity sha512-4LzLaayFhFyneJwLo0IUa8knuIvj+zF0vBFueQs4e3tEaAMIQX8q5th8ziKkgOavr6y/y9yoBe+RXN/edwLzsQ==
-  dependencies:
-    known-css-properties "^0.29.0"
-    postcss-media-query-parser "^0.2.3"
-    postcss-resolve-nested-selector "^0.1.1"
-    postcss-selector-parser "^6.0.13"
-    postcss-value-parser "^4.2.0"
-
-stylelint-scss@^7.0.0:
+stylelint-scss@7.0.0, stylelint-scss@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.0.0.tgz#fae9346e6a1e15039422a7e46b3390e39508218d"
   integrity sha512-H88kCC+6Vtzj76NsC8rv6x/LW8slBzIbyeSjsKVlS+4qaEJoDrcJR4L+8JdrR2ORdTscrBzYWiiT2jq6leYR1Q==
