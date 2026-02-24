@@ -3,7 +3,7 @@ ARG RUBY_VERSION=4.0.1
 FROM ruby:$RUBY_VERSION
 
 # Install JavaScript dependencies and libvips for Active Storage
-ARG NODE_MAJOR_VERSION=20
+ARG NODE_MAJOR_VERSION=24
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash -
 RUN apt-get update -qq && \
     apt-get install -y build-essential libvips nodejs libsodium23 libyaml-dev && \
