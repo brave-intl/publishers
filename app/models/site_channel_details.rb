@@ -38,11 +38,11 @@ class SiteChannelDetails < BaseChannelDetails
     SiteChannelDetails.unscoped.joins(:channel)
       .where.not(
         brave_publisher_id: SiteChannelDetails
-                            .unscoped
-                            .joins(:channel)
-                            .select(:brave_publisher_id)
-                            .distinct
-                            .where("channels.verified": true)
+          .unscoped
+          .joins(:channel)
+          .select(:brave_publisher_id)
+          .distinct
+          .where("channels.verified": true)
       )
       .where.not(verification_method: nil)
       .where("channels.updated_at": max_age.ago..Time.now)
