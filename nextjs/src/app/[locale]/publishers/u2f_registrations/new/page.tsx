@@ -87,7 +87,7 @@ export default function U2fRegistrations() {
       </Head>
       <Container>
         <Card>
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <h1>{t('u2f_registrations.new.heading')}</h1>
             <div className='mt-2'>
               <Input

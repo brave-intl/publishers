@@ -84,7 +84,7 @@ export default function SecurityPage() {
       </Head>
       <Container>
         <Card className='w-full'>
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <div className='mb-3 flex flex-col items-start justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h1 className='mb-2'>{t('security.index.heading')}</h1>
@@ -110,7 +110,7 @@ export default function SecurityPage() {
             </div>
           </div>
           <hr className='my-4' />
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.totp.heading')}</h3>
@@ -140,7 +140,7 @@ export default function SecurityPage() {
               <div className='flex-start mt-2 flex-col items-center md:mt-0 md:flex md:pl-5'>
                 <Link href='./totp_registrations/new'>
                   <Button
-                    className='w-[150px] flex-grow-0'
+                    className='w-[150px] grow-0'
                     kind={totp_enabled ? 'outline' : 'filled'}
                   >
                     {totp_enabled ? 'Reconfigure' : t('security.index.setup')}
@@ -153,7 +153,7 @@ export default function SecurityPage() {
             </div>
           </div>
           <hr className='my-4' />
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.u2f.heading')}</h3>
@@ -189,7 +189,7 @@ export default function SecurityPage() {
               </div>
               <div className='mt-3 flex-col items-center md:mt-0 md:flex md:pl-5'>
                 <Link href='./u2f_registrations/new'>
-                  <Button className='w-[150px] flex-grow-0'>
+                  <Button className='w-[150px] grow-0'>
                     {t('security.index.u2f.button')}
                   </Button>
                 </Link>

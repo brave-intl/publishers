@@ -311,7 +311,7 @@ export default function ContributionPage() {
     return (
       <main className='main transition-colors'>
         <Container>
-          <div className='mx-auto max-w-screen-lg'>
+          <div className='mx-auto max-w-(--breakpoint-lg)'>
             <Card>
               <div className='flex grow basis-full items-center justify-center'>
                 <ProgressRing />
@@ -325,7 +325,7 @@ export default function ContributionPage() {
     return (
       <main className='main transition-colors'>
         <Container>
-          <div className='mx-auto max-w-screen-lg'>
+          <div className='mx-auto max-w-(--breakpoint-lg)'>
             <EmptyChannelCard
               addChannel={() =>
                 router.push('/publishers/home?addChannelModal=true')
@@ -339,7 +339,7 @@ export default function ContributionPage() {
     return (
       <main className='main transition-colors'>
         <Container>
-          <div className='mx-auto max-w-screen-lg'>
+          <div className='mx-auto max-w-(--breakpoint-lg)'>
             <Card>
               <div className='headings-display-2 py-4'>
                 {t('contribution_pages.page_header')}

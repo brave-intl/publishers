@@ -133,7 +133,7 @@ export default function ChannelCard({
         </div>
         <div>{displayVerified()}</div>
       </section>
-      <h3 className='break-words pb-3'>
+      <h3 className='wrap-break-word pb-3'>
         {channel.details.publication_title || defaultName}
       </h3>
       <section>
