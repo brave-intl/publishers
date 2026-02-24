@@ -36,7 +36,7 @@ const routeMatch = [
 
 app
   .prepare()
-  .then(() => {
+  .then( async () => {
     const expressApp = express();
 
     // use the express app to serve static assets, necessary for Nala icons to work
@@ -103,7 +103,7 @@ app
     if (dev) {
       // Generate a self-signed certificate and key
       const attrs = [{ name: 'commonName', value: 'localhost' }];
-      const pems = selfsigned.generate(attrs, { days: 365 });
+      const pems = await selfsigned.generate(attrs, { days: 365 });
 
       const serverOptions = {
         key: pems.private,
