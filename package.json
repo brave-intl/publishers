@@ -96,7 +96,7 @@
     "webpack": "5.105.2",
     "webpack-assets-manifest": "5.2.1",
     "webpack-cli": "5.1.4",
-    "webpack-merge": "5.10"
+    "webpack-merge": "6.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "7.28.6",
