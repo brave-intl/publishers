@@ -41,8 +41,8 @@
     "web3": "^4.8.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.4.1",
-    "@commitlint/config-conventional": "20.4.1",
+    "@commitlint/cli": "20.4.2",
+    "@commitlint/config-conventional": "20.4.2",
     "@faker-js/faker": "10.3.0",
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "6.9.1",
@@ -51,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "8.56.0",
     "@typescript-eslint/parser": "8.56.0",
     "autoprefixer": "10.4.24",
-    "eslint": "10.0.0",
+    "eslint": "10.0.2",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
