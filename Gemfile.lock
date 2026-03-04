@@ -768,7 +768,7 @@ GEM
       yard (~> 0.9)
     yt (0.34.1)
       activesupport
-    zeitwerk (2.7.4)
+    zeitwerk (2.7.5)
     zendesk_api (3.1.1)
       faraday (> 2.0.0)
       faraday-multipart
