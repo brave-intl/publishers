@@ -2,8 +2,8 @@ import * as React from "react";
 
 import OutsideAlerter from "../outsideAlerter/OutsideAlerter";
 
-import { CaratDownIcon } from "brave-ui/components/icons";
 import CreatorsLogo from "../../../assets/images/logo_br_creators.svg";
+import DropdownIcon from "../../../assets/images/select-down-arrow.svg";
 import locale from "../../locale/en";
 import routes from "../../routes/routes";
 
@@ -18,14 +18,14 @@ import {
   Name,
   Nav,
   NavGroup,
-  Wrapper
+  Wrapper,
 } from "./NavbarStyle";
 
 export enum NavbarSelection {
   Dashboard,
   Channels,
   Referrals,
-  Payments
+  Payments,
 }
 
 interface INavbarProps {
@@ -40,28 +40,28 @@ const outsideAlerterStyle = {
   marginBottom: "auto",
   marginLeft: "auto",
   marginTop: "auto",
-  minWidth: "125px"
+  minWidth: "125px",
 };
 
 export class Navbar extends React.Component<INavbarProps, INavbarState> {
   constructor(props) {
     super(props);
     this.state = {
-      menuOpen: false
+      menuOpen: false,
     };
     // TODO When we migrate over to new dashboard remove this
     document.getElementById("main-content").style.height = "100vh";
   }
 
   public toggleMenu = () => {
-    this.setState(prevState => ({
-      menuOpen: !prevState.menuOpen
+    this.setState((prevState) => ({
+      menuOpen: !prevState.menuOpen,
     }));
   };
 
   public closeMenu = () => {
     this.setState({
-      menuOpen: false
+      menuOpen: false,
     });
   };
 
@@ -82,7 +82,7 @@ export class Navbar extends React.Component<INavbarProps, INavbarState> {
               </AvatarContainer>
               <Name>{this.props.name}</Name>
               <DropdownToggle>
-                <CaratDownIcon height={25} width={25} />
+                <DropdownIcon height={25} width={25} />
               </DropdownToggle>
             </DropdownGroup>
           </OutsideAlerter>

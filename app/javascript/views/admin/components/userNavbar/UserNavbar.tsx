@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import Card from "../../../../components/card/Card";
-import BottomNav from "./components/BottomNav/BottomNav";
 import TopNav from "./components/TopNav/TopNav";
 import {} from "./UserNavbarStyle";
 
@@ -20,7 +19,7 @@ interface IPublisherNavProps {
 export enum NavbarSelection {
   Dashboard = "Dashboard",
   Channels = "Channels",
-  Referrals = "Referrals"
+  Referrals = "Referrals",
 }
 
 export default class Referrals extends React.Component<IUserNavbarProps, {}> {
@@ -39,7 +38,6 @@ export default class Referrals extends React.Component<IUserNavbarProps, {}> {
           avatar={this.props.publisher.avatar}
           userID={this.props.publisher.id}
         />
-        <BottomNav />
       </div>
     );
   }

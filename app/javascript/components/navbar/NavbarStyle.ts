@@ -41,7 +41,7 @@ export const NavGroup = styled.div`
 interface INavProps {
   selected: boolean;
 }
-export const Nav = styled.div`
+export const Nav = styled.div<Partial<INavProps>>`
   display: flex;
   align-items: center;
   height: 80px;
@@ -75,7 +75,7 @@ export const DropdownGroup = styled.div`
 interface IDropdownMenuProps {
   open: boolean;
 }
-export const DropdownMenu = styled.div`
+export const DropdownMenu = styled.div<Partial<IDropdownMenuProps>>`
   position: absolute;
   background-color: white;
   top: 50px;

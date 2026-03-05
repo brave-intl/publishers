@@ -12,10 +12,10 @@ export const H1 = styled.div`
   font-size: 30px;
 `;
 
-export const H2 = styled.div`
+export const H2 = styled.div<Partial<ITextProps>>`
   font-family: Poppins, sans-serif;
   font-size: 24px;
-  ${(props: ITextProps) =>
+  ${(props: Partial<ITextProps>) =>
     props.bold &&
     `
     font-weight: bold;
