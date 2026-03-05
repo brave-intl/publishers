@@ -14,6 +14,16 @@ const customConfig = {
     },
     extensions: [".css"],
   },
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+    ],
+  },
 };
 
 module.exports = merge(generateWebpackConfig(customConfig), {
