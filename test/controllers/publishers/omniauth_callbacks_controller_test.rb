@@ -21,8 +21,9 @@ module Publishers
     test "should not accept YouTube GET requests to OmniAuth endpoint" do
       ActionController::Base.allow_forgery_protection = true
       OmniAuth.config.test_mode = false
-      get publisher_register_youtube_channel_omniauth_authorize_url
-      assert_response :missing
+      assert_raises(ActionController::RoutingError) do
+        get publisher_register_youtube_channel_omniauth_authorize_url
+      end
       ActionController::Base.allow_forgery_protection = false
       OmniAuth.config.test_mode = true
     end
@@ -40,8 +41,9 @@ module Publishers
     test "should not accept Twitter GET requests to OmniAuth endpoint" do
       ActionController::Base.allow_forgery_protection = true
       OmniAuth.config.test_mode = false
-      get publisher_register_twitter_channel_omniauth_authorize_url
-      assert_response :missing
+      assert_raises(ActionController::RoutingError) do
+        get publisher_register_twitter_channel_omniauth_authorize_url
+      end
       ActionController::Base.allow_forgery_protection = false
       OmniAuth.config.test_mode = true
     end
