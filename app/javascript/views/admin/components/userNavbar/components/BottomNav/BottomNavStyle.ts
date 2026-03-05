@@ -36,7 +36,7 @@ export const NavIcon = styled.div`
   margin: auto;
   fill: purple;
 `;
-export const NavText = styled.div`
+export const NavText = styled.div<Partial<INavTextProps>>`
   @media (max-width: 768px) {
     font-size: 13px;
   }

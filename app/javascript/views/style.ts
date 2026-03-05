@@ -82,7 +82,7 @@ interface IButtonProps {
   inactive?: boolean;
 }
 
-export const Button = styled.div`
+export const Button = styled.div<Partial<IButtonProps>>`
   text-align: center;
   vertical-align: middle;
   border-radius: 20px;
@@ -94,7 +94,7 @@ export const Button = styled.div`
   font-weight: 900;
   letter-spacing: 0.39px;
 
-  ${(props: IButtonProps) =>
+  ${(props: Partial<IButtonProps>) =>
     props.inactive
       ? `
         border: 1px solid #EDEDF0;

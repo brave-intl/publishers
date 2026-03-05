@@ -89,7 +89,7 @@
     "shakapacker": "9.5.0",
     "stream-browserify": "^3.0.0",
     "style-loader": "^4.0.0",
-    "styled-components": "5.3.11",
+    "styled-components": "6.3.11",
     "terser-webpack-plugin": "5.3.16",
     "tributejs": "^5.1.3",
     "vm-browserify": "^1.1.2",
