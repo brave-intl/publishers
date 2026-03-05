@@ -34,7 +34,7 @@ export const ErrorText = styled.span`
 interface IButtonProps {
   enabled?: boolean;
 }
-export const PrimaryButton = styled.div`
+export const PrimaryButton = styled.div<Partial<IButtonProps>>`
   text-align: center;
   vertical-align: middle;
   border-radius: 20px;
@@ -43,7 +43,7 @@ export const PrimaryButton = styled.div`
   user-select: none;
   color: white;
   font-family: Poppins, sans-serif;
-  ${(props: IButtonProps) =>
+  ${(props: Partial<IButtonProps>) =>
     props.enabled
       ? `
         background: #4c54d2;

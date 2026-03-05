@@ -4,7 +4,7 @@ interface IModalProps {
   open: boolean;
 }
 
-export const ModalDiv = styled.div`
+export const ModalDiv = styled.div<Partial<IModalProps>>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -52,7 +52,7 @@ export const Container = styled.div`
 interface IPaddingContainer {
   padding: boolean;
 }
-export const PaddingContainer = styled.div`
+export const PaddingContainer = styled.div<Partial<IPaddingContainer>>`
   ${(props: Partial<IPaddingContainer>) =>
     props.padding === true &&
     `

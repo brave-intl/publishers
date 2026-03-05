@@ -3,7 +3,7 @@ import styled from "styled-components";
 interface IButtonProps {
   enabled?: boolean;
 }
-export const PrimaryButton = styled.div`
+export const PrimaryButton = styled.div<Partial<IButtonProps>>`
   text-align: center;
   vertical-align: middle;
   box-sizing: border-box;
@@ -17,7 +17,7 @@ export const PrimaryButton = styled.div`
   &:hover {
     background: #4C54D2;
   }
-  ${(props: IButtonProps) =>
+  ${(props: Partial<IButtonProps>) =>
     props.enabled
       ? `
         background: #4C54D2;

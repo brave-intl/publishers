@@ -37,19 +37,19 @@ export const Container = styled.div`
   }
 `;
 
-export const Grid = styled.div`
+export const Grid = styled.div<Partial<IGridProps>>`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 30px;
-  ${(props: IGridProps) =>
+  ${(props: Partial<IGridProps>) =>
     `
     grid-template-areas: ${props.templateAreas};
     grid-template-rows: ${props.templateRows};
     `}
 `;
 
-export const Cell = styled.div`
-  ${(props: ICellProps) =>
+export const Cell = styled.div<Partial<ICellProps>>`
+  ${(props: Partial<ICellProps>) =>
     `
     grid-area: ${props.gridArea};
     `}
