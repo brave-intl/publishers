@@ -1037,3 +1037,59 @@ en:
       step_3: Enter the 6-digit code from the app once the scan is complete.
       password_prompt: 6-digit code
       submit_value: Complete
+
+  landing:
+    meta:
+      title: "Log In - Brave Creators"
+      og_title: "Earn more for content you publish to the web - Brave Creators"
+      og_description: "Sign up with Brave Creators to begin receiving contributions from your fans and supporters. Register your website or social media accounts now to begin receiving payouts and contributions. Earn more with Brave Creators."
+    nav:
+      logo_alt: "Brave Creator Logo"
+      signup: "sign up"
+      signup_aria: "Sign up to be a Brave Creator"
+      login: "log in"
+      login_aria: "Log in to your Brave Creator dashboard"
+    home:
+      headline: "Earn for your online content"
+      subhead: "Join Brave Creators and monetize your online presence today. Receive contributions from the millions of users on the Brave Browser, and add your crypto address to start receiving crypto contributions from your supporters all across the Web."
+      btn_signup: "Sign up"
+      btn_login: "Log in"
+      get_started: "Get started with:"
+      website: "Your own website"
+      youtube: "YouTube"
+      social_media: "Your social media account (X, Reddit, etc.)"
+      twitch: "Twitch"
+    spotlight:
+      heading: "You create content and we get you paid."
+      subhead: "Sign up with Brave Creators to begin receiving contributions from your fans and supporters. Register your website or social media accounts now to begin receiving payouts and contributions. Earn more with Brave Creators."
+      scotty_quote: "Brave is a great frictionless way for fans to support the creators they watch."
+      scotty_credit: "- Scotty Allen"
+      scotty_href: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw"
+      scotty_alt: "Scotty Allen Strange Parts"
+      baker_quote: "\"Brave is basically free crowdfunding. It is like Patreon but without having to spend any of your hard earned money.\""
+      baker_credit: "- Bart Baker"
+      baker_href: "https://www.youtube.com/BartBaKer"
+      baker_alt: "Bart Baker Brave Creators"
+      defranco_quote: "\"There are also so many other ways just coming out that you can make new money and people can support other creators.\""
+      defranco_credit: "- Philip DeFranco"
+      defranco_href: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw"
+      defranco_alt: "Philip DeFranco Brave Creators"
+    summary:
+      heading: "How does Brave Creators work?"
+      one_title: "Brave browser users earn tokens for seeing private ads in Brave"
+      one_desc: "Brave Creators is powered by Basic Attention Token (BAT). People who use the Brave browser can earn BAT for seeing privacy-respecting ads in Brave."
+      two_title: "They contribute BAT to you, their favorite content creator"
+      two_desc: "Your subscribers, followers, or readers can automatically contribute a set amount to you each month, or make on-demand BAT contributions to you in an amount of their choice."
+      three_title: "You sign up as a verified content creator on Brave Creators"
+      three_desc: "Signing up for Brave Creators gives you access to your own Brave Creators dashboard, letting you register your sites and channels to begin receiving BAT."
+      four_title: "Register your sites and channels, and begin receiving BAT"
+      four_desc: "Once you've registered your sites and channels, you can connect an account from one of our partners to your Brave Creators account, giving us and your audience a place to send you your BAT. On-demand contributions go instantly from the user to you. Any other contributions from users or Brave to you are paid once a month."
+      card_business: "Business inquiries"
+      card_help: "Help Center"
+    signoff:
+      headline_html: "Join over %{count} content creators and publishers earning more from Brave Creators"
+      btn: "Sign up now"
+    footer:
+      copyright: "© Brave Software"
+      privacy: "Privacy Policy"
+      terms: "Terms of Use"

@@ -16,8 +16,8 @@ import { apiRequest } from '@/lib/api';
 import Card from '@/components/Card';
 import Container from '@/components/Container';
 
-import PhoneOutline from '~/images/phone_outline.svg';
-import USBOutline from '~/images/usb_outline.svg';
+import PhoneOutline from '@/assets/phone-outline';
+import USBOutline from '@/assets/usb-outline';
 
 export default function SecurityPage() {
   const [modal, setModal] = useState({ isOpen: false, id: null });
@@ -111,7 +111,7 @@ export default function SecurityPage() {
           </div>
           <hr className='my-4' />
           <div className='max-w-screen-md'>
-            <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row '>
+            <div className='mb-3 mt-4 flex flex-col justify-between md:flex-row'>
               <div className='md:w-[80%]'>
                 <h3 className='mb-2'>{t('security.index.totp.heading')}</h3>
                 <div className='md:order-2'>
@@ -146,7 +146,9 @@ export default function SecurityPage() {
                     {totp_enabled ? 'Reconfigure' : t('security.index.setup')}
                   </Button>
                 </Link>
-                <PhoneOutline className='mt-3 hidden h-[70px] w-[40px] md:block' />
+                <div className='mt-3 hidden h-[70px] w-[40px] md:block'>
+                  <PhoneOutline  />
+                </div>
               </div>
             </div>
           </div>
@@ -185,13 +187,15 @@ export default function SecurityPage() {
                   </div>
                 )}
               </div>
-              <div className='mt-3 flex-col items-center md:mt-0  md:flex md:pl-5'>
+              <div className='mt-3 flex-col items-center md:mt-0 md:flex md:pl-5'>
                 <Link href='./u2f_registrations/new'>
                   <Button className='w-[150px] flex-grow-0'>
                     {t('security.index.u2f.button')}
                   </Button>
                 </Link>
-                <USBOutline className='mt-3 hidden h-[50px] w-[60px] md:block' />
+                <div className='mt-3 hidden h-[50px] w-[60px] md:block'>
+                  <USBOutline />
+                </div>
               </div>
             </div>
           </div>

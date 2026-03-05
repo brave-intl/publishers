@@ -7,6 +7,12 @@ html
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1"
 
+    meta property="og:title" content="Earn more for content you publish to the web - Brave Creators"
+    meta property="og:description" content="Viewers who use the Brave Browser may have contributed money to you while surfing the web through Brave Creators. Simply sign up as a verified content creator on Brave Creators to start collecting your contributions."
+    meta property="og:image" content=image_url("/static/media/preview.png")
+    meta property="og:type" content="website"
+    meta property="og:url" content=Rails.configuration.pub_secrets[:creators_full_host]
+
     - set_meta_tags(title: "Earn more for content you publish to the web - Brave Creators", description: "Sign up to begin receiving tips & contributions from your visitors and fans. Register your website or YouTube, Twitter, Reddit, Twitch, and Vimeo accounts to begin earning!", image: image_url("/static/media/preview.png"))
     = display_meta_tags
     = javascript_pack_tag('static', defer: true)
@@ -15,6 +21,7 @@ html
 
     link rel="preload" as="font" type="font/woff2" href=asset_url('poppins/Poppins-Light.woff2')
     link rel="preload" as="font" type="font/woff2" href=asset_url('poppins/Poppins-Medium.woff2')
+    link rel="preload" as="font" type="font/woff2" href=asset_url('muli/Muli-Regular.woff2')
     = stylesheet_link_tag "static"
 
     link rel="icon" type="image/png" href=image_path("favicon.ico")

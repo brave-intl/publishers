@@ -1,10 +1,14 @@
-.howto-box-orange, .howto-box-pink, .howto-box-purple {
-  border-radius: var(--leo-radius-m);
+.howto-box-orange,
+.howto-box-pink,
+.howto-box-purple {
   padding: var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
 }
 
 @media (width <= 768px) {
-  .howto-box-orange, .howto-box-pink, .howto-box-purple {
+  .howto-box-orange,
+  .howto-box-pink,
+  .howto-box-purple {
     border-radius: var(--leo-radius-xl);
   }
 }
@@ -29,12 +33,14 @@
 }
 
 .howto-arrow {
-  border-radius: var(--leo-radius-full);
-  width: 40px;
-  height: 40px;
-  background-color: var(--leo-color-container-background);
   position: absolute;
   right: -28px;
+
+  width: 40px;
+  height: 40px;
+
+  background-color: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-full);
 }
 
 .howto-arrow-icon {

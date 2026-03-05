@@ -965,3 +965,59 @@ ja:
       step_3: スキャンが完了したら、アプリから6桁のコードを入力します。
       password_prompt: 6桁のコード
       submit_value: 完了
+
+  landing:
+    meta:
+      title: "Brave クリエイター"
+      og_title: "あなたのコンテンツを収益化しませんか？ - Brave クリエイター"
+      og_description: "Brave Creatorsに登録して、ファンやサポーターからの支援を受け取り始めましょう。ウェブサイトやソーシャルメディアアカウントを今すぐ登録して、支払いや支援の受け取りを開始しましょう。Brave Creatorsでより多くの収益を得ることができます。"
+    nav:
+      logo_alt: "Brave Creators Creator Logo"
+      signup: "登録"
+      signup_aria: "Brave Creatorsに登録"
+      login: "ログイン"
+      login_aria: "Brave Creatorsにログイン"
+    home:
+      headline: "あなたのコンテンツを収益化しませんか？"
+      subhead: "Brave Creatorsに登録して、ファンやサポーターからの支援を受け取り始めましょう。ウェブサイトやソーシャルメディアアカウントを今すぐ登録して、支払いや支援の受け取りを開始しましょう。Brave Creatorsでより多くの収益を得ることができます。"
+      btn_signup: "登録"
+      btn_login: "ログイン"
+      get_started: "以下のようなサービスを登録できます"
+      website: "あなたのWebサイト"
+      youtube: "YouTube"
+      social_media: "ブログ"
+      twitch: "Twitch"
+    spotlight:
+      heading: "あなたのコンテンツをBrave Creatorsで収益化できます"
+      subhead: "Brave Creatorsは、作品やコンテンツからより多くの収益を上げ、広告ブロック等で減ってしまった収益を取り戻すことをサポートします。広告収益だけに依存する代わりに、ユーザからコンテンツへの直接支払いを受けることができるようになります。"
+      scotty_quote: "\"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます\""
+      scotty_credit: "- Scotty Allen"
+      scotty_href: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw"
+      scotty_alt: "Scotty Allen Strange Parts"
+      baker_quote: "\"Braveはいわば無料で参加できるクラウドファウンディングのようなものです。支援者は自分の財布を傷めずにあなたの活動を支援することができるのです！\""
+      baker_credit: "- Bart Baker"
+      baker_href: "https://www.youtube.com/BartBaKer"
+      baker_alt: "Bart Baker Brave Creators"
+      defranco_quote: "\"Braveを通じて、クリエイターは収益を上げることができ、ユーザは支援することが可能なのです！\""
+      defranco_credit: "- Philip DeFranco"
+      defranco_href: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw"
+      defranco_alt: "Philip DeFranco Brave Creators"
+    summary:
+      heading: "Brave Creatorsの仕組み"
+      one_title: "Braveブラウザを使っているとを獲得できます"
+      one_desc: "Brave CreatorsはBATを基盤に作られています。Braveのプライバシーを重視した広告を見るとポイントを獲得することができます。"
+      two_title: "そういったユーザがあなたのようなクリエイターやその作品に対してをチップとして送ります"
+      two_desc: "定期購読者、フォロワー、読者は毎月決まった金額分のチップを自動的に送ることや、都度任意の金額を送ることができます"
+      three_title: "Brave Creatorsの認証済みコンテンツクリエイターになる"
+      three_desc: "認証済みコンテンツクリエイターになると、クリエイター向けダッシュボードにアクセスすることが可能になります。ダッシュボードでは受け取ったチップを確認できる他、紹介用のURLを取得することが可能です。Braveを紹介することによってより多くのを獲得することができます。"
+      four_title: "クリエイターダッシュボードでチップを回収する"
+      four_desc: "登録・ログイン後のダッシュボードでは明細書と残高を確認することが可能です。"
+      card_business: "ビジネスに関するお問い合わせ"
+      card_help: "ヘルプセンター"
+    signoff:
+      headline_html: "すでに%{count}以上のコンテンツクリエイターや出版社がBrave Creatorsに参加し、収益を上げ始めています"
+      btn: "新規登録"
+    footer:
+      copyright: "© Brave Software"
+      privacy: "プライバシーポリシー"
+      terms: "利用規約"

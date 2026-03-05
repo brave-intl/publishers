@@ -3,6 +3,7 @@
 require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
+require "test_helpers/csrf_getter"
 
 class PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -11,10 +12,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include PublishersHelper
   include MockUpholdResponses
   include MockRewardsResponses
+  include CsrfGetter
 
   before do
     stub_uphold_cards!
     stub_rewards_parameters
+    @csrf_token = get_csrf_token
   end
 
   SIGNUP_PARAMS = {
@@ -117,11 +120,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
       assert_enqueued_emails(2) do
-        post(registrations_path, params: SIGNUP_PARAMS)
+        post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
       end
     end
     assert_response 200
-    assert_template :emailed_authentication_token
 
     publisher = Publisher.order(created_at: :asc).last
     get(publisher_path(publisher))
@@ -132,17 +134,18 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference("Publisher.count") do
       # Login email should be generated
       assert_enqueued_emails(1) do
-        post(registrations_path, params: {email: "alice@verified.org"})
+        get "/log-in"
+        post(api_nextv1_registrations_path, params: {email: "alice@verified.org"}, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
       end
     end
     assert_response :success
-    assert_template :emailed_authentication_token
   end
 
   test "sends an email with an access link" do
     url = nil
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
       publisher = Publisher.order(created_at: :asc).last
       email = ActionMailer::Base.deliveries.find do |message|
         message.to.first == SIGNUP_PARAMS[:email]
@@ -172,7 +175,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "expired login link takes unverified publishers to renew their login link" do
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
     publisher = Publisher.order(created_at: :asc).last
 
@@ -250,17 +254,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   def request_login_email(publisher:)
     perform_enqueued_jobs do
-      get(log_in_publishers_path)
       params = publisher.attributes.slice(*%w[brave_publisher_id email])
-      put(registrations_path, params: params)
+      put(api_nextv1_registrations_path, params: params, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
   end
 
   def request_login_email_uppercase_email(publisher:)
     perform_enqueued_jobs do
-      get(log_in_publishers_path)
       params = {email: publisher.email.upcase}
-      put(registrations_path, params: params)
+      put(api_nextv1_registrations_path, params: params, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
   end
 
@@ -300,7 +302,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher completing signup will agree to TOS" do
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
     publisher = Publisher.order(created_at: :asc).last
     url = publisher_url(publisher, token: publisher.authentication_token)
@@ -320,7 +323,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher cannot sign up for a long name" do
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
     publisher = Publisher.order(created_at: :asc).last
     url = publisher_url(publisher, token: publisher.authentication_token)
@@ -337,7 +341,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher updating contact email address will trigger 3 emails and allow publishers confirm new address" do
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
     publisher = Publisher.order(created_at: :asc).last
     url = publisher_url(publisher, token: publisher.authentication_token)
@@ -399,7 +404,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher updating contact email address" do
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
     end
 
     publisher = Publisher.order(created_at: :asc).last
@@ -483,8 +489,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "og meta tags should be set" do
     # ensure meta tags appear on static home apge
     get root_path
-    ["og:image", "og:title", "og:description", "og:url", "og:type"].each do |meta_tag|
-      assert_select "meta[property='#{meta_tag}']"
+
+    assert_select "head" do
+      ["og:image", "og:title", "og:description", "og:url", "og:type"].each do |meta_tag|
+        assert_select "meta[property='#{meta_tag}']"
+      end
     end
 
     # ensure meta tags appear in publisher dashboard and elsewhere
@@ -503,7 +512,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = nil
 
     perform_enqueued_jobs do
-      post(registrations_path, params: SIGNUP_PARAMS)
+      get "/log-in"
+      post(api_nextv1_registrations_path, params: SIGNUP_PARAMS, headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => @csrf_token})
       publisher = Publisher.find_by(pending_email: SIGNUP_PARAMS[:email])
       assert_equal "created", publisher.last_status_update.status
 

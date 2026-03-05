@@ -36,7 +36,7 @@ const userFactory = Factory.extend({
     });
   },
   get avatar() {
-    return faker.internet.avatar();
+    return faker.image.avatar();
   },
 });
 

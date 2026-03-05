@@ -32,7 +32,7 @@ class PublisherMailer < ApplicationMailer
 
   def wallet_refresh_failure(publisher, wallet_provider)
     @publisher = publisher
-    @publisher_log_in_url = log_in_publishers_url
+    @publisher_log_in_url = root_url + "/log-in"
     @wallet_provider = wallet_provider
 
     I18n.with_locale(@publisher.last_supported_login_locale) do
@@ -302,7 +302,7 @@ class PublisherMailer < ApplicationMailer
 
   def wallet_not_connected(publisher, total_amount)
     @publisher = publisher
-    @publisher_log_in_url = log_in_publishers_url
+    @publisher_log_in_url = root_url + "/log-in"
     @total_amount = total_amount
 
     connection = @publisher.uphold_connection

@@ -18,6 +18,7 @@ export function middleware(request) {
     locales: ['en', 'ja'],
     defaultLocale: 'en',
   });
+
   const response = handleI18nRouting(request);
   response.headers.set('x-default-locale', defaultLocale);
 

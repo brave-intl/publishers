@@ -8,6 +8,7 @@ class LogInTest < ApplicationSystemTestCase
 
   before do
     stub_rewards_parameters
+    setup_nextjs_test
   end
 
   def canned_u2f_response(registration)
@@ -28,7 +29,7 @@ class LogInTest < ApplicationSystemTestCase
   test "a user with an existing email can receive a login email" do
     email = "alice@verified.org"
 
-    visit log_in_publishers_path
+    get "/log-in"
 
     assert_content page, "Log In"
     fill_in "email", with: email
@@ -41,7 +42,7 @@ class LogInTest < ApplicationSystemTestCase
   test "after failed login, user can create an account instead" do
     email = "new-test@example.com"
 
-    visit log_in_publishers_path
+    get "/log-in"
 
     assert_content page, "Log In"
     fill_in "email", with: email
@@ -53,7 +54,7 @@ class LogInTest < ApplicationSystemTestCase
   test "a user can resend log in email" do
     email = "alice@verified.org"
 
-    visit log_in_publishers_path
+    get "/log-in"
 
     assert_content page, "Log In"
     fill_in "email", with: email
@@ -67,7 +68,7 @@ class LogInTest < ApplicationSystemTestCase
 
   test "a user without 2FA enabled will be taken to the dashboard after log in" do
     publisher = publishers(:completed)
-    visit log_in_publishers_path
+    get "/log-in"
     assert_content page, "Log In"
 
     fill_in "email", with: publisher.email
@@ -78,7 +79,7 @@ class LogInTest < ApplicationSystemTestCase
 
   test "a user with TOTP enabled will be asked for an auth code after log in" do
     publisher = publishers(:verified_totp_only)
-    visit log_in_publishers_path
+    get "/log-in"
     assert_content page, "Log In"
 
     fill_in "email", with: publisher.email
@@ -96,7 +97,7 @@ class LogInTest < ApplicationSystemTestCase
 
   test "a user with TOTP enabled can retry entry of their auth code" do
     publisher = publishers(:verified_totp_only)
-    visit log_in_publishers_path
+    get "/log-in"
     assert_content page, "Log In"
 
     fill_in "email", with: publisher.email
@@ -120,7 +121,7 @@ class LogInTest < ApplicationSystemTestCase
     publisher = publishers(:verified)
     u2f_registration = u2f_registrations(:default)
 
-    visit log_in_publishers_path
+    get "/log-in"
     assert_content page, "Log In"
 
     fill_in "email", with: publisher.email
@@ -141,7 +142,7 @@ class LogInTest < ApplicationSystemTestCase
   test "a user with U2F enabled can choose to use TOTP if they don't have their device" do
     publisher = publishers(:verified)
 
-    visit log_in_publishers_path
+    get "/log-in"
     assert_content page, "Log In"
 
     fill_in "email", with: publisher.email

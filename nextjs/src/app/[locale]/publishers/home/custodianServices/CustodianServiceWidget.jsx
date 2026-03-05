@@ -19,12 +19,23 @@ import { ChannelCardContext } from '@/lib/context/ChannelCardContext';
 export default function CustodianServiceWidget({}) {
   const t = useTranslations();
   const locale = useLocale();
-  const supportUrl = locale !== 'ja' ? 'https://support.brave.com/hc/en-us/articles/9884338155149' : 'https://support.brave.com/hc/en-us/articles/23311539795597';
+  const supportUrl =
+    locale !== 'ja'
+      ? 'https://support.brave.com/hc/en-us/articles/9884338155149'
+      : 'https://support.brave.com/hc/en-us/articles/23311539795597';
 
-  const {bitflyerConnection, setBitflyerConnection, upholdConnection, setUpholdConnection, geminiConnection, setGeminiConnection} = useContext(CustodianConnectionContext);
+  const {
+    bitflyerConnection,
+    setBitflyerConnection,
+    upholdConnection,
+    setUpholdConnection,
+    geminiConnection,
+    setGeminiConnection,
+  } = useContext(CustodianConnectionContext);
   const { setHasCustodian } = useContext(ChannelCardContext);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [isCustodianConnectModalOpen, setIsCustodianConnectModalOpen] = useState(false);
+  const [isCustodianConnectModalOpen, setIsCustodianConnectModalOpen] =
+    useState(false);
 
   const providerUpdaters = {
     gemini: setGeminiConnection,
@@ -36,7 +47,7 @@ export default function CustodianServiceWidget({}) {
     gemini: 'https://exchange.gemini.com/',
     uphold: 'https://wallet.uphold.com/',
     bitflyer: 'https://bitflyer.com/',
-  }
+  };
 
   async function disconnectProvider(provider) {
     const res = await apiRequest(
@@ -59,7 +70,11 @@ export default function CustodianServiceWidget({}) {
 
   function providerIcon(provider) {
     if (provider === 'gemini') {
-      return <Icon><Image src="/images/gemini-color.svg" width="24" height="24" /></Icon>;
+      return (
+        <Icon>
+          <Image src='/images/gemini-color.svg' width='24' height='24' />
+        </Icon>
+      );
     } else {
       return <Icon name={`${provider}-color`} />;
     }
@@ -68,21 +83,28 @@ export default function CustodianServiceWidget({}) {
   function showConnected(provider) {
     return (
       <section>
-        <div className='small-semibold pb-0.5'>{t('Home.account.custodial_account')}</div>
-        <div className={`pb-2 xl:pb-0 flex justify-between ${styles['faux-btn']}`}>
+        <div className='small-semibold pb-0.5'>
+          {t('Home.account.custodial_account')}
+        </div>
+        <div
+          className={`flex justify-between pb-2 xl:pb-0 ${styles['faux-btn']}`}
+        >
           <div className='flex items-center'>
             <span className='inline-block align-middle'>
               {providerIcon(provider)}
             </span>
-            <span className='inline-block align-middle px-1'>
+            <span className='inline-block px-1 align-middle'>
               {t(`shared.${provider}`)}
             </span>
           </div>
-          <Link href={providerWebsites[provider]} className='color-tertiary pr-1'>
-            <Icon name='launch' className='color-tertiary'/>
+          <Link
+            href={providerWebsites[provider]}
+            className='color-tertiary pr-1'
+          >
+            <Icon name='launch' className='color-tertiary' />
           </Link>
         </div>
-        <div className='mt-0.5 small-regular color-tertiary'>
+        <div className='small-regular color-tertiary mt-0.5'>
           <Link
             className={styles['disconnect-btn']}
             onClick={() => {
@@ -98,9 +120,11 @@ export default function CustodianServiceWidget({}) {
           onClose={() => setIsConfirmationModalOpen(false)}
           showClose={true}
         >
-          <DisconnectConfirmationModal close={disconnectProvider} provider={provider} />
+          <DisconnectConfirmationModal
+            close={disconnectProvider}
+            provider={provider}
+          />
         </Dialog>
-
       </section>
     );
   }
@@ -108,14 +132,19 @@ export default function CustodianServiceWidget({}) {
   function showUnconnected() {
     return (
       <section>
-        <div className='small-semibold pb-0.5'>{t('Home.account.custodial_account')}</div>
-        <div className={`pb-2 xl:pb-0 flex justify-between cursor-pointer ${styles['faux-btn']}`} onClick={launchCustodianModal} >
-          <div className='pl-0.5 color-secondary'>
+        <div className='small-semibold pb-0.5'>
+          {t('Home.account.custodial_account')}
+        </div>
+        <div
+          className={`flex cursor-pointer justify-between pb-2 xl:pb-0 ${styles['faux-btn']}`}
+          onClick={launchCustodianModal}
+        >
+          <div className='color-secondary pl-0.5'>
             {t('Home.account.not_connected')}
           </div>
-          <Icon name='launch' className='color-tertiary'/>
+          <Icon name='launch' className='color-tertiary' />
         </div>
-        <div className='mt-0.5 small-regular color-tertiary'>
+        <div className='small-regular color-tertiary mt-0.5'>
           {t('Home.account.connect_warning')}
           <a
             href={supportUrl}

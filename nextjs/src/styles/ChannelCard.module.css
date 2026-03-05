@@ -25,11 +25,11 @@
 }
 
 .crypto-wallet-dropdown-eth {
-  background-image: url('../../public/icons/eth-color.svg');
+  background-image: url('/icons/eth-color.svg');
 }
 
 .crypto-wallet-dropdown-sol {
-  background-image: url('../../public/icons/sol-color.svg');
+  background-image: url('/icons/sol-color.svg');
 }
 
 .menu {
@@ -41,7 +41,7 @@
 }
 
 .dropdown-indicator {
-  color: #666D89;
+  color: #666d89;
 }
 
 .indicator-separator {
@@ -59,7 +59,7 @@
   color: var(--leo-color-text-tertiary);
   text-align: center;
 
-  border-top: 1px solid #E8E9EE;
+  border-top: 1px solid #e8e9ee;
 }
 
 .trash-icon {
@@ -86,19 +86,20 @@
 }
 
 .privacy-text {
+  padding-top: 40px;
+
   font-family: Inter, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
   letter-spacing: -0.2px;
-  padding-top: 40px;
 }
 
 .privacy-button-container {
-  text-align: center;
   display: inline-block;
   padding-top: 40px;
   padding-left: 10px;
+  text-align: center;
 }
 
 .disconnect-btn {
@@ -107,9 +108,9 @@
 }
 
 .faux-btn {
+  padding: 9px var(--leo-spacing-m);
   border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-m);
-  padding: 9px var(--leo-spacing-m);
 }
 
 .add-channel-card {

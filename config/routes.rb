@@ -40,12 +40,8 @@ Rails.application.routes.draw do
       scope module: "publishers" do
         # Registrations, eventually we should consider refactoring these routes into something a little more restful
         scope controller: "registrations" do
-          get :sign_up
-          get :log_in
           get :expired_authentication_token
           post :resend_authentication_email
-
-          resource :registrations, only: [:create, :update]
         end
 
         resource :case do
@@ -153,6 +149,10 @@ Rails.application.routes.draw do
     namespace :nextv1, defaults: {format: :json} do
       resources :publishers, only: [:update] do
         resources :crypto_addresses, only: %i[index destroy]
+      end
+
+      resource :registrations, only: [:create, :update] do
+        get :tos_links
       end
 
       get "publishers/security", to: "publishers#security"

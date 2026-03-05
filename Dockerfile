@@ -1,9 +1,9 @@
 # Make sure it matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.4.6
+ARG RUBY_VERSION=4.0.1
 FROM ruby:$RUBY_VERSION
 
 # Install JavaScript dependencies and libvips for Active Storage
-ARG NODE_MAJOR_VERSION=20
+ARG NODE_MAJOR_VERSION=24
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash -
 RUN apt-get update -qq && \
     apt-get install -y build-essential libvips nodejs libsodium23 libyaml-dev && \
@@ -34,9 +34,6 @@ COPY . .
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile
-
-# Now compile the homepage
-RUN cd public/creators-landing && yarn install && yarn build
 
 # Now for the NextJS frontend
 WORKDIR /rails/nextjs

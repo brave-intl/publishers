@@ -1,4 +1,4 @@
-FROM ruby:3.4.6-slim
+FROM ruby:4.0.1-slim
 
 RUN apt-get update -qq && apt-get install -y build-essential
 RUN apt-get update -qq
@@ -38,7 +38,7 @@ RUN gem install nokogiri
 RUN bundle install --jobs 20
 
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 20.18.0
+ENV NODE_VERSION 24.13.1
 ENV NODE_OPTIONS=--openssl-legacy-provider
 ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
@@ -56,7 +56,6 @@ RUN yarn cache clean
 RUN yarn install --verbose
 
 COPY . .
-RUN cd public/creators-landing && yarn install && yarn build
 
 # Now for the NextJS frontend
 WORKDIR /var/www//nextjs

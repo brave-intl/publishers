@@ -14,9 +14,9 @@ import { useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/api';
 import styles from '@/styles/Dashboard.module.css';
 
-import addAccounts from "~/images/add_accounts.png";
-import addPayment from "~/images/add_payment.png";
-import receiveContributions from "~/images/receive_contributions.png";
+import addAccounts from '~/images/add_accounts.png';
+import addPayment from '~/images/add_payment.png';
+import receiveContributions from '~/images/receive_contributions.png';
 
 import Card from '@/components/Card';
 import Container from '@/components/Container';
@@ -73,41 +73,70 @@ export default function HomePage() {
     return (
       <main className='main transition-colors'>
         <Container>
-          {alert && (
-            <Alert className='mb-3'>{alert}</Alert>
-          )}
+          {alert && <Alert className='mb-3'>{alert}</Alert>}
           {notice && (
-            <Alert className='mb-3' type='warning'>{notice}</Alert>
+            <Alert className='mb-3' type='warning'>
+              {notice}
+            </Alert>
           )}
           <div className='mx-auto max-w-screen-lg'>
-            <Collapse isOpen={isCollapseOpen} onToggle={()=>{setIsCollapseOpen(!isCollapseOpen)}}>
-              <div slot='title'><h4>{t('Home.headings.how_to_receive')}</h4></div>
-              <div className="grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-2">
+            <Collapse
+              isOpen={isCollapseOpen}
+              onToggle={() => {
+                setIsCollapseOpen(!isCollapseOpen);
+              }}
+            >
+              <div slot='title'>
+                <h4>{t('Home.headings.how_to_receive')}</h4>
+              </div>
+              <div className='grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-2'>
                 <div className={`relative ${styles['howto-box-orange']}`}>
-                  <img className='hidden lg:block' src={addAccounts.src}/>
+                  <img className='hidden lg:block' src={addAccounts.src} />
                   <div className={`${styles['howto-text']}`}>
-                    <h4 className='pl-0.5'>{t('Home.headings.add_accounts')}</h4>
-                    <p className='pt-1'>{t('Home.headings.add_accounts_text')}</p>
+                    <h4 className='pl-0.5'>
+                      {t('Home.headings.add_accounts')}
+                    </h4>
+                    <p className='pt-1'>
+                      {t('Home.headings.add_accounts_text')}
+                    </p>
                   </div>
-                  <div className={`z-20 hidden lg:flex top-1/2 items-center shadow ${styles['howto-arrow']}`}>
-                    <Icon className={`mx-auto ${styles['howto-arrow-icon']}`} name='arrow-right' />
+                  <div
+                    className={`shadow top-1/2 z-20 hidden items-center lg:flex ${styles['howto-arrow']}`}
+                  >
+                    <Icon
+                      className={`mx-auto ${styles['howto-arrow-icon']}`}
+                      name='arrow-right'
+                    />
                   </div>
                 </div>
-                <div className={`z-10 relative ${styles['howto-box-pink']}`}>
-                  <img className='hidden lg:block' src={addPayment.src}/>
+                <div className={`relative z-10 ${styles['howto-box-pink']}`}>
+                  <img className='hidden lg:block' src={addPayment.src} />
                   <div className={`${styles['howto-text']}`}>
-                    <h4 className='pl-0.5'>{t('Home.headings.add_payments')}</h4>
-                    <p className='pt-1'>{t('Home.headings.add_payments_text')}</p>
+                    <h4 className='pl-0.5'>
+                      {t('Home.headings.add_payments')}
+                    </h4>
+                    <p className='pt-1'>
+                      {t('Home.headings.add_payments_text')}
+                    </p>
                   </div>
-                  <div className={`hidden lg:flex top-1/2 items-center shadow ${styles['howto-arrow']}`}>
-                    <Icon className={`mx-auto ${styles['howto-arrow-icon']}`} name='arrow-right' />
+                  <div
+                    className={`shadow top-1/2 hidden items-center lg:flex ${styles['howto-arrow']}`}
+                  >
+                    <Icon
+                      className={`mx-auto ${styles['howto-arrow-icon']}`}
+                      name='arrow-right'
+                    />
                   </div>
                 </div>
                 <div className={`${styles['howto-box-purple']}`}>
-                  <img src={receiveContributions.src}/>
+                  <img src={receiveContributions.src} />
                   <div className={`${styles['howto-text']}`}>
-                    <h4 className='pl-0.5'>{t('Home.headings.receive_contributions')}</h4>
-                    <p className='pt-1'>{t('Home.headings.receive_contributions_text')}</p>
+                    <h4 className='pl-0.5'>
+                      {t('Home.headings.receive_contributions')}
+                    </h4>
+                    <p className='pt-1'>
+                      {t('Home.headings.receive_contributions_text')}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -128,7 +157,7 @@ export default function HomePage() {
                               onChannelDelete={onChannelDelete}
                               custodianData={custodianData}
                             />
-                            </ChannelCardProvider>
+                          </ChannelCardProvider>
                         );
                       })}
                     </section>

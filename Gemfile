@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-ruby "~> 3.4.0"
+ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.0.2.1"
+rails_version = "8.1.2"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.6.2"
+gem "rails-html-sanitizer", "1.7.0"
 gem "railties", rails_version
 
-gem "rack", "3.2.3"
+gem "rack", "3.2.5"
 
 # All things countries
 gem "countries"
@@ -18,7 +18,7 @@ gem "countries"
 gem "active_model_serializers", "~> 0.10"
 
 # For bulk updates/imports
-gem "activerecord-import", "~> 1.8.0"
+gem "activerecord-import", "~> 2.2.0"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.8"
@@ -29,28 +29,28 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.199.0"
+gem "aws-sdk-s3", "~> 1.213.0"
 
-gem "bootstrap", "5.3.5"
+gem "bootstrap", "5.3.8"
 
 gem "brotli", "~> 0.7.0"
 
 # Authorization
 gem "cancancan", "~> 3.6.0"
 
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 3.0.2"
 
 gem "csv"
 
 # Authentication
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 
 gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.14.0"
-gem "faraday-retry", "2.3.2"
+gem "faraday", "2.14.1"
+gem "faraday-retry", "2.4.0"
 
 gem "ffi"
 
@@ -67,9 +67,9 @@ gem "nokogiri", ">= 1.16"
 # Open Graph tag
 gem "meta-tags", "~> 2.20"
 
-gem "newrelic_rpm", "~> 9.7"
+gem "newrelic_rpm", "~> 10.0"
 
-gem "omniauth-rails_csrf_protection", "~> 1.0.1"
+gem "omniauth-rails_csrf_protection", "~> 2.0.0"
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 1.2.0"
 
@@ -91,7 +91,7 @@ gem "omniauth-github", "~> 2.0.1"
 gem "ostruct"
 
 # Model record auditing
-gem "paper_trail", "~> 15.2.0"
+gem "paper_trail", "~> 17.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -100,7 +100,7 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "premailer-rails", "~> 1.12.0", require: false
 
 # Implementation of PublicSuffix
-gem "public_suffix", "~> 5.0"
+gem "public_suffix", "~> 7.0"
 
 # Puma as app server
 gem "puma", "~> 6.6.0"
@@ -123,7 +123,7 @@ gem "render_async", "~> 2.1"
 gem "rexml", ">= 3.3.6"
 
 # Generate QR codes for TOTP 2fa
-gem "rqrcode", "~> 2.2.0"
+gem "rqrcode", "~> 3.2.0"
 
 # SCSS for stylesheets
 gem "sass-rails", ">= 6"
@@ -138,13 +138,13 @@ gem "terser"
 # gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 8.1.0"
 
-gem "sidekiq-scheduler", "~> 5.0.3"
-gem "sidekiq-throttled", "~> 1.5.0"
+gem "sidekiq-scheduler", "~> 6.0.0"
+gem "sidekiq-throttled", "~> 2.1.0"
 
 # slim for view templates
-gem "slim-rails", "3.7.0"
+gem "slim-rails", "4.0.0"
 
 gem "ssrf_filter", "1.3.0"
 
@@ -157,7 +157,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "7.2.3"
+gem "shakapacker", "9.5.0"
 
 # pagination support for models
 gem "will_paginate"
@@ -193,7 +193,7 @@ group :development do
   # gem "spring-watcher-listen", "~> 2.0.0"
 
   # i18n-tasks helps you find and manage missing and unused translations.
-  gem "i18n-tasks", "~> 1.0.13"
+  gem "i18n-tasks", "~> 1.1.0"
 end
 
 group :test do
@@ -221,7 +221,7 @@ group :development, :test do
 
   # Get rid of mailcatcher
   gem "letter_opener"
-  gem "letter_opener_web", "~> 2.0"
+  gem "letter_opener_web", "~> 3.0"
 
   # Static security vulnerability scanner
   gem "brakeman"
@@ -235,7 +235,7 @@ group :development, :test do
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
   gem "solargraph"
-  gem "dotenv-rails", "3.1.8"
+  gem "dotenv-rails", "3.2.0"
 end
 
 gem "importmap-rails", "~>2.0"

@@ -33,9 +33,7 @@ export const CryptoAddressContext = createContext({
   updateResponseData: () => {},
 });
 
-export default function CryptoAddressProvider({
-  children,
-}) {
+export default function CryptoAddressProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, {
     addressesInUse: [],
     currentResponseData: [],

@@ -307,11 +307,12 @@ export default function ChannelCryptoEditor({ channel }) {
       await connectEthereumAddress();
     } else if (address.clearAddress) {
       // check to see if there is still a crypto address associated with the channel
-      const otherChain = address.clearAddress === 'ETH' ? currentSolAddress : currentEthAddress;
+      const otherChain =
+        address.clearAddress === 'ETH' ? currentSolAddress : currentEthAddress;
       if (otherChain) {
         await clearAddress(address.deletedAddress.value);
       } else {
-        launchRemovalModal(address.deletedAddress.value)
+        launchRemovalModal(address.deletedAddress.value);
       }
     } else if (address.chain && address.address) {
       if (
@@ -376,7 +377,9 @@ export default function ChannelCryptoEditor({ channel }) {
   } else {
     return (
       <div className={styles['crypto-wallet-for-channel']}>
-        <div className='label-component pb-1'>{t('Home.addCryptoWidget.widgetTitle')}</div>
+        <div className='label-component pb-1'>
+          {t('Home.addCryptoWidget.widgetTitle')}
+        </div>
         <div className={styles['crypto-wallet-group']}>
           <div className='small-semibold pb-0.5'>
             {t('Home.addCryptoWidget.ethereum')}
@@ -402,7 +405,9 @@ export default function ChannelCryptoEditor({ channel }) {
           />
         </div>
         <div className={styles['crypto-wallet-group']}>
-          <div className='small-semibold pb-0.5'>{t('Home.addCryptoWidget.solana')}</div>
+          <div className='small-semibold pb-0.5'>
+            {t('Home.addCryptoWidget.solana')}
+          </div>
           <Select
             options={solOptions}
             onChange={changeAddress.bind(this)}
@@ -425,7 +430,7 @@ export default function ChannelCryptoEditor({ channel }) {
         </div>
         <div className={styles['alert-warning']}>{errorText}</div>
         {(currentSolAddress || currentEthAddress) && (
-          <div className="mb-1">
+          <div className='mb-1'>
             <Link href={`/c/${channel.public_identifier}`}>
               {t('Home.addCryptoWidget.channelPageLink')}
             </Link>

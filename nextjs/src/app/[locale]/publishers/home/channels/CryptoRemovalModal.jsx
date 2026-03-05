@@ -9,9 +9,13 @@ export default function CryptoRemovalModal({ close, clearAddress, address }) {
 
   return (
     <div>
-      <h1 className={styles['privacy-header']}>{t('Home.addCryptoWidget.removalHeader')}</h1>
-      <p className={styles['privacy-text']}>{t('Home.addCryptoWidget.removalNotification')}</p>
-      <div className="text-right">
+      <h1 className={styles['privacy-header']}>
+        {t('Home.addCryptoWidget.removalHeader')}
+      </h1>
+      <p className={styles['privacy-text']}>
+        {t('Home.addCryptoWidget.removalNotification')}
+      </p>
+      <div className='text-right'>
         <div className={styles['privacy-button-container']}>
           <Button
             onClick={close}
@@ -23,7 +27,10 @@ export default function CryptoRemovalModal({ close, clearAddress, address }) {
         </div>
         <div className={styles['privacy-button-container']}>
           <Button
-            onClick={() => {clearAddress(address); close()}}
+            onClick={() => {
+              clearAddress(address);
+              close();
+            }}
             style={{ margin: '10px 0px', width: '320px' }}
             kind='filled'
           >
@@ -32,5 +39,5 @@ export default function CryptoRemovalModal({ close, clearAddress, address }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

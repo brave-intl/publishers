@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useContext } from "react";
-import { useTranslations } from "next-intl";
+import { useState, useContext } from 'react';
+import { useTranslations } from 'next-intl';
 
-import Icon from "@brave/leo/react/icon";
-import Select, { components } from "react-select";
-import { CryptoWidgetContext } from "@/lib/context/CryptoWidgetContext";
-import CryptoPaymentOption from "./CryptoPaymentOption";
-import styles from "@/styles/PublicChannelPage.module.css";
+import Icon from '@brave/leo/react/icon';
+import Select, { components } from 'react-select';
+import { CryptoWidgetContext } from '@/lib/context/CryptoWidgetContext';
+import CryptoPaymentOption from './CryptoPaymentOption';
+import styles from '@/styles/PublicChannelPage.module.css';
 
 export default function CryptoWidgetAmountSelect({
   clearError,
@@ -16,37 +16,37 @@ export default function CryptoWidgetAmountSelect({
 }) {
   const t = useTranslations();
 
-  const placeholder = t("publicChannelPage.custom");
+  const placeholder = t('publicChannelPage.custom');
   const iconOptions = {
-    SOL: "sol-color",
-    ETH: "eth-color",
-    BAT: "bat-color",
-    USDC: "usdc-color",
+    SOL: 'sol-color',
+    ETH: 'eth-color',
+    BAT: 'bat-color',
+    USDC: 'usdc-color',
   };
   const defaultAmounts = [1, 5, 10];
 
   const dropdownOptions = [];
   if (ethAddress) {
     dropdownOptions.push({
-      label: t("publicChannelPage.ethereumNetwork"),
+      label: t('publicChannelPage.ethereumNetwork'),
       options: [
         {
-          label: t("walletServices.addCryptoWidget.ethereum"),
-          subheading: t("publicChannelPage.ethSubheading"),
-          value: "ETH",
-          icon: "eth-color",
+          label: t('walletServices.addCryptoWidget.ethereum'),
+          subheading: t('publicChannelPage.ethSubheading'),
+          value: 'ETH',
+          icon: 'eth-color',
         },
         {
-          label: t("walletServices.addCryptoWidget.ethereumBAT"),
-          subheading: t("publicChannelPage.ethBatSubheading"),
-          value: "BAT",
-          icon: "bat-color",
+          label: t('walletServices.addCryptoWidget.ethereumBAT'),
+          subheading: t('publicChannelPage.ethBatSubheading'),
+          value: 'BAT',
+          icon: 'bat-color',
         },
         {
-          label: t("publicChannelPage.usdc"),
-          subheading: t("publicChannelPage.usdcSubheading"),
-          value: "USDC",
-          icon: "usdc-color",
+          label: t('publicChannelPage.usdc'),
+          subheading: t('publicChannelPage.usdcSubheading'),
+          value: 'USDC',
+          icon: 'usdc-color',
         },
       ],
     });
@@ -54,25 +54,25 @@ export default function CryptoWidgetAmountSelect({
 
   if (solAddress) {
     dropdownOptions.push({
-      label: t("publicChannelPage.solanaNetwork"),
+      label: t('publicChannelPage.solanaNetwork'),
       options: [
         {
-          label: t("walletServices.addCryptoWidget.solana"),
-          subheading: t("publicChannelPage.solSubheading"),
-          value: "SOL",
-          icon: "sol-color",
+          label: t('walletServices.addCryptoWidget.solana'),
+          subheading: t('publicChannelPage.solSubheading'),
+          value: 'SOL',
+          icon: 'sol-color',
         },
         {
-          label: t("walletServices.addCryptoWidget.solanaBAT"),
-          subheading: t("publicChannelPage.solBatSubheading"),
-          value: "splBAT",
-          icon: "bat-color",
+          label: t('walletServices.addCryptoWidget.solanaBAT'),
+          subheading: t('publicChannelPage.solBatSubheading'),
+          value: 'splBAT',
+          icon: 'bat-color',
         },
         {
-          label: t("publicChannelPage.solUsdc"),
-          subheading: t("publicChannelPage.solUsdcSubheading"),
-          value: "USDC-SPL",
-          icon: "usdc-color",
+          label: t('publicChannelPage.solUsdc'),
+          subheading: t('publicChannelPage.solUsdcSubheading'),
+          value: 'USDC-SPL',
+          icon: 'usdc-color',
         },
       ],
     });
@@ -98,11 +98,11 @@ export default function CryptoWidgetAmountSelect({
 
   function calculateUSDPrice(amount) {
     amount = amount || currentAmount;
-    if (displayChain.includes("USDC")) {
+    if (displayChain.includes('USDC')) {
       return Math.round(amount * 100) / 100;
     } else {
       return (
-        Math.round(amount * ratios[displayChain.toLowerCase()]["usd"] * 100) /
+        Math.round(amount * ratios[displayChain.toLowerCase()]['usd'] * 100) /
         100
       );
     }
@@ -110,10 +110,10 @@ export default function CryptoWidgetAmountSelect({
 
   function calculateCryptoPrice(usd, chain) {
     chain = chain || displayChain;
-    if (chain.includes("USDC")) {
+    if (chain.includes('USDC')) {
       return usd;
     } else {
-      return usd / ratios[chain.toLowerCase()]["usd"];
+      return usd / ratios[chain.toLowerCase()]['usd'];
     }
   }
 
@@ -124,10 +124,10 @@ export default function CryptoWidgetAmountSelect({
   function changeChain(optionVal) {
     setCurrentChain(optionVal.value);
     setSelectValue(optionVal);
-    const chain = optionVal.value.includes("BAT")
-      ? "BAT"
-      : optionVal.value.includes("USDC")
-        ? "USDC"
+    const chain = optionVal.value.includes('BAT')
+      ? 'BAT'
+      : optionVal.value.includes('USDC')
+        ? 'USDC'
         : optionVal.value;
     setDisplayChain(chain);
     clearError();
@@ -170,14 +170,14 @@ export default function CryptoWidgetAmountSelect({
         onChange={changeChain}
         components={{
           SingleValue: ({ children, ...rest }) => (
-            <components.SingleValue {...rest} className="flex">
+            <components.SingleValue {...rest} className='flex'>
               <Icon
                 name={`${iconOptions[displayChain]}`}
-                className={`mr-2 ${styles["value-icon-image"]}`}
+                className={`mr-2 ${styles['value-icon-image']}`}
               />
               <div>
                 {children}
-                <div className={`${styles["crypto-option-subheading"]}`}>
+                <div className={`${styles['crypto-option-subheading']}`}>
                   {rest.data.subheading}
                 </div>
               </div>
@@ -185,63 +185,63 @@ export default function CryptoWidgetAmountSelect({
           ),
           Option: CryptoPaymentOption,
         }}
-        className="crypto-currency-dropdown"
+        className='crypto-currency-dropdown'
         value={selectValue}
         styles={{
           control: (base) => ({
             ...base,
-            boxShadow: "none",
-            borderColor: "rgba(161, 178, 186, 0.4)",
-            padding: "0px 16px",
-            borderRadius: "8px",
+            boxShadow: 'none',
+            borderColor: 'rgba(161, 178, 186, 0.4)',
+            padding: '0px 16px',
+            borderRadius: '8px',
           }),
           groupHeading: (base) => ({
             ...base,
-            textAlign: "left",
-            fontSize: "11px",
-            backgroundColor: "rgba(243, 245, 247, 1)",
-            padding: "12px 16px",
+            textAlign: 'left',
+            fontSize: '11px',
+            backgroundColor: 'rgba(243, 245, 247, 1)',
+            padding: '12px 16px',
           }),
-          group: (base) => ({ ...base, padding: "0px" }),
-          indicatorSeparator: (base) => ({ ...base, display: "none" }),
+          group: (base) => ({ ...base, padding: '0px' }),
+          indicatorSeparator: (base) => ({ ...base, display: 'none' }),
           dropdownIndicator: (base) => ({
             ...base,
-            padding: "0px",
-            color: "rgba(98, 117, 126, 1)",
+            padding: '0px',
+            color: 'rgba(98, 117, 126, 1)',
           }),
-          input: (base) => ({ ...base, caretColor: "transparent" }),
+          input: (base) => ({ ...base, caretColor: 'transparent' }),
           valueContainer: (base) => ({
             ...base,
-            display: "flex",
-            textAlign: "left",
-            padding: "16px",
-            paddingLeft: "0px",
-            fontWeight: "600",
+            display: 'flex',
+            textAlign: 'left',
+            padding: '16px',
+            paddingLeft: '0px',
+            fontWeight: '600',
           }),
           menu: (base) => ({
             ...base,
-            marginTop: "0px",
-            borderRadius: "8px",
+            marginTop: '0px',
+            borderRadius: '8px',
             boxShadow:
-              "0px 4px 16px -2px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(0, 0, 0, 0.05)",
-            overflow: "hidden",
+              '0px 4px 16px -2px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(0, 0, 0, 0.05)',
+            overflow: 'hidden',
           }),
           menuList: (base) => ({
             ...base,
-            maxHeight: "500px",
-            paddingTop: "0px",
+            maxHeight: '500px',
+            paddingTop: '0px',
           }),
         }}
       />
-      <div className="grid grid grid-cols-12 pb-4 pt-4">
+      <div className='grid grid-cols-12 pb-4 pt-4'>
         {/* amount inputs */}
-        <div className="col-span-12 md:col-span-7 text-left">
+        <div className='col-span-12 text-left md:col-span-7'>
           {!displayCrypto &&
             defaultAmounts.map((amount) => {
               return (
                 <button
                   key={amount}
-                  className={`${calculateUSDPrice() === amount ? styles["selected"] : ""} ${styles["amount-button"]}`}
+                  className={`${calculateUSDPrice() === amount ? styles['selected'] : ''} ${styles['amount-button']}`}
                   onClick={() => updateAmount(amount)}
                 >
                   $ {amount}
@@ -249,41 +249,41 @@ export default function CryptoWidgetAmountSelect({
               );
             })}
           <input
-            inputmode="numeric"
-            type="number"
+            inputMode='numeric'
+            type='number'
             min={0}
             onChange={handleInputChange}
-            className={`${currentAmount === customAmount ? styles["selected"] : ""} ${displayCrypto ? styles["amount-full-width"] : ""} ${styles["amount-input"]}`}
+            className={`${currentAmount === customAmount ? styles['selected'] : ''} ${displayCrypto ? styles['amount-full-width'] : ''} ${styles['amount-input']}`}
             placeholder={placeholder}
             value={customAmount}
           />
-          <span className={`${styles["dollar-input-denomination"]}`}>
-            {!displayCrypto && "$"}
+          <span className={`${styles['dollar-input-denomination']}`}>
+            {!displayCrypto && '$'}
           </span>
-          <span className={`${styles["amount-input-denomination"]}`}>
+          <span className={`${styles['amount-input-denomination']}`}>
             {displayCrypto && displayChain}
           </span>
         </div>
         {/* amount display*/}
-        <div className="col-span-12 md:col-span-5 text-right align-top">
-          <h2 className={`${styles["large-currency-display"]}`}>
+        <div className='col-span-12 text-right align-top md:col-span-5'>
+          <h2 className={`${styles['large-currency-display']}`}>
             {displayCrypto ? (
               <span>
-                {roundCryptoPrice()}{" "}
-                <span className={`${styles["currency"]} align-middle`}>
+                {roundCryptoPrice()}{' '}
+                <span className={`${styles['currency']} align-middle`}>
                   {displayChain}
                 </span>
               </span>
             ) : (
               <span>
-                ${calculateUSDPrice()}{" "}
-                <span className={`${styles["currency"]} align-middle`}>
+                ${calculateUSDPrice()}{' '}
+                <span className={`${styles['currency']} align-middle`}>
                   USD
                 </span>
               </span>
             )}
           </h2>
-          <div className={`${styles["small-currency-display"]}`}>
+          <div className={`${styles['small-currency-display']}`}>
             {!displayCrypto ? (
               <span>
                 {roundCryptoPrice()} {displayChain}
@@ -294,7 +294,7 @@ export default function CryptoWidgetAmountSelect({
           </div>
           <div
             onClick={() => handleDisplayCryptoChange()}
-            className={`${styles["exchange-icon"]}`}
+            className={`${styles['exchange-icon']}`}
           ></div>
         </div>
       </div>
