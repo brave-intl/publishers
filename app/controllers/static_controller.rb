@@ -7,6 +7,9 @@ class StaticController < ApplicationController
   before_action :redirect_if_current_publisher, only: :index
 
   def index
+    @verified_channels_count = Rails.cache.fetch("channel_count", expires_in: 1.hour) do
+      Channel.verified.count
+    end
   end
 
   private

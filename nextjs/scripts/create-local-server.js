@@ -30,8 +30,7 @@ const routeMatch = [
   ...nextAllowPageRoutes.map((r) => `/ja${r}`),
   ...nextAllowPageRoutes.map((r) => `/en${r}`),
   ...nextAllowPageRoutes,
-  '/_next/*splat',
-  ...['/', '//', '/en', '/ja']
+  '/_next/*splat'
 ];
 
 app
@@ -95,6 +94,9 @@ app
     expressApp.get(routeMatch, (req, res) => {
       return handle(req, res);
     });
+
+    // Handle root path - proxy to Rails
+    expressApp.get('/', middlewareToRouteToRails);
 
     // Then the rest proxy over to Rails
     expressApp.all('/*any', middlewareToRouteToRails);
