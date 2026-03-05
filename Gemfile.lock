@@ -130,7 +130,7 @@ GEM
     backport (1.2.0)
     base58 (0.2.3)
     base64 (0.3.0)
-    bcrypt (3.1.20)
+    bcrypt (3.1.21)
     benchmark (0.5.0)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
@@ -194,10 +194,10 @@ GEM
     database_cleaner-core (2.0.1)
     date (3.5.1)
     debug_inspector (1.2.0)
-    devise (4.9.4)
+    devise (5.0.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
+      railties (>= 7.0)
       responders
       warden (~> 1.2.3)
     diff-lcs (1.6.2)
@@ -565,9 +565,9 @@ GEM
     render_async (2.1.11)
     request_store (1.7.0)
       rack (>= 1.4)
-    responders (3.1.1)
-      actionpack (>= 5.2)
-      railties (>= 5.2)
+    responders (3.2.0)
+      actionpack (>= 7.0)
+      railties (>= 7.0)
     reverse_markdown (3.0.2)
       nokogiri
     rexml (3.4.4)
@@ -814,7 +814,7 @@ DEPENDENCIES
   countries
   csv
   database_cleaner
-  devise (~> 4.9)
+  devise (~> 5.0)
   dnsruby (~> 1.70)
   domain_name
   dotenv-rails (= 3.2.0)

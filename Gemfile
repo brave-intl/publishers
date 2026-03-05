@@ -43,7 +43,7 @@ gem "connection_pool", "~> 3.0.2"
 gem "csv"
 
 # Authentication
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 
 gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
