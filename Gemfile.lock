@@ -147,7 +147,7 @@ GEM
       popper_js (>= 2.11.8, < 3)
     brakeman (8.0.4)
       racc
-    brotli (0.7.0)
+    brotli (0.8.0)
     browser (6.2.0)
     builder (3.3.0)
     bundler-audit (0.9.3)
@@ -805,7 +805,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap (= 5.3.8)
   brakeman
-  brotli (~> 0.7.0)
+  brotli (~> 0.8.0)
   bundler-audit
   byebug
   cancancan (~> 3.6.0)
