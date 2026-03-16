@@ -5194,10 +5194,10 @@ set-proto@^1.0.0:
     es-errors "^1.3.0"
     es-object-atoms "^1.0.0"
 
-shakapacker@9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/shakapacker/-/shakapacker-9.5.0.tgz#761aee7f4c01d8a37b13d628968b6730897c967b"
-  integrity sha512-pTGHzHCc74CIoXeg8otCoBa8DjGWZUoYVKu9eyWwpdO9Jq6yHxSD9u5Qp36nXjC9jupd9gnfhCY5YHqkJHpfLA==
+shakapacker@9.6.1:
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/shakapacker/-/shakapacker-9.6.1.tgz#de307cf75b6bf13f3c7e09c966a38e7822dd9999"
+  integrity sha512-xE1RAm6c1C6o1Erj+8Iih/WqmauKpcGUiZ2t8NJRBlKmOypvWpyk+h2DQ3u02ii3aiOYlDDSboJMk/yzmaIOPA==
   dependencies:
     js-yaml "^4.1.0"
     path-complete-extname "^1.0.0"
