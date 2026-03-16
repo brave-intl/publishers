@@ -102,6 +102,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
   test "should change address for channel" do
     account_address = "0xbB3Ea1e03A2dC8Bd2777D5Ea886a55e3573E726e"
     chain = "ETH"
+    CryptoAddress.create(publisher: @publisher, address: account_address, chain: chain, verified: true)
 
     Api::Nextv1::CryptoAddressForChannelsController.any_instance.expects(:replace_crypto_address_for_channel).with(account_address, chain, @channel).returns(true)
 
@@ -114,7 +115,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
   end
 
   test "should return error when changing address for channel with invalid parameters" do
-    account_address = nil
+    account_address = "0x3430E11a53fE270C0ce2885AfFf1Ba6F9B48b59F"
     chain = "ETH"
     post "/api/nextv1/channels/#{@channel.id}/crypto_address_for_channels/change_address", params: {
       address: account_address,
