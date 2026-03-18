@@ -424,7 +424,7 @@ GEM
       omniauth (~> 2.0)
     omniauth-twitch (1.2.0)
       omniauth-oauth2 (~> 1.6)
-    omniauth-twitter2 (1.0.0)
+    omniauth-twitter2 (1.1.0)
       omniauth
       omniauth-oauth2 (~> 1.0)
     open3 (0.2.1)
