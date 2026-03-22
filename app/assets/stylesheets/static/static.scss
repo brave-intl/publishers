@@ -52,6 +52,7 @@ body {
 .nav-container {
   display: flex;
   flex-direction: row;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -59,6 +60,7 @@ body {
   height: 100%;
   margin: 0 auto;
   padding: 24px 30px;
+  box-sizing: border-box;
 }
 
 .nav-spacer {
@@ -301,9 +303,18 @@ body {
   background: #7d4cdb;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1050px) {
   .carousel-container {
     flex-direction: column-reverse !important;
+  }
+  .carousel-inner {
+    min-height: 550px;
+  }
+  .carousel-quote {
+    padding: 12px;
+  }
+  .carousel-img {
+    padding: 12px;
   }
 }
 
@@ -412,6 +423,7 @@ body {
   line-height: 24px;
   text-align: center;
   margin: 1.33em 0;
+  padding: 0 48px;
 }
 
 /* Footer */
@@ -448,6 +460,21 @@ body {
 .show-mobile {
   display: none;
 }
+.show-ipad {
+  display: none;
+}
+.hidden-ipad {
+  display: block;
+}
+
+@media (max-width: 1130px) {
+  .show-ipad {
+    display: block;
+  }
+  .hidden-ipad {
+    display: none;
+  }
+}
 
 @media (max-width: 768px) {
   .landing-headline {
@@ -466,5 +493,19 @@ body {
   .carousel-button {
     width: 32px;
     height: 32px;
+  }
+  .carousel-inner {
+    min-height: 600px;
+  }
+
+  .carousel-container {
+    min-height: 550px;
+    margin: 16px;
+    margin-bottom: 60px;
+  }
+
+  .carousel-quote {
+    min-width: 0;
+    padding: 0 16px;
   }
 }
