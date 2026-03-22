@@ -3,14 +3,12 @@
 require "test_helper"
 
 class Oauth2ConfigTest < ActiveSupport::TestCase
-  [Oauth2::Config::Gemini, Oauth2::Config::Uphold, Oauth2::Config::Bitflyer].each do |cls|
+  [Oauth2::Config::Uphold, Oauth2::Config::Bitflyer].each do |cls|
     describe cls.name do
       [:scope, :client_id, :client_secret, :authorization_url, :token_url, :redirect_uri, :content_type].each do |method|
         let(:klass) { cls }
         let(:token_url_values) do
           case klass.name
-          when "Oauth2::Config::Gemini"
-            "exchange.sandbox"
           when "Oauth2::Config::Bitflyer"
             "azurewebsites"
           when "Oauth2::Config::Uphold"
@@ -19,8 +17,6 @@ class Oauth2ConfigTest < ActiveSupport::TestCase
         end
         let(:auth_url_values) do
           case klass.name
-          when "Oauth2::Config::Gemini"
-            "exchange.sandbox"
           when "Oauth2::Config::Bitflyer"
             "azurewebsites"
           when "Oauth2::Config::Uphold"

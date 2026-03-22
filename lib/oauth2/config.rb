@@ -65,51 +65,6 @@ module Oauth2::Config
     end
   end
 
-  class Gemini < AuthorizationCode
-    class << self
-      def scope
-        "balances:read,account:read,payments:create"
-      end
-
-      def client_id
-        Rails.configuration.pub_secrets[:gemini_client_id]
-      end
-
-      def client_secret
-        Rails.configuration.pub_secrets[:gemini_client_secret]
-      end
-
-      # Gemini auth grant flow uses a different host than api requests
-      # See: https://docs.gemini.com/oauth/#authorization-code-grant-flow
-      def authorization_url
-        url = is_production? ? "https://exchange.gemini.com"
-       : "https://exchange.sandbox.gemini.com"
-
-        URI("#{url}/auth")
-      end
-
-      # See: https://docs.gemini.com/oauth/#authorization-code-grant-flow
-      def token_url
-        url = is_production? ? "https://exchange.gemini.com"
-       : "https://exchange.sandbox.gemini.com"
-
-        URI("#{url}/auth/token")
-      end
-
-      def redirect_uri
-        URI("#{base_redirect_url}/publishers/gemini_connection/new")
-      end
-
-      def content_type
-        "application/json" # See Oauth2::AuthorizationCode.new
-      end
-
-      def access_token_struct
-        Oauth2::Responses::AccessTokenResponse
-      end
-    end
-  end
-
   class Uphold < AuthorizationCode
     class << self
       def base_token_url

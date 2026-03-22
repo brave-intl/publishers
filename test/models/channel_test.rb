@@ -28,17 +28,12 @@ class ChannelTest < ActionDispatch::IntegrationTest
 
   test "deletes associated connections for channel on destroy" do
     uphold_channel = channels(:verified)
-    gemini_channel = channels(:top_referrer_gemini_channel)
 
     ucfc = uphold_channel.uphold_connection
     assert ucfc
-    gcfc = gemini_channel.gemini_connection
-    assert gcfc
 
     uphold_channel.destroy!
-    gemini_channel.destroy!
 
-    assert_raises { gcfc.reload }
     assert_raises { ucfc.reload }
   end
 

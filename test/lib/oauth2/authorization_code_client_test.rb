@@ -51,7 +51,7 @@ class OAuth2AuthorizationCodeTest < ActiveSupport::TestCase
     end
 
     describe "when application/json" do
-      let(:config) { Oauth2::Config::Gemini }
+      let(:config) { Oauth2::Config::Uphold }
 
       describe "when unknown unsuccessful" do
         let(:response) { Net::HTTPInternalServerError }

@@ -15,7 +15,6 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
 
     wallet_data = {
       uphold_connection: uphold_wallet,
-      gemini_connection: gemini_wallet,
       bitflyer_connection: bitflyer_wallet,
       allowed_regions: regions
     }
@@ -45,16 +44,6 @@ class Api::Nextv1::HomeController < Api::Nextv1::BaseController
     current_publisher.uphold_connection.as_json(
       only: [:default_currency, :uphold_id, :is_member, :oauth_refresh_failed, :payout_failed],
       methods: [:can_create_uphold_cards?, :username, :uphold_status, :verify_url]
-    )
-  end
-
-  # Internal: Renders properties associated with the Gemini Wallet Connection
-  #
-  # Returns a hash
-  def gemini_wallet
-    current_publisher.gemini_connection.as_json(
-      only: [:default_currency, :display_name, :recipient_id, :oauth_refresh_failed, :recipient_id_status, :payout_failed],
-      methods: [:payable?, :verify_url, :valid_country?]
     )
   end
 

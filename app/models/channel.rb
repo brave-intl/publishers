@@ -16,7 +16,6 @@ class Channel < ApplicationRecord
   SUBSCRIBER_COUNT = :subscriber_count
   ADVANCED_SORTABLE_COLUMNS = [YOUTUBE_VIEW_COUNT, TWITCH_VIEW_COUNT, VIDEO_COUNT, SUBSCRIBER_COUNT, FOLLOWER_COUNT].freeze
   BITFLYER_CONNECTION = "BitflyerConnection".freeze
-  GEMINI_CONNECTION = "GeminiConnection".freeze
 
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
@@ -31,7 +30,6 @@ class Channel < ApplicationRecord
 
   has_one :promo_registration, dependent: :destroy
   has_many :uphold_connection_for_channel, dependent: :destroy
-  has_many :gemini_connection_for_channel, dependent: :destroy
   has_many :crypto_address_for_channels, dependent: :destroy
   has_many :crypto_addresses, through: :crypto_address_for_channels
 
@@ -215,7 +213,7 @@ class Channel < ApplicationRecord
   end
 
   def brave_payable?
-    gemini_connection || uphold_connection || bitflyer_connection || crypto_address_for_channels.exists?
+    uphold_connection || bitflyer_connection || crypto_address_for_channels.exists?
   end
 
   def web3_enabled?
@@ -343,10 +341,6 @@ class Channel < ApplicationRecord
     @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher&.uphold_connection&.default_currency && publisher&.uphold_connection&.id == connection.uphold_connection_id }
   end
 
-  def gemini_connection
-    @gemini_connection ||= gemini_connection_for_channel.first
-  end
-
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
     return unless verified?
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
@@ -447,12 +441,6 @@ class Channel < ApplicationRecord
 
   def create_channel_card
     create_uphold_channel_card if publisher&.uphold_connection&.uphold_id
-    create_gemini_channel_card if publisher&.gemini_connection&.recipient_id
-  end
-
-  def create_gemini_channel_card
-    return if !publisher&.gemini_connection&.recipient_id
-    publisher&.gemini_connection&.create_recipient_ids
   end
 
   def create_uphold_channel_card

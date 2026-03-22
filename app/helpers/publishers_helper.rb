@@ -43,7 +43,7 @@ module PublishersHelper
     is_new = if publisher.bitflyer_locale?(I18n.locale)
       publisher.bitflyer_connection.blank?
     else
-      publisher.uphold_connection&.unconnected? && publisher.gemini_connection.blank?
+      publisher.uphold_connection&.unconnected?
     end
     is_new.present? && publisher.channels.size.zero?
   end

@@ -14,7 +14,7 @@ class Api::Nextv1::Connection::BitflyerConnectionsController < Api::Nextv1::Oaut
       render(json: {}, status: 200)
     else
       render(json: {errors: I18n.t(
-        "publishers.gemini_connections.destroy.error",
+        "publishers.bitflyer_connections.destroy.error",
         errors: bitflyer_connection.errors.full_messages.join(", ")
       )}, status: 417)
     end

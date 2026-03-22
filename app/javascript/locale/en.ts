@@ -10,7 +10,8 @@ export default {
   cancel: "Cancel",
   channels: "Channels",
   common: {
-    unexpectedError: "An unexpected error has occurred. Please try again later."
+    unexpectedError:
+      "An unexpected error has occurred. Please try again later.",
   },
   copyLink: "Copy Link",
   create: "Create",
@@ -26,26 +27,29 @@ export default {
   homepage: {
     referral: {
       confirmed: "CONFIRMED",
-      details: 'See details for the areas in each group',
+      details: "See details for the areas in each group",
       downloaded: "DOWNLOADED",
       installed: "INSTALLED",
       statement: "Check your statement for this period's payout.",
       title: "Referral Stats",
     },
     welcome: {
-      description: "To get started on earning through the Brave Creators system, here is a list of things we recommend setting up first.",
+      description:
+        "To get started on earning through the Brave Creators system, here is a list of things we recommend setting up first.",
       first: {
-        description: "Follow the instructions to verify that you're the rightful owner of properties.",
+        description:
+          "Follow the instructions to verify that you're the rightful owner of properties.",
         number: "1",
         title: "Add your websites or channels",
       },
       second: {
-        description: "To receive payments, your wallet accounts must be connected. Connect Gemini or Uphold for your desired payment options.",
+        description:
+          "To receive payments, your wallet accounts must be connected. Connect to Uphold for your desired payment options.",
         number: "2",
         title: "Connect wallet services",
       },
       title: "Welcome to Brave Creators",
-    }
+    },
   },
   installs: "Installs",
   makeMonthly: "Make this monthly",
@@ -58,7 +62,7 @@ export default {
     payments: "Payments",
     referrals: "Referrals",
     security: "Security",
-    settings: "Settings"
+    settings: "Settings",
   },
   notEnoughTokens: "Not enough tokens",
   off: " ",
@@ -73,13 +77,13 @@ export default {
       lastDeposit: "Last Deposit",
       manageFunds: "Manage Funds",
       notConnected: "Not connected",
-      title: "Deposit Account"
+      title: "Deposit Account",
     },
     header: {
       navigation: {
-        invoices: "Invoices"
+        invoices: "Invoices",
       },
-      title: "Payments"
+      title: "Payments",
     },
     history: {
       confirmedEarning: "Confirmed Earning (BAT)",
@@ -88,7 +92,7 @@ export default {
       paymentDate: "Payment Date",
       statement: "Statement",
       title: "Payment History",
-      totalDeposited: "Total Deposited"
+      totalDeposited: "Total Deposited",
     },
 
     invoices: {
@@ -107,12 +111,12 @@ export default {
           name: "File Name",
           time: "Date",
           title: "Files",
-          uploadedBy: "Uploaded By"
+          uploadedBy: "Uploaded By",
         },
         finalizedAmount: "Finalized Amount",
         paymentDate: "Payment Date",
         status: "Status",
-        title: "Brave Rewards"
+        title: "Brave Rewards",
       },
       status: "Status",
       title: "Invoices",
@@ -124,16 +128,16 @@ export default {
           "Submitting an invoice provides a paper trail for any potential disputes regarding referral code statistics, payout amount, or miscellaneous financial data.",
         invoice: "Supporting Documents",
         missing: "You must enter an amount.",
-        title: "Submit Invoice"
+        title: "Submit Invoice",
       },
-      uploadedBy: "Uploaded By"
+      uploadedBy: "Uploaded By",
     },
     overview: {
       confirmationMessage: "To be confirmed and posted on {date}",
       invoice: "Invoice",
       nextPaymentDate: "Next Payment Date",
-      paymentTotal: "Payment Total"
-    }
+      paymentTotal: "Payment Total",
+    },
   },
   referralCode: "Referral Code",
   referralCodes: "Referral Codes",
@@ -167,17 +171,19 @@ export default {
   settings: {
     contact: {
       edit: "Edit Contact",
-      email: 'Email',
-      error: "Unable to change email; the email address may be in use. Please enter a different email address.",
+      email: "Email",
+      error:
+        "Unable to change email; the email address may be in use. Please enter a different email address.",
       heading: "Contact",
-      name: 'Your Name',
-      pendingEmail: "Email address has been updated to: {email}. An email has been sent to this address to confirm this change.",
+      name: "Your Name",
+      pendingEmail:
+        "Email address has been updated to: {email}. An email has been sent to this address to confirm this change.",
     },
   },
   shared: {
     cancel: "Cancel",
     ok: "OK",
-    save: "Save"
+    save: "Save",
   },
   siteBanner: {
     addChannel: "+ Add User Name or Handle",
@@ -185,14 +191,16 @@ export default {
     batLocalized: "BAT",
     cancel: "Cancel",
     closeBanner: "Done",
-    defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
+    defaultDescription:
+      "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
     header: "Contribution Banner",
     links: "Links",
     linksPlaceholder: "Select a social media link",
     addSocialLink: "Add Social Link",
     linkErrorText: "Only one link to a platform is allowed",
     oneBannerHeader: "Use one banner for all channels?",
-    oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
+    oneBannerSubText:
+      "Your customized banner will be displayed on all of your channels.",
     previewButton: "Preview",
     resizeBackgroundImage: "Resize and position your cover image",
     resizeLogoLabel: "Resize and position your logo",
@@ -206,7 +214,7 @@ export default {
     twitchHint: "Twitch handle",
     twitterHint: "Twitter handle",
     update24Hours: "Your banner will be updated within 24 hours",
-    youtubeHint: "Youtube channel"
+    youtubeHint: "Youtube channel",
   },
   statements: {
     overview: {
@@ -227,7 +235,7 @@ export default {
           "* Note - these are the transactions which exist during this statement time period. Some transactions may have been on the pervious statement or rolled over to the next statement.",
         summary: "Summary",
         total: "Total",
-        type: "Type"
+        type: "Type",
       },
       download: "Download",
       earningPeriod: "Earning Period",
@@ -236,7 +244,8 @@ export default {
       paymentDate: "Payment Date",
       referralPromoEarnings: "Referral Promo Earnings",
       referrals: "Referrals",
-      referralsInfo: "The breakdown of regions for confirmations during this period. Some confirmations may appear on the previous statement or be rolled over to the next statement.",
+      referralsInfo:
+        "The breakdown of regions for confirmations during this period. Some confirmations may appear on the previous statement or be rolled over to the next statement.",
       statement: "Statement",
       title: "Statements",
       totalBraveSettled: "Total Brave Settled",
@@ -249,8 +258,8 @@ export default {
       },
       upholdCardLink: "https://uphold.com/dashboard/cards/{cardId}/activity",
       view: "View",
-      viewMore: "View More"
-    }
+      viewMore: "View More",
+    },
   },
   thirtyDay: "30-Day Use",
   tokens: "tokens",
@@ -260,32 +269,27 @@ export default {
     bitflyer: {
       connect: "Connect to bitFlyer",
       disconnect: "Disconnect",
-      notPayable: "To receive your payments, you'll need to verify your identity on bitFlyer.",
+      notPayable:
+        "To receive your payments, you'll need to verify your identity on bitFlyer.",
       title: "bitFlyer Account",
-
     },
     brave: {
-      description: "Connect a custodial account to receive BAT contributions and payouts.",
-      nonKycWarning: "Connect a custodial account to become a <em>verified creator</em>, and to begin receiving monthly payouts. You won’t be eligible for payouts until you connect a custodial account. <custodial_support_link>Learn more.</custodial_support_link>",
-      paymentFailedWarning: "We found an issue with the connection to your {custodian} account. Please check if there are any issues with your {custodian} account, and try connecting again.",
-      title: "Account for BAT Payment"
+      description:
+        "Connect a custodial account to receive BAT contributions and payouts.",
+      nonKycWarning:
+        "Connect a custodial account to become a <em>verified creator</em>, and to begin receiving monthly payouts. You won’t be eligible for payouts until you connect a custodial account. <custodial_support_link>Learn more.</custodial_support_link>",
+      paymentFailedWarning:
+        "We found an issue with the connection to your {custodian} account. Please check if there are any issues with your {custodian} account, and try connecting again.",
+      title: "Account for BAT Payment",
     },
     connected: "Connected",
     currencies: {
-      description: 'You will receive monthly contributions from your Brave fans in this currency in your account.',
-      fees: 'For currency choices other than BAT, This exchange will charge an exchange fee upon deposit. <a>Check fees</a>.',
-      title: 'Confirm your preferred deposit currency or token',
+      description:
+        "You will receive monthly contributions from your Brave fans in this currency in your account.",
+      fees: "For currency choices other than BAT, This exchange will charge an exchange fee upon deposit. <a>Check fees</a>.",
+      title: "Confirm your preferred deposit currency or token",
     },
     disconnect: "Disconnect",
-    gemini: {
-      connect: "Connect to Gemini",
-      disconnect: "Disconnect",
-      notPayable: "To receive your payments, you'll need to verify your identity on Gemini.",
-      reauthorizationNeeded: "Gemini is reporting to us that your account connection is out of date. This could be the result of changing your Gemini password or other changes on your Gemini account. Please try disconnecting and reconnecting your Gemini account.",
-      blocked_country: "It looks like you’re in an unsupported country for Brave Creators with Gemini, so your channels won’t appear as verified. However, once your country is supported, you’ll automatically become verified and be eligible to receive payouts to your Gemini account. <blocked_country_link>Learn more</blocked_country_link>.",
-      title: "Gemini Account",
-      duplicateAccount: "It looks like your Gemini account is already connected to another Brave Creators account. Please disconnect your Gemini account from any other Brave Creators accounts, and then try again."
-    },
     lastDeposit: "Last Deposit: <span>{value}</span>",
     lastDepositDate: "Last Deposit Date: <span>{value}</span>",
     title: "Account Services",
@@ -295,27 +299,36 @@ export default {
       connect: "Connect to Uphold",
       currency: {
         confirm: "Confirm",
-        fee_disclaimer: 'Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a>Check fees</a>',
+        fee_disclaimer:
+          "Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a>Check fees</a>",
         headline: "Confirm your preferred deposit currency or token",
-        intro: "You will receive monthly contributions from your Brave fans in this currency in your Uphold account.",
+        intro:
+          "You will receive monthly contributions from your Brave fans in this currency in your Uphold account.",
       },
       depositCurrency: "Deposit Currency: <span>{currency}</span>",
-      description: "Connect to Uphold to be able to receive contributions and other payments in BAT.",
+      description:
+        "Connect to Uphold to be able to receive contributions and other payments in BAT.",
       disconnect: {
         confirm: "Disconnect",
-        confirmation: "Are you sure you want to disconnect your account with Uphold?",
+        confirmation:
+          "Are you sure you want to disconnect your account with Uphold?",
         deny: "Cancel",
         headline: "Disconnect Uphold Account?",
-        intro: "You won't be able to receive the monthly contributions from your fans until your wallet at Uphold is connected to us."
+        intro:
+          "You won't be able to receive the monthly contributions from your fans until your wallet at Uphold is connected to us.",
       },
       status: {
         connecting: "Brave Creators is connecting to your Uphold account.",
-        nonMember: "To receive your payments, you'll need to verify your identity on Uphold.",
-        reauthorizationNeeded: "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
-        restrictedMember: "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
-        blocked_country: "It looks like you’re in an unsupported country for Brave Creators with Uphold, so your channels won’t appear as verified. However, once your country is supported, you’ll automatically become verified and be eligible to receive payouts to your Uphold account. <blocked_country_link>Learn more</blocked_country_link>.",
+        nonMember:
+          "To receive your payments, you'll need to verify your identity on Uphold.",
+        reauthorizationNeeded:
+          "Uphold is reporting to us that your account connection is out of date. This could be the result of changing your Uphold password or other changes on your Uphold account. Please try disconnecting and reconnecting your Uphold account.",
+        restrictedMember:
+          "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.",
+        blocked_country:
+          "It looks like you’re in an unsupported country for Brave Creators with Uphold, so your channels won’t appear as verified. However, once your country is supported, you’ll automatically become verified and be eligible to receive payouts to your Uphold account. <blocked_country_link>Learn more</blocked_country_link>.",
       },
-      title: "Uphold Account"
+      title: "Uphold Account",
     },
     verify: "Continue to Verify",
     addCryptoWidget: {
@@ -334,40 +347,47 @@ export default {
       notConnected: "Not Connected",
       channelPageLink: "View Channel Page",
       privacyHeader: "Privacy reminder",
-      privacyNotification: "Using the same crypto address for multiple channels will allow others to know that those channels all belong to you. If you don't want others to know, use a different crypto address for each of your channels.",
+      privacyNotification:
+        "Using the same crypto address for multiple channels will allow others to know that those channels all belong to you. If you don't want others to know, use a different crypto address for each of your channels.",
       privacyQuit: "Cancel",
       privacyContinue: "I understand and would like to continue",
-    }
+    },
   },
   publicChannelPage: {
-    privacyDisclaimer: "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted.",
-    trustWarning: "Make sure you trust this creator. Contributions made via this page go to ",
+    privacyDisclaimer:
+      "Please note that your contribution will be publicly visible as a transaction on the blockchain network you select, and cannot be deleted.",
+    trustWarning:
+      "Make sure you trust this creator. Contributions made via this page go to ",
     generateQR: "Generate QR Code",
     QRModalHeader: "Send from mobile wallets",
-    QRModalText: "You can send by scanning this QR code using a Web3 wallet from your mobile device.",
+    QRModalText:
+      "You can send by scanning this QR code using a Web3 wallet from your mobile device.",
     paymentHeading: "Show your love and send a token of your gratitude",
     paymentSubHeading: "Support your favorite creators",
     send: "Send",
     custom: "Custom",
-    usdc: 'USD Coin',
-    solUsdc: 'USDC on Solana',
+    usdc: "USD Coin",
+    solUsdc: "USDC on Solana",
     ethereumNetwork: "Ethereum Network",
     ethereumBATNetwork: "Basic Attention Token",
     solanaNetwork: "Solana Network",
-    usdcNetwork: 'USD Coin',
-    ethSubheading: 'ETH',
+    usdcNetwork: "USD Coin",
+    ethSubheading: "ETH",
     ethBatSubheading: "ERC-20 BAT",
-    solSubheading: 'SOL',
-    solBatSubheading: 'SPL-BAT (Wormhole)',
-    usdcSubheading: 'USDC',
-    solUsdcSubheading: 'USDC-SPL',
+    solSubheading: "SOL",
+    solBatSubheading: "SPL-BAT (Wormhole)",
+    usdcSubheading: "USDC",
+    solUsdcSubheading: "USDC-SPL",
     share: "Share your support",
     goBack: "Go back",
     thanks: "Thanks for supporting your favorite creators",
     hooray: "Hooray! {amount} sent",
-    successTweet: "I just sent some {symbol} to {name} via their Brave contribution page {url}! Want to receive {symbol} too? Sign up at https://creators.brave.com!",
-    QRBatText: "Scanning this QR code will give you the creator’s BAT address on {chain}.",
-    QRStandardText: "Scanning this QR code will give you the creator’s {chain} address.",
+    successTweet:
+      "I just sent some {symbol} to {name} via their Brave contribution page {url}! Want to receive {symbol} too? Sign up at https://creators.brave.com!",
+    QRBatText:
+      "Scanning this QR code will give you the creator’s BAT address on {chain}.",
+    QRStandardText:
+      "Scanning this QR code will give you the creator’s {chain} address.",
     ErrorTitle: "There was a problem sending your contribution",
     ErrorMsg: "Please try again.",
     insufficientBalance: "Insufficient balance",
@@ -375,33 +395,33 @@ export default {
     noEthMsg: "Connect an Ethereum wallet to send your contribution",
     noSolTitle: "No Solana wallet detected",
     noSolMsg: "Connect a Solana wallet to send your contribution",
-    ETH: 'Ethereum',
-    SOL: 'Solana',
+    ETH: "Ethereum",
+    SOL: "Solana",
     tryBraveHeader: "Try Brave Wallet",
     tryBraveSubheader: "Available only on Brave browser",
     tryBraveButton: "Try it out!",
     tryBraveBullet1: "Browser-native, inherently secure",
     tryBraveBullet2: "Native NFT support",
     tryBraveBullet3: "Multi-chain support",
-    tryBraveText: "It looks like you don't have an Ethereum or Solana wallet installed yet. You'll need one to create and manage your crypto addresses.",
-  }
+    tryBraveText:
+      "It looks like you don't have an Ethereum or Solana wallet installed yet. You'll need one to create and manage your crypto addresses.",
+  },
 };
 
-
-export const flattenMessages = ((nestedMessages, prefix = '') => {
+export const flattenMessages = (nestedMessages, prefix = "") => {
   if (nestedMessages === null) {
-    return {}
+    return {};
   }
   return Object.keys(nestedMessages).reduce((messages, key) => {
-    const value = nestedMessages[key]
-    const prefixedKey = prefix ? `${prefix}.${key}` : key
+    const value = nestedMessages[key];
+    const prefixedKey = prefix ? `${prefix}.${key}` : key;
 
-    if (typeof value === 'string') {
-      Object.assign(messages, { [prefixedKey]: value })
+    if (typeof value === "string") {
+      Object.assign(messages, { [prefixedKey]: value });
     } else {
-      Object.assign(messages, flattenMessages(value, prefixedKey))
+      Object.assign(messages, flattenMessages(value, prefixedKey));
     }
 
-    return messages
-  }, {})
-})
+    return messages;
+  }, {});
+};

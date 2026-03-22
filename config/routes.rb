@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   # oauth_controller base children
   get "publishers/bitflyer_connection/new", to: "payment/connection/bitflyer_connections#callback"
   get "publishers/uphold_verified", to: "payment/connection/uphold_connections#callback"
-  get "publishers/gemini_connection/new", to: "payment/connection/gemini_connections#callback"
 
   # This implements basic callback urls for initiating oauth flows.
   # It could endup being a base/abstract controller for any authorization code flow
@@ -29,7 +28,6 @@ Rails.application.routes.draw do
 
   # These routes are for connecting to 3rd-party payment providers.
   namespace :connection, module: "payment/connection" do
-    resource :gemini_connection
     resource :bitflyer_connection
     resource :uphold_connection, except: [:new]
   end
@@ -198,7 +196,6 @@ Rails.application.routes.draw do
       end
 
       namespace :connection do
-        resource :gemini_connection
         resource :bitflyer_connection
         resource :uphold_connection, except: [:new]
       end

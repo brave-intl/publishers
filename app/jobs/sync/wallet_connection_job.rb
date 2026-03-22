@@ -5,8 +5,6 @@ class Sync::WalletConnectionJob < ApplicationJob
     case klass_name
     when "UpholdConnection"
       klass = UpholdConnection
-    when "GeminiConnection"
-      klass = GeminiConnection
     when "BitflyerConnection"
       klass = BitflyerConnection
     else

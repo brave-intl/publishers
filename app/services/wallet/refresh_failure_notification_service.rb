@@ -14,7 +14,7 @@ class Wallet::RefreshFailureNotificationService < BuilderBaseService
     result = connection.refresh_authorization!
 
     case result
-    when UpholdConnection, BitflyerConnection, GeminiConnection
+    when UpholdConnection, BitflyerConnection
       pass([result])
     when BFailure
       result

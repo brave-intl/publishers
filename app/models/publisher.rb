@@ -18,7 +18,6 @@ class Publisher < ApplicationRecord
   BROWSER_USER = "browser_user".freeze
 
   UPHOLD_CONNECTION = UpholdConnection.to_s
-  GEMINI_CONNECTION = GeminiConnection.to_s
   BITFLYER_CONNECTION = BitflyerConnection.to_s
   MAX_SUSPENSIONS = 2
 
@@ -54,7 +53,6 @@ class Publisher < ApplicationRecord
   belongs_to :selected_wallet_provider, polymorphic: true
 
   has_one :uphold_connection
-  has_one :gemini_connection
   has_one :bitflyer_connection
 
   belongs_to :created_by, class_name: "Publisher"
@@ -126,7 +124,7 @@ class Publisher < ApplicationRecord
   }
 
   # We could remove the `country is null` if we change all affected creators to an
-  # unknown country. This applies exclusively to Uphold and not Gemini
+  # unknown country. This applies exclusively to Uphold
   scope :valid_payable_uphold_creators, -> {
     uphold_selected_provider
       .merge(UpholdConnection.payable)
@@ -152,23 +150,6 @@ class Publisher < ApplicationRecord
   scope :valid_payable_bitflyer_creators, -> {
     bitflyer_selected_provider
       .merge(BitflyerConnection.payable)
-  }
-
-  ###############################
-  #
-  # Gemini scopes
-  #
-  ###############################
-
-  scope :gemini_selected_provider, -> {
-    joins(:gemini_connection)
-      .where("gemini_connections.id = publishers.selected_wallet_provider_id
-           AND publishers.selected_wallet_provider_type = '#{GeminiConnection}'")
-  }
-
-  scope :valid_payable_gemini_creators, -> {
-    gemini_selected_provider
-      .merge(GeminiConnection.payable)
   }
 
   store_accessor :feature_flags, VALID_FEATURE_FLAGS
@@ -501,7 +482,6 @@ class Publisher < ApplicationRecord
   # Returns true
   def set_default_features
     feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
-    feature_flags[UserFeatureFlags::GEMINI_ENABLED] = true
   end
 
   def set_created_status

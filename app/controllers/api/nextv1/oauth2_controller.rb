@@ -85,8 +85,6 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
     provider = permitted_params.fetch(:provider)
 
     case provider
-    when "gemini"
-      @klass = GeminiConnection
     when "uphold"
       @klass = UpholdConnection
     when "bitflyer"

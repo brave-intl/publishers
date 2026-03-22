@@ -27,23 +27,12 @@ export default function CustodianConnectModal({}) {
 
   // Since japanese accounts are limited to bitflyer, translation isn't a concern here. If we add other languages, we might need to revisit this.
   useEffect(() => {
-    const unsupportedProvider = [];
-    // hard code gemini to us
-    if (
-      allowedRegions.uphold.allow.includes(selectedCountry) &&
-      ['US'].includes(selectedCountry)
-    ) {
+    if (allowedRegions.uphold.allow.includes(selectedCountry)) {
       setUnsupportedCountry(false);
     } else {
       setUnsupportedCountry(true);
-      !allowedRegions.uphold.allow.includes(selectedCountry) &&
-        unsupportedProvider.push('Uphold');
-      // hard code gemini to the us
-      !['US'].includes(selectedCountry) && unsupportedProvider.push('Gemini');
-
       setUnsupportedCountryMsg(
         t('Home.account.wrong_region', {
-          provider: unsupportedProvider.join(' and '),
           region: selectedCountryLabel,
         }),
       );
@@ -113,15 +102,6 @@ export default function CustodianConnectModal({}) {
               slot='icon-before'
             />
             {t('Home.account.uphold_connect')}
-            <Icon name='launch' slot='icon-after' />
-          </Button>
-          <Button onClick={() => redirectToAuthUrl('gemini')} kind='outline'>
-            <Icon
-              className='color-tertiary'
-              name='gemini-color'
-              slot='icon-before'
-            />
-            {t('Home.account.gemini_connect')}
             <Icon name='launch' slot='icon-after' />
           </Button>
           {unsupportedCountry && (

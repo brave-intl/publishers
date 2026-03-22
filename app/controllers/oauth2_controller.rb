@@ -147,8 +147,6 @@ class Oauth2Controller < ApplicationController
     provider = permitted_params.fetch(:provider)
 
     case provider
-    when "gemini"
-      @klass = GeminiConnection
     when "uphold"
       @klass = UpholdConnection
     when "bitflyer"
