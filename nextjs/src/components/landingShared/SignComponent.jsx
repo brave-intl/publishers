@@ -135,7 +135,7 @@ export default function SignComponent({
           <SentEmail confetti={confetti} tryAgain={tryAgain} words={words} />
         ) : (
           <div className='mt-[80px]'>
-            <div className={`${styles['box']} flex-center w-[540px] flex-col`}>
+            <div className={`${styles['box']} flex-center max-w-[540px] flex-col`}>
               <h2 className={`${styles['sign-title']} m-[12px]`}>{heading}</h2>
               <div className='mb-[50px] text-center text-[18px] text-white/80'>
                 {subhead}
