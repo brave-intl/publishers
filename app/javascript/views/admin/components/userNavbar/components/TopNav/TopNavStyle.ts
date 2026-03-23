@@ -52,7 +52,7 @@ export const NavGroup = styled.div`
 interface INavProps {
   selected: boolean;
 }
-export const Nav = styled.div`
+export const Nav = styled.div<Partial<INavProps>>`
   display: flex;
   align-items: center;
   height: 80px;
@@ -86,7 +86,7 @@ export const Link = styled.a`
 interface IStatusProps {
   status: string;
 }
-export const Status = styled.div`
+export const Status = styled.div<Partial<IStatusProps>>`
   border-radius: 6px;
   background-color: #2dbd4e;
   color: white;
@@ -162,7 +162,7 @@ export const DropdownGroup = styled.div`
 interface IDropdownMenuProps {
   open: boolean;
 }
-export const DropdownMenu = styled.div`
+export const DropdownMenu = styled.div<Partial<IDropdownMenuProps>>`
   position: absolute;
   background-color: white;
   top: 50px;

@@ -9,11 +9,7 @@
     "sourceMap": true,
     "target": "es5",
     "jsx": "react",
-    "noEmit": true,
-    "paths": {
-      "brave-ui": ["./node_modules/brave-ui/src"],
-      "brave-ui/*": ["./node_modules/brave-ui/src/*"]
-    }
+    "noEmit": true
   },
   "files": ["custom.d.ts"],
   "include": ["app/javascript/**/*"],

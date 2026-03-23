@@ -17,8 +17,6 @@
     "GHSA-xvch-5gv4-984h|minimist",
     "GHSA-wc69-rhjr-hc9g|moment",
     "GHSA-8hfj-j24r-96c4|moment",
-    "GHSA-w7rc-rwvf-8q5r|brave-ui>styled-components>fbjs>isomorphic-fetch>node-fetch",
-    "GHSA-r683-j2x4-v87g|brave-ui>styled-components>fbjs>isomorphic-fetch>node-fetch",
     "GHSA-r8f7-9pfq-mjmv|node-sass",
     "GHSA-r8f7-9pfq-mjmv|@rails/webpacker>sass-loader>node-sass",
     "GHSA-rp65-9cf3-cjxr|@rails/webpacker>optimize-css-assets-webpack-plugin>cssnano>cssnano-preset-default>postcss-svgo>svgo>css-select>nth-check",
