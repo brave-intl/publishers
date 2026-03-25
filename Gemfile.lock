@@ -627,7 +627,7 @@ GEM
     semantic_range (3.1.1)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
-    shakapacker (9.6.1)
+    shakapacker (9.7.0)
       activesupport (>= 5.2)
       package_json
       rack-proxy (>= 0.6.1)
@@ -873,7 +873,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver (~> 4.4)
   sendgrid-ruby (~> 6.7)
-  shakapacker (= 9.6.1)
+  shakapacker (= 9.7.0)
   sidekiq (~> 8.1.0)
   sidekiq-scheduler (~> 6.0.0)
   sidekiq-throttled (~> 2.1.0)
