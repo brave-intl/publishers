@@ -60,7 +60,9 @@ class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseControl
     chain = params[:chain]
     current_channel = current_publisher.channels.find(params[:channel_id])
 
-    success = replace_crypto_address_for_channel(account_address, chain, current_channel)
+    existing_address = CryptoAddress.where(publisher: current_publisher, address: account_address, chain: chain, verified: true).first
+
+    success = existing_address && replace_crypto_address_for_channel(account_address, chain, current_channel)
 
     if success
       render(json: {crypto_address_for_channel: success}, status: 200)

@@ -14,7 +14,7 @@
             <%= image_tag("built-with-bat-pill.svg", alt: t('landing.nav.logo_alt')) %>
           </a>
         </div>
-        <div class="box flex-row" style="gap: 48px;">
+        <div class="box flex-row" style="gap: 48px;margin-left: auto;">
           <a href="/sign-up" class="landing-nav-link" aria-label="<%= t('landing.nav.signup_aria') %>">
             <%= t('landing.nav.signup') %>
           </a>
@@ -233,14 +233,14 @@
 
     <!-- Signoff Section -->
     <div class="box flex-col">
-      <div class="box w-full flex-col" style="max-width: 1200px; padding: 48px;">
-        <div class="box flex-col" style="padding: 0 48px;">
+      <div class="box w-full flex-col" style="max-width: 1200px">
+        <div class="box flex-col">
           <h4 class="signoff-heading">
             <%= t('landing.signoff.headline_html', count: number_with_delimiter(@verified_channels_count)) %>
           </h4>
           <div class="box flex-col" style="padding: 24px;">
-            <%= image_tag("creator-logos-wide.webp", class: "hidden-mobile", style: "flex: 1 1 0%; overflow: hidden; object-fit: contain;") %>
-            <%= image_tag("creator-logos-mobile.webp", class: "show-mobile") %>
+            <%= image_tag("creator-logos-wide.webp", class: "hidden-ipad", style: "flex: 1 1 0%; overflow: hidden; object-fit: contain;") %>
+            <%= image_tag("creator-logos-mobile.webp", class: "show-ipad") %>
           </div>
         </div>
         <a class="primary-button" href="/sign-up" style="margin: 48px auto;">

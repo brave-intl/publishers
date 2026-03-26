@@ -1,7 +1,7 @@
 # Note: You must restart bin/webpacker-dev-server for changes to take effect
 
 default: &default
-#  source_path: app/javascript
+  #  source_path: app/javascript
 
   # You can have a subdirectory of the source_path, like 'packs' (recommended).
   # Alternatively, you can use '/' to use the whole source_path directory.
@@ -24,8 +24,8 @@ default: &default
   css_extract_ignore_order_warnings: false
 
   public_root_path: public
-#  public_output_path: packs
-#  cache_path: tmp/webpacker
+  #  public_output_path: packs
+  #  cache_path: tmp/webpacker
   shakapacker_compile_output: true
   # See https://github.com/shakacode/shakapacker#deployment
   shakapacker_precompile: true
@@ -35,9 +35,6 @@ default: &default
 
   # Additional paths webpack should look up modules
   # ['app/assets', 'engine/foo/app/assets']
-  additional_paths: [
-    './node_modules/brave-ui/src'
-  ]
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
@@ -60,7 +57,7 @@ default: &default
     - .jpg
 
   # Select loader to use, available options are 'babel' (default), 'swc' or 'esbuild'
-  shakapacker_loader: 'babel'
+  shakapacker_loader: "babel"
 
   # Set to true to enable check for matching versions of shakapacker gem and NPM package - will raise an error if there is a mismatch or wildcard versioning is used
   ensure_consistent_versioning: true
@@ -108,14 +105,14 @@ development:
     use_local_ip: false
     quiet: false
     # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
-    allowed_hosts: 'all'
+    allowed_hosts: "all"
     # Shows progress and colorizes output of bin/webpacker[-dev-server]
     pretty: true
     headers:
-      'Access-Control-Allow-Origin': '*'
+      "Access-Control-Allow-Origin": "*"
     static:
       watch:
-        ignored: '/node_modules/'
+        ignored: "/node_modules/"
 
 test:
   <<: *default
