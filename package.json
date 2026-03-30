@@ -136,7 +136,8 @@
     "nth-check": "3.0.1",
     "postcss": "8.5.8",
     "@types/react": "16.14.69",
-    "@types/styled-components": "5.1.36"
+    "@types/styled-components": "5.1.36",
+    "picomatch": "4.0.4"
   },
   "browserslist": [
     "defaults"
