@@ -43,7 +43,7 @@
   "devDependencies": {
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
-    "@faker-js/faker": "10.3.0",
+    "@faker-js/faker": "10.4.0",
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
