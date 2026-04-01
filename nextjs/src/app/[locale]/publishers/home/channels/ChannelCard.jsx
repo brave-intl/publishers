@@ -29,7 +29,6 @@ export default function ChannelCard({
   const {
     setBitflyerConnection,
     setUpholdConnection,
-    setGeminiConnection,
     setAllowedRegions,
   } = useContext(CustodianConnectionContext);
 
@@ -39,13 +38,7 @@ export default function ChannelCard({
   useEffect(() => {
     setBitflyerConnection(custodianData.bitflyer_connection);
     setUpholdConnection(custodianData.uphold_connection);
-    setGeminiConnection(custodianData.gemini_connection);
-
-    setHasCustodian(
-      custodianData.bitflyer_connection ||
-        custodianData.uphold_connection ||
-        custodianData.gemini_connection,
-    );
+    setHasCustodian(custodianData.bitflyer_connection || custodianData.uphold_connection);
     setAllowedRegions(custodianData.allowed_regions);
   }, []);
 

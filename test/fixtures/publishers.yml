@@ -10,7 +10,7 @@ default: &default
   agreed_to_tos: "<%= 1.day.ago %>"
   last_sign_in_ip: "192.168.1.1"
   current_sign_in_ip: "192.168.1.1"
-  feature_flags: <%= { UserFeatureFlags::GEMINI_ENABLED => true, UserFeatureFlags::P2P_ENABLED => true }.to_json %>
+  feature_flags: <%= { UserFeatureFlags::P2P_ENABLED => true }.to_json %>
 
 verified:
   <<: *default
@@ -34,7 +34,7 @@ verified_blocked_country_gemini:
   default_site_banner_mode: true
   email: "AQ@verified.org"
   name: "AQ the Verified"
-  selected_wallet_provider: gemini_blocked_country_connection (GeminiConnection)
+  selected_wallet_provider: gemini_blocked_country_connection (UpholdConnection)
 
 notes:
   <<: *default
@@ -91,8 +91,8 @@ top_referrer_gemini:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
-  selected_wallet_provider: top_referrer_gemini_connected (GeminiConnection)
-  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true,  UserFeatureFlags::GEMINI_ENABLED => true }.to_json %>
+  selected_wallet_provider: top_referrer_gemini_connected (UpholdConnection)
+  feature_flags: <%= { UserFeatureFlags::REFERRAL_ENABLED_OVERRIDE => true }.to_json %>
 
 top_referrer_bitflyer:
   name: "Bitflyer Top Referrer Completed"
@@ -121,7 +121,7 @@ gemini_completed:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
-  selected_wallet_provider: connection_with_token (GeminiConnection)
+  selected_wallet_provider: connection_with_token (UpholdConnection)
 
 gemini_in_japan:
   email: "gemini_in_japan@completed.org"
@@ -130,7 +130,7 @@ gemini_in_japan:
   agreed_to_tos: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= DateTime.now %>"
   subscribed_to_marketing_emails: true
-  selected_wallet_provider: gemini_in_japan_connection (GeminiConnection)
+  selected_wallet_provider: gemini_in_japan_connection (UpholdConnection)
 
 gemini_not_completed:
   email: "gemini_not@completed.org"

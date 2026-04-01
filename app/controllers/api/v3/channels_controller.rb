@@ -15,7 +15,7 @@ class Api::V3::ChannelsController < Api::BaseController
 
       wallet = publisher.selected_wallet_provider
       response[channel_obj[:channel_identifier]] = case wallet
-      when GeminiConnection, UpholdConnection
+      when UpholdConnection
         wallet.valid_country?
       when BitflyerConnection
         wallet.present?

@@ -11,7 +11,6 @@ require "webmock/minitest"
 require "sidekiq/testing"
 require "test_helpers/service_class_helpers"
 require "test_helpers/mock_uphold_responses"
-require "test_helpers/mock_gemini_responses"
 require "test_helpers/mock_oauth2_responses"
 require "test_helpers/mock_bitflyer_responses"
 require "test_helpers/mock_rewards_responses"
@@ -75,7 +74,6 @@ module ActionDispatch
     include ServiceClassHelpers
     include MockUpholdResponses
     include MockBitflyerResponses
-    include MockGeminiResponses
     include MockOauth2Responses
     include SignInHelpers
     include Devise::Test::IntegrationHelpers
@@ -101,7 +99,6 @@ module ActionDispatch
     include ServiceClassHelpers
     include MockUpholdResponses
     include MockBitflyerResponses
-    include MockGeminiResponses
     include MockOauth2Responses
     include SignInHelpers
 

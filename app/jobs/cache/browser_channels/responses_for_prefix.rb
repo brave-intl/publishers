@@ -9,7 +9,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
   PADDING_WORD = "P".freeze
   BITFLYER_CONNECTION = "BitflyerConnection".freeze
   UPHOLD_CONNECTION = "UpholdConnection".freeze
-  GEMINI_CONNECTION = "GeminiConnection".freeze
 
   attr_accessor :site_banner_lookups, :temp_file
 
@@ -27,7 +26,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     channel_responses = PublishersPb::ChannelResponseList.new
 
-    @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection, :gemini_connection]).each do |site_banner_lookup|
+    @site_banner_lookups.includes(publisher: [:uphold_connection, :bitflyer_connection]).each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
       payable = site_banner_lookup.publisher.brave_payable?
@@ -62,20 +61,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
           wallet.bitflyer_wallet = bitflyer_wallet
           channel_response.wallets.push(wallet)
         end
-        if site_banner_lookup.publisher.selected_wallet_provider_type == GEMINI_CONNECTION && site_banner_lookup.publisher.gemini_connection.present?
-          wallet = PublishersPb::Wallet.new
-          gemini_wallet = PublishersPb::GeminiWallet.new
-          connection = site_banner_lookup.publisher.gemini_connection
-          gemini_wallet.wallet_state = get_gemini_wallet_state(gemini_connection: connection)
-
-          if connection.valid_country?
-            gemini_address = site_banner_lookup.channel&.gemini_connection&.recipient_id || ""
-            gemini_wallet.address = payable ? (gemini_address || "") : ""
-          end
-
-          wallet.gemini_wallet = gemini_wallet
-          channel_response.wallets.push(wallet)
-        end
       rescue => e
         LogException.perform(e)
       end
@@ -106,14 +91,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def get_bitflyer_wallet_state(bitflyer_connection:)
     PublishersPb::BitflyerWalletState::BITFLYER_ACCOUNT_KYC
-  end
-
-  def get_gemini_wallet_state(gemini_connection:)
-    if gemini_connection.payable?
-      PublishersPb::GeminiWalletState::GEMINI_ACCOUNT_KYC
-    else
-      PublishersPb::GeminiWalletState::GEMINI_ACCOUNT_NO_KYC
-    end
   end
 
   def cleanup!

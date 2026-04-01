@@ -29,8 +29,6 @@ export default function CustodianServiceWidget({}) {
     setBitflyerConnection,
     upholdConnection,
     setUpholdConnection,
-    geminiConnection,
-    setGeminiConnection,
   } = useContext(CustodianConnectionContext);
   const { setHasCustodian } = useContext(ChannelCardContext);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -38,13 +36,11 @@ export default function CustodianServiceWidget({}) {
     useState(false);
 
   const providerUpdaters = {
-    gemini: setGeminiConnection,
     uphold: setUpholdConnection,
     bitflyer: setBitflyerConnection,
   };
 
   const providerWebsites = {
-    gemini: 'https://exchange.gemini.com/',
     uphold: 'https://wallet.uphold.com/',
     bitflyer: 'https://bitflyer.com/',
   };
@@ -68,18 +64,6 @@ export default function CustodianServiceWidget({}) {
     setIsCustodianConnectModalOpen(true);
   }
 
-  function providerIcon(provider) {
-    if (provider === 'gemini') {
-      return (
-        <Icon>
-          <Image src='/images/gemini-color.svg' width='24' height='24' />
-        </Icon>
-      );
-    } else {
-      return <Icon name={`${provider}-color`} />;
-    }
-  }
-
   function showConnected(provider) {
     return (
       <section>
@@ -91,7 +75,7 @@ export default function CustodianServiceWidget({}) {
         >
           <div className='flex items-center'>
             <span className='inline-block align-middle'>
-              {providerIcon(provider)}
+              <Icon name={`${provider}-color`} />
             </span>
             <span className='inline-block px-1 align-middle'>
               {t(`shared.${provider}`)}
@@ -170,8 +154,6 @@ export default function CustodianServiceWidget({}) {
     return showConnected('bitflyer');
   } else if (upholdConnection && upholdConnection.uphold_id) {
     return showConnected('uphold');
-  } else if (geminiConnection && geminiConnection.display_name) {
-    return showConnected('gemini');
   } else {
     return showUnconnected();
   }

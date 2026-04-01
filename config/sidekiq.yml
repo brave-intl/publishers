@@ -65,9 +65,5 @@
       cron: "0 0 * * *"
       description: "Refresh n expired wallet connections per interval at a rate of r requests/min"
       queue: scheduler
-    GeminiRefreshJob:
-      cron: "0 2 * * *"
-      description: "Refresh n expired wallet connections per interval at a rate of r requests/min"
-      queue: scheduler
 
 :verbose: true
