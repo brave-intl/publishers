@@ -9,7 +9,7 @@ gem "rails", rails_version
 gem "rails-html-sanitizer", "1.7.0"
 gem "railties", rails_version
 
-gem "rack", "3.2.5"
+gem "rack", "3.2.6"
 
 # All things countries
 gem "countries"
