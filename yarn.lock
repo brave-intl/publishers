@@ -3810,10 +3810,10 @@ jest-regex-util@30.0.1:
   resolved "https://registry.yarnpkg.com/jest-regex-util/-/jest-regex-util-30.0.1.tgz#f17c1de3958b67dfe485354f5a10093298f2a49b"
   integrity sha512-jHEQgBXAgc+Gh4g0p3bCevgRCVRkB4VB70zhoAE48gxeSr1hfUOsM/C2WoJgVL7Eyg//hudYENbm3Ne+/dRVVA==
 
-jest-styled-components@7.3.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-7.3.1.tgz#6549264645f644c66ce99743f0bfbdccc53da18c"
-  integrity sha512-8OYbo22jGvTM15K/A40pchLtLPifZVYUQiUMRsk/i0nGXz5jN3TYoip7MGyoVOUtTPNfeFnVzeJaeov4jcFCZQ==
+jest-styled-components@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-7.4.0.tgz#d9f7c67ca30a077005c398329c01f6964340bda5"
+  integrity sha512-VUkStCEG3ewwBTADMT9VyrZ5Pi5oPAzufcafyK6zREFeMv0fcU2LdYFpM5RZm78IrU+Fi6DhD+NVeiurVe3LKQ==
   dependencies:
     "@adobe/css-tools" "^4.4.0"
 
