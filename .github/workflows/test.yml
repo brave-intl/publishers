@@ -57,7 +57,7 @@ jobs:
       - name: Yarn install
         run: yarn --frozen-lockfile
       - name: NewUI install
-        run: cd nextjs && npm install
+        run: cd nextjs && npm ci
         env:
           process.env.CI: false
       - name: NewUI build
