@@ -21,7 +21,7 @@ gem "active_model_serializers", "~> 0.10"
 gem "activerecord-import", "~> 2.2.0"
 
 # Allowing for URI templates, for HTTP clients
-gem "addressable", "~> 2.8"
+gem "addressable", "~> 2.9"
 
 # For analytics
 gem "active_analytics"
