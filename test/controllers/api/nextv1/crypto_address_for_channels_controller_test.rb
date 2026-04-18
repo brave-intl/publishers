@@ -144,4 +144,37 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
 
     assert_equal true, Util::CryptoUtils.verify_ethereum_address(signature, address, message, @publisher)
   end
+
+  # -------------------------------------------------------------------
+  # Security regression: attaching a wallet to an unverified channel must
+  # be rejected so that the public contribution page cannot be spoofed.
+  # -------------------------------------------------------------------
+
+  test "should reject wallet attachment to an unverified channel" do
+    unverified_publisher = publishers(:default)
+    unverified_channel = channels(:default)
+    sign_out @publisher
+    sign_in unverified_publisher
+
+    assert_equal false, unverified_channel.verified?, "precondition: fixture channel must be unverified"
+
+    nonce = "test-nonce-#{SecureRandom.uuid}"
+    Rails.cache.write(nonce, unverified_publisher.id)
+    csrf_token = get_csrf_token
+
+    Util::CryptoUtils.stubs(:verify_ethereum_address).returns(true)
+
+    post "/api/nextv1/channels/#{unverified_channel.id}/crypto_address_for_channels",
+      params: {
+        chain: "ETH",
+        account_address: "0xE35fF99536f3B122aa1B9cDed8E090232831C93f",
+        message: nonce,
+        transaction_signature: "0x00"
+      },
+      headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => csrf_token}
+
+    assert_response :unprocessable_entity,
+      "Wallet attachment must be rejected for unverified channels (got #{response.status})"
+    assert_includes JSON.parse(response.body)["errors"].to_s, "verified"
+  end
 end

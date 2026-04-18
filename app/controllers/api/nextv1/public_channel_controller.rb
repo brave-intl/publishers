@@ -7,8 +7,11 @@ class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
     channel_title = channel&.publication_title
     crypto_addresses = channel&.crypto_addresses&.pluck(:address, :chain)
 
-    # Handle the case when the resource is not found
-    if channel.nil? || crypto_addresses&.empty?
+    # Handle the case when the resource is not found or not yet verified.
+    # Returning data for unverified channels would allow any publisher to
+    # publish a spoofed contribution page (with an attacker-controlled wallet)
+    # for a domain they do not yet own.
+    if channel.nil? || !channel.verified? || crypto_addresses&.empty?
       return render json: {}, status: 404
     end
 
