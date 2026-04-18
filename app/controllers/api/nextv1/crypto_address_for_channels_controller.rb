@@ -22,6 +22,10 @@ class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseControl
     current_channel = current_publisher.channels.find(params[:channel_id])
     @errors = []
 
+    unless current_channel.verified?
+      return render(json: {errors: ["channel must be verified before attaching a wallet"]}, status: :unprocessable_entity)
+    end
+
     # check that the message is a valid nonce and delete after use
     valid_message = if Rails.cache.read(message) == current_publisher.id
       !!Rails.cache.delete(message)
