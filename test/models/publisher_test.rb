@@ -471,10 +471,10 @@ class PublisherTest < ActiveSupport::TestCase
     end
 
     describe "when the publisher does not have the selected_wallet_provider" do
-      let(:publisher) { publishers(:gemini_completed) }
+      let(:publisher) { publishers(:bitflyer_pub) }
 
       it "is the right kind" do
-        assert publisher.selected_wallet_provider.class, GeminiConnection
+        assert publisher.selected_wallet_provider.class, BitflyerConnection
       end
     end
   end

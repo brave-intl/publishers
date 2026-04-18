@@ -26,12 +26,12 @@
     "@github/webauthn-json": "^2.1.1",
     "@solana/spl-token": "^0.1.8",
     "@solana/web3.js": "^1.95.8",
-    "axios": "1.13.6",
+    "axios": "1.15.0",
     "bs58": "6.0.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
-    "next": "^16.1.7",
-    "next-intl": "^4.7.0",
+    "next": "^16.2.3",
+    "next-intl": "^4.9.1",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,19 +43,19 @@
   "devDependencies": {
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
-    "@faker-js/faker": "10.3.0",
+    "@faker-js/faker": "10.4.0",
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@types/react": "18.3.28",
-    "@typescript-eslint/eslint-plugin": "8.57.1",
-    "@typescript-eslint/parser": "8.57.1",
+    "@typescript-eslint/eslint-plugin": "8.58.1",
+    "@typescript-eslint/parser": "8.58.1",
     "autoprefixer": "10.4.27",
-    "eslint": "10.0.3",
-    "eslint-config-next": "16.1.7",
+    "eslint": "10.2.0",
+    "eslint-config-next": "16.2.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "eslint-plugin-simple-import-sort": "12.1.1",
+    "eslint-plugin-simple-import-sort": "13.0.0",
     "eslint-plugin-unused-imports": "4.4.1",
     "express": "5.2.1",
     "http-proxy": "1.18.1",
@@ -66,11 +66,11 @@
     "miragejs": "0.1.48",
     "next-router-mock": "^1.0.5",
     "patch-package": "8.0.1",
-    "postcss": "8.5.8",
+    "postcss": "8.5.9",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "0.7.2",
     "selfsigned": "5.5.0",
-    "stylelint": "17.4.0",
+    "stylelint": "17.6.0",
     "stylelint-config-clean-order": "8.0.1",
     "stylelint-config-standard": "40.0.0",
     "stylelint-order": "^8.0.0",
@@ -79,7 +79,7 @@
     "typescript": "5.9.3"
   },
   "overrides": {
-    "minimatch": "10.2.4"
+    "minimatch": "10.2.5"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -91,7 +91,7 @@
     ]
   },
   "engines": {
-    "node": "24.14.0",
+    "node": "24.14.1",
     "yarn": "please use NPM"
   }
 }

@@ -31,15 +31,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :wallet_state, :enum, 1, "publishers_pb.BitflyerWalletState"
       optional :address, :string, 2
     end
-    add_message "publishers_pb.GeminiWallet" do
-      optional :wallet_state, :enum, 1, "publishers_pb.GeminiWalletState"
-      optional :address, :string, 2
-    end
     add_message "publishers_pb.Wallet" do
       oneof :provider do
         optional :uphold_wallet, :message, 1, "publishers_pb.UpholdWallet"
         optional :bitflyer_wallet, :message, 3, "publishers_pb.BitflyerWallet"
-        optional :gemini_wallet, :message, 4, "publishers_pb.GeminiWallet"
       end
     end
     add_message "publishers_pb.ChannelResponse" do
@@ -58,10 +53,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :BITFLYER_ACCOUNT_NO_KYC, 0
       value :BITFLYER_ACCOUNT_KYC, 1
     end
-    add_enum "publishers_pb.GeminiWalletState" do
-      value :GEMINI_ACCOUNT_NO_KYC, 0
-      value :GEMINI_ACCOUNT_KYC, 1
-    end
   end
 end
 
@@ -70,11 +61,9 @@ module PublishersPb
   SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
   UpholdWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWallet").msgclass
   BitflyerWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWallet").msgclass
-  GeminiWallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.GeminiWallet").msgclass
   Wallet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.Wallet").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
   ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
   UpholdWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.UpholdWalletState").enummodule
   BitflyerWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.BitflyerWalletState").enummodule
-  GeminiWalletState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.GeminiWalletState").enummodule
 end

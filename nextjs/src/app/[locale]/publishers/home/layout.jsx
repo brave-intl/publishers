@@ -6,7 +6,8 @@ export function generateStaticParams() {
 }
 
 // Look at @/constant/config to change them
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const {locale} = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
   return {
     title: t('dashboard'),

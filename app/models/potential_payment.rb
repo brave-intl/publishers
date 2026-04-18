@@ -6,7 +6,7 @@ class PotentialPayment < ApplicationRecord
   MANUAL = "manual".freeze
 
   # valid wallet_providers
-  enum :wallet_provider, {uphold: 0, paypal: 1, gemini: 2, bitflyer: 3}
+  enum :wallet_provider, {uphold: 0, paypal: 1, bitflyer: 2}
 
   belongs_to :payout_report
   belongs_to :publisher
@@ -17,17 +17,14 @@ class PotentialPayment < ApplicationRecord
   validate :channel_id_not_present_for_referral_payment, if: -> { kind == REFERRAL }
   validate :publisher_id_unique_for_referral_payments
 
-  validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, in: [true, false], unless: -> { wallet_provider == "paypal" || wallet_provider == "gemini" || wallet_provider == "bitflyer" }
+  validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, in: [true, false], unless: -> { wallet_provider == "paypal" || wallet_provider == "bitflyer" }
 
   scope :uphold_kyc, -> {
     where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false)
   }
-  scope :gemini_kyc, -> {
-    where(gemini_is_verified: true)
-  }
 
   scope :to_be_paid, -> {
-    uphold_kyc.or(gemini_kyc)
+    uphold_kyc
       .where("amount::numeric > ?", 0)
       .where.not(address: "")
       .where.not(address: nil)

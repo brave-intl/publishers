@@ -29,6 +29,10 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
       return render json: {}, status: 404
     end
 
+    unless current_channel.verified?
+      return render json: {errors: "channel must be verified before customizing the contribution page"}, status: :unprocessable_entity
+    end
+
     permitted_params = params.permit(
       :contribution_page,
       :publicName,

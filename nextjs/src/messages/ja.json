@@ -202,7 +202,6 @@
     "open": "開く",
     "disconnect": "切断",
     "uphold": "Uphold",
-    "gemini": "Gemini",
     "bitflyer": "bitFlyer",
     "dismiss": "取消",
     "learn_more": "詳細はこちら",
@@ -293,10 +292,9 @@
       "connect_prompt": "アカウントを接続して、BATの寄付を受け取りましょう。国を選択すると、利用可能なアカウント・プロバイダーの一覧が表示されます。",
       "country_disclaimer": "各月の支払いを受け取るには、カストディアル・アカウントの接続が必要です。",
       "custodial_select_heading": "接続可能なカストディアル・アカウント",
-      "gemini_connect": "Geminiに接続",
       "uphold_connect": "Upholdに接続",
       "bitflyer_connect": "bitFlyerに接続",
-      "wrong_region": "{region}では{provider}アカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。"
+      "wrong_region": "{region}では Uphold アカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。"
     },
     "channels": {
       "verified": "認証済みと表示",

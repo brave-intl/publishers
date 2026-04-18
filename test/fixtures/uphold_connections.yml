@@ -183,3 +183,42 @@ promo_lockout_connection:
 selected_wallet_provider_connection:
   <<: *base_verified_connection
   publisher: publisher_selected_wallet_provider
+
+# Adding old gemini connections here to keep tests working (keeping the names to also keep tests working)
+
+suspended_gemini_connection:
+  publisher: gemini_suspended
+  uphold_id: <%= SecureRandom.uuid %>
+  country: 'US'
+
+gemini_in_japan_connection:
+  publisher: gemini_in_japan
+  uphold_id: <%= SecureRandom.uuid %>
+  country: 'JP'
+
+connection_with_token:
+  publisher: gemini_completed
+  is_member: true
+  uphold_id: <%= SecureRandom.uuid %>
+  country: 'US'
+  status: 'Active'
+
+connection_not_verified:
+  publisher: gemini_not_completed
+  is_member: false
+  status: 'Active'
+
+top_referrer_gemini_connected:
+  publisher: top_referrer_gemini
+  uphold_id: <%= SecureRandom.uuid %>
+  country: 'US'
+  is_member: true
+  payout_failed: true
+  status: 'Active'
+
+gemini_blocked_country_connection:
+  publisher: verified_blocked_country_gemini
+  is_member: true
+  uphold_id: <%= SecureRandom.uuid %>
+  country: 'AQ'
+

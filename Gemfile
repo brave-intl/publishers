@@ -4,12 +4,12 @@ ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.1.2"
+rails_version = "8.1.2.1"
 gem "rails", rails_version
 gem "rails-html-sanitizer", "1.7.0"
 gem "railties", rails_version
 
-gem "rack", "3.2.5"
+gem "rack", "3.2.6"
 
 # All things countries
 gem "countries"
@@ -21,7 +21,7 @@ gem "active_model_serializers", "~> 0.10"
 gem "activerecord-import", "~> 2.2.0"
 
 # Allowing for URI templates, for HTTP clients
-gem "addressable", "~> 2.8"
+gem "addressable", "~> 2.9"
 
 # For analytics
 gem "active_analytics"
@@ -29,7 +29,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.216.0"
+gem "aws-sdk-s3", "~> 1.219.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -146,7 +146,7 @@ gem "sidekiq-throttled", "~> 2.1.0"
 # slim for view templates
 gem "slim-rails", "4.0.0"
 
-gem "ssrf_filter", "1.3.0"
+gem "ssrf_filter", "1.5.0"
 
 gem "strong_migrations"
 
@@ -157,7 +157,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "9.6.1"
+gem "shakapacker", "9.7.0"
 
 # pagination support for models
 gem "will_paginate"

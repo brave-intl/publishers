@@ -47,14 +47,3 @@ br
     = submit_tag("Notify publishers", class: "btn btn-primary", disabled: true)
 = will_paginate @payout_reports
 
-br
-
-h4 Change Payout Progress
-= form_for(:payout_in_progress, { method: :put, url: payouts_in_progress_admin_payout_reports_path}) do |f|
-  - payouts_in_progress = Rails.cache.fetch(SetPayoutsInProgressJob::PAYOUTS_IN_PROGRESS) || {}
-  - SetPayoutsInProgressJob::CONNECTIONS.each do |connection_name|
-    = f.check_box(connection_name, disabled: true, checked: payouts_in_progress[connection_name].present?, class: "progress-checkbox")
-    = f.label connection_name
-    br
-  = f.submit("Submit", class: "btn btn-primary", disabled: true)
-
