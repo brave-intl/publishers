@@ -88,7 +88,7 @@ function selected(e) {
     },
   );
 
-  assignCheckboxes(e, event.target, assignedHTML);
+  assignCheckboxes(e, event.target);
 
   const parent = event.target.closest("div");
   if (parent.id) {
@@ -106,7 +106,7 @@ function selected(e) {
   }
 }
 
-function assignCheckboxes(e, target, assignedHTML) {
+function assignCheckboxes(e, target) {
   const checkbox = target
     .closest("tr")
     .querySelectorAll("input[type='checkbox']");
@@ -126,7 +126,12 @@ function assignCheckboxes(e, target, assignedHTML) {
       let parentDiv = checkedForm.closest("div");
       if (parentDiv.id) {
         parentDiv.classList.toggle("w-100");
-        parentDiv.closest("td").innerHTML = assignedHTML;
+        const td = parentDiv.closest("td");
+        td.textContent = "";
+        const div = document.createElement("div");
+        div.className = "text-dark";
+        div.textContent = e.detail.item.original.key;
+        td.appendChild(div);
       }
     });
   }
