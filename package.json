@@ -62,7 +62,7 @@
     "@babel/runtime": "7.29.2",
     "@github/webauthn-json": "^2.1.1",
     "@rails/activestorage": "^8.0.0",
-    "axios": "1.15.0",
+    "axios": "1.15.1",
     "babel-loader": "10.1.1",
     "chart.js": "4.5.1",
     "clipboard": "^2.0.11",
