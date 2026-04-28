@@ -43,14 +43,16 @@
 }
 
 .crypto-widget-wrapper {
-  width: 520px;
-  margin: 0 auto;
-  padding: 32px 16px;
-
   background-image: url('/images/crypto_widget_bg.png');
   background-size: cover;
   border-radius: 12px;
   box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
+
+  @media only screen and (width >= 520px) {
+    width: 520px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
 }
 
 .creator-description {
@@ -64,14 +66,18 @@
 }
 
 .privacy-disclaimer {
-  width: 520px;
-  margin: 1rem auto;
+  margin: 1rem;
 
   font-family: Inter, sans-serif;
   font-size: 0.8rem;
   line-height: 1.2rem;
   color: #3f4855;
   text-align: left;
+
+  @media only screen and (width >= 520px) {
+    width: 520px;
+    margin: 1rem auto;
+  }
 }
 
 .social-link {
@@ -181,6 +187,12 @@
 }
 
 .large-currency-display {
+  margin-top: 1em;
+
+  @media only screen and (width >= 520px) {
+    margin-top: 0;
+  }
+
   .currency {
     font-family: Inter, sans-serif;
     font-size: 0.5em;
@@ -298,42 +310,51 @@
 }
 
 .amount-input-denomination {
-  position: relative;
-  top: -35px;
-
-  float: right;
-
-  padding-right: 15px;
-
   font-size: 13px;
   color: rgb(63 72 85);
+  position: relative;
+  right: 40px;
+
+  @media only screen and (width >= 520px) {
+    position: relative;
+    top: -35px;
+    float: right;
+    padding-right: 15px;
+  }
+}
+
+.dollar-input-denomination {
+  font-size: 13px;
+  color: rgb(63 72 85);
+  position: relative;
+  right: 80px;
+
+  @media only screen and (width >= 520px) {
+    padding-right: 15px;
+    position: relative;
+    top: -35px;
+    right: -179px;
+  }
 }
 
 .success-wrapper {
-  width: 520px;
-  height: 542px;
   margin: 0 auto;
   padding: 32px 16px;
 
   background-image: url('/images/crypto_widget_success.png');
   background-size: cover;
+  background-position: center center;
   border-radius: 12px;
   box-shadow: 0 3px 10px -1px rgb(0 0 0 / 5%);
-}
 
-.dollar-input-denomination {
-  position: relative;
-  top: -35px;
-  right: -179px;
-
-  padding-right: 15px;
-
-  font-size: 13px;
-  color: rgb(63 72 85);
+  @media only screen and (width >= 520px) {
+    width: 520px;
+    height: 542px;
+  }
 }
 
 .success-message-wrapper {
-  padding: 205px 50px 50px;
+  padding: 205px 50px 70px;
 }
 
 .success-thank {

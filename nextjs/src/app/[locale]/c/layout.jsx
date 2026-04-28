@@ -1,13 +1,38 @@
-'use client';
 import Link from '@brave/leo/react/link';
 import Image from 'next/image';
 import Head from 'next/head';
 
 import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
+import { siteConfig } from '@/constant/config';
 import styles from '@/styles/PublicLayout.module.css';
 import Logo from '~/images/brave_creators_logo.png';
 import DarkLogo from '~/images/brave_logo_dark_bg.png';
+
+export async function generateMetadata({ params }) {
+  const {locale} = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata' });
+
+  return {
+    title: {
+      absolute: `${t('public_title')} - ${t('title')}`,
+    },
+    openGraph: {
+      url: siteConfig.url,
+      title: `${t('public_title')} - ${t('title')}`,
+      description: t('description'),
+      siteName: t('title'),
+      type: 'website',
+      locale: 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${t('public_title')} - ${t('title')}`,
+      description: t('description'),
+    },
+  };
+}
 
 export default function PublicChannelLayout({ children }) {
   const t = useTranslations();
