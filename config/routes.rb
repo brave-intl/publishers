@@ -347,7 +347,11 @@ Rails.application.routes.draw do
     end
     resources :channel_transfers
     resources :channel_approvals
-    resources :security
+    resources :security do
+      member do
+        delete :totp_registration
+      end
+    end
 
     resources :organizations, except: [:destroy]
 
