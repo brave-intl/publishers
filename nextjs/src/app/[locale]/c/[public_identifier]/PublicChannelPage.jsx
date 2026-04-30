@@ -83,7 +83,7 @@ export default function PublicChannelPage({ publicIdentifier, previewMode }) {
         <div className={`${styles['image-container']}`}>
           <div
             style={{
-              '--cover-url': `url('${coverUrl || '../../public/images/default_banner_bg.jpg'}')`,
+              '--cover-url': `url('${coverUrl || '/images/default_banner_bg.jpg'}')`,
             }}
             className={`${styles['cover']}`}
           ></div>

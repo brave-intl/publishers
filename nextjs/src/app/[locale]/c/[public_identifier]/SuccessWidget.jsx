@@ -28,7 +28,7 @@ export default function SuccessWidget({
       </div>
       <div className={`${styles['payment-buttons']}`}>
         <button
-          className={`${styles['share-button']}`}
+          className={`mb-3 ${styles['share-button']}`}
           href={`https://x.com/intent/tweet?text=${tweetText}`}
           target='_blank'
           rel='noopener noreferrer'
