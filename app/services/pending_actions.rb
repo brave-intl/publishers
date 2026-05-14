@@ -122,10 +122,11 @@ module PendingActions
       if context.two_factor_enabled?(current_publisher)
         save! context
         if context.class.name.include?("Nextv1")
-          execute! context
-          # context.render(json: {
-          #   error: '2fa_required'
-          # }, status: 200)
+          context.render(json: {
+            error: "2fa_required",
+            u2f_enabled: context.u2f_enabled?(current_publisher),
+            totp_enabled: context.totp_enabled?(current_publisher)
+          }, status: 200)
         else
           context.redirect_to context.two_factor_authentications_path
         end

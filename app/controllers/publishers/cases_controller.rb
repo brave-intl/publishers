@@ -37,8 +37,9 @@ module Publishers
     end
 
     def delete_file
-      attachment = ActiveStorage::Attachment.find(params[:id])
-      attachment.purge_later
+      @case = Case.find_by(publisher: current_publisher)
+      attachment = @case&.files&.attachments&.find_by(id: params[:id])
+      attachment&.purge_later
       redirect_to new_case_path
     end
 

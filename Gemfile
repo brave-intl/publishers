@@ -29,7 +29,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.219.0"
+gem "aws-sdk-s3", "~> 1.220.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -157,7 +157,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "9.7.0"
+gem "shakapacker", "10.0.0"
 
 # pagination support for models
 gem "will_paginate"

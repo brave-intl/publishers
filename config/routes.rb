@@ -195,6 +195,11 @@ Rails.application.routes.draw do
         delete :destroy
       end
 
+      # 2FA step-up verification endpoints for Nextv1 SPA
+      resources :two_factor_authentications, only: %i[index]
+      resources :totp_authentications, only: %i[create]
+      resources :u2f_authentications, only: %i[create]
+
       namespace :connection do
         resource :bitflyer_connection
         resource :uphold_connection, except: [:new]
