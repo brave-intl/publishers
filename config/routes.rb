@@ -42,10 +42,6 @@ Rails.application.routes.draw do
           post :resend_authentication_email
         end
 
-        resource :case do
-          delete :delete_file
-        end
-        resources :case_notes
         resources :keys do
           patch :roll
         end
@@ -292,16 +288,6 @@ Rails.application.routes.draw do
         post :ofac_update
       end
     end
-
-    resources :cases do
-      patch :assign
-      collection do
-        get :overview
-        resources :case_replies
-      end
-    end
-
-    resources :case_notes
 
     resources :reserved_public_names
 

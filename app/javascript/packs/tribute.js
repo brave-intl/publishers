@@ -5,7 +5,6 @@ import Avatar from "../views/admin/components/userNavbar/components/TopNav/Avata
 document.addEventListener("DOMContentLoaded", function() {
   if (
     window.location.href.indexOf("admin/publishers/") !== -1 ||
-    window.location.href.indexOf("admin/cases") !== -1
   ) {
     fetch("/admin/publishers?role=admin")
       .then(function(response) {
