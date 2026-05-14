@@ -137,7 +137,9 @@ Rails.application.routes.draw do
 
   resources :faqs, only: [:index]
 
-  root "static#index"
+  root to: "static#index"
+  get "/en", to: "static#index"
+  get "/ja", to: "static#index"
   get "sign-up", to: "static#index"
   get "log-in", to: "static#index"
 
