@@ -41,6 +41,14 @@ app
     // use the express app to serve static assets, necessary for Nala icons to work
     expressApp.use(express.static('public'));
 
+    // Normalize double-slashes in request URLs before routing. Express 5 matches
+    // // to / for routing but preserves req.url as //, which causes the proxy to
+    // forward // to Rails and Next.js's URL parser to throw ERR_INVALID_URL.
+    expressApp.use((req, _res, next) => {
+      req.url = req.url.replace(/\/{2,}/g, '/');
+      next();
+    });
+
     let pubHost, nextHost;
     if (testMode) {
       pubHost = new URL(`http://${process.env.TEST_MODE_PUBLISHERS_HOST}`);
@@ -55,9 +63,8 @@ app
 
     const middlewareToRouteToRails = createProxyMiddleware({
       logger: console,
-      target: pubHost,
+      target: pubHost.origin,
       changeOrigin: true,
-      prependPath: true,
       secure: testMode ? false : !dev,
       on: {
         proxyReq: (proxyReq, request, response) => {
