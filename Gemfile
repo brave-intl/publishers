@@ -103,7 +103,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 7.0"
 
 # Puma as app server
-gem "puma", "~> 6.6.0"
+gem "puma", ">= 8.0.2"
 
 # Sanitize bad inputs coming in
 gem "rack-utf8_sanitizer"
