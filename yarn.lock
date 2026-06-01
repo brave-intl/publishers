@@ -5993,6 +5993,11 @@ tapable@^2.3.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.3.0.tgz#7e3ea6d5ca31ba8e078b560f0d83ce9a14aa8be6"
   integrity sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==
 
+tapable@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.3.3.tgz#5da7c9992c46038221267985ab28421a8879f160"
+  integrity sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==
+
 terser-webpack-plugin@5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.5.0.tgz#d92b8e2c892dd09c683c38120394267e8d8660ef"
@@ -6285,15 +6290,15 @@ web-streams-polyfill@^3.0.3:
   resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz#2073b91a2fdb1fbfbd401e7de0ac9f8214cecb4b"
   integrity sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==
 
-webpack-assets-manifest@6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/webpack-assets-manifest/-/webpack-assets-manifest-6.5.1.tgz#a0a2d8eefcad4f9cb1dd9f0829c3cb0a051d4230"
-  integrity sha512-aMuOF9+UB4oHyKxi0ixQpKiI52nZ2onHFgqOmLlyIFgBh/lU7hcy+zPryaoHrBR1polqTPE3atz/SZ7xFc2QSQ==
+webpack-assets-manifest@6.5.2:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/webpack-assets-manifest/-/webpack-assets-manifest-6.5.2.tgz#07a35b62b0ff74bc268a25b78defba5eac32f8a4"
+  integrity sha512-UNi1LmOJUEsLpAYTV21ftp5HYsxePvhIEvAIij84I3wBCYDOman3tevsglxfC+F+GFWEDhFkwrvIzbvXqTYqrw==
   dependencies:
     deepmerge "^4.3.1"
     proper-lockfile "^4.1.2"
     schema-utils "^4.3.3"
-    tapable "^2.3.0"
+    tapable "^2.3.3"
 
 webpack-cli@7.0.2:
   version "7.0.2"
