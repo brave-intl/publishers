@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#391396005212ebb4df7eb19c10a2a6879acfaecf",
+    "@brave/leo": "github:brave/leo#b37b7d146859747bbd6da27308dc9581b326abbf",
     "@fontsource-variable/mulish": "^5.2.8",
     "@fontsource/dm-mono": "5.2.7",
     "@fontsource/inter": "5.2.8",
@@ -30,7 +30,7 @@
     "bs58": "6.0.0",
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
-    "next": "^16.2.6",
+    "next": "^16.2.7",
     "next-intl": "^4.9.1",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^18.2.0",
@@ -66,7 +66,7 @@
     "miragejs": "0.1.48",
     "next-router-mock": "^1.0.5",
     "patch-package": "8.0.1",
-    "postcss": "8.5.15",
+    "postcss": "^8.5.15",
     "prettier": "3.8.3",
     "prettier-plugin-tailwindcss": "0.8.0",
     "selfsigned": "5.5.0",

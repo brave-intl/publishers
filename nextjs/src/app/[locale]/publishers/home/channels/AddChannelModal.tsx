@@ -48,7 +48,7 @@ export default function AddChannelModal() {
               <Icon
                 className='mx-auto mb-2 inline-block'
                 forceColor={true}
-                name={channel === 'site' ? 'globe' : `social-${channel}`}
+                name={channel === 'site' ? 'globe' : `social-${channel}-color`}
               />
               <h4 className='pb-1'>{t(`shared.channel_names.${channel}`)}</h4>
               <p className='color-tertiary small-regular'>
