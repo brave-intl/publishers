@@ -14,11 +14,6 @@ aside
           = nav_link "Transfers", admin_channel_transfers_path
           = nav_link "Approvals", admin_channel_approvals_path
           = nav_link "Duplicates", duplicates_admin_channels_path
-
-      = nav_link "Cases", admin_cases_path
-        - cases = Case.where(status: Case::OPEN).size
-        - if cases.positive?
-          span.ml-3.badge.badge-light.badge-pill= cases
       li
         a href='#' class="sidebar-toggle pull-right"
           = fa_icon "chevron-down"

@@ -5,7 +5,13 @@
     h5.admin-header = "2FA Registrations 🔒"
     .rounded-box
         .db-field = "2FA via Authenticator App - " + (@publisher.totp_registration ? "Yes" : "No")
-        .db-field = "2FA via Hardware Key - " + (!@publisher.u2f_registrations.empty? ? "Yes" : "No")
+        .db-field = "2FA via Hardware Key - " + (@publisher.u2f_registrations.any? ? "Yes" : "No")
+        - if @publisher.totp_registration
+            .db-field.mt-2
+                = form_with(url: totp_registration_admin_security_path(@publisher), method: :delete) do |f|
+                    = f.submit "Remove TOTP Registration",
+                        class: "btn btn-danger btn-sm",
+                        onclick: "return confirm('Are you sure you want to remove this publisher\\'s TOTP registration? They will need to set up their authenticator app again.')"
     br
     br
     h5.admin-header = "2FA Removal 🔐"

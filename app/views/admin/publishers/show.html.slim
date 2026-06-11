@@ -62,9 +62,6 @@ hr
         - elsif h.is_a?(PublisherStatusUpdate)
           = render partial: 'status', locals: { status: h, publisher: @publisher, current_user: @current_user}
           hr
-        - elsif h.instance_of?(PaperTrail::Version)
-          - if h.item_type.eql?("Case")
-            = render partial: 'case', locals: { history: h }
 
 
 

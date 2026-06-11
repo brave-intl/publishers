@@ -74,7 +74,8 @@
                         = number_with_delimiter(channel.details.stats[key])
 
     small.mr-3
-      = link_to(fa_icon("trash", text: "Remove Channel"), admin_channel_path(channel.id), method: :delete, remote: true, data: { confirm: 'WARNING. This will remove this channel. Please only do this if this is a duplicate channel.' })
+      a href="#" id="remove_channel_#{channel.id}"
+        = fa_icon("trash", text: "Remove Channel")
 
     / When the channel is being contested
     - if channel.verification_pending?
@@ -115,3 +116,17 @@
       javascript:
         document.getElementById("view_more_#{channel.id}").onclick = function anonymous() { document.getElementById("more_info_#{channel.id}").classList.toggle("d-none"); return false; }
 
+    javascript:
+      document.getElementById("remove_channel_#{channel.id}").addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!window.confirm('WARNING. This will remove this channel. Please only do this if this is a duplicate channel.')) return;
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        fetch('#{admin_channel_path(channel.id)}', {
+          method: 'DELETE',
+          headers: { 'X-CSRF-Token': token, 'Accept': 'text/javascript' },
+          credentials: 'same-origin'
+        }).then(function(res) {
+          if (res.ok) document.getElementById('#{channel.id}').remove();
+          else window.alert('Failed to remove channel. Please try again.');
+        });
+      });
