@@ -118,7 +118,7 @@
     "husky": "9.1.7",
     "jest-styled-components": "7.4.0",
     "prettier": "3.8.3",
-    "stylelint": "17.11.1",
+    "stylelint": "17.13.0",
     "stylelint-config-recommended-scss": "17.0.1",
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-scss": "7.0.0",
