@@ -121,7 +121,7 @@
     "stylelint": "17.13.0",
     "stylelint-config-recommended-scss": "17.0.1",
     "stylelint-config-styled-components": "0.1.1",
-    "stylelint-scss": "7.0.0",
+    "stylelint-scss": "7.2.0",
     "sugarss": "5.0.1",
     "swc-loader": "^0.2.7",
     "ts-loader": "9.6.1",
