@@ -59,7 +59,7 @@
     "eslint-plugin-unused-imports": "4.4.1",
     "express": "5.2.1",
     "http-proxy": "1.18.1",
-    "http-proxy-middleware": "4.1.0",
+    "http-proxy-middleware": "4.1.1",
     "jest": "30.4.2",
     "jest-environment-jsdom": "30.4.1",
     "lint-staged": "17.0.7",
