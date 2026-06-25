@@ -5893,7 +5893,24 @@ stylelint-config-styled-components@0.1.1:
   resolved "https://registry.yarnpkg.com/stylelint-config-styled-components/-/stylelint-config-styled-components-0.1.1.tgz#b408388d7c687833ab4be4c4e6522d97d2827ede"
   integrity sha512-z5Xz/9GmvxO6e/DLzBMwkB85zHxEEjN6K7Cj80Bi+o/9vR9eS3GX3E9VuMnX9WLFYulqbqLtTapGGY28JBiy9Q==
 
-stylelint-scss@7.0.0, stylelint-scss@^7.0.0:
+stylelint-scss@7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.2.0.tgz#2a5f7a7e210254f927bbc3e8145245abedd9e390"
+  integrity sha512-6E79Bachv0Iz0gqRUZgdqdXCsiq26DWBWIBNHYtjTmAp3wJu6cp/I37VfW7BPntmh2puF3bY09XWl4HZGrLhzw==
+  dependencies:
+    "@csstools/css-calc" "^3.2.1"
+    "@csstools/css-parser-algorithms" "^4.0.0"
+    "@csstools/css-syntax-patches-for-csstree" "^1.1.4"
+    "@csstools/css-tokenizer" "^4.0.0"
+    css-tree "^3.2.1"
+    is-plain-object "^5.0.0"
+    known-css-properties "^0.37.0"
+    postcss-media-query-parser "^0.2.3"
+    postcss-resolve-nested-selector "^0.1.6"
+    postcss-selector-parser "^7.1.1"
+    postcss-value-parser "^4.2.0"
+
+stylelint-scss@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.0.0.tgz#fae9346e6a1e15039422a7e46b3390e39508218d"
   integrity sha512-H88kCC+6Vtzj76NsC8rv6x/LW8slBzIbyeSjsKVlS+4qaEJoDrcJR4L+8JdrR2ORdTscrBzYWiiT2jq6leYR1Q==
