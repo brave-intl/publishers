@@ -38,7 +38,7 @@ class SiteBanner < ApplicationRecord
   # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains
   def clear_invalid_social_links
     return if errors.present? || social_links.nil?
-    self.social_links = social_links.select { |key, _| key.in?(["twitch", "youtube", "twitter", "github", "reddit", "vimeo"]) }
+    self.social_links = social_links.select { |key, _| key.in?(["twitch", "youtube", "twitter", "reddit", "vimeo"]) }
 
     unless social_links["twitch"].blank? || Addressable::URI.parse(social_links["twitch"]).to_s.starts_with?("https://www.twitch.tv/", "https://twitch.tv/", "www.twitch.tv/", "twitch.tv/")
       social_links["twitch"] = ""
@@ -61,10 +61,6 @@ class SiteBanner < ApplicationRecord
       social_links["twitter"] = ""
     end
 
-    unless social_links["github"].blank? || Addressable::URI.parse(social_links["github"]).to_s.starts_with?("https://www.github.com/", "https://github.com/", "www.github.com/", "github.com/")
-      social_links["github"] = ""
-    end
-
     unless social_links["reddit"].blank? || Addressable::URI.parse(social_links["reddit"]).to_s.starts_with?("https://www.reddit.com/", "https://reddit.com/", "www.reddit.com/", "reddit.com/")
       social_links["reddit"] = ""
     end
@@ -85,7 +81,7 @@ class SiteBanner < ApplicationRecord
       channel_id: channel_id,
       title: channel.publication_title,
       description: DEFAULT_DESCRIPTION,
-      social_links: {youtube: "", twitter: "", twitch: "", github: "", reddit: "", vimeo: ""}
+      social_links: {youtube: "", twitter: "", twitch: "", reddit: "", vimeo: ""}
     )
   end
 

@@ -11,7 +11,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :twitter, :string, 2
       optional :twitch, :string, 3
       optional :reddit, :string, 4
-      optional :github, :string, 5
       optional :vimeo, :string, 6
     end
     add_message "publishers_pb.SiteBannerDetails" do

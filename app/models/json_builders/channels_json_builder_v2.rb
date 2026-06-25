@@ -46,8 +46,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
       Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
       Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
       Channel.verified.vimeo_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.reddit_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.github_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection)
+      Channel.verified.reddit_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection)
     ]
   end
 

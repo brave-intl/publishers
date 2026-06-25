@@ -26,7 +26,6 @@ class Channel < ApplicationRecord
   has_property :twitter
   has_property :vimeo
   has_property :reddit
-  has_property :github
 
   has_one :promo_registration, dependent: :destroy
   has_many :uphold_connection_for_channel, dependent: :destroy
@@ -269,7 +268,6 @@ class Channel < ApplicationRecord
       .left_outer_joins(:twitter_channel_details)
       .left_outer_joins(:reddit_channel_details)
       .left_outer_joins(:vimeo_channel_details)
-      .left_outer_joins(:github_channel_details)
 
     channel = base_channel
     query.split(" ").each do |q|
@@ -291,9 +289,6 @@ class Channel < ApplicationRecord
         .or(base_channel.where("lower(vimeo_channel_details.vimeo_channel_id) LIKE ?", q))
         .or(base_channel.where("lower(vimeo_channel_details.name) LIKE ?", q))
         .or(base_channel.where("lower(vimeo_channel_details.nickname) LIKE ?", q))
-        .or(base_channel.where("lower(github_channel_details.github_channel_id) LIKE ?", q))
-        .or(base_channel.where("lower(github_channel_details.name) LIKE ?", q))
-        .or(base_channel.where("lower(github_channel_details.nickname) LIKE ?", q))
     end
 
     channel

@@ -61,8 +61,7 @@ class JsonBuilders::ChannelsJsonBuilderV3P1
       Channel.verified.twitch_channels,
       Channel.verified.twitter_channels,
       Channel.verified.vimeo_channels,
-      Channel.verified.reddit_channels,
-      Channel.verified.github_channels
+      Channel.verified.reddit_channels
     ]
   end
 
