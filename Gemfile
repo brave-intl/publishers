@@ -69,6 +69,8 @@ gem "meta-tags", "~> 2.20"
 
 gem "newrelic_rpm", "~> 10.0"
 
+gem "oauth2", "~> 2.0"
+
 gem "omniauth-rails_csrf_protection", "~> 2.0.0"
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 1.2.0"
