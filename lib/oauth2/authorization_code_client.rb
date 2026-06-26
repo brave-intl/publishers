@@ -139,6 +139,6 @@ class Oauth2::AuthorizationCodeClient
       out[key] = parsed_body.fetch(key, nil)
     end
 
-    struct.new(out)
+    struct.new(**out)
   end
 end

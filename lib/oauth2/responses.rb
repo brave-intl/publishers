@@ -3,8 +3,7 @@ module Oauth2::Responses
   ErrorResponse = Struct.new(
     :error,
     :error_description,
-    :error_uri,
-    keyword_init: true
+    :error_uri
   )
 
   # Access Token Response:   https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.3
@@ -13,8 +12,7 @@ module Oauth2::Responses
     :access_token,
     :expires_in,
     :refresh_token,
-    :scope,
-    keyword_init: true
+    :scope
   )
 
   # Bitflyer Access Token Response: Slight variation of to spec, but includes account hash
@@ -25,8 +23,7 @@ module Oauth2::Responses
     :expires_in,
     :refresh_token,
     :scope,
-    :account_hash,
-    keyword_init: true
+    :account_hash
   )
 
   # Refresh Token Response: https://datatracker.ietf.org/doc/html/rfc6749#section-4.3.3
@@ -35,7 +32,6 @@ module Oauth2::Responses
     :access_token,
     :expires_in,
     :refresh_token,
-    :scope,
-    keyword_init: true
+    :scope
   )
 end
