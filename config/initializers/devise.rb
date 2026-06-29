@@ -270,7 +270,7 @@ Devise.setup do |config|
     Rails.configuration.pub_secrets[:twitter_client_secret],
     {
       callback_path: "/publishers/auth/register_twitter_channel/callback",
-      scope: "tweet.read users.read",
+      scope: "tweet.read users.read users.email",
       name: "register_twitter_channel"
     }
 
