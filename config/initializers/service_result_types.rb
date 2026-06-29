@@ -4,11 +4,11 @@
 #
 # If I need an explicit type, I am going to define it as a response from the service in question
 # and pattern match against that type, not dig around in a generic response object.
-BSuccess = Struct.new(:result, keyword_init: true)
+BSuccess = Struct.new(:result)
 
-BFailure = Struct.new(:errors, keyword_init: true)
+BFailure = Struct.new(:errors)
 
 # There are definitely cases where "Success" and "Failure" are not exactly correct and we should be explicit about it.
-BIndeterminate = Struct.new(:result, keyword_init: true)
+BIndeterminate = Struct.new(:result)
 
 class BServiceResult; end
