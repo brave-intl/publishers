@@ -1,9 +1,9 @@
 # typed: true
 
 class RedisCountService < BuilderBaseService
-  BelowLimit = Struct.new(:limit, :interval, :count, keyword_init: true)
+  BelowLimit = Struct.new(:limit, :interval, :count)
 
-  AboveLimit = Struct.new(:limit, :interval, :count, keyword_init: true)
+  AboveLimit = Struct.new(:limit, :interval, :count)
 
   def self.build
     new

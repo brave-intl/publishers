@@ -29,7 +29,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.220.0"
+gem "aws-sdk-s3", "~> 1.226.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -49,7 +49,7 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.14.1"
+gem "faraday", "2.14.3"
 gem "faraday-retry", "2.4.0"
 
 gem "ffi"
@@ -68,6 +68,8 @@ gem "nokogiri", ">= 1.16"
 gem "meta-tags", "~> 2.20"
 
 gem "newrelic_rpm", "~> 10.0"
+
+gem "oauth2", "~> 2.0"
 
 gem "omniauth-rails_csrf_protection", "~> 2.0.0"
 # Oauth client for google / youtube
@@ -103,7 +105,7 @@ gem "premailer-rails", "~> 1.12.0", require: false
 gem "public_suffix", "~> 7.0"
 
 # Puma as app server
-gem "puma", "~> 6.6.0"
+gem "puma", ">= 8.0.2"
 
 # Sanitize bad inputs coming in
 gem "rack-utf8_sanitizer"
@@ -157,7 +159,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "10.0.0"
+gem "shakapacker", "10.1.0"
 
 # pagination support for models
 gem "will_paginate"

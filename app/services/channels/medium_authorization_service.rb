@@ -2,7 +2,7 @@
 
 module Channels
   class MediumAuthorizationService < BuilderBaseService
-    Success = Struct.new(:value, keyword_init: true)
+    Success = Struct.new(:value)
     def self.build
       new
     end

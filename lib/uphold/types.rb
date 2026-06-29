@@ -6,8 +6,7 @@ module Uphold
       :key,
       :name,
       :requirements,
-      :restrictions,
-      keyword_init: true
+      :restrictions
     )
 
     UpholdUser = Struct.new(
@@ -16,20 +15,17 @@ module Uphold
       :id,
       :country,
       :currencies,
-      :username,
-      keyword_init: true
+      :username
     )
 
     UpholdCard = Struct.new(
       :currency,
       :id,
-      :label,
-      keyword_init: true
+      :label
     )
 
     UpholdCardAddress = Struct.new(
-      :type,
-      keyword_init: true
+      :type
     )
 
     class UpholdCardAddresses; end

@@ -5,8 +5,7 @@ module Rewards
       :custodianRegions,
       :batRate,
       :autocontribute,
-      :tips,
-      keyword_init: true
+      :tips
     )
   end
 end

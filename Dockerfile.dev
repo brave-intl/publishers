@@ -1,4 +1,4 @@
-FROM ruby:4.0.3-slim
+FROM ruby:4.0.5-slim
 
 RUN apt-get update -qq && apt-get install -y build-essential
 RUN apt-get update -qq
@@ -50,7 +50,7 @@ RUN curl --silent -o-  https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/inst
   && nvm alias default $NODE_VERSION \
   && nvm use default
 
-RUN apt-get install -y python3
+RUN apt-get update -qq && apt-get install -y python3
 RUN npm install -g yarn
 RUN yarn cache clean
 RUN yarn install --verbose

@@ -139,7 +139,7 @@ class BaseApiClient < BaseService
       out[key] = obj.fetch(key, nil)
     end
 
-    struct.new(out)
+    struct.new(**out)
   end
 
   def client_url(path)

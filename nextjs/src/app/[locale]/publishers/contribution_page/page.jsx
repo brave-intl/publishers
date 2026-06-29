@@ -49,7 +49,6 @@ export default function ContributionPage() {
     'twitter',
     'youtube',
     'twitch',
-    'github',
     'reddit',
     'vimeo',
   ];
