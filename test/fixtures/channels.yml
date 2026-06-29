@@ -250,12 +250,6 @@ reddit_new:
   verified: true
   public_identifier: <%= SecureRandom.alphanumeric(10) %>
 
-github_new:
-  publisher: channel_publisher
-  details: github_details (GithubChannelDetails)
-  verified: true
-  public_identifier: <%= SecureRandom.alphanumeric(10) %>
-
 global_yt1:
   publisher: global_media_group
   details: global_yt1_details (YoutubeChannelDetails)

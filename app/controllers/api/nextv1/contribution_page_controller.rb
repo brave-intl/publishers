@@ -42,7 +42,7 @@ class Api::Nextv1::ContributionPageController < Api::Nextv1::BaseController
       :title,
       :logo,
       :cover,
-      socialLinks: [:twitter, :reddit, :github, :vimeo, :youtube, :twitch]
+      socialLinks: [:twitter, :reddit, :vimeo, :youtube, :twitch]
     )
 
     logo_length = permitted_params[:logo]&.length || 0
