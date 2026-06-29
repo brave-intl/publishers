@@ -41,8 +41,8 @@
     "web3": "^4.8.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.5.3",
-    "@commitlint/config-conventional": "20.5.3",
+    "@commitlint/cli": "21.0.2",
+    "@commitlint/config-conventional": "21.0.2",
     "@faker-js/faker": "10.5.0",
     "@svgr/webpack": "8.1.0",
     "@testing-library/jest-dom": "6.9.1",
