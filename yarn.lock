@@ -1232,10 +1232,10 @@
   resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-3.1.6.tgz#fca16a7d60f89df48f506f130f58223d7d81c2a2"
   integrity sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==
 
-"@formatjs/icu-messageformat-parser@3.5.11":
-  version "3.5.11"
-  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.11.tgz#2b68955ebb7ca1daa9145335c0d800a87b44c332"
-  integrity sha512-NVsuNsc2dUVG9+4HBJ/srScxtA/18LqGgwtop/tuN/OIBjVl6QA+0KhfZQddDD9sEh2LeVjLFPGVU3ixa3blcA==
+"@formatjs/icu-messageformat-parser@3.5.12":
+  version "3.5.12"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.12.tgz#120384e7767fc3741a740c700463daff7ccbf048"
+  integrity sha512-YyzzxVgYJ8DELmmkhn0Yr0rUj0dTJFf9Jp628K3S0ysInBWxLVDOS8i3RP91cCp4DMK4WYb4cVMhWA9i4knSJg==
   dependencies:
     "@formatjs/icu-skeleton-parser" "2.1.10"
 
@@ -1244,14 +1244,14 @@
   resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.10.tgz#a72859339c68ce29d595d27c481115a50b8b6527"
   integrity sha512-XuSva+8ZGawk8VnD5VD6UeH8KarQ/Z022zgjHDoHmlNiAewstXuuzXc0Hk5pGFSdG+nNw5bfJKXqj1ZXHn9yUA==
 
-"@formatjs/intl@4.1.13":
-  version "4.1.13"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-4.1.13.tgz#21e4f87ae739ac20b1854dee3b30d776725f3298"
-  integrity sha512-dufOl09iREq8V+laVdlGuyoqNmuzqDvyeA3O3k+0XQfvKJgK8bBWFKqYYWejFMKeOij/4LuPKJA+LsshpXQ4sw==
+"@formatjs/intl@4.1.14":
+  version "4.1.14"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-4.1.14.tgz#9873f608ab990fc9cf39dc68164e990f8313240f"
+  integrity sha512-hl8dgvbV2Te/KPnCud+nuBc+z8qW8fGreiun7ul5LopIHkbP0izylvnhIFDL2dQMeMPdrKCAXhJkYDeoxVuDRw==
   dependencies:
     "@formatjs/fast-memoize" "3.1.6"
-    "@formatjs/icu-messageformat-parser" "3.5.11"
-    intl-messageformat "11.2.8"
+    "@formatjs/icu-messageformat-parser" "3.5.12"
+    intl-messageformat "11.2.9"
 
 "@github/webauthn-json@^2.1.1":
   version "2.1.1"
@@ -3740,13 +3740,13 @@ interpret@^3.1.1:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-3.1.1.tgz#5be0ceed67ca79c6c4bc5cf0d7ee843dcea110c4"
   integrity sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==
 
-intl-messageformat@11.2.8:
-  version "11.2.8"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-11.2.8.tgz#c5c5be3c3fa3d61e7956644d67b9e812ee50b4e3"
-  integrity sha512-l323RCl3qJDVQ8U9j74ut/hVMdg3VPsOHpVMDvFfz9qiq4dPO5ooVYFNVUzzrpgG39a+RLzcXyJb8VFgIU+tUA==
+intl-messageformat@11.2.9:
+  version "11.2.9"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-11.2.9.tgz#ae866df5c72a0b6693f0936c2b9a154c9c73a2d2"
+  integrity sha512-cGzymZerpDhVXRKjKLgXKda9gI29TU2o88L7gwNMHp3WZVxA/0c5tX52udXbW9JklDApolvMXZG6Dhhdz5eirA==
   dependencies:
     "@formatjs/fast-memoize" "3.1.6"
-    "@formatjs/icu-messageformat-parser" "3.5.11"
+    "@formatjs/icu-messageformat-parser" "3.5.12"
 
 is-accessor-descriptor@3.0.5:
   version "3.0.5"
@@ -5247,13 +5247,13 @@ react-dom@^16.6.3:
     scheduler "^0.19.1"
 
 react-intl@^10.0.0:
-  version "10.1.13"
-  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-10.1.13.tgz#8c54f88a8d120abb1f212ec4524f11c3e7e8acba"
-  integrity sha512-3aKnIOIPN6CWsu3jqPpYMlJZ2U0Qnxhd42xGWQNdGIknK/gBudWOHSIx9vN4XKkITokJLr7YTgs4yLUGtbvP9g==
+  version "10.1.14"
+  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-10.1.14.tgz#ee5f2f0f681c8b7954304fc884c87d9eb10c7950"
+  integrity sha512-DuL7vAViDCjxyiPNccMkt1PBv22mh+1OBhA8ta4r0fbjnJYhLVFc+3pR71qADZRHytRnKm9JcVDP9jYJW+qO6g==
   dependencies:
-    "@formatjs/icu-messageformat-parser" "3.5.11"
-    "@formatjs/intl" "4.1.13"
-    intl-messageformat "11.2.8"
+    "@formatjs/icu-messageformat-parser" "3.5.12"
+    "@formatjs/intl" "4.1.14"
+    intl-messageformat "11.2.9"
 
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.6:
   version "16.13.1"
