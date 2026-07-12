@@ -146,7 +146,7 @@
     "postcss": "8.5.16",
     "@types/react": "16.14.70",
     "@types/styled-components": "5.1.36",
-    "picomatch": "4.0.4"
+    "picomatch": "4.0.5"
   },
   "browserslist": [
     "defaults"
