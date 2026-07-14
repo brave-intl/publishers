@@ -306,7 +306,7 @@ GEM
       reline (>= 0.4.2)
     jaro_winkler (1.7.0)
     jmespath (1.6.2)
-    json (2.20.0)
+    json (2.21.1)
     jsonapi-renderer (0.2.2)
     jwt (3.2.0)
       base64
@@ -492,7 +492,7 @@ GEM
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
-    rack-proxy (0.8.2)
+    rack-proxy (0.8.3)
       rack
     rack-session (2.1.2)
       base64 (>= 0.1.0)
@@ -634,7 +634,7 @@ GEM
     semantic_range (3.1.1)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
-    shakapacker (10.1.0)
+    shakapacker (10.3.0)
       activesupport (>= 5.2)
       package_json
       rack-proxy (>= 0.6.1)
@@ -881,7 +881,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver (~> 4.4)
   sendgrid-ruby (~> 6.7)
-  shakapacker (= 10.1.0)
+  shakapacker (= 10.3.0)
   sidekiq (~> 8.1.0)
   sidekiq-scheduler (~> 6.0.0)
   sidekiq-throttled (~> 2.1.0)
