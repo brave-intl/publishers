@@ -445,7 +445,7 @@ GEM
       activerecord (>= 7.1)
       request_store (~> 1.4)
     parallel (1.28.0)
-    parser (3.3.11.1)
+    parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
     pg (1.6.3)
@@ -768,7 +768,7 @@ GEM
     will_paginate (4.0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.44)
+    yard (0.9.45)
     yard-activesupport-concern (0.0.1)
       yard (>= 0.8)
     yard-solargraph (0.1.0)
