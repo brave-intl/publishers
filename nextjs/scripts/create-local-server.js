@@ -1,5 +1,4 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const chalk = require('chalk');
 const next = require('next');
 const path = require('path');
 const fs = require('fs');
@@ -126,9 +125,9 @@ app
     return server.listen(PORT, (err) => {
       if (err) throw err;
 
-      console.log(
-        chalk.green(`> Server started on ${chalk.bold.green(`${nextHost}`)}`),
-      );
+      const green = (s) => `\x1b[32m${s}\x1b[0m`;
+      const boldGreen = (s) => `\x1b[1m\x1b[32m${s}\x1b[0m`;
+      console.log(green(`> Server started on ${boldGreen(nextHost)}`));
     });
   })
   .catch((err) => {
