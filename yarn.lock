@@ -1198,31 +1198,31 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.11.tgz#a269e055e40e2f45873bae9d1a2fdccbd314ea3f"
   integrity sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==
 
-"@formatjs/fast-memoize@3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-3.1.6.tgz#fca16a7d60f89df48f506f130f58223d7d81c2a2"
-  integrity sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==
+"@formatjs/fast-memoize@3.1.7":
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-3.1.7.tgz#5f79b3756e4bcb5faee47b3a2f01216e1212c9e4"
+  integrity sha512-zXfhLpvA6T7+efdt9JLbBwZ00tT7NsBMDVnDu8rpHeNNv8KfRZAMo2gkG0k9lK/Nzc//3kJ9pImsfuJxk3KhUA==
 
-"@formatjs/icu-messageformat-parser@3.5.12":
-  version "3.5.12"
-  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.12.tgz#120384e7767fc3741a740c700463daff7ccbf048"
-  integrity sha512-YyzzxVgYJ8DELmmkhn0Yr0rUj0dTJFf9Jp628K3S0ysInBWxLVDOS8i3RP91cCp4DMK4WYb4cVMhWA9i4knSJg==
+"@formatjs/icu-messageformat-parser@3.5.15":
+  version "3.5.15"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.15.tgz#2c01caddd2c91ab7f4207a9bda2f57d97150b61f"
+  integrity sha512-5o4grXKotAB3JqQuisLApHG43g17N+paoRTa92Jiz35Zvfemq0cVf4EDvuxyHAzmsJji7igaEowicLO/VmfJ8Q==
   dependencies:
-    "@formatjs/icu-skeleton-parser" "2.1.10"
+    "@formatjs/icu-skeleton-parser" "2.1.11"
 
-"@formatjs/icu-skeleton-parser@2.1.10":
-  version "2.1.10"
-  resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.10.tgz#a72859339c68ce29d595d27c481115a50b8b6527"
-  integrity sha512-XuSva+8ZGawk8VnD5VD6UeH8KarQ/Z022zgjHDoHmlNiAewstXuuzXc0Hk5pGFSdG+nNw5bfJKXqj1ZXHn9yUA==
+"@formatjs/icu-skeleton-parser@2.1.11":
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.11.tgz#09226edf55a18e3fea80304d2cc95aaeb0095436"
+  integrity sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==
 
-"@formatjs/intl@4.1.14":
-  version "4.1.14"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-4.1.14.tgz#9873f608ab990fc9cf39dc68164e990f8313240f"
-  integrity sha512-hl8dgvbV2Te/KPnCud+nuBc+z8qW8fGreiun7ul5LopIHkbP0izylvnhIFDL2dQMeMPdrKCAXhJkYDeoxVuDRw==
+"@formatjs/intl@4.1.17":
+  version "4.1.17"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-4.1.17.tgz#8b78b589d54757348530752afd46a91003899509"
+  integrity sha512-IxluRkzOZH8ahaDip5g8YH9kJi1munUZi9i1BJs1wVFQIY2pROoCSiOlybZegyiPsZlMaYfADkD99zP2xmBfjQ==
   dependencies:
-    "@formatjs/fast-memoize" "3.1.6"
-    "@formatjs/icu-messageformat-parser" "3.5.12"
-    intl-messageformat "11.2.9"
+    "@formatjs/fast-memoize" "3.1.7"
+    "@formatjs/icu-messageformat-parser" "3.5.15"
+    intl-messageformat "11.2.12"
 
 "@github/webauthn-json@^2.1.1":
   version "2.1.1"
@@ -4232,13 +4232,13 @@ interpret@^3.1.1:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-3.1.1.tgz#5be0ceed67ca79c6c4bc5cf0d7ee843dcea110c4"
   integrity sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==
 
-intl-messageformat@11.2.9:
-  version "11.2.9"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-11.2.9.tgz#ae866df5c72a0b6693f0936c2b9a154c9c73a2d2"
-  integrity sha512-cGzymZerpDhVXRKjKLgXKda9gI29TU2o88L7gwNMHp3WZVxA/0c5tX52udXbW9JklDApolvMXZG6Dhhdz5eirA==
+intl-messageformat@11.2.12:
+  version "11.2.12"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-11.2.12.tgz#10a5b8ffd5cbe0bb233cb7d9adc18ba901b8f429"
+  integrity sha512-KW70Xxfcvy7vV3qODfvShWkFDPMqKDAa4N+hSyVBWGNtVhTUFYaqlD/l88DaYPKiVcPP4rPQ3qnH7i5K82Mg7g==
   dependencies:
-    "@formatjs/fast-memoize" "3.1.6"
-    "@formatjs/icu-messageformat-parser" "3.5.12"
+    "@formatjs/fast-memoize" "3.1.7"
+    "@formatjs/icu-messageformat-parser" "3.5.15"
 
 is-accessor-descriptor@3.0.5:
   version "3.0.5"
@@ -5917,13 +5917,13 @@ react-dom@^16.6.3:
     scheduler "^0.19.1"
 
 react-intl@^10.0.0:
-  version "10.1.14"
-  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-10.1.14.tgz#ee5f2f0f681c8b7954304fc884c87d9eb10c7950"
-  integrity sha512-DuL7vAViDCjxyiPNccMkt1PBv22mh+1OBhA8ta4r0fbjnJYhLVFc+3pR71qADZRHytRnKm9JcVDP9jYJW+qO6g==
+  version "10.1.18"
+  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-10.1.18.tgz#c20a1c2d9fff3e0e904a97ff4fc22a1fe1ea4bdf"
+  integrity sha512-4JMOYakqVn/IajJt8Ad341Iwd6RDtiP1WQZiHRcFpHDBhVW4E9T0vkypSOk69Adg3dEbIYOE4HKTehH/1sSwnw==
   dependencies:
-    "@formatjs/icu-messageformat-parser" "3.5.12"
-    "@formatjs/intl" "4.1.14"
-    intl-messageformat "11.2.9"
+    "@formatjs/icu-messageformat-parser" "3.5.15"
+    "@formatjs/intl" "4.1.17"
+    intl-messageformat "11.2.12"
 
 "react-is-18@npm:react-is@^18.3.1":
   version "18.3.1"
