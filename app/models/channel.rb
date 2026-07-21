@@ -420,7 +420,7 @@ class Channel < ApplicationRecord
     when "token_not_found_dns"
       I18n.t("helpers.channels.verification_failure_cta.token_not_found_dns")
     when "token_not_found_public_file"
-      I18n.t("helpers.channels.verification_failure_cta.token_not_found_public_file_html", domain: channel.details.brave_publisher_id)
+      I18n.t("helpers.channels.verification_failure_cta.token_not_found_public_file_html", domain: details.brave_publisher_id)
     when "no_https"
       I18n.t("helpers.channels.verification_failure_cta.no_https")
     else
