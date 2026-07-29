@@ -4,7 +4,7 @@ ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.1.3"
+rails_version = "8.1.3.1"
 gem "rails", rails_version
 gem "railties", rails_version
 

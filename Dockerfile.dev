@@ -35,6 +35,8 @@ RUN RAILS_ENV=development
 
 # Install the gems.
 RUN gem install nokogiri
+RUN bundle lock --add-platform arm64-linux-gnu \
+ && bundle lock --add-platform arm64-linux-musl
 RUN bundle install --jobs 20
 
 ENV NVM_DIR /usr/local/nvm
