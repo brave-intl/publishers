@@ -119,7 +119,7 @@
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-jsdoc": "^63.0.12",
+    "eslint-plugin-jsdoc": "^63.2.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-unicorn": "^72.0.0",
