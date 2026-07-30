@@ -4,9 +4,8 @@ ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.1.2.1"
+rails_version = "8.1.3.1"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.7.0"
 gem "railties", rails_version
 
 gem "rack", "3.2.6"
@@ -29,7 +28,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.226.0"
+gem "aws-sdk-s3", "~> 1.228.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -59,7 +58,7 @@ gem "font-awesome-rails", "~> 4.7.0"
 gem "google-protobuf", "~> 3.25"
 
 # Make logs less mad verbose
-gem "lograge", "~> 0.14.0"
+gem "lograge", "~> 0.15.0"
 
 # Dependency for rails
 gem "nokogiri", ">= 1.16"
@@ -159,7 +158,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "10.1.0"
+gem "shakapacker", "10.3.0"
 
 # pagination support for models
 gem "will_paginate"
