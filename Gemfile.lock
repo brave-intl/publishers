@@ -770,10 +770,11 @@ GEM
     yt (0.34.1)
       activesupport
     zeitwerk (2.8.2)
-    zendesk_api (3.1.1)
+    zendesk_api (3.1.2)
+      base64
       faraday (> 2.0.0)
       faraday-multipart
-      hashie (>= 3.5.2, < 6.0.0)
+      hashie (>= 3.5.2)
       inflection
       mini_mime
       multipart-post (~> 2.0)
@@ -1184,7 +1185,7 @@ CHECKSUMS
   yard-solargraph (0.1.0) sha256=a19a4619c942181a618fb9458970a9d2534cf7fda69fc43949629a7948a5930e
   yt (0.34.1) sha256=5ec0b10434721b697ae84f86e5dc826d5169921f1858e6ec613b7e3c9c1e704c
   zeitwerk (2.8.2) sha256=7212a61311083c604184b1ea2574b9aa05cd14f855a0841c06985cabe9181d12
-  zendesk_api (3.1.1) sha256=f85b646263729fee8dc3c47f02bb3caaf26f1650a094299dee46c063e26e7216
+  zendesk_api (3.1.2) sha256=3f726c133af8ed3518a9e7cfa9015a368617bd210754ed9173d984f12ddcec15
 
 RUBY VERSION
   ruby 4.0.5
