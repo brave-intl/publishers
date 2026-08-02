@@ -10,21 +10,34 @@ import { useContext } from 'react';
 import { useTranslations } from 'next-intl';
 import Web3 from 'web3';
 import {
-  Connection,
-  SystemProgram,
-  LAMPORTS_PER_SOL,
-  Transaction,
-  PublicKey,
-} from '@solana/web3.js';
+  address,
+  appendTransactionMessageInstruction,
+  compileTransaction,
+  createNoopSigner,
+  createSolanaRpc,
+  createTransactionMessage,
+  getTransactionEncoder,
+  lamports,
+  pipe,
+  setTransactionMessageFeePayer,
+  setTransactionMessageLifetimeUsingBlockhash,
+} from '@solana/kit';
+import { getTransferSolInstruction } from '@solana-program/system';
 import {
-  Token
-} from '@solana/spl-token';
+  findAssociatedTokenPda,
+  getCreateAssociatedTokenIdempotentInstruction,
+  getTransferInstruction,
+  TOKEN_PROGRAM_ADDRESS,
+} from '@solana-program/token';
 
 import Button from '@brave/leo/react/button';
 import { CryptoWidgetContext } from '@/lib/context/CryptoWidgetContext';
 import styles from '@/styles/PublicChannelPage.module.css';
 import batAbi from '@/constant/batAbi.json';
 import erc20Abi from '@/constant/erc20Abi.json';
+import { WalletStandardContext } from './WalletStandardProvider';
+
+const SOLANA_MAINNET_CHAIN = 'solana:mainnet';
 
 export default function CryptoWidgetPaymentButton({
   previewMode,
@@ -50,6 +63,14 @@ export default function CryptoWidgetPaymentButton({
     setErrorTitle,
     setIsTryBraveModalOpen,
   } = useContext(CryptoWidgetContext);
+
+  const {
+    wallets: solanaWallets,
+    wallet: connectedWallet,
+    account: connectedAccount,
+    connect: connectWallet,
+    disconnect: disconnectWallet,
+  } = useContext(WalletStandardContext);
 
   async function sendPayment() {
     clearError();
@@ -184,38 +205,59 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendSolPayment() {
-    if (typeof window !== 'undefined' && !window.solana) {
+    if (solanaWallets.length === 0) {
       setIsTryBraveModalOpen(true);
       setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     } else {
-      const provider = await window.solana.connect();
-      if (provider.publicKey) {
-        const pub_key = provider.publicKey;
-        const connection = new Connection(`${rpcHost}/rpc`);
-        const amount = Math.round(currentAmount * LAMPORTS_PER_SOL);
-
-        const transaction = new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: pub_key,
-            toPubkey: addresses.SOL,
-            lamports: amount,
-          }),
+      const provider =
+        connectedWallet && connectedAccount
+          ? { wallet: connectedWallet, account: connectedAccount }
+          : await connectWallet();
+      if (provider?.account?.address) {
+        const feePayer = address(provider.account.address);
+        const feePayerSigner = createNoopSigner(feePayer);
+        const rpc = createSolanaRpc(`${rpcHost}/rpc`);
+        const transferAmount = lamports(
+          BigInt(Math.round(currentAmount * 1_000_000_000)),
         );
-        transaction.feePayer = pub_key;
-        const blockhashObj = await connection.getLatestBlockhash('confirmed');
-        transaction.recentBlockhash = await blockhashObj.blockhash;
+        const { value: latestBlockhash } = await rpc
+          .getLatestBlockhash({ commitment: 'confirmed' })
+          .send();
+
+        const transactionMessage = pipe(
+          createTransactionMessage({ version: 0 }),
+          (tx) => setTransactionMessageFeePayer(feePayer, tx),
+          (tx) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+          (tx) =>
+            appendTransactionMessageInstruction(
+              getTransferSolInstruction({
+                source: feePayerSigner,
+                destination: address(addresses.SOL),
+                amount: transferAmount,
+              }),
+              tx,
+            ),
+        );
 
         try {
-          const result =
-            await window.solana.signAndSendTransaction(transaction);
-          if (result.signature) {
-            window.solana.disconnect();
+          const wireBytes = new Uint8Array(
+            getTransactionEncoder().encode(compileTransaction(transactionMessage)),
+          );
+          const results = await provider.wallet.features[
+            'solana:signAndSendTransaction'
+          ].signAndSendTransaction({
+            account: provider.account,
+            transaction: wireBytes,
+            chain: SOLANA_MAINNET_CHAIN,
+          });
+          if (results?.[0]?.signature) {
+            disconnectWallet();
             setIsSuccessView(true);
           }
         } catch (e) {
           setGenericError();
-          window.solana.disconnect();
+          disconnectWallet();
         }
       } else {
         setGenericError();
@@ -225,96 +267,104 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendSolTokenPayment(contractAddress, decimal) {
-    if (typeof window !== 'undefined' && !window.solana) {
+    if (solanaWallets.length === 0) {
       setIsTryBraveModalOpen(true);
       setError('publicChannelPage.noSolTitle', 'publicChannelPage.noSolMsg');
       return;
     } else {
-      const provider = await window.solana.connect();
-
-      if (provider.publicKey) {
+      const provider =
+        connectedWallet && connectedAccount
+          ? { wallet: connectedWallet, account: connectedAccount }
+          : await connectWallet();
+      if (provider?.account?.address) {
         try {
-          // This is the account address of the user who is sending bat
-          const sourceAccountOwner = provider.publicKey;
-          // multiply the number of bat tokens to the power of the decimals in the token program
-          const amount = Math.round(currentAmount * Math.pow(10, decimal));
-          // this is the account address that will receive bat
-          const destinationAccountOwner = new PublicKey(addresses.SOL);
-          const connection = new Connection(`${rpcHost}/rpc`);
-          const contract = new PublicKey(contractAddress);
-          // Check to see if the sender has an associated token account
-          const senderAccount = await connection.getParsedTokenAccountsByOwner(
-            sourceAccountOwner,
-            {
-              mint: contract,
-            },
+          // multiply the number of tokens to the power of the decimals in the token program
+          const amount = BigInt(
+            Math.round(currentAmount * Math.pow(10, decimal)),
           );
+          const sourceOwner = address(provider.account.address);
+          const sourceOwnerSigner = createNoopSigner(sourceOwner);
+          const destinationOwner = address(addresses.SOL);
+          const mint = address(contractAddress);
+          const rpc = createSolanaRpc(`${rpcHost}/rpc`);
 
-          if (senderAccount.value.length > 0) {
-            const senderTokenAddress = senderAccount.value[0].pubkey;
-            // get receiver associated token account
+          // Derive sender and receiver associated token accounts (ATAs)
+          const [senderAta] = await findAssociatedTokenPda({
+            mint,
+            owner: sourceOwner,
+            tokenProgram: TOKEN_PROGRAM_ADDRESS,
+          });
+          const [destinationAta] = await findAssociatedTokenPda({
+            mint,
+            owner: destinationOwner,
+            tokenProgram: TOKEN_PROGRAM_ADDRESS,
+          });
 
-            const destinationAccount =
-              await connection.getParsedTokenAccountsByOwner(
-                destinationAccountOwner,
-                {
-                  mint: contract,
-                },
-              );
-            // Does the receiver token account already exist?
-            const hasDestinationAccount = destinationAccount.value.length > 0;
-            // Get the receiver token address, whether it exists or not
-            const destinationTokenAddress = hasDestinationAccount
-              ? destinationAccount.value[0].pubkey
-              : await Token.getAssociatedTokenAddress(
-                  contract,
-                  destinationAccountOwner,
-                );
-
-            const tx = new Transaction();
-            // if the token accout has not been created, add an instruction to create it
-            if (!hasDestinationAccount) {
-              tx.add(
-                Token.createAssociatedTokenAccountInstruction(
-                  sourceAccountOwner,
-                  destinationTokenAddress,
-                  destinationAccountOwner,
-                  contract,
-                ),
-              );
-            }
-            // Add the instruction to transfer the tokens
-            tx.add(
-              Token.createTransferInstruction(
-                senderTokenAddress,
-                destinationTokenAddress,
-                sourceAccountOwner,
-                amount,
-              ),
-            );
-
-            tx.feePayer = sourceAccountOwner;
-            const latestBlockHash =
-              await connection.getLatestBlockhash('confirmed');
-            tx.recentBlockhash = latestBlockHash.blockhash;
-
-            const signature = await window.solana.signAndSendTransaction(tx);
-
-            if (signature.signature) {
-              window.solana.disconnect();
-              setIsSuccessView(true);
-            }
-          } else {
+          // Verify the sender actually holds this token before building the tx
+          const { value: senderAccountInfo } = await rpc
+            .getAccountInfo(senderAta, { commitment: 'confirmed' })
+            .send();
+          if (!senderAccountInfo) {
             setError(
               'publicChannelPage.ErrorTitle',
               'publicChannelPage.insufficientBalance',
             );
-            window.solana.disconnect();
+            disconnectWallet();
             return;
+          }
+
+          const { value: latestBlockhash } = await rpc
+            .getLatestBlockhash({ commitment: 'confirmed' })
+            .send();
+
+          // Idempotent create — no-op if the receiver ATA already exists
+          const createDestinationInstruction =
+            getCreateAssociatedTokenIdempotentInstruction({
+              payer: sourceOwnerSigner,
+              ata: destinationAta,
+              owner: destinationOwner,
+              mint,
+            });
+          const transferInstruction = getTransferInstruction({
+            source: senderAta,
+            destination: destinationAta,
+            authority: sourceOwnerSigner,
+            amount,
+          });
+
+          const transactionMessage = pipe(
+            createTransactionMessage({ version: 0 }),
+            (tx) => setTransactionMessageFeePayer(sourceOwner, tx),
+            (tx) =>
+              setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, tx),
+            (tx) =>
+              appendTransactionMessageInstruction(
+                createDestinationInstruction,
+                tx,
+              ),
+            (tx) => appendTransactionMessageInstruction(transferInstruction, tx),
+          );
+          const wireBytes = new Uint8Array(
+            getTransactionEncoder().encode(
+              compileTransaction(transactionMessage),
+            ),
+          );
+
+          const results = await provider.wallet.features[
+            'solana:signAndSendTransaction'
+          ].signAndSendTransaction({
+            account: provider.account,
+            transaction: wireBytes,
+            chain: SOLANA_MAINNET_CHAIN,
+          });
+
+          if (results?.[0]?.signature) {
+            disconnectWallet();
+            setIsSuccessView(true);
           }
         } catch (e) {
           setGenericError();
-          window.solana.disconnect();
+          disconnectWallet();
         }
       } else {
         setGenericError();
