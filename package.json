@@ -69,7 +69,7 @@
     "compression-webpack-plugin": "^12.0.0",
     "css-loader": "^7.0.0",
     "css-minimizer-webpack-plugin": "^8.0.0",
-    "dompurify": "^3.4.11",
+    "dompurify": "^3.4.13",
     "is-accessor-descriptor": "3.0.6",
     "js-yaml": "5.2.2",
     "kind-of": "^6.0.3",
