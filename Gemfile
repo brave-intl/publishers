@@ -4,9 +4,8 @@ ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.1.2.1"
+rails_version = "8.1.3.1"
 gem "rails", rails_version
-gem "rails-html-sanitizer", "1.7.0"
 gem "railties", rails_version
 
 gem "rack", "3.2.6"
@@ -29,7 +28,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.226.0"
+gem "aws-sdk-s3", "~> 1.228.0"
 
 gem "bootstrap", "5.3.8"
 
