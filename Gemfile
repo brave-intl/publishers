@@ -115,7 +115,7 @@ gem "rails-i18n", "~> 8.0"
 gem "recaptcha", "~> 5.21.0", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis", "~> 5.1"
+gem "redis", "~> 6.0"
 gem "redis-session-store"
 
 gem "render_async", "~> 2.1"
