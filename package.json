@@ -71,7 +71,7 @@
     "css-minimizer-webpack-plugin": "^8.0.0",
     "dompurify": "^3.4.13",
     "is-accessor-descriptor": "3.0.6",
-    "js-yaml": "5.2.2",
+    "js-yaml": "5.2.3",
     "kind-of": "^6.0.3",
     "mini-css-extract-plugin": "^2.7.6",
     "moment": "^2.29.4",
