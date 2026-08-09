@@ -769,7 +769,7 @@ GEM
       yard (~> 0.9)
     yt (0.34.1)
       activesupport
-    zeitwerk (2.8.2)
+    zeitwerk (2.8.3)
     zendesk_api (3.1.2)
       base64
       faraday (> 2.0.0)
@@ -1184,7 +1184,7 @@ CHECKSUMS
   yard-activesupport-concern (0.0.1) sha256=be790cb0efc23e2e87677063598ac8b743586154657bbd9655a7f03ce78390ef
   yard-solargraph (0.1.0) sha256=a19a4619c942181a618fb9458970a9d2534cf7fda69fc43949629a7948a5930e
   yt (0.34.1) sha256=5ec0b10434721b697ae84f86e5dc826d5169921f1858e6ec613b7e3c9c1e704c
-  zeitwerk (2.8.2) sha256=7212a61311083c604184b1ea2574b9aa05cd14f855a0841c06985cabe9181d12
+  zeitwerk (2.8.3) sha256=2c85125a8467ce069e20123d1e709a08955c9d29c118c25b46b7b7fafdbb92e5
   zendesk_api (3.1.2) sha256=3f726c133af8ed3518a9e7cfa9015a368617bd210754ed9173d984f12ddcec15
 
 RUBY VERSION
