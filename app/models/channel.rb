@@ -543,7 +543,7 @@ class Channel < ApplicationRecord
       errors.add(:public_name, "must only contain letters, numbers, dashes, and underscores")
     end
 
-    reserved = ReservedPublicName.find_by("LOWER(public_name) = ?", public_name.downcase)
+    reserved = ReservedPublicName.find_by(public_name: public_name)
     # names previously in use are released after 1 year
     if reserved && (reserved.permanent || reserved.created_at >= 1.year.ago)
       errors.add(:public_name, "already under use")
