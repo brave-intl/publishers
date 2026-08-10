@@ -116,7 +116,9 @@ gem "recaptcha", "~> 5.21.0", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis", "~> 6.0"
-gem "redis-session-store"
+# Redis-backed session store via the redis-store family (registers :redis_store).
+# Replaces redis-session-store, whose latest release (0.11.6) caps redis at < 6.
+gem "redis-actionpack", "~> 5.5"
 
 gem "render_async", "~> 2.1"
 
