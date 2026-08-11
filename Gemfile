@@ -158,7 +158,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "10.3.0"
+gem "shakapacker", "10.3.1"
 
 # pagination support for models
 gem "will_paginate"
