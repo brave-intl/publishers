@@ -1,45 +1,22 @@
-# Note: You must restart bin/webpacker-dev-server for changes to take effect
+# Note: You must restart bin/webpacker-dev-server for changes to take effect.
+#
+# js-yaml v4+ removed support for the `<<:` merge key that YAML normally uses
+# to inherit shared keys from an anchor. Shakapacker parses this file with
+# js-yaml, so each environment below is fully inlined instead of extending a
+# shared `default:` anchor. Plain aliases (e.g. `*extensions`) still work.
 
-default: &default
-  #  source_path: app/javascript
-
-  # You can have a subdirectory of the source_path, like 'packs' (recommended).
-  # Alternatively, you can use '/' to use the whole source_path directory.
-  #  source_entry_path: /
-
-  # Copied this over from the config from when we used rails/webpacker
+development:
   source_path: app/javascript
   source_entry_path: packs
   public_output_path: packs
   cache_path: tmp/cache/shakapacker
-
-  # If nested_entries is true, then we'll pick up subdirectories within the source_entry_path.
-  # You cannot set this option to true if you set source_entry_path to '/'
   nested_entries: true
-
-  #  While using a File-System-based automated bundle generation feature, miscellaneous warnings suggesting css order
-  #  conflicts may arise due to the mini-css-extract-plugin. For projects where css ordering has been mitigated through
-  #  consistent use of scoping or naming conventions, the css order warnings can be disabled by setting
-  #  css_extract_ignore_order_warnings to true
   css_extract_ignore_order_warnings: false
-
   public_root_path: public
-  #  public_output_path: packs
-  #  cache_path: tmp/webpacker
   shakapacker_compile_output: true
-  # See https://github.com/shakacode/shakapacker#deployment
   shakapacker_precompile: true
-
-  # Location for manifest.json, defaults to {public_output_path}/manifest.json if unset
-  # manifest_path: public/packs/manifest.json
-
-  # Additional paths webpack should look up modules
-  # ['app/assets', 'engine/foo/app/assets']
-
-  # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
-
-  extensions:
+  extensions: &extensions
     - .coffee
     - .erb
     - .js
@@ -55,18 +32,11 @@ default: &default
     - .gif
     - .jpeg
     - .jpg
-
-  # Select loader to use, available options are 'babel' (default), 'swc' or 'esbuild'
   shakapacker_loader: "babel"
-
-  # Set to true to enable check for matching versions of shakapacker gem and NPM package - will raise an error if there is a mismatch or wildcard versioning is used
   ensure_consistent_versioning: true
-
-  # Select whether the compiler will use SHA digest ('digest' option) or most most recent modified timestamp ('mtime') to determine freshness
-  compiler_strategy: digest
-
-development:
-  <<: *default
+  # Extra module lookup paths; must be an array even if empty because
+  # shakapacker spreads it without an undefined guard (rules/jscommon.js).
+  additional_paths: []
   compile: true
   compiler_strategy: mtime
 
@@ -77,28 +47,10 @@ development:
     host: localhost
     port: 3035
     public: localhost:3035
-    # Hot Module Replacement updates modules while the application is running without a full reload
-    # Used instead of the `hot` key in https://webpack.js.org/configuration/dev-server/#devserverhot
     hmr: false
-    # If HMR is on, CSS will by inlined by delivering it as part of the script payload via style-loader. Be sure
-    # that you add style-loader to your project dependencies.
-    #
-    # If you want to instead deliver CSS via <link> with the mini-css-extract-plugin, set inline_css to false.
-    # In that case, style-loader is not needed as a dependency.
-    #
-    # mini-css-extract-plugin is a required dependency in both cases.
     inline_css: true
-    # Defaults to the inverse of hmr. Uncomment to manually set this.
-    # live_reload: true
     client:
-      # Should we show a full-screen overlay in the browser when there are compiler errors or warnings?
       overlay: true
-      # May also be a string
-      # webSocketURL:
-      #  hostname: '0.0.0.0'
-      #  pathname: '/ws'
-      #  port: 8080
-    # Should we use gzip compression?
     overlay: true
     compress: true
     disable_host_check: true
@@ -106,7 +58,6 @@ development:
     quiet: false
     # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
     allowed_hosts: "all"
-    # Shows progress and colorizes output of bin/webpacker[-dev-server]
     pretty: true
     headers:
       "Access-Control-Allow-Origin": "*"
@@ -115,17 +66,44 @@ development:
         ignored: "/node_modules/"
 
 test:
-  <<: *default
-  compile: false
-
+  source_path: app/javascript
+  source_entry_path: packs
   # Compile test packs to a separate directory
   public_output_path: packs-test
-
-production:
-  <<: *default
-
-  # Production depends on precompilation of packs prior to booting for performance.
+  cache_path: tmp/cache/shakapacker
+  nested_entries: true
+  css_extract_ignore_order_warnings: false
+  public_root_path: public
+  shakapacker_compile_output: true
+  shakapacker_precompile: true
+  cache_manifest: false
+  extensions: *extensions
+  shakapacker_loader: "babel"
+  ensure_consistent_versioning: true
+  # Extra module lookup paths; must be an array even if empty because
+  # shakapacker spreads it without an undefined guard (rules/jscommon.js).
+  additional_paths: []
+  compiler_strategy: digest
   compile: false
 
-  # Cache manifest.json for performance
+production:
+  source_path: app/javascript
+  source_entry_path: packs
+  public_output_path: packs
+  cache_path: tmp/cache/shakapacker
+  nested_entries: true
+  css_extract_ignore_order_warnings: false
+  public_root_path: public
+  shakapacker_compile_output: true
+  shakapacker_precompile: true
+  # Production caches manifest.json for performance
   cache_manifest: true
+  extensions: *extensions
+  shakapacker_loader: "babel"
+  ensure_consistent_versioning: true
+  # Extra module lookup paths; must be an array even if empty because
+  # shakapacker spreads it without an undefined guard (rules/jscommon.js).
+  additional_paths: []
+  compiler_strategy: digest
+  # Production depends on precompilation of packs prior to booting for performance.
+  compile: false
