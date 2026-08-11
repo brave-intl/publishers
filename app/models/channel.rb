@@ -420,7 +420,7 @@ class Channel < ApplicationRecord
     when "token_not_found_dns"
       I18n.t("helpers.channels.verification_failure_cta.token_not_found_dns")
     when "token_not_found_public_file"
-      I18n.t("helpers.channels.verification_failure_cta.token_not_found_public_file_html", domain: channel.details.brave_publisher_id)
+      I18n.t("helpers.channels.verification_failure_cta.token_not_found_public_file_html", domain: details.brave_publisher_id)
     when "no_https"
       I18n.t("helpers.channels.verification_failure_cta.no_https")
     else
@@ -543,7 +543,7 @@ class Channel < ApplicationRecord
       errors.add(:public_name, "must only contain letters, numbers, dashes, and underscores")
     end
 
-    reserved = ReservedPublicName.find_by(public_name: public_name)
+    reserved = ReservedPublicName.find_by("LOWER(public_name) = ?", public_name.downcase)
     # names previously in use are released after 1 year
     if reserved && (reserved.permanent || reserved.created_at >= 1.year.ago)
       errors.add(:public_name, "already under use")
