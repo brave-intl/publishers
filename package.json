@@ -139,7 +139,7 @@
   "resolutions": {
     "node-fetch": "3.3.2",
     "nth-check": "3.0.1",
-    "postcss": "8.5.25",
+    "postcss": "8.5.26",
     "@types/react": "16.14.70",
     "@types/styled-components": "5.1.36",
     "picomatch": "4.0.5",
