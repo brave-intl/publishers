@@ -8,7 +8,7 @@ rails_version = "8.1.3.1"
 gem "rails", rails_version
 gem "railties", rails_version
 
-gem "rack", "3.2.6"
+gem "rack", "3.2.7"
 
 # All things countries
 gem "countries"
