@@ -2765,7 +2765,7 @@ cssnano-preset-default@^7.0.17:
     postcss-svgo "^7.1.3"
     postcss-unique-selectors "^7.0.7"
 
-cssnano-preset-default@^8.0.5:
+cssnano-preset-default@^8.0.6:
   version "8.0.8"
   resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-8.0.8.tgz#2fe4b6d80c02a61c3d07f69e678f759d61fd8e69"
   integrity sha512-WHUoojPq3fMdps/OjSn73p6FDb3YAN7HiuMA5WJJxs6Ka0MFqtZZsS4EppIWTJzW/Ss4sEZHVIKst/qi22u3uA==
@@ -2810,12 +2810,12 @@ cssnano-utils@^6.0.4:
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-6.0.4.tgz#f2f5e6c7746e2e5cd9873bb5b45ae160cbe5d0e1"
   integrity sha512-j1z2mW4MqtcGM4I8TxXAdOXUifp1DZ5/bZnyYnCpHlzQ/ilCj2voLxE0aqEKnBDA5hF6HahSY13JU8kyZ1s8Mg==
 
-cssnano@8.0.5:
-  version "8.0.5"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-8.0.5.tgz#c40f3deccebfe1a39bdc5118a547626858be1a3d"
-  integrity sha512-Yigb8Apuqi/jWwii1XFmZwgAPZ2RHDUx/ANodBZsEQusYIFryChhwOQNKco0A7V6zgFqDDy3LqefGK6OnniGMA==
+cssnano@8.0.6:
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-8.0.6.tgz#e1413255203594b34899541632ac188be65a3dce"
+  integrity sha512-KDwqW0R35qIGDDWse4vRhrNtF558sUOcfuqCbB/h0bUP4+aBUpbGT5X2bQlE1gEACk+nDFAL045VyesanJFEug==
   dependencies:
-    cssnano-preset-default "^8.0.5"
+    cssnano-preset-default "^8.0.6"
     lilconfig "^3.1.3"
 
 cssnano@^7.0.4:
@@ -5657,7 +5657,7 @@ postcss-value-parser@^4.0.2, postcss-value-parser@^4.1.0, postcss-value-parser@^
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@8.5.26, postcss@^8.4.40, postcss@^8.5.16, postcss@^8.5.6:
+postcss@>=8.5.26, postcss@^8.4.40, postcss@^8.5.16, postcss@^8.5.6:
   version "8.5.26"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.26.tgz#6e75135780c7e10df3433bf2266c552d35c8c620"
   integrity sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==
