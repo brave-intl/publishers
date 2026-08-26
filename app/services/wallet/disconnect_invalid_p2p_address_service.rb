@@ -11,5 +11,7 @@ class Wallet::DisconnectInvalidP2pAddressService < BuilderBaseService
       SlackMessenger.new(message: "A banned address has been detected in creators: Address #{address.address} on chain #{address.chain} for publisher #{address.publisher.id}", channel: "compliance-bot").perform
       address.destroy!
     end
+
+    ServiceRun.record_success!(self.class)
   end
 end
