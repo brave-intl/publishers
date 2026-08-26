@@ -62,4 +62,44 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     doc = Nokogiri::HTML(response.body)
     assert doc.search("tbody > tr").blank?
   end
+
+  test "index reports when the OFAC services have never run" do
+    sign_in publishers(:admin)
+
+    get admin_channels_path
+
+    assert_response :success
+    assert_select "time.job-time", count: 0
+    assert_match "no successful run recorded", response.body
+  end
+
+  test "index shows the last successful run of each OFAC service" do
+    sign_in publishers(:admin)
+
+    ofac_list_run = ServiceRun.record_success!(ParseOfacListService)
+    disconnect_run = ServiceRun.record_success!(Wallet::DisconnectInvalidP2pAddressService)
+
+    get admin_channels_path
+
+    assert_response :success
+    assert_select "time.job-time", count: 2
+    assert_select "time.job-time[datetime=?]", ofac_list_run.created_at.iso8601
+    assert_select "time.job-time[datetime=?]", disconnect_run.created_at.iso8601
+    assert_no_match "no successful run recorded", response.body
+  end
+
+  test "index shows the most recent run when a service has run more than once" do
+    sign_in publishers(:admin)
+
+    travel_to 2.days.ago do
+      ServiceRun.record_success!(ParseOfacListService)
+    end
+    latest = ServiceRun.record_success!(ParseOfacListService)
+
+    get admin_channels_path
+
+    assert_response :success
+    assert_select "time.job-time", count: 1
+    assert_select "time.job-time[datetime=?]", latest.created_at.iso8601
+  end
 end

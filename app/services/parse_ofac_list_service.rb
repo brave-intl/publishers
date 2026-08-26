@@ -9,7 +9,12 @@ class ParseOfacListService
   #    "qpf2cphc5dkuclkqur7lhj2yuqq9pk3hmukle77vhq",
   #    "qpusmp64rajses77x95g9ah825mtyyv74smwwkxhx3", etc...
   def self.perform
-    fetch_github_repo_top_level_files(repo_owner: "brave-intl", repo_name: "ofac-sanctioned-digital-currency-addresses", branch: "lists")
+    result = fetch_github_repo_top_level_files(repo_owner: "brave-intl", repo_name: "ofac-sanctioned-digital-currency-addresses", branch: "lists")
+
+    return result if result.blank? || result[:addresses].blank?
+
+    ServiceRun.record_success!(self)
+    result
   end
 
   def self.fetch_github_file_content(repo_owner:, repo_name:, branch:, file_path:, github_headers:)

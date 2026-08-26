@@ -1,0 +1,5 @@
+- if run_at
+  time.job-time datetime=run_at.iso8601
+    = run_at.strftime('%Y-%m-%d %H:%M UTC')
+- else
+  | no successful run recorded
