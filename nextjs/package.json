@@ -26,7 +26,7 @@
     "@github/webauthn-json": "^2.1.1",
     "@solana-program/system": "^0.13.0",
     "@solana-program/token": "^0.15.0",
-    "@solana/kit": "^7.1.0",
+    "@solana/kit": "^8.0.0",
     "axios": "1.19.0",
     "@wallet-standard/app": "^1.1.0",
     "bs58": "6.0.0",
