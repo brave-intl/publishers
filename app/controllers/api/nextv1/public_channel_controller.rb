@@ -1,5 +1,6 @@
 class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
   skip_before_action :authenticate_publisher!
+  skip_before_action :redirect_if_suspended
 
   def show
     channel = Channel.includes(:site_banner).where("LOWER(public_name) = :query OR LOWER(public_identifier) = :query", query: params[:public_identifier].downcase).first
@@ -11,7 +12,7 @@ class Api::Nextv1::PublicChannelController < Api::Nextv1::BaseController
     # Returning data for unverified channels would allow any publisher to
     # publish a spoofed contribution page (with an attacker-controlled wallet)
     # for a domain they do not yet own.
-    if channel.nil? || !channel.verified? || crypto_addresses&.empty?
+    if channel.nil? || !channel.verified? || crypto_addresses&.empty? || !channel.publisher.brave_payable?
       return render json: {}, status: 404
     end
 
