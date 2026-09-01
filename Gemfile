@@ -175,7 +175,7 @@ gem "zendesk_api", "~> 3.1.0"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.5.2"
-gem "sprockets", "4.4.0"
+gem "sprockets", "4.4.1"
 
 gem "eth", "~> 0.5"
 gem "rbnacl"
