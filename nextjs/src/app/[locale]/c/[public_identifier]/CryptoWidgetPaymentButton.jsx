@@ -301,15 +301,21 @@ export default function CryptoWidgetPaymentButton({
           });
 
           // Verify the sender actually holds this token before building the tx.
-          // getAccountInfo defaults to base58, which the RPC rejects for account
-          // data over 128 bytes -- a token account is 165, so base64 is required.
-          const { value: senderAccountInfo } = await rpc
-            .getAccountInfo(senderAta, {
-              commitment: 'confirmed',
-              encoding: 'base64',
-            })
+          // Ask for the owner's accounts on this mint and confirm the ATA we're
+          // about to spend from is among them. base64 encoding is required --
+          // base58 is rejected for account data over 128 bytes and a token
+          // account is 165.
+          const { value: senderTokenAccounts } = await rpc
+            .getTokenAccountsByOwner(
+              sourceOwner,
+              { mint },
+              { commitment: 'confirmed', encoding: 'base64' },
+            )
             .send();
-          if (!senderAccountInfo) {
+          const senderHoldsToken = senderTokenAccounts.some(
+            ({ pubkey }) => pubkey === senderAta,
+          );
+          if (!senderHoldsToken) {
             setError(
               'publicChannelPage.ErrorTitle',
               'publicChannelPage.insufficientBalance',
