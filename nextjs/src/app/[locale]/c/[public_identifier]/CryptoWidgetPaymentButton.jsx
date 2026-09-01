@@ -300,9 +300,14 @@ export default function CryptoWidgetPaymentButton({
             tokenProgram: TOKEN_PROGRAM_ADDRESS,
           });
 
-          // Verify the sender actually holds this token before building the tx
+          // Verify the sender actually holds this token before building the tx.
+          // getAccountInfo defaults to base58, which the RPC rejects for account
+          // data over 128 bytes -- a token account is 165, so base64 is required.
           const { value: senderAccountInfo } = await rpc
-            .getAccountInfo(senderAta, { commitment: 'confirmed' })
+            .getAccountInfo(senderAta, {
+              commitment: 'confirmed',
+              encoding: 'base64',
+            })
             .send();
           if (!senderAccountInfo) {
             setError(
