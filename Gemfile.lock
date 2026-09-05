@@ -626,7 +626,7 @@ GEM
     semantic_range (3.1.1)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
-    shakapacker (10.3.1)
+    shakapacker (10.3.2)
       activesupport (>= 5.2)
       package_json
       rack-proxy (>= 0.6.1)
@@ -870,7 +870,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver (~> 4.4)
   sendgrid-ruby (~> 6.7)
-  shakapacker (= 10.3.1)
+  shakapacker (= 10.3.2)
   sidekiq (~> 8.1.0)
   sidekiq-scheduler (~> 6.0.0)
   sidekiq-throttled (~> 2.1.0)
@@ -1140,7 +1140,7 @@ CHECKSUMS
   selenium-webdriver (4.48.0) sha256=0c8376ebc8a0a4879343fe6fe6eccdcea76748611cd25de370b33eded2077a94
   semantic_range (3.1.1) sha256=508333196ef0c7ba33e79579d4df7eb0a41080595e6a655c2515b03d634ec4a9
   sendgrid-ruby (6.7.0) sha256=c9ff96bd37c9d6d3ce39c3c1017ee3cd9d09c155ec6af1b5078d05b5d832d111
-  shakapacker (10.3.1) sha256=39647dfccfdc6365ca717629bea43aacd582752be552e77e8eeae495647678c4
+  shakapacker (10.3.2) sha256=cfc8fa328d39b5321912376faa13710bd1ac10bc3eab3c95e6d71eb28f9ba0e0
   sidekiq (8.1.7) sha256=91ad48c7e6c32e1846bf1d5b74c27948758049b93fed0cb539f8d586c7de3415
   sidekiq-scheduler (6.0.2) sha256=1065f1a989e750849de1d23d1f34338c104ed6ec5a6dc22a2620c5af54a2d6fc
   sidekiq-throttled (2.1.0) sha256=430d4684b781b37f7f22b9b4a26dadf438b725718ecb821ae8bb8ea66f78fc4c
