@@ -105,8 +105,8 @@
     "@types/react": "16.14.70",
     "@types/react-dom": "16.9.25",
     "@types/styled-components": "5.1.36",
-    "@typescript-eslint/eslint-plugin": "^8.67.0",
-    "@typescript-eslint/parser": "^8.67.0",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
     "audit-ci": "7.1.0",
     "autoprefixer": "10.5.4",
     "babel-plugin-styled-components": "2.3.0",
@@ -134,7 +134,7 @@
     "sugarss": "5.0.1",
     "swc-loader": "^0.2.7",
     "ts-loader": "9.6.2",
-    "typescript": "7.0.2"
+    "typescript": "^6.0.0"
   },
   "resolutions": {
     "node-fetch": "3.3.2",
