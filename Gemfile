@@ -177,7 +177,10 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "sprockets-rails", "3.5.2"
 gem "sprockets", "4.4.1"
 
-gem "eth", "~> 0.5"
+# Keccak-256 for EIP-191 signature recovery in Util::CryptoUtils. Replaces the
+# eth gem, whose rbsecp256k1 dependency pins rubyzip to a 2.x line that carries
+# CVE-2026-85396; recovery is done directly with OpenSSL secp256k1 instead.
+gem "keccak", "~> 1.3"
 gem "rbnacl"
 gem "base58"
 
