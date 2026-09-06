@@ -1,7 +1,6 @@
 require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
-require "eth"
 require "test_helpers/csrf_getter"
 
 class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::IntegrationTest
@@ -139,10 +138,31 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
     address = "0x3430E11a53fE270C0ce3997AfFf1Ba6F9B48b59F"
     message = "1686284137397"
 
-    Eth::Signature.expects(:personal_recover).with(message, signature).returns(address)
-    Eth::Util.expects(:public_key_to_address).with(address).returns(Eth::Address.new(address))
-
     assert_equal true, Util::CryptoUtils.verify_ethereum_address(signature, address, message, @publisher)
+  end
+
+  test "should reject an Ethereum signature from a different address" do
+    signature = "0xc6ed3f93f3ca79fc3ebd7548d4adb79ef70a5fbea35ed088ffe265389be4f65f4980e056316bedb515ffafe1dda3889f7e753c78d26dd16146e39ee7e62382021b"
+    other_address = "0x000000000000000000000000000000000000dEaD"
+    message = "1686284137397"
+
+    assert_equal false, Util::CryptoUtils.verify_ethereum_address(signature, other_address, message, @publisher)
+  end
+
+  test "should reject an Ethereum signature over a different message" do
+    signature = "0xc6ed3f93f3ca79fc3ebd7548d4adb79ef70a5fbea35ed088ffe265389be4f65f4980e056316bedb515ffafe1dda3889f7e753c78d26dd16146e39ee7e62382021b"
+    address = "0x3430E11a53fE270C0ce3997AfFf1Ba6F9B48b59F"
+
+    assert_equal false, Util::CryptoUtils.verify_ethereum_address(signature, address, "1686284137398", @publisher)
+  end
+
+  test "should reject a malformed Ethereum signature without raising" do
+    address = "0x3430E11a53fE270C0ce3997AfFf1Ba6F9B48b59F"
+    message = "1686284137397"
+
+    ["", "0xdeadbeef", "0x" + "00" * 65, "not-hex-at-all", nil].each do |signature|
+      assert_equal false, Util::CryptoUtils.verify_ethereum_address(signature, address, message, @publisher)
+    end
   end
 
   # -------------------------------------------------------------------
