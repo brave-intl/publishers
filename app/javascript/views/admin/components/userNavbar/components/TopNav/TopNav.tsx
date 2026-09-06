@@ -135,6 +135,7 @@ export default class Referrals extends React.Component<
       credentials: "same-origin",
       headers: {
         Accept: "text/html",
+        // @ts-ignore
         "X-CSRF-Token": document.head
           .querySelector("[name=csrf-token]")
           .getAttribute("content") as string,

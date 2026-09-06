@@ -45,10 +45,12 @@ export default class Modal extends React.Component<IModalProps> {
   }
 
   public componentDidMount() {
+    // @ts-ignore
     this.modalRoot.appendChild(this.el);
   }
 
   public componentWillUnmount() {
+    // @ts-ignore
     this.modalRoot.removeChild(this.el);
   }
 
