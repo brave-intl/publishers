@@ -43,10 +43,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "moduleResolution": [
-    "node_modules",
-    ".next",
-    "node"
   ]
 }

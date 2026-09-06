@@ -62,8 +62,8 @@ export default function TOTPNewPage() {
       </Head>
       <Container>
         <Card>
-          <div className='max-w-screen-md'>
-            <div className='[&>*]:mb-2'>
+          <div className='max-w-(--breakpoint-md)'>
+            <div className='*:mb-2'>
               {user.two_factor_enabled && (
                 <Alert type='warning'>
                   {t('totp_registrations.new.warning')}

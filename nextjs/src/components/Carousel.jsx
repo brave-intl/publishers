@@ -66,7 +66,7 @@ export default function Carousel({ items, slideTime }) {
         {/* Previous Arrow */}
         <button
           onClick={goToPrevious}
-          className='absolute left-1 top-1/2 z-10 transform rounded-full bg-[#5E6175] p-[1px] text-white transition-all hover:bg-opacity-75'
+          className='absolute left-1 top-1/2 z-10 transform rounded-full bg-[#5E6175] p-px text-white transition-all hover:bg-[#5E6175]/75'
           aria-label='Previous slide'
         >
           <Icon name='carat-left' />
@@ -75,7 +75,7 @@ export default function Carousel({ items, slideTime }) {
         {/* Next Arrow */}
         <button
           onClick={goToNext}
-          className='absolute right-1 top-1/2 z-10 transform rounded-full bg-[#5E6175] p-[1px] text-white transition-all hover:bg-opacity-75'
+          className='absolute right-1 top-1/2 z-10 transform rounded-full bg-[#5E6175] p-px text-white transition-all hover:bg-[#5E6175]/75'
           aria-label='Next slide'
         >
           <Icon name='carat-right' />

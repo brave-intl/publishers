@@ -49,7 +49,7 @@ export default function PublicChannelLayout({ children }) {
           />
         </div>
       </div>
-      <div className='flex-grow'>{children}</div>
+      <div className='grow'>{children}</div>
       <div className={`${styles['footer']} small-regular`}>
         <div className='container mx-auto flex justify-between'>
           <div className='flex'>
