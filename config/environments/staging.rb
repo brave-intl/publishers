@@ -41,13 +41,13 @@ Rails.application.configure do
 
 
   # SESSION STORE
-  config.session_store :redis_session_store,
-                       key:  "_publishers_session",
-                       redis: {
-                         client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
-                         expire_after: 30.days,
-                         key_prefix: 'publishers:session:'
-                       }
+  config.session_store :redis_store,
+                       key: "_publishers_session",
+                       servers: [{
+                         url: Rails.configuration.pub_secrets[:redis_url],
+                         namespace: "publishers:session"
+                       }],
+                       expire_after: 30.days
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque

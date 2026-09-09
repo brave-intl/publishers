@@ -8,7 +8,7 @@ rails_version = "8.1.3.1"
 gem "rails", rails_version
 gem "railties", rails_version
 
-gem "rack", "3.2.6"
+gem "rack", "3.2.7"
 
 # All things countries
 gem "countries"
@@ -17,7 +17,7 @@ gem "countries"
 gem "active_model_serializers", "~> 0.10"
 
 # For bulk updates/imports
-gem "activerecord-import", "~> 2.2.0"
+gem "activerecord-import", "~> 2.3.0"
 
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.9"
@@ -28,7 +28,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.228.0"
+gem "aws-sdk-s3", "~> 1.229.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -115,8 +115,10 @@ gem "rails-i18n", "~> 8.0"
 gem "recaptcha", "~> 5.21.0", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis", "~> 5.1"
-gem "redis-session-store"
+gem "redis", "~> 6.0"
+# Redis-backed session store via the redis-store family (registers :redis_store).
+# Replaces redis-session-store, whose latest release (0.11.6) caps redis at < 6.
+gem "redis-actionpack", "~> 5.5"
 
 gem "render_async", "~> 2.1"
 
@@ -158,7 +160,7 @@ gem "webauthn"
 # One-time passwords for 2fa
 gem "rotp", "~> 6.3.0"
 
-gem "shakapacker", "10.3.0"
+gem "shakapacker", "10.3.2"
 
 # pagination support for models
 gem "will_paginate"
@@ -173,7 +175,7 @@ gem "zendesk_api", "~> 3.1.0"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "sprockets-rails", "3.5.2"
-gem "sprockets", "4.2.2"
+gem "sprockets", "4.4.1"
 
 gem "eth", "~> 0.5"
 gem "rbnacl"
@@ -235,7 +237,6 @@ group :development, :test do
   gem "mocha", require: false
   gem "simplecov", require: false, group: :test
   gem "selenium-webdriver", "~> 4.4"
-  gem "solargraph"
   gem "dotenv-rails", "3.2.0"
 end
 

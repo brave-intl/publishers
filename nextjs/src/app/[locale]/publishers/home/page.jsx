@@ -71,7 +71,7 @@ export default function HomePage() {
     );
   } else {
     return (
-      <main className='main transition-colors'>
+      <main className='main transition-colors items-stretch justify-center'>
         <Container>
           {alert && <Alert className='mb-3'>{alert}</Alert>}
           {notice && (
@@ -79,7 +79,7 @@ export default function HomePage() {
               {notice}
             </Alert>
           )}
-          <div className='mx-auto max-w-screen-lg'>
+          <div className='mx-auto max-w-[1024px]'>
             <Collapse
               isOpen={isCollapseOpen}
               onToggle={() => {

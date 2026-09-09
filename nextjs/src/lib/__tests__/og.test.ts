@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { openGraph } from '@/lib/og';
 
 describe('Open Graph function should work correctly', () => {

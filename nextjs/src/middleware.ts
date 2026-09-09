@@ -5,6 +5,11 @@ function secureUrl(url: string): string {
   return url.replace(/http:\/\//g, 'https://');
 }
 
+const handleI18nRouting = createMiddleware({
+  locales: ['en', 'ja'],
+  defaultLocale: 'en',
+});
+
 export function middleware(request) {
   const pathname = request.nextUrl.pathname;
   const locale = request.nextUrl.searchParams.get('locale');
@@ -12,12 +17,7 @@ export function middleware(request) {
     return NextResponse.redirect(new URL(`/ja${pathname}`, request.nextUrl.origin));
   }
 
-  // next-intl middleware
   const defaultLocale = request.headers.get('x-default-locale') || 'en';
-  const handleI18nRouting = createMiddleware({
-    locales: ['en', 'ja'],
-    defaultLocale: 'en',
-  });
 
   const response = handleI18nRouting(request);
   response.headers.set('x-default-locale', defaultLocale);

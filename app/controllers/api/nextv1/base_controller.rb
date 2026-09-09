@@ -9,7 +9,7 @@ class Api::Nextv1::BaseController < ActionController::API
   protect_from_forgery with: :exception
 
   before_action :authenticate_publisher!
-
+  before_action :redirect_if_suspended
   before_action :set_csrf_cookie
 
   def authenticate_publisher!(opts = {})
@@ -27,6 +27,19 @@ class Api::Nextv1::BaseController < ActionController::API
 
   def publisher_session
     current_publisher && warden.session(:publisher)
+  end
+
+  def redirect_if_suspended
+    return if !current_publisher.present?
+    # publisher is neither suspended nor meets the criteria for automatic suspension
+    return if current_publisher.authorized_to_act?
+
+    # If the publisher is not suspended, then they meet the criteria for enforcing an existing  suspension
+    if !current_publisher.suspended?
+      current_publisher.enforce_suspension!
+    end
+
+    render(json: {location: suspended_error_publishers_path}, status: 302)
   end
 
   private

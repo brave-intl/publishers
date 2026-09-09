@@ -22,13 +22,13 @@ Rails.application.configure do
     REDIS = ConnectionPool.new(size: 5) { Redis.new }
 
     # SESSION STORE
-    config.session_store :redis_session_store,
-       key:  "_publishers_session",
-       redis: {
-       client: Redis.new(url: Rails.configuration.pub_secrets[:redis_url]),
-       expire_after: 30.days,
-       key_prefix: 'publishers:session:'
-    }
+    config.session_store :redis_store,
+       key: "_publishers_session",
+       servers: [{
+         url: Rails.configuration.pub_secrets[:redis_url],
+         namespace: "publishers:session"
+       }],
+       expire_after: 30.days
 
     config.action_mailer.default_url_options = { host: "localhost", protocol: "https" }
     config.action_mailer.delivery_method = :letter_opener_web

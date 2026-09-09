@@ -72,7 +72,7 @@ export default function SettingsPage() {
 
       <Container>
         <Card className='mb-3'>
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <h2 className='mb-2'>{t('Settings.index.header')}</h2>
             <h4 className='mt-2'>Stay Logged-In</h4>
             <div className='flex items-center justify-between'>
@@ -112,7 +112,7 @@ export default function SettingsPage() {
         </Card>
 
         <Card className='mb-3'>
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <div className='mb-2 flex items-center justify-between'>
               <h2>{t('Settings.index.contact.heading')}</h2>
               <div>
@@ -186,7 +186,7 @@ export default function SettingsPage() {
         </Card>
 
         <Card className='mb-3'>
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <h2 className='mb-2'>{t('Settings.index.email.heading')}</h2>
             <h4>Notifications</h4>
             <div className='mt-1'>
@@ -203,7 +203,7 @@ export default function SettingsPage() {
         </Card>
 
         <Card className='mb-3'>
-          <div className='max-w-screen-md'>
+          <div className='max-w-(--breakpoint-md)'>
             <h2 className='mb-2'>
               {t('Settings.index.delete_account.heading')}
             </h2>

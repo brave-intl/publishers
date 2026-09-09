@@ -1,9 +1,29 @@
-@import url('@brave/leo/tokens/css/variables.css');
-@import url('./variables.css');
+@import url('@brave/leo/tokens/css/variables.css') layer(base);
+@import url('./variables.css') layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  /* Map spacing to height utilities */
+  --height-px: 1px;
+  --height-0\.5: 4px;
+  --height-1: 8px;
+  --height-2: 16px;
+  --height-3: 24px;
+  --height-4: 32px;
+  --height-5: 40px;
+
+  /* Map spacing to width utilities */
+  --width-px: 1px;
+  --width-0\.5: 4px;
+  --width-1: 8px;
+  --width-2: 16px;
+  --width-3: 24px;
+  --width-4: 32px;
+  --width-5: 40px;
+
+  --spacing: 8px;
+}
 
 html {
   box-sizing: border-box;
@@ -45,8 +65,6 @@ h6,
 p,
 ol,
 ul {
-  margin: 0;
-  padding: 0;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -83,8 +101,6 @@ h4 {
 }
 
 hr {
-  @apply my-2;
-
   margin-top: var(--leo-spacing-xl);
   margin-bottom: var(--leo-spacing-xl);
 

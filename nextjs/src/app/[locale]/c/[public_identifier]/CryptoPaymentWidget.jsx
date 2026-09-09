@@ -14,6 +14,7 @@ import TryBraveModal from './TryBraveModal';
 import CryptoWidgetAmountSelect from './CryptoWidgetAmountSelect';
 import CryptoWidgetPaymentButton from './CryptoWidgetPaymentButton';
 import SuccessWidget from './SuccessWidget';
+import WalletStandardProvider from './WalletStandardProvider';
 import { apiRequest } from '@/lib/api';
 import styles from '@/styles/PublicChannelPage.module.css';
 
@@ -139,11 +140,13 @@ export default function CryptoPaymentWidget({
           )}
         </div>
         <div className={`${styles['payment-buttons']}`}>
-          <CryptoWidgetPaymentButton
-            previewMode={previewMode}
-            cryptoConstants={cryptoConstants}
-            addresses={addresses}
-          />
+          <WalletStandardProvider>
+            <CryptoWidgetPaymentButton
+              previewMode={previewMode}
+              cryptoConstants={cryptoConstants}
+              addresses={addresses}
+            />
+          </WalletStandardProvider>
           <a
             className={`${styles['qr-link']}`}
             onClick={(event) => {
