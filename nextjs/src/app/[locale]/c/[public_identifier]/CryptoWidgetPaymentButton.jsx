@@ -222,7 +222,7 @@ export default function CryptoWidgetPaymentButton({
           BigInt(Math.round(currentAmount * 1_000_000_000)),
         );
         const { value: latestBlockhash } = await rpc
-          .getLatestBlockhash({ commitment: 'confirmed' })
+          .getLatestBlockhash({ commitment: 'finalized' })
           .send();
 
         const transactionMessage = pipe(
@@ -309,7 +309,7 @@ export default function CryptoWidgetPaymentButton({
             .getTokenAccountsByOwner(
               sourceOwner,
               { mint },
-              { commitment: 'confirmed', encoding: 'base64' },
+              { commitment: 'finalized', encoding: 'base64' },
             )
             .send();
           const senderHoldsToken = senderTokenAccounts.some(
@@ -325,7 +325,7 @@ export default function CryptoWidgetPaymentButton({
           }
 
           const { value: latestBlockhash } = await rpc
-            .getLatestBlockhash({ commitment: 'confirmed' })
+            .getLatestBlockhash({ commitment: 'finalized' })
             .send();
 
           // Idempotent create — no-op if the receiver ATA already exists
