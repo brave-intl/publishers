@@ -126,8 +126,8 @@ GEM
     aws-sdk-kms (1.132.0)
       aws-sdk-core (~> 3, >= 3.256.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.230.0)
-      aws-sdk-core (~> 3, >= 3.254.1)
+    aws-sdk-s3 (1.231.0)
+      aws-sdk-core (~> 3, >= 3.255.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -737,7 +737,7 @@ DEPENDENCIES
   activerecord-import (~> 2.3.0)
   activerecord-postgres_enum
   addressable (~> 2.9)
-  aws-sdk-s3 (~> 1.230.0)
+  aws-sdk-s3 (~> 1.231.0)
   base58
   better_errors
   binding_of_caller
@@ -860,7 +860,7 @@ CHECKSUMS
   aws-partitions (1.1287.0) sha256=76f4c73011654553566c5db5bbef0f24738bb016e923910e8b1b3f9cb7d989ca
   aws-sdk-core (3.257.0) sha256=a92ad19c7ff668cec6688ee3200ee562da80647a3bbeed9fda02e8b0ca6492c6
   aws-sdk-kms (1.132.0) sha256=094b0097bb3be9d5c1ac87e971ca7f5aebb746801dfb5f0f576480bf98dca69c
-  aws-sdk-s3 (1.230.0) sha256=cf9157b0760fd8260b5890ce4d5d841539b423c0333b6394362a76d797d3fc73
+  aws-sdk-s3 (1.231.0) sha256=a9fc98c6f03f0e71c7215d48ff8844d436421df7f9486301d56bdf1f368a3364
   aws-sigv4 (1.12.1) sha256=6973ff95cb0fd0dc58ba26e90e9510a2219525d07620c8babeb70ef831826c00
   base58 (0.2.3) sha256=fda5c5d3bda8b429ad0d1a5309c2d1e488ba46f0a2ab99a639890f26c61bf3be
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
