@@ -2794,7 +2794,7 @@ cssnano-preset-default@^7.0.17:
     postcss-svgo "^7.1.3"
     postcss-unique-selectors "^7.0.7"
 
-cssnano-preset-default@^9.0.3:
+cssnano-preset-default@^9.0.4:
   version "9.0.4"
   resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-9.0.4.tgz#0c805c93e7e60853c640cffb347bd7e4befcc95a"
   integrity sha512-eHy3rfG0/TRGGG6gbgwLLlSs3Xr0xx2ShVwN94le+pydxAC3dXgmJTu8uIqdvBbrmEirUGuK9H5rUnxJRDXdoA==
@@ -2839,12 +2839,12 @@ cssnano-utils@^7.0.2:
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-7.0.2.tgz#260d293fbbe8965bdc8719ebdeb00f26b3b01047"
   integrity sha512-X5B8Butd9TISH65XOoSYsq/wokHHjDK7eNujX3EcTf67T6uy2BySmT1SoaSXzlFdOsRf431FTENMsPrsc9JYHg==
 
-cssnano@9.0.3:
-  version "9.0.3"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.0.3.tgz#b0f16138651fc7aecc0b68894979a77721cd50e2"
-  integrity sha512-v4oRMYCXcJtI1MlGcwVgSP/TG/RrznC3iKQeNcFTQZZYWomp2j8CmgT9iiSO2v64K4LJSi6pWdyznmUUutLCKw==
+cssnano@9.0.4:
+  version "9.0.4"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.0.4.tgz#c48106b7493adc7e427eaa2a56b3605e485cfadf"
+  integrity sha512-CdXjUnePN8UmFySZ65Oh83DUf/z/VV+yRc86PlMUA4JBJizXiwelynZvfLji+gY/Z94xH+RrCT48wZyqSJdhuw==
   dependencies:
-    cssnano-preset-default "^9.0.3"
+    cssnano-preset-default "^9.0.4"
 
 cssnano@^7.0.4:
   version "7.1.9"
