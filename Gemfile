@@ -177,7 +177,8 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "sprockets-rails", "3.5.2"
 gem "sprockets", "4.4.1"
 
-gem "eth", "~> 0.5"
+# Keccak-256 replaces the eth gem
+gem "keccak", "~> 1.3"
 gem "rbnacl"
 gem "base58"
 
