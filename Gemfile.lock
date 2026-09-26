@@ -599,9 +599,9 @@ GEM
     slim (5.2.2)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
-    slim-rails (4.0.0)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
+    slim-rails (4.0.1)
+      actionpack (>= 7.0)
+      railties (>= 7.0)
       slim (>= 3.0, < 6.0, != 5.0.0)
     snaky_hash (2.0.7)
       hashie (>= 0.1.0, < 6)
@@ -785,7 +785,7 @@ DEPENDENCIES
   sidekiq-scheduler (~> 6.0.0)
   sidekiq-throttled (~> 2.1.0)
   simplecov
-  slim-rails (= 4.0.0)
+  slim-rails (= 4.0.1)
   sprockets (= 4.4.1)
   sprockets-rails (= 3.5.2)
   ssrf_filter (= 1.6.0)
@@ -1032,7 +1032,7 @@ CHECKSUMS
   simplecov (1.3.0) sha256=d9886307863c1ead47657dcbed869bfffd82318808b09014d8f0ff77dcfe7492
   simpleidn (0.2.3) sha256=08ce96f03fa1605286be22651ba0fc9c0b2d6272c9b27a260bc88be05b0d2c29
   slim (5.2.2) sha256=d1b5a575fcfa904a5eb66ec0a8f48a2363c7b9c57d50debb42dbab31524ef5e3
-  slim-rails (4.0.0) sha256=2cfee5c4ba00d4d935676db1e74a05dbaf9dd6f789903a1006e3bb687bbe36e2
+  slim-rails (4.0.1) sha256=bd8f21eec413738ae65d7732926e65be15061dae17cc85f80e37301916a5a0f4
   snaky_hash (2.0.7) sha256=7d02c70012a3f932e48860cd024577908300c9aa615e0cb9b450aaa749cbcb4d
   sprockets (4.4.1) sha256=fbd665edad0916de5c7abefef0fc616866a60c5e48ce2846f39ac3fc5df9e184
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
