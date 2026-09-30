@@ -50,7 +50,9 @@ export default function CustodianConnectModal({}) {
       'POST',
       {},
     );
-    window.location.assign(res.authorization_url);
+    if (res.authorization_url) {
+      window.location.assign(res.authorization_url);
+    }
   }
 
   return (

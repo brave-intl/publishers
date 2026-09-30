@@ -36,6 +36,9 @@ COPY . .
 RUN NODE_OPTIONS=--openssl-legacy-provider RAILS_ENV=production CREATORS_FULL_HOST="1" SECRET_KEY_BASE="1" bundle exec rails assets:precompile
 
 # Now for the NextJS frontend
+# needed for nala (@brave/leo)
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable
 WORKDIR /rails/nextjs
 RUN npm i
 ENV NEXT_TELEMETRY_DISABLED 1

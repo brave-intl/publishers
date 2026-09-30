@@ -28,7 +28,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.229.0"
+gem "aws-sdk-s3", "~> 1.232.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -48,7 +48,7 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.14.3"
+gem "faraday", "2.14.4"
 gem "faraday-retry", "2.4.0"
 
 gem "ffi"
@@ -149,7 +149,7 @@ gem "sidekiq-throttled", "~> 2.1.0"
 # slim for view templates
 gem "slim-rails", "4.0.0"
 
-gem "ssrf_filter", "1.5.0"
+gem "ssrf_filter", "1.6.0"
 
 gem "strong_migrations"
 
@@ -177,7 +177,8 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "sprockets-rails", "3.5.2"
 gem "sprockets", "4.4.1"
 
-gem "eth", "~> 0.5"
+# Keccak-256 replaces the eth gem
+gem "keccak", "~> 1.3"
 gem "rbnacl"
 gem "base58"
 

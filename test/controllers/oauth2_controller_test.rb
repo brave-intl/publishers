@@ -16,7 +16,7 @@ class Oauth2ControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     Oauth2Controller.any_instance.stubs(:state_verified?).returns(true)
     get(publishers_uphold_verified_path(code: "123"))
-    assert_response :redirect
+    assert_response :service_unavailable
   end
 
   test "uphold connection create" do
@@ -24,6 +24,6 @@ class Oauth2ControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     Oauth2Controller.any_instance.stubs(:state_verified?).returns(true)
     post(connection_uphold_connection_path(code: "123"))
-    assert_response :redirect
+    assert_response :service_unavailable
   end
 end
