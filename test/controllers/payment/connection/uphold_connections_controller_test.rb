@@ -7,24 +7,6 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include MockRewardsResponses
 
-  describe "maintenance" do
-    before do
-      UpholdConnection.delete_all
-      sign_in(publishers(:google_verified))
-    end
-
-    it "blocks #create" do
-      post connection_uphold_connection_path
-      assert_response :service_unavailable
-    end
-
-    it "blocks #callback" do
-      get "/publishers/uphold_verified", params: {code: "value", state: "some value"}
-      assert_response :service_unavailable
-      assert_equal(0, UpholdConnection.count)
-    end
-  end
-
   describe "#callback" do
     let(:scope) { "cards:write" }
     let(:publisher) { publishers(:google_verified) }
@@ -36,7 +18,6 @@ class UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
     }
 
     before do
-      skip "Uphold connections under maintenance"
       stub_rewards_parameters
       UpholdConnection.delete_all
       assert_equal(0, UpholdConnection.count)

@@ -9,8 +9,6 @@
 class Api::Nextv1::Connection::UpholdConnectionsController < Api::Nextv1::Oauth2Controller
   include PublishersHelper
 
-  prepend_before_action :uphold_maintenance, only: [:create]
-
   def show
     publisher = current_publisher
     render(json: {
@@ -53,10 +51,6 @@ class Api::Nextv1::Connection::UpholdConnectionsController < Api::Nextv1::Oauth2
   end
 
   private
-
-  def uphold_maintenance
-    head :service_unavailable
-  end
 
   # 1.) Set required state for Oauth2 Implementation
   # @debug is an optional flag that will return a json response from the callback

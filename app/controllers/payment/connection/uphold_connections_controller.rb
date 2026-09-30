@@ -12,8 +12,6 @@ module Payment
     # Took me a while to figure that out.
 
     class UpholdConnectionsController < Oauth2Controller
-      prepend_before_action :uphold_maintenance, only: [:create, :callback]
-
       def show
         publisher = current_publisher
         respond_to do |format|
@@ -59,10 +57,6 @@ module Payment
       end
 
       private
-
-      def uphold_maintenance
-        head :service_unavailable
-      end
 
       # 1.) Set required state for Oauth2 Implementation
       # @debug is an optional flag that will return a json response from the callback
