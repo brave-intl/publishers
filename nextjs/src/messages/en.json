@@ -122,7 +122,8 @@
       "custodial_select_heading": "Available custodial account providers",
       "uphold_connect": "Connect Uphold",
       "bitflyer_connect": "Connect bitFlyer",
-      "wrong_region": "Uphold accounts registered in {region}  are not supported at this time. However, you can connect anyway, and you'll become eligible if {region} is supported in the future."
+      "wrong_region": "Uphold accounts registered in {region}  are not supported at this time. However, you can connect anyway, and you'll become eligible if {region} is supported in the future.",
+      "disabled_msg": "Connecting an Uphold account is temporarily unavailable."
     },
     "channels": {
       "verified": "Appears as Verified",
