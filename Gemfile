@@ -9,6 +9,7 @@ gem "rails", rails_version
 gem "railties", rails_version
 
 gem "rack", "3.2.7"
+gem "rack-proxy", ">= 1.0.3"
 
 # All things countries
 gem "countries"

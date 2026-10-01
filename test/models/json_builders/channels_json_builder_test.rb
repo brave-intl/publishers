@@ -86,14 +86,8 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
 
   test "returned channels only appear once" do
     channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
-    returned_channel_ids = []
-    channels.each do |channel|
-      if returned_channel_ids.include?(channel.first)
-        assert false
-      else
-        returned_channel_ids.push(channel.first)
-      end
-    end
+    channel_ids = channels.map(&:first)
+    assert_equal channel_ids.uniq.size, channel_ids.size
   end
 
   test "returns channel site_banner" do
