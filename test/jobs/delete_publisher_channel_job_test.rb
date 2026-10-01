@@ -16,7 +16,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
 
     DeletePublisherChannelJob.perform_now(channel.id)
 
-    # assert something
+    assert Channel.where(id: channel.id).empty?
   end
 
   test "deletes unverifed channel" do
