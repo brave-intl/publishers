@@ -295,7 +295,8 @@
       "custodial_select_heading": "接続可能なカストディアル・アカウント",
       "uphold_connect": "Upholdに接続",
       "bitflyer_connect": "bitFlyerに接続",
-      "wrong_region": "{region}では Uphold アカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。"
+      "wrong_region": "{region}では Uphold アカウントは現在サポートされていません。今後{region}がサポートされた際に受取ができるようになります。",
+      "disabled_msg": "Connecting an Uphold account is temporarily unavailable."
     },
     "channels": {
       "verified": "認証済みと表示",
