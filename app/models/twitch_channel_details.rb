@@ -6,6 +6,7 @@ class TwitchChannelDetails < BaseChannelDetails
   validates :thumbnail_url, presence: true
   validates :auth_user_id, presence: true
   validates :display_name, presence: true
+  validates :name, presence: true
 
   PREFIX = "twitch#author:".freeze
 
