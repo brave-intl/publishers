@@ -63,7 +63,7 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert doc.search("tbody > tr").blank?
   end
 
-  test "index reports when the OFAC services have never run" do
+  test "index reports when the Prohibited List services have never run" do
     sign_in publishers(:admin)
 
     get admin_channels_path
@@ -73,17 +73,17 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_match "no successful run recorded", response.body
   end
 
-  test "index shows the last successful run of each OFAC service" do
+  test "index shows the last successful run of each Prohibited List service" do
     sign_in publishers(:admin)
 
-    ofac_list_run = ServiceRun.record_success!(ParseOfacListService)
+    prohibited_list_run = ServiceRun.record_success!(ParseProhibitedListService)
     disconnect_run = ServiceRun.record_success!(Wallet::DisconnectInvalidP2pAddressService)
 
     get admin_channels_path
 
     assert_response :success
     assert_select "time.job-time", count: 2
-    assert_select "time.job-time[datetime=?]", ofac_list_run.created_at.iso8601
+    assert_select "time.job-time[datetime=?]", prohibited_list_run.created_at.iso8601
     assert_select "time.job-time[datetime=?]", disconnect_run.created_at.iso8601
     assert_no_match "no successful run recorded", response.body
   end
@@ -92,9 +92,9 @@ class Admin::ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publishers(:admin)
 
     travel_to 2.days.ago do
-      ServiceRun.record_success!(ParseOfacListService)
+      ServiceRun.record_success!(ParseProhibitedListService)
     end
-    latest = ServiceRun.record_success!(ParseOfacListService)
+    latest = ServiceRun.record_success!(ParseProhibitedListService)
 
     get admin_channels_path
 

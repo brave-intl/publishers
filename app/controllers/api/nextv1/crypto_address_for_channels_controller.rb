@@ -106,7 +106,7 @@ class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseControl
   end
 
   def sanctioned?(address)
-    bucket_name = ENV["OFAC_ADDRESSES_BUCKET"]
+    bucket_name = ENV["PROHIBITED_LIST_BUCKET"]
     encoded_address = Base64.urlsafe_encode64(address).gsub(/^=+|=+/, "")
     begin
       obj = Aws::S3::Object.new(bucket_name: bucket_name, key: encoded_address, region: "us-west-2")

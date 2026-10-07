@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "citext"
@@ -413,10 +413,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_000000) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "ofac_addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "address", null: false
-  end
-
   create_table "organization_permissions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "offline_reporting", default: false, null: false
     t.uuid "organization_id"
@@ -504,6 +500,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["channel_identifier"], name: "index_previously_suspended_channels_on_channel_identifier", unique: true
+  end
+
+  create_table "prohibited_list", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "address", null: false
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

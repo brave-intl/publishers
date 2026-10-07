@@ -3,19 +3,19 @@
 require "test_helper"
 
 class Wallet::DisconnectInvalidP2pAddressServiceTest < ActiveSupport::TestCase
-  # The fixtures pair ofac_addresses(:three) with crypto_addresses(:banned_sol_address),
-  # so exactly one address is banned before any setup.
-  test "destroys the crypto addresses that match the OFAC list" do
-    banned = crypto_addresses(:banned_sol_address)
+  # The fixtures pair prohibited_list(:three) with crypto_addresses(:prohibited_sol_address),
+  # so exactly one address is prohibited before any setup.
+  test "destroys the crypto addresses that match the Prohibited list" do
+    prohibited = crypto_addresses(:prohibited_sol_address)
 
     assert_difference -> { CryptoAddress.count }, -1 do
       Wallet::DisconnectInvalidP2pAddressService.build.call
     end
 
-    assert_not CryptoAddress.exists?(banned.id)
+    assert_not CryptoAddress.exists?(prohibited.id)
   end
 
-  test "leaves addresses that aren't on the OFAC list alone" do
+  test "leaves addresses that aren't on the Prohibited list alone" do
     untouched = crypto_addresses(:eth_address)
 
     Wallet::DisconnectInvalidP2pAddressService.build.call
@@ -29,8 +29,8 @@ class Wallet::DisconnectInvalidP2pAddressServiceTest < ActiveSupport::TestCase
     end
   end
 
-  test "records a run and destroys nothing when no addresses are banned" do
-    OfacAddress.delete_all
+  test "records a run and destroys nothing when no addresses are prohibited" do
+    ProhibitedList.delete_all
 
     assert_no_difference -> { CryptoAddress.count } do
       Wallet::DisconnectInvalidP2pAddressService.build.call

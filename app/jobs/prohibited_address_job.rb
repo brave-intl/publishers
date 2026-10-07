@@ -1,4 +1,4 @@
-class BannedAddressJob < ApplicationJob
+class ProhibitedAddressJob < ApplicationJob
   queue_as :scheduler
 
   def perform
