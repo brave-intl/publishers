@@ -43,8 +43,8 @@
     "web3": "^4.8.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "21.2.2",
-    "@commitlint/config-conventional": "21.2.2",
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
     "@faker-js/faker": "10.6.0",
     "@svgr/webpack": "8.1.0",
     "@tailwindcss/postcss": "^4.2.2",
