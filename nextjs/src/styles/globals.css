@@ -208,6 +208,10 @@ hr {
     var(--leo-radius-xl);
 }
 
+.bg-container {
+  background: var(--leo-color-container-background);
+}
+
 @media (width <= 768px) {
   .content-background,
   .main {

@@ -61,6 +61,11 @@ COPY . .
 
 # Now for the NextJS frontend
 WORKDIR /var/www//nextjs
+
+# needed for nala (@brave/leo)
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable
+
 RUN npm i
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN node scripts/copyLeoIcons.js && npm run build

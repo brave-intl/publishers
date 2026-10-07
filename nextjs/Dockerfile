@@ -4,6 +4,10 @@ FROM node:24-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# needed for nala (@brave/leo)
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable
+
 COPY package.json package-lock.json* ./
 RUN npm i
 

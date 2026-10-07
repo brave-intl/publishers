@@ -1,6 +1,5 @@
 class Api::Nextv1::CryptoAddressForChannelsController < Api::Nextv1::BaseController
   include PublishersHelper
-  include Eth
 
   def index
     current_channel = current_publisher.channels.find(params[:channel_id])

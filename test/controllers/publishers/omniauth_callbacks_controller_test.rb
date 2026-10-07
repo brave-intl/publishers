@@ -275,8 +275,8 @@ module Publishers
           "provider" => "twitch",
           "uid" => "123545",
           "info" => {
-            "name" => "TwTwTw",
-            "nickname" => "twtwtw",
+            "name" => "NewTwitchUser",
+            "nickname" => "newtwitchuser",
             "email" => "brand@nonfunctional.google.com",
             "image" => "https://some_host/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg"
           },
@@ -337,6 +337,65 @@ module Publishers
           ),
           element.text
         )
+      end
+    end
+
+    test "a publisher who adds a twitch channel with the same uid as another publisher's channel will see the channel contention message" do
+      publisher = publishers(:uphold_connected)
+      existing_details = twitch_channel_details(:twitch_new_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash(
+        "uid" => existing_details.twitch_channel_id,
+        "info" => {"name" => existing_details.display_name, "nickname" => existing_details.name}
+      )
+
+      assert_difference("Channel.count", 1) do
+        post(publisher_register_twitch_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to controller: "/publishers", action: "home"
+        follow_redirect!
+      end
+
+      contesting_channel = publisher.channels.where(verification_pending: true).first
+      assert_equal contesting_channel.id, channels(:twitch_new).reload.contested_by_channel_id
+
+      assert_select("span.channel-contested") do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(contesting_channel)), element.text)
+      end
+    end
+
+    test "a publisher who adds a twitch channel with a different uid but the same name as another publisher's channel will see the channel contention message" do
+      publisher = publishers(:uphold_connected)
+      existing_details = twitch_channel_details(:twitch_new_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash(
+        "uid" => "a_different_twitch_uid",
+        "info" => {"name" => existing_details.display_name, "nickname" => existing_details.name}
+      )
+
+      assert_difference("Channel.count", 1) do
+        post(publisher_register_twitch_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to controller: "/publishers", action: "home"
+        follow_redirect!
+      end
+
+      contesting_channel = publisher.channels.where(verification_pending: true).first
+      assert_not_nil contesting_channel
+      assert_equal existing_details.name, contesting_channel.details.name
+      refute contesting_channel.verified
+      assert_equal contesting_channel.id, channels(:twitch_new).reload.contested_by_channel_id
+
+      assert_select("span.channel-contested") do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(contesting_channel)), element.text)
       end
     end
   end

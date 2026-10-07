@@ -61,7 +61,9 @@ module Publishers
       uid = twitch_auth_hash[:uid]
 
       existing_channel = Channel.joins(:twitch_channel_details)
-        .where(verified: true, "twitch_channel_details.twitch_channel_id": uid).first
+        .where(verified: true, "twitch_channel_details.twitch_channel_id": uid)
+        .or(Channel.joins(:twitch_channel_details).where(verified: true, "twitch_channel_details.name": twitch_info.nickname))
+        .first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered", channel_title: existing_channel.details.display_name)
