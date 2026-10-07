@@ -112,7 +112,7 @@
     "babel-plugin-styled-components": "2.3.0",
     "babel-plugin-syntax-dynamic-import": "6.18.0",
     "babel-plugin-transform-object-rest-spread": "7.0.0-beta.3",
-    "cssnano": "9.0.4",
+    "cssnano": "9.1.2",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.8",
     "enzyme-to-json": "3.6.2",
@@ -136,18 +136,7 @@
     "ts-loader": "9.6.2",
     "typescript": "^6.0.0"
   },
-  "resolutions": {
-    "node-fetch": "3.3.2",
-    "nth-check": "3.0.1",
-    "postcss": ">=8.5.26",
-    "@types/react": "19.3.0",
-    "@types/styled-components": "5.1.36",
-    "picomatch": "4.0.7",
-    "brace-expansion": ">=5.0.12",
-    "fast-uri": ">=3.1.8",
-    "serialize-javascript": ">=7.1.2",
-    "js-yaml": "5.4.2"
-  },
+  "resolutions": {},
   "browserslist": [
     "defaults"
   ],
