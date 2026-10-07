@@ -9,6 +9,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
   PADDING_WORD = "P".freeze
   BITFLYER_CONNECTION = "BitflyerConnection".freeze
   UPHOLD_CONNECTION = "UpholdConnection".freeze
+  # TEMPORARY: Uphold incident. Omit Uphold wallets from channel responses.
+  # Revert to re-enable Uphold wallet data.
+  UPHOLD_WALLETS_DISABLED = true
 
   attr_accessor :site_banner_lookups, :temp_file
 
@@ -33,7 +36,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
       # Some malformed data shouldn't prevent the list from being generated.
 
       begin
-        if site_banner_lookup.publisher.selected_wallet_provider_type == UPHOLD_CONNECTION && site_banner_lookup.publisher.uphold_connection.present?
+        if !UPHOLD_WALLETS_DISABLED && site_banner_lookup.publisher.selected_wallet_provider_type == UPHOLD_CONNECTION && site_banner_lookup.publisher.uphold_connection.present?
           wallet = PublishersPb::Wallet.new
           uphold_wallet = PublishersPb::UpholdWallet.new
           connection = site_banner_lookup.publisher.uphold_connection
