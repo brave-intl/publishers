@@ -2805,10 +2805,10 @@ cssnano-preset-default@^7.0.17:
     postcss-svgo "^7.1.3"
     postcss-unique-selectors "^7.0.7"
 
-cssnano-preset-default@^9.0.4:
-  version "9.3.1"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-9.3.1.tgz#06cbf33cd4388cc683d6da78867373f6949937d2"
-  integrity sha512-hObHO941c1x5SIOLcZ9zNAkC6NRVmCKujty4rbrhHH0GvTxFe1uSRUr/i9bdKzffF3ReaawAA/1dOCAP4iRRwg==
+cssnano-preset-default@^9.1.2:
+  version "9.3.2"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-9.3.2.tgz#b167d7d442611d3f41fb555cebb833a77e9fa447"
+  integrity sha512-HpBRavK5tdHJLW9eL2vc3zByyjpmDLV2R/3t8pAtykjUp4lPOtF5vR3g7IWJsv7QgdS2PRuBbVKPAcOVMCwrwQ==
   dependencies:
     browserslist "^4.29.3"
     cssnano-utils "^8.2.0"
@@ -2819,8 +2819,8 @@ cssnano-preset-default@^9.0.4:
     postcss-discard-duplicates "^9.0.5"
     postcss-discard-empty "^9.0.6"
     postcss-discard-overridden "^9.0.5"
-    postcss-merge-longhand "^9.2.0"
-    postcss-merge-rules "^9.1.1"
+    postcss-merge-longhand "^9.2.1"
+    postcss-merge-rules "^9.1.2"
     postcss-minify-font-values "^9.0.7"
     postcss-minify-gradients "^9.0.6"
     postcss-minify-params "^9.0.6"
@@ -2834,7 +2834,7 @@ cssnano-preset-default@^9.0.4:
     postcss-normalize-unicode "^9.0.5"
     postcss-normalize-url "^9.0.5"
     postcss-normalize-whitespace "^9.0.5"
-    postcss-ordered-values "^9.0.6"
+    postcss-ordered-values "^9.0.7"
     postcss-reduce-initial "^9.0.6"
     postcss-reduce-transforms "^9.0.4"
     postcss-svgo "^9.0.4"
@@ -2852,12 +2852,12 @@ cssnano-utils@^8.0.0, cssnano-utils@^8.0.1, cssnano-utils@^8.0.2, cssnano-utils@
   dependencies:
     "@csstools/css-tokenizer" "^4.0.2"
 
-cssnano@9.0.4:
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.0.4.tgz#c48106b7493adc7e427eaa2a56b3605e485cfadf"
-  integrity sha512-CdXjUnePN8UmFySZ65Oh83DUf/z/VV+yRc86PlMUA4JBJizXiwelynZvfLji+gY/Z94xH+RrCT48wZyqSJdhuw==
+cssnano@9.1.2:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.1.2.tgz#2e4dc2d5ad70cad6639d384e30489d8f64981af2"
+  integrity sha512-UJnrkOxzaK21cYEbxnp21vUohm/wg8B8R0eoLe7A6Jnm9nHeIQ0irn3L9HYzml9BFkrF97JwE7d6HV4UU6+1dQ==
   dependencies:
-    cssnano-preset-default "^9.0.4"
+    cssnano-preset-default "^9.1.2"
 
 cssnano@^7.0.4:
   version "7.1.9"
@@ -5298,13 +5298,14 @@ postcss-merge-longhand@^7.0.7:
     postcss-value-parser "^4.2.0"
     stylehacks "^7.0.11"
 
-postcss-merge-longhand@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/postcss-merge-longhand/-/postcss-merge-longhand-9.2.0.tgz#199efb87fa9be867bba4a3540dd029df8c2ce8b9"
-  integrity sha512-7ZozpQkYDYfzYV4MYcDJZScXHVq2WS4A8RJEJ9nwxhRcvXP/7GBEMNNLadaqb53q4uCJnJtt36k0kFzcnhBK+w==
+postcss-merge-longhand@^9.2.1:
+  version "9.2.1"
+  resolved "https://registry.yarnpkg.com/postcss-merge-longhand/-/postcss-merge-longhand-9.2.1.tgz#e8f6d138dac8cb3d55ab40bf6a790ef5b1da7440"
+  integrity sha512-dYwIiRP/lH2ItiUo/t9QG/Vn0ac5dPjISTTosF8yfU0PaFZcRYb8mnO82LxQtfYfUqtzWduYGrGVDyLi8N5xxQ==
   dependencies:
+    "@csstools/css-tokenizer" "^4.0.2"
     browserslist "^4.29.3"
-    cssnano-utils "^8.0.2"
+    cssnano-utils "^8.2.0"
     stylehacks "^9.0.7"
 
 postcss-merge-rules@^7.0.11:
@@ -5317,10 +5318,10 @@ postcss-merge-rules@^7.0.11:
     cssnano-utils "^5.0.3"
     postcss-selector-parser "^7.1.1"
 
-postcss-merge-rules@^9.1.1:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/postcss-merge-rules/-/postcss-merge-rules-9.1.1.tgz#9d6566d515710b93e273dc5ff03e6f269f48eeea"
-  integrity sha512-GIvTG7eN1gc935kWgPCSIhetZBNakmVWKF1eA0GZ4GPy+WAN+Glz69BlTdN7xHykq5EYenSlO2DRjbA8MEY0oA==
+postcss-merge-rules@^9.1.2:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/postcss-merge-rules/-/postcss-merge-rules-9.1.2.tgz#403e63325ef65bfb1444a0373a13137a980bd848"
+  integrity sha512-hDAdZNa4MgxPK7VbKqFHz7NlmZMehhcSWP4wDi77mmmUTs6K/rTw0hekCN4t9vBhwKhM9gKsGJS/FcGQB1bZdg==
   dependencies:
     "@csstools/css-tokenizer" "^4.0.2"
     browserslist "^4.29.3"
@@ -5563,12 +5564,12 @@ postcss-ordered-values@^7.0.4:
     cssnano-utils "^5.0.3"
     postcss-value-parser "^4.2.0"
 
-postcss-ordered-values@^9.0.6:
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/postcss-ordered-values/-/postcss-ordered-values-9.0.6.tgz#f64039d09927de3c1f9291ab27a1c907a453443d"
-  integrity sha512-/Oua4QNx4So8QSEYC+kH5lEM8Z67D8ONMZBx/J5hidkMIRfYGyrUcdlvEZ3e48A6YlOq5hyHb/axcNezq1hhAQ==
+postcss-ordered-values@^9.0.7:
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/postcss-ordered-values/-/postcss-ordered-values-9.0.7.tgz#fce85927b39d92a4a3131ab87feb49bc41002961"
+  integrity sha512-vEXN/t5iqwZvRAURoAsp06CxIBwJ6o9ViDAbENZPd6KgLys2U/z4UIafket5S/L2ps7cR216dN++Vt6d28frqQ==
   dependencies:
-    cssnano-utils "^8.1.0"
+    cssnano-utils "^8.2.0"
 
 postcss-reduce-initial@^7.0.9:
   version "7.0.9"
