@@ -293,7 +293,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^8.0.1"
 
-"@babel/plugin-bugfix-safari-rest-destructuring-rhs-array@^8.0.5":
+"@babel/plugin-bugfix-safari-rest-destructuring-rhs-array@^8.0.6":
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/@babel/plugin-bugfix-safari-rest-destructuring-rhs-array/-/plugin-bugfix-safari-rest-destructuring-rhs-array-8.0.6.tgz#37c56f0b966c63d3905cee4ff251fdec6fe65298"
   integrity sha512-vk9CzgaQGcTTBL8F0YNr7LBEka6pXP/I5KcMj0oicGXUquWSNqxiijHGQkHF+s8m910NbGMpn5mU2sFV7AQjBA==
@@ -345,7 +345,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^8.0.1"
 
-"@babel/plugin-transform-async-generator-functions@^8.0.1":
+"@babel/plugin-transform-async-generator-functions@^8.0.6":
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-async-generator-functions/-/plugin-transform-async-generator-functions-8.0.6.tgz#3ff19b58e4e75e4399c6a69d571dd878205d9ed3"
   integrity sha512-4K13qZ2TVi9W/NHMg3y0Fguu63cPjGNZT5TpPctIUDdiuIpxo4jwvySGrPWlD6KD00exvpx6Y6l5foFEpnzDcg==
@@ -674,7 +674,7 @@
     "@babel/helper-annotate-as-pure" "^8.0.0"
     "@babel/helper-plugin-utils" "^8.0.1"
 
-"@babel/plugin-transform-regenerator@^8.0.5":
+"@babel/plugin-transform-regenerator@^8.0.6":
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-regenerator/-/plugin-transform-regenerator-8.0.6.tgz#8e6c6c807f2036638457d48a577879cf64d4fd92"
   integrity sha512-ky/yW+PcQfHyOhbQFNkcHOCIHXaEANYaXCucZ1MY1PdSJRjaf3AX/TMKS6nCij73YtU1bVNy7Zx5NWAJy42TQA==
@@ -696,10 +696,10 @@
   dependencies:
     "@babel/helper-plugin-utils" "^8.0.1"
 
-"@babel/plugin-transform-runtime@8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-8.0.1.tgz#4b199eb337c3bdda9c7e6d6d25ec387e1d4f7dd6"
-  integrity sha512-MPDpKBrxn+thQay3eJmUiSeHswiT7MkINb48hHkX6OzodB149PKq1kred+lpMebrDzHA+G1ekCQnlYSkyEqAOw==
+"@babel/plugin-transform-runtime@8.0.6":
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-8.0.6.tgz#658897701b48250ce285955e5c2cbe2ab9dc4b6b"
+  integrity sha512-2djup+i7z4taCN9VCJsmPNC0GT5A0FhI+S0tZwK+FRDZdaEOQUYVmfKOg/hIKhMBXjOFxEsBHvGE0Thqj71edA==
   dependencies:
     "@babel/helper-module-imports" "^8.0.0"
     "@babel/helper-plugin-utils" "^8.0.1"
@@ -782,23 +782,23 @@
     "@babel/helper-create-regexp-features-plugin" "^8.0.1"
     "@babel/helper-plugin-utils" "^8.0.1"
 
-"@babel/preset-env@8.0.5":
-  version "8.0.5"
-  resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-8.0.5.tgz#320624f44a3270b6fc6db083ffce8ff541521f01"
-  integrity sha512-0ZiW2jOnEQ3+FV3ro3uh6B5afBT0C2yJHCKvw+s1BOKKXg7VfCvTpGBylN5UFeO2SFtkVJB2KY0tEpdnUjjguw==
+"@babel/preset-env@8.0.6":
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-8.0.6.tgz#be6ff38ff1e08b8525d072f6350eeb887054a63d"
+  integrity sha512-Ekl110OgRBQtibBTXrXyuxhy2p7QxpzWT45cFOZCBFKBan3o8vN54sQ26GtqyTyORSNWKx0GOmIdLTTu/Y+prA==
   dependencies:
     "@babel/compat-data" "^8.0.5"
-    "@babel/helper-compilation-targets" "^8.0.5"
+    "@babel/helper-compilation-targets" "^8.0.6"
     "@babel/helper-plugin-utils" "^8.0.1"
     "@babel/helper-validator-option" "^8.0.0"
     "@babel/plugin-bugfix-firefox-class-in-computed-class-key" "^8.0.1"
     "@babel/plugin-bugfix-safari-class-field-initializer-scope" "^8.0.1"
     "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression" "^8.0.1"
-    "@babel/plugin-bugfix-safari-rest-destructuring-rhs-array" "^8.0.5"
+    "@babel/plugin-bugfix-safari-rest-destructuring-rhs-array" "^8.0.6"
     "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining" "^8.0.1"
     "@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly" "^8.0.1"
     "@babel/plugin-transform-arrow-functions" "^8.0.1"
-    "@babel/plugin-transform-async-generator-functions" "^8.0.1"
+    "@babel/plugin-transform-async-generator-functions" "^8.0.6"
     "@babel/plugin-transform-async-to-generator" "^8.0.1"
     "@babel/plugin-transform-block-scoped-functions" "^8.0.1"
     "@babel/plugin-transform-block-scoping" "^8.0.5"
@@ -836,7 +836,7 @@
     "@babel/plugin-transform-private-methods" "^8.0.1"
     "@babel/plugin-transform-private-property-in-object" "^8.0.5"
     "@babel/plugin-transform-property-literals" "^8.0.1"
-    "@babel/plugin-transform-regenerator" "^8.0.5"
+    "@babel/plugin-transform-regenerator" "^8.0.6"
     "@babel/plugin-transform-regexp-modifiers" "^8.0.1"
     "@babel/plugin-transform-reserved-words" "^8.0.1"
     "@babel/plugin-transform-shorthand-properties" "^8.0.1"
@@ -984,7 +984,7 @@
   resolved "https://registry.yarnpkg.com/@colordx/core/-/core-7.3.0.tgz#84eaf97d4e764254e5085e7af7583eb2dd216d0c"
   integrity sha512-LVzTTPhX7wpy7TkGjouA9zbbCBIw92RGm7ZQqSKFE0oYE3sMx2FGXz90eVpgw7k/+wrrY+qJ86nHXifZWMS5jA==
 
-"@csstools/css-calc@^3.2.1", "@csstools/css-calc@^3.3.0":
+"@csstools/css-calc@^3.3.0":
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/@csstools/css-calc/-/css-calc-3.4.3.tgz#f3708018243c508ed9fca99835d3b03e9112cf95"
   integrity sha512-iex20d8CHVkyvg6B7UKV7uHnI2Bqo9g+EFfT9E0y+GvTvhZ/DwONJ+9aKb1dlqm0ZiGsL5RXjp0fCoJYnkeDjA==
@@ -994,7 +994,7 @@
   resolved "https://registry.yarnpkg.com/@csstools/css-parser-algorithms/-/css-parser-algorithms-4.0.2.tgz#689445621dae9f2114db2bee2190d3b4513a2d3c"
   integrity sha512-40cSKyMvK+tq4qz6Awrlye2WGuOKt3FwPgtGg6KTfbHOWNw+Rk1rzbAtZnZ6IBhsY491HLRnDXwoyBAijmmILA==
 
-"@csstools/css-syntax-patches-for-csstree@^1.1.4", "@csstools/css-syntax-patches-for-csstree@^1.1.8", "@csstools/css-syntax-patches-for-csstree@^1.1.9":
+"@csstools/css-syntax-patches-for-csstree@^1.1.8", "@csstools/css-syntax-patches-for-csstree@^1.1.9":
   version "1.1.15"
   resolved "https://registry.yarnpkg.com/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz#2255da5042c77e6ba3faf1995188404b6fc22361"
   integrity sha512-J0u7HkVl2nzSlhsiTOp4AmwcUQ3D+mGEEKfBy/7To5/y7F2OHwyLrXfrhR0SMgr4p5Lo+eaMVSeai24zUcBIxA==
@@ -2805,7 +2805,7 @@ cssnano-preset-default@^7.0.17:
     postcss-svgo "^7.1.3"
     postcss-unique-selectors "^7.0.7"
 
-cssnano-preset-default@^9.0.4:
+cssnano-preset-default@^9.1.2:
   version "9.3.2"
   resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-9.3.2.tgz#b167d7d442611d3f41fb555cebb833a77e9fa447"
   integrity sha512-HpBRavK5tdHJLW9eL2vc3zByyjpmDLV2R/3t8pAtykjUp4lPOtF5vR3g7IWJsv7QgdS2PRuBbVKPAcOVMCwrwQ==
@@ -2852,12 +2852,12 @@ cssnano-utils@^8.0.0, cssnano-utils@^8.0.1, cssnano-utils@^8.0.2, cssnano-utils@
   dependencies:
     "@csstools/css-tokenizer" "^4.0.2"
 
-cssnano@9.0.4:
-  version "9.0.4"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.0.4.tgz#c48106b7493adc7e427eaa2a56b3605e485cfadf"
-  integrity sha512-CdXjUnePN8UmFySZ65Oh83DUf/z/VV+yRc86PlMUA4JBJizXiwelynZvfLji+gY/Z94xH+RrCT48wZyqSJdhuw==
+cssnano@9.1.2:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.1.2.tgz#2e4dc2d5ad70cad6639d384e30489d8f64981af2"
+  integrity sha512-UJnrkOxzaK21cYEbxnp21vUohm/wg8B8R0eoLe7A6Jnm9nHeIQ0irn3L9HYzml9BFkrF97JwE7d6HV4UU6+1dQ==
   dependencies:
-    cssnano-preset-default "^9.0.4"
+    cssnano-preset-default "^9.1.2"
 
 cssnano@^7.0.4:
   version "7.1.9"
@@ -4311,7 +4311,7 @@ is-plain-object@^2.0.4:
   dependencies:
     isobject "^3.0.1"
 
-is-plain-object@^5.0.0, is-plain-object@^5.1.0:
+is-plain-object@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-5.1.0.tgz#22ed7b5e856bb57966348e5b9468dada42be87f4"
   integrity sha512-bUi/yjmtKYcRVUtWRGr0UA6xEFh2I6zWUwMrUXB3s7bmYCaZ8a+0ZsTRkrawh/mzlSD1Y0Ph8bp/U+TvBpWDNw==
@@ -6510,24 +6510,7 @@ stylelint-config-styled-components@0.1.1:
   resolved "https://registry.yarnpkg.com/stylelint-config-styled-components/-/stylelint-config-styled-components-0.1.1.tgz#b408388d7c687833ab4be4c4e6522d97d2827ede"
   integrity sha512-z5Xz/9GmvxO6e/DLzBMwkB85zHxEEjN6K7Cj80Bi+o/9vR9eS3GX3E9VuMnX9WLFYulqbqLtTapGGY28JBiy9Q==
 
-stylelint-scss@7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.2.0.tgz#2a5f7a7e210254f927bbc3e8145245abedd9e390"
-  integrity sha512-6E79Bachv0Iz0gqRUZgdqdXCsiq26DWBWIBNHYtjTmAp3wJu6cp/I37VfW7BPntmh2puF3bY09XWl4HZGrLhzw==
-  dependencies:
-    "@csstools/css-calc" "^3.2.1"
-    "@csstools/css-parser-algorithms" "^4.0.0"
-    "@csstools/css-syntax-patches-for-csstree" "^1.1.4"
-    "@csstools/css-tokenizer" "^4.0.0"
-    css-tree "^3.2.1"
-    is-plain-object "^5.0.0"
-    known-css-properties "^0.37.0"
-    postcss-media-query-parser "^0.2.3"
-    postcss-resolve-nested-selector "^0.1.6"
-    postcss-selector-parser "^7.1.1"
-    postcss-value-parser "^4.2.0"
-
-stylelint-scss@^7.0.0:
+stylelint-scss@7.3.0, stylelint-scss@^7.0.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.3.0.tgz#f0f45f8114b88845ed56a82eb4235c6912943934"
   integrity sha512-FBz075AUFoEJ1WQKsgsRr6EJKcjy7jxQjV8xsAqbPcnhNiXnJ7C489vqUyDZccBy1GorewlshERkaMuCyOKXaw==
