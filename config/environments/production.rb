@@ -46,7 +46,8 @@ Rails.application.configure do
                          url: Rails.configuration.pub_secrets[:redis_url],
                          namespace: "publishers:session"
                        }],
-                       expire_after: 30.days
+                       expire_after: 30.days,
+                       same_site: :lax
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque

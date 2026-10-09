@@ -28,32 +28,15 @@ class Oauth2Controller < ApplicationController
     redirect_to(authorization_url, allow_other_host: true)
   end
 
-  def debug(resp)
-    data = {}
-    errors = []
-
-    case resp
-    when @access_token_response
-      data = resp.to_h
-      @klass.create_new_connection!(current_publisher, resp)
-    when ErrorResponse
-      errors.push(resp.to_h)
-    when UnknownError
-      errors.push(resp.response.body)
-    end
-
-    render json: {data: data, errors: errors}
-  end
-
   def callback
     error = nil
 
     if state_verified?
+      # bddsec #1894 finding 21: the state cookie is single-use; clear it as
+      # soon as the callback verifies so a captured callback cannot be
+      # replayed within the 90-second window.
+      cookies.delete(:_state)
       resp = access_token_request
-
-      if allow_debug?
-        debug(resp) and return
-      end
 
       case resp
       when @access_token_response
@@ -108,16 +91,24 @@ class Oauth2Controller < ApplicationController
     cookies.encrypted[:_state] = {
       value: @state,
       expires: 90.seconds.from_now,
-      httponly: true
+      httponly: true,
+      same_site: :lax,
+      secure: Rails.env.production? || Rails.env.staging?
     }
   end
 
   def state_verified?
-    if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
-      false
-    else
-      true
-    end
+    # bddsec #1894 follow-up: an empty cookie and an empty state param
+    # compared equal, letting attacker callbacks bypass the state guard on
+    # creators with no prior connection flow. Both values must be present.
+    cookie_state = cookies.encrypted["_state"]
+    return false if cookie_state.blank?
+    return false if permitted_params[:state].blank?
+
+    ActiveSupport::SecurityUtils.secure_compare(
+      permitted_params[:state].to_s,
+      cookie_state.to_s
+    )
   end
 
   def set_access_token_response
@@ -135,10 +126,6 @@ class Oauth2Controller < ApplicationController
 
   def record_error(result)
     LogException.perform(result, expected: true)
-  end
-
-  def allow_debug?
-    Rails.env.development? && @debug
   end
 
   # Note: To use this as a subclass you'll want to override this method entirely

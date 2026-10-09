@@ -1,10 +1,4 @@
 class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
-  # This implements a full Oauth2 Authorization Code flow
-  # for any descendant of Oauth2::AuthorizationCodeBase
-  # What is done on AccessTokenResponse is yet to be defined
-  #
-  # I had to build this just to debug the varying implementations
-  # of the Oauth2::AuthorizationCodebase children.
   include Oauth2::Responses
   include Oauth2::Errors
 
@@ -13,23 +7,6 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
 
   def create
     render json: {authorization_url: authorization_url}
-  end
-
-  def debug(resp)
-    data = {}
-    errors = []
-
-    case resp
-    when @access_token_response
-      data = resp.to_h
-      @klass.create_new_connection!(current_publisher, resp)
-    when ErrorResponse
-      errors.push(resp.to_h)
-    when UnknownError
-      errors.push(resp.response.body)
-    end
-
-    render json: {data: data, errors: errors}
   end
 
   private
@@ -55,16 +32,24 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
     cookies.encrypted[:_state] = {
       value: @state,
       expires: 90.seconds.from_now,
-      httponly: true
+      httponly: true,
+      same_site: :lax,
+      secure: Rails.env.production? || Rails.env.staging?
     }
   end
 
   def state_verified?
-    if permitted_params.fetch(:state) != cookies.encrypted["_state"] && !@debug
-      false
-    else
-      true
-    end
+    # bddsec #1894 follow-up: an empty cookie and an empty state param
+    # compared equal, letting attacker callbacks bypass the state guard on
+    # creators with no prior connection flow. Both values must be present.
+    cookie_state = cookies.encrypted["_state"]
+    return false if cookie_state.blank?
+    return false if permitted_params[:state].blank?
+
+    ActiveSupport::SecurityUtils.secure_compare(
+      permitted_params[:state].to_s,
+      cookie_state.to_s
+    )
   end
 
   def generic_error
@@ -73,10 +58,6 @@ class Api::Nextv1::Oauth2Controller < Api::Nextv1::BaseController
 
   def record_error(result)
     LogException.perform(result, expected: true)
-  end
-
-  def allow_debug?
-    Rails.env.development? && @debug
   end
 
   # Note: To use this as a subclass you'll want to override this method entirely

@@ -28,7 +28,8 @@ Rails.application.configure do
          url: Rails.configuration.pub_secrets[:redis_url],
          namespace: "publishers:session"
        }],
-       expire_after: 30.days
+       expire_after: 30.days,
+       same_site: :lax
 
     config.action_mailer.default_url_options = { host: "localhost", protocol: "https" }
     config.action_mailer.delivery_method = :letter_opener_web

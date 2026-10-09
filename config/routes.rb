@@ -26,12 +26,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # These routes are for connecting to 3rd-party payment providers.
-  namespace :connection, module: "payment/connection" do
-    resource :bitflyer_connection
-    resource :uphold_connection, except: [:new]
-  end
-
   # Once Publisher Logs in they access this resource
   resources :publishers, only: %i[create update new show destroy] do
     collection do

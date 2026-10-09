@@ -22,7 +22,7 @@ Rails.application.configure do
 
   config.time_zone = "UTC"
   config.active_record.default_timezone = :utc
-  config.session_store :cache_store, key: "_publishers_session"
+  config.session_store :cache_store, key: "_publishers_session", same_site: :lax
 
   # config.active_record.encryption.encrypt_fixtures = true
 
