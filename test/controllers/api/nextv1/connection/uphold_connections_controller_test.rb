@@ -3,24 +3,43 @@
 require "test_helper"
 require "webmock/minitest"
 
-class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
+class Api::Nextv1::Connection::UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include MockRewardsResponses
+
+  describe "maintenance" do
+    before do
+      UpholdConnection.delete_all
+      sign_in(publishers(:google_verified))
+    end
+
+    it "blocks #create" do
+      post connection_uphold_connection_path
+      assert_response :service_unavailable
+    end
+
+    it "blocks #callback" do
+      get "/publishers/uphold_verified", params: {code: "value", state: "some value"}
+      assert_response :service_unavailable
+      assert_equal(0, UpholdConnection.count)
+    end
+  end
 
   describe "#callback" do
     let(:scope) { "cards:write" }
     let(:publisher) { publishers(:google_verified) }
-    let(:account_hash) { "a unique value" }
     let(:state) { "some value" }
     let(:cookie) { state }
-    let(:path) { "/publishers/bitflyer_connection/new" }
     let(:verified_request) {
       ActionDispatch::Cookies::CookieJar.any_instance.stubs(:encrypted).returns({"_state" => cookie})
-      get path, params: {code: "value", state: state}
+      get "/publishers/uphold_verified", params: {code: "value", state: state}
     }
 
     before do
-      BitflyerConnection.delete_all
-      assert_equal(0, BitflyerConnection.count)
+      skip "Uphold connections under maintenance"
+      stub_rewards_parameters
+      UpholdConnection.delete_all
+      assert_equal(0, UpholdConnection.count)
       sign_in(publisher)
     end
 
@@ -28,12 +47,7 @@ class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
       let(:cookie) { "another value" }
 
       before do
-        I18n.locale = :ja
-        get path, params: {code: "value", state: state}
-      end
-
-      after do
-        I18n.locale = :en
+        get "/publishers/uphold_verified", params: {code: "value", state: state}
       end
 
       it "should redirect" do
@@ -45,14 +59,19 @@ class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
       end
 
       it "should not create a connection" do
-        assert_equal(0, BitflyerConnection.count)
+        assert_equal(0, UpholdConnection.count)
       end
     end
 
     describe "when valid state" do
       describe "when successful" do
         before do
-          mock_refresh_token_success(BitflyerConnection.oauth2_client.token_url, scope: scope, account_hash: account_hash)
+          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
+          stub_get_user
+          stub_get_card
+          stub_get_user_deposits_capability
+          stub_list_cards
+          stub_create_card
         end
 
         describe "when allow_debug?" do
@@ -76,7 +95,7 @@ class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
           end
 
           it "should create a new uphold_connection" do
-            assert_equal(1, BitflyerConnection.count)
+            assert_equal(1, UpholdConnection.count)
           end
 
           it "should not include a flash alert" do
@@ -87,30 +106,23 @@ class BitflyerConnectionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     describe "when unsuccessful" do
-      before do
-        I18n.locale = :ja
-      end
-
-      after do
-        I18n.locale = :en
-      end
-
-      describe "when known error" do
-        let(:scope) { "an invalid scope" }
+      describe "when allow_debug?" do
         before do
-          mock_refresh_token_success(BitflyerConnection.oauth2_client.token_url, scope: scope, account_hash: account_hash)
-          verified_request
+          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
+          stub_get_user
+          stub_get_user_deposits_capability
+          stub_get_card
+          Oauth2Controller.any_instance.stubs(:allow_debug?).returns(true)
         end
 
-        it "should redirect with a specific message" do
-          assert_not_equal(I18n.t("shared.error"), flash.alert)
+        it "should return 200" do
+          assert_raises(Oauth2::Errors::ConnectionError) { verified_request }
         end
       end
 
       describe "when unknown error" do
         before do
-          mock_refresh_token_success(BitflyerConnection.oauth2_client.token_url, scope: scope, account_hash: account_hash)
-          BitflyerConnection.stubs(:new).raises(RuntimeError)
+          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
           verified_request
         end
 

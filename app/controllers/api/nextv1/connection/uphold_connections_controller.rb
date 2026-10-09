@@ -23,23 +23,6 @@ class Api::Nextv1::Connection::UpholdConnectionsController < Api::Nextv1::Oauth2
     }, status: 200)
   end
 
-  # TODO: Do we update connections???
-  # def update
-  #   uphold_connection = current_publisher.uphold_connection
-  #   return if uphold_connection.blank?
-
-  #   send_emails = DateTime.now
-
-  #   case params[:send_emails]
-  #   when "forever"
-  #     send_emails = UpholdConnection::FOREVER_DATE
-  #   when "next_year"
-  #     send_emails = 1.year.from_now
-  #   end
-
-  #   uphold_connection.update(send_emails: send_emails)
-  # end
-
   # publishers/disconnect_uphold
   def destroy
     # You can't remove your connection if you've been banned/suspended.

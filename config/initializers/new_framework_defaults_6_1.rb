@@ -25,7 +25,9 @@
 #
 # This change is not backwards compatible with earlier Rails versions.
 # It's best enabled when your entire app is migrated and stable on 6.1.
-# Rails.application.config.action_dispatch.cookies_same_site_protection = :lax
+# Enabled per H1 report #4072111: the OAuth2 callback is a GET, so
+# SameSite=Lax must also cover _publishers_session, not just _state.
+Rails.application.config.action_dispatch.cookies_same_site_protection = :lax
 
 # Generate CSRF tokens that are encoded in URL-safe Base64.
 #
