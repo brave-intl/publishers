@@ -2,134 +2,112 @@
 
 require "test_helper"
 require "webmock/minitest"
+require "test_helpers/csrf_getter"
 
 class Api::Nextv1::Connection::UpholdConnectionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  include MockRewardsResponses
+  include CsrfGetter
 
-  describe "maintenance" do
-    before do
-      UpholdConnection.delete_all
-      sign_in(publishers(:google_verified))
-    end
+  let(:path) { "/api/nextv1/connection/uphold_connection" }
+  let(:publisher) { publishers(:verified) }
 
-    it "blocks #create" do
-      post connection_uphold_connection_path
-      assert_response :service_unavailable
-    end
-
-    it "blocks #callback" do
-      get "/publishers/uphold_verified", params: {code: "value", state: "some value"}
-      assert_response :service_unavailable
-      assert_equal(0, UpholdConnection.count)
-    end
+  def setup
+    ActionController::Base.allow_forgery_protection = true
   end
 
-  describe "#callback" do
-    let(:scope) { "cards:write" }
-    let(:publisher) { publishers(:google_verified) }
-    let(:state) { "some value" }
-    let(:cookie) { state }
-    let(:verified_request) {
-      ActionDispatch::Cookies::CookieJar.any_instance.stubs(:encrypted).returns({"_state" => cookie})
-      get "/publishers/uphold_verified", params: {code: "value", state: state}
-    }
+  def teardown
+    ActionController::Base.allow_forgery_protection = false
+  end
 
+  def json_headers
+    {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => (@csrf_token ||= get_csrf_token)}
+  end
+
+  def state_set_cookie_header
+    Array(response.headers["set-cookie"]).flat_map { |h| h.split("\n") }.find { |c| c.start_with?("_state=") }
+  end
+
+  describe "#create" do
     before do
-      skip "Uphold connections under maintenance"
-      stub_rewards_parameters
-      UpholdConnection.delete_all
-      assert_equal(0, UpholdConnection.count)
       sign_in(publisher)
     end
 
-    describe "when invalid state" do
-      let(:cookie) { "another value" }
+    it "is blocked while uphold is under maintenance" do
+      post path, headers: json_headers
 
-      before do
-        get "/publishers/uphold_verified", params: {code: "value", state: state}
-      end
-
-      it "should redirect" do
-        assert_equal(response.status, 302)
-      end
-
-      it "should redirect with a generic message" do
-        assert_equal(I18n.t("shared.error"), flash.alert)
-      end
-
-      it "should not create a connection" do
-        assert_equal(0, UpholdConnection.count)
-      end
+      assert_response :service_unavailable
     end
 
-    describe "when valid state" do
-      describe "when successful" do
-        before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user
-          stub_get_card
-          stub_get_user_deposits_capability
-          stub_list_cards
-          stub_create_card
-        end
+    it "does not issue a state cookie while under maintenance" do
+      post path, headers: json_headers
 
-        describe "when allow_debug?" do
-          before do
-            Oauth2Controller.any_instance.stubs(:allow_debug?).returns(true)
-            verified_request
-          end
+      assert_nil state_set_cookie_header
+    end
+  end
 
-          it "should return 200" do
-            assert_equal(200, response.status)
-          end
-        end
-
-        describe "when !allow_debug?" do
-          before do
-            verified_request
-          end
-
-          it "should redirect" do
-            assert_equal(response.status, 302)
-          end
-
-          it "should create a new uphold_connection" do
-            assert_equal(1, UpholdConnection.count)
-          end
-
-          it "should not include a flash alert" do
-            refute flash.alert
-          end
-        end
-      end
+  describe "#show" do
+    before do
+      sign_in(publisher)
     end
 
-    describe "when unsuccessful" do
-      describe "when allow_debug?" do
-        before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          stub_get_user
-          stub_get_user_deposits_capability
-          stub_get_card
-          Oauth2Controller.any_instance.stubs(:allow_debug?).returns(true)
-        end
+    it "returns the uphold connection status as json" do
+      get path, headers: {"HTTP_ACCEPT" => "application/json"}
 
-        it "should return 200" do
-          assert_raises(Oauth2::Errors::ConnectionError) { verified_request }
-        end
+      assert_response :ok
+      body = response.parsed_body
+      connection = publisher.uphold_connection
+
+      assert_equal connection.uphold_status.to_s, body["uphold_status"]
+      assert_equal true, body["uphold_is_member"]
+      assert_equal "BAT", body["default_currency"]
+      assert body.key?("uphold_status_summary")
+      assert body.key?("uphold_status_description")
+      assert body.key?("uphold_username")
+    end
+
+    it "returns empty defaults for a publisher without a connection" do
+      UpholdConnection.where(publisher: publisher).delete_all
+
+      get path, headers: {"HTTP_ACCEPT" => "application/json"}
+
+      assert_response :ok
+      assert_equal "", response.parsed_body["uphold_status"]
+      assert_equal false, response.parsed_body["uphold_is_member"]
+      assert_nil response.parsed_body["default_currency"]
+    end
+  end
+
+  describe "#destroy" do
+    before do
+      sign_in(publisher)
+    end
+
+    it "removes the connection and returns 200" do
+      assert_difference("UpholdConnection.count", -1) do
+        delete path, headers: json_headers
       end
 
-      describe "when unknown error" do
-        before do
-          mock_refresh_token_success(UpholdConnection.oauth2_client.token_url, scope: scope)
-          verified_request
-        end
+      assert_response :ok
+      assert_nil publisher.reload.uphold_connection
+    end
+  end
 
-        it "should redirect with a generic message" do
-          assert_equal(I18n.t("shared.error"), flash.alert)
-        end
+  describe "#destroy for a suspended publisher" do
+    let(:publisher) { publishers(:suspended) }
+
+    before do
+      # Suspended publishers are halted before the CSRF cookie is set, so fetch it first.
+      @csrf_token = get_csrf_token
+      sign_in(publisher)
+    end
+
+    it "does not remove the connection" do
+      assert_no_difference("UpholdConnection.count") do
+        delete path, headers: json_headers
       end
+
+      assert_response :found
+      assert_equal Rails.application.routes.url_helpers.suspended_error_publishers_path, response.parsed_body["location"]
     end
   end
 end
