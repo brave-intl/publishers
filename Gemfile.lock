@@ -341,7 +341,7 @@ GEM
       timeout
     net-smtp (0.5.2)
       net-protocol
-    newrelic_rpm (10.8.0)
+    newrelic_rpm (10.9.1)
       logger
     nio4r (2.7.5)
     nokogiri (1.19.4-aarch64-linux-gnu)
@@ -940,7 +940,7 @@ CHECKSUMS
   net-pop (0.1.2) sha256=848b4e982013c15b2f0382792268763b748cce91c9e91e36b0f27ed26420dff3
   net-protocol (0.4.0) sha256=f9f90c8c6f64794a45160bf422177a336db12809de3beeeaa26b88fcd2e8c853
   net-smtp (0.5.2) sha256=35103cc04d6b2d94632f9928ede07483c24b70b9c0db1f231fea43909b678f3c
-  newrelic_rpm (10.8.0) sha256=8445de6010e439389c330af2215fd832b58b110fb6335f9966fd928a0339d3b4
+  newrelic_rpm (10.9.1) sha256=7a2c8f0bd6c3407f7d981999d46e0d5c39c53bee9ca737f0e083d3b6dcc8f0c3
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   nokogiri (1.19.4-aarch64-linux-gnu) sha256=1269fb644a6de405057a53dd5c762b1209b43ca7424f839454d3dbc677c31a8f
   nokogiri (1.19.4-arm-linux-gnu) sha256=a301313e38bb065d68239e79734bcd6f56fb6efaacebde29e9abf2a4735340ca
