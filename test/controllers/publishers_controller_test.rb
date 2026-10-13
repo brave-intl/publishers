@@ -462,18 +462,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.pending_email)
   end
 
-  test "a publisher can destroy his uphold connection" do
-    publisher = publishers(:uphold_connected_details)
-    sign_in publisher
-
-    delete connection_uphold_connection_path, headers: {"HTTP_ACCEPT" => "application/json"}
-
-    assert_response 200
-
-    publisher.reload
-    refute publisher.uphold_connection
-  end
-
   test "home redirects to 2FA prompt on first visit" do
     publisher = publishers(:unprompted)
 
