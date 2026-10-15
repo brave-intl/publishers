@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
       select = <Select {...selectProps} />;
     }
 
-    ReactDOM.render(select, element);
+    createRoot(element).render(select);
   });
 });
 
