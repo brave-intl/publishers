@@ -548,6 +548,97 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal login.accept_language, "en-US,en;q=0.9"
   end
 
+  describe "single active session" do
+    before do
+      stub_rewards_parameters
+    end
+
+    def log_in_on_new_device(publisher)
+      open_session do |device|
+        follow_login_link(device, publisher)
+      end
+    end
+
+    def follow_login_link(device, publisher)
+      token = PublisherTokenGenerator.new(publisher: publisher).perform
+      device.get publisher_url(publisher, token: token)
+    end
+
+    def signed_in?(device)
+      device.get home_publishers_path
+      device.response.status == 200
+    end
+
+    test "logging in with a new access link signs the publisher out of every other session" do
+      publisher = publishers(:completed)
+      first_device = log_in_on_new_device(publisher)
+      assert signed_in?(first_device)
+
+      second_device = log_in_on_new_device(publisher)
+
+      assert signed_in?(second_device)
+      refute signed_in?(first_device), "the earlier session should have been signed out"
+    end
+
+    test "only the most recent of several sessions stays signed in" do
+      publisher = publishers(:completed)
+      devices = Array.new(3) { log_in_on_new_device(publisher) }
+
+      assert signed_in?(devices.last)
+      devices[0..-2].each { |device| refute signed_in?(device) }
+    end
+
+    test "logging in again from the same browser keeps that browser signed in" do
+      publisher = publishers(:completed)
+      device = log_in_on_new_device(publisher)
+
+      follow_login_link(device, publisher)
+
+      assert signed_in?(device)
+    end
+
+    test "logging in does not sign out other publishers" do
+      publisher = publishers(:completed)
+      other_publisher = publishers(:uphold_connected)
+      other_device = log_in_on_new_device(other_publisher)
+
+      log_in_on_new_device(publisher)
+
+      assert signed_in?(other_device)
+    end
+
+    test "an invalid access link does not sign out existing sessions" do
+      publisher = publishers(:completed)
+      first_device = log_in_on_new_device(publisher)
+
+      open_session do |device|
+        PublisherTokenGenerator.new(publisher: publisher).perform
+        device.get publisher_url(publisher, token: "not-the-token")
+      end
+
+      assert signed_in?(first_device)
+    end
+
+    test "with 2FA, other sessions are signed out only once the second factor is completed" do
+      publisher = publishers(:completed)
+      publisher.update_attribute(:totp_registration, totp_registrations(:default))
+      ROTP::TOTP.any_instance.stubs(:verify).returns(Time.now.to_i)
+
+      first_device = log_in_on_new_device(publisher)
+      first_device.post totp_authentications_path, params: {totp_password: "123456"}
+      assert signed_in?(first_device)
+
+      second_device = log_in_on_new_device(publisher)
+      assert_equal two_factor_authentications_path, URI(second_device.response.location).path
+      assert signed_in?(first_device), "a pending 2FA login should not end other sessions"
+
+      second_device.post totp_authentications_path, params: {totp_password: "123456"}
+
+      assert signed_in?(second_device)
+      refute signed_in?(first_device), "the earlier session should have been signed out"
+    end
+  end
+
   test "protect from users without second factor authentication for session-fixation attacks" do
     publisher = publishers(:fake1)
     sign_in publisher
