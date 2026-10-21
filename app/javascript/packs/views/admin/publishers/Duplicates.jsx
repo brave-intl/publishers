@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 class Duplicates extends React.Component {
   constructor(props) {
@@ -50,10 +50,9 @@ class Duplicates extends React.Component {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(
-    <Duplicates />,
+  createRoot(
     document
       .getElementById("duplicates")
       .appendChild(document.createElement("div")),
-  );
+  ).render(<Duplicates />);
 });
