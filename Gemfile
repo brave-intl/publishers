@@ -36,7 +36,7 @@ gem "bootstrap", "5.3.8"
 gem "brotli", "~> 0.8.0"
 
 # Authorization
-gem "cancancan", "~> 3.6.0"
+gem "cancancan", "~> 3.7.0"
 
 gem "connection_pool", "~> 3.0.2"
 
