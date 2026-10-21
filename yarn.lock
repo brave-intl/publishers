@@ -2805,7 +2805,7 @@ cssnano-preset-default@^7.0.17:
     postcss-svgo "^7.1.3"
     postcss-unique-selectors "^7.0.7"
 
-cssnano-preset-default@^9.7.0:
+cssnano-preset-default@^9.8.0:
   version "9.8.0"
   resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-9.8.0.tgz#b9db3b493b8c8e79e39c942c57cce1b3ffb662c3"
   integrity sha512-BIZvo83PsVGlCErJrFOVTTYgESKzPP3NnQwXVGwYQT6YfGnVHC3TKyVKSSyaAZPmu8pvDco58+5nnDfVniz86g==
@@ -2851,12 +2851,12 @@ cssnano-utils@^9.0.0:
   dependencies:
     "@csstools/css-tokenizer" "^4.0.2"
 
-cssnano@9.7.0:
-  version "9.7.0"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.7.0.tgz#01c77b35561ee96503dadbad17afcfefa0742831"
-  integrity sha512-OOa/GE44AMMHtKUKxw20tZJ7Lu5PRwMWvX/1Raf3R634beYoQDFnf0CePsr/TvIdLadinnTpvfdf+jGI84uIjQ==
+cssnano@9.8.0:
+  version "9.8.0"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.8.0.tgz#e1fdba39d85a3832490118e1797e2f8827d460b9"
+  integrity sha512-sNgrmVv7rtwR3j6VwjlgoDPq52ptYAKbsBQBm3SR1rEAg0e1feS8N2OqkPp1ZKmyGkpNr80kerYNCCbdQXhDtg==
   dependencies:
-    cssnano-preset-default "^9.7.0"
+    cssnano-preset-default "^9.8.0"
 
 cssnano@^7.0.4:
   version "7.1.9"
@@ -6567,10 +6567,10 @@ stylis@4.3.6:
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.3.6.tgz#7c7b97191cb4f195f03ecab7d52f7902ed378320"
   integrity sha512-yQ3rwFWRfwNUY7H5vpU0wfdkNSnvnJinhF9830Swlaxl03zsOjCfmX0ugac+3LtK0lYSgwL/KXc8oYL3mG4YFQ==
 
-sugarss@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/sugarss/-/sugarss-5.0.1.tgz#55589d1b997cdb1f0d84a94ed7f002e708f909bc"
-  integrity sha512-ctS5RYCBVvPoZAnzIaX5QSShK8ZiZxD5HUqSxlusvEMC+QZQIPCPOIJg6aceFX+K2rf4+SH89eu++h1Zmsr2nw==
+sugarss@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/sugarss/-/sugarss-5.0.2.tgz#c55fd2e0d3dafda35b302e39fc1b62b38c5a47da"
+  integrity sha512-30Zt7tXECUXZbVRmmo/2+90UMl/mD8gBrNeRozE/6Gp2uEktD01m/hVFRrTsgg7Ca2ZmW68HX40aZ23byUiwdg==
 
 super-regex@^1.1.0:
   version "1.1.0"
