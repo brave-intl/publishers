@@ -6095,11 +6095,6 @@ randexp@0.4.6:
     discontinuous-range "1.0.0"
     ret "~0.1.10"
 
-react-avatar-editor@^15.0.0:
-  version "15.2.0"
-  resolved "https://registry.yarnpkg.com/react-avatar-editor/-/react-avatar-editor-15.2.0.tgz#0b7893c20eb94b3c6560817f40473ac2998165b9"
-  integrity sha512-yoh495J6JareHOY56Hyw8XmfuWW4YN8cSGN8lrX67/sCJsp4jiOdlDgPiWHykAfeocMVl7ZQ62DdNa2it2ae7g==
-
 react-dom@^19.0.0:
   version "19.3.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.3.0.tgz#a0ff19161d7f4e9be5469a07278b0c06e00f9001"
