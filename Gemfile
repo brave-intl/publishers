@@ -56,7 +56,7 @@ gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0"
 
-gem "google-protobuf", "~> 3.25"
+gem "google-protobuf", "~> 4.0"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.15.0"
