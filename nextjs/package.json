@@ -79,7 +79,7 @@
     "stylelint-order": "^8.0.0",
     "stylelint-webpack-plugin": "5.1.0",
     "tailwindcss": "^4.2.2",
-    "typescript": "^6.0.0"
+    "typescript": "^7.0.0"
   },
   "overrides": {
     "minimatch": ">=10.2.5",
