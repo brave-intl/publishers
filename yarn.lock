@@ -6142,9 +6142,9 @@ react-test-renderer@^16.0.0-0:
     scheduler "^0.19.1"
 
 react-tooltip@^6.0.0:
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-6.0.8.tgz#5c97036778b3b1d86ee9e253e450850b170eb809"
-  integrity sha512-VPjtBPyoFwq72QVE6GYB/LtfEg/mnFBHqL0nD0oNNmjH8EZYFyBwgnFKNCOp5zCte45k1weXjKc0wXE6NICpfg==
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-6.0.9.tgz#7d6571d98d455dfe438b6c6d8bf50f8cc9907c62"
+  integrity sha512-4GUhb4vqCr7fuK3D2W8TtmuCfTGLxJ3YIrgYVDGyuvk05215/B22qnc6iKQfnU3T2fqh3Op7VuKXrdV2+f+jHQ==
   dependencies:
     "@floating-ui/dom" "1.7.6"
     clsx "2.1.1"
