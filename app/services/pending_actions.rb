@@ -68,7 +68,7 @@ module PendingActions
     # @return [PendingAction] the class callable
     def self.saved context
       pending_action = context.session[:pending_action]
-      pending_action_class = pending_action[:class].constantize # rubocop:disable Sorbet/ConstantsFromStrings
+      pending_action_class = pending_action[:class].constantize
       unless pending_action_class < PendingAction
         context.session.delete(:pending_action)
         raise SecurityError.new("#{pending_action_class} is not a subclass of PendingAction")

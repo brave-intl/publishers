@@ -29,14 +29,14 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.232.0"
+gem "aws-sdk-s3", "~> 1.233.0"
 
 gem "bootstrap", "5.3.8"
 
 gem "brotli", "~> 0.8.0"
 
 # Authorization
-gem "cancancan", "~> 3.6.0"
+gem "cancancan", "~> 3.7.0"
 
 gem "connection_pool", "~> 3.0.2"
 
@@ -49,14 +49,14 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.14.4"
+gem "faraday", "2.15.0"
 gem "faraday-retry", "2.4.0"
 
 gem "ffi"
 
 gem "font-awesome-rails", "~> 4.7.0"
 
-gem "google-protobuf", "~> 3.25"
+gem "google-protobuf", "~> 4.0"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.15.0"
@@ -148,7 +148,7 @@ gem "sidekiq-scheduler", "~> 6.0.0"
 gem "sidekiq-throttled", "~> 2.1.0"
 
 # slim for view templates
-gem "slim-rails", "4.0.0"
+gem "slim-rails", "4.0.1"
 
 gem "ssrf_filter", "1.6.0"
 

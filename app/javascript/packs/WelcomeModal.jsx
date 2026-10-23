@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import { IntlProvider, FormattedMessage, useIntl } from "react-intl";
 import en, { flattenMessages } from "../locale/en";
@@ -82,14 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.body.dataset.locale === "ja") {
     localePackage = ja;
   }
-  ReactDOM.render(
+  createRoot(container).render(
     <IntlProvider
       locale={document.body.dataset.locale}
       messages={flattenMessages(localePackage)}
     >
       <WelcomeModal {...props} />
-    </IntlProvider>,
-
-    container
+    </IntlProvider>
   );
 });

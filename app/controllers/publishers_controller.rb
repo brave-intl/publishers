@@ -201,7 +201,8 @@ class PublishersController < ApplicationController
         flash[:notice] = t("publishers.show.email_confirmed", email: current_publisher.email)
       end
 
-      sign_in(:publisher, current_publisher)
+      # Only one active session per publisher: rotating the session salt signs out every other device.
+      logout_everybody_else!(current_publisher)
       redirect_to publisher_next_step_path(current_publisher) if two_factor_enabled?(current_publisher)
     end
   end

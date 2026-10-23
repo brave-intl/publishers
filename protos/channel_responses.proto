@@ -7,6 +7,11 @@ message SocialLinks {
   string youtube = 1;
   string twitter = 2;
   string twitch = 3;
+  string reddit = 4;
+  string vimeo = 6;
+
+  reserved 5;
+  reserved "github";
 }
 
 message SiteBannerDetails {
@@ -42,9 +47,11 @@ enum BitflyerWalletState {
 message Wallet {
   oneof provider {
     UpholdWallet uphold_wallet = 1;
-    PaypalWallet paypal_wallet = 2;
     BitflyerWallet bitflyer_wallet = 3;
   }
+
+  reserved 2, 4;
+  reserved "paypal_wallet", "gemini_wallet";
 }
 
 message ChannelResponse {
