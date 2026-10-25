@@ -148,7 +148,7 @@ GEM
       popper_js (>= 2.11.8, < 3)
     brakeman (8.1.0)
       racc
-    brotli (0.8.0)
+    brotli (0.9.2)
     browser (6.2.0)
     builder (3.3.0)
     bundler-audit (0.9.3)
@@ -730,7 +730,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap (= 5.3.8)
   brakeman
-  brotli (~> 0.8.0)
+  brotli (~> 0.9.2)
   bundler-audit
   byebug
   cancancan (~> 3.7.0)
@@ -860,7 +860,7 @@ CHECKSUMS
   binding_of_caller (2.0.0) sha256=e53eebf8428a85587aede7b43a83e7419eb85b8b690938a96aa330d03052d517
   bootstrap (5.3.8) sha256=1c23b06df24ec28a0058ad90a0da93e260d2c0a5c453d7087f6bad428464742f
   brakeman (8.1.0) sha256=cfa9e5214e4925842f4bc849a64f8a7e6c5d0425fe98eac8d7b7bc60fdc17e07
-  brotli (0.8.0) sha256=0c5a42046b3b603fb109656881147fd76064c034b7d19c1b4fcc32a093a4d55d
+  brotli (0.9.2) sha256=8d5e3b8f267bad385c53d73e1575e617567eee1a05e7aaee1c08bdeb8abf3024
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
   bundler (4.0.20) sha256=7978a8ac648767f5e635bc522445b79e80a52b907a39a36c2d8085ed6bc762ae
