@@ -311,7 +311,14 @@
       "vimeo_prompt": "私はVimeoチャンネルを所有、または管理しています。",
       "reddit_prompt": "私はRedditアカウントを所有しています。I own a Reddit account.",
       "add_first_channel": "最初のチャンネルを追加する",
-      "add_channel_title": "チャンネルとはなんですか？"
+      "add_channel_title": "チャンネルとはなんですか？",
+      "remove_channel_modal": {
+        "headline": "チャンネルを削除しますか？",
+        "intro": "あなたはチャンネルを削除しようとしています。",
+        "confirmation": "本当にチャンネルを削除しますか？",
+        "deny": "削除しない",
+        "confirm": "削除する"
+      }
     },
     "addCryptoWidget": {
       "addWallet": "新しいウォレットを追加してください",

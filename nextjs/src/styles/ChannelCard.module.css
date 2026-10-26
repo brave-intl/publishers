@@ -83,6 +83,7 @@
   font-weight: 500;
   line-height: 40px;
   letter-spacing: 0;
+  text-align: left;
 }
 
 .privacy-text {
@@ -93,6 +94,7 @@
   font-weight: 400;
   line-height: 26px;
   letter-spacing: -0.2px;
+  text-align: left;
 }
 
 .privacy-button-container {
