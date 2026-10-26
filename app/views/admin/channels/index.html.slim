@@ -3,18 +3,18 @@ div.row
     section.panel
       header.panel-heading
         h4= "#{params[:type]&.titlecase} Channels"
-      h6= 'Run OFAC jobs'
-      = form_tag ofac_update_admin_channels_path do
+      h6= 'Run Prohibited List jobs'
+      = form_tag prohibited_list_update_admin_channels_path do
         = submit_tag("Start job", class: "btn btn-primary")
       br
       h6= 'Last successful run:'
       ul.list-unstyled
         li
-          ' OFAC list fetch:
-          = render 'service_run_time', run_at: @last_ofac_list_run
+          ' Prohibited list fetch:
+          = render 'service_run_time', run_at: @last_prohibited_list_run
         li
-          ' Banned address disconnect:
-          = render 'service_run_time', run_at: @last_banned_address_run
+          ' Prohibited address disconnect:
+          = render 'service_run_time', run_at: @last_prohibited_address_run
       
       br
       br

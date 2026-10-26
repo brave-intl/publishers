@@ -7,7 +7,7 @@ class CryptoAddress < ApplicationRecord
   validate :chain_not_changed?
   validate :address_not_changed?
 
-  validates :address, banned_address: true
+  validates :address, prohibited_address: true
 
   scope :sol_addresses, -> { where(chain: "SOL") }
   scope :eth_addresses, -> { where(chain: "ETH") }
@@ -18,8 +18,8 @@ class CryptoAddress < ApplicationRecord
     end
   end
 
-  def banned_address?
-    !valid? && errors.full_messages.any? { |err| err.include?(BannedAddressValidator::MSG) }
+  def prohibited_address?
+    !valid? && errors.full_messages.any? { |err| err.include?(ProhibitedAddressValidator::MSG) }
   end
 
   def address_not_changed?

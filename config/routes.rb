@@ -255,10 +255,6 @@ Rails.application.routes.draw do
         namespace :channels, defaults: {format: :json} do
           get "total_verified"
         end
-        namespace :ofac, defaults: {format: :json} do
-          get "banned_lists"
-          get "banned_lists_fresh"
-        end
       end
       namespace :channels, defaults: {format: :json} do
         # This is effectively a get request, but our channel_identifiers are not in
@@ -279,7 +275,7 @@ Rails.application.routes.draw do
     resources :channels, only: [:index, :destroy] do
       collection do
         get :duplicates
-        post :ofac_update
+        post :prohibited_list_update
       end
     end
 
