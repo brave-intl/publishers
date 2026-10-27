@@ -17,9 +17,6 @@ gem "countries"
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10"
 
-# For bulk updates/imports
-gem "activerecord-import", "~> 3.0.0"
-
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.9"
 
