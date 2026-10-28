@@ -63,10 +63,10 @@ module Admin
       # comparison job
       new_prohibited_list = ParseProhibitedListService.perform[:addresses]
       raise "Empty list" unless new_prohibited_list.present?
-      list = new_prohibited_list.map { |addr| ProhibitedList.new(address: addr) }
+      list = new_prohibited_list.map { |addr| {address: addr} }
       ActiveRecord::Base.transaction do
         ActiveRecord::Base.connection.truncate_tables(:prohibited_list)
-        ProhibitedList.import list
+        list.each_slice(5_000) { |batch| ProhibitedList.insert_all(batch) }
       end
       ProhibitedAddressJob.perform_later
       redirect_to admin_channels_path, flash: {notice: "The prohibited list is being updated"}
