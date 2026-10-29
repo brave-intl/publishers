@@ -34,7 +34,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@824c0e29fdfc7d689c191c27acc969d2d04b7dd8 # v1.331.0
         with:
-          ruby-version: 4.0.7
+          ruby-version: 4.0.8
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
