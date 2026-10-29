@@ -8,7 +8,13 @@ if (typeof window !== 'undefined') {
 
 import { useContext } from 'react';
 import { useTranslations } from 'next-intl';
-import Web3 from 'web3';
+import {
+  createPublicClient,
+  createWalletClient,
+  custom,
+  encodeFunctionData,
+  toHex,
+} from 'viem';
 import {
   address,
   appendTransactionMessageInstruction,
@@ -115,9 +121,7 @@ export default function CryptoWidgetPaymentButton({
 
       // While most guides to converting eth to wei multiply the value by 10e18, In javascript e counts
       // as the 10 and *10e18 results in a value that is an order of mangitude too high.
-      const value = Web3.utils.toHex(
-        Web3.utils.toBigInt(Math.round(currentAmount * 10e17)),
-      );
+      const value = toHex(BigInt(Math.round(currentAmount * 10e17)));
 
       const params = [
         {
@@ -158,27 +162,34 @@ export default function CryptoWidgetPaymentButton({
       }
 
       try {
-        const web3 = new Web3(window.ethereum);
-        const contract = new web3.eth.Contract(abi, contractAddress);
-        const encodedAbi = await contract.methods
-          .transfer(addresses.ETH, amount)
-          .encodeABI();
-        const gasPrice = await web3.eth.getGasPrice();
+        const transport = custom(window.ethereum);
+        const publicClient = createPublicClient({ transport });
+        const walletClient = createWalletClient({ transport });
+
+        const data = encodeFunctionData({
+          abi,
+          functionName: 'transfer',
+          args: [addresses.ETH, amount],
+        });
+        const gasPrice = await publicClient.getGasPrice();
 
         const transaction = {
-          from: address,
+          account: address,
           to: contractAddress,
-          value: '0', // note that value is a string
-          data: encodedAbi,
+          value: 0n,
+          data,
           gasPrice,
         };
-        const gasEstimate = await web3.eth.estimateGas(transaction);
-        const results = await web3.eth.sendTransaction({
+        const gasEstimate = await publicClient.estimateGas(transaction);
+        // chain: null skips viem's chain-id assertion; the wallet's current network is used
+        const hash = await walletClient.sendTransaction({
           ...transaction,
-          gas: gasEstimate + Web3.utils.toBigInt(450000),
+          chain: null,
+          gas: gasEstimate + 450000n,
         });
+        const receipt = await publicClient.waitForTransactionReceipt({ hash });
 
-        if (results.status > 0) {
+        if (receipt.status === 'success') {
           setIsSuccessView(true);
         }
       } catch (e) {
@@ -194,13 +205,13 @@ export default function CryptoWidgetPaymentButton({
   }
 
   async function sendEthBatPayment() {
-    const amount = Web3.utils.toBigInt(Math.round(currentAmount * 10e17));
+    const amount = BigInt(Math.round(currentAmount * 10e17));
     await sendEthTokenPayment(ethBatAddress, amount, batAbi);
   }
 
   async function sendEthUsdcPayment() {
     // USDC token needs 6 decimal places, not 18
-    const amount = Web3.utils.toBigInt(Math.round(currentAmount * 10e5));
+    const amount = BigInt(Math.round(currentAmount * 10e5));
     await sendEthTokenPayment(ethUsdcAddress, amount, erc20Abi);
   }
 
