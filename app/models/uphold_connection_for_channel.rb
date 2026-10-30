@@ -14,5 +14,5 @@ class UpholdConnectionForChannel < ApplicationRecord
   NETWORK = "anonymous"
 
   validates :channel_identifier, uniqueness: {scope: [:uphold_connection_id, :channel_identifier, :currency, :uphold_id]}
-  validates :address, banned_address: true
+  validates :address, prohibited_address: true
 end

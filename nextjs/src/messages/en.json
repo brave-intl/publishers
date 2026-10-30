@@ -139,7 +139,14 @@
       "reddit_prompt": "I own a Reddit account.",
       "add_first_channel": "Add your first channel",
       "add_channel_prompt": "Channels are accounts, sites or other properties on the Web that you own, like a YouTube channel, a Reddit account, your own website, etc.",
-      "add_channel_title": "What are channels?"
+      "add_channel_title": "What are channels?",
+      "remove_channel_modal": {
+        "headline": "Remove Channel?",
+        "intro": "You are removing the channel",
+        "confirmation": "Are you sure you want to remove this channel?",
+        "deny": "Do Not Remove",
+        "confirm": "Remove Channel"
+      }
     },
     "addCryptoWidget": {
       "addWallet": "Add new address",

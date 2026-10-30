@@ -19,9 +19,9 @@
       cron: "0 4 * * *"
       description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
       queue: scheduler
-    UpdateOfacListJob:
+    UpdateProhibitedListJob:
       cron: "0 * * * *"
-      description: "Update the Ofac list"
+      description: "Update the Prohibited list"
       queue: scheduler
     CleanAbandonedSiteChannelsJob:
       cron: "0 3 * * *"
@@ -46,9 +46,9 @@
       cron: "0 1 * * *"
       description: "Syncs zendesk tickets"
       queue: low
-    BannedAddressJob:
+    ProhibitedAddressJob:
       cron: "30 * * * *"
-      description: "Scan For Banned Addresses"
+      description: "Scan For Prohibited Addresses"
     Cache::BrowserChannels::Main:
       cron: "0 */2 * * *"
       description: "Syncs V4 channels list"

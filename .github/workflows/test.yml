@@ -34,9 +34,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Set up Ruby
-        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1.329.0
+        uses: ruby/setup-ruby@e1bd6146574da5e0795075b5319b300edb30c5b0 # v1.333.0
         with:
-          ruby-version: 4.0.7
+          ruby-version: 4.0.8
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
@@ -78,4 +78,4 @@ jobs:
         env:
           DATABASE_URL_TEST: postgres://postgres:postgres@localhost:5432/brave_publishers_test
           BAT_RATIOS_URL: https://ratios.rewards.bravesoftware.com
-          OFAC_ADDRESSES_BUCKET: brave-production-ofac-addresses
+          PROHIBITED_LIST_BUCKET: brave-production-prohibited-addresses

@@ -17,9 +17,6 @@ gem "countries"
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10"
 
-# For bulk updates/imports
-gem "activerecord-import", "~> 2.3.0"
-
 # Allowing for URI templates, for HTTP clients
 gem "addressable", "~> 2.9"
 
@@ -29,7 +26,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.233.0"
+gem "aws-sdk-s3", "~> 1.235.0"
 
 gem "bootstrap", "5.3.8"
 

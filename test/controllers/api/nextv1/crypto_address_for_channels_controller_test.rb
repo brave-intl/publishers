@@ -21,7 +21,7 @@ class Api::Nextv1::CryptoAddressForChannelsControllerTest < ActionDispatch::Inte
       endpoint: "http://localhost:8000",
       stub_responses: {
         list_buckets: {
-          buckets: [name: "brave-production-ofac-addresses"]
+          buckets: [name: "brave-production-prohibited-addresses"]
         },
         list_objects: {
           contents: [{key: "MHgxOTk5ZWY1MjcwMGMzNGRlN2VjMmI2OGEyOGFhZmIzN2RiMGM1YWRl"}]

@@ -19,8 +19,8 @@ module Admin
 
       @channels = @channels.verified if params[:verified].present?
 
-      @last_ofac_list_run = ServiceRun.last_success_at(ParseOfacListService)
-      @last_banned_address_run = ServiceRun.last_success_at(Wallet::DisconnectInvalidP2pAddressService)
+      @last_prohibited_list_run = ServiceRun.last_success_at(ParseProhibitedListService)
+      @last_prohibited_address_run = ServiceRun.last_success_at(Wallet::DisconnectInvalidP2pAddressService)
 
       case params[:type]
       when "website"
@@ -58,18 +58,18 @@ module Admin
       end
     end
 
-    def ofac_update
-      # rather than trying to chain jobs, just perform the sorter ofac logic then kick off the address
+    def prohibited_list_update
+      # rather than trying to chain jobs, just perform the download list logic then kick off the address
       # comparison job
-      new_ofac_list = ParseOfacListService.perform[:addresses]
-      raise "Empty list" unless new_ofac_list.present?
-      list = new_ofac_list.map { |addr| OfacAddress.new(address: addr) }
+      new_prohibited_list = ParseProhibitedListService.perform[:addresses]
+      raise "Empty list" unless new_prohibited_list.present?
+      list = new_prohibited_list.map { |addr| {address: addr} }
       ActiveRecord::Base.transaction do
-        ActiveRecord::Base.connection.truncate_tables(:ofac_addresses)
-        OfacAddress.import list
+        ActiveRecord::Base.connection.truncate_tables(:prohibited_list)
+        list.each_slice(5_000) { |batch| ProhibitedList.insert_all(batch) }
       end
-      BannedAddressJob.perform_later
-      redirect_to admin_channels_path, flash: {notice: "The OFAC list is being updated"}
+      ProhibitedAddressJob.perform_later
+      redirect_to admin_channels_path, flash: {notice: "The prohibited list is being updated"}
     end
 
     private

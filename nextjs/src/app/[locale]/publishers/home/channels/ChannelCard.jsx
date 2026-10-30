@@ -1,10 +1,11 @@
 'use client';
 
 import Button from '@brave/leo/react/button';
+import Dialog from '@brave/leo/react/dialog';
 import Hr from '@brave/leo/react/hr';
 import Icon from '@brave/leo/react/icon';
 import { useTranslations } from 'next-intl';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import styles from '@/styles/ChannelCard.module.css';
 
@@ -15,6 +16,7 @@ import Card from '@/components/Card';
 
 import CustodianServiceWidget from '../custodianServices/CustodianServiceWidget';
 import ChannelCryptoEditor from './ChannelCryptoEditor';
+import ChannelRemovalModal from './ChannelRemovalModal';
 
 export default function ChannelCard({
   channel,
@@ -25,6 +27,7 @@ export default function ChannelCard({
   const t = useTranslations();
   // TODO: come up with some default name
   const defaultName = '';
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     setBitflyerConnection,
@@ -49,6 +52,10 @@ export default function ChannelCard({
     } else {
       onChannelDelete(channel.id);
     }
+  }
+
+  function closeModal(argument) {
+    setIsModalOpen(false);
   }
 
   function channelType() {
@@ -155,10 +162,17 @@ export default function ChannelCard({
           id={`channel_row_delete_button_${channel.id}`}
           className='color-secondary mr-0.5'
           kind='plain-faint'
-          onClick={removeChannel}
+          onClick={() => setIsModalOpen(true)}
         >
           {t('shared.remove')}
         </Button>
+        <Dialog isOpen={isModalOpen} onClose={closeModal}>
+          <ChannelRemovalModal
+            close={closeModal}
+            removeChannel={removeChannel}
+            channelId={channel.id}
+          />
+        </Dialog>
         {hasCrypto && (
           <Button
             href={`/publishers/contribution_page?channel=${channel.id}`}

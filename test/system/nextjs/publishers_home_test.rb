@@ -31,9 +31,8 @@ class PublishersHomeTest < ApplicationSystemTestCase
 
     find("#channel_row_delete_button_#{channel.id}").click
 
-    # TODO add this back in!
-    # assert_content page, "Are you sure you want to remove this channel?"
-    # find("[data-test-modal-container]").click_link("Remove")
+    assert_content page, "Are you sure you want to remove this channel?"
+    find("#channel_modal_delete_button_#{channel.id}").click
 
     refute_content channel.publication_title
   end
