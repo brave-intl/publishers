@@ -1,4 +1,3 @@
-require "json"
 require "base64"
 
 class ParseProhibitedListService
@@ -9,7 +8,7 @@ class ParseProhibitedListService
   #    "qpf2cphc5dkuclkqur7lhj2yuqq9pk3hmukle77vhq",
   #    "qpusmp64rajses77x95g9ah825mtyyv74smwwkxhx3", etc...
   def self.perform
-    result = fetch_github_repo_top_level_files(repo_owner: "brave-intl", repo_name: Rails.configuration.pub_secrets[:prohibited_list_repo_name], branch: "lists")
+    result = fetch_s3_addresses
 
     return result if result.blank? || result[:addresses].blank?
 
@@ -17,46 +16,18 @@ class ParseProhibitedListService
     result
   end
 
-  def self.fetch_github_file_content(repo_owner:, repo_name:, branch:, file_path:, github_headers:)
-    uri = URI("https://api.github.com/repos/#{repo_owner}/#{repo_name}/contents/#{file_path}?ref=#{branch}")
-    https = Net::HTTP.new(uri.host, uri.port)
-    https.use_ssl = true
-
-    request = Net::HTTP::Get.new(uri)
-    request.add_field("Authorization", github_headers[:Authorization])
-    request.add_field("Accept", github_headers[:Accept])
-
-    response = https.request(request)
-    content_data = JSON.parse(response.body)
-
-    return "" if content_data["content"].nil?
-
-    Base64.decode64(content_data["content"]).force_encoding("utf-8")
-  end
-
-  def self.fetch_github_repo_top_level_files(repo_owner:, repo_name:, branch:)
-    github_token = Rails.configuration.pub_secrets[:github_prohibited_token]
-    github_headers = {
-      Accept: "application/vnd.github.v3+json",
-      Authorization: "token #{github_token}"
-    }
-
-    uri = URI("https://api.github.com/repos/#{repo_owner}/#{repo_name}/git/trees/#{branch}?recursive=1")
-    response = Net::HTTP.get(uri, github_headers)
-    data = JSON.parse(response)
-
-    return if data["tree"].nil?
-
-    prohibited_addresses = []
-    data["tree"].each do |item|
-      next unless item["type"] == "blob" && !item["path"].include?("/") && item["path"].end_with?(".json") && item["path"] != "README.md"
-
-      content = fetch_github_file_content(repo_owner:, repo_name:, branch:, file_path: item["path"], github_headers:)
-      prohibited_addresses += JSON.parse(content)
+  # Each object key in the bucket is an address, URL-safe base64 encoded with padding stripped.
+  def self.fetch_s3_addresses(client: Aws::S3::Client.new(region: "us-west-2"), bucket: ENV["PROHIBITED_LIST_BUCKET"])
+    addresses = client.list_objects_v2(bucket:).flat_map do |page|
+      page.contents.filter_map { |object| decode_key(object.key) }
     end
 
-    prohibited_addresses = prohibited_addresses.uniq
+    {addresses: addresses.uniq}
+  end
 
-    {addresses: prohibited_addresses}
+  def self.decode_key(key)
+    Base64.urlsafe_decode64(key).force_encoding("utf-8")
+  rescue ArgumentError
+    nil
   end
 end
