@@ -203,6 +203,8 @@ export default function CryptoWidgetPaymentButton({
 
         if (receipt.status === 'success') {
           setIsSuccessView(true);
+        } else {
+          setGenericError();
         }
       } catch (e) {
         console.log(e);
