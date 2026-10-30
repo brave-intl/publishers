@@ -187,7 +187,19 @@ export default function CryptoWidgetPaymentButton({
           chain: null,
           gas: gasEstimate + 450000n,
         });
-        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+        let transferReplaced = false;
+        const receipt = await publicClient.waitForTransactionReceipt({
+          hash,
+          onReplaced: ({ reason }) => {
+            if (reason !== 'repriced') {
+              transferReplaced = true;
+            }
+          },
+        });
+        if (transferReplaced) {
+          setGenericError();
+          return;
+        }
 
         if (receipt.status === 'success') {
           setIsSuccessView(true);
