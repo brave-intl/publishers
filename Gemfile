@@ -8,7 +8,7 @@ rails_version = "8.1.3.1"
 gem "rails", rails_version
 gem "railties", rails_version
 
-gem "rack", "3.2.7"
+gem "rack", ">= 3.2.8"
 gem "rack-proxy", ">= 1.0.3"
 
 # All things countries
@@ -18,7 +18,7 @@ gem "countries"
 gem "active_model_serializers", "~> 0.10"
 
 # Allowing for URI templates, for HTTP clients
-gem "addressable", "~> 2.9"
+gem "addressable", ">= 2.9.2"
 
 # For analytics
 gem "active_analytics"
