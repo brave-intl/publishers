@@ -30,12 +30,8 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
     result = PublishersPb::ChannelResponseList.decode(result)
 
-    if Cache::BrowserChannels::ResponsesForPrefix::UPHOLD_WALLETS_DISABLED
-      assert_empty result.channel_responses[0].wallets
-    else
-      assert result.channel_responses[0].wallets[0].uphold_wallet.address
-      assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, channel.uphold_connection.address
-    end
+    assert result.channel_responses[0].wallets[0].uphold_wallet.address
+    assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, channel.uphold_connection.address
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end
 
@@ -54,11 +50,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
     result = PublishersPb::ChannelResponseList.decode(result)
 
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
-    if Cache::BrowserChannels::ResponsesForPrefix::UPHOLD_WALLETS_DISABLED
-      assert_empty result.channel_responses[0].wallets
-    else
-      assert_predicate result.channel_responses[0].wallets[0].uphold_wallet.address, :empty?
-    end
+    assert_predicate result.channel_responses[0].wallets[0].uphold_wallet.address, :empty?
   end
 
   test "includes web3 url when there is a crypto address" do
@@ -133,11 +125,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < SidekiqTestCase
       result = Brotli.inflate(File.open(service.temp_file.path, "rb").readlines.join("").slice(4..-1))
       result = PublishersPb::ChannelResponseList.decode(result)
 
-      if Cache::BrowserChannels::ResponsesForPrefix::UPHOLD_WALLETS_DISABLED
-        assert_empty result.channel_responses[0].wallets
-      else
-        assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, ""
-      end
+      assert_equal result.channel_responses[0].wallets[0].uphold_wallet.address, ""
     end
   end
 end
