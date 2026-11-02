@@ -205,9 +205,6 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.23"
   gem "rails-controller-testing"
-
-  # Image information library
-  gem "fastimage", "~> 2.4.0"
 end
 
 group :development, :test do
