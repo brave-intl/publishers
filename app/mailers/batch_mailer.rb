@@ -10,4 +10,9 @@ class BatchMailer < ApplicationMailer
 
     mail(to: @publisher.email || @publisher.pending_email, subject: default_i18n_subject)
   end
+
+  def custom_announcement(publisher, subject:, body_html:)
+    @body_html = body_html
+    mail(to: publisher.email, subject: subject)
+  end
 end
