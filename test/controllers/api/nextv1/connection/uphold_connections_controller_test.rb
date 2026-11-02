@@ -32,16 +32,26 @@ class Api::Nextv1::Connection::UpholdConnectionsControllerTest < ActionDispatch:
       sign_in(publisher)
     end
 
-    it "is blocked while uphold is under maintenance" do
+    it "returns the uphold authorization url as json" do
       post path, headers: json_headers
 
-      assert_response :service_unavailable
+      assert_response :ok
+      authorization_url = URI(response.parsed_body["authorization_url"])
+      assert_equal "sandbox.uphold.com", authorization_url.host
+      assert_includes URI.decode_www_form(authorization_url.query).to_h.keys, "state"
     end
 
-    it "does not issue a state cookie while under maintenance" do
+    it "issues a short-lived httponly state cookie matching the authorization url state" do
       post path, headers: json_headers
 
-      assert_nil state_set_cookie_header
+      cookie = state_set_cookie_header
+      assert cookie, "expected a _state cookie to be set"
+      assert_match(/httponly/i, cookie)
+      assert_match(/samesite=lax/i, cookie)
+
+      url_state = URI.decode_www_form(URI(response.parsed_body["authorization_url"]).query).to_h["state"]
+      jar = ActionDispatch::Cookies::CookieJar.build(request, cookies.to_hash)
+      assert_equal url_state, jar.encrypted[:_state]
     end
   end
 
