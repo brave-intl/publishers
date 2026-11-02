@@ -43,6 +43,9 @@ p {
   .brand {
     margin: 0 auto;
     display: table;
+    img {
+      max-width: 300px;
+    }
   }
 }
 
