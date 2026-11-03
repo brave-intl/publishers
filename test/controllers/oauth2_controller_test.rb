@@ -163,12 +163,65 @@ class Oauth2ControllerTest < ActionDispatch::IntegrationTest
   end
 
   describe "uphold callback" do
-    it "is blocked while uphold is under maintenance" do
+    let(:uphold_token_url) { UpholdConnection.oauth2_config.token_url }
+    let(:uphold_id) { SecureRandom.uuid }
+
+    def start_uphold_flow
+      post "/api/nextv1/connection/uphold_connection", headers: {"HTTP_ACCEPT" => "application/json", "X-CSRF-Token" => (@csrf_token ||= get_csrf_token)}
+      assert_response :ok
+      Rack::Utils.parse_query(URI(response.parsed_body["authorization_url"]).query).fetch("state")
+    end
+
+    def uphold_callback(state:)
+      get "/publishers/uphold_verified", params: {code: "authorization-code", state: state}
+    end
+
+    def stub_successful_uphold_exchange
+      mock_refresh_token_success(uphold_token_url, scope: Oauth2::Config::Uphold.scope)
+      stub_get_user_deposits_capability
+      stub_get_user(id: uphold_id)
+      stub_list_cards
+      stub_get_card
+      stub_create_card
+    end
+
+    it "rejects a callback without a matching state cookie" do
       assert_no_difference("UpholdConnection.count") do
         get "/publishers/uphold_verified", params: {code: "authorization-code", state: "some value"}
       end
 
-      assert_response :service_unavailable
+      assert_response :redirect
+    end
+
+    it "connects the uphold wallet and consumes the state cookie when the state matches" do
+      stub_successful_uphold_exchange
+      state = start_uphold_flow
+
+      uphold_callback(state: state)
+
+      assert_equal home_publishers_path, URI(response.location).path
+      assert_nil flash.alert
+      assert_requested :post, uphold_token_url, times: 1
+
+      connection = UpholdConnection.find_by!(publisher: publisher)
+      assert_equal uphold_id, connection.uphold_id
+      assert connection.uphold_verified?
+      assert_equal connection, publisher.reload.selected_wallet_provider
+
+      assert set_cookie_headers.any? { |c| c.start_with?("_state=;") }, "expected the _state cookie to be expired"
+      assert cookies["_state"].blank?
+    end
+
+    it "rejects a replay of a successful uphold callback" do
+      stub_successful_uphold_exchange
+      state = start_uphold_flow
+      uphold_callback(state: state)
+      assert_nil flash.alert
+
+      uphold_callback(state: state)
+
+      assert_equal I18n.t("shared.error"), flash.alert
+      assert_requested :post, uphold_token_url, times: 1
     end
   end
 
