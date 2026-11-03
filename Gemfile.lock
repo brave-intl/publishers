@@ -105,11 +105,11 @@ GEM
     addressable (2.9.2)
       public_suffix (>= 2.0.2, < 8.0)
     android_key_attestation (0.3.0)
-    anonymous_loader (0.1.3)
-      version_gem (~> 1.1, >= 1.1.14)
+    anonymous_loader (0.1.5)
+      version_gem (~> 1.1, >= 1.1.17)
     ast (2.4.3)
-    auth-sanitizer (0.2.3)
-      version_gem (~> 1.1, >= 1.1.14)
+    auth-sanitizer (0.2.5)
+      version_gem (~> 1.1, >= 1.1.16)
     aws-eventstream (1.4.1)
     aws-partitions (1.1299.0)
     aws-sdk-core (3.261.0)
@@ -252,7 +252,7 @@ GEM
       bigdecimal
       rake (~> 13.3)
     hashdiff (1.2.1)
-    hashie (5.1.0)
+    hashie (5.2.0)
       logger
     highline (3.1.2)
       reline
@@ -363,16 +363,16 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.7-x86_64-linux-gnu)
       racc (~> 1.4)
-    oauth2 (2.0.25)
-      anonymous_loader (~> 0.1, >= 0.1.3)
-      auth-sanitizer (~> 0.2, >= 0.2.3)
+    oauth2 (2.1.0)
+      anonymous_loader (~> 0.1, >= 0.1.5)
+      auth-sanitizer (~> 0.2, >= 0.2.5)
       faraday (>= 0.17.3, < 4.0)
       jwt (>= 1.0, < 4.0)
       logger (~> 1.2)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
-      snaky_hash (~> 2.0, >= 2.0.7)
-      version_gem (~> 1.1, >= 1.1.14)
+      snaky_hash (~> 2.0, >= 2.0.9)
+      version_gem (~> 1.1, >= 1.1.17)
     omniauth (2.1.4)
       hashie (>= 3.4.6)
       logger
@@ -616,9 +616,9 @@ GEM
       actionpack (>= 7.0)
       railties (>= 7.0)
       slim (>= 3.0, < 6.0, != 5.0.0)
-    snaky_hash (2.0.7)
+    snaky_hash (2.0.9)
       hashie (>= 0.1.0, < 6)
-      version_gem (~> 1.1, >= 1.1.14)
+      version_gem (~> 1.1, >= 1.1.16)
     sprockets (4.4.1)
       concurrent-ruby (~> 1.1)
       logger
@@ -669,7 +669,7 @@ GEM
     uri (1.1.2)
     useragent (0.16.11)
     vcr (6.4.0)
-    version_gem (1.1.15)
+    version_gem (1.1.17)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.3.0)
@@ -836,9 +836,9 @@ CHECKSUMS
   activesupport (8.1.3.1) sha256=85458765f25ea48b9019c46b6bb3fa5683197bf4280d9f06710a6e8d7a831376
   addressable (2.9.2) sha256=9117c7e7d6ee07230e75ce41fb9401ae55354dc654fcd0e862ba41d539e9a610
   android_key_attestation (0.3.0) sha256=467eb01a99d2bb48ef9cf24cc13712669d7056cba5a52d009554ff037560570b
-  anonymous_loader (0.1.3) sha256=084a18e2439144d955447dc11dfc982f41fcd1583ad32d4d55151325dc44cb55
+  anonymous_loader (0.1.5) sha256=c96a4a1b5f49f320037fae63e931ac15b3823686e4f0ee6f24f75a0ade4227cb
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  auth-sanitizer (0.2.3) sha256=db10aac92cfbe4c64ab637eebcbe1d67395d1694798041362173370f59933e3c
+  auth-sanitizer (0.2.5) sha256=eec0f5ee354931a1431be6f7025bc38d03db1731a2185726cbe6248e49bee177
   aws-eventstream (1.4.1) sha256=ceb6a99c61df4bb00344e54aed0351574beca24f87a0d1487d1d2ed80929ce96
   aws-partitions (1.1299.0) sha256=de8a9cf51f505a57343cb81a79279b4ae91e7acc09647f692416be85788ffce9
   aws-sdk-core (3.261.0) sha256=db5499a701378d1113458e1d6ea3e9d61436f998d0449b67298821bcdcd2eab6
@@ -908,7 +908,7 @@ CHECKSUMS
   google-protobuf (4.36.2-arm64-darwin) sha256=f70d810e6bbab9d8ad9c1d5fd685a21de4c10ad3ad32efb9455e17e5b1286917
   google-protobuf (4.36.2-x86_64-linux-gnu) sha256=d25a820873e423f1d209ae8c672a4a28b019e2429debd0901d26670a0b4e14db
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
-  hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
+  hashie (5.2.0) sha256=357a22635195c2e3911fbbc3de9a7d528843d1f42ab0aae02171048f16332d72
   highline (3.1.2) sha256=67cbd34d19f6ef11a7ee1d82ffab5d36dfd5b3be861f450fc1716c7125f4bb4a
   htmlentities (4.4.2) sha256=bbafbdf69f2eca9262be4efef7e43e6a1de54c95eb600f26984f71d2fe96c5c3
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
@@ -955,7 +955,7 @@ CHECKSUMS
   nokogiri (1.19.7-arm-linux-musl) sha256=28d0ff0c87b6bb2e56580323a6fb049d5d4a02b94f0958fdd47e9ac146991c77
   nokogiri (1.19.7-arm64-darwin) sha256=f27d7f25f4873fbc3aa35a2cc2fb680c98555fec1925348da439d0869d541142
   nokogiri (1.19.7-x86_64-linux-gnu) sha256=25865ccb462f714e712fdf8906fde07849cb6704a808e3d629d75baa5af5dd3b
-  oauth2 (2.0.25) sha256=2f736a2f93c2caa67c1b08dc3c9889bb907d62643f3183fefaa1723cba6a82ac
+  oauth2 (2.1.0) sha256=69925a45030c231cdca3ef4a54a8e848e5319f12c3fdbbfa5065dfbeb4efe835
   omniauth (2.1.4) sha256=42a05b0496f0d22e1dd85d42aaf602f064e36bb47a6826a27ab55e5ba608763c
   omniauth-github (2.0.1) sha256=8ff8e70ac6d6db9d52485eef52cfa894938c941496e66b52b5e2773ade3ccad4
   omniauth-google-oauth2 (1.2.3) sha256=bdbab67e64e50b7902eee2dcfc2225575cefba15ab89a3b6e92c8947987c1da9
@@ -1051,7 +1051,7 @@ CHECKSUMS
   simpleidn (0.2.3) sha256=08ce96f03fa1605286be22651ba0fc9c0b2d6272c9b27a260bc88be05b0d2c29
   slim (5.2.2) sha256=d1b5a575fcfa904a5eb66ec0a8f48a2363c7b9c57d50debb42dbab31524ef5e3
   slim-rails (4.0.1) sha256=bd8f21eec413738ae65d7732926e65be15061dae17cc85f80e37301916a5a0f4
-  snaky_hash (2.0.7) sha256=7d02c70012a3f932e48860cd024577908300c9aa615e0cb9b450aaa749cbcb4d
+  snaky_hash (2.0.9) sha256=e93e6ec80632f8c8c4a3fe6e25d51eaef253e0e58dc7100f0f8370320feb3128
   sprockets (4.4.1) sha256=fbd665edad0916de5c7abefef0fc616866a60c5e48ce2846f39ac3fc5df9e184
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
   ssrf_filter (1.6.0) sha256=78d15bc26d0385c931f46f12a9c1cbb90e6556bd96b95f25e5a5f786c8dcf999
@@ -1077,7 +1077,7 @@ CHECKSUMS
   uri (1.1.2) sha256=89292e98eabbef6248b0a0ed5e7e398e152f83f17560023a6d94a7f492b169fb
   useragent (0.16.11) sha256=700e6413ad4bb954bb63547fa098dddf7b0ebe75b40cc6f93b8d54255b173844
   vcr (6.4.0) sha256=077ac92cc16efc5904eb90492a18153b5e6ca5398046d8a249a7c96a9ea24ae6
-  version_gem (1.1.15) sha256=a73241587b29252e3567e0c818ded80730eb754d43b508f6ce4db22ca9ba27d0
+  version_gem (1.1.17) sha256=70420b9675fbb77a7e7e7eb8ed6580dd4dd25be53b1454c1a79cc18f3c5a8dfd
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   web-console (4.3.0) sha256=e13b71301cdfc2093f155b5aa3a622db80b4672d1f2f713119cc7ec7ac6a6da4
   webauthn (3.5.0) sha256=dac4fa0aa84f7458f1745509b3bdfa31d26a7257a10bebf04fe84f6dc2222836
