@@ -50,10 +50,10 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",
-    "autoprefixer": "10.6.1",
+    "autoprefixer": "10.6.2",
     "eslint": "10.13.0",
-    "@typescript-eslint/eslint-plugin": "8.72.0",
-    "@typescript-eslint/parser": "8.72.0",
+    "@typescript-eslint/eslint-plugin": "8.72.1",
+    "@typescript-eslint/parser": "8.72.1",
     "@types/react": "19.3.0",
     "eslint-config-next": "16.4.3",
     "eslint-config-prettier": "10.1.8",
@@ -69,7 +69,7 @@
     "miragejs": "0.1.48",
     "next-router-mock": "^1.0.5",
     "patch-package": "8.0.1",
-    "postcss": "8.5.31",
+    "postcss": "8.5.32",
     "prettier": "3.9.10",
     "prettier-plugin-tailwindcss": "0.8.1",
     "selfsigned": "5.5.0",
@@ -97,7 +97,7 @@
     ]
   },
   "engines": {
-    "node": "24.22.1",
+    "node": "24.22.2",
     "yarn": "please use NPM"
   }
 }
