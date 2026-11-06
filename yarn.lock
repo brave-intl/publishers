@@ -905,10 +905,10 @@
     "@babel/plugin-transform-modules-commonjs" "^8.0.1"
     "@babel/plugin-transform-typescript" "^8.0.6"
 
-"@babel/runtime@8.0.8":
-  version "8.0.8"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-8.0.8.tgz#d11580496fd44ad3bf10c4a0cb70a029c2dd464c"
-  integrity sha512-dEu8nGlRqjsJsvviUUoSMfcRHpwomCiRlXsc2mPfJ79+ffTpDm+JtfUtTMzUrqCApHQnCsVPD3gT1ZT8RgBRCQ==
+"@babel/runtime@8.0.10":
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-8.0.10.tgz#9aff508d3d253525438d376473f99e90aca00909"
+  integrity sha512-0QyWQOIhl2onOgg96BuOYV+oCgLINVDPC8RkVPCiQhLILVqpefDUmcY+aAsW6vp7fcuTZL6SXXlFrSDCTFIu1w==
 
 "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.29.10"
