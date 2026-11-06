@@ -156,7 +156,7 @@ gem "u2f", "~> 1.0"
 gem "webauthn"
 
 # One-time passwords for 2fa
-gem "rotp", "~> 6.3.0"
+gem "rotp", "~> 6.4.0"
 
 gem "shakapacker", "10.3.2"
 
