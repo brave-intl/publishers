@@ -15,6 +15,10 @@ services:
       ADDRESS: "0.0.0.0"
       SENDGRID_SMTP_SERVER: mailcatcher
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+      # Set in .env (shell exports take precedence). Uses host SSO credentials via the mounted ~/.aws;
+      # run `aws sso login --profile <profile>` on the host first.
+      AWS_PROFILE: ${AWS_PROFILE}
+      AWS_REGION: ${AWS_REGION}
     command: sh -c "rm -f tmp/pids/server.pid && ./scripts/entrypoint.sh && bundle exec rails s"
     networks:
       - default
