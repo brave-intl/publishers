@@ -192,11 +192,6 @@
   dependencies:
     "@babel/types" "^8.0.0"
 
-"@babel/helper-plugin-utils@^7.29.7":
-  version "7.29.7"
-  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.29.7.tgz#c0a0766f1a13617d8a17407d7ab8f9d486225ea4"
-  integrity sha512-G7sHYigPY17oO5SYWnfD/0MTBwVR781S/JI643e/JhUYgVgWE/61SoW3NH9KWUKyKq5LVh3npif99Wkt6j86Jw==
-
 "@babel/helper-plugin-utils@^8.0.0", "@babel/helper-plugin-utils@^8.0.1":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-8.0.1.tgz#d1c9d8ae225902c597deac8c79ace4227feac8af"
@@ -335,13 +330,6 @@
   integrity sha512-P8+RN2n7ts2s1vnE+lXdHYf+dhnmcGSen/kWzBsVluT9Sey5AqmcRXYWlHqgQxaNlKTD5YMa1tf5z4d1v8W88w==
   dependencies:
     "@babel/helper-plugin-utils" "^8.0.1"
-
-"@babel/plugin-syntax-jsx@^7.25.9":
-  version "7.29.7"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-jsx/-/plugin-syntax-jsx-7.29.7.tgz#622c16f9ad63782fe6e83dadc7e40330744b7f1e"
-  integrity sha512-TSu8+mHCoEaaCDEZ0I3+6mvTBYR4PCxQwf2z9/r5Tbztv6NaLR3B9thGTTxX2WGuGHJqRiAbKPeGTJ5XWXVg6A==
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.29.7"
 
 "@babel/plugin-syntax-jsx@^8.0.1":
   version "8.0.1"
@@ -2441,14 +2429,13 @@ babel-plugin-polyfill-corejs3@^1.0.0:
     "@babel/helper-define-polyfill-provider" "^1.0.0"
     core-js-compat "^3.48.0"
 
-babel-plugin-styled-components@2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-2.3.1.tgz#01c57976f8449b99077af1aa7a88bd49801c6b67"
-  integrity sha512-qzRR73g8C6acYxnHNlKydMsJrSBKdPpJuPQlVRM2lhYUjsYaOD/V1OQ8Sas2tobQ6cS6wb0Qd6MoxNmoj3wklQ==
+babel-plugin-styled-components@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-2.4.0.tgz#93da6478f94f217e86c4be8a688a40113ada5e3d"
+  integrity sha512-voX7iwsNe4HyIwACtfeDSeUlbTo8ftFVdAa+oAFo19deENH8dTfeVD/W3b5V0gHkUsuAp4l9fz5hGeNLJZAGCw==
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.25.9"
     "@babel/helper-module-imports" "^7.25.9"
-    "@babel/plugin-syntax-jsx" "^7.25.9"
     picomatch "^4.0.2"
 
 babel-plugin-syntax-dynamic-import@6.18.0:
