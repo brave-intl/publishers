@@ -19,19 +19,19 @@ other_default_sol_address:
   publisher: default
 
 eth_address:
-  address: "0x0472ec0185ebb8202f3d4ddb0226998889663cf2"
+  address: "0x8db9F63c69C53a466cA60ce177C274c93026c8e2"
   verified: true
   chain: "ETH"
   publisher: verified
 
 default_eth_address:
-  address: "0x38B4552d1503b5ED349c206A2e18FBC7789420d5"
+  address: "0xbB3Ea1e03A2dC8Bd2777D5Ea886a55e3573E726e"
   verified: true
   chain: "ETH"
   publisher: default
 
 other_default_eth_address:
-  address: "0xFA32b121738bD8d1d5fDD61aC3587533aaA86e67"
+  address: "0x56D60c974442264d2136C09174e998721539d4Ad"
   verified: true
   chain: "ETH"
   publisher: default

@@ -4,11 +4,11 @@ ruby "~> 4.0.0"
 
 source "https://rubygems.org"
 
-rails_version = "8.1.3.1"
+rails_version = "8.1.4.1"
 gem "rails", rails_version
 gem "railties", rails_version
 
-gem "rack", "3.2.7"
+gem "rack", ">= 3.2.8"
 gem "rack-proxy", ">= 1.0.3"
 
 # All things countries
@@ -18,7 +18,7 @@ gem "countries"
 gem "active_model_serializers", "~> 0.10"
 
 # Allowing for URI templates, for HTTP clients
-gem "addressable", "~> 2.9"
+gem "addressable", ">= 2.9.2"
 
 # For analytics
 gem "active_analytics"
@@ -26,7 +26,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.235.0"
+gem "aws-sdk-s3", "~> 1.237.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -46,7 +46,7 @@ gem "dnsruby", "~> 1.70", require: false
 gem "domain_name"
 
 # HTTP library wrapper
-gem "faraday", "2.15.0"
+gem "faraday", "2.15.1"
 gem "faraday-retry", "2.4.0"
 
 gem "ffi"
@@ -156,7 +156,7 @@ gem "u2f", "~> 1.0"
 gem "webauthn"
 
 # One-time passwords for 2fa
-gem "rotp", "~> 6.3.0"
+gem "rotp", "~> 6.4.0"
 
 gem "shakapacker", "10.3.2"
 
@@ -205,9 +205,6 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.23"
   gem "rails-controller-testing"
-
-  # Image information library
-  gem "fastimage", "~> 2.4.0"
 end
 
 group :development, :test do
