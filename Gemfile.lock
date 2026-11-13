@@ -111,8 +111,8 @@ GEM
     auth-sanitizer (0.2.5)
       version_gem (~> 1.1, >= 1.1.16)
     aws-eventstream (1.4.1)
-    aws-partitions (1.1302.0)
-    aws-sdk-core (3.264.0)
+    aws-partitions (1.1305.0)
+    aws-sdk-core (3.268.0)
       aws-eventstream (~> 1, >= 1.4.1)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -121,11 +121,11 @@ GEM
       jmespath (~> 1, >= 1.6.1)
       logger
       rexml (~> 3.4, >= 3.4.2)
-    aws-sdk-kms (1.139.0)
-      aws-sdk-core (~> 3, >= 3.264.0)
+    aws-sdk-kms (1.143.0)
+      aws-sdk-core (~> 3, >= 3.268.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.237.0)
-      aws-sdk-core (~> 3, >= 3.263.0)
+    aws-sdk-s3 (1.238.0)
+      aws-sdk-core (~> 3, >= 3.264.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -205,7 +205,7 @@ GEM
       base64 (>= 0.2)
       logger (~> 1.6)
       simpleidn (~> 0.2.1)
-    domain_name (0.7.20261007)
+    domain_name (0.7.20261031)
     dotenv (3.2.0)
     dotenv-rails (3.2.0)
       dotenv (= 3.2.0)
@@ -373,11 +373,11 @@ GEM
       rack (>= 1.2, < 4)
       snaky_hash (~> 2.0, >= 2.0.9)
       version_gem (~> 1.1, >= 1.1.17)
-    omniauth (2.1.4)
-      hashie (>= 3.4.6)
+    omniauth (2.2.0)
+      hashie (>= 3.5.2)
       logger
-      rack (>= 2.2.3)
-      rack-protection
+      rack (>= 2.2.8)
+      rack-protection (>= 2.2.0)
     omniauth-github (2.0.1)
       omniauth (~> 2.0)
       omniauth-oauth2 (~> 1.8)
@@ -668,7 +668,7 @@ GEM
     unicode-emoji (4.3.0)
     uri (1.1.2)
     useragent (0.16.11)
-    vcr (6.4.0)
+    vcr (6.4.1)
     version_gem (1.1.17)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -721,7 +721,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10)
   activerecord-postgres_enum
   addressable (>= 2.9.2)
-  aws-sdk-s3 (~> 1.237.0)
+  aws-sdk-s3 (~> 1.238.0)
   base58
   better_errors
   binding_of_caller
@@ -840,10 +840,10 @@ CHECKSUMS
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   auth-sanitizer (0.2.5) sha256=eec0f5ee354931a1431be6f7025bc38d03db1731a2185726cbe6248e49bee177
   aws-eventstream (1.4.1) sha256=ceb6a99c61df4bb00344e54aed0351574beca24f87a0d1487d1d2ed80929ce96
-  aws-partitions (1.1302.0) sha256=d306e86e216def9b93f6f9de1c9f03c89560d6ed1a2fc7976e7950f33cf56827
-  aws-sdk-core (3.264.0) sha256=57c42dfa45f874e6b5e39c0cd9b1565cb4a506bb0900a88324d7fa58148f5af1
-  aws-sdk-kms (1.139.0) sha256=23406b8124f560d792f013689ec1cf28aa88f017f2fde4741f93285ccaa8e884
-  aws-sdk-s3 (1.237.0) sha256=1e8a96a5411124d66f85f397bd00a1d6df53da1946725b6d5980d921a8e11191
+  aws-partitions (1.1305.0) sha256=dbcf06fd557d111f8bba82180b8f32317f756516c40f3df72bdf94851ffbfa96
+  aws-sdk-core (3.268.0) sha256=471950504724daa017711705647245ed2dcb44afc658dda88ca38176fe0f4612
+  aws-sdk-kms (1.143.0) sha256=0f1286c8abf2b91817acffc0cd58580f7de703706c2b55e5be1cfc5cc7740dac
+  aws-sdk-s3 (1.238.0) sha256=7cb7a003051e02549caa3bef7f25ab5537fcf83d2e0bf1ec51c557db94ddaa18
   aws-sigv4 (1.12.1) sha256=6973ff95cb0fd0dc58ba26e90e9510a2219525d07620c8babeb70ef831826c00
   base58 (0.2.3) sha256=fda5c5d3bda8b429ad0d1a5309c2d1e488ba46f0a2ab99a639890f26c61bf3be
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
@@ -883,7 +883,7 @@ CHECKSUMS
   debug_inspector (1.2.0) sha256=9bdfa02eebc3da163833e6a89b154084232f5766087e59573b70521c77ea68a2
   devise (5.0.4) sha256=d605f2b85854e74e56ee789e2d398702bc2d06e6bcd894717a670a3199c74cc1
   dnsruby (1.74.0) sha256=7a83736c768e62b4915e2032ed4b97f9245d515e0e4efa67e424acb218296593
-  domain_name (0.7.20261007) sha256=0976c6ab837dbde991b433d03acc38fdb91fa8839df31a1ed75ce0318dc0441c
+  domain_name (0.7.20261031) sha256=6091f1c2b4781302de49eefef9ebcfbd758b84279898ea8918d0a59fdc5c0cc9
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
   dotenv-rails (3.2.0) sha256=657e25554ba622ffc95d8c4f1670286510f47f2edda9f68293c3f661b303beab
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
@@ -956,7 +956,7 @@ CHECKSUMS
   nokogiri (1.19.7-arm64-darwin) sha256=f27d7f25f4873fbc3aa35a2cc2fb680c98555fec1925348da439d0869d541142
   nokogiri (1.19.7-x86_64-linux-gnu) sha256=25865ccb462f714e712fdf8906fde07849cb6704a808e3d629d75baa5af5dd3b
   oauth2 (2.1.0) sha256=69925a45030c231cdca3ef4a54a8e848e5319f12c3fdbbfa5065dfbeb4efe835
-  omniauth (2.1.4) sha256=42a05b0496f0d22e1dd85d42aaf602f064e36bb47a6826a27ab55e5ba608763c
+  omniauth (2.2.0) sha256=8c7a05284621a35766d39fea106ea4801d3895dee59657b86c32e1f60887f1ce
   omniauth-github (2.0.1) sha256=8ff8e70ac6d6db9d52485eef52cfa894938c941496e66b52b5e2773ade3ccad4
   omniauth-google-oauth2 (1.2.3) sha256=bdbab67e64e50b7902eee2dcfc2225575cefba15ab89a3b6e92c8947987c1da9
   omniauth-oauth2 (1.9.0) sha256=ed15f6d9d20991807ce114cc5b9c1453bce3645b64e51c68c90cff5ff153fee8
@@ -1076,7 +1076,7 @@ CHECKSUMS
   unicode-emoji (4.3.0) sha256=11c02fa73290378c066bb0562cd4c87d8e1b706fbbe0059ca12746a4244de8ce
   uri (1.1.2) sha256=89292e98eabbef6248b0a0ed5e7e398e152f83f17560023a6d94a7f492b169fb
   useragent (0.16.11) sha256=700e6413ad4bb954bb63547fa098dddf7b0ebe75b40cc6f93b8d54255b173844
-  vcr (6.4.0) sha256=077ac92cc16efc5904eb90492a18153b5e6ca5398046d8a249a7c96a9ea24ae6
+  vcr (6.4.1) sha256=74870fc87d1bdf1f24e847f57977ac9a5e55cde681f56f1172c7c82dc9f006aa
   version_gem (1.1.17) sha256=70420b9675fbb77a7e7e7eb8ed6580dd4dd25be53b1454c1a79cc18f3c5a8dfd
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   web-console (4.3.0) sha256=e13b71301cdfc2093f155b5aa3a622db80b4672d1f2f713119cc7ec7ac6a6da4

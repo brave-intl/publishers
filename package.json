@@ -93,7 +93,7 @@
     "webpack": "5.112.2",
     "webpack-assets-manifest": "6.5.5",
     "webpack-merge": "6.0",
-    "webpack-cli": "7.2.3"
+    "webpack-cli": "7.3.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "8.0.1",
@@ -107,14 +107,14 @@
     "@typescript-eslint/parser": "^8.72.0",
     "audit-ci": "7.1.0",
     "autoprefixer": "10.6.2",
-    "babel-plugin-styled-components": "2.3.1",
+    "babel-plugin-styled-components": "2.4.0",
     "babel-plugin-syntax-dynamic-import": "6.18.0",
     "babel-plugin-transform-object-rest-spread": "7.0.0-beta.3",
     "cssnano": "9.9.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.8",
     "enzyme-to-json": "3.6.2",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^65.4.0",
