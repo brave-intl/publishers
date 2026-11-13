@@ -39,6 +39,7 @@
     "GHSA-cxjh-pqwp-8mfp|react-scripts>webpack-dev-server>http-proxy-middleware>http-proxy>follow-redirects",
     "GHSA-67hx-6x53-jw92",
     "GHSA-76p7-773f-r4q5",
-    "GHSA-vfj7-8cjw-p6xm"
+    "GHSA-vfj7-8cjw-p6xm",
+    "GHSA-gcqx-w48m-w2h4"
   ]
 }
