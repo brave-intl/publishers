@@ -1261,22 +1261,14 @@
     "@eslint/core" "^1.2.1"
     levn "^0.4.1"
 
-"@floating-ui/core@^1.7.5", "@floating-ui/core@^1.8.0":
+"@floating-ui/core@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.8.0.tgz#d01c0bbea02e4a57f6fd7d5de6fc2c5c7dca40e1"
   integrity sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==
   dependencies:
     "@floating-ui/utils" "^0.2.12"
 
-"@floating-ui/dom@1.7.6":
-  version "1.7.6"
-  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.7.6.tgz#f915bba5abbb177e1f227cacee1b4d0634b187bf"
-  integrity sha512-9gZSAI5XM36880PPMm//9dfiEngYoC6Am2izES1FF406YFsjvyBMmeJ2g4SAju3xWwtuynNRFL2s9hgxpLI5SQ==
-  dependencies:
-    "@floating-ui/core" "^1.7.5"
-    "@floating-ui/utils" "^0.2.11"
-
-"@floating-ui/dom@^1.0.1":
+"@floating-ui/dom@^1.0.1", "@floating-ui/dom@^1.7.6":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.8.0.tgz#8a20e6facbe2456afdbeb6c8b968a72df689cf63"
   integrity sha512-yXSrzeHZBTZadLOlfyhCkJHNeLJnHRnRInwdZ40L7ZiaAtrBwoYlsDrX3v5zB1Utk7CLfzcOVnVVWoXEky7Ceg==
@@ -1284,7 +1276,7 @@
     "@floating-ui/core" "^1.8.0"
     "@floating-ui/utils" "^0.2.12"
 
-"@floating-ui/utils@^0.2.11", "@floating-ui/utils@^0.2.12":
+"@floating-ui/utils@^0.2.12":
   version "0.2.12"
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.12.tgz#afefe785949f16ac4cdd1e695935a321572dd56a"
   integrity sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==
@@ -5922,11 +5914,11 @@ react-test-renderer@^16.0.0-0:
     scheduler "^0.19.1"
 
 react-tooltip@^6.0.0:
-  version "6.0.9"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-6.0.9.tgz#7d6571d98d455dfe438b6c6d8bf50f8cc9907c62"
-  integrity sha512-4GUhb4vqCr7fuK3D2W8TtmuCfTGLxJ3YIrgYVDGyuvk05215/B22qnc6iKQfnU3T2fqh3Op7VuKXrdV2+f+jHQ==
+  version "6.0.11"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-6.0.11.tgz#683fd243772390155f3ca3c79f126ba5dc4d78b5"
+  integrity sha512-XBq+gqQLn/QtCkULwGW9RnwXoC5aefjUtky0VY1HBMmie2O62HK/bvi1nbUOteX4AnEFhJpOTwslCyXUpRWWUQ==
   dependencies:
-    "@floating-ui/dom" "1.7.6"
+    "@floating-ui/dom" "^1.7.6"
     clsx "2.1.1"
 
 react-transition-group@^4.3.0:
