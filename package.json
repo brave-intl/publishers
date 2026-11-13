@@ -123,7 +123,7 @@
     "eslint-plugin-unicorn": "^79.0.0",
     "fork-ts-checker-webpack-plugin": "9.1.0",
     "husky": "9.1.7",
-    "jest-styled-components": "7.4.0",
+    "jest-styled-components": "7.4.1",
     "prettier": "3.9.10",
     "stylelint": "17.16.0",
     "stylelint-config-recommended-scss": "17.0.1",
