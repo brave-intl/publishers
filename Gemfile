@@ -26,7 +26,7 @@ gem "active_analytics"
 gem "activerecord-postgres_enum"
 
 # Use AWS gem for s3 uploads
-gem "aws-sdk-s3", "~> 1.237.0"
+gem "aws-sdk-s3", "~> 1.239.0"
 
 gem "bootstrap", "5.3.8"
 
@@ -195,7 +195,7 @@ group :development do
   # gem "spring-watcher-listen", "~> 2.0.0"
 
   # i18n-tasks helps you find and manage missing and unused translations.
-  gem "i18n-tasks", "~> 1.1.0"
+  gem "i18n-tasks", "~> 1.2.0"
 end
 
 group :test do
