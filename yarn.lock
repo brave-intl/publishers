@@ -1280,7 +1280,7 @@
   dependencies:
     "@floating-ui/utils" "^0.2.12"
 
-"@floating-ui/dom@^1.0.1", "@floating-ui/dom@^1.7.6":
+"@floating-ui/dom@^1.0.1":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.8.0.tgz#8a20e6facbe2456afdbeb6c8b968a72df689cf63"
   integrity sha512-yXSrzeHZBTZadLOlfyhCkJHNeLJnHRnRInwdZ40L7ZiaAtrBwoYlsDrX3v5zB1Utk7CLfzcOVnVVWoXEky7Ceg==
@@ -2737,11 +2737,6 @@ clone-deep@^4.0.1:
     is-plain-object "^2.0.4"
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
-
-clsx@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.1.tgz#eed397c9fd8bd882bfb18deab7102049a2f32999"
-  integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -5925,14 +5920,6 @@ react-test-renderer@^16.0.0-0:
     prop-types "^15.6.2"
     react-is "^16.8.6"
     scheduler "^0.19.1"
-
-react-tooltip@^6.0.0:
-  version "6.0.11"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-6.0.11.tgz#683fd243772390155f3ca3c79f126ba5dc4d78b5"
-  integrity sha512-XBq+gqQLn/QtCkULwGW9RnwXoC5aefjUtky0VY1HBMmie2O62HK/bvi1nbUOteX4AnEFhJpOTwslCyXUpRWWUQ==
-  dependencies:
-    "@floating-ui/dom" "^1.7.6"
-    clsx "2.1.1"
 
 react-transition-group@^4.3.0:
   version "4.4.5"
