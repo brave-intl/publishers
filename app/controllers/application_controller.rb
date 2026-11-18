@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
-    @current_ability ||= Ability.new(current_user, request.remote_ip, request&.headers&.fetch("HTTP_ORIGINALIP", ""))
+    @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
 
   def handle_unverified_request

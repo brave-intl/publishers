@@ -154,20 +154,43 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_template "admin/errors/whitelist"
   end
 
-  test "renders whitelist unless admin is on admin whitelist original ip" do
+  # 203.0.113.7 is on the test admin whitelist; 10.0.0.5 stands in for the Next.js proxy / ALB (a trusted private hop).
+  test "ignores an allowlisted ip supplied in the originalIP header" do
     admin = publishers(:admin)
     sign_in admin
 
-    get admin_publishers_path, headers: {"REMOTE_ADDR" => "1.2.3.4", "HTTP_ORIGINALIP" => "1.2.3.4,4.5.6.7"} # not on whitelist
+    get admin_publishers_path, headers: {"REMOTE_ADDR" => "1.2.3.4", "HTTP_ORIGINALIP" => "203.0.113.7"}
 
     assert_template "admin/errors/whitelist"
   end
 
-  test "renders success if original ip allowed" do
+  test "ignores an allowlisted ip and the originalIP header when both are spoofed through the proxy chain" do
     admin = publishers(:admin)
     sign_in admin
 
-    get admin_publishers_path, headers: {"REMOTE_ADDR" => "1.2.3.4", "HTTP_ORIGINALIP" => "127.0.0.1"}
+    get admin_publishers_path, headers: {
+      "REMOTE_ADDR" => "10.0.0.5",
+      "HTTP_X_FORWARDED_FOR" => "203.0.113.7, 198.51.100.9, 10.0.0.9",
+      "HTTP_ORIGINALIP" => "203.0.113.7"
+    }
+
+    assert_template "admin/errors/whitelist"
+  end
+
+  test "ignores an allowlisted ip prepended to X-Forwarded-For before the trusted proxy chain" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    get admin_publishers_path, headers: {"REMOTE_ADDR" => "10.0.0.5", "HTTP_X_FORWARDED_FOR" => "203.0.113.7, 198.51.100.9"}
+
+    assert_template "admin/errors/whitelist"
+  end
+
+  test "allows an allowlisted client reaching rails through the trusted proxy chain" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    get admin_publishers_path, headers: {"REMOTE_ADDR" => "10.0.0.5", "HTTP_X_FORWARDED_FOR" => "203.0.113.7"}
 
     assert_template "admin/publishers/index"
   end

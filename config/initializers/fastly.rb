@@ -12,5 +12,8 @@ rescue => e
   puts "Failed to load trusted_proxies from Cloudfront. Error: #{e.message}"
 end
 
-Rails.application.config.action_dispatch.trusted_proxies = proxy_list.map { |proxy| IPAddr.new(proxy) }
+# Assigning trusted_proxies replaces Rails' defaults, so keep them: the ALB and the Next.js proxy
+# reach Rails from private addresses and must be treated as hops for request.remote_ip to resolve the client.
+Rails.application.config.action_dispatch.trusted_proxies =
+  ActionDispatch::RemoteIp::TRUSTED_PROXIES + proxy_list.map { |proxy| IPAddr.new(proxy) }
 puts "✅ Set trusted_proxies list"
