@@ -67,12 +67,12 @@ app
       secure: testMode ? false : !dev,
       on: {
         proxyReq: (proxyReq, request, response) => {
-          const ip = (
-            request.headers['x-forwarded-for'] || request.socket.remoteAddress
-          )
-            .split(':')
-            .pop();
-          proxyReq.setHeader('originalIP', ip);
+          // Append our socket peer as a proxy hop; never forward a client-chosen IP as authoritative.
+          // Rails derives the client from this chain via trusted_proxies (request.remote_ip).
+          const peer = (request.socket.remoteAddress || '').replace(/^::ffff:/, '');
+          const prior = request.headers['x-forwarded-for'];
+          proxyReq.setHeader('x-forwarded-for', prior ? `${prior}, ${peer}` : peer);
+          proxyReq.removeHeader('originalip');
           proxyReq.setHeader('origin', pubHost.origin);
         },
         proxyRes: (proxyRes, request, response) => {
