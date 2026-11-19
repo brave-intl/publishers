@@ -70,7 +70,7 @@
     "next-router-mock": "^1.0.5",
     "patch-package": "8.0.1",
     "postcss": "8.5.32",
-    "prettier": "3.9.10",
+    "prettier": "3.10.1",
     "prettier-plugin-tailwindcss": "0.8.1",
     "selfsigned": "5.5.0",
     "stylelint": "18.0.0",
