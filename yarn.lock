@@ -6415,10 +6415,10 @@ stylelint-config-styled-components@0.1.1:
   resolved "https://registry.yarnpkg.com/stylelint-config-styled-components/-/stylelint-config-styled-components-0.1.1.tgz#b408388d7c687833ab4be4c4e6522d97d2827ede"
   integrity sha512-z5Xz/9GmvxO6e/DLzBMwkB85zHxEEjN6K7Cj80Bi+o/9vR9eS3GX3E9VuMnX9WLFYulqbqLtTapGGY28JBiy9Q==
 
-stylelint-scss@7.4.0:
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.4.0.tgz#0294b16bcc3184bbe8843f81ab521192f9e32e71"
-  integrity sha512-OvN+AestcvtB/IFvde1kpFLq2mpIsPaeB8E+Cjlxu7qjf0ja7NCoTrDW97tuNeXFlYGUdwqGq5cXaByLpNwuxA==
+stylelint-scss@7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-7.5.0.tgz#6c429eda06620b48452e37b12797ede0b1245964"
+  integrity sha512-oRbhTDu8ocyWbgRfp7nWCvIX1DP50qnD9zPrtOxkIasJSiGZaMWKP0gcdl0HzNU1PRe5ZTfpHtvBIurtDjvilw==
   dependencies:
     "@csstools/css-calc" "^3.4.3"
     "@csstools/css-parser-algorithms" "^4.0.0"
