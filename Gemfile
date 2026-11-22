@@ -42,7 +42,7 @@ gem "csv"
 # Authentication
 gem "devise", "~> 5.0"
 
-gem "dnsruby", "~> 1.70", require: false
+gem "dnsruby", "~> 2.0", require: false
 gem "domain_name"
 
 # HTTP library wrapper

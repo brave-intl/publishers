@@ -201,10 +201,10 @@ GEM
       railties (>= 7.0)
       responders
       warden (~> 1.2.3)
-    dnsruby (1.74.0)
+    dnsruby (2.0.0)
       base64 (>= 0.2)
       logger (~> 1.6)
-      simpleidn (~> 0.2.1)
+      simpleidn (>= 0.2.1, < 0.4.0)
     domain_name (0.7.20261031)
     dotenv (3.2.0)
     dotenv-rails (3.2.0)
@@ -608,7 +608,7 @@ GEM
       redis-prescription (~> 2.2)
       sidekiq (>= 8.0)
     simplecov (1.3.2)
-    simpleidn (0.2.3)
+    simpleidn (0.3.0)
     slim (5.2.2)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
@@ -737,7 +737,7 @@ DEPENDENCIES
   csv
   database_cleaner
   devise (~> 5.0)
-  dnsruby (~> 1.70)
+  dnsruby (~> 2.0)
   domain_name
   dotenv-rails (= 3.2.0)
   faraday (= 2.15.1)
@@ -882,7 +882,7 @@ CHECKSUMS
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   debug_inspector (1.2.0) sha256=9bdfa02eebc3da163833e6a89b154084232f5766087e59573b70521c77ea68a2
   devise (5.0.4) sha256=d605f2b85854e74e56ee789e2d398702bc2d06e6bcd894717a670a3199c74cc1
-  dnsruby (1.74.0) sha256=7a83736c768e62b4915e2032ed4b97f9245d515e0e4efa67e424acb218296593
+  dnsruby (2.0.0) sha256=95db3c44669eb4aad9f72d8b7ae3faaf4737b4a9f99855703a415f1e3a65d87e
   domain_name (0.7.20261031) sha256=6091f1c2b4781302de49eefef9ebcfbd758b84279898ea8918d0a59fdc5c0cc9
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
   dotenv-rails (3.2.0) sha256=657e25554ba622ffc95d8c4f1670286510f47f2edda9f68293c3f661b303beab
@@ -1048,7 +1048,7 @@ CHECKSUMS
   sidekiq-scheduler (6.0.2) sha256=1065f1a989e750849de1d23d1f34338c104ed6ec5a6dc22a2620c5af54a2d6fc
   sidekiq-throttled (2.1.0) sha256=430d4684b781b37f7f22b9b4a26dadf438b725718ecb821ae8bb8ea66f78fc4c
   simplecov (1.3.2) sha256=2a22ec1759f1b8db60881a2e038758956fc69ef93ed669be0bde0678de6d0e85
-  simpleidn (0.2.3) sha256=08ce96f03fa1605286be22651ba0fc9c0b2d6272c9b27a260bc88be05b0d2c29
+  simpleidn (0.3.0) sha256=12ca730bed2f3db04d11e9bfd1bca3e11fb37f55b21eb2e9793fb5814bf54d03
   slim (5.2.2) sha256=d1b5a575fcfa904a5eb66ec0a8f48a2363c7b9c57d50debb42dbab31524ef5e3
   slim-rails (4.0.1) sha256=bd8f21eec413738ae65d7732926e65be15061dae17cc85f80e37301916a5a0f4
   snaky_hash (2.0.9) sha256=e93e6ec80632f8c8c4a3fe6e25d51eaef253e0e58dc7100f0f8370320feb3128
