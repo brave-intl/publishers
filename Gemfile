@@ -56,7 +56,7 @@ gem "font-awesome-rails", "~> 4.7.0"
 gem "google-protobuf", "~> 4.0"
 
 # Make logs less mad verbose
-gem "lograge", "~> 0.15.0"
+gem "lograge", "~> 0.16.0"
 
 # Dependency for rails
 gem "nokogiri", ">= 1.16"
